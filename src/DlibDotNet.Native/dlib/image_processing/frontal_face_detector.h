@@ -80,7 +80,7 @@ extern "C" __declspec(dllexport) int frontal_face_detector_operator(
     return err;
 }
 
-extern "C" _declspec(dllexport) void frontal_face_detector_delete(void* obj)
+extern "C" _declspec(dllexport) void frontal_face_detector_delete(frontal_face_detector* obj)
 {
 	delete obj;
 }

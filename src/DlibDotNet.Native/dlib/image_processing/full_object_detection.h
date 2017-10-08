@@ -29,7 +29,7 @@ extern "C" __declspec(dllexport) point* full_object_detection_part(full_object_d
     return new point(p);
 }
 
-extern "C" _declspec(dllexport) void full_object_detection_delete(void* obj)
+extern "C" _declspec(dllexport) void full_object_detection_delete(full_object_detection* obj)
 {
 	delete obj;
 }

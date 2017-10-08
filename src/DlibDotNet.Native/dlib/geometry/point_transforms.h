@@ -33,7 +33,7 @@ extern "C" __declspec(dllexport) void* point_rotator_operator(void* obj, void* v
     return new dlib::vector<double,2>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_rotator_delete(void* obj)
+extern "C" _declspec(dllexport) void point_rotator_delete(dlib::point_rotator* obj)
 {
 	delete obj;
 }
@@ -73,7 +73,7 @@ extern "C" __declspec(dllexport) void* point_transform_operator(void* obj, void*
     return new dlib::vector<double,2>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_transform_delete(void* obj)
+extern "C" _declspec(dllexport) void point_transform_delete(dlib::point_transform* obj)
 {
 	delete obj;
 }
@@ -114,7 +114,7 @@ extern "C" __declspec(dllexport) void* point_transform_affine_operator(void* obj
     return new dlib::vector<double>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_transform_affine_delete(void* obj)
+extern "C" _declspec(dllexport) void point_transform_affine_delete(dlib::point_transform_affine* obj)
 {
 	delete obj;
 }
@@ -156,7 +156,7 @@ extern "C" __declspec(dllexport) void* rectangle_transform_operator_d(void* obj,
     return new dlib::drectangle(ret);
 }
 
-extern "C" _declspec(dllexport) void rectangle_transform_delete(void* obj)
+extern "C" _declspec(dllexport) void rectangle_transform_delete(dlib::rectangle_transform* obj)
 {
 	delete obj;
 }
@@ -190,7 +190,7 @@ extern "C" __declspec(dllexport) void* point_transform_projective_operator(void*
     return new dlib::vector<double>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_transform_projective_delete(void* obj)
+extern "C" _declspec(dllexport) void point_transform_projective_delete(dlib::point_transform_projective* obj)
 {
 	delete obj;
 }

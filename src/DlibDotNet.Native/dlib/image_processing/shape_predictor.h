@@ -92,7 +92,7 @@ extern "C" __declspec(dllexport) unsigned int shape_predictor_num_features(shape
     return predictor->num_features();
 }
 
-extern "C" _declspec(dllexport) void shape_predictor_delete(void* obj)
+extern "C" _declspec(dllexport) void shape_predictor_delete(shape_predictor* obj)
 {
 	delete obj;
 }

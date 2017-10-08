@@ -218,7 +218,7 @@ extern "C" __declspec(dllexport) int correlation_tracker_update2(
     return err;
 }
 
-extern "C" _declspec(dllexport) void correlation_tracker_delete(void* obj)
+extern "C" _declspec(dllexport) void correlation_tracker_delete(correlation_tracker* obj)
 {
 	delete obj;
 }
