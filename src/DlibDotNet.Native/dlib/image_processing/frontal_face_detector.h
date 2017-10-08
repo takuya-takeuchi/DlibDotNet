@@ -32,43 +32,43 @@ extern "C" __declspec(dllexport) int frontal_face_detector_operator(
         case array2d_type::UInt8:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<uint8_t>*)img), adjust_threshold));
-                for each(dlib::rectangle r in result)
-                    dets->push_back(new rectangle(r));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
             }
             break;
         case array2d_type::UInt16:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<uint16_t>*)img), adjust_threshold));
-                for each(dlib::rectangle r in result)
-                    dets->push_back(new rectangle(r));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
             }
             break;
         case array2d_type::Float:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<float>*)img), adjust_threshold));
-                for each(dlib::rectangle r in result)
-                    dets->push_back(new rectangle(r));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
             }
             break;
         case array2d_type::Double:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<double>*)img), adjust_threshold));
-                for each(dlib::rectangle r in result)
-                    dets->push_back(new rectangle(r));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
             }
             break;
         case array2d_type::RgbPixel:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<rgb_pixel>*)img), adjust_threshold));
-                for each(dlib::rectangle r in result)
-                    dets->push_back(new rectangle(r));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
             }
             break;
         case array2d_type::HsiPixel:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<hsi_pixel>*)img), adjust_threshold));
-                for each(dlib::rectangle r in result)
-                    dets->push_back(new rectangle(r));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
             }
             break;
         case array2d_type::RgbAlphaPixel:
