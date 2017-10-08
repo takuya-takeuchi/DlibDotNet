@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Release TestSettings" id="102b5756-98a4-43ec-b0ac-99f25072bd92" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+  <Deployment>
+    <DeploymentItem filename="test\DlibDotNet.Tests\TestDeployItem\Release\DlibDotNet.Native.dll" />
+    <DeploymentItem filename="test\DlibDotNet.Tests\data\" outputDirectory="data" />
+  </Deployment>
+  <NamingScheme baseName="Result" appendTimeStamp="false" useDefault="false" />
+  <Execution hostProcessPlatform="MSIL">
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+    <AgentRule name="LocalMachineDefaultRole">
+    </AgentRule>
+  </Execution>
+  <Properties />
+</TestSettings>

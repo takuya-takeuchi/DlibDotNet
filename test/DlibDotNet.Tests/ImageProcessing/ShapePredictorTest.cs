@@ -1,0 +1,178 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if DEBUG
+using System.Drawing;
+using System.IO;
+#endif
+
+namespace DlibDotNet.Tests.ImageProcessing
+{
+
+    [TestClass]
+    public class ShapePredictorTest : TestBase
+    {
+
+        private ShapePredictor _ShapePredictor;
+
+        [TestMethod]
+        public void CreateShapePredictor()
+        {
+            var predictor = new ShapePredictor();
+            this.DisposeAndCheckDisposedState(predictor);
+        }
+
+        [TestInitialize]
+        [TestMethod]
+        public void CreateShapePredictorFromFile()
+        {
+            var path = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
+            this._ShapePredictor = new ShapePredictor(path.FullName);
+        }
+
+        [TestMethod]
+        public void DetectFace()
+        {
+            if (this._ShapePredictor == null)
+                Assert.Fail("ShapePredictor is not initialized!!");
+
+            var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector();
+            //Interpolation.PyramidUp(image);
+
+            var path = this.GetDataFile("Lenna.jpg");
+            var image = Dlib.LoadImage<byte>(path.FullName);
+
+            var dets = faceDetector.Detect(image);
+            Assert.AreEqual(dets.Length, 1);
+
+            var rects = new List<Rectangle>();
+
+            const int offset = 1;
+            var shapes = dets.Select(r => this._ShapePredictor.Detect(image, r)).ToList();
+            foreach (var shape in shapes)
+            {
+                var r = shape.Rect;
+                var parts = shape.Parts;
+                for (uint i = 0; i < parts; i++)
+                {
+                    var part = shape.GetPart(i);
+                    var pr = new Rectangle(
+                        part.X - offset, part.Y - offset, part.X + offset, part.Y + offset);
+                    rects.Add(pr);
+                }
+
+                rects.Add(r);
+            }
+
+#if DEBUG
+            using (var bmp = Image.FromFile(path.FullName))
+            using (var g = Graphics.FromImage(bmp))
+            using (var p = new Pen(Color.Green, 1f))
+            {
+                // If you executed PyramidUp, it made the image bigger by a factor of two.
+                // It means that detected coordinates are bigger by a factor of two.
+                foreach (var r in rects)
+                    g.DrawRectangle(p, r.Left, r.Top, r.Width, r.Height);
+                //g.DrawRectangle(p, r.Left / 2f, r.Top / 2f, r.Width / 2f, r.Height / 2f);
+
+                bmp.Save(Path.Combine(this.GetOutDir(this.GetType().Name), "DetectFace.bmp"));
+            }
+#endif
+
+            this.DisposeAndCheckDisposedState(rects);
+            this.DisposeAndCheckDisposedState(dets);
+            this.DisposeAndCheckDisposedState(faceDetector);
+            this.DisposeAndCheckDisposedState(image);
+        }
+
+        [TestMethod]
+        public void DetectFace2()
+        {
+            if (this._ShapePredictor == null)
+                Assert.Fail("ShapePredictor is not initialized!!");
+
+            const string testName = "DetectFace2";
+            var path = this.GetDataFile("Lenna_mini.bmp");
+            var tests = new[]
+            {
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = true},
+                new { Type = ImageTypes.Double,        ExpectResult = true},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false}
+            };
+
+            var type = this.GetType().Name;
+
+            using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+                foreach (var input in tests)
+                {
+                    var expectResult = input.ExpectResult;
+                    var imageObj = DlibTest.LoadImage(input.Type, path);
+                    Rectangle[] dets = null;
+
+                    var outputImageAction = new Func<bool, Array2DBase>(expect =>
+                    {
+                        dets = faceDetector.Detect(imageObj);
+                        return imageObj;
+                    });
+
+                    var successAction = new Action<Array2DBase>(image =>
+                    {
+                        var rects = new List<Rectangle>();
+                        const int offset = 1;
+                        var shapes = dets.Select(r => this._ShapePredictor.Detect(image, r)).ToList();
+                        foreach (var shape in shapes)
+                        {
+                            var r = shape.Rect;
+                            var parts = shape.Parts;
+                            for (uint i = 0; i < parts; i++)
+                            {
+                                var part = shape.GetPart(i);
+                                var pr = new Rectangle(
+                                    part.X - offset, part.Y - offset, part.X + offset, part.Y + offset);
+                                rects.Add(pr);
+                            }
+
+                            rects.Add(r);
+                        }
+                        this.DisposeAndCheckDisposedState(rects);
+
+                        // This test does NOT check whether output image and detect face area are correct
+                        //Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"2008_001322_{input.Type}.jpg")}");
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw excption for InputType: {input.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        this.DisposeAndCheckDisposedState(imageObj);
+                        if (dets != null)
+                            this.DisposeAndCheckDisposedState(dets);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
+        }
+
+        [TestCleanup]
+        public void Dispose()
+        {
+            if (this._ShapePredictor != null)
+                this.DisposeAndCheckDisposedState(this._ShapePredictor);
+        }
+
+    }
+
+}
