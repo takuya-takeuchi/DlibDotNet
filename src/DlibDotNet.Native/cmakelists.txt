@@ -10,12 +10,9 @@ endif()
 
 # Support to load image
 # NOTE: In other words, dlib can NOT load image if these options are not enabled.
-option(DLIB_JPEG_SUPPORT "Support to load jpeg file" ON)
-option(DLIB_PNG_SUPPORT "Support to load png file" ON)
-option(DLIB_GIF_SUPPORT "Support to load gif file" ON)
-#add_definitions(DLIB_GIF_SUPPORT)
-#add_definitions(DLIB_PNG_SUPPORT)
-#add_definitions(DLIB_GIF_SUPPORT)
+add_definitions(-DDLIB_JPEG_SUPPORT)
+add_definitions(-DDLIB_PNG_SUPPORT)
+add_definitions(-DDLIB_GIF_SUPPORT)
 
 # include
 # NOTE: You should *NOT* add the dlib folder itself to your compiler's include path.
