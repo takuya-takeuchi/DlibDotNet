@@ -250,7 +250,7 @@ extern "C" _declspec(dllexport) bool array2d_matrix_nc(matrix_element_type type,
             *ret = ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array)->nc();
 			return true;
         default:
-            return nullptr;
+            return false;
     }
 }
 
@@ -292,7 +292,7 @@ extern "C" _declspec(dllexport) bool array2d_matrix_nr(matrix_element_type type,
             *ret = ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array)->nr();
 			return true;
         default:
-            return nullptr;
+            return false;
     }
 }
 
@@ -334,7 +334,7 @@ extern "C" _declspec(dllexport) bool array2d_matrix_size(matrix_element_type typ
             *ret = ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array)->size();
 			return true;
         default:
-            return nullptr;
+            return false;
     }
 }
 
