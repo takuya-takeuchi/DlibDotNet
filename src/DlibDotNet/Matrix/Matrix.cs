@@ -164,7 +164,7 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            Dlib.Native.matrix_delete(this.NativePtr);
+            Dlib.Native.matrix_delete(this._ElementType, this.NativePtr);
         }
 
         #endregion

@@ -143,9 +143,32 @@ extern "C" _declspec(dllexport) bool array2d_size(array2d_type type, void* array
     }
 }
 
-extern "C" _declspec(dllexport) void array2d_delete(void* array)
+extern "C" _declspec(dllexport) void array2d_delete(array2d_type type, void* array)
 {
-	delete array;
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			delete ((array2d<uint8_t>*)array);
+			break;
+        case array2d_type::UInt16:
+			delete ((array2d<uint16_t>*)array);
+			break;
+        case array2d_type::Float:
+			delete ((array2d<float>*)array);
+			break;
+        case array2d_type::Double:
+			delete ((array2d<double>*)array);
+			break;
+        case array2d_type::RgbPixel:
+			delete ((array2d<rgb_pixel>*)array);
+			break;
+        case array2d_type::HsiPixel:
+			delete ((array2d<hsi_pixel>*)array);
+			break;
+        case array2d_type::RgbAlphaPixel:
+			delete ((array2d<rgb_alpha_pixel>*)array);
+			break;
+    }
 }
 
 #pragma region matrix
@@ -338,9 +361,44 @@ extern "C" _declspec(dllexport) bool array2d_matrix_size(matrix_element_type typ
     }
 }
 
-extern "C" _declspec(dllexport) void array2d_matrix_delete(void* array)
+extern "C" _declspec(dllexport) void array2d_matrix_delete(matrix_element_type type, void* array)
 {
-	delete array;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            delete ((dlib::array2d<matrix<uint8_t>>*)array);
+            break;
+        case matrix_element_type::UInt16:
+            delete ((dlib::array2d<matrix<uint16_t>>*)array);
+            break;
+        case matrix_element_type::UInt32:
+            delete ((dlib::array2d<matrix<uint32_t>>*)array);
+            break;
+        case matrix_element_type::Int8:
+            delete ((dlib::array2d<matrix<int8_t>>*)array);
+            break;
+        case matrix_element_type::Int16:
+            delete ((dlib::array2d<matrix<int16_t>>*)array);
+            break;
+        case matrix_element_type::Int32:
+            delete ((dlib::array2d<matrix<int32_t>>*)array);
+            break;
+        case matrix_element_type::Float:
+            delete ((dlib::array2d<matrix<float>>*)array);
+            break;
+        case matrix_element_type::Double:
+            delete ((dlib::array2d<matrix<double>>*)array);
+            break;
+        case matrix_element_type::RgbPixel:
+            delete ((dlib::array2d<matrix<rgb_pixel>>*)array);
+            break;
+        case matrix_element_type::HsiPixel:
+            delete ((dlib::array2d<matrix<hsi_pixel>>*)array);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            delete ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array);
+            break;
+    }
 }
 
 #pragma endregion matrix

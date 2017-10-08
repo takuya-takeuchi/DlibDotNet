@@ -339,7 +339,7 @@ namespace DlibDotNet
             public static extern IntPtr array2d_new1(Array2DType type, int rows, int cols);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_delete(IntPtr array);
+            public static extern void array2d_delete(Array2DType type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -367,7 +367,7 @@ namespace DlibDotNet
             public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_delete(IntPtr array);
+            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -458,7 +458,7 @@ namespace DlibDotNet
             public static extern IntPtr matrix_new1(MatrixElementType matrixElementType, int row, int column);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_delete(IntPtr array);
+            public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]

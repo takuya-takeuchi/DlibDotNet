@@ -211,9 +211,44 @@ extern "C" _declspec(dllexport) int matrix_size(matrix_element_type type, void* 
     return err;
 }
 
-extern "C" _declspec(dllexport) void matrix_delete(void* obj)
+extern "C" _declspec(dllexport) void matrix_delete(matrix_element_type type, void* matrix)
 {
-	delete obj;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            delete ((dlib::matrix<uint8_t>*)matrix);
+            break;
+        case matrix_element_type::UInt16:
+            delete ((dlib::matrix<uint16_t>*)matrix);
+            break;
+        case matrix_element_type::UInt32:
+            delete ((dlib::matrix<uint32_t>*)matrix);
+            break;
+        case matrix_element_type::Int8:
+            delete ((dlib::matrix<int8_t>*)matrix);
+            break;
+        case matrix_element_type::Int16:
+            delete ((dlib::matrix<int16_t>*)matrix);
+            break;
+        case matrix_element_type::Int32:
+            delete ((dlib::matrix<int32_t>*)matrix);
+            break;
+        case matrix_element_type::Float:
+            delete ((dlib::matrix<float>*)matrix);
+            break;
+        case matrix_element_type::Double:
+            delete ((dlib::matrix<double>*)matrix);
+            break;
+        case matrix_element_type::RgbPixel:
+            delete ((dlib::matrix<rgb_pixel>*)matrix);
+            break;
+        case matrix_element_type::HsiPixel:
+            delete ((dlib::matrix<hsi_pixel>*)matrix);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            delete ((dlib::matrix<rgb_alpha_pixel>*)matrix);
+            break;
+    }
 }
 
 extern "C" _declspec(dllexport) int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
