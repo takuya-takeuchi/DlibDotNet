@@ -42,6 +42,24 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+# Visual Studio Code
+.settings/
+.vscode/
+tsconfig.json
+jsconfig.json
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+build
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json
