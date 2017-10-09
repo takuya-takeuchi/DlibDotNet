@@ -3,6 +3,13 @@ set(PROJ_NAME DlibDotNet.Native)
 
 project(${PROJ_NAME} VERSION 0.0.0)
 
+if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+    set(CMAKE_CXX_STANDARD 11)  # for c++11
+    find_package(X11 REQUIRED)
+    link_libraries(${X11_LIBRARIES})
+    include_directories(${X11_INCLUDE_DIR})
+endif()
+
 # Select the release build type by default
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
