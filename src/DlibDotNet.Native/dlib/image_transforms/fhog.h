@@ -116,4 +116,114 @@ DLLEXPORT int draw_fhog(
     return ret;
 }
 
+#pragma region fhog_matrix
+
+DLLEXPORT void* array2d_fhog_matrix_new(matrix_element_type type)
+{
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            return new dlib::array2d<matrix<float, 31, 1>>();
+        case matrix_element_type::Double:
+            return new dlib::array2d<matrix<double, 31, 1>>();
+        default:
+            return nullptr;
+    }
+}
+
+DLLEXPORT void* array2d_fhog_matrix_new1(matrix_element_type type, int rows, int cols)
+{
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            return new dlib::array2d<matrix<float, 31, 1>>(rows, cols);
+        case matrix_element_type::Double:
+            return new dlib::array2d<matrix<double, 31, 1>>(rows, cols);
+        default:
+            return nullptr;
+    }
+}
+
+DLLEXPORT bool array2d_fhog_matrix_nc(matrix_element_type type, void* array, int* ret)
+{
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            *ret = ((dlib::array2d<matrix<float, 31, 1>>*)array)->nc();
+            return true;
+        case matrix_element_type::Double:
+            *ret = ((dlib::array2d<matrix<double, 31, 1>>*)array)->nc();
+            return true;
+        default:
+            return false;
+    }
+}
+
+DLLEXPORT bool array2d_fhog_matrix_nr(matrix_element_type type, void* array, int* ret)
+{
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            *ret = ((dlib::array2d<matrix<float, 31, 1>>*)array)->nr();
+            return true;
+        case matrix_element_type::Double:
+            *ret = ((dlib::array2d<matrix<double, 31, 1>>*)array)->nr();
+            return true;
+        default:
+            return false;
+    }
+}
+
+DLLEXPORT bool array2d_fhog_matrix_size(matrix_element_type type, void* array, int* ret)
+{
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            *ret = ((dlib::array2d<matrix<float, 31, 1>>*)array)->size();
+            return true;
+        case matrix_element_type::Double:
+            *ret = ((dlib::array2d<matrix<double, 31, 1>>*)array)->size();
+            return true;
+        default:
+            return false;
+    }
+}
+
+DLLEXPORT void array2d_fhog_matrix_delete(matrix_element_type type, void* array)
+{
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            delete ((dlib::array2d<matrix<float, 31, 1>>*)array);
+            break;
+        case matrix_element_type::Double:
+            delete ((dlib::array2d<matrix<double, 31, 1>>*)array);
+            break;
+        default:
+            break;
+    }
+}
+
+DLLEXPORT int array2d_fhog_matrix_get_rect2(matrix_element_type type, void* img, rectangle** rect)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::Float:
+            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<float, 31, 1>>*)img)));
+			break;
+        case matrix_element_type::Double:
+            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<double, 31, 1>>*)img)));
+			break;
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+#pragma endregion fhog_matrix
+
 #endif

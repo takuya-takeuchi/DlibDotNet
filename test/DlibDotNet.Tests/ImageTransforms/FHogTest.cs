@@ -1,5 +1,4 @@
 ﻿using System;
-using DlibDotNet.Tests.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Tests.ImageTransforms
@@ -33,7 +32,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = false},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = false}
             };
-            
+
             foreach (ImageTypes inputType in Enum.GetValues(typeof(ImageTypes)))
                 foreach (var output in tests)
                 {
@@ -42,11 +41,49 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var expectResult = output.ExpectResult;
                     var imageObj = DlibTest.LoadImage(inputType, path);
-                    var outputObj = Array2DTest.CreateArray2DMatrix(output.Type);
+                    Array2DMatrixBase outputObj = null;
 
                     var outputImageAction = new Func<bool, Array2DMatrixBase>(expect =>
                     {
-                        Dlib.ExtracFHogFeatures(imageObj, outputObj);
+                        switch (output.Type)
+                        {
+                            case MatrixElementTypes.UInt8:
+                                outputObj = Dlib.ExtracFHogFeatures<byte>(imageObj);
+                                break;
+                            case MatrixElementTypes.UInt16:
+                                outputObj = Dlib.ExtracFHogFeatures<ushort>(imageObj);
+                                break;
+                            case MatrixElementTypes.UInt32:
+                                outputObj = Dlib.ExtracFHogFeatures<uint>(imageObj);
+                                break;
+                            case MatrixElementTypes.Int8:
+                                outputObj = Dlib.ExtracFHogFeatures<sbyte>(imageObj);
+                                break;
+                            case MatrixElementTypes.Int16:
+                                outputObj = Dlib.ExtracFHogFeatures<short>(imageObj);
+                                break;
+                            case MatrixElementTypes.Int32:
+                                outputObj = Dlib.ExtracFHogFeatures<int>(imageObj);
+                                break;
+                            case MatrixElementTypes.Float:
+                                outputObj = Dlib.ExtracFHogFeatures<float>(imageObj);
+                                break;
+                            case MatrixElementTypes.Double:
+                                outputObj = Dlib.ExtracFHogFeatures<double>(imageObj);
+                                break;
+                            case MatrixElementTypes.RgbPixel:
+                                outputObj = Dlib.ExtracFHogFeatures<RgbPixel>(imageObj);
+                                break;
+                            case MatrixElementTypes.RgbAlphaPixel:
+                                outputObj = Dlib.ExtracFHogFeatures<RgbAlphaPixel>(imageObj);
+                                break;
+                            case MatrixElementTypes.HsiPixel:
+                                outputObj = Dlib.ExtracFHogFeatures<HsiPixel>(imageObj);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
                         return outputObj;
                     });
 
@@ -102,7 +139,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true}
             };
-            
+
             foreach (var output in tests)
             {
                 Array2DBase imageObj = null;
@@ -111,9 +148,19 @@ namespace DlibDotNet.Tests.ImageTransforms
                 try
                 {
                     imageObj = DlibTest.LoadImage(ImageTypes.RgbPixel, path);
-                    outputObj = Array2DTest.CreateArray2DMatrix(output.Type);
 
-                    Dlib.ExtracFHogFeatures(imageObj, outputObj);
+                    switch (output.Type)
+                    {
+                        case MatrixElementTypes.Float:
+                            outputObj = Dlib.ExtracFHogFeatures<float>(imageObj);
+                            break;
+                        case MatrixElementTypes.Double:
+                            outputObj = Dlib.ExtracFHogFeatures<double>(imageObj);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
                     MatrixBase matrix = Dlib.DrawHog(outputObj);
 
                     if (!this.CanGuiDebug)
