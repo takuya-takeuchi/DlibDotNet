@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="Debug TestSettings" id="102b5756-98a4-43ec-b0ac-99f25072bd92" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings id="cd722878-f0f3-4bf7-8c90-be147fb48456" name="TestSettings1" enableDefaultDataCollectors="false" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description><!--_locID_text="Description1"-->これらはローカル テスト実行用の既定のテスト設定です。</Description>
   <Deployment>
     <DeploymentItem filename="test\DlibDotNet.Tests\TestDeployItem\Debug\DlibDotNet.Native.dll" />
     <DeploymentItem filename="test\DlibDotNet.Tests\data\" outputDirectory="data" />
