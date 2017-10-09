@@ -214,42 +214,50 @@ DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, int* ret)
 
 DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix)
 {
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            delete ((dlib::matrix<uint8_t>*)matrix);
-            break;
-        case matrix_element_type::UInt16:
-            delete ((dlib::matrix<uint16_t>*)matrix);
-            break;
-        case matrix_element_type::UInt32:
-            delete ((dlib::matrix<uint32_t>*)matrix);
-            break;
-        case matrix_element_type::Int8:
-            delete ((dlib::matrix<int8_t>*)matrix);
-            break;
-        case matrix_element_type::Int16:
-            delete ((dlib::matrix<int16_t>*)matrix);
-            break;
-        case matrix_element_type::Int32:
-            delete ((dlib::matrix<int32_t>*)matrix);
-            break;
-        case matrix_element_type::Float:
-            delete ((dlib::matrix<float>*)matrix);
-            break;
-        case matrix_element_type::Double:
-            delete ((dlib::matrix<double>*)matrix);
-            break;
-        case matrix_element_type::RgbPixel:
-            delete ((dlib::matrix<rgb_pixel>*)matrix);
-            break;
-        case matrix_element_type::HsiPixel:
-            delete ((dlib::matrix<hsi_pixel>*)matrix);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            delete ((dlib::matrix<rgb_alpha_pixel>*)matrix);
-            break;
-    }
+    // switch(type)
+    // {
+    //     case matrix_element_type::UInt8:
+    //         delete ((dlib::matrix<uint8_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::UInt16:
+    //         delete ((dlib::matrix<uint16_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::UInt32:
+    //         delete ((dlib::matrix<uint32_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Int8:
+    //         delete ((dlib::matrix<int8_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Int16:
+    //         delete ((dlib::matrix<int16_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Int32:
+    //         delete ((dlib::matrix<int32_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Float:
+    //         delete ((dlib::matrix<float>*)matrix);
+    //         break;
+    //     case matrix_element_type::Double:
+    //         delete ((dlib::matrix<double>*)matrix);
+    //         break;
+    //     case matrix_element_type::RgbPixel:
+    //         delete ((dlib::matrix<rgb_pixel>*)matrix);
+    //         break;
+    //     case matrix_element_type::HsiPixel:
+    //         delete ((dlib::matrix<hsi_pixel>*)matrix);
+    //         break;
+    //     case matrix_element_type::RgbAlphaPixel:
+    //         delete ((dlib::matrix<rgb_alpha_pixel>*)matrix);
+    //         break;
+    // }
+    // dlib::matrix is template type.
+    // Ex. dlib::matrix<float, 31, 1> does NOT equal to dlib::matrix<float>
+    // Template argument is decided in compile time rather than runtime.
+    // So we can not specify template argument as variable.
+    // In other words, we have to call delete for void* because we do not known exact type.
+    // Fortunately, dlib::matrix does not implement destructor.
+    // So it is could be no problem when delete void* and destructor is not called.
+    delete matrix;
 }
 
 DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
