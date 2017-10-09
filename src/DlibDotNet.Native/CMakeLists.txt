@@ -41,11 +41,17 @@ add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES} ${DLIB_SOURCES} ${JPEG_SOU
 # lib
 # NOTE: These statement should be at after add_library
 # NOTE: You must add preprocessor DLIB_JPEG_SUPPORT and DLIB_PNG_SUPPORT to DlibDotNet.Native.vcxproj if you wanna load png and jpeg
+if(CMAKE_GENERATOR MATCHES "Visual Studio")
 set(STATIC_LIBRARIES
-    # $ENV{DLIBPATH}/examples/build_cuda_off/dlib_build/${CMAKE_BUILD_TYPE}/dlib.lib
     $ENV{DLIB_PATH}/examples/build/dlib_build/${CMAKE_BUILD_TYPE}/dlib.lib
 )
 target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
+else()
+set(STATIC_LIBRARIES
+    $ENV{DLIB_PATH}/examples/build/dlib_build/libdlib.a
+)
+target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
+endif()
 
 # Enforce /MD option
 set(CompilerFlags
