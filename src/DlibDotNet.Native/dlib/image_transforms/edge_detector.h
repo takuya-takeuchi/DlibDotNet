@@ -13,6 +13,7 @@ using namespace dlib;
 using namespace std;
 
 #define ARRAY2D_ELEMENT element
+#undef ARRAY2D_ELEMENT
 
 #define sobel_edge_detector_template(in_img, out_type, horz, vert)\
 do {\

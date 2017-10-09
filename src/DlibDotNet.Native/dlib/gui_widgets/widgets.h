@@ -15,6 +15,7 @@ using namespace std;
 #pragma region ImageWindow<matrix_op<template>>
 
 #define ELEMENT element
+#undef ELEMENT
 
 #pragma region new
 

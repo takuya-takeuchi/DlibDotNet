@@ -12,6 +12,7 @@ using namespace dlib;
 using namespace std;
 
 #define ARRAY2D_ELEMENT element
+#undef ARRAY2D_ELEMENT
 
 #define extract_fhog_features_template(ret, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding)\
 do {\

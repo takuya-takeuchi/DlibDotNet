@@ -18,6 +18,9 @@ using namespace std;
 #define FUNCTION function
 #define ELEMENT_IN element
 #define ELEMENT_OUT element
+#undef FUNCTION
+#undef ELEMENT_IN
+#undef ELEMENT_OUT
 
 #define interpolation_template(ret, type, img) \
 do { \

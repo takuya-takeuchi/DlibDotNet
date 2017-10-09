@@ -15,6 +15,7 @@ using namespace std;
 #pragma region matrix_op<template>
 
 #define ELEMENT element
+#undef ELEMENT
 
 #define matrix_op_operator_template(ret, type, obj, r, c, result) \
 do { \

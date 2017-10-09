@@ -10,6 +10,7 @@ using namespace dlib;
 using namespace std;
 
 #define ARRAY2D_ELEMENT element
+#undef ARRAY2D_ELEMENT
 
 #define max_cost_assignment_template(cost, assignments)\
 do {\
