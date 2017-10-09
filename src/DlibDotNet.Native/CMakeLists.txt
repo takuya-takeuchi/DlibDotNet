@@ -3,6 +3,13 @@ set(PROJ_NAME DlibDotNet.Native)
 
 project(${PROJ_NAME} VERSION 0.0.0)
 
+if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+    set(CMAKE_CXX_STANDARD 11)  # for c++11
+    find_package(X11 REQUIRED)
+    link_libraries(${X11_LIBRARIES})
+    include_directories(${X11_INCLUDE_DIR})
+endif()
+
 # Select the release build type by default
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -10,12 +17,9 @@ endif()
 
 # Support to load image
 # NOTE: In other words, dlib can NOT load image if these options are not enabled.
-option(DLIB_JPEG_SUPPORT "Support to load jpeg file" ON)
-option(DLIB_PNG_SUPPORT "Support to load png file" ON)
-option(DLIB_GIF_SUPPORT "Support to load gif file" ON)
-#add_definitions(DLIB_GIF_SUPPORT)
-#add_definitions(DLIB_PNG_SUPPORT)
-#add_definitions(DLIB_GIF_SUPPORT)
+add_definitions(-DDLIB_JPEG_SUPPORT)
+add_definitions(-DDLIB_PNG_SUPPORT)
+add_definitions(-DDLIB_GIF_SUPPORT)
 
 # include
 # NOTE: You should *NOT* add the dlib folder itself to your compiler's include path.
@@ -44,11 +48,17 @@ add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES} ${DLIB_SOURCES} ${JPEG_SOU
 # lib
 # NOTE: These statement should be at after add_library
 # NOTE: You must add preprocessor DLIB_JPEG_SUPPORT and DLIB_PNG_SUPPORT to DlibDotNet.Native.vcxproj if you wanna load png and jpeg
+if(CMAKE_GENERATOR MATCHES "Visual Studio")
 set(STATIC_LIBRARIES
-    # $ENV{DLIBPATH}/examples/build_cuda_off/dlib_build/${CMAKE_BUILD_TYPE}/dlib.lib
     $ENV{DLIB_PATH}/examples/build/dlib_build/${CMAKE_BUILD_TYPE}/dlib.lib
 )
 target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
+else()
+set(STATIC_LIBRARIES
+    $ENV{DLIB_PATH}/examples/build/dlib_build/libdlib.a
+)
+target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
+endif()
 
 # Enforce /MD option
 set(CompilerFlags

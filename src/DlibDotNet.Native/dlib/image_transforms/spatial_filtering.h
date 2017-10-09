@@ -1,6 +1,7 @@
 #ifndef _CPP_SPATIAL_FILTERING_H_
 #define _CPP_SPATIAL_FILTERING_H_
 
+#include "../export.h"
 #include <dlib/pixel.h>
 #include <dlib/image_processing/full_object_detection_abstract.h>
 #include <dlib/image_processing/generic_image.h>
@@ -11,6 +12,7 @@ using namespace dlib;
 using namespace std;
 
 #define ELEMENT element
+#undef ELEMENT
 
 #define gaussian_blur_template(ret, in_type, in_img, out_img, sigma, max_size) \
 do { \
@@ -70,7 +72,7 @@ do { \
 
 #pragma region gaussian_blur
 
-extern "C" __declspec(dllexport) int gaussian_blur(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, double sigma, int max_size)
+DLLEXPORT int gaussian_blur(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, double sigma, int max_size)
 {
     int err = ERR_OK;
     switch(out_type)
@@ -118,7 +120,7 @@ extern "C" __declspec(dllexport) int gaussian_blur(array2d_type in_type, void* i
 
 #pragma endregion sum_filter
 
-extern "C" __declspec(dllexport) int sum_filter(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, rectangle* rect)
+DLLEXPORT int sum_filter(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, rectangle* rect)
 {
     int err = ERR_OK;
     switch(out_type)

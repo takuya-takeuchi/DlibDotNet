@@ -1,6 +1,7 @@
 #ifndef _CPP_DRAW_H_
 #define _CPP_DRAW_H_
 
+#include "../export.h"
 #include <dlib/array.h>
 #include <dlib/image_transforms/draw.h>
 #include <dlib/image_transforms/interpolation.h>
@@ -11,7 +12,7 @@ using namespace dlib;
 using namespace std;
 
 
-extern "C" __declspec(dllexport) int tile_images(array2d_type in_type, void* images, void** ret_image)
+DLLEXPORT int tile_images(array2d_type in_type, void* images, void** ret_image)
 {
     int err = ERR_OK;
 

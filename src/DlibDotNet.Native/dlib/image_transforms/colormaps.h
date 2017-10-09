@@ -1,6 +1,7 @@
 #ifndef _CPP_COLORMAPS_H_
 #define _CPP_COLORMAPS_H_
 
+#include "../export.h"
 #include <dlib/hash.h>
 #include <dlib/pixel.h>
 #include <dlib/matrix.h>
@@ -13,7 +14,7 @@ using namespace std;
 
 #pragma region op_heatmap
 
-extern "C" __declspec(dllexport) int op_heatmap_apply(array2d_type type, void* obj, int r, int c, rgb_pixel* ret)
+DLLEXPORT int op_heatmap_apply(array2d_type type, void* obj, int r, int c, rgb_pixel* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -46,7 +47,7 @@ extern "C" __declspec(dllexport) int op_heatmap_apply(array2d_type type, void* o
     return err;
 }
 
-extern "C" __declspec(dllexport) bool op_heatmap_max_val(array2d_type type, void* obj, double* ret)
+DLLEXPORT bool op_heatmap_max_val(array2d_type type, void* obj, double* ret)
 {
     switch(type)
     {
@@ -76,7 +77,7 @@ extern "C" __declspec(dllexport) bool op_heatmap_max_val(array2d_type type, void
     }
 }
 
-extern "C" __declspec(dllexport) bool op_heatmap_min_val(array2d_type type, void* obj, double* ret)
+DLLEXPORT bool op_heatmap_min_val(array2d_type type, void* obj, double* ret)
 {
     switch(type)
     {
@@ -106,7 +107,7 @@ extern "C" __declspec(dllexport) bool op_heatmap_min_val(array2d_type type, void
     }
 }
 
-extern "C" __declspec(dllexport) bool op_heatmap_nc(array2d_type type, void* obj, int* ret)
+DLLEXPORT bool op_heatmap_nc(array2d_type type, void* obj, int* ret)
 {
     switch(type)
     {
@@ -136,7 +137,7 @@ extern "C" __declspec(dllexport) bool op_heatmap_nc(array2d_type type, void* obj
     }
 }
 
-extern "C" __declspec(dllexport) bool op_heatmap_nr(array2d_type type, void* obj, int* ret)
+DLLEXPORT bool op_heatmap_nr(array2d_type type, void* obj, int* ret)
 {
     switch(type)
     {
@@ -170,7 +171,7 @@ extern "C" __declspec(dllexport) bool op_heatmap_nr(array2d_type type, void* obj
 
 #pragma region op_jet
 
-extern "C" __declspec(dllexport) int op_jet_apply(array2d_type type, void* obj, int r, int c, rgb_pixel* ret)
+DLLEXPORT int op_jet_apply(array2d_type type, void* obj, int r, int c, rgb_pixel* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -203,7 +204,7 @@ extern "C" __declspec(dllexport) int op_jet_apply(array2d_type type, void* obj, 
     return err;
 }
 
-extern "C" __declspec(dllexport) bool op_jet_max_val(array2d_type type, void* obj, double* ret)
+DLLEXPORT bool op_jet_max_val(array2d_type type, void* obj, double* ret)
 {
     switch(type)
     {
@@ -233,7 +234,7 @@ extern "C" __declspec(dllexport) bool op_jet_max_val(array2d_type type, void* ob
     }
 }
 
-extern "C" __declspec(dllexport) bool op_jet_min_val(array2d_type type, void* obj, double* ret)
+DLLEXPORT bool op_jet_min_val(array2d_type type, void* obj, double* ret)
 {
     switch(type)
     {
@@ -263,7 +264,7 @@ extern "C" __declspec(dllexport) bool op_jet_min_val(array2d_type type, void* ob
     }
 }
 
-extern "C" __declspec(dllexport) bool op_jet_nc(array2d_type type, void* obj, int* ret)
+DLLEXPORT bool op_jet_nc(array2d_type type, void* obj, int* ret)
 {
     switch(type)
     {
@@ -293,7 +294,7 @@ extern "C" __declspec(dllexport) bool op_jet_nc(array2d_type type, void* obj, in
     }
 }
 
-extern "C" __declspec(dllexport) bool op_jet_nr(array2d_type type, void* obj, int* ret)
+DLLEXPORT bool op_jet_nr(array2d_type type, void* obj, int* ret)
 {
     switch(type)
     {
@@ -327,7 +328,7 @@ extern "C" __declspec(dllexport) bool op_jet_nr(array2d_type type, void* obj, in
 
 #pragma region heatmap
 
-extern "C" __declspec(dllexport) int heatmap(array2d_type type, void* img, void** matrix)
+DLLEXPORT int heatmap(array2d_type type, void* img, void** matrix)
 {
     int err = ERR_OK;
     switch(type)
@@ -367,7 +368,7 @@ extern "C" __declspec(dllexport) int heatmap(array2d_type type, void* img, void*
     return err;
 }
 
-extern "C" __declspec(dllexport) int heatmap2(array2d_type type, void* img, double max_val, double min_val, void** matrix)
+DLLEXPORT int heatmap2(array2d_type type, void* img, double max_val, double min_val, void** matrix)
 {
     int err = ERR_OK;
     switch(type)
@@ -426,7 +427,7 @@ extern "C" __declspec(dllexport) int heatmap2(array2d_type type, void* img, doub
 
 #pragma region jet
 
-extern "C" __declspec(dllexport) int jet(array2d_type type, void* img, void** matrix)
+DLLEXPORT int jet(array2d_type type, void* img, void** matrix)
 {
     int err = ERR_OK;
     switch(type)
@@ -466,7 +467,7 @@ extern "C" __declspec(dllexport) int jet(array2d_type type, void* img, void** ma
     return err;
 }
 
-extern "C" __declspec(dllexport) int jet2(array2d_type type, void* img, double max_val, double min_val, void** matrix)
+DLLEXPORT int jet2(array2d_type type, void* img, double max_val, double min_val, void** matrix)
 {
     int err = ERR_OK;
     switch(type)

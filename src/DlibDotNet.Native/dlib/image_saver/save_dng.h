@@ -1,6 +1,7 @@
 #ifndef _CPP_SAVE_DNG_H_
 #define _CPP_SAVE_DNG_H_
 
+#include "../export.h"
 #include <dlib/array2d/array2d_kernel.h>
 #include <dlib/image_io.h>
 #include <dlib/image_saver/image_saver.h>
@@ -11,7 +12,7 @@
 using namespace dlib;
 using namespace std;
 
-extern "C" __declspec(dllexport) int save_dng(array2d_type type, void* image, const char* file_name)
+DLLEXPORT int save_dng(array2d_type type, void* image, const char* file_name)
 {
     int err = ERR_OK;
     switch(type)

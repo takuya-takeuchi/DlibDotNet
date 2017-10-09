@@ -1,6 +1,7 @@
 #ifndef _CPP_WIDGETS_H_
 #define _CPP_WIDGETS_H_
 
+#include "../export.h"
 #include <dlib/gui_widgets/widgets.h>
 #include <dlib/pixel.h>
 #include <dlib/matrix.h>
@@ -14,6 +15,7 @@ using namespace std;
 #pragma region ImageWindow<matrix_op<template>>
 
 #define ELEMENT element
+#undef ELEMENT
 
 #pragma region new
 
@@ -118,12 +120,12 @@ do { \
 
 #pragma region new
 
-extern "C" __declspec(dllexport) image_window* image_window_new()
+DLLEXPORT image_window* image_window_new()
 {
     return new image_window();
 }
 
-extern "C" __declspec(dllexport) image_window* image_window_new_array2d1(array2d_type type, void* image)
+DLLEXPORT image_window* image_window_new_array2d1(array2d_type type, void* image)
 {
     switch(type)
     {
@@ -146,7 +148,7 @@ extern "C" __declspec(dllexport) image_window* image_window_new_array2d1(array2d
     }
 }
 
-extern "C" __declspec(dllexport) image_window* image_window_new_array2d2(array2d_type type, void* image, const char* title)
+DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image, const char* title)
 {
     switch(type)
     {
@@ -169,7 +171,7 @@ extern "C" __declspec(dllexport) image_window* image_window_new_array2d2(array2d
     }
 }
 
-extern "C" _declspec(dllexport) image_window* image_window_new_matrix1(matrix_element_type type, void* image)
+DLLEXPORT image_window* image_window_new_matrix1(matrix_element_type type, void* image)
 {
     switch(type)
     {
@@ -200,7 +202,7 @@ extern "C" _declspec(dllexport) image_window* image_window_new_matrix1(matrix_el
     }
 }
 
-extern "C" _declspec(dllexport) image_window* image_window_new_matrix2(matrix_element_type type, void* image, const char* title)
+DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void* image, const char* title)
 {
     switch(type)
     {
@@ -231,7 +233,7 @@ extern "C" _declspec(dllexport) image_window* image_window_new_matrix2(matrix_el
     }
 }
 
-extern "C" __declspec(dllexport) void* image_window_new_matrix_op1(element_type etype, array2d_type type, void* image)
+DLLEXPORT void* image_window_new_matrix_op1(element_type etype, array2d_type type, void* image)
 {    
     void* ret = nullptr;
     switch(etype)
@@ -253,7 +255,7 @@ extern "C" __declspec(dllexport) void* image_window_new_matrix_op1(element_type 
     return ret;
 }
 
-extern "C" __declspec(dllexport) void* image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title)
+DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title)
 {   
     void* ret = nullptr;
     switch(etype)
@@ -279,7 +281,7 @@ extern "C" __declspec(dllexport) void* image_window_new_matrix_op2(element_type 
 
 #pragma region add_overlay
 
-extern "C" _declspec(dllexport) int image_window_add_overlay(image_window* window, dlib::rectangle* r, array2d_type type, void* p)
+DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r, array2d_type type, void* p)
 {
     int err = ERR_OK;
 
@@ -314,7 +316,7 @@ extern "C" _declspec(dllexport) int image_window_add_overlay(image_window* windo
     return err;
 }
 
-extern "C" _declspec(dllexport) int image_window_add_overlay2(image_window* window, std::vector<rectangle*>* r, array2d_type type, void* p)
+DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectangle*>* r, array2d_type type, void* p)
 {
     int err = ERR_OK;
     
@@ -353,7 +355,7 @@ extern "C" _declspec(dllexport) int image_window_add_overlay2(image_window* wind
     return err;
 }
 
-extern "C" _declspec(dllexport) int image_window_add_overlay3(image_window* window, dlib::drectangle* r, array2d_type type, void* p)
+DLLEXPORT int image_window_add_overlay3(image_window* window, dlib::drectangle* r, array2d_type type, void* p)
 {
     int err = ERR_OK;
 
@@ -388,7 +390,7 @@ extern "C" _declspec(dllexport) int image_window_add_overlay3(image_window* wind
     return err;
 }
 
-extern "C" _declspec(dllexport) int image_window_add_overlay4(image_window* window, image_window::overlay_line* line)
+DLLEXPORT int image_window_add_overlay4(image_window* window, image_window::overlay_line* line)
 {
     int err = ERR_OK;
 
@@ -397,7 +399,7 @@ extern "C" _declspec(dllexport) int image_window_add_overlay4(image_window* wind
     return err;
 }
 
-extern "C" _declspec(dllexport) int image_window_add_overlay5(image_window* window, std::vector<image_window::overlay_line*>* lines)
+DLLEXPORT int image_window_add_overlay5(image_window* window, std::vector<image_window::overlay_line*>* lines)
 {
     int err = ERR_OK;
     
@@ -412,24 +414,24 @@ extern "C" _declspec(dllexport) int image_window_add_overlay5(image_window* wind
 
 #pragma endregion add_overlay
 
-extern "C" _declspec(dllexport) void image_window_clear_overlay(image_window* window)
+DLLEXPORT void image_window_clear_overlay(image_window* window)
 {
     window->clear_overlay();
 }
 
-extern "C" _declspec(dllexport) void image_window_delete(image_window* window)
+DLLEXPORT void image_window_delete(image_window* window)
 {
 	delete window;
 }
 
-extern "C" _declspec(dllexport) void image_window_wait_until_closed(image_window* window)
+DLLEXPORT void image_window_wait_until_closed(image_window* window)
 {
 	window->wait_until_closed();
 }
 
 #pragma region set_image
 
-extern "C" __declspec(dllexport) int image_window_set_image_array2d(image_window* window, array2d_type type, void* image)
+DLLEXPORT int image_window_set_image_array2d(image_window* window, array2d_type type, void* image)
 {
     int err = ERR_OK;
 
@@ -464,7 +466,7 @@ extern "C" __declspec(dllexport) int image_window_set_image_array2d(image_window
     return err;
 }
 
-extern "C" _declspec(dllexport) int image_window_set_image_matrix(image_window* window, matrix_element_type type, void* image)
+DLLEXPORT int image_window_set_image_matrix(image_window* window, matrix_element_type type, void* image)
 {
     int err = ERR_OK;
 
@@ -511,7 +513,7 @@ extern "C" _declspec(dllexport) int image_window_set_image_matrix(image_window* 
     return err;
 }
 
-extern "C" __declspec(dllexport) int image_window_set_image_matrix_op(image_window* window, element_type etype, array2d_type type, void* image)
+DLLEXPORT int image_window_set_image_matrix_op(image_window* window, element_type etype, array2d_type type, void* image)
 {
     int err = ERR_OK;
 
@@ -540,30 +542,30 @@ extern "C" __declspec(dllexport) int image_window_set_image_matrix_op(image_wind
 
 #pragma region ImageWindow::overlay_line
 
-extern "C" _declspec(dllexport) image_window::overlay_line* image_window_overlay_line_new()
+DLLEXPORT image_window::overlay_line* image_window_overlay_line_new()
 {
 	return new image_window::overlay_line();
 }
 
-extern "C" _declspec(dllexport) bool image_window_overlay_line_p1(image_window::overlay_line* line, dlib::point** point)
+DLLEXPORT bool image_window_overlay_line_p1(image_window::overlay_line* line, dlib::point** point)
 {
     *point = new dlib::point(line->p1);
     return true;
 }
 
-extern "C" _declspec(dllexport) bool image_window_overlay_line_p2(image_window::overlay_line* line, dlib::point** point)
+DLLEXPORT bool image_window_overlay_line_p2(image_window::overlay_line* line, dlib::point** point)
 {
     *point = new dlib::point(line->p2);
     return true;
 }
 
-extern "C" _declspec(dllexport) bool image_window_overlay_line_color(image_window::overlay_line* line, rgb_alpha_pixel* color)
+DLLEXPORT bool image_window_overlay_line_color(image_window::overlay_line* line, rgb_alpha_pixel* color)
 {
     memcpy(color, &(line->color), sizeof(rgb_alpha_pixel));
     return true;
 }
 
-extern "C" _declspec(dllexport) void image_window_overlay_line_delete(image_window::overlay_line* line)
+DLLEXPORT void image_window_overlay_line_delete(image_window::overlay_line* line)
 {
 	delete line;
 }

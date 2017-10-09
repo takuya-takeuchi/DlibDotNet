@@ -1,6 +1,7 @@
 #ifndef _CPP_SHAPE_PREDICTOR_H_
 #define _CPP_SHAPE_PREDICTOR_H_
 
+#include "../export.h"
 #include <dlib/image_processing/shape_predictor.h>
 #include <dlib/gui_widgets.h>
 #include "../shared.h"
@@ -8,19 +9,19 @@
 using namespace dlib;
 using namespace std;
 
-extern "C" __declspec(dllexport) shape_predictor* shape_predictor_new()
+DLLEXPORT shape_predictor* shape_predictor_new()
 {
     return new shape_predictor();
 }
 
-extern "C" __declspec(dllexport) shape_predictor* deserialize_shape_predictor(const char* file_name)
+DLLEXPORT shape_predictor* deserialize_shape_predictor(const char* file_name)
 {
     shape_predictor* predictor = new shape_predictor();
     dlib::deserialize(file_name) >> (*predictor);
     return predictor;
 }
 
-extern "C" __declspec(dllexport) int shape_predictor_operator(
+DLLEXPORT int shape_predictor_operator(
     shape_predictor* predictor,
     array2d_type img_type,
     void* img,
@@ -82,17 +83,17 @@ extern "C" __declspec(dllexport) int shape_predictor_operator(
     return err;
 }
 
-extern "C" __declspec(dllexport) unsigned int shape_predictor_num_parts(shape_predictor* predictor)
+DLLEXPORT unsigned int shape_predictor_num_parts(shape_predictor* predictor)
 {
     return predictor->num_parts();
 }
 
-extern "C" __declspec(dllexport) unsigned int shape_predictor_num_features(shape_predictor* predictor)
+DLLEXPORT unsigned int shape_predictor_num_features(shape_predictor* predictor)
 {
     return predictor->num_features();
 }
 
-extern "C" _declspec(dllexport) void shape_predictor_delete(void* obj)
+DLLEXPORT void shape_predictor_delete(shape_predictor* obj)
 {
 	delete obj;
 }

@@ -339,7 +339,7 @@ namespace DlibDotNet
             public static extern IntPtr array2d_new1(Array2DType type, int rows, int cols);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_delete(IntPtr array);
+            public static extern void array2d_delete(Array2DType type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -367,7 +367,7 @@ namespace DlibDotNet
             public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_delete(IntPtr array);
+            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -383,6 +383,34 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType rectangle_get_rect2(MatrixElementType type, IntPtr matrix, out IntPtr rect);
+
+            #endregion
+
+            #region array2d_fhog_matrix
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr array2d_fhog_matrix_new(MatrixElementType type);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr array2d_fhog_matrix_new1(MatrixElementType type, int rows, int cols);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_fhog_matrix_delete(MatrixElementType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool array2d_fhog_matrix_nc(MatrixElementType type, IntPtr array, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool array2d_fhog_matrix_nr(MatrixElementType type, IntPtr array, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool array2d_fhog_matrix_size(MatrixElementType type, IntPtr matrix, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array2d_fhog_matrix_get_rect2(MatrixElementType type, IntPtr matrix, out IntPtr rect);
 
             #endregion
 
@@ -458,7 +486,7 @@ namespace DlibDotNet
             public static extern IntPtr matrix_new1(MatrixElementType matrixElementType, int row, int column);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_delete(IntPtr array);
+            public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]

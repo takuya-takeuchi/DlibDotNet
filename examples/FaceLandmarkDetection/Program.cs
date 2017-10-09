@@ -26,7 +26,7 @@ namespace FaceLandmarkDetection
             }
 
             using (var win = new ImageWindow())
-            using (var win_faces = new ImageWindow())
+            using (var winFaces = new ImageWindow())
             using (var detector = FrontalFaceDetector.GetFrontalFaceDetector())
             using (var sp = new ShapePredictor(args[0]))
                 foreach (var file in args.ToList().GetRange(1, args.Length - 1))
@@ -65,9 +65,9 @@ namespace FaceLandmarkDetection
                                 l.Dispose();
 
                             var chipLocations = Dlib.GetFaceChipDetails(shapes);
-                            using (var face_chips = Dlib.ExtractImageChips<RgbPixel>(img, chipLocations))
-                            using (var tileImage = Dlib.TileImages(face_chips))
-                                win_faces.SetImage(tileImage);
+                            using (var faceChips = Dlib.ExtractImageChips<RgbPixel>(img, chipLocations))
+                            using (var tileImage = Dlib.TileImages(faceChips))
+                                winFaces.SetImage(tileImage);
 
                             foreach (var c in chipLocations)
                                 c.Dispose();

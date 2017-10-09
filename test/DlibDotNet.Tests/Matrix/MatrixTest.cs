@@ -186,7 +186,7 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
-                var array = new []
+                var array = new[]
                 {
                     1, 2, 3, 4, 5, 6, 7, 8, 9
                 };
@@ -228,7 +228,7 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
-                var array = new []
+                var array = new[]
                 {
                     new RgbPixel {Red = 1, Blue = 1, Green = 1},
                     new RgbPixel {Red = 2, Blue = 2, Green = 2},
@@ -422,6 +422,37 @@ namespace DlibDotNet.Tests.Matrix
             }
 
             throw new NotSupportedException();
+        }
+
+        internal static TwoDimentionObjectBase CreateMatrix(MatrixElementTypes elementTypes)
+        {
+            switch (elementTypes)
+            {
+                case MatrixElementTypes.UInt8:
+                    return new Matrix<byte>();
+                case MatrixElementTypes.UInt16:
+                    return new Matrix<ushort>();
+                case MatrixElementTypes.UInt32:
+                    return new Matrix<uint>();
+                case MatrixElementTypes.Int8:
+                    return new Matrix<sbyte>();
+                case MatrixElementTypes.Int16:
+                    return new Matrix<short>();
+                case MatrixElementTypes.Int32:
+                    return new Matrix<int>();
+                case MatrixElementTypes.Float:
+                    return new Matrix<float>();
+                case MatrixElementTypes.Double:
+                    return new Matrix<double>();
+                case MatrixElementTypes.RgbPixel:
+                    return new Matrix<RgbPixel>();
+                case MatrixElementTypes.RgbAlphaPixel:
+                    return new Matrix<RgbAlphaPixel>();
+                case MatrixElementTypes.HsiPixel:
+                    return new Matrix<HsiPixel>();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(elementTypes), elementTypes, null);
+            }
         }
 
         internal static TwoDimentionObjectBase CreateMatrix(MatrixElementTypes elementTypes, int rows = 0, int columns = 0)

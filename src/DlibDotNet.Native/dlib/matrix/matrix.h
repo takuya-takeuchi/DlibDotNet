@@ -1,6 +1,7 @@
 #ifndef _CPP_MATRIX_H_
 #define _CPP_MATRIX_H_
 
+#include "../export.h"
 #include <dlib/pixel.h>
 #include <dlib/matrix/matrix.h>
 #include <dlib/matrix/matrix_op.h>
@@ -11,7 +12,7 @@ using namespace std;
 
 #pragma region matrix
 
-extern "C" _declspec(dllexport) void* matrix_new(matrix_element_type type)
+DLLEXPORT void* matrix_new(matrix_element_type type)
 {
     switch(type)
     {
@@ -42,7 +43,7 @@ extern "C" _declspec(dllexport) void* matrix_new(matrix_element_type type)
     }
 }
 
-extern "C" _declspec(dllexport) void* matrix_new1(matrix_element_type type, int num_rows, int num_cols)
+DLLEXPORT void* matrix_new1(matrix_element_type type, int num_rows, int num_cols)
 {
     switch(type)
     {
@@ -73,7 +74,7 @@ extern "C" _declspec(dllexport) void* matrix_new1(matrix_element_type type, int 
     }
 }
 
-extern "C" _declspec(dllexport) int matrix_nc(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, int* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -119,7 +120,7 @@ extern "C" _declspec(dllexport) int matrix_nc(matrix_element_type type, void* ma
     return err;
 }
 
-extern "C" _declspec(dllexport) int matrix_nr(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, int* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -165,7 +166,7 @@ extern "C" _declspec(dllexport) int matrix_nr(matrix_element_type type, void* ma
     return err;
 }
 
-extern "C" _declspec(dllexport) int matrix_size(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, int* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -211,12 +212,55 @@ extern "C" _declspec(dllexport) int matrix_size(matrix_element_type type, void* 
     return err;
 }
 
-extern "C" _declspec(dllexport) void matrix_delete(void* obj)
+DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix)
 {
-	delete obj;
+    // switch(type)
+    // {
+    //     case matrix_element_type::UInt8:
+    //         delete ((dlib::matrix<uint8_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::UInt16:
+    //         delete ((dlib::matrix<uint16_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::UInt32:
+    //         delete ((dlib::matrix<uint32_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Int8:
+    //         delete ((dlib::matrix<int8_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Int16:
+    //         delete ((dlib::matrix<int16_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Int32:
+    //         delete ((dlib::matrix<int32_t>*)matrix);
+    //         break;
+    //     case matrix_element_type::Float:
+    //         delete ((dlib::matrix<float>*)matrix);
+    //         break;
+    //     case matrix_element_type::Double:
+    //         delete ((dlib::matrix<double>*)matrix);
+    //         break;
+    //     case matrix_element_type::RgbPixel:
+    //         delete ((dlib::matrix<rgb_pixel>*)matrix);
+    //         break;
+    //     case matrix_element_type::HsiPixel:
+    //         delete ((dlib::matrix<hsi_pixel>*)matrix);
+    //         break;
+    //     case matrix_element_type::RgbAlphaPixel:
+    //         delete ((dlib::matrix<rgb_alpha_pixel>*)matrix);
+    //         break;
+    // }
+    // dlib::matrix is template type.
+    // Ex. dlib::matrix<float, 31, 1> does NOT equal to dlib::matrix<float>
+    // Template argument is decided in compile time rather than runtime.
+    // So we can not specify template argument as variable.
+    // In other words, we have to call delete for void* because we do not known exact type.
+    // Fortunately, dlib::matrix does not implement destructor.
+    // So it is could be no problem when delete void* and destructor is not called.
+    delete matrix;
 }
 
-extern "C" _declspec(dllexport) int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
+DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
 {
     int err = ERR_OK;
     switch(type)

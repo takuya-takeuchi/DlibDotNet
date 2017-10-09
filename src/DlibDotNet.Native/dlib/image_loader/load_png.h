@@ -1,13 +1,14 @@
 #ifndef _CPP_LOAD_PNG_H_
 #define _CPP_LOAD_PNG_H_
 
+#include "../export.h"
 #include <dlib/image_io.h>
 #include "../shared.h"
  
 using namespace dlib;
 using namespace std;
 
-extern "C" __declspec(dllexport) int load_png(array2d_type type, void* image, const char* file_name)
+DLLEXPORT int load_png(array2d_type type, void* image, const char* file_name)
 {
     int err = ERR_OK;
     switch(type)
