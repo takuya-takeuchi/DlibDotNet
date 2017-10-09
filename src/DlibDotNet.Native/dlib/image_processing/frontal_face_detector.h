@@ -1,6 +1,7 @@
 #ifndef _CPP_FRONTAL_FACE_DETECTOR_H_
 #define _CPP_FRONTAL_FACE_DETECTOR_H_
 
+#include "../export.h"
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
@@ -11,13 +12,13 @@
 using namespace dlib;
 using namespace std;
 
-extern "C" __declspec(dllexport) frontal_face_detector* get_frontal_face_detector()
+DLLEXPORT frontal_face_detector* get_frontal_face_detector()
 {
     frontal_face_detector ret = dlib::get_frontal_face_detector();
     return new dlib::frontal_face_detector(ret);
 }
 
-extern "C" __declspec(dllexport) int frontal_face_detector_operator(
+DLLEXPORT int frontal_face_detector_operator(
     frontal_face_detector* detector,
     array2d_type img_type,
     void* img,
@@ -80,7 +81,7 @@ extern "C" __declspec(dllexport) int frontal_face_detector_operator(
     return err;
 }
 
-extern "C" _declspec(dllexport) void frontal_face_detector_delete(frontal_face_detector* obj)
+DLLEXPORT void frontal_face_detector_delete(frontal_face_detector* obj)
 {
 	delete obj;
 }

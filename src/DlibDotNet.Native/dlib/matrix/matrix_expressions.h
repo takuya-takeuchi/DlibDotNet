@@ -1,6 +1,7 @@
 #ifndef _CPP_MATRIX_EXPRESSIONS_H_
 #define _CPP_MATRIX_EXPRESSIONS_H_
 
+#include "../export.h"
 #include <dlib/matrix.h>
 #include <dlib/matrix/matrix_expressions.h>
 #include "../shared.h"
@@ -8,12 +9,12 @@
 using namespace dlib;
 using namespace std;
 
-extern "C" _declspec(dllexport) void matrix_range_exp_delete(void* obj)
+DLLEXPORT void matrix_range_exp_delete(void* obj)
 {
 	delete obj;
 }
 
-extern "C" __declspec(dllexport) void* matrix_range_exp_create(matrix_element_type type, matrix_range_exp_create_param* param)
+DLLEXPORT void* matrix_range_exp_create(matrix_element_type type, matrix_range_exp_create_param* param)
 { 
     void* result = nullptr;
     switch(type)
@@ -86,7 +87,7 @@ extern "C" __declspec(dllexport) void* matrix_range_exp_create(matrix_element_ty
     return result;
 }
 
-extern "C" __declspec(dllexport) bool matrix_range_exp_nc(matrix_element_type type, void* matrix, int* result)
+DLLEXPORT bool matrix_range_exp_nc(matrix_element_type type, void* matrix, int* result)
 {
     bool err = false;   
     switch(type)
@@ -143,7 +144,7 @@ extern "C" __declspec(dllexport) bool matrix_range_exp_nc(matrix_element_type ty
     return err;
 }
 
-extern "C" __declspec(dllexport) bool matrix_range_exp_nr(matrix_element_type type, void* matrix, int* result)
+DLLEXPORT bool matrix_range_exp_nr(matrix_element_type type, void* matrix, int* result)
 {
     bool err = false;    
     switch(type)

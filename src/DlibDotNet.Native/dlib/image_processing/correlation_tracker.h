@@ -1,6 +1,7 @@
 #ifndef _CPP_CORRELATION_TRACKER_H_
 #define _CPP_CORRELATION_TRACKER_H_
 
+#include "../export.h"
 #include <dlib/image_processing.h>
 #include <dlib/gui_widgets.h>
 #include "../shared.h"
@@ -8,7 +9,7 @@
 using namespace dlib;
 using namespace std;
 
-extern "C" __declspec(dllexport) correlation_tracker* correlation_tracker_new(
+DLLEXPORT correlation_tracker* correlation_tracker_new(
     unsigned int filter_size, 
     unsigned int num_scale_levels, 
     unsigned int scale_window_size,
@@ -29,7 +30,7 @@ extern "C" __declspec(dllexport) correlation_tracker* correlation_tracker_new(
         scale_pyramid_alpha);
 }
 
-extern "C" __declspec(dllexport) int correlation_tracker_start_track(correlation_tracker* tracker, array2d_type img_type, void* img, dlib::drectangle* p)
+DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, array2d_type img_type, void* img, dlib::drectangle* p)
 {
     int err = ERR_OK;
 
@@ -62,13 +63,13 @@ extern "C" __declspec(dllexport) int correlation_tracker_start_track(correlation
     return err;
 }
 
-extern "C" __declspec(dllexport) drectangle* correlation_tracker_get_position(correlation_tracker* tracker)
+DLLEXPORT drectangle* correlation_tracker_get_position(correlation_tracker* tracker)
 {
     dlib::drectangle rect = tracker->get_position();
     return new dlib::drectangle(rect);
 }
 
-extern "C" __declspec(dllexport) int correlation_tracker_update_noscale(
+DLLEXPORT int correlation_tracker_update_noscale(
     correlation_tracker* tracker,
     const array2d_type img_type,
     void* img,
@@ -106,7 +107,7 @@ extern "C" __declspec(dllexport) int correlation_tracker_update_noscale(
     return err;
 }
 
-extern "C" __declspec(dllexport) int correlation_tracker_update_noscale2(
+DLLEXPORT int correlation_tracker_update_noscale2(
     correlation_tracker* tracker,
     const array2d_type img_type,
     void* img,
@@ -143,7 +144,7 @@ extern "C" __declspec(dllexport) int correlation_tracker_update_noscale2(
     return err;
 }
 
-extern "C" __declspec(dllexport) int correlation_tracker_update(
+DLLEXPORT int correlation_tracker_update(
     correlation_tracker* tracker,
     const array2d_type img_type,
     void* img,
@@ -181,7 +182,7 @@ extern "C" __declspec(dllexport) int correlation_tracker_update(
     return err;
 }
 
-extern "C" __declspec(dllexport) int correlation_tracker_update2(
+DLLEXPORT int correlation_tracker_update2(
     correlation_tracker* tracker,
     const array2d_type img_type,
     void* img,
@@ -218,7 +219,7 @@ extern "C" __declspec(dllexport) int correlation_tracker_update2(
     return err;
 }
 
-extern "C" _declspec(dllexport) void correlation_tracker_delete(correlation_tracker* obj)
+DLLEXPORT void correlation_tracker_delete(correlation_tracker* obj)
 {
 	delete obj;
 }

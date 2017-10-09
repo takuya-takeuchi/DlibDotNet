@@ -1,6 +1,7 @@
 #ifndef _CPP_SEGMENT_IMAGE_H_
 #define _CPP_SEGMENT_IMAGE_H_
 
+#include "../export.h"
 #include <dlib/image_transforms/segment_image.h>
 #include <dlib/image_processing/generic_image.h>
 #include "../shared.h"
@@ -13,7 +14,7 @@ using namespace std;
 // - out_image_type must contain an unsigned integer pixel type.
 // - is_same_object(in_img, out_img) == false
 // Perhaps, find_candidate_object_locations requires same condition?
-extern "C" _declspec(dllexport) int find_candidate_object_locations(
+DLLEXPORT int find_candidate_object_locations(
     array2d_type type,
     void* in_img,
     std::vector<rectangle*> *rects,

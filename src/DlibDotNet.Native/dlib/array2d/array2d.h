@@ -1,13 +1,14 @@
 #ifndef _CPP_ARRAY2D_H_
 #define _CPP_ARRAY2D_H_
 
+#include "../export.h"
 #include <dlib/array2d.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
 
 using namespace dlib;
 
-extern "C" __declspec(dllexport) void* array2d_new(array2d_type type)
+DLLEXPORT void* array2d_new(array2d_type type)
 {
     switch(type)
     {
@@ -30,7 +31,7 @@ extern "C" __declspec(dllexport) void* array2d_new(array2d_type type)
     }
 }
 
-extern "C" _declspec(dllexport) void* array2d_new1(array2d_type type, int rows, int cols)
+DLLEXPORT void* array2d_new1(array2d_type type, int rows, int cols)
 {
     switch(type)
     {
@@ -53,7 +54,7 @@ extern "C" _declspec(dllexport) void* array2d_new1(array2d_type type, int rows, 
     }
 }
 
-extern "C" _declspec(dllexport) bool array2d_nc(array2d_type type, void* array, int* ret)
+DLLEXPORT bool array2d_nc(array2d_type type, void* array, int* ret)
 {
     switch(type)
     {
@@ -83,7 +84,7 @@ extern "C" _declspec(dllexport) bool array2d_nc(array2d_type type, void* array, 
     }
 }
 
-extern "C" _declspec(dllexport) bool array2d_nr(array2d_type type, void* array, int* ret)
+DLLEXPORT bool array2d_nr(array2d_type type, void* array, int* ret)
 {
     switch(type)
     {
@@ -113,7 +114,7 @@ extern "C" _declspec(dllexport) bool array2d_nr(array2d_type type, void* array, 
     }
 }
 
-extern "C" _declspec(dllexport) bool array2d_size(array2d_type type, void* array, uint64_t* ret)
+DLLEXPORT bool array2d_size(array2d_type type, void* array, uint64_t* ret)
 {
     switch(type)
     {
@@ -143,7 +144,7 @@ extern "C" _declspec(dllexport) bool array2d_size(array2d_type type, void* array
     }
 }
 
-extern "C" _declspec(dllexport) void array2d_delete(array2d_type type, void* array)
+DLLEXPORT void array2d_delete(array2d_type type, void* array)
 {
     switch(type)
     {
@@ -173,7 +174,7 @@ extern "C" _declspec(dllexport) void array2d_delete(array2d_type type, void* arr
 
 #pragma region matrix
 
-extern "C" _declspec(dllexport) void* array2d_matrix_new(matrix_element_type type)
+DLLEXPORT void* array2d_matrix_new(matrix_element_type type)
 {
     switch(type)
     {
@@ -204,7 +205,7 @@ extern "C" _declspec(dllexport) void* array2d_matrix_new(matrix_element_type typ
     }
 }
 
-extern "C" _declspec(dllexport) void* array2d_matrix_new1(matrix_element_type type, int rows, int cols)
+DLLEXPORT void* array2d_matrix_new1(matrix_element_type type, int rows, int cols)
 {
     switch(type)
     {
@@ -235,7 +236,7 @@ extern "C" _declspec(dllexport) void* array2d_matrix_new1(matrix_element_type ty
     }
 }
 
-extern "C" _declspec(dllexport) bool array2d_matrix_nc(matrix_element_type type, void* array, int* ret)
+DLLEXPORT bool array2d_matrix_nc(matrix_element_type type, void* array, int* ret)
 {
     switch(type)
     {
@@ -277,7 +278,7 @@ extern "C" _declspec(dllexport) bool array2d_matrix_nc(matrix_element_type type,
     }
 }
 
-extern "C" _declspec(dllexport) bool array2d_matrix_nr(matrix_element_type type, void* array, int* ret)
+DLLEXPORT bool array2d_matrix_nr(matrix_element_type type, void* array, int* ret)
 {
     switch(type)
     {
@@ -319,7 +320,7 @@ extern "C" _declspec(dllexport) bool array2d_matrix_nr(matrix_element_type type,
     }
 }
 
-extern "C" _declspec(dllexport) bool array2d_matrix_size(matrix_element_type type, void* array, int* ret)
+DLLEXPORT bool array2d_matrix_size(matrix_element_type type, void* array, int* ret)
 {
     switch(type)
     {
@@ -361,7 +362,7 @@ extern "C" _declspec(dllexport) bool array2d_matrix_size(matrix_element_type typ
     }
 }
 
-extern "C" _declspec(dllexport) void array2d_matrix_delete(matrix_element_type type, void* array)
+DLLEXPORT void array2d_matrix_delete(matrix_element_type type, void* array)
 {
     switch(type)
     {

@@ -1,6 +1,7 @@
 #ifndef _CPP_RENDER_FACE_DETECTIONS_H_
 #define _CPP_RENDER_FACE_DETECTIONS_H_
 
+#include "../export.h"
 #include <dlib/image_processing/render_face_detections.h>
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
@@ -9,7 +10,7 @@
 using namespace dlib;
 using namespace std;
 
-extern "C" _declspec(dllexport) void render_face_detections(const std::vector<full_object_detection*>* dets, rgb_pixel* p, std::vector<image_window::overlay_line*>* rets)
+DLLEXPORT void render_face_detections(const std::vector<full_object_detection*>* dets, rgb_pixel* p, std::vector<image_window::overlay_line*>* rets)
 {
     std::vector<full_object_detection> tmpDets;
     for (int index = 0 ; index < dets->size(); index++)
@@ -25,7 +26,7 @@ extern "C" _declspec(dllexport) void render_face_detections(const std::vector<fu
     }
 }
 
-extern "C" _declspec(dllexport) void render_face_detections2(full_object_detection* det, rgb_pixel* p, std::vector<image_window::overlay_line*>* rets)
+DLLEXPORT void render_face_detections2(full_object_detection* det, rgb_pixel* p, std::vector<image_window::overlay_line*>* rets)
 {
     std::vector<image_window::overlay_line> ret = dlib::render_face_detections(*det, *p);
     

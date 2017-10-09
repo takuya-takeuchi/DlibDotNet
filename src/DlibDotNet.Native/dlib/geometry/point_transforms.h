@@ -1,6 +1,7 @@
 #ifndef _CPP_POINT_TRANSFORMS_H_
 #define _CPP_POINT_TRANSFORMS_H_
 
+#include "../export.h"
 #include <dlib/geometry/point_transforms.h>
 #include <dlib/image_transforms.h>
  
@@ -9,23 +10,23 @@ using namespace std;
 
 #pragma region point_rotator
 
-extern "C" __declspec(dllexport) void* point_rotator_new()
+DLLEXPORT void* point_rotator_new()
 {
     return new dlib::point_rotator();
 }
 
-extern "C" __declspec(dllexport) void* point_rotator_new1(double angle)
+DLLEXPORT void* point_rotator_new1(double angle)
 {
     return new dlib::point_rotator(angle);
 }
 
-extern "C" __declspec(dllexport) void* point_rotator_get_m(void* obj)
+DLLEXPORT void* point_rotator_get_m(void* obj)
 {
     auto matrix = ((dlib::point_rotator*)obj)->get_m();
     return new dlib::matrix<double>(matrix);
 }
 
-extern "C" __declspec(dllexport) void* point_rotator_operator(void* obj, void* vector)
+DLLEXPORT void* point_rotator_operator(void* obj, void* vector)
 {
     auto v = (dlib::vector<double,2>*)vector;
     auto t = (dlib::point_rotator*)obj;
@@ -33,7 +34,7 @@ extern "C" __declspec(dllexport) void* point_rotator_operator(void* obj, void* v
     return new dlib::vector<double,2>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_rotator_delete(dlib::point_rotator* obj)
+DLLEXPORT void point_rotator_delete(dlib::point_rotator* obj)
 {
 	delete obj;
 }
@@ -42,30 +43,30 @@ extern "C" _declspec(dllexport) void point_rotator_delete(dlib::point_rotator* o
 
 #pragma region point_transform
 
-extern "C" __declspec(dllexport) void* point_transform_new()
+DLLEXPORT void* point_transform_new()
 {
     return new dlib::point_transform();
 }
 
-extern "C" __declspec(dllexport) void* point_transform_new1(double angle, void* translate)
+DLLEXPORT void* point_transform_new1(double angle, void* translate)
 {
     auto vector = (dlib::vector<double,2>*)translate;
     return new dlib::point_transform(angle, *vector);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_get_b(void* obj)
+DLLEXPORT void* point_transform_get_b(void* obj)
 {
     auto vector = ((dlib::point_transform*)obj)->get_b();
     return new dlib::vector<double>(vector);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_get_m(void* obj)
+DLLEXPORT void* point_transform_get_m(void* obj)
 {
     auto matrix = ((dlib::point_transform*)obj)->get_m();
     return new dlib::matrix<double>(matrix);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_operator(void* obj, void* vector)
+DLLEXPORT void* point_transform_operator(void* obj, void* vector)
 {
     auto v = (dlib::vector<double,2>*)vector;
     auto t = (dlib::point_transform*)obj;
@@ -73,7 +74,7 @@ extern "C" __declspec(dllexport) void* point_transform_operator(void* obj, void*
     return new dlib::vector<double,2>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_transform_delete(dlib::point_transform* obj)
+DLLEXPORT void point_transform_delete(dlib::point_transform* obj)
 {
 	delete obj;
 }
@@ -82,31 +83,31 @@ extern "C" _declspec(dllexport) void point_transform_delete(dlib::point_transfor
 
 #pragma region point_transform_affine
 
-extern "C" __declspec(dllexport) void* point_transform_affine_new()
+DLLEXPORT void* point_transform_affine_new()
 {
     return new dlib::point_transform_affine();
 }
 
-extern "C" __declspec(dllexport) void* point_transform_affine_new1(void* matrix, void* vector)
+DLLEXPORT void* point_transform_affine_new1(void* matrix, void* vector)
 {
     auto m = (dlib::matrix<double,2,2>*)matrix;
     auto b = (dlib::vector<double>*)vector;
     return new dlib::point_transform_affine(*m, *b);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_affine_get_b(void* obj)
+DLLEXPORT void* point_transform_affine_get_b(void* obj)
 {
     auto vector = ((dlib::point_transform_affine*)obj)->get_b();
     return new dlib::vector<double>(vector);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_affine_get_m(void* obj)
+DLLEXPORT void* point_transform_affine_get_m(void* obj)
 {
     auto matrix = ((dlib::point_transform_affine*)obj)->get_m();
     return new dlib::matrix<double>(matrix);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_affine_operator(void* obj, void* vector)
+DLLEXPORT void* point_transform_affine_operator(void* obj, void* vector)
 {
     auto v = (dlib::vector<double>*)vector;
     auto t = (dlib::point_transform_affine*)obj;
@@ -114,7 +115,7 @@ extern "C" __declspec(dllexport) void* point_transform_affine_operator(void* obj
     return new dlib::vector<double>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_transform_affine_delete(dlib::point_transform_affine* obj)
+DLLEXPORT void point_transform_affine_delete(dlib::point_transform_affine* obj)
 {
 	delete obj;
 }
@@ -123,24 +124,24 @@ extern "C" _declspec(dllexport) void point_transform_affine_delete(dlib::point_t
 
 #pragma region rectangle_transform
 
-extern "C" __declspec(dllexport) void* rectangle_transform_new()
+DLLEXPORT void* rectangle_transform_new()
 {
     return new dlib::rectangle_transform();
 }
 
-extern "C" __declspec(dllexport) void* rectangle_transform_new1(void* transform)
+DLLEXPORT void* rectangle_transform_new1(void* transform)
 {
     auto p = (dlib::point_transform_affine*)transform;
     return new dlib::rectangle_transform(*p);
 }
 
-extern "C" __declspec(dllexport) void* rectangle_transform_get_tform(void* obj)
+DLLEXPORT void* rectangle_transform_get_tform(void* obj)
 {
     dlib::point_transform_affine tform = ((dlib::rectangle_transform*)obj)->get_tform();
     return new dlib::point_transform_affine(tform);
 }
 
-extern "C" __declspec(dllexport) void* rectangle_transform_operator(void* obj, void* rect)
+DLLEXPORT void* rectangle_transform_operator(void* obj, void* rect)
 {
     auto r = (dlib::rectangle*)rect;
     auto t = (dlib::rectangle_transform*)obj;
@@ -148,7 +149,7 @@ extern "C" __declspec(dllexport) void* rectangle_transform_operator(void* obj, v
     return new dlib::rectangle(ret);
 }
 
-extern "C" __declspec(dllexport) void* rectangle_transform_operator_d(void* obj, void* rect)
+DLLEXPORT void* rectangle_transform_operator_d(void* obj, void* rect)
 {
     auto r = (dlib::drectangle*)rect;
     auto t = (dlib::rectangle_transform*)obj;
@@ -156,7 +157,7 @@ extern "C" __declspec(dllexport) void* rectangle_transform_operator_d(void* obj,
     return new dlib::drectangle(ret);
 }
 
-extern "C" _declspec(dllexport) void rectangle_transform_delete(dlib::rectangle_transform* obj)
+DLLEXPORT void rectangle_transform_delete(dlib::rectangle_transform* obj)
 {
 	delete obj;
 }
@@ -165,24 +166,24 @@ extern "C" _declspec(dllexport) void rectangle_transform_delete(dlib::rectangle_
 
 #pragma region point_transform_projective
 
-extern "C" __declspec(dllexport) void* point_transform_projective_new()
+DLLEXPORT void* point_transform_projective_new()
 {
     return new dlib::point_transform_projective();
 }
 
-extern "C" __declspec(dllexport) void* point_transform_projective_new1(void* matrix)
+DLLEXPORT void* point_transform_projective_new1(void* matrix)
 {
     auto m = (dlib::matrix<double,3,3>*)matrix;
     return new dlib::point_transform_projective(*m);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_projective_get_m(void* obj)
+DLLEXPORT void* point_transform_projective_get_m(void* obj)
 {
     auto matrix = ((dlib::point_transform_projective*)obj)->get_m();
     return new dlib::matrix<double>(matrix);
 }
 
-extern "C" __declspec(dllexport) void* point_transform_projective_operator(void* obj, void* vector)
+DLLEXPORT void* point_transform_projective_operator(void* obj, void* vector)
 {
     auto v = (dlib::vector<double>*)vector;
     auto t = (dlib::point_transform_projective*)obj;
@@ -190,20 +191,20 @@ extern "C" __declspec(dllexport) void* point_transform_projective_operator(void*
     return new dlib::vector<double>(ret);
 }
 
-extern "C" _declspec(dllexport) void point_transform_projective_delete(dlib::point_transform_projective* obj)
+DLLEXPORT void point_transform_projective_delete(dlib::point_transform_projective* obj)
 {
 	delete obj;
 }
 
 #pragma endregion point_transform_projective
 
-extern "C" __declspec(dllexport) dlib::point* rotate_point(dlib::point* center, dlib::point* p, const double angle)
+DLLEXPORT dlib::point* rotate_point(dlib::point* center, dlib::point* p, const double angle)
 {
     dlib::point ret = dlib::rotate_point(*center, *p, angle);
     return new dlib::point(ret);
 }
 
-extern "C" __declspec(dllexport) dlib::dpoint* rotate_dpoint(dlib::dpoint* center, dlib::dpoint* p, const double angle)
+DLLEXPORT dlib::dpoint* rotate_dpoint(dlib::dpoint* center, dlib::dpoint* p, const double angle)
 {
     dlib::dpoint ret = dlib::rotate_point(*center, *p, angle);
     return new dlib::dpoint(ret);

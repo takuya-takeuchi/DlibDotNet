@@ -1,6 +1,7 @@
 #ifndef _CPP_INTERPOLATION_H_
 #define _CPP_INTERPOLATION_H_
 
+#include "../export.h"
 #include <dlib/array.h>
 #include <dlib/pixel.h>
 #include <dlib/image_processing.h>
@@ -440,7 +441,7 @@ do { \
 
 #pragma region flip_image_left_right
 
-extern "C" __declspec(dllexport) int flip_image_left_right(array2d_type type, void* img)
+DLLEXPORT int flip_image_left_right(array2d_type type, void* img)
 {
     int err = ERR_OK;
 
@@ -451,7 +452,7 @@ extern "C" __declspec(dllexport) int flip_image_left_right(array2d_type type, vo
     return err;
 }
 
-extern "C" __declspec(dllexport) int flip_image_left_right2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img )
+DLLEXPORT int flip_image_left_right2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img )
 {
     int err = ERR_OK;
 
@@ -504,7 +505,7 @@ extern "C" __declspec(dllexport) int flip_image_left_right2(array2d_type in_type
 
 #pragma endregion flip_image_left_right
 
-extern "C" __declspec(dllexport) int flip_image_up_down(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img )
+DLLEXPORT int flip_image_up_down(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img )
 {
     int err = ERR_OK;
 
@@ -555,7 +556,7 @@ extern "C" __declspec(dllexport) int flip_image_up_down(array2d_type in_type, vo
     return err;
 }
 
-extern "C" __declspec(dllexport) int pyramid_up(array2d_type type, void* img)
+DLLEXPORT int pyramid_up(array2d_type type, void* img)
 {
     int err = ERR_OK;
 
@@ -568,7 +569,7 @@ extern "C" __declspec(dllexport) int pyramid_up(array2d_type type, void* img)
 
 #pragma region resize_image
 
-extern "C" __declspec(dllexport) int resize_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img)
+DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img)
 {
     int err = ERR_OK;
 
@@ -614,7 +615,7 @@ extern "C" __declspec(dllexport) int resize_image(array2d_type in_type, void* in
     return err;
 }
 
-extern "C" __declspec(dllexport) int resize_image2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, interpolation_type type)
+DLLEXPORT int resize_image2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, interpolation_type type)
 {
     int err = ERR_OK;
 
@@ -657,7 +658,7 @@ extern "C" __declspec(dllexport) int resize_image2(array2d_type in_type, void* i
     return err;
 }
 
-extern "C" __declspec(dllexport) int resize_image3(array2d_type type, void* img, double size_scale)
+DLLEXPORT int resize_image3(array2d_type type, void* img, double size_scale)
 {
     int err = ERR_OK;
     switch(type)
@@ -691,7 +692,7 @@ extern "C" __declspec(dllexport) int resize_image3(array2d_type type, void* img,
 
 #pragma region rotate_image
 
-extern "C" __declspec(dllexport) int rotate_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, double angle)
+DLLEXPORT int rotate_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, double angle)
 {
     int err = ERR_OK;
 
@@ -734,7 +735,7 @@ extern "C" __declspec(dllexport) int rotate_image(array2d_type in_type, void* in
     return err;
 }
 
-extern "C" __declspec(dllexport) int rotate_image2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, double angle, interpolation_type type)
+DLLEXPORT int rotate_image2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, double angle, interpolation_type type)
 {
     int err = ERR_OK;
 
@@ -779,7 +780,7 @@ extern "C" __declspec(dllexport) int rotate_image2(array2d_type in_type, void* i
 
 #pragma endregion rotate_image
 
-extern "C" __declspec(dllexport) int transform_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, point_mapping_type mapping_type, void* mapping_obj, interpolation_type type)
+DLLEXPORT int transform_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img, point_mapping_type mapping_type, void* mapping_obj, interpolation_type type)
 {
     int err = ERR_OK;
 
@@ -822,36 +823,36 @@ extern "C" __declspec(dllexport) int transform_image(array2d_type in_type, void*
 
 #pragma region chip_details
 
-extern "C" __declspec(dllexport) chip_details* chip_details_new()
+DLLEXPORT chip_details* chip_details_new()
 {
     return new dlib::chip_details();
 }
 
-extern "C" _declspec(dllexport) bool chip_details_angle(chip_details* chip, double* angle)
+DLLEXPORT bool chip_details_angle(chip_details* chip, double* angle)
 {
     *angle = chip->angle;   
     return true;
 }
 
-extern "C" _declspec(dllexport) bool chip_details_cols(chip_details* chip, uint32_t* cols)
+DLLEXPORT bool chip_details_cols(chip_details* chip, uint32_t* cols)
 {
     *cols = chip->cols;   
     return true;
 }
 
-extern "C" _declspec(dllexport) bool chip_details_rect(chip_details* chip, dlib::drectangle** rect)
+DLLEXPORT bool chip_details_rect(chip_details* chip, dlib::drectangle** rect)
 {
     *rect = new dlib::drectangle(chip->rect);   
     return true;
 }
 
-extern "C" _declspec(dllexport) bool chip_details_rows(chip_details* chip, uint32_t* rows)
+DLLEXPORT bool chip_details_rows(chip_details* chip, uint32_t* rows)
 {
     *rows = chip->rows;   
     return true;
 }
 
-extern "C" __declspec(dllexport) void chip_details_delete(dlib::chip_details* obj)
+DLLEXPORT void chip_details_delete(dlib::chip_details* obj)
 {
     delete obj;
 }
@@ -860,7 +861,7 @@ extern "C" __declspec(dllexport) void chip_details_delete(dlib::chip_details* ob
 
 #pragma region get_face_chip_details
 
-extern "C" __declspec(dllexport) int get_face_chip_details(std::vector<full_object_detection*>* dets, const unsigned int size, const double padding, std::vector<chip_details*>* rets)
+DLLEXPORT int get_face_chip_details(std::vector<full_object_detection*>* dets, const unsigned int size, const double padding, std::vector<chip_details*>* rets)
 {
     int err = ERR_OK;
     
@@ -879,7 +880,7 @@ extern "C" __declspec(dllexport) int get_face_chip_details(std::vector<full_obje
     return err;
 }
 
-extern "C" __declspec(dllexport) int get_face_chip_details2(full_object_detection* det, const unsigned int size, const double padding, chip_details** ret)
+DLLEXPORT int get_face_chip_details2(full_object_detection* det, const unsigned int size, const double padding, chip_details** ret)
 {
     int err = ERR_OK;
 
@@ -893,7 +894,7 @@ extern "C" __declspec(dllexport) int get_face_chip_details2(full_object_detectio
 
 #pragma region extract_image_chips
 
-extern "C" __declspec(dllexport) int extract_image_chips(array2d_type img_type, void* in_img, std::vector<chip_details*>* chip_locations, array2d_type array_type, void* array)
+DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vector<chip_details*>* chip_locations, array2d_type array_type, void* array)
 {
     int err = ERR_OK;
     
@@ -946,7 +947,7 @@ extern "C" __declspec(dllexport) int extract_image_chips(array2d_type img_type, 
     return err;
 }
 
-extern "C" __declspec(dllexport) int extract_image_chip(array2d_type img_type, void* in_img, chip_details* chip_location, array2d_type array_type, void* out_chip)
+DLLEXPORT int extract_image_chip(array2d_type img_type, void* in_img, chip_details* chip_location, array2d_type array_type, void* out_chip)
 {
     int err = ERR_OK;
 

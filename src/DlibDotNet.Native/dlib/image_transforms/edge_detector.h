@@ -1,6 +1,7 @@
 #ifndef _CPP_EDGE_DETECTOR_H_
 #define _CPP_EDGE_DETECTOR_H_
 
+#include "../export.h"
 #include <dlib/array2d/array2d_kernel.h>
 #include <dlib/image_io.h>
 #include <dlib/pixel.h>
@@ -39,7 +40,7 @@ do {\
     }\
 } while (0)
 
-extern "C" __declspec(dllexport) int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_type out_type, void* horz, void* vert)
+DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_type out_type, void* horz, void* vert)
 {
     // Check output type
     switch(out_type)
@@ -97,7 +98,7 @@ extern "C" __declspec(dllexport) int sobel_edge_detector(array2d_type in_type, v
     return err;
 }
 
-extern "C" __declspec(dllexport) int suppress_non_maximum_edges(array2d_type in_type, void* horz, void* vert, array2d_type out_type, void* out_img)
+DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void* vert, array2d_type out_type, void* out_img)
 {
     // Check output type
     switch(in_type)

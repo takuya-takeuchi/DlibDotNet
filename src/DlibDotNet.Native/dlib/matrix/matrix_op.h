@@ -1,6 +1,7 @@
 #ifndef _CPP_MATRIX_OP_H_
 #define _CPP_MATRIX_OP_H_
 
+#include "../export.h"
 #include <dlib/hash.h>
 #include <dlib/pixel.h>
 #include <dlib/matrix.h>
@@ -125,12 +126,12 @@ do { \
 
 #pragma endregion matrix_op<template>
 
-extern "C" _declspec(dllexport) void matrix_op_delete(void* obj)
+DLLEXPORT void matrix_op_delete(void* obj)
 {
 	delete obj;
 }
 
-extern "C" __declspec(dllexport) int matrix_op_operator(element_type etype, array2d_type type, void* obj, int r, int c, rgb_pixel* ret)
+DLLEXPORT int matrix_op_operator(element_type etype, array2d_type type, void* obj, int r, int c, rgb_pixel* ret)
 {
     int err = ERR_OK;
     switch(etype)
@@ -152,7 +153,7 @@ extern "C" __declspec(dllexport) int matrix_op_operator(element_type etype, arra
     return err;
 }
 
-extern "C" __declspec(dllexport) int matrix_op_nc(element_type etype, array2d_type type, void* obj, int* ret)
+DLLEXPORT int matrix_op_nc(element_type etype, array2d_type type, void* obj, int* ret)
 {
     bool bRet = false;
     int err = ERR_OK;
@@ -179,7 +180,7 @@ extern "C" __declspec(dllexport) int matrix_op_nc(element_type etype, array2d_ty
     return err;
 }
 
-extern "C" __declspec(dllexport) int matrix_op_nr(element_type etype, array2d_type type, void* obj, int* ret)
+DLLEXPORT int matrix_op_nr(element_type etype, array2d_type type, void* obj, int* ret)
 {
     bool bRet = false;
     int err = ERR_OK;

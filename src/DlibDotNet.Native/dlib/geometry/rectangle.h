@@ -1,6 +1,7 @@
 #ifndef _CPP_GEOMETRY_RECTANGLE_H_
 #define _CPP_GEOMETRY_RECTANGLE_H_
 
+#include "../export.h"
 #include <dlib/geometry/rectangle.h>
 #include <dlib/geometry/vector.h>
 #include <dlib/image_io.h>
@@ -8,163 +9,163 @@
 
 using namespace dlib;
 
-extern "C" __declspec(dllexport) rectangle* rectangle_new()
+DLLEXPORT rectangle* rectangle_new()
 {
     return new rectangle();
 }
  
-extern "C" __declspec(dllexport) rectangle* rectangle_new1(const int left, const int top, const int right, const int bottom)
+DLLEXPORT rectangle* rectangle_new1(const int left, const int top, const int right, const int bottom)
 {
      return new rectangle(left, top, right, bottom);
 }
 
-extern "C" __declspec(dllexport) rectangle* rectangle_new2(const unsigned int width, const unsigned int height)
+DLLEXPORT rectangle* rectangle_new2(const unsigned int width, const unsigned int height)
 {
     return new rectangle(width, height);
 }
 
-extern "C" __declspec(dllexport) rectangle* rectangle_new3(const point* p)
+DLLEXPORT rectangle* rectangle_new3(const point* p)
 {
     return new dlib::rectangle(*p);
 }
     
-extern "C" __declspec(dllexport) rectangle* rectangle_new4(const point* p1, const point* p2)
+DLLEXPORT rectangle* rectangle_new4(const point* p1, const point* p2)
 {
     return new rectangle(*p1, *p2);
 }
 
-extern "C" __declspec(dllexport) void rectangle_delete(const rectangle* rect)
+DLLEXPORT void rectangle_delete(const rectangle* rect)
 {
     delete rect;
 }
 
-extern "C" __declspec(dllexport) int rectangle_left(rectangle* rect)
+DLLEXPORT int rectangle_left(rectangle* rect)
 {
     return rect->left();
 }
 
-extern "C" __declspec(dllexport) int rectangle_top(rectangle* rect)
+DLLEXPORT int rectangle_top(rectangle* rect)
 {
     return rect->top();
 }
 
-extern "C" __declspec(dllexport) int rectangle_right(rectangle* rect)
+DLLEXPORT int rectangle_right(rectangle* rect)
 {
     return rect->right();
 }
 
-extern "C" __declspec(dllexport) int rectangle_bottom(rectangle* rect)
+DLLEXPORT int rectangle_bottom(rectangle* rect)
 {
     return rect->bottom();
 }
 
-extern "C" __declspec(dllexport) void rectangle_set_left(rectangle* rect, int value)
+DLLEXPORT void rectangle_set_left(rectangle* rect, int value)
 {
     rect->set_left(value);
 }
 
-extern "C" __declspec(dllexport) void rectangle_set_top(rectangle* rect, int value)
+DLLEXPORT void rectangle_set_top(rectangle* rect, int value)
 {
     rect->set_top(value);
 }
 
-extern "C" __declspec(dllexport) void rectangle_set_right(rectangle* rect, int value)
+DLLEXPORT void rectangle_set_right(rectangle* rect, int value)
 {
     rect->set_right(value);
 }
 
-extern "C" __declspec(dllexport) void rectangle_set_bottom(rectangle* rect, int value)
+DLLEXPORT void rectangle_set_bottom(rectangle* rect, int value)
 {
     rect->set_bottom(value);
 }
 
-extern "C" __declspec(dllexport) point* rectangle_tl_corner(rectangle* rect)
+DLLEXPORT point* rectangle_tl_corner(rectangle* rect)
 {
     return new point(rect->tl_corner());
 }
 
-extern "C" __declspec(dllexport) point* rectangle_bl_corner(rectangle* rect)
+DLLEXPORT point* rectangle_bl_corner(rectangle* rect)
 {
     return new point(rect->bl_corner());
 }
 
-extern "C" __declspec(dllexport) point* rectangle_tr_corner(rectangle* rect)
+DLLEXPORT point* rectangle_tr_corner(rectangle* rect)
 {
     return new point(rect->tr_corner());
 }
 
-extern "C" __declspec(dllexport) point* rectangle_br_corner(rectangle* rect)
+DLLEXPORT point* rectangle_br_corner(rectangle* rect)
 {
     return new point(rect->br_corner());
 }
 
-extern "C" __declspec(dllexport) unsigned int rectangle_width(rectangle* rect)
+DLLEXPORT unsigned int rectangle_width(rectangle* rect)
 {
     return rect->width();
 }
 
-extern "C" __declspec(dllexport) unsigned int rectangle_height(rectangle* rect)
+DLLEXPORT unsigned int rectangle_height(rectangle* rect)
 {
     return rect->height();
 }
 
-extern "C" __declspec(dllexport) unsigned int rectangle_area(rectangle* rect)
+DLLEXPORT unsigned int rectangle_area(rectangle* rect)
 {
     return rect->area();
 }
 
-extern "C" __declspec(dllexport) bool rectangle_is_empty(rectangle* rect)
+DLLEXPORT bool rectangle_is_empty(rectangle* rect)
 {
     return rect->is_empty();
 }
 
-extern "C" __declspec(dllexport) bool rectangle_contains(rectangle* rect, point* point)
+DLLEXPORT bool rectangle_contains(rectangle* rect, point* point)
 {
     return rect->contains(*point);
 }
 
-extern "C" __declspec(dllexport) bool rectangle_contains1(rectangle* rect, int x, int y)
+DLLEXPORT bool rectangle_contains1(rectangle* rect, int x, int y)
 {
     return rect->contains(x, y);
 }
 
-extern "C" __declspec(dllexport) rectangle* rectangle_centered_rect(int x, int y, unsigned int width, unsigned int height)
+DLLEXPORT rectangle* rectangle_centered_rect(int x, int y, unsigned int width, unsigned int height)
 {
     const rectangle result = centered_rect(x, y, width, height);
     return new rectangle(result);
 }
 
-extern "C" __declspec(dllexport) rectangle* rectangle_centered_rect1(point* p, unsigned int width, unsigned int height)
+DLLEXPORT rectangle* rectangle_centered_rect1(point* p, unsigned int width, unsigned int height)
 {
     const rectangle result = centered_rect(*p, width, height);
     return new rectangle(result);
 }
 
-extern "C" __declspec(dllexport) rectangle* rectangle_centered_rect2(rectangle* rect, unsigned int width, unsigned int height)
+DLLEXPORT rectangle* rectangle_centered_rect2(rectangle* rect, unsigned int width, unsigned int height)
 {
     const rectangle result = centered_rect(*rect, width, height);
     return new rectangle(result);
 }
 
-extern "C" __declspec(dllexport) rectangle* rectangle_intersect(rectangle* rect, rectangle* target)
+DLLEXPORT rectangle* rectangle_intersect(rectangle* rect, rectangle* target)
 {
     const rectangle result = rect->intersect(*target);
     return new rectangle(result);
 }
 
-extern "C" __declspec(dllexport) point* rectangle_center(rectangle* rect)
+DLLEXPORT point* rectangle_center(rectangle* rect)
 {
     const point result = center(*rect);
     return new point(result);
 }
 
-extern "C" __declspec(dllexport) dpoint* rectangle_dcenter(rectangle* rect)
+DLLEXPORT dpoint* rectangle_dcenter(rectangle* rect)
 {
     const dpoint result = dcenter(*rect);
     return new dpoint(result);
 }
 
-extern "C" __declspec(dllexport) int rectangle_get_rect(array2d_type img_type, void* img, rectangle** rect)
+DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** rect)
 {
     int err = ERR_OK;
 
@@ -199,7 +200,7 @@ extern "C" __declspec(dllexport) int rectangle_get_rect(array2d_type img_type, v
     return err;
 }
 
-extern "C" _declspec(dllexport) int rectangle_get_rect2(matrix_element_type type, void* img, rectangle** rect)
+DLLEXPORT int rectangle_get_rect2(matrix_element_type type, void* img, rectangle** rect)
 {
     int err = ERR_OK;
 
@@ -248,19 +249,19 @@ extern "C" _declspec(dllexport) int rectangle_get_rect2(matrix_element_type type
 
 #pragma region operator
 
-extern "C" __declspec(dllexport) void* rectangle_operator_add(rectangle* rect, rectangle* rhs)
+DLLEXPORT void* rectangle_operator_add(rectangle* rect, rectangle* rhs)
 {
     const rectangle result = *rect + *rhs;
     return new rectangle(result);
 }
 
-// extern "C" __declspec(dllexport) void* rectangle_operator_sub(rectangle* rect, rectangle* rhs)
+// DLLEXPORT void* rectangle_operator_sub(rectangle* rect, rectangle* rhs)
 // {
 //     const rectangle result = *rect - *rhs;
 //     return new rectangle(result);
 // }
 
-extern "C" __declspec(dllexport) bool rectangle_operator_equal(rectangle* rect, rectangle* rhs)
+DLLEXPORT bool rectangle_operator_equal(rectangle* rect, rectangle* rhs)
 {
     return *rect == *rhs;
 }

@@ -1,6 +1,7 @@
 #ifndef _CPP_MATRIX_H_
 #define _CPP_MATRIX_H_
 
+#include "../export.h"
 #include <dlib/pixel.h>
 #include <dlib/matrix/matrix.h>
 #include <dlib/matrix/matrix_op.h>
@@ -11,7 +12,7 @@ using namespace std;
 
 #pragma region matrix
 
-extern "C" _declspec(dllexport) void* matrix_new(matrix_element_type type)
+DLLEXPORT void* matrix_new(matrix_element_type type)
 {
     switch(type)
     {
@@ -42,7 +43,7 @@ extern "C" _declspec(dllexport) void* matrix_new(matrix_element_type type)
     }
 }
 
-extern "C" _declspec(dllexport) void* matrix_new1(matrix_element_type type, int num_rows, int num_cols)
+DLLEXPORT void* matrix_new1(matrix_element_type type, int num_rows, int num_cols)
 {
     switch(type)
     {
@@ -73,7 +74,7 @@ extern "C" _declspec(dllexport) void* matrix_new1(matrix_element_type type, int 
     }
 }
 
-extern "C" _declspec(dllexport) int matrix_nc(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, int* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -119,7 +120,7 @@ extern "C" _declspec(dllexport) int matrix_nc(matrix_element_type type, void* ma
     return err;
 }
 
-extern "C" _declspec(dllexport) int matrix_nr(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, int* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -165,7 +166,7 @@ extern "C" _declspec(dllexport) int matrix_nr(matrix_element_type type, void* ma
     return err;
 }
 
-extern "C" _declspec(dllexport) int matrix_size(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, int* ret)
 {
     int err = ERR_OK;
     switch(type)
@@ -211,7 +212,7 @@ extern "C" _declspec(dllexport) int matrix_size(matrix_element_type type, void* 
     return err;
 }
 
-extern "C" _declspec(dllexport) void matrix_delete(matrix_element_type type, void* matrix)
+DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix)
 {
     switch(type)
     {
@@ -251,7 +252,7 @@ extern "C" _declspec(dllexport) void matrix_delete(matrix_element_type type, voi
     }
 }
 
-extern "C" _declspec(dllexport) int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
+DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
 {
     int err = ERR_OK;
     switch(type)

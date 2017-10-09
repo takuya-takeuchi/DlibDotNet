@@ -1,6 +1,7 @@
 #ifndef _CPP_MAX_COST_ASSIGNMENT_H_
 #define _CPP_MAX_COST_ASSIGNMENT_H_
 
+#include "../export.h"
 #include <dlib/matrix.h>
 #include <dlib/optimization/max_cost_assignment.h>
 #include "../shared.h"
@@ -19,7 +20,7 @@ do {\
     }\
 } while (0)
 
-extern "C" _declspec(dllexport) int max_cost_assignment(matrix_element_type type, void* cost, std::vector<int64_t> *assignments)
+DLLEXPORT int max_cost_assignment(matrix_element_type type, void* cost, std::vector<int64_t> *assignments)
 {
     int err = ERR_OK;
     switch(type)

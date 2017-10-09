@@ -1,6 +1,7 @@
 #ifndef _CPP_FHOG_H_
 #define _CPP_FHOG_H_
 
+#include "../export.h"
 #include <dlib/pixel.h>
 #include <dlib/image_processing/full_object_detection_abstract.h>
 #include <dlib/image_processing/generic_image.h>
@@ -29,7 +30,7 @@ do {\
     }\
 } while (0)
 
-extern "C" __declspec(dllexport) int extract_fhog_features(
+DLLEXPORT int extract_fhog_features(
     array2d_type img_type,
     void* img,
     matrix_element_type hog_type,
@@ -84,7 +85,7 @@ extern "C" __declspec(dllexport) int extract_fhog_features(
     return err;
 }
 
-extern "C" __declspec(dllexport) int draw_fhog(
+DLLEXPORT int draw_fhog(
     const matrix_element_type hog_type,
     const void* hog,
     const int cell_draw_size,
