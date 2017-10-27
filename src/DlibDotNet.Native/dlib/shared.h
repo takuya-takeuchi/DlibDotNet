@@ -2,6 +2,7 @@ enum struct array2d_type : int
 {
     UInt8 = 0,
     UInt16,
+    Int32,
     Float,
     Double,
     RgbPixel,
@@ -27,8 +28,11 @@ enum struct matrix_element_type : int
 
 enum element_type : int
 {
-    OpHeatmap,
-    OpJet
+    OpHeatmap = 0,
+
+    OpJet,
+
+    OpArray2dToMat
 };
 
 enum struct interpolation_type : int

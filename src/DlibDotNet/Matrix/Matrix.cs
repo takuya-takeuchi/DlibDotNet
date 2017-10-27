@@ -75,6 +75,7 @@ namespace DlibDotNet
 
             this.NativePtr = ptr;
             this._MatrixElementTypes = type;
+            this._ElementType = type.ToNativeMatrixElementType();
         }
 
         #endregion

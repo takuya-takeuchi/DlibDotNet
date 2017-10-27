@@ -71,19 +71,22 @@
     <Compile Include="ImageTransforms\ColormapsTest.cs" />
     <Compile Include="ImageTransforms\FindCandidateObjectLocationsTest.cs" />
     <Compile Include="ImageTransforms\SobelEdgeDetectorTest.cs" />
+    <Compile Include="ImageTransforms\AssignImageTest.cs" />
     <Compile Include="ImageTransforms\SpatialFilteringTest.cs" />
     <Compile Include="ImageTransforms\InterpolationTest.cs" />
+    <Compile Include="Matrix\MatrixMatTest.cs" />
     <Compile Include="Matrix\MatrixUtilitiesTest.cs" />
     <Compile Include="Matrix\MatrixRangeExpTest.cs" />
     <Compile Include="Matrix\MatrixOpTest.cs" />
     <Compile Include="Matrix\MatrixTest.cs" />
     <Compile Include="Optimization\MaxCostAssignmentTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StdLib\Pair\PairOfPointPointTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestDataBase.cs" />
-    <Compile Include="Vector\VectorOfInt32Test.cs" />
-    <Compile Include="Vector\VectorOfLongTest.cs" />
-    <Compile Include="Vector\VectorOfRectangleTest.cs" />
+    <Compile Include="StdLib\Vector\VectorOfInt32Test.cs" />
+    <Compile Include="StdLib\Vector\VectorOfLongTest.cs" />
+    <Compile Include="StdLib\Vector\VectorOfRectangleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\Lenna.dng">

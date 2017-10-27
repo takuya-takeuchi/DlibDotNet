@@ -298,7 +298,7 @@ namespace DlibDotNet.Tests.Geometry
             this.DisposeAndCheckDisposedState(rect);
             this.DisposeAndCheckDisposedState(center);
         }
-        
+
         [TestMethod]
         public void CenteredRect()
         {
@@ -358,6 +358,102 @@ namespace DlibDotNet.Tests.Geometry
             this.DisposeAndCheckDisposedState(rect);
             this.DisposeAndCheckDisposedState(result);
             this.DisposeAndCheckDisposedState(expected);
+        }
+
+        [TestMethod]
+        public void Translate()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new DRectangle(left, top, right, bottom);
+            var point = new Point(x, y);
+
+            var ret = rect.Translate(point);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
+        public void TranslateStatic()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new DRectangle(left, top, right, bottom);
+            var point = new Point(x, y);
+
+            var ret = DRectangle.Translate(rect, point);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
+        public void TranslateD()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new DRectangle(left, top, right, bottom);
+            var point = new DPoint(x, y);
+
+            var ret = rect.Translate(point);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
+        public void TranslateStaticD()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new DRectangle(left, top, right, bottom);
+            var point = new DPoint(x, y);
+
+            var ret = DRectangle.Translate(rect, point);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]

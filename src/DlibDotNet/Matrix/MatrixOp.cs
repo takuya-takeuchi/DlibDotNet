@@ -86,12 +86,10 @@ namespace DlibDotNet
             public static extern void matrix_op_delete(IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool matrix_op_nc(Dlib.Native.ElementType etype, Dlib.Native.Array2DType type, IntPtr matrix, out int ret);
+            public static extern Dlib.Native.ErrorType matrix_op_nc(Dlib.Native.ElementType etype, Dlib.Native.Array2DType type, IntPtr matrix, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool matrix_op_nr(Dlib.Native.ElementType etype, Dlib.Native.Array2DType type, IntPtr matrix, out int ret);
+            public static extern Dlib.Native.ErrorType matrix_op_nr(Dlib.Native.ElementType etype, Dlib.Native.Array2DType type, IntPtr matrix, out int ret);
 
         }
 

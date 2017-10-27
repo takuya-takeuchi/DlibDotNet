@@ -396,6 +396,100 @@ namespace DlibDotNet.Tests.Geometry
         }
 
         [TestMethod]
+        public void Translate()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new Rectangle(left, top, right, bottom);
+            var point = new Point(x, y);
+
+            var ret = rect.Translate(point);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
+        public void TranslateStatic()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new Rectangle(left, top, right, bottom);
+            var point = new Point(x, y);
+
+            var ret = Rectangle.Translate(rect, point);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
+        public void TranslateXY()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new Rectangle(left, top, right, bottom);
+
+            var ret = rect.Translate(x, y);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
+        public void TranslateStaticXY()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            const int x = 10;
+            const int y = 20;
+            var rect = new Rectangle(left, top, right, bottom);
+            var point = new Point(x, y);
+
+            var ret = Rectangle.Translate(rect, x, y);
+
+            Assert.AreEqual(ret.Left, left + x);
+            Assert.AreEqual(ret.Top, top + y);
+            Assert.AreEqual(ret.Right, right + x);
+            Assert.AreEqual(ret.Bottom, bottom + y);
+
+            this.DisposeAndCheckDisposedState(ret);
+            this.DisposeAndCheckDisposedState(point);
+            this.DisposeAndCheckDisposedState(rect);
+        }
+
+        [TestMethod]
         public void OperatorAdd()
         {
             var lleft = this.NextRandom(0, 100);

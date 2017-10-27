@@ -11,8 +11,8 @@
 using namespace dlib;
 using namespace std;
 
-#define ELEMENT element
-#undef ELEMENT
+#define ELEMENT_OUT element
+#undef ELEMENT_OUT
 
 #define gaussian_blur_template(ret, in_type, in_img, out_img, sigma, max_size) \
 do { \

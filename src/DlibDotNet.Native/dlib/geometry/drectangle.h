@@ -144,6 +144,18 @@ DLLEXPORT void drectangle_delete(const drectangle* rect)
     delete rect;
 }
 
+DLLEXPORT drectangle* drectangle_translate_rect(drectangle* rect, point* p)
+{
+    drectangle result = dlib::translate_rect(*rect, *p);
+    return new dlib::drectangle(result);
+}
+
+DLLEXPORT drectangle* drectangle_translate_rect_d(drectangle* rect, dpoint* p)
+{
+    drectangle result = dlib::translate_rect(*rect, *p);
+    return new dlib::drectangle(result);
+}
+
 #pragma region operator
 
 DLLEXPORT void* drectangle_operator_add(drectangle* rect, drectangle* rhs)

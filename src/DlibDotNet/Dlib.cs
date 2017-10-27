@@ -18,6 +18,17 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static Rectangle GetRect(HoughTransform houghTransform)
+        {
+            if (houghTransform == null)
+                throw new ArgumentNullException(nameof(houghTransform));
+
+            houghTransform.ThrowIfDisposed();
+
+             HoughTransform.Native.hough_transform_get_rect(houghTransform.NativePtr, out var rect);
+            return new Rectangle(rect);
+        }
+
         public static Array2D<T> LoadBmp<T>(string path)
             where T : struct
         {
@@ -198,6 +209,8 @@ namespace DlibDotNet
 
                 UInt16,
 
+                Int32,
+
                 Float,
 
                 Double,
@@ -217,7 +230,9 @@ namespace DlibDotNet
 
                 OpHeatmap,
 
-                OpJet
+                OpJet,
+
+                OpArray2DToMat
 
             }
 
