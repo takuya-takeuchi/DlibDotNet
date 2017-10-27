@@ -246,6 +246,44 @@ namespace DlibDotNet
             return new DRectangle(result);
         }
 
+        public DRectangle Translate(Point point)
+        {
+            return Translate(this, point);
+        }
+
+        public static DRectangle Translate(DRectangle drect, Point point)
+        {
+            if (drect == null)
+                throw new ArgumentNullException(nameof(drect));
+            if (point == null)
+                throw new ArgumentNullException(nameof(point));
+
+            drect.ThrowIfDisposed();
+            point.ThrowIfDisposed();
+
+            var result = Native.drectangle_translate_rect(drect.NativePtr, point.NativePtr);
+            return new DRectangle(result);
+        }
+
+        public DRectangle Translate(DPoint point)
+        {
+            return Translate(this, point);
+        }
+
+        public static DRectangle Translate(DRectangle drect, DPoint point)
+        {
+            if (drect == null)
+                throw new ArgumentNullException(nameof(drect));
+            if (point == null)
+                throw new ArgumentNullException(nameof(point));
+
+            drect.ThrowIfDisposed();
+            point.ThrowIfDisposed();
+
+            var result = Native.drectangle_translate_rect_d(drect.NativePtr, point.NativePtr);
+            return new DRectangle(result);
+        }
+
         #region Overrides
 
         public static explicit operator Rectangle(DRectangle drect)
@@ -417,6 +455,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr drectangle_centered_rect1(IntPtr drect, double width, double height);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr drectangle_translate_rect(IntPtr rect, IntPtr p);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr drectangle_translate_rect_d(IntPtr rect, IntPtr p);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr drectangle_operator_add(IntPtr drect, IntPtr rhs);

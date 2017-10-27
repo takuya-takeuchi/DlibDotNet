@@ -29,6 +29,9 @@ do { \
         case array2d_type::UInt16:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image));\
             break;\
+        case array2d_type::Int32:\
+            ret = new image_window(*((matrix_op<ELEMENT<array2d<int32_t>>>*)image));\
+            break;\
         case array2d_type::Float:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<float>>>*)image));\
             break;\
@@ -59,6 +62,9 @@ do { \
             break;\
         case array2d_type::UInt16:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image), title);\
+            break;\
+        case array2d_type::Int32:\
+            ret = new image_window(*((matrix_op<ELEMENT<array2d<int32_t>>>*)image), title);\
             break;\
         case array2d_type::Float:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<float>>>*)image), title);\
@@ -92,6 +98,9 @@ do { \
             break;\
         case array2d_type::UInt16:\
             window->set_image(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image));\
+            break;\
+        case array2d_type::Int32:\
+            window->set_image(*((matrix_op<ELEMENT<array2d<int32_t>>>*)image));\
             break;\
         case array2d_type::Float:\
             window->set_image(*((matrix_op<ELEMENT<array2d<float>>>*)image));\
@@ -133,6 +142,8 @@ DLLEXPORT image_window* image_window_new_array2d1(array2d_type type, void* image
             return new image_window(*((array2d<uint8_t>*)image));
         case array2d_type::UInt16:
             return new image_window(*((array2d<uint16_t>*)image));
+        case array2d_type::Int32:
+            return new image_window(*((array2d<int32_t>*)image));
         case array2d_type::Float:
             return new image_window(*((array2d<float>*)image));
         case array2d_type::Double:
@@ -156,6 +167,8 @@ DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image
             return new image_window(*((array2d<uint8_t>*)image), title);
         case array2d_type::UInt16:
             return new image_window(*((array2d<uint16_t>*)image), title);
+        case array2d_type::Int32:
+            return new image_window(*((array2d<int32_t>*)image), title);
         case array2d_type::Float:
             return new image_window(*((array2d<float>*)image), title);
         case array2d_type::Double:
@@ -293,6 +306,9 @@ DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r,
         case array2d_type::UInt16:
             window->add_overlay(*r, *((uint16_t*)p));
             break;
+        case array2d_type::Int32:
+            window->add_overlay(*r, *((int32_t*)p));
+            break;
         case array2d_type::Float:
             window->add_overlay(*r, *((float*)p));
             break;
@@ -332,6 +348,9 @@ DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectan
         case array2d_type::UInt16:
             window->add_overlay(tmpRects, *((uint16_t*)p));
             break;
+        case array2d_type::Int32:
+            window->add_overlay(tmpRects, *((int32_t*)p));
+            break;
         case array2d_type::Float:
             window->add_overlay(tmpRects, *((float*)p));
             break;
@@ -366,6 +385,9 @@ DLLEXPORT int image_window_add_overlay3(image_window* window, dlib::drectangle* 
             break;
         case array2d_type::UInt16:
             window->add_overlay(*r, *((uint16_t*)p));
+            break;
+        case array2d_type::Int32:
+            window->add_overlay(*r, *((int32_t*)p));
             break;
         case array2d_type::Float:
             window->add_overlay(*r, *((float*)p));
@@ -442,6 +464,9 @@ DLLEXPORT int image_window_set_image_array2d(image_window* window, array2d_type 
             break;
         case array2d_type::UInt16:
             window->set_image(*((array2d<uint16_t>*)image));
+            break;
+        case array2d_type::Int32:
+            window->set_image(*((array2d<int32_t>*)image));
             break;
         case array2d_type::Float:
             window->set_image(*((array2d<float>*)image));
@@ -525,6 +550,11 @@ DLLEXPORT int image_window_set_image_matrix_op(image_window* window, element_typ
             #undef ELEMENT
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
+            image_window_set_image_matrix_op_template(err, window, type, image);
+            #undef ELEMENT
+            break;
+        case element_type::OpArray2dToMat:
+            #define ELEMENT dlib::op_array2d_to_mat
             image_window_set_image_matrix_op_template(err, window, type, image);
             #undef ELEMENT
             break;

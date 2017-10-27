@@ -28,6 +28,9 @@ do { \
         case array2d_type::UInt16:\
 			*result = (*((matrix_op<ELEMENT<array2d<uint16_t>>>*)obj))(r, c);\
 			break;\
+        case array2d_type::Int32:\
+			*result = (*((matrix_op<ELEMENT<array2d<int32_t>>>*)obj))(r, c);\
+			break;\
         case array2d_type::Float:\
 			*result = (*((matrix_op<ELEMENT<array2d<float>>>*)obj))(r, c);\
 			break;\
@@ -49,78 +52,86 @@ do { \
     }\
 } while (0)
 
-#define matrix_op_nc_template(err, type, obj, result) \
+#define matrix_op_nc_template(bRet, type, obj, result) \
 do { \
     switch(type)\
     {\
         case array2d_type::UInt8:\
 			*result = ((matrix_op<ELEMENT<array2d<uint8_t>>>*)obj)->nc();\
-			err = true;\
+			bRet = true;\
             break;\
         case array2d_type::UInt16:\
 			*result = ((matrix_op<ELEMENT<array2d<uint16_t>>>*)obj)->nc();\
-			err = true;\
+			bRet = true;\
+            break;\
+        case array2d_type::Int32:\
+			*result = ((matrix_op<ELEMENT<array2d<int32_t>>>*)obj)->nc();\
+			bRet = true;\
             break;\
         case array2d_type::Float:\
 			*result = ((matrix_op<ELEMENT<array2d<float>>>*)obj)->nc();\
-			err = true;\
+			bRet = true;\
             break;\
         case array2d_type::Double:\
 			*result = ((matrix_op<ELEMENT<array2d<double>>>*)obj)->nc();\
-			err = true;\
+			bRet = true;\
             break;\
         case array2d_type::RgbPixel:\
             *result = ((matrix_op<ELEMENT<array2d<rgb_pixel>>>*)obj)->nc();\
-            err = true;\
+            bRet = true;\
             break;\
         case array2d_type::HsiPixel:\
             *result = ((matrix_op<ELEMENT<array2d<hsi_pixel>>>*)obj)->nc();\
-            err = true;\
+            bRet = true;\
             break;\
         case array2d_type::RgbAlphaPixel:\
             *result = ((matrix_op<ELEMENT<array2d<rgb_alpha_pixel>>>*)obj)->nc();\
-            err = true;\
+            bRet = true;\
             break;\
         default:\
-            err = false;\
+            bRet = false;\
             break;\
     }\
 } while (0)
 
-#define matrix_op_nr_template(err, type, obj, result) \
+#define matrix_op_nr_template(bRet, type, obj, result) \
 do { \
     switch(type)\
     {\
         case array2d_type::UInt8:\
 			*result = ((matrix_op<ELEMENT<array2d<uint8_t>>>*)obj)->nr();\
-			err = true;\
+			bRet = true;\
             break;\
         case array2d_type::UInt16:\
 			*result = ((matrix_op<ELEMENT<array2d<uint16_t>>>*)obj)->nr();\
-			err = true;\
+			bRet = true;\
+            break;\
+        case array2d_type::Int32:\
+			*result = ((matrix_op<ELEMENT<array2d<int32_t>>>*)obj)->nr();\
+			bRet = true;\
             break;\
         case array2d_type::Float:\
 			*result = ((matrix_op<ELEMENT<array2d<float>>>*)obj)->nr();\
-			err = true;\
+			bRet = true;\
             break;\
         case array2d_type::Double:\
 			*result = ((matrix_op<ELEMENT<array2d<double>>>*)obj)->nr();\
-			err = true;\
+			bRet = true;\
             break;\
         case array2d_type::RgbPixel:\
             *result = ((matrix_op<ELEMENT<array2d<rgb_pixel>>>*)obj)->nr();\
-            err = true;\
+            bRet = true;\
             break;\
         case array2d_type::HsiPixel:\
             *result = ((matrix_op<ELEMENT<array2d<hsi_pixel>>>*)obj)->nr();\
-            err = true;\
+            bRet = true;\
             break;\
         case array2d_type::RgbAlphaPixel:\
             *result = ((matrix_op<ELEMENT<array2d<rgb_alpha_pixel>>>*)obj)->nr();\
-            err = true;\
+            bRet = true;\
             break;\
         default:\
-            err = false;\
+            bRet = false;\
             break;\
     }\
 } while (0)
@@ -174,6 +185,13 @@ DLLEXPORT int matrix_op_nc(element_type etype, array2d_type type, void* obj, int
             if (!bRet)
                 err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
             break;
+        case element_type::OpArray2dToMat:
+            #define ELEMENT dlib::op_array2d_to_mat
+            matrix_op_nc_template(bRet, type, obj, ret);
+            #undef ELEMENT
+            if (!bRet)
+                err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
         default:
             err =  ERR_ELEMENT_TYPE_NOT_SUPPORT;
     }
@@ -196,6 +214,13 @@ DLLEXPORT int matrix_op_nr(element_type etype, array2d_type type, void* obj, int
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
+            matrix_op_nr_template(bRet, type, obj, ret);
+            #undef ELEMENT
+            if (!bRet)
+                err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+        case element_type::OpArray2dToMat:
+            #define ELEMENT dlib::op_array2d_to_mat
             matrix_op_nr_template(bRet, type, obj, ret);
             #undef ELEMENT
             if (!bRet)

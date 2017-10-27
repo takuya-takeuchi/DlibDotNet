@@ -247,6 +247,18 @@ DLLEXPORT int rectangle_get_rect2(matrix_element_type type, void* img, rectangle
     return err;
 }
 
+DLLEXPORT rectangle* rectangle_translate_rect(rectangle* rect, point* p)
+{
+    rectangle result = dlib::translate_rect(*rect, *p);
+    return new dlib::rectangle(result);
+}
+
+DLLEXPORT rectangle* rectangle_translate_rect_xy(rectangle* rect, int x, int y)
+{
+    rectangle result = dlib::translate_rect(*rect, x, y);
+    return new dlib::rectangle(result);
+}
+
 #pragma region operator
 
 DLLEXPORT void* rectangle_operator_add(rectangle* rect, rectangle* rhs)

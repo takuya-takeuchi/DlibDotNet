@@ -16,6 +16,8 @@ DLLEXPORT void* array2d_new(array2d_type type)
 			return new dlib::array2d<uint8_t>();
         case array2d_type::UInt16:
 			return new dlib::array2d<uint16_t>();
+        case array2d_type::Int32:
+			return new dlib::array2d<int32_t>();
         case array2d_type::Float:
 			return new dlib::array2d<float>();
         case array2d_type::Double:
@@ -39,6 +41,8 @@ DLLEXPORT void* array2d_new1(array2d_type type, int rows, int cols)
 			return new dlib::array2d<uint8_t>(rows, cols);
         case array2d_type::UInt16:
 			return new dlib::array2d<uint16_t>(rows, cols);
+        case array2d_type::Int32:
+			return new dlib::array2d<int32_t>(rows, cols);
         case array2d_type::Float:
 			return new dlib::array2d<float>(rows, cols);
         case array2d_type::Double:
@@ -63,6 +67,9 @@ DLLEXPORT bool array2d_nc(array2d_type type, void* array, int* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((array2d<uint16_t>*)array)->nc();
+			return true;
+        case array2d_type::Int32:
+			*ret = ((array2d<int32_t>*)array)->nc();
 			return true;
         case array2d_type::Float:
 			*ret = ((array2d<float>*)array)->nc();
@@ -94,6 +101,9 @@ DLLEXPORT bool array2d_nr(array2d_type type, void* array, int* ret)
         case array2d_type::UInt16:
 			*ret = ((array2d<uint16_t>*)array)->nr();
 			return true;
+        case array2d_type::Int32:
+			*ret = ((array2d<int32_t>*)array)->nr();
+			return true;
         case array2d_type::Float:
 			*ret = ((array2d<float>*)array)->nr();
 			return true;
@@ -124,6 +134,9 @@ DLLEXPORT bool array2d_size(array2d_type type, void* array, uint64_t* ret)
         case array2d_type::UInt16:
 			*ret = ((array2d<uint16_t>*)array)->size();
 			return true;
+        case array2d_type::Int32:
+			*ret = ((array2d<int32_t>*)array)->size();
+			return true;
         case array2d_type::Float:
 			*ret = ((array2d<float>*)array)->size();
 			return true;
@@ -153,6 +166,9 @@ DLLEXPORT void array2d_delete(array2d_type type, void* array)
 			break;
         case array2d_type::UInt16:
 			delete ((array2d<uint16_t>*)array);
+			break;
+        case array2d_type::Int32:
+			delete ((array2d<int32_t>*)array);
 			break;
         case array2d_type::Float:
 			delete ((array2d<float>*)array);

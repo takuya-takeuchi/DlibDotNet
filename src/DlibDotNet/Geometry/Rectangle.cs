@@ -261,6 +261,41 @@ namespace DlibDotNet
             return new Rectangle(result);
         }
 
+        public Rectangle Translate(int x, int y)
+        {
+            return Translate(this, x, y);
+        }
+
+        public static Rectangle Translate(Rectangle rect, int x, int y)
+        {
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            rect.ThrowIfDisposed();
+
+            var result = Native.rectangle_translate_rect_xy(rect.NativePtr, x, y);
+            return new Rectangle(result);
+        }
+
+        public Rectangle Translate(Point point)
+        {
+            return Translate(this, point);
+        }
+
+        public static Rectangle Translate(Rectangle rect, Point point)
+        {
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+            if (point == null)
+                throw new ArgumentNullException(nameof(point));
+
+            rect.ThrowIfDisposed();
+            point.ThrowIfDisposed();
+
+            var result = Native.rectangle_translate_rect(rect.NativePtr, point.NativePtr);
+            return new Rectangle(result);
+        }
+
         #region Overrides
 
         public static Rectangle operator +(Rectangle rect, Rectangle rhs)
@@ -408,6 +443,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr rectangle_dcenter(IntPtr rect);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr rectangle_translate_rect(IntPtr rect, IntPtr p);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr rectangle_translate_rect_xy(IntPtr rect, int x, int y);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr rectangle_operator_add(IntPtr rect, IntPtr rhs);

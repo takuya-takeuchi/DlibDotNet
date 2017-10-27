@@ -102,6 +102,8 @@ namespace DlibDotNet.Tests.Core
                     return new Array2D<byte>();
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>();
+                case ImageTypes.Int32:
+                    return new Array2D<int>();
                 case ImageTypes.Float:
                     return new Array2D<float>();
                 case ImageTypes.Double:
@@ -125,6 +127,8 @@ namespace DlibDotNet.Tests.Core
                     return new Array2D<byte>(rows, columns);
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>(rows, columns);
+                case ImageTypes.Int32:
+                    return new Array2D<int>(rows, columns);
                 case ImageTypes.Float:
                     return new Array2D<float>(rows, columns);
                 case ImageTypes.Double:

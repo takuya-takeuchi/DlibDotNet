@@ -13,6 +13,8 @@ namespace DlibDotNet
 
         UInt16,
 
+        Int32,
+
         HsiPixel,
 
         Float,

@@ -25,6 +25,9 @@ DLLEXPORT int op_heatmap_apply(array2d_type type, void* obj, int r, int c, rgb_p
         case array2d_type::UInt16:
 			*ret = ((op_heatmap<array2d<uint16_t>>*)obj)->apply(r, c);
 			break;
+        case array2d_type::Int32:
+			*ret = ((op_heatmap<array2d<int32_t>>*)obj)->apply(r, c);
+			break;
         case array2d_type::Float:
 			*ret = ((op_heatmap<array2d<float>>*)obj)->apply(r, c);
 			break;
@@ -57,6 +60,9 @@ DLLEXPORT bool op_heatmap_max_val(array2d_type type, void* obj, double* ret)
         case array2d_type::UInt16:
 			*ret = ((op_heatmap<array2d<uint16_t>>*)obj)->max_val;
 			return true;
+        case array2d_type::Int32:
+			*ret = ((op_heatmap<array2d<int32_t>>*)obj)->max_val;
+			return true;
         case array2d_type::Float:
 			*ret = ((op_heatmap<array2d<float>>*)obj)->max_val;
 			return true;
@@ -86,6 +92,9 @@ DLLEXPORT bool op_heatmap_min_val(array2d_type type, void* obj, double* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((op_heatmap<array2d<uint16_t>>*)obj)->min_val;
+			return true;
+        case array2d_type::Int32:
+			*ret = ((op_heatmap<array2d<int32_t>>*)obj)->min_val;
 			return true;
         case array2d_type::Float:
 			*ret = ((op_heatmap<array2d<float>>*)obj)->min_val;
@@ -117,6 +126,9 @@ DLLEXPORT bool op_heatmap_nc(array2d_type type, void* obj, int* ret)
         case array2d_type::UInt16:
 			*ret = ((op_heatmap<array2d<uint16_t>>*)obj)->nc();
 			return true;
+        case array2d_type::Int32:
+			*ret = ((op_heatmap<array2d<int32_t>>*)obj)->nc();
+			return true;
         case array2d_type::Float:
 			*ret = ((op_heatmap<array2d<float>>*)obj)->nc();
 			return true;
@@ -146,6 +158,9 @@ DLLEXPORT bool op_heatmap_nr(array2d_type type, void* obj, int* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((op_heatmap<array2d<uint16_t>>*)obj)->nr();
+			return true;
+        case array2d_type::Int32:
+			*ret = ((op_heatmap<array2d<int32_t>>*)obj)->nr();
 			return true;
         case array2d_type::Float:
 			*ret = ((op_heatmap<array2d<float>>*)obj)->nr();
@@ -182,6 +197,9 @@ DLLEXPORT int op_jet_apply(array2d_type type, void* obj, int r, int c, rgb_pixel
         case array2d_type::UInt16:
 			*ret = ((op_jet<array2d<uint16_t>>*)obj)->apply(r, c);
 			break;
+        case array2d_type::Int32:
+			*ret = ((op_jet<array2d<int32_t>>*)obj)->apply(r, c);
+			break;
         case array2d_type::Float:
 			*ret = ((op_jet<array2d<float>>*)obj)->apply(r, c);
 			break;
@@ -214,6 +232,9 @@ DLLEXPORT bool op_jet_max_val(array2d_type type, void* obj, double* ret)
         case array2d_type::UInt16:
 			*ret = ((op_jet<array2d<uint16_t>>*)obj)->max_val;
 			return true;
+        case array2d_type::Int32:
+			*ret = ((op_jet<array2d<int32_t>>*)obj)->max_val;
+			return true;
         case array2d_type::Float:
 			*ret = ((op_jet<array2d<float>>*)obj)->max_val;
 			return true;
@@ -243,6 +264,9 @@ DLLEXPORT bool op_jet_min_val(array2d_type type, void* obj, double* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((op_jet<array2d<uint16_t>>*)obj)->min_val;
+			return true;
+        case array2d_type::Int32:
+			*ret = ((op_jet<array2d<int32_t>>*)obj)->min_val;
 			return true;
         case array2d_type::Float:
 			*ret = ((op_jet<array2d<float>>*)obj)->min_val;
@@ -274,6 +298,9 @@ DLLEXPORT bool op_jet_nc(array2d_type type, void* obj, int* ret)
         case array2d_type::UInt16:
 			*ret = ((op_jet<array2d<uint16_t>>*)obj)->nc();
 			return true;
+        case array2d_type::Int32:
+			*ret = ((op_jet<array2d<int32_t>>*)obj)->nc();
+			return true;
         case array2d_type::Float:
 			*ret = ((op_jet<array2d<float>>*)obj)->nc();
 			return true;
@@ -303,6 +330,9 @@ DLLEXPORT bool op_jet_nr(array2d_type type, void* obj, int* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((op_jet<array2d<uint16_t>>*)obj)->nr();
+			return true;
+        case array2d_type::Int32:
+			*ret = ((op_jet<array2d<int32_t>>*)obj)->nr();
 			return true;
         case array2d_type::Float:
 			*ret = ((op_jet<array2d<float>>*)obj)->nr();
@@ -345,6 +375,12 @@ DLLEXPORT int heatmap(array2d_type type, void* img, void** matrix)
                 *matrix = new matrix_op<op_heatmap<array2d<uint16_t>>>(ret);
             }
             break;
+        case array2d_type::Int32:
+            {
+                auto ret = dlib::heatmap(*((array2d<int32_t>*)img));
+                *matrix = new matrix_op<op_heatmap<array2d<int32_t>>>(ret);
+            }
+            break;
         case array2d_type::Float:
             {
                 auto ret = dlib::heatmap(*((array2d<float>*)img));
@@ -383,6 +419,12 @@ DLLEXPORT int heatmap2(array2d_type type, void* img, double max_val, double min_
             {
                 auto ret = dlib::heatmap(*((array2d<uint16_t>*)img), max_val, min_val);
                 *matrix = new matrix_op<op_heatmap<array2d<uint16_t>>>(ret);
+            }
+            break;
+        case array2d_type::Int32:
+            {
+                auto ret = dlib::heatmap(*((array2d<int32_t>*)img), max_val, min_val);
+                *matrix = new matrix_op<op_heatmap<array2d<int32_t>>>(ret);
             }
             break;
         case array2d_type::Float:
@@ -444,6 +486,12 @@ DLLEXPORT int jet(array2d_type type, void* img, void** matrix)
                 *matrix = new matrix_op<op_jet<array2d<uint16_t>>>(ret);
             }
             break;
+        case array2d_type::Int32:
+            {
+                auto ret = dlib::jet(*((array2d<int32_t>*)img));
+                *matrix = new matrix_op<op_jet<array2d<int32_t>>>(ret);
+            }
+            break;
         case array2d_type::Float:
             {
                 auto ret = dlib::jet(*((array2d<float>*)img));
@@ -482,6 +530,12 @@ DLLEXPORT int jet2(array2d_type type, void* img, double max_val, double min_val,
             {
                 auto ret = dlib::jet(*((array2d<uint16_t>*)img), max_val, min_val);
                 *matrix = new matrix_op<op_jet<array2d<uint16_t>>>(ret);
+            }
+            break;
+        case array2d_type::Int32:
+            {
+                auto ret = dlib::jet(*((array2d<int32_t>*)img), max_val, min_val);
+                *matrix = new matrix_op<op_jet<array2d<int32_t>>>(ret);
             }
             break;
         case array2d_type::Float:
