@@ -14,7 +14,8 @@ using namespace std;
 
 #define max_cost_assignment_template(cost, assignments)\
 do {\
-    std::vector<long> ret = dlib::max_cost_assignment(*((dlib::matrix<ARRAY2D_ELEMENT>*)cost));\
+    dlib::matrix<ARRAY2D_ELEMENT>& m = *(static_cast<dlib::matrix<ARRAY2D_ELEMENT>*>(cost));\
+    std::vector<long> ret = dlib::max_cost_assignment(m);\
     for (int i = 0, cnt = ret.size() ; i < cnt; i++ )\
     {\
         assignments->push_back(ret[i]);\
