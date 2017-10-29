@@ -512,37 +512,37 @@ namespace DlibDotNet
             public static extern bool matrix_nr(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, byte[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, byte[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, ushort[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, ushort[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, uint[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, uint[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, sbyte[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, sbyte[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, short[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, short[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, float[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, float[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, double[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, double[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbPixel[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbPixel[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbAlphaPixel[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbAlphaPixel[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]

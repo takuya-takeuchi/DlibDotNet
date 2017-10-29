@@ -12,6 +12,22 @@ using namespace std;
 
 #pragma region matrix
 
+#pragma region template
+
+#define ELEMENT element
+#undef ELEMENT
+
+#define matrix_operator_array_template(matrix, array) \
+do { \
+    dlib::matrix<ELEMENT>& mat = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+    ELEMENT* src = static_cast<ELEMENT*>(array);\
+    const long row = mat.nr();\
+    const long column = mat.nc();\
+    for (long r = 0; r < row; ++r)\
+        for (long c = 0; c < column; ++c)\
+            mat(r, c) = src[r * column + c];\
+} while (0)
+
 DLLEXPORT void* matrix_new(matrix_element_type type)
 {
     switch(type)
@@ -260,76 +276,65 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix)
     delete matrix;
 }
 
-DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array, int array_num)
+DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array)
 {
     int err = ERR_OK;
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                dlib::matrix<uint8_t> tmp = *((dlib::matrix<uint8_t>*)matrix);
-                tmp = *((uint8_t*)array);
-            }
+            #define ELEMENT uint8_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                dlib::matrix<uint16_t> tmp = *((dlib::matrix<uint16_t>*)matrix);
-                tmp = *((uint16_t*)array);
-            }
+            #define ELEMENT uint16_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                dlib::matrix<uint32_t> tmp = *((dlib::matrix<uint32_t>*)matrix);
-                tmp = *((uint32_t*)array);
-            }
+            #define ELEMENT uint32_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                dlib::matrix<int8_t> tmp = *((dlib::matrix<int8_t>*)matrix);
-                tmp = *((int8_t*)array);
-            }
+            #define ELEMENT int8_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                dlib::matrix<int16_t> tmp = *((dlib::matrix<int16_t>*)matrix);
-                tmp = *((int16_t*)array);
-            }
+            #define ELEMENT int16_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                dlib::matrix<int32_t> tmp = *((dlib::matrix<int32_t>*)matrix);
-                tmp = *((int32_t*)array);
-            }
+            #define ELEMENT int32_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                dlib::matrix<float> tmp = *((dlib::matrix<float>*)matrix);
-                tmp = *((float*)array);
-            }
+            #define ELEMENT float
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                dlib::matrix<double> tmp = *((dlib::matrix<double>*)matrix);
-                tmp = *((double*)array);
-            }
+            #define ELEMENT double
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            {
-                dlib::matrix<rgb_pixel> tmp = *((dlib::matrix<rgb_pixel>*)matrix);
-                tmp = *((rgb_pixel*)array);
-            }
+            #define ELEMENT rgb_pixel
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            {
-                dlib::matrix<hsi_pixel> tmp = *((dlib::matrix<hsi_pixel>*)matrix);
-                tmp = *((hsi_pixel*)array);
-            }
+            #define ELEMENT hsi_pixel
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                dlib::matrix<rgb_alpha_pixel> tmp = *((dlib::matrix<rgb_alpha_pixel>*)matrix);
-                tmp = *((rgb_alpha_pixel*)array);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
