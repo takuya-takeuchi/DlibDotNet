@@ -365,6 +365,596 @@ namespace DlibDotNet.Tests.Matrix
         }
 
         [TestMethod]
+        public void Indexer()
+        {
+            try
+            {
+                using (var matrix = new Matrix<byte>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (byte)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(byte)}");
+            }
+            try
+            {
+                using (var matrix = new Matrix<ushort>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (ushort)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ushort)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<uint>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (uint)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(uint)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<sbyte>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (sbyte)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(sbyte)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<short>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (short)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(short)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<int>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (int)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<float>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (float)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(float)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<double>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (double)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(double)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<RgbPixel>(3, 3))
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var b = (byte)(r + c);
+                            var v = new RgbPixel { Red = b, Blue = b, Green = b };
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v.Red, matrix[r, c].Red);
+                            Assert.AreEqual(v.Blue, matrix[r, c].Blue);
+                            Assert.AreEqual(v.Green, matrix[r, c].Green);
+                        }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<RgbAlphaPixel>(3, 3))
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var b = (byte)(r + c);
+                            var v = new RgbAlphaPixel { Red = b, Blue = b, Green = b };
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v.Red, matrix[r, c].Red);
+                            Assert.AreEqual(v.Blue, matrix[r, c].Blue);
+                            Assert.AreEqual(v.Green, matrix[r, c].Green);
+                        }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<HsiPixel>(3, 3))
+                    for (var r = 0; r < 3; r++)
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var b = (byte)(r + c);
+                            var v = new HsiPixel { H = b, S = b, I = b };
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v.H, matrix[r, c].H);
+                            Assert.AreEqual(v.S, matrix[r, c].S);
+                            Assert.AreEqual(v.I, matrix[r, c].I);
+                        }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(HsiPixel)}");
+            }
+        }
+
+        [TestMethod]
+        public void Indexer2()
+        {
+            try
+            {
+                using (var matrix = new Matrix<byte>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (byte)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(byte)}");
+            }
+            try
+            {
+                using (var matrix = new Matrix<ushort>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (ushort)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ushort)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<uint>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (uint)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(uint)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<sbyte>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (sbyte)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(sbyte)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<short>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (short)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(short)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<int>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (int)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<float>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (float)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(float)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<double>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (double)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(double)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<RgbPixel>(3, 1))
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var b = (byte)(index);
+                        var v = new RgbPixel { Red = b, Blue = b, Green = b };
+                        matrix[index] = v;
+                        Assert.AreEqual(v.Red, matrix[index].Red);
+                        Assert.AreEqual(v.Blue, matrix[index].Blue);
+                        Assert.AreEqual(v.Green, matrix[index].Green);
+                    }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<RgbAlphaPixel>(3, 1))
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var b = (byte)(index);
+                        var v = new RgbAlphaPixel { Red = b, Blue = b, Green = b };
+                        matrix[index] = v;
+                        Assert.AreEqual(v.Red, matrix[index].Red);
+                        Assert.AreEqual(v.Blue, matrix[index].Blue);
+                        Assert.AreEqual(v.Green, matrix[index].Green);
+                    }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<HsiPixel>(3, 1))
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var b = (byte)(index);
+                        var v = new HsiPixel { H = b, S = b, I = b };
+                        matrix[index] = v;
+                        Assert.AreEqual(v.H, matrix[index].H);
+                        Assert.AreEqual(v.S, matrix[index].S);
+                        Assert.AreEqual(v.I, matrix[index].I);
+                    }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(HsiPixel)}");
+            }
+        }
+
+        [TestMethod]
+        public void Indexer3()
+        {
+            try
+            {
+                using (var matrix = new Matrix<byte>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (byte)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(byte)}");
+            }
+            try
+            {
+                using (var matrix = new Matrix<ushort>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (ushort)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ushort)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<uint>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (uint)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(uint)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<sbyte>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (sbyte)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(sbyte)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<short>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (short)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(short)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<int>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (int)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<float>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (float)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(float)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<double>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (double)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(double)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<RgbPixel>(1, 3))
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var b = (byte)(index);
+                        var v = new RgbPixel { Red = b, Blue = b, Green = b };
+                        matrix[index] = v;
+                        Assert.AreEqual(v.Red, matrix[index].Red);
+                        Assert.AreEqual(v.Blue, matrix[index].Blue);
+                        Assert.AreEqual(v.Green, matrix[index].Green);
+                    }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<RgbAlphaPixel>(1, 3))
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var b = (byte)(index);
+                        var v = new RgbAlphaPixel { Red = b, Blue = b, Green = b };
+                        matrix[index] = v;
+                        Assert.AreEqual(v.Red, matrix[index].Red);
+                        Assert.AreEqual(v.Blue, matrix[index].Blue);
+                        Assert.AreEqual(v.Green, matrix[index].Green);
+                    }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<HsiPixel>(1, 3))
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var b = (byte)(index);
+                        var v = new HsiPixel { H = b, S = b, I = b };
+                        matrix[index] = v;
+                        Assert.AreEqual(v.H, matrix[index].H);
+                        Assert.AreEqual(v.S, matrix[index].S);
+                        Assert.AreEqual(v.I, matrix[index].I);
+                    }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(HsiPixel)}");
+            }
+        }
+
+        [TestMethod]
         public void RowsColumnsSize()
         {
             var tests = new[]

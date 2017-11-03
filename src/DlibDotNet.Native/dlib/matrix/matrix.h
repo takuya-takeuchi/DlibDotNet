@@ -344,6 +344,292 @@ DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void
     return err;
 }
 
+#pragma region 
+
+#pragma region matrix_operator_get_one_row_column
+
+DLLEXPORT void matrix_operator_get_one_row_column_uint8_t(void* matrix, int index, uint8_t* ret)
+{
+    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_uint16_t(void* matrix, int index, uint16_t* ret)
+{
+    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_uint32_t(void* matrix, int index, uint32_t* ret)
+{
+    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_int8_t(void* matrix, int index, int8_t* ret)
+{
+    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_int16_t(void* matrix, int index, int16_t* ret)
+{
+    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_int32_t(void* matrix, int index, int32_t* ret)
+{
+    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_double(void* matrix, int index, double* ret)
+{
+    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_float(void* matrix, int index, float* ret)
+{
+    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_rgb_pixel(void* matrix, int index, rgb_pixel* ret)
+{
+    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_rgb_alpha_pixel(void* matrix, int index, rgb_alpha_pixel* ret)
+{
+    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
+    *ret = tmp(index);
+}
+
+DLLEXPORT void matrix_operator_get_one_row_column_hsi_pixel(void* matrix, int index, hsi_pixel* ret)
+{
+    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
+    *ret = tmp(index);
+}
+
+#pragma endregion
+
+#pragma region matrix_operator_set_one_row_column
+
+DLLEXPORT void matrix_operator_set_one_row_column_uint8_t(void* matrix, int index, uint8_t value)
+{
+    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_uint16_t(void* matrix, int index, uint16_t value)
+{
+    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_uint32_t(void* matrix, int index, uint32_t value)
+{
+    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_int8_t(void* matrix, int index, int8_t value)
+{
+    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_int16_t(void* matrix, int index, int16_t value)
+{
+    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_int32_t(void* matrix, int index, int32_t value)
+{
+    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_double(void* matrix, int index, double value)
+{
+    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_float(void* matrix, int index, float value)
+{
+    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_rgb_pixel(void* matrix, int index, rgb_pixel value)
+{
+
+    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_rgb_alpha_pixel(void* matrix, int index, rgb_alpha_pixel value)
+{
+    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
+    tmp(index) = value;
+}
+
+DLLEXPORT void matrix_operator_set_one_row_column_hsi_pixel(void* matrix, int index, hsi_pixel value)
+{
+    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
+    tmp(index) = value;
+}
+
+#pragma endregion
+
+#pragma region matrix_operator_get_row_column
+
+DLLEXPORT void matrix_operator_get_row_column_uint8_t(void* matrix, int row, int column, uint8_t* ret)
+{
+    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_uint16_t(void* matrix, int row, int column, uint16_t* ret)
+{
+    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_uint32_t(void* matrix, int row, int column, uint32_t* ret)
+{
+    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_int8_t(void* matrix, int row, int column, int8_t* ret)
+{
+    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_int16_t(void* matrix, int row, int column, int16_t* ret)
+{
+    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_int32_t(void* matrix, int row, int column, int32_t* ret)
+{
+    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_double(void* matrix, int row, int column, double* ret)
+{
+    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_float(void* matrix, int row, int column, float* ret)
+{
+    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_rgb_pixel(void* matrix, int row, int column, rgb_pixel* ret)
+{
+    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_rgb_alpha_pixel(void* matrix, int row, int column, rgb_alpha_pixel* ret)
+{
+    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+DLLEXPORT void matrix_operator_get_row_column_hsi_pixel(void* matrix, int row, int column, hsi_pixel* ret)
+{
+    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
+    *ret = tmp(row, column);
+}
+
+#pragma endregion
+
+#pragma region matrix_operator_set_row_column
+
+DLLEXPORT void matrix_operator_set_row_column_uint8_t(void* matrix, int row, int column, uint8_t value)
+{
+    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_uint16_t(void* matrix, int row, int column, uint16_t value)
+{
+    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_uint32_t(void* matrix, int row, int column, uint32_t value)
+{
+    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_int8_t(void* matrix, int row, int column, int8_t value)
+{
+    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_int16_t(void* matrix, int row, int column, int16_t value)
+{
+    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_int32_t(void* matrix, int row, int column, int32_t value)
+{
+    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_double(void* matrix, int row, int column, double value)
+{
+    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_float(void* matrix, int row, int column, float value)
+{
+    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_rgb_pixel(void* matrix, int row, int column, rgb_pixel value)
+{
+    
+    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_rgb_alpha_pixel(void* matrix, int row, int column, rgb_alpha_pixel value)
+{
+    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
+    tmp(row, column) = value;
+}
+
+DLLEXPORT void matrix_operator_set_row_column_hsi_pixel(void* matrix, int row, int column, hsi_pixel value)
+{
+    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
+    tmp(row, column) = value;
+}
+
+#pragma endregion
+
+#pragma endregion
+
 DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix, std::ostringstream* stream)
 {
     int err = ERR_OK;
