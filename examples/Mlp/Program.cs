@@ -25,7 +25,7 @@ namespace Mlp
             //typedef matrix<double, 2, 1 > sample_type;
 
             // make an instance of a sample matrix so we can use it below
-            using (var sample = new SampleType())
+            using (var sample = new SampleType(2, 1))
             {
                 // Create a multi-layer perceptron network.   This network has 2 nodes on the input layer 
                 // (which means it takes column vectors of length 2 as input) and 5 nodes in the first 
@@ -42,8 +42,8 @@ namespace Mlp
                         {
                             for (var c = -20; c <= 20; ++c)
                             {
-                                sample(0) = r;
-                                sample(1) = c;
+                                sample[0] = r;
+                                sample[1] = c;
 
                                 // if this point is less than 10 from the origin
                                 if (Math.Sqrt((double)r * r + c * c) <= 10)
@@ -60,17 +60,20 @@ namespace Mlp
 
                     // each of these statements prints out the output of the network given a particular sample.
 
-                    sample(0) = 3.123;
-                    sample(1) = 4;
-                    Console.WriteLine($"This sample should be close to 1 and it is classified as a {net(sample)}");
+                    sample[0] = 3.123;
+                    sample[1] = 4;
+                    using (var ret = net.Operator(sample))
+                        Console.WriteLine($"This sample should be close to 1 and it is classified as a {ret}");
 
-                    sample(0) = 13.123;
-                    sample(1) = 9.3545;
-                    Console.WriteLine($"This sample should be close to 0 and it is classified as a {net(sample)}");
+                    sample[0] = 13.123;
+                    sample[1] = 9.3545;
+                    using (var ret = net.Operator(sample))
+                        Console.WriteLine($"This sample should be close to 0 and it is classified as a {ret}");
 
-                    sample(0) = 13.123;
-                    sample(1) = 0;
-                    Console.WriteLine($"This sample should be close to 0 and it is classified as a {net(sample)}");
+                    sample[0] = 13.123;
+                    sample[1] = 0;
+                    using (var ret = net.Operator(sample))
+                        Console.WriteLine($"This sample should be close to 0 and it is classified as a {ret}");
                 }
             }
         }
