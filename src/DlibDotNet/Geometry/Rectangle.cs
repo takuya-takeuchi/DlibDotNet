@@ -50,6 +50,9 @@ namespace DlibDotNet
 
         internal Rectangle(IntPtr ptr)
         {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
             this.NativePtr = ptr;
         }
 
@@ -328,9 +331,9 @@ namespace DlibDotNet
         public static bool operator !=(Rectangle rect, Rectangle rhs)
         {
             if (ReferenceEquals(rect, rhs))
-                return true;
-            if (ReferenceEquals(rect, null) || ReferenceEquals(rhs, null))
                 return false;
+            if (ReferenceEquals(rect, null) || ReferenceEquals(rhs, null))
+                return true;
 
             rect.ThrowIfDisposed();
             rhs.ThrowIfDisposed();

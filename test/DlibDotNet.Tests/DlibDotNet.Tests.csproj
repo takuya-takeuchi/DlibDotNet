@@ -82,6 +82,10 @@
     <Compile Include="Optimization\MaxCostAssignmentTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLib\Pair\PairOfPointPointTest.cs" />
+    <Compile Include="StdLib\Vector\VectorOfMatrixTest.cs" />
+    <Compile Include="StdLib\Vector\VectorOfMModRectTest.cs" />
+    <Compile Include="StdLib\Vector\VectorOfVectorMModRectTest.cs" />
+    <Compile Include="StdLib\Vector\VectorOfVectorRectangleTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestDataBase.cs" />
     <Compile Include="StdLib\Vector\VectorOfInt32Test.cs" />

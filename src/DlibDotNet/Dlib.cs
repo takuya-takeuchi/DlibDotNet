@@ -25,7 +25,7 @@ namespace DlibDotNet
 
             houghTransform.ThrowIfDisposed();
 
-             HoughTransform.Native.hough_transform_get_rect(houghTransform.NativePtr, out var rect);
+            HoughTransform.Native.hough_transform_get_rect(houghTransform.NativePtr, out var rect);
             return new Rectangle(rect);
         }
 
@@ -614,6 +614,34 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool matrix_range_exp_nr(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
+
+            #endregion
+
+            #region vector_matrix
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_new1(MatrixElementType matrixElementType);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_new2(MatrixElementType matrixElementType, IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_new3([In] MatrixElementType matrixElementType, [In] IntPtr[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_matrix_copy(IntPtr vector, IntPtr[] dst);
 
             #endregion
 

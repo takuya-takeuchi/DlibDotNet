@@ -8,6 +8,8 @@
 using namespace dlib;
 using namespace std;
 
+#pragma region full_object_detection
+
 DLLEXPORT full_object_detection* full_object_detection_new()
 {
     return new full_object_detection();
@@ -34,5 +36,65 @@ DLLEXPORT void full_object_detection_delete(full_object_detection* obj)
 {
 	delete obj;
 }
+
+#pragma endregion full_object_detection
+
+#pragma region mmod_rect
+
+DLLEXPORT mmod_rect* mmod_rect_new()
+{
+    return new mmod_rect();
+}
+
+DLLEXPORT double mmod_rect_get_detection_confidence(mmod_rect* mmod, double* confidence)
+{
+    *confidence = mmod->detection_confidence;
+    return true;
+}
+
+DLLEXPORT bool mmod_rect_get_ignore(mmod_rect* mmod, bool* ignore)
+{
+    *ignore = mmod->ignore;
+    return true;
+}
+
+DLLEXPORT bool mmod_rect_get_label(mmod_rect* mmod, std::string** str)
+{
+    *str = new std::string(mmod->label);
+    return true;
+}
+
+DLLEXPORT bool mmod_rect_get_rect(mmod_rect* mmod, rectangle** rect)
+{
+    *rect = new rectangle(mmod->rect);
+    return true;
+}
+
+DLLEXPORT void mmod_rect_set_detection_confidence(mmod_rect* mmod, double confidence)
+{
+    mmod->detection_confidence = confidence;
+}
+
+DLLEXPORT void mmod_rect_set_ignore(mmod_rect* mmod, bool ignore)
+{
+    mmod->ignore = ignore;
+}
+
+DLLEXPORT void mmod_rect_set_label(mmod_rect* mmod, std::string* label)
+{
+    mmod->label = std::string(*label);
+}
+
+DLLEXPORT void mmod_rect_set_rect(mmod_rect* mmod, rectangle* rect)
+{
+    mmod->rect = rectangle(*rect);
+}
+
+DLLEXPORT void mmod_rect_delete(mmod_rect* obj)
+{
+	delete obj;
+}
+
+#pragma endregion mmod_rect
 
 #endif

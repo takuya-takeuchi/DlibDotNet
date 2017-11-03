@@ -34,6 +34,14 @@ namespace DlibDotNet
             this.NativePtr = Native.vector_rectangle_new3(array, new IntPtr(array.Length));
         }
 
+        internal VectorOfRectangle(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            this.NativePtr = ptr;
+        }
+
         #endregion
 
         #region Properties
@@ -48,19 +56,23 @@ namespace DlibDotNet
 
         public override Rectangle[] ToArray()
         {
-            var size = Size;
+            var size = this.Size;
             if (size == 0)
                 return new Rectangle[0];
 
             var dst = new IntPtr[size];
             Native.vector_rectangle_copy(this.NativePtr, dst);
-            return dst.Select(p=> new Rectangle(p)).ToArray();
+            return dst.Select(p => p != IntPtr.Zero ? new Rectangle(p) : null).ToArray();
         }
 
         #region Overrides
 
         protected override void DisposeUnmanaged()
         {
+            // Do NOT dispose each item element except for std::vector
+            //foreach (var item in this.ToArray())
+            //    item?.Dispose();
+
             Native.vector_rectangle_delete(this.NativePtr);
             base.DisposeUnmanaged();
         }

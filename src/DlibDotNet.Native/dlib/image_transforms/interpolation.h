@@ -860,7 +860,43 @@ DLLEXPORT void chip_details_delete(dlib::chip_details* obj)
     delete obj;
 }
 
-#pragma endregion chip_details_new
+#pragma endregion chip_details
+
+#pragma region chip_dims
+
+DLLEXPORT chip_dims* chip_dims_new(unsigned int rows, unsigned int cols)
+{
+    return new dlib::chip_dims(rows, cols);
+}
+
+DLLEXPORT bool chip_dims_get_cols(chip_dims* chip, uint32_t* cols)
+{
+    *cols = chip->cols;   
+    return true;
+}
+
+DLLEXPORT void chip_dims_set_cols(chip_dims* chip, uint32_t cols)
+{
+    chip->cols = cols;
+}
+
+DLLEXPORT bool chip_dims_get_rows(chip_dims* chip, uint32_t* rows)
+{
+    *rows = chip->rows;   
+    return true;
+}
+
+DLLEXPORT void chip_dims_set_rows(chip_dims* chip, uint32_t rows)
+{
+    chip->rows = rows;
+}
+
+DLLEXPORT void chip_dims_delete(dlib::chip_dims* obj)
+{
+    delete obj;
+}
+
+#pragma endregion chip_dims
 
 #pragma region get_face_chip_details
 
