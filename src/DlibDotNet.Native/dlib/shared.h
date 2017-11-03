@@ -2,6 +2,7 @@ enum struct array2d_type : int
 {
     UInt8 = 0,
     UInt16,
+    Int16,
     Int32,
     Float,
     Double,

@@ -18,6 +18,8 @@ namespace DlibDotNet.Extensions
                     return Dlib.Native.Array2DType.UInt8;
                 case ImageTypes.UInt16:
                     return Dlib.Native.Array2DType.UInt16;
+                case ImageTypes.Int16:
+                    return Dlib.Native.Array2DType.Int16;
                 case ImageTypes.Int32:
                     return Dlib.Native.Array2DType.Int32;
                 case ImageTypes.HsiPixel:

@@ -209,6 +209,8 @@ namespace DlibDotNet
 
                 UInt16,
 
+                Int16,
+
                 Int32,
 
                 Float,
