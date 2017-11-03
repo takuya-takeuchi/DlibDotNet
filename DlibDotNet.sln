@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomCropper", "examples\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Image", "examples\Image\Image.csproj", "{63DE55FB-3997-4BBA-8709-98EAB475100A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mlp", "examples\Mlp\Mlp.csproj", "{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,14 @@ Global
 		{63DE55FB-3997-4BBA-8709-98EAB475100A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63DE55FB-3997-4BBA-8709-98EAB475100A}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
 		{63DE55FB-3997-4BBA-8709-98EAB475100A}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.DebugLinux|Any CPU.ActiveCfg = Debug|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.DebugLinux|Any CPU.Build.0 = Debug|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.ReleaseLinux|Any CPU.ActiveCfg = Release|Any CPU
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +137,7 @@ Global
 		{2C838B0E-5C99-4CAB-8A29-A05AEAD18FF0} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{7A5F1035-906E-4F26-9FD1-8FC98D8F7F35} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{63DE55FB-3997-4BBA-8709-98EAB475100A} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{70310CB2-F68C-4DC7-BCD6-730E6A0228D3} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}

@@ -95,6 +95,17 @@ namespace DlibDotNet.Extensions
             throw new ArgumentOutOfRangeException(nameof(pointTransform));
         }
 
+        internal static Dlib.Native.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelTypes types)
+        {
+            switch (types)
+            {
+                case MultilayerPerceptronKernelTypes.Kernel1:
+                    return Dlib.Native.MlpKernelType.Kernel1;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+            }
+        }
+
     }
 
 }

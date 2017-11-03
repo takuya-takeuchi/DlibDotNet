@@ -60,6 +60,13 @@ enum struct point_mapping_type : int
 
 };
 
+enum struct mlp_kernel_type : int
+{
+
+    Kernel1 = 0 // mlp_kernel_1
+
+};
+
 typedef struct
 {
     // uint8_t
@@ -118,3 +125,4 @@ typedef struct
 #define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT   -7
 // #define ERR_INPUT_OUTPUT_ARRAY_NOT_SAME_SIZE  -8
 // #define ERR_INPUT_OUTPUT_MATRIX_NOT_SAME_SIZE -9
+#define ERR_MLP_KERNEL_NOT_SUPPORT            -8

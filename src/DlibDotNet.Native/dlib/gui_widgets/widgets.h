@@ -573,6 +573,7 @@ DLLEXPORT int image_window_set_image_matrix_op(image_window* window, element_typ
             #define ELEMENT dlib::op_heatmap
             image_window_set_image_matrix_op_template(err, window, type, image);
             #undef ELEMENT
+            break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
             image_window_set_image_matrix_op_template(err, window, type, image);

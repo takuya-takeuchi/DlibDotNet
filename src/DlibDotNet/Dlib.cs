@@ -289,6 +289,13 @@ namespace DlibDotNet
 
             }
 
+            internal enum MlpKernelType
+            {
+
+                Kernel1 = 0
+
+            }
+
             internal enum ErrorType
             {
 
@@ -767,6 +774,19 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool matrix_range_exp_nr(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
+
+            #endregion
+
+            #region mlp
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr mlp_kernel_new(MlpKernelType kernel_type, int nodes_in_input_layer, int nodes_in_first_hidden_layer, int nodes_in_second_hidden_layer, int nodes_in_output_layer, double alpha, double momentum);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern uint mlp_kernel_train(IntPtr kernel, MatrixElementType matrixElementType, IntPtr example_in, double example_out);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void mlp_kernel_delete(MlpKernelType kernel_type, IntPtr kernel);
 
             #endregion
 
