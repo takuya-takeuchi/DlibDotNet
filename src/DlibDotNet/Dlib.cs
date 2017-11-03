@@ -545,6 +545,9 @@ namespace DlibDotNet
             public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_operator_left_shift(MatrixElementType type, IntPtr matrix, IntPtr ofstream);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool matrix_size(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
 

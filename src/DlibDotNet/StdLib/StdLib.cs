@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -22,13 +23,42 @@ namespace DlibDotNet
         internal sealed partial class Native
         {
 
-            #region save_png
+            #region stdlib
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void stdlib_free(IntPtr ptr);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr stdlib_malloc(IntPtr size);
+
+            #endregion
+
+            #region string
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr string_new();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void string_append(IntPtr str, StringBuilder c_str, int len);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr string_c_str(IntPtr str);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void string_delete(IntPtr str);
+
+            #endregion
+
+            #region ostringstream
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr ostringstream_new();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr ostringstream_str(IntPtr str);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void ostringstream_delete(IntPtr str);
 
             #endregion
 

@@ -344,6 +344,70 @@ DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void
     return err;
 }
 
+DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            {
+                dlib::matrix<uint8_t>& mat = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::UInt16:
+            {
+                dlib::matrix<uint16_t>& mat = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::UInt32:
+            {
+                dlib::matrix<uint32_t>& mat = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::Int8:
+            {
+                dlib::matrix<int8_t>& mat = *(static_cast<dlib::matrix<int8_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::Int16:
+            {
+                dlib::matrix<int16_t>& mat = *(static_cast<dlib::matrix<int16_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::Int32:
+            {
+                dlib::matrix<int32_t>& mat = *(static_cast<dlib::matrix<int32_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::Float:
+            {
+                dlib::matrix<float>& mat = *(static_cast<dlib::matrix<float>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::Double:
+            {
+                dlib::matrix<double>& mat = *(static_cast<dlib::matrix<double>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
 #pragma endregion matrix
 
 #endif

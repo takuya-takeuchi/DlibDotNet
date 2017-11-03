@@ -168,6 +168,43 @@ namespace DlibDotNet
             Dlib.Native.matrix_delete(this._ElementType, this.NativePtr);
         }
 
+        public override string ToString()
+        {
+            var ofstream = IntPtr.Zero;
+            var stdstr = IntPtr.Zero;
+            string str = null;
+
+            try
+            {
+                ofstream = Dlib.Native.ostringstream_new();
+                var ret = Dlib.Native.matrix_operator_left_shift(this._ElementType, this.NativePtr, ofstream);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.OK:
+                        stdstr = Dlib.Native.ostringstream_str(ofstream);
+                        str = StringHelper.FromStdString(stdstr);
+                        break;
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {this._ElementType} is not supported.");
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (stdstr != IntPtr.Zero)
+                    Dlib.Native.string_delete(stdstr);
+                if (ofstream != IntPtr.Zero)
+                    Dlib.Native.ostringstream_delete(ofstream);
+            }
+            
+            return str;
+        }
+
         #endregion
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Tests.Matrix
@@ -109,6 +110,76 @@ namespace DlibDotNet.Tests.Matrix
                             this.DisposeAndCheckDisposedState(matrix);
                     }
                 }
+        }
+
+        [TestMethod]
+        public void ToStringTest()
+        {
+            var array = new[]
+            {
+                1, 2, 6,
+                5, 3, 6,
+                4, 5, 0
+            };
+
+            const string answer = "1 2 6 \n5 3 6 \n4 5 0 \n";
+            const string answer1 = "\u0001 \u0002 \u0006 \n\u0005 \u0003 \u0006 \n\u0004 \u0005 ";
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = false, Answer = "" },
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false, Answer = "" },
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false, Answer = "" },
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true,  Answer = answer1},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true,  Answer = answer },
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true,  Answer = answer },
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true,  Answer = answer1},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true,  Answer = answer },
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true,  Answer = answer },
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true,  Answer = answer },
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true,  Answer = answer }
+            };
+
+            foreach (var test in tests)
+            {
+                TwoDimentionObjectBase matrix = null;
+
+                try
+                {
+                    if (test.ExpectResult)
+                    {
+                        matrix = CreateMatrix(test.Type, 3, 3);
+                        this.Assign(matrix, array);
+                        var str = matrix.ToString();
+                        Assert.AreEqual(test.Answer, str);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            matrix = CreateMatrix(test.Type, 3, 3);
+
+                            var str = matrix.ToString();
+                            Assert.Fail($"{matrix.GetType().Name} should throw excption for Type: {test.Type}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {test.Type}.");
+                    throw;
+                }
+                finally
+                {
+                    if (matrix != null)
+                        this.DisposeAndCheckDisposedState(matrix);
+                }
+            }
         }
 
         [TestMethod]
@@ -329,6 +400,59 @@ namespace DlibDotNet.Tests.Matrix
                     throw;
                 }
             }
+        }
+
+        private void Assign(TwoDimentionObjectBase obj, int[] array)
+        {
+            if (obj is Matrix<sbyte> sbyteMatrix)
+            {
+                sbyteMatrix.Assign(array.Select(i => (sbyte)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<short> shortMatrix)
+            {
+                shortMatrix.Assign(array.Select(i => (short)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<int> intMatrix)
+            {
+                intMatrix.Assign(array.Select(i => (int)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<byte> byteMatrix)
+            {
+                byteMatrix.Assign(array.Select(i => (byte)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<ushort> ushortMatrix)
+            {
+                ushortMatrix.Assign(array.Select(i => (ushort)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<uint> uintMatrix)
+            {
+                uintMatrix.Assign(array.Select(i => (uint)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<float> floatMatrix)
+            {
+                floatMatrix.Assign(array.Select(i => (float)i).ToArray());
+                return;
+            }
+
+            if (obj is Matrix<double> doubleMatrix)
+            {
+                doubleMatrix.Assign(array.Select(i => (double)i).ToArray());
+                return;
+            }
+
+            throw new NotSupportedException();
         }
 
         private void CheckRowsColumnsSize(TwoDimentionObjectBase obj, int row, int columnn)
