@@ -56,10 +56,29 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Properties
-        #endregion
-
         #region Methods
+
+        public Matrix<double> Operator(MatrixBase data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            data.ThrowIfDisposed();
+
+            var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
+            var type = data.MatrixElementType.ToNativeMatrixElementType();
+
+            var ret = Dlib.Native.mlp_kernel_operator(kernelType, this.NativePtr, type, data.NativePtr, out var retMat);
+            switch (ret)
+            {
+                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+                case Dlib.Native.ErrorType.MlpKernelNotSupport:
+                    throw new ArgumentException($"{kernelType} is not supported.");
+            }
+
+            return new Matrix<double>(retMat, MatrixElementTypes.Double);
+        }
 
         public void Train(MatrixBase exampleIn, double exampleOut)
         {
@@ -68,17 +87,27 @@ namespace DlibDotNet
 
             exampleIn.ThrowIfDisposed();
 
+            var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
             var type = exampleIn.MatrixElementType.ToNativeMatrixElementType();
-            Dlib.Native.mlp_kernel_train(this.NativePtr, type, exampleIn.NativePtr, exampleOut);
+            var ret = Dlib.Native.mlp_kernel_train(kernelType, this.NativePtr, type, exampleIn.NativePtr, exampleOut);
+            switch (ret)
+            {
+                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+                case Dlib.Native.ErrorType.MlpKernelNotSupport:
+                    throw new ArgumentException($"{kernelType} is not supported.");
+            }
         }
 
         #region Overrids
-        #endregion
 
-        #region Event Handlers
-        #endregion
+        protected override void DisposeUnmanaged()
+        {
+            base.DisposeUnmanaged();
+            var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
+            Dlib.Native.mlp_kernel_delete(kernelType, this.NativePtr);
+        }
 
-        #region Helpers
         #endregion
 
         #endregion
