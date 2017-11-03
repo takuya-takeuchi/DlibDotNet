@@ -204,6 +204,243 @@ DLLEXPORT void array2d_delete(array2d_type type, void* array)
     }
 }
 
+#pragma region row
+
+DLLEXPORT int array2d_row(array2d_type type, void* array, int32_t row, void** ret)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+            {
+                auto tmp = static_cast<dlib::array2d<uint8_t>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<uint8_t>::row(r);
+            }
+            break;
+        case array2d_type::UInt16:
+            {
+                auto tmp = static_cast<dlib::array2d<uint16_t>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<uint16_t>::row(r);
+            }
+            break;
+        case array2d_type::Int32:
+            {
+                auto tmp = static_cast<dlib::array2d<int32_t>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<int32_t>::row(r);
+            }
+            break;
+        case array2d_type::Float:
+            {
+                auto tmp = static_cast<dlib::array2d<float>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<float>::row(r);
+            }
+            break;
+        case array2d_type::Double:
+            {
+                auto tmp = static_cast<dlib::array2d<double>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<double>::row(r);
+            }
+            break;
+        case array2d_type::RgbPixel:
+            {
+                auto tmp = static_cast<dlib::array2d<rgb_pixel>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<rgb_pixel>::row(r);
+            }
+            break;
+        case array2d_type::HsiPixel:
+            {
+                auto tmp = static_cast<dlib::array2d<hsi_pixel>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<hsi_pixel>::row(r);
+            }
+            break;
+        case array2d_type::RgbAlphaPixel:
+            {
+                auto tmp = static_cast<dlib::array2d<rgb_alpha_pixel>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<rgb_alpha_pixel>::row(r);
+            }
+            break;
+        default:
+            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+#pragma region array2d_get_row_column
+
+DLLEXPORT void array2d_get_row_column_uint8_t(void* row, int32_t column, uint8_t* ret)
+{
+    dlib::array2d<uint8_t>::row& tmp = *(static_cast<dlib::array2d<uint8_t>::row*>(row));
+    *((uint8_t*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_uint16_t(void* row, int32_t column, uint16_t* ret)
+{
+    dlib::array2d<uint16_t>::row& tmp = *(static_cast<dlib::array2d<uint16_t>::row*>(row));
+    *((uint16_t*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_int32_t(void* row, int32_t column, int32_t* ret)
+{
+    dlib::array2d<int32_t>::row& tmp = *(static_cast<dlib::array2d<int32_t>::row*>(row));
+    *((int32_t*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_double(void* row, int32_t column, double* ret)
+{
+    dlib::array2d<double>::row& tmp = *(static_cast<dlib::array2d<double>::row*>(row));
+    *((double*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_float(void* row, int32_t column, float* ret)
+{
+    dlib::array2d<float>::row& tmp = *(static_cast<dlib::array2d<float>::row*>(row));
+    *((float*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_rgb_pixel(void* row, int32_t column, rgb_pixel* ret)
+{
+    dlib::array2d<rgb_pixel>::row& tmp = *(static_cast<dlib::array2d<rgb_pixel>::row*>(row));
+    *((rgb_pixel*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_rgb_alpha_pixel(void* row, int32_t column, rgb_alpha_pixel* ret)
+{
+    dlib::array2d<rgb_alpha_pixel>::row& tmp = *(static_cast<dlib::array2d<rgb_alpha_pixel>::row*>(row));
+    *((rgb_alpha_pixel*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_hsi_pixel(void* row, int32_t column, hsi_pixel* ret)
+{
+    dlib::array2d<hsi_pixel>::row& tmp = *(static_cast<dlib::array2d<hsi_pixel>::row*>(row));
+    *((hsi_pixel*)ret) = tmp[column];
+}
+
+#pragma endregion array2d_get_row_column
+
+#pragma region array2d_set_row_column
+
+DLLEXPORT void array2d_set_row_column_uint8_t(void* row, int32_t column, uint8_t ret)
+{
+    dlib::array2d<uint8_t>::row& tmp = *(static_cast<dlib::array2d<uint8_t>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_uint16_t(void* row, int32_t column, uint16_t ret)
+{
+    dlib::array2d<uint16_t>::row& tmp = *(static_cast<dlib::array2d<uint16_t>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_int32_t(void* row, int32_t column, int32_t ret)
+{
+    dlib::array2d<int32_t>::row& tmp = *(static_cast<dlib::array2d<int32_t>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_double(void* row, int32_t column, double ret)
+{
+    dlib::array2d<double>::row& tmp = *(static_cast<dlib::array2d<double>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_float(void* row, int32_t column, float ret)
+{
+    dlib::array2d<float>::row& tmp = *(static_cast<dlib::array2d<float>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_rgb_pixel(void* row, int32_t column, rgb_pixel ret)
+{
+    dlib::array2d<rgb_pixel>::row& tmp = *(static_cast<dlib::array2d<rgb_pixel>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_rgb_alpha_pixel(void* row, int32_t column, rgb_alpha_pixel ret)
+{
+    dlib::array2d<rgb_alpha_pixel>::row& tmp = *(static_cast<dlib::array2d<rgb_alpha_pixel>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_hsi_pixel(void* row, int32_t column, hsi_pixel ret)
+{
+    dlib::array2d<hsi_pixel>::row& tmp = *(static_cast<dlib::array2d<hsi_pixel>::row*>(row));
+    tmp[column] = ret;
+}
+
+#pragma endregion array2d_set_row_column
+
+DLLEXPORT int array2d_row_delete(array2d_type type, void* row)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+            {
+                auto tmp = static_cast<dlib::array2d<uint8_t>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::UInt16:
+            {
+                auto tmp = static_cast<dlib::array2d<uint16_t>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::Int32:
+            {
+                auto tmp = static_cast<dlib::array2d<int32_t>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::Float:
+            {
+                auto tmp = static_cast<dlib::array2d<float>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::Double:
+            {
+                auto tmp = static_cast<dlib::array2d<double>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::RgbPixel:
+            {
+                auto tmp = static_cast<dlib::array2d<rgb_pixel>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::HsiPixel:
+            {
+                auto tmp = static_cast<dlib::array2d<hsi_pixel>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::RgbAlphaPixel:
+            {
+                auto tmp = static_cast<dlib::array2d<rgb_alpha_pixel>::row*>(row);
+                delete tmp;
+            }
+            break;
+    }
+
+    return err;
+}
+
+#pragma endregion row
+
 #pragma region matrix
 
 DLLEXPORT void* array2d_matrix_new(matrix_element_type type)
@@ -441,6 +678,12 @@ DLLEXPORT void array2d_matrix_delete(matrix_element_type type, void* array)
     // What should we do?
     delete array;
 }
+
+#pragma region row
+
+
+
+#pragma endregion row
 
 #pragma endregion matrix
 
