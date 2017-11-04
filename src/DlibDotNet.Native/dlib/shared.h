@@ -33,7 +33,9 @@ enum element_type : int
 
     OpJet,
 
-    OpArray2dToMat
+    OpArray2dToMat,
+    
+    OpTrans
 };
 
 enum struct interpolation_type : int
