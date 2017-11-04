@@ -235,9 +235,9 @@ namespace DlibDotNet.Tests.Geometry
             var l1 = new Point(x * 2, y);
             var l2 = new Point(x, y * 2);
 
-            Assert.IsTrue(r == l);
-            Assert.IsTrue(r != l1);
-            Assert.IsTrue(r != l2);
+            Assert.IsTrue(r == l, $"1 - RX: {r.X}, RY: {r.Y}\nLX: {l.X}, LY: {l.Y}");
+            Assert.IsTrue(r != l1, $"2 - RX: {r.X}, RY: {r.Y}\nLX: {l1.X}, LY: {l1.Y}");
+            Assert.IsTrue(r != l2, $"3 - RX: {r.X}, RY: {r.Y}\nLX: {l2.X}, LY: {l2.Y}");
 
             this.DisposeAndCheckDisposedState(l);
             this.DisposeAndCheckDisposedState(r);

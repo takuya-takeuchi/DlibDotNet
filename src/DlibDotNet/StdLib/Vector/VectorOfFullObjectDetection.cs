@@ -61,6 +61,10 @@ namespace DlibDotNet
 
         protected override void DisposeUnmanaged()
         {
+            // Do NOT dispose each item element except for std::vector
+            //foreach (var item in this.ToArray())
+            //    item?.Dispose();
+
             Native.vector_full_object_detection_delete(this.NativePtr);
             base.DisposeUnmanaged();
         }

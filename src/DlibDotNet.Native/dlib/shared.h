@@ -2,6 +2,8 @@ enum struct array2d_type : int
 {
     UInt8 = 0,
     UInt16,
+    Int16,
+    Int32,
     Float,
     Double,
     RgbPixel,
@@ -27,8 +29,13 @@ enum struct matrix_element_type : int
 
 enum element_type : int
 {
-    OpHeatmap,
-    OpJet
+    OpHeatmap = 0,
+
+    OpJet,
+
+    OpArray2dToMat,
+    
+    OpTrans
 };
 
 enum struct interpolation_type : int
@@ -52,6 +59,13 @@ enum struct point_mapping_type : int
     TransformAffine,
         
     TransformProjective
+
+};
+
+enum struct mlp_kernel_type : int
+{
+
+    Kernel1 = 0 // mlp_kernel_1
 
 };
 
@@ -113,3 +127,4 @@ typedef struct
 #define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT   -7
 // #define ERR_INPUT_OUTPUT_ARRAY_NOT_SAME_SIZE  -8
 // #define ERR_INPUT_OUTPUT_MATRIX_NOT_SAME_SIZE -9
+#define ERR_MLP_KERNEL_NOT_SUPPORT            -8

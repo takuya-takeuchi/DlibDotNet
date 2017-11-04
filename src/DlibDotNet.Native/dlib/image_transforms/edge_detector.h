@@ -19,6 +19,9 @@ using namespace std;
 do {\
     switch(out_type)\
     {\
+        case array2d_type::Int16:\
+            dlib::sobel_edge_detector(*((array2d<ARRAY2D_ELEMENT>*)in_img), *((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert));\
+            break;\
         case array2d_type::Float:\
             dlib::sobel_edge_detector(*((array2d<ARRAY2D_ELEMENT>*)in_img), *((array2d<float>*)horz), *((array2d<float>*)vert));\
             break;\
@@ -32,6 +35,9 @@ do {\
 do {\
     switch(in_type)\
     {\
+        case array2d_type::Int16:\
+            dlib::suppress_non_maximum_edges(*((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert), *((array2d<ARRAY2D_ELEMENT>*)out_img));\
+            break;\
         case array2d_type::Float:\
             dlib::suppress_non_maximum_edges(*((array2d<float>*)horz), *((array2d<float>*)vert), *((array2d<ARRAY2D_ELEMENT>*)out_img));\
             break;\
@@ -46,6 +52,7 @@ DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_ty
     // Check output type
     switch(out_type)
     {
+		case array2d_type::Int16:
 		case array2d_type::Float:
 		case array2d_type::Double:
 			break;
@@ -63,6 +70,16 @@ DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_ty
             break;
         case array2d_type::UInt16:
             #define ARRAY2D_ELEMENT uint16_t
+            sobel_edge_detector_template(in_img, out_type, horz, vert);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int16:
+            #define ARRAY2D_ELEMENT int16_t
+            sobel_edge_detector_template(in_img, out_type, horz, vert);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int32:
+            #define ARRAY2D_ELEMENT int32_t
             sobel_edge_detector_template(in_img, out_type, horz, vert);
             #undef ARRAY2D_ELEMENT
             break;
@@ -104,6 +121,7 @@ DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void*
     // Check output type
     switch(in_type)
     {
+		case array2d_type::Int16:
 		case array2d_type::Float:
 		case array2d_type::Double:
 			break;
@@ -121,6 +139,16 @@ DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void*
             break;
         case array2d_type::UInt16:
             #define ARRAY2D_ELEMENT uint16_t
+            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int16:
+            #define ARRAY2D_ELEMENT int16_t
+            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int32:
+            #define ARRAY2D_ELEMENT int32_t
             suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
             #undef ARRAY2D_ELEMENT
             break;

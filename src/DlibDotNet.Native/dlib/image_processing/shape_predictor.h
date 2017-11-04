@@ -45,6 +45,12 @@ DLLEXPORT int shape_predictor_operator(
                 *full_obj_detect = new full_object_detection(result);
             }
             break;
+        case array2d_type::Int32:
+            {
+                full_object_detection result = (*predictor)(*((array2d<int32_t>*)img), *rect);
+                *full_obj_detect = new full_object_detection(result);
+            }
+            break;
         case array2d_type::Float:
             {
                 full_object_detection result = (*predictor)(*((array2d<float>*)img), *rect);

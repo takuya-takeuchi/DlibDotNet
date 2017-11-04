@@ -18,6 +18,17 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static Rectangle GetRect(HoughTransform houghTransform)
+        {
+            if (houghTransform == null)
+                throw new ArgumentNullException(nameof(houghTransform));
+
+            houghTransform.ThrowIfDisposed();
+
+            HoughTransform.Native.hough_transform_get_rect(houghTransform.NativePtr, out var rect);
+            return new Rectangle(rect);
+        }
+
         public static Array2D<T> LoadBmp<T>(string path)
             where T : struct
         {
@@ -198,6 +209,10 @@ namespace DlibDotNet
 
                 UInt16,
 
+                Int16,
+
+                Int32,
+
                 Float,
 
                 Double,
@@ -217,7 +232,11 @@ namespace DlibDotNet
 
                 OpHeatmap,
 
-                OpJet
+                OpJet,
+
+                OpArray2DToMat,
+
+                OpTrans
 
             }
 
@@ -272,6 +291,13 @@ namespace DlibDotNet
 
             }
 
+            internal enum MlpKernelType
+            {
+
+                Kernel1 = 0
+
+            }
+
             internal enum ErrorType
             {
 
@@ -289,11 +315,13 @@ namespace DlibDotNet
 
                 OutputElementTypeNotSupport = -6,
 
-                MatrixElementTypeNotSupport = -7
+                MatrixElementTypeNotSupport = -7,
 
                 //InputOutputArrayNotSameSize = -8,
 
                 //InputOutputMatrixNotSameSize = -9
+
+                MlpKernelNotSupport = -8
 
             }
 
@@ -356,7 +384,73 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType rectangle_get_rect(Array2DType type, IntPtr array, out IntPtr rect);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array2d_row(Array2DType type, IntPtr array, int row, out IntPtr ret);
+
+            #region array2d_get_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_uint8_t(IntPtr row, int column, out byte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_uint16_t(IntPtr row, int column, out ushort value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_int16_t(IntPtr row, int column, out short value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_int32_t(IntPtr row, int column, out int value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_double(IntPtr row, int column, out double value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_float(IntPtr row, int column, out float value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_rgb_pixel(IntPtr row, int column, out RgbPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_rgb_alpha_pixel(IntPtr row, int column, out RgbAlphaPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_hsi_pixel(IntPtr row, int column, out HsiPixel value);
+
             #endregion
+
+            #region array2d_set_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_uint8_t(IntPtr row, int column, byte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_uint16_t(IntPtr row, int column, ushort value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_int16_t(IntPtr row, int column, short value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_int32_t(IntPtr row, int column, int value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_double(IntPtr row, int column, double value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_float(IntPtr row, int column, float value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_rgb_pixel(IntPtr row, int column, RgbPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_rgb_alpha_pixel(IntPtr row, int column, RgbAlphaPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_hsi_pixel(IntPtr row, int column, HsiPixel value);
+
+            #endregion
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_row_delete(Array2DType type, IntPtr row);
 
             #region array2d_matrix
 
@@ -386,6 +480,86 @@ namespace DlibDotNet
 
             #endregion
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int row, out IntPtr ret);
+
+            #region array2d_matrix_get_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int column, out IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int column, out IntPtr value);
+
+            #endregion
+
+            #region array2d_matrix_set_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_uint8_t(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_uint16_t(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_uint32_t(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_int8_t(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_int16_t(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_int32_t(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_double(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_float(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_rgb_pixel(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_rgb_alpha_pixel(IntPtr row, int column, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_set_row_column_hsi_pixel(IntPtr row, int column, IntPtr value);
+
+            #endregion
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row);
+
             #region array2d_fhog_matrix
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -411,6 +585,8 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array2d_fhog_matrix_get_rect2(MatrixElementType type, IntPtr matrix, out IntPtr rect);
+
+            #endregion
 
             #endregion
 
@@ -497,41 +673,192 @@ namespace DlibDotNet
             public static extern bool matrix_nr(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, byte[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, byte[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, ushort[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, ushort[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, uint[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, uint[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, sbyte[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, sbyte[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, short[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, short[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, float[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, float[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, double[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, double[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbPixel[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbPixel[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbAlphaPixel[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbAlphaPixel[] array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array, int arrayNum);
+            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_operator_left_shift(MatrixElementType type, IntPtr matrix, IntPtr ofstream);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool matrix_size(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
+
+            #region matrix_operator_get_one_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_uint8_t(IntPtr matrix, int index, out byte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_uint16_t(IntPtr matrix, int index, out ushort ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_uint32_t(IntPtr matrix, int index, out uint ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_int8_t(IntPtr matrix, int index, out sbyte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_int16_t(IntPtr matrix, int index, out short ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_int32_t(IntPtr matrix, int index, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_double(IntPtr matrix, int index, out double ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_float(IntPtr matrix, int index, out float ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_rgb_pixel(IntPtr matrix, int index, out RgbPixel ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, out RgbAlphaPixel ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_one_row_column_hsi_pixel(IntPtr matrix, int index, out HsiPixel ret);
+
+            #endregion
+
+            #region matrix_operator_set_one_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_uint8_t(IntPtr matrix, int index, byte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_uint16_t(IntPtr matrix, int index, ushort value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_uint32_t(IntPtr matrix, int index, uint value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_int8_t(IntPtr matrix, int index, sbyte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_int16_t(IntPtr matrix, int index, short value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_int32_t(IntPtr matrix, int index, int value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_double(IntPtr matrix, int index, double value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_float(IntPtr matrix, int index, float value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_rgb_pixel(IntPtr matrix, int index, RgbPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, RgbAlphaPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_one_row_column_hsi_pixel(IntPtr matrix, int index, HsiPixel value);
+
+            #endregion
+
+            #region matrix_operator_get_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_uint8_t(IntPtr matrix, int row, int column, out byte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_uint16_t(IntPtr matrix, int row, int column, out ushort ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_uint32_t(IntPtr matrix, int row, int column, out uint ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_int8_t(IntPtr matrix, int row, int column, out sbyte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_int16_t(IntPtr matrix, int row, int column, out short ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_int32_t(IntPtr matrix, int row, int column, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_double(IntPtr matrix, int row, int column, out double ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_float(IntPtr matrix, int row, int column, out float ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_rgb_pixel(IntPtr matrix, int row, int column, out RgbPixel ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_rgb_alpha_pixel(IntPtr matrix, int row, int column, out RgbAlphaPixel ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_get_row_column_hsi_pixel(IntPtr matrix, int row, int column, out HsiPixel ret);
+
+            #endregion
+
+            #region matrix_operator_set_row_column
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_uint8_t(IntPtr matrix, int row, int column, byte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_uint16_t(IntPtr matrix, int row, int column, ushort value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_uint32_t(IntPtr matrix, int row, int column, uint value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_int8_t(IntPtr matrix, int row, int column, sbyte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_int16_t(IntPtr matrix, int row, int column, short value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_int32_t(IntPtr matrix, int row, int column, int value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_double(IntPtr matrix, int row, int column, double value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_float(IntPtr matrix, int row, int column, float value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_rgb_pixel(IntPtr matrix, int row, int column, RgbPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_rgb_alpha_pixel(IntPtr matrix, int row, int column, RgbAlphaPixel value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_operator_set_row_column_hsi_pixel(IntPtr matrix, int row, int column, HsiPixel value);
+
+            #endregion
 
             #endregion
 
@@ -599,6 +926,50 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool matrix_range_exp_nr(MatrixElementType matrixElementType, IntPtr matrix, out int ret);
+
+            #endregion
+
+            #region mlp
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr mlp_kernel_new(MlpKernelType kernel_type, int nodes_in_input_layer, int nodes_in_first_hidden_layer, int nodes_in_second_hidden_layer, int nodes_in_output_layer, double alpha, double momentum);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType mlp_kernel_train(MlpKernelType kernel_type, IntPtr kernel, MatrixElementType matrixElementType, IntPtr example_in, double example_out);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType mlp_kernel_operator(MlpKernelType kernel_type, IntPtr kernel, MatrixElementType type, IntPtr data, out IntPtr ret_mat);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void mlp_kernel_delete(MlpKernelType kernel_type, IntPtr kernel);
+
+            #endregion
+
+            #region vector_matrix
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_new1(MatrixElementType matrixElementType);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_new2(MatrixElementType matrixElementType, IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_new3([In] MatrixElementType matrixElementType, [In] IntPtr[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_matrix_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_matrix_copy(IntPtr vector, IntPtr[] dst);
 
             #endregion
 

@@ -16,6 +16,10 @@ DLLEXPORT void* array_new(array2d_type type)
 			return new dlib::array<uint8_t>();
         case array2d_type::UInt16:
 			return new dlib::array<uint16_t>();
+        case array2d_type::Int16:
+			return new dlib::array<int16_t>();
+        case array2d_type::Int32:
+			return new dlib::array<int32_t>();
         case array2d_type::Float:
 			return new dlib::array<float>();
         case array2d_type::Double:
@@ -39,6 +43,10 @@ DLLEXPORT void* array_new1(array2d_type type, uint32_t new_size)
 			return new dlib::array<uint8_t>(new_size);
         case array2d_type::UInt16:
 			return new dlib::array<uint16_t>(new_size);
+        case array2d_type::Int16:
+			return new dlib::array<uint16_t>(new_size);
+        case array2d_type::Int32:
+			return new dlib::array<uint32_t>(new_size);
         case array2d_type::Float:
 			return new dlib::array<float>(new_size);
         case array2d_type::Double:
@@ -62,6 +70,10 @@ DLLEXPORT void* array_array2d_new(array2d_type type)
 			return new dlib::array<array2d<uint8_t>>();
         case array2d_type::UInt16:
 			return new dlib::array<array2d<uint16_t>>();
+        case array2d_type::Int16:
+			return new dlib::array<array2d<int16_t>>();
+        case array2d_type::Int32:
+			return new dlib::array<array2d<int32_t>>();
         case array2d_type::Float:
 			return new dlib::array<array2d<float>>();
         case array2d_type::Double:
@@ -85,6 +97,10 @@ DLLEXPORT void* array_array2d_new1(array2d_type type, uint32_t new_size)
 			return new dlib::array<array2d<uint8_t>>(new_size);
         case array2d_type::UInt16:
 			return new dlib::array<array2d<uint16_t>>(new_size);
+        case array2d_type::Int16:
+			return new dlib::array<array2d<int16_t>>(new_size);
+        case array2d_type::Int32:
+			return new dlib::array<array2d<int32_t>>(new_size);
         case array2d_type::Float:
 			return new dlib::array<array2d<float>>(new_size);
         case array2d_type::Double:

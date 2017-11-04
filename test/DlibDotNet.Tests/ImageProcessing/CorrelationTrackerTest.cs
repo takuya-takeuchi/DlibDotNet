@@ -1,10 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#if DEBUG
-using System.Drawing;
-using System.IO;
-#endif
 
 namespace DlibDotNet.Tests.ImageProcessing
 {
@@ -378,7 +375,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
-                new { Type = ImageTypes.UInt8,         ExpectResult = true}
+                new { Type = ImageTypes.Int32,         ExpectResult = true}
             };
 
             var type = this.GetType().Name;
@@ -412,16 +409,12 @@ namespace DlibDotNet.Tests.ImageProcessing
                                 tracker.Update(image);
                             using (var r = tracker.GetPosition())
                             {
-#if DEBUG
-                                using (var tmp = Image.FromFile(file.FullName))
-                                using (var bmp = new Bitmap(tmp))
-                                using (var g = Graphics.FromImage(bmp))
-                                using (var p = new Pen(Color.Red, 3f))
+                                using (var img = Dlib.LoadImage<RgbPixel>(file.FullName))
                                 {
-                                    g.DrawRectangle(p, (float)r.Left, (float)r.Top, (float)r.Width, (float)r.Height);
-                                    bmp.Save(Path.Combine(this.GetOutDir(type), $"{Path.GetFileNameWithoutExtension(file.FullName)}.jpg"));
+                                    Dlib.DrawRectangle(img, (Rectangle)r, new RgbPixel { Red = 255 }, 3);
+                                    Dlib.SaveJpeg(img, Path.Combine(this.GetOutDir(type), $"{Path.GetFileNameWithoutExtension(file.FullName)}.jpg"));
                                 }
-#endif
+
                             }
                         });
 

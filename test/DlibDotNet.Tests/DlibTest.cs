@@ -485,7 +485,7 @@ namespace DlibDotNet.Tests
                     case ImageTypes.RgbAlphaPixel:
                         {
                             var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jp")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
@@ -756,6 +756,12 @@ namespace DlibDotNet.Tests
                     break;
                 case ImageTypes.UInt16:
                     image = Dlib.LoadImage<ushort>(path.FullName);
+                    break;
+                case ImageTypes.Int16:
+                    image = Dlib.LoadImage<short>(path.FullName);
+                    break;
+                case ImageTypes.Int32:
+                    image = Dlib.LoadImage<int>(path.FullName);
                     break;
                 case ImageTypes.HsiPixel:
                     image = Dlib.LoadImage<HsiPixel>(path.FullName);

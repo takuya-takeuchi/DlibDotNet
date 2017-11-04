@@ -171,9 +171,9 @@ namespace DlibDotNet
         public static bool operator !=(DPoint point, DPoint rhs)
         {
             if (ReferenceEquals(point, rhs))
-                return true;
-            if (ReferenceEquals(point, null) || ReferenceEquals(rhs, null))
                 return false;
+            if (ReferenceEquals(point, null) || ReferenceEquals(rhs, null))
+                return true;
 
             point.ThrowIfDisposed();
             rhs.ThrowIfDisposed();

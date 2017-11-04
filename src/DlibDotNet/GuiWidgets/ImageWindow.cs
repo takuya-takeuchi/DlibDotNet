@@ -415,6 +415,24 @@ namespace DlibDotNet
             Native.image_window_clear_overlay(this.NativePtr);
         }
 
+        public bool GetNextDoubleClick(out Point p)
+        {
+            this.ThrowIfDisposed();
+
+            var ret = Native.image_window_get_next_double_click(this.NativePtr, out var ptr);
+            p = new Point(ptr);
+            return ret;
+        }
+
+        public bool GetNextDoubleClick(out Point p, out uint mouseButton)
+        {
+            this.ThrowIfDisposed();
+
+            var ret = Native.image_window_get_next_double_click2(this.NativePtr, out var ptr, out mouseButton);
+            p = new Point(ptr);
+            return ret;
+        }
+
         public void SetImage(Array2DBase image)
         {
             this.ThrowIfDisposed();
@@ -613,6 +631,14 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void image_window_clear_overlay(IntPtr window);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool image_window_get_next_double_click(IntPtr window, out IntPtr p);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool image_window_get_next_double_click2(IntPtr window, out IntPtr p, out uint mouseButton);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType image_window_set_image_array2d(IntPtr window, Dlib.Native.Array2DType type, IntPtr image);

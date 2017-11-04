@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#if DEBUG
-using System.Drawing;
-using System.IO;
-#endif
 
 namespace DlibDotNet.Tests.ImageProcessing
 {
@@ -41,7 +38,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             //Interpolation.PyramidUp(image);
 
             var path = this.GetDataFile("Lenna.jpg");
-            var image = Dlib.LoadImage<byte>(path.FullName);
+            var image = Dlib.LoadImage<RgbPixel>(path.FullName);
 
             var dets = faceDetector.Detect(image);
             Assert.AreEqual(dets.Length, 1);
@@ -64,21 +61,11 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 rects.Add(r);
             }
+            
+            foreach (var r in rects)
+                Dlib.DrawRectangle(image, r, new RgbPixel { Green = 255 });
 
-#if DEBUG
-            using (var bmp = Image.FromFile(path.FullName))
-            using (var g = Graphics.FromImage(bmp))
-            using (var p = new Pen(Color.Green, 1f))
-            {
-                // If you executed PyramidUp, it made the image bigger by a factor of two.
-                // It means that detected coordinates are bigger by a factor of two.
-                foreach (var r in rects)
-                    g.DrawRectangle(p, r.Left, r.Top, r.Width, r.Height);
-                //g.DrawRectangle(p, r.Left / 2f, r.Top / 2f, r.Width / 2f, r.Height / 2f);
-
-                bmp.Save(Path.Combine(this.GetOutDir(this.GetType().Name), "DetectFace.bmp"));
-            }
-#endif
+            Dlib.SaveBmp(image, Path.Combine(this.GetOutDir(this.GetType().Name), "DetectFace.bmp"));
 
             this.DisposeAndCheckDisposedState(rects);
             this.DisposeAndCheckDisposedState(dets);
@@ -99,14 +86,13 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false}
             };
-
-            var type = this.GetType().Name;
-
+            
             using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
                 foreach (var input in tests)
                 {

@@ -6,7 +6,7 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class Array2DMatrix<T> : Array2DMatrixBase
+    public class Array2DMatrix<T> : Array2DMatrixBase
         where T : struct
     {
 
@@ -51,7 +51,7 @@ namespace DlibDotNet
             this.NativePtr = Dlib.Native.array2d_matrix_new(this._MatrixElementType);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{matrixType} is not supported.");
-            
+
             this.MatrixElementType = matrixType;
         }
 
@@ -65,7 +65,7 @@ namespace DlibDotNet
             this.NativePtr = Dlib.Native.array2d_matrix_new1(this._MatrixElementType, rows, columns);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{matrixType} is not supported.");
-            
+
             this.MatrixElementType = matrixType;
         }
 
@@ -118,6 +118,48 @@ namespace DlibDotNet
             }
         }
 
+        public Row<T> this[int row]
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                if (!(0 <= row && row < this.Rows))
+                    throw new IndexOutOfRangeException();
+
+                var type = this._MatrixElementType;
+                Dlib.Native.array2d_matrix_row(type, this.NativePtr, row, out var ret);
+
+                switch (type)
+                {
+                    case Dlib.Native.MatrixElementType.UInt8:
+                        return new RowUInt8(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.UInt16:
+                        return new RowUInt16(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.UInt32:
+                        return new RowUInt32(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.Int8:
+                        return new RowInt8(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.Int16:
+                        return new RowInt16(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.Int32:
+                        return new RowInt32(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.Float:
+                        return new RowFloat(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.Double:
+                        return new RowDouble(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.RgbPixel:
+                        return new RowRgbPixel(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.RgbAlphaPixel:
+                        return new RowRgbAlphaPixel(ret, type, this) as Row<T>;
+                    case Dlib.Native.MatrixElementType.HsiPixel:
+                        return new RowHsiPixel(ret, type, this) as Row<T>;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
         #endregion
 
         #region Methods 
@@ -133,6 +175,527 @@ namespace DlibDotNet
         #endregion
 
         #endregion
+
+        public abstract class Row<T> : DlibObject
+            where T : struct
+        {
+
+            #region Fields 
+
+            internal readonly Dlib.Native.MatrixElementType _Type;
+
+            protected readonly Array2DMatrixBase _Parent;
+
+            #endregion
+
+            #region Constructors 
+
+            internal Row(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+            {
+                if (ptr == IntPtr.Zero)
+                    throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+                this._Parent = parent ?? throw new ArgumentNullException(nameof(parent));
+                this.NativePtr = ptr;
+                this._Type = type;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public abstract Matrix<T> this[int column]
+            {
+                get;
+                set;
+            }
+
+            #endregion
+
+            #region Overrides 
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+                Dlib.Native.array2d_matrix_row_delete(this._Type, this.NativePtr);
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowUInt8 : Row<byte>
+        {
+
+            #region Constructors 
+
+            internal RowUInt8(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<byte> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_uint8_t(this.NativePtr, column, out value);
+                    return new Matrix<byte>(value, MatrixElementTypes.UInt8);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_uint8_t(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+        
+        public sealed class RowUInt16 : Row<ushort>
+        {
+
+            #region Constructors 
+
+            internal RowUInt16(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<ushort> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_uint16_t(this.NativePtr, column, out value);
+                    return new Matrix<ushort>(value, MatrixElementTypes.UInt16);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_uint16_t(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+        
+        public sealed class RowUInt32 : Row<uint>
+        {
+
+            #region Constructors 
+
+            internal RowUInt32(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<uint> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_uint32_t(this.NativePtr, column, out value);
+                    return new Matrix<uint>(value, MatrixElementTypes.UInt32);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_uint32_t(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowInt8 : Row<sbyte>
+        {
+
+            #region Constructors 
+
+            internal RowInt8(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<sbyte> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_int8_t(this.NativePtr, column, out value);
+                    return new Matrix<sbyte>(value, MatrixElementTypes.Int8);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_int8_t(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowInt16 : Row<short>
+        {
+
+            #region Constructors 
+
+            internal RowInt16(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<short> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_int16_t(this.NativePtr, column, out value);
+                    return new Matrix<short>(value, MatrixElementTypes.Int16);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_int16_t(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowInt32 : Row<int>
+        {
+
+            #region Constructors 
+
+            internal RowInt32(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<int> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_int32_t(this.NativePtr, column, out value);
+                    return new Matrix<int>(value, MatrixElementTypes.Int32);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_int32_t(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowFloat : Row<float>
+        {
+
+            #region Constructors 
+
+            internal RowFloat(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<float> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_float(this.NativePtr, column, out value);
+                    return new Matrix<float>(value, MatrixElementTypes.Float);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_float(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowDouble : Row<double>
+        {
+
+            #region Constructors 
+
+            internal RowDouble(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<double> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_double(this.NativePtr, column, out value);
+                    return new Matrix<double>(value, MatrixElementTypes.Double);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_double(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowRgbPixel : Row<RgbPixel>
+        {
+
+            #region Constructors 
+
+            internal RowRgbPixel(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<RgbPixel> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_rgb_pixel(this.NativePtr, column, out value);
+                    return new Matrix<RgbPixel>(value, MatrixElementTypes.RgbPixel);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_rgb_pixel(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+        
+        public sealed class RowRgbAlphaPixel : Row<RgbAlphaPixel>
+        {
+
+            #region Constructors 
+
+            internal RowRgbAlphaPixel(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<RgbAlphaPixel> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_rgb_alpha_pixel(this.NativePtr, column, out value);
+                    return new Matrix<RgbAlphaPixel>(value, MatrixElementTypes.RgbAlphaPixel);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_rgb_alpha_pixel(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowHsiPixel : Row<HsiPixel>
+        {
+
+            #region Constructors 
+
+            internal RowHsiPixel(IntPtr ptr, Dlib.Native.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<HsiPixel> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    Dlib.Native.array2d_matrix_get_row_column_hsi_pixel(this.NativePtr, column, out value);
+                    return new Matrix<HsiPixel>(value, MatrixElementTypes.HsiPixel);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_matrix_set_row_column_hsi_pixel(this.NativePtr, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
 
     }
 
