@@ -740,6 +740,75 @@ namespace DlibDotNet.Tests
 
         #endregion
 
+        #region LoadImageData
+
+        [TestMethod]
+        public void LoadImageData()
+        {
+            const int cols = 512;
+            const int rows = 512;
+            var path = this.GetDataFile($"lena_gray.raw");
+            var data = File.ReadAllBytes(path.FullName);
+
+            var tests = new[]
+            {
+                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                //new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                //new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
+                //new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                //new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                //new { Type = ImageTypes.Float,         ExpectResult = true},
+                //new { Type = ImageTypes.Double,        ExpectResult = true}
+            };
+
+            foreach (var test in tests)
+            {
+                TwoDimentionObjectBase image;
+                using (var win = new ImageWindow())
+                {
+                    switch (test.Type)
+                    {
+                        case ImageTypes.UInt8:
+                            image = Dlib.LoadImageData<byte>(data, 512, 512, 512);
+
+                            if (this.CanGuiDebug)
+                            {
+                                win.SetImage((Array2D<byte>)image);
+                                win.WaitUntilClosed();
+                            }
+                            break;
+                        //case ImageTypes.UInt16:
+                        //    image = Dlib.LoadBmp<ushort>(path.FullName);
+                        //    break;
+                        //case ImageTypes.HsiPixel:
+                        //    image = Dlib.LoadBmp<HsiPixel>(path.FullName);
+                        //    break;
+                        //case ImageTypes.Float:
+                        //    image = Dlib.LoadBmp<float>(path.FullName);
+                        //    break;
+                        //case ImageTypes.Double:
+                        //    image = Dlib.LoadBmp<double>(path.FullName);
+                        //    break;
+                        //case ImageTypes.RgbPixel:
+                        //    image = Dlib.LoadBmp<RgbPixel>(path.FullName);
+                        //    break;
+                        //case ImageTypes.RgbAlphaPixel:
+                        //    image = Dlib.LoadBmp<RgbAlphaPixel>(path.FullName);
+                        //    break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
+                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+
+                this.DisposeAndCheckDisposedState(image);
+            }
+        }
+
+        #endregion
+
         internal static Array2DBase LoadImage(ImageTypes type, FileInfo path)
         {
             Array2DBase image;

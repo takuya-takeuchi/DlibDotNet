@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DlibDotNet.Tests.Core
+namespace DlibDotNet.Tests.Array2D
 {
 
     [TestClass]
