@@ -69,6 +69,15 @@ enum struct mlp_kernel_type : int
 
 };
 
+enum struct running_stats_type : int
+{
+
+    Float = 0,
+
+    Double
+
+};
+
 typedef struct
 {
     // uint8_t
@@ -128,3 +137,6 @@ typedef struct
 // #define ERR_INPUT_OUTPUT_ARRAY_NOT_SAME_SIZE  -8
 // #define ERR_INPUT_OUTPUT_MATRIX_NOT_SAME_SIZE -9
 #define ERR_MLP_KERNEL_NOT_SUPPORT            -8
+
+// statistics/statistics.h
+#define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -9

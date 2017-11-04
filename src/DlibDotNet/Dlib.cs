@@ -464,6 +464,15 @@ namespace DlibDotNet
 
             }
 
+            internal enum RunningStatsType
+            {
+
+                Float = 0,
+
+                Double
+
+            }
+
             internal enum ErrorType
             {
 
@@ -487,7 +496,9 @@ namespace DlibDotNet
 
                 //InputOutputMatrixNotSameSize = -9
 
-                MlpKernelNotSupport = -8
+                MlpKernelNotSupport = -8,
+
+                RunningStatsTypeNotSupport = -9
 
             }
 
@@ -1108,6 +1119,82 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void mlp_kernel_delete(MlpKernelType kernel_type, IntPtr kernel);
+
+            #endregion
+
+            #region running_stats
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr running_stats_new(RunningStatsType type);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_add(RunningStatsType type, IntPtr stats, ref float val);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_add(RunningStatsType type, IntPtr stats, ref double val);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_clear(RunningStatsType type, IntPtr stats);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_current_n(RunningStatsType type, IntPtr stats, out float n);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_current_n(RunningStatsType type, IntPtr stats, out double n);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_ex_kurtosis(RunningStatsType type, IntPtr stats, out float ex_kurtosis);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_ex_kurtosis(RunningStatsType type, IntPtr stats, out double ex_kurtosis);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_max(RunningStatsType type, IntPtr stats, out float max);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_max(RunningStatsType type, IntPtr stats, out double max);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_mean(RunningStatsType type, IntPtr stats, out float mean);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_mean(RunningStatsType type, IntPtr stats, out double mean);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_min(RunningStatsType type, IntPtr stats, out float min);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_min(RunningStatsType type, IntPtr stats, out double min);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_scale(RunningStatsType type, IntPtr stats, ref float scale, out float ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_scale(RunningStatsType type, IntPtr stats, ref double scale, out double ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_skewness(RunningStatsType type, IntPtr stats, out float skewness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_skewness(RunningStatsType type, IntPtr stats, out double skewness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_stddev(RunningStatsType type, IntPtr stats, out float stddev);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_stddev(RunningStatsType type, IntPtr stats, out double stddev);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_variance(RunningStatsType type, IntPtr stats, out float variance);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_variance(RunningStatsType type, IntPtr stats, out double variance);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void running_stats_delete(RunningStatsType type, IntPtr stats);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr running_stats_operator_add(RunningStatsType type, IntPtr left, IntPtr right);
 
             #endregion
 

@@ -137,6 +137,19 @@ namespace DlibDotNet.Extensions
             }
         }
 
+        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsTypes types)
+        {
+            switch (types)
+            {
+                case RunningStatsTypes.Float:
+                    return Dlib.Native.RunningStatsType.Float;
+                case RunningStatsTypes.Double:
+                    return Dlib.Native.RunningStatsType.Double;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+            }
+        }
+
     }
 
 }
