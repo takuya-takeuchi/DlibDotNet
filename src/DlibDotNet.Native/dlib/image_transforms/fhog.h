@@ -92,6 +92,16 @@ DLLEXPORT int extract_fhog_features(
             extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
             #undef ARRAY2D_ELEMENT
             break;
+        case array2d_type::Int16:
+            #define ARRAY2D_ELEMENT int16_t
+            extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int32:
+            #define ARRAY2D_ELEMENT int32_t
+            extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
+            #undef ARRAY2D_ELEMENT
+            break;
         case array2d_type::Float:
             #define ARRAY2D_ELEMENT float
             extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
@@ -144,6 +154,16 @@ DLLEXPORT int extract_fhog_features_array(
         //     break;
         // case array2d_type::UInt16:
         //     #define ARRAY2D_ELEMENT uint16_t
+        //     extract_fhog_features_array_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
+        //     #undef ARRAY2D_ELEMENT
+        //     break;
+        // case array2d_type::Int16:
+        //     #define ARRAY2D_ELEMENT int16_t
+        //     extract_fhog_features_array_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
+        //     #undef ARRAY2D_ELEMENT
+        //     break;
+        // case array2d_type::Int32:
+        //     #define ARRAY2D_ELEMENT int32_t
         //     extract_fhog_features_array_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
         //     #undef ARRAY2D_ELEMENT
         //     break;

@@ -226,6 +226,13 @@ DLLEXPORT int array2d_row(array2d_type type, void* array, int32_t row, void** re
                 *ret = new dlib::array2d<uint16_t>::row(r);
             }
             break;
+        case array2d_type::Int16:
+            {
+                auto tmp = static_cast<dlib::array2d<int16_t>*>(array);
+                auto r = (*tmp)[row];
+                *ret = new dlib::array2d<int16_t>::row(r);
+            }
+            break;
         case array2d_type::Int32:
             {
                 auto tmp = static_cast<dlib::array2d<int32_t>*>(array);
@@ -290,6 +297,12 @@ DLLEXPORT void array2d_get_row_column_uint16_t(void* row, int32_t column, uint16
     *((uint16_t*)ret) = tmp[column];
 }
 
+DLLEXPORT void array2d_get_row_column_int16_t(void* row, int32_t column, int16_t* ret)
+{
+    dlib::array2d<int16_t>::row& tmp = *(static_cast<dlib::array2d<int16_t>::row*>(row));
+    *((int16_t*)ret) = tmp[column];
+}
+
 DLLEXPORT void array2d_get_row_column_int32_t(void* row, int32_t column, int32_t* ret)
 {
     dlib::array2d<int32_t>::row& tmp = *(static_cast<dlib::array2d<int32_t>::row*>(row));
@@ -339,6 +352,12 @@ DLLEXPORT void array2d_set_row_column_uint8_t(void* row, int32_t column, uint8_t
 DLLEXPORT void array2d_set_row_column_uint16_t(void* row, int32_t column, uint16_t ret)
 {
     dlib::array2d<uint16_t>::row& tmp = *(static_cast<dlib::array2d<uint16_t>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_int16_t(void* row, int32_t column, int16_t ret)
+{
+    dlib::array2d<int16_t>::row& tmp = *(static_cast<dlib::array2d<int16_t>::row*>(row));
     tmp[column] = ret;
 }
 
@@ -395,6 +414,12 @@ DLLEXPORT int array2d_row_delete(array2d_type type, void* row)
         case array2d_type::UInt16:
             {
                 auto tmp = static_cast<dlib::array2d<uint16_t>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::Int16:
+            {
+                auto tmp = static_cast<dlib::array2d<int16_t>::row*>(row);
                 delete tmp;
             }
             break;

@@ -137,6 +137,8 @@ namespace DlibDotNet
                         return new RowUInt8(ret, this.ImageType, this) as Row<T>;
                     case ImageTypes.UInt16:
                         return new RowUInt16(ret, this.ImageType, this) as Row<T>;
+                    case ImageTypes.Int16:
+                        return new RowInt16(ret, this.ImageType, this) as Row<T>;
                     case ImageTypes.Int32:
                         return new RowInt32(ret, this.ImageType, this) as Row<T>;
                     case ImageTypes.HsiPixel:
@@ -294,7 +296,45 @@ namespace DlibDotNet
             #endregion
 
         }
-        
+
+        public sealed class RowInt16 : Row<short>
+        {
+
+            #region Constructors
+
+            public RowInt16(IntPtr ptr, ImageTypes type, Array2DBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override short this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    short value;
+                    Dlib.Native.array2d_get_row_column_int16_t(this.NativePtr, column, out value);
+                    return value;
+                }
+                set
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_set_row_column_int16_t(this.NativePtr, column, value);
+                }
+            }
+
+            #endregion
+
+        }
+
         public sealed class RowInt32 : Row<int>
         {
 

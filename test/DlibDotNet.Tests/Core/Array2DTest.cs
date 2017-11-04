@@ -106,6 +106,7 @@ namespace DlibDotNet.Tests.Core
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
@@ -131,6 +132,14 @@ namespace DlibDotNet.Tests.Core
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
                                 Assert.AreEqual(row[0], 255, "Array<ushort> failed");
+                        }
+                        break;
+                    case ImageTypes.Int16:
+                        {
+                            var array = (Array2D<short>)array2D;
+                            Dlib.AssignAllPpixels(array, 255);
+                            using (var row = array[0])
+                                Assert.AreEqual(row[0], 255, "Array<short> failed");
                         }
                         break;
                     case ImageTypes.Int32:
@@ -238,6 +247,7 @@ namespace DlibDotNet.Tests.Core
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
@@ -268,6 +278,17 @@ namespace DlibDotNet.Tests.Core
                             {
                                 row[50] = 0;
                                 Assert.AreEqual(row[50], 0, "Array<ushort> failed");
+                            }
+                        }
+                        break;
+                    case ImageTypes.Int16:
+                        {
+                            var array = (Array2D<short>)array2D;
+                            Dlib.AssignAllPpixels(array, 255);
+                            using (var row = array[0])
+                            {
+                                row[50] = 0;
+                                Assert.AreEqual(row[50], 0, "Array<short> failed");
                             }
                         }
                         break;
@@ -664,6 +685,8 @@ namespace DlibDotNet.Tests.Core
                     return new Array2D<byte>();
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>();
+                case ImageTypes.Int16:
+                    return new Array2D<short>();
                 case ImageTypes.Int32:
                     return new Array2D<int>();
                 case ImageTypes.Float:
@@ -689,6 +712,8 @@ namespace DlibDotNet.Tests.Core
                     return new Array2D<byte>(rows, columns);
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>(rows, columns);
+                case ImageTypes.Int16:
+                    return new Array2D<short>(rows, columns);
                 case ImageTypes.Int32:
                     return new Array2D<int>(rows, columns);
                 case ImageTypes.Float:

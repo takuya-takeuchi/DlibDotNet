@@ -27,6 +27,9 @@ do { \
         case array2d_type::UInt16:\
             dlib::assign_all_pixels(*((array2d<uint16_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
             break;\
+        case array2d_type::Int16:\
+            dlib::assign_all_pixels(*((array2d<int16_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
+            break;\
         case array2d_type::Int32:\
             dlib::assign_all_pixels(*((array2d<int32_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
             break;\
@@ -99,6 +102,11 @@ DLLEXPORT int assign_all_pixels(array2d_type out_type, void* out_img, array2d_ty
            break;
        case array2d_type::UInt16:
            #define ELEMENT_IN uint16_t
+           assign_all_pixels_template(err, out_type, out_img, in_pixel);
+           #undef ELEMENT_IN
+           break;
+       case array2d_type::Int16:
+           #define ELEMENT_IN int16_t
            assign_all_pixels_template(err, out_type, out_img, in_pixel);
            #undef ELEMENT_IN
            break;

@@ -245,7 +245,9 @@ namespace DlibDotNet
 
             protected override void DisposeUnmanaged()
             {
-                base.DisposeUnmanaged();
+                // Do Not call base.DisposeUnmanaged.
+                // Because base.DisposeUnmanaged calls array2d_matrix_delete and it corrupts memory
+                //base.DisposeUnmanaged();
                 Dlib.Native.array2d_fhog_matrix_delete(this._MatrixElementType, this.NativePtr);
             }
 
