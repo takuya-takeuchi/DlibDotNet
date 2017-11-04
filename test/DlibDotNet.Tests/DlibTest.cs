@@ -807,6 +807,207 @@ namespace DlibDotNet.Tests
             }
         }
 
+        [TestMethod]
+        public void LoadImageData2()
+        {
+            const int cols = 512;
+            const int rows = 512;
+            const int steps = 512;
+
+            var tests = new[]
+            {
+                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = true},
+                new { Type = ImageTypes.Double,        ExpectResult = true}
+            };
+
+            var random = new Random(0);
+
+            foreach (var test in tests)
+            {
+                TwoDimentionObjectBase image;
+                using (var win = new ImageWindow())
+                {
+                    switch (test.Type)
+                    {
+                        case ImageTypes.UInt8:
+                            {
+                                var data = new byte[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = (byte)random.Next(0, 255);
+
+                                image = Dlib.LoadImageData<byte>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<byte>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.UInt16:
+                            {
+                                var data = new ushort[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = (ushort)random.Next(0, 255);
+
+                                image = Dlib.LoadImageData<ushort>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<ushort>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.Int16:
+                            {
+                                var data = new short[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = (short)random.Next(0, 255);
+
+                                image = Dlib.LoadImageData<short>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<short>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.Int32:
+                            {
+                                var data = new int[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = random.Next(0, 255);
+
+                                image = Dlib.LoadImageData<int>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<int>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.Float:
+                            {
+                                var data = new float[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = (float)random.NextDouble();
+
+                                image = Dlib.LoadImageData<float>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<float>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.Double:
+                            {
+                                var data = new double[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = (double)random.NextDouble();
+
+                                image = Dlib.LoadImageData<double>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<double>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.HsiPixel:
+                            {
+                                var data = new HsiPixel[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = new HsiPixel
+                                        {
+                                            H = (byte)random.Next(0, 255),
+                                            S = (byte)random.Next(0, 255),
+                                            I = (byte)random.Next(0, 255)
+                                        };
+
+                                image = Dlib.LoadImageData<HsiPixel>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<HsiPixel>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.RgbPixel:
+                            {
+                                var data = new RgbPixel[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = new RgbPixel
+                                        {
+                                            Red = (byte)random.Next(0, 255),
+                                            Green = (byte)random.Next(0, 255),
+                                            Blue = (byte)random.Next(0, 255)
+                                        };
+
+                                image = Dlib.LoadImageData<RgbPixel>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<RgbPixel>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        case ImageTypes.RgbAlphaPixel:
+                            {
+                                var data = new RgbAlphaPixel[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = new RgbAlphaPixel
+                                        {
+                                            Red = (byte)random.Next(0, 255),
+                                            Green = (byte)random.Next(0, 255),
+                                            Blue = (byte)random.Next(0, 255),
+                                            Alpha = (byte)random.Next(0, 255)
+                                        };
+
+                                image = Dlib.LoadImageData<RgbAlphaPixel>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<RgbAlphaPixel>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
+                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+
+                this.DisposeAndCheckDisposedState(image);
+            }
+        }
+
         #endregion
 
         internal static Array2DBase LoadImage(ImageTypes type, FileInfo path)

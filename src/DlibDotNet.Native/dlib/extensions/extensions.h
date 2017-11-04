@@ -175,13 +175,13 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                         return nullptr;
                 }
             }
-        case array2d_type::HsiPixel:
+        case array2d_type::RgbAlphaPixel:
             {
                 switch(src_type)
                 {
-                    // from hsi_pixel to hsi_pixel
-                    case array2d_type::HsiPixel:
-                        #define ELEMENT hsi_pixel
+                    // from rgb_alpha_pixel to rgb_alpha_pixel
+                    case array2d_type::RgbAlphaPixel:
+                        #define ELEMENT rgb_alpha_pixel
                         extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
                         #undef ELEMENT
                     case array2d_type::UInt8:
@@ -191,18 +191,18 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
-                    case array2d_type::RgbAlphaPixel:
+                    case array2d_type::HsiPixel:
                     default:
                         return nullptr;
                 }
             }
-        case array2d_type::RgbAlphaPixel:
+        case array2d_type::HsiPixel:
             {
                 switch(src_type)
                 {
-                    // from rgb_alpha_pixel to rgb_alpha_pixel
+                    // from hsi_pixel to hsi_pixel
                     case array2d_type::HsiPixel:
-                        #define ELEMENT rgb_alpha_pixel
+                        #define ELEMENT hsi_pixel
                         extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
                         #undef ELEMENT
                     case array2d_type::UInt8:
