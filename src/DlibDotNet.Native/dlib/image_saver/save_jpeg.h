@@ -23,6 +23,9 @@ DLLEXPORT int save_jpeg(array2d_type type, void* image, const char* file_name, i
         case array2d_type::UInt16:
             dlib::save_jpeg(*((array2d<uint16_t>*)image), file_name, quality);
             break;
+        case array2d_type::Int32:
+            dlib::save_jpeg(*((array2d<int32_t>*)image), file_name, quality);
+            break;
         case array2d_type::Float:
             dlib::save_jpeg(*((array2d<float>*)image), file_name, quality);
             break;

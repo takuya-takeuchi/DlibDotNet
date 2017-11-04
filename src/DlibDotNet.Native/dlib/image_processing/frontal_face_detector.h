@@ -44,6 +44,13 @@ DLLEXPORT int frontal_face_detector_operator(
                     dets->push_back(new rectangle(result[index]));
             }
             break;
+        case array2d_type::Int32:
+            {
+                std::vector<rectangle> result = ((*detector)(*((array2d<int32_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
         case array2d_type::Float:
             {
                 std::vector<rectangle> result = ((*detector)(*((array2d<float>*)img), adjust_threshold));

@@ -51,6 +51,49 @@ DLLEXPORT int draw_line(
      return err;
  }
 
+ DLLEXPORT int draw_rectangle(
+    array2d_type type,
+    void* image, 
+    dlib::rectangle* rect,
+    void* p,
+    unsigned int thickness)
+ {
+     int err = ERR_OK;
+ 
+     switch(type)
+     {
+         case array2d_type::UInt8:
+             dlib::draw_rectangle(*((array2d<uint8_t>*)image), *rect, *((uint8_t*)p), thickness);
+             break;
+         case array2d_type::UInt16:
+             dlib::draw_rectangle(*((array2d<uint16_t>*)image), *rect, *((uint16_t*)p), thickness);
+             break;
+         case array2d_type::Int32:
+             dlib::draw_rectangle(*((array2d<int32_t>*)image), *rect, *((uint16_t*)p), thickness);
+             break;
+         case array2d_type::Float:
+             dlib::draw_rectangle(*((array2d<float>*)image), *rect, *((float*)p), thickness);
+             break;
+         case array2d_type::Double:
+             dlib::draw_rectangle(*((array2d<double>*)image), *rect, *((double*)p), thickness);
+             break;
+         case array2d_type::RgbPixel:
+             dlib::draw_rectangle(*((array2d<dlib::rgb_pixel>*)image), *rect, *((dlib::rgb_pixel*)p), thickness);
+             break;
+         case array2d_type::HsiPixel:
+             dlib::draw_rectangle(*((array2d<dlib::hsi_pixel>*)image), *rect, *((dlib::hsi_pixel*)p), thickness);
+             break;
+         case array2d_type::RgbAlphaPixel:
+             dlib::draw_rectangle(*((array2d<dlib::rgb_alpha_pixel>*)image), *rect, *((dlib::rgb_alpha_pixel*)p), thickness);
+             break;
+         default:
+             err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+             break;
+     }
+ 
+     return err;
+ }
+
 DLLEXPORT int tile_images(array2d_type in_type, void* images, void** ret_image)
 {
     int err = ERR_OK;

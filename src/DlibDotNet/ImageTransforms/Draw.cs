@@ -200,6 +200,193 @@ namespace DlibDotNet
         }
 
         #endregion
+        
+        #region DrawRectangle(Array2DBase image, Rectangle rect, pixelType color, uint thickness)
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, byte color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.UInt8,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, ushort color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.UInt16,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, int color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.Int32,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, float color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.Float,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, double color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.Double,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, RgbPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.RgbPixel,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, RgbAlphaPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.RgbAlphaPixel,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        public static void DrawRectangle(Array2DBase image, Rectangle rect, HsiPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rect == null)
+                throw new ArgumentNullException(nameof(rect));
+
+            image.ThrowIfDisposed();
+            rect.ThrowIfDisposed();
+
+            var ret = Native.draw_rectangle(
+                Native.Array2DType.HsiPixel,
+                image.NativePtr,
+                rect.NativePtr,
+                ref color,
+                thickness);
+            switch (ret)
+            {
+                case Native.ErrorType.ArrayTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
+        }
+
+        #endregion
 
         public static Matrix<T> TileImages<T>(Array<Array2D<T>> array)
             where T: struct 
@@ -247,6 +434,34 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref HsiPixel color);
+
+            #endregion
+
+            #region draw_rectangle
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref byte color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref ushort color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref int color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref float color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref double color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref RgbPixel color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref RgbAlphaPixel color, uint thickness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref HsiPixel color, uint thickness);
 
             #endregion
 
