@@ -394,6 +394,268 @@ namespace DlibDotNet.Tests.Core
             }
         }
 
+        [TestMethod]
+        public void GetSetRowColumnMatrix()
+        {
+            const int width = 150;
+            const int height = 100;
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true}
+            };
+
+            foreach (var test in tests)
+            {
+                var array2DMatrix = CreateArray2DMatrix(test.Type, height, width);
+                switch (array2DMatrix.MatrixElementType)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            var matrix = (Array2DMatrix<byte>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const byte tmp = 80;
+                                var mat = new Matrix<byte>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<byte> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            var matrix = (Array2DMatrix<ushort>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const ushort tmp = 80;
+                                var mat = new Matrix<ushort>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<ushort> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            var matrix = (Array2DMatrix<uint>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const uint tmp = 80;
+                                var mat = new Matrix<uint>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<uint> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            var matrix = (Array2DMatrix<sbyte>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const sbyte tmp = 80;
+                                var mat = new Matrix<sbyte>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<sbyte> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            var matrix = (Array2DMatrix<short>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const short tmp = 80;
+                                var mat = new Matrix<short>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<short> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            var matrix = (Array2DMatrix<int>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const int tmp = 80;
+                                var mat = new Matrix<int>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<int> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            var matrix = (Array2DMatrix<float>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const float tmp = 80.5f;
+                                var mat = new Matrix<float>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<float> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            var matrix = (Array2DMatrix<double>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                const double tmp = 50.5d;
+                                var mat = new Matrix<double>(10, 99)
+                                {
+                                    [5, 10] = tmp
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t, tmp, "Array2DMatrix<double> failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            var matrix = (Array2DMatrix<RgbPixel>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                var mat = new Matrix<RgbPixel>(10, 99)
+                                {
+                                    [5, 10] = new RgbPixel
+                                    {
+                                        Red = 13,
+                                        Blue = 55,
+                                        Green = 124
+                                    }
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t.Red, 13, "Array2DMatrix<RgbPixel>.Red failed");
+                                Assert.AreEqual(t.Blue, 55, "Array2DMatrix<RgbPixel>.Blue failed");
+                                Assert.AreEqual(t.Green, 124, "Array2DMatrix<RgbPixel>.Green failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            var matrix = (Array2DMatrix<RgbAlphaPixel>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                var mat = new Matrix<RgbAlphaPixel>(10, 99)
+                                {
+                                    [5, 10] = new RgbAlphaPixel
+                                    {
+                                        Red = 13,
+                                        Blue = 55,
+                                        Green = 124,
+                                        Alpha = 4
+                                    }
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t.Red, 13, "Array2DMatrix<RgbAlphaPixel>.Red failed");
+                                Assert.AreEqual(t.Blue, 55, "Array2DMatrix<RgbAlphaPixel>.Blue failed");
+                                Assert.AreEqual(t.Green, 124, "Array2DMatrix<RgbAlphaPixel>.Green failed");
+                                Assert.AreEqual(t.Alpha, 4, "Array2DMatrix<RgbAlphaPixel>.Alpha failed");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            var matrix = (Array2DMatrix<HsiPixel>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                var mat = new Matrix<HsiPixel>(10, 99)
+                                {
+                                    [5, 10] = new HsiPixel
+                                    {
+                                        H = 13,
+                                        S = 55,
+                                        I = 124
+                                    }
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.AreEqual(t.H, 13, "Array2DMatrix<HsiPixel>.H failed");
+                                Assert.AreEqual(t.S, 55, "Array2DMatrix<HsiPixel>.S failed");
+                                Assert.AreEqual(t.I, 124, "Array2DMatrix<HsiPixel>.I failed");
+                            }
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(array2DMatrix.MatrixElementType), array2DMatrix.MatrixElementType, null);
+                }
+                this.DisposeAndCheckDisposedState(array2DMatrix);
+            }
+        }
+
         internal static Array2DBase CreateArray2D(ImageTypes elementType)
         {
             switch (elementType)

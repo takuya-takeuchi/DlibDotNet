@@ -58,9 +58,40 @@ namespace DlibDotNet.Extensions
                 case MatrixElementTypes.RgbPixel:
                     return Dlib.Native.MatrixElementType.RgbPixel;
                 case MatrixElementTypes.RgbAlphaPixel:
-                    return Dlib.Native.MatrixElementType.HsiPixel;
+                    return Dlib.Native.MatrixElementType.RgbAlphaPixel;
                 case MatrixElementTypes.HsiPixel:
                     return Dlib.Native.MatrixElementType.HsiPixel;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(matrixElementTypes), matrixElementTypes, null);
+            }
+        }
+
+        internal static ImageTypes ToImageTypes(this MatrixElementTypes matrixElementTypes)
+        {
+            switch (matrixElementTypes)
+            {
+                case MatrixElementTypes.UInt8:
+                    return ImageTypes.UInt8;
+                case MatrixElementTypes.UInt16:
+                    return ImageTypes.UInt16;
+                //case MatrixElementTypes.UInt32:
+                //    return ImageTypes.UInt32;
+                //case MatrixElementTypes.Int8:
+                //    return ImageTypes.Int8;
+                //case MatrixElementTypes.Int16:
+                //    return ImageTypes.Int16;
+                case MatrixElementTypes.Int32:
+                    return ImageTypes.Int32;
+                case MatrixElementTypes.Float:
+                    return ImageTypes.Float;
+                case MatrixElementTypes.Double:
+                    return ImageTypes.Double;
+                case MatrixElementTypes.RgbPixel:
+                    return ImageTypes.RgbPixel;
+                case MatrixElementTypes.RgbAlphaPixel:
+                    return ImageTypes.HsiPixel;
+                case MatrixElementTypes.HsiPixel:
+                    return ImageTypes.HsiPixel;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(matrixElementTypes), matrixElementTypes, null);
             }

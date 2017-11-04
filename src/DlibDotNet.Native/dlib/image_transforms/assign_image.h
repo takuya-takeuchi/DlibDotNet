@@ -62,6 +62,9 @@ do { \
         case array2d_type::UInt16:\
             dlib::assign_image(*((array2d<uint16_t>*)out_img), *((array2d<ELEMENT_IN>*)in_img));\
             break;\
+        case array2d_type::Int32:\
+            dlib::assign_image(*((array2d<int32_t>*)out_img), *((array2d<ELEMENT_IN>*)in_img));\
+            break;\
         case array2d_type::Float:\
             dlib::assign_image(*((array2d<float>*)out_img), *((array2d<ELEMENT_IN>*)in_img));\
             break;\
@@ -153,6 +156,11 @@ DLLEXPORT int assign_image(array2d_type out_type, void* out_img, array2d_type in
             assign_image_template(err, out_type, out_img, in_img);
             #undef ELEMENT_IN
             break;
+        case array2d_type::Int32: 
+            #define ELEMENT_IN int32_t 
+            assign_image_template(err, out_type, out_img, in_img); 
+            #undef ELEMENT_IN 
+            break; 
         case array2d_type::Float:
             #define ELEMENT_IN float
             assign_image_template(err, out_type, out_img, in_img);
