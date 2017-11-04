@@ -56,7 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Array2DTest.cs" />
+    <Compile Include="Array2D\Array2DTest.cs" />
     <Compile Include="DlibTest.cs" />
     <Compile Include="Geometry\DPointTest.cs" />
     <Compile Include="Geometry\PointTest.cs" />

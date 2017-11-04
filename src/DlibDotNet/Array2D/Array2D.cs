@@ -67,6 +67,17 @@ namespace DlibDotNet
             this.ImageType = type;
         }
 
+        internal Array2D(IntPtr ptr, ImageTypes type)
+        {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            this.NativePtr = ptr;
+            this._Array2DType = type.ToNativeArray2DType();
+
+            this.ImageType = type;
+        }
+
         #endregion
 
         #region Properties
@@ -158,6 +169,12 @@ namespace DlibDotNet
         #endregion
 
         #region Methods 
+
+        internal static bool TryParse<T>(out ImageTypes type)
+            where T : struct
+        {
+            return SupportTypes.TryGetValue(typeof(T), out type);
+        }
 
         #region Overrides 
 

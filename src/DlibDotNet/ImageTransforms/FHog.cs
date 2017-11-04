@@ -76,18 +76,18 @@ namespace DlibDotNet
             inImage.ThrowIfDisposed(nameof(inImage));
 
             var hogImage = new Array<Array2D<T>>();
-            using (var array = new Array2D<T>())
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var inType = inImage.ImageType.ToNativeArray2DType();
+            var outType = type.ToNativeArray2DType();
+            var ret = Native.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+            switch (ret)
             {
-                var inType = inImage.ImageType.ToNativeArray2DType();
-                var outType = array.ImageType.ToNativeArray2DType();
-                var ret = Native.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
-                switch (ret)
-                {
-                    case Native.ErrorType.OutputElementTypeNotSupport:
-                        throw new ArgumentException($"Output {outType} is not supported.");
-                    case Native.ErrorType.InputArrayTypeNotSupport:
-                        throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
-                }
+                case Native.ErrorType.OutputElementTypeNotSupport:
+                    throw new ArgumentException($"Output {outType} is not supported.");
+                case Native.ErrorType.InputArrayTypeNotSupport:
+                    throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
             }
 
             return hogImage;
