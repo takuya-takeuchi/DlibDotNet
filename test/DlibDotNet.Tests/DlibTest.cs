@@ -757,6 +757,9 @@ namespace DlibDotNet.Tests
                 case ImageTypes.UInt16:
                     image = Dlib.LoadImage<ushort>(path.FullName);
                     break;
+                case ImageTypes.Int32:
+                    image = Dlib.LoadImage<int>(path.FullName);
+                    break;
                 case ImageTypes.HsiPixel:
                     image = Dlib.LoadImage<HsiPixel>(path.FullName);
                     break;
