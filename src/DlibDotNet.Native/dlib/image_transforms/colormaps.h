@@ -578,4 +578,14 @@ DLLEXPORT int jet2(array2d_type type, void* img, double max_val, double min_val,
 
 #pragma endregion jet
 
+DLLEXPORT void colormap_heat(double value, double min_val, double max_val, dlib::rgb_pixel* pixel)
+{
+    *pixel = dlib::colormap_heat(value, min_val, max_val);
+}
+
+DLLEXPORT void colormap_jet(double value, double min_val, double max_val, dlib::rgb_pixel* pixel)
+{
+    *pixel = dlib::colormap_jet(value, min_val, max_val);
+}
+
 #endif
