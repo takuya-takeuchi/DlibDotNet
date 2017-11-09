@@ -124,7 +124,7 @@ DLLEXPORT void vector_get_xyz_double(dlib::vector<double>* vector, double* x, do
     *z = vector->z();
 }
 
-#pragma endregion_get_xyz
+#pragma endregion vector_get_xyz
 
 #pragma region vector_set_xyz
 
@@ -184,7 +184,7 @@ DLLEXPORT void vector_set_xyz_double(dlib::vector<double>* vector, double x, dou
     vector->z() = z;
 }
 
-#pragma endregion_set_xyz
+#pragma endregion vector_set_xyz
 
 #pragma region vector_operator_add
 
