@@ -26,7 +26,7 @@ namespace DlibDotNet
             {
                 this._Type = matrix.MatrixElementType;
                 var type = this._Type.ToNativeMatrixElementType();
-                this.NativePtr = Dlib.Native.vector_matrix_new1(type);
+                this.NativePtr = Dlib.Native.stdvector_matrix_new1(type);
             }
         }
 
@@ -39,7 +39,7 @@ namespace DlibDotNet
             {
                 this._Type = matrix.MatrixElementType;
                 var type = this._Type.ToNativeMatrixElementType();
-                this.NativePtr = Dlib.Native.vector_matrix_new2(type, new IntPtr(size));
+                this.NativePtr = Dlib.Native.stdvector_matrix_new2(type, new IntPtr(size));
             }
         }
 
@@ -53,7 +53,7 @@ namespace DlibDotNet
                 this._Type = matrix.MatrixElementType;
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
                 var type = this._Type.ToNativeMatrixElementType();
-                this.NativePtr = Dlib.Native.vector_matrix_new3(type, array, new IntPtr(array.Length));
+                this.NativePtr = Dlib.Native.stdvector_matrix_new3(type, array, new IntPtr(array.Length));
             }
         }
 
@@ -69,9 +69,9 @@ namespace DlibDotNet
 
         #region Properties
 
-        public override IntPtr ElementPtr => Dlib.Native.vector_matrix_getPointer(this.NativePtr);
+        public override IntPtr ElementPtr => Dlib.Native.stdvector_matrix_getPointer(this.NativePtr);
 
-        public override int Size => Dlib.Native.vector_matrix_getSize(this.NativePtr).ToInt32();
+        public override int Size => Dlib.Native.stdvector_matrix_getSize(this.NativePtr).ToInt32();
 
         #endregion
 
@@ -84,7 +84,7 @@ namespace DlibDotNet
                 return new Matrix<T>[0];
 
             var dst = new IntPtr[size];
-            Dlib.Native.vector_matrix_copy(this.NativePtr, dst);
+            Dlib.Native.stdvector_matrix_copy(this.NativePtr, dst);
             return dst.Select(p => p != IntPtr.Zero ? new Matrix<T>(p, this._Type) : null).ToArray();
         }
 
@@ -97,7 +97,7 @@ namespace DlibDotNet
             //    item?.Dispose();
 
             var type = this._Type.ToNativeMatrixElementType();
-            Dlib.Native.vector_matrix_delete(type, this.NativePtr);
+            Dlib.Native.stdvector_matrix_delete(type, this.NativePtr);
             base.DisposeUnmanaged();
         }
 

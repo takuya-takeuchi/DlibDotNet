@@ -8,7 +8,7 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed partial class ImageWindow : DlibObject
+    public sealed partial class ImageWindow : BaseWindow
     {
 
         #region Constructors
@@ -92,7 +92,6 @@ namespace DlibDotNet
         #endregion
 
         #region Properties
-
         #endregion
 
         #region Methods
@@ -484,12 +483,6 @@ namespace DlibDotNet
             }
         }
 
-        public void WaitUntilClosed()
-        {
-            this.ThrowIfDisposed();
-            Native.image_window_wait_until_closed(this.NativePtr);
-        }
-
         #region Overrides
 
         protected override void DisposeUnmanaged()
@@ -536,10 +529,7 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr image_window_new_matrix_op2(Dlib.Native.ElementType matrixElementType, Dlib.Native.Array2DType type, IntPtr image, byte[] title);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void image_window_wait_until_closed(IntPtr window);
-
+            
             #region image_window_add_overlay
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

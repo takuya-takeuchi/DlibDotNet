@@ -6,7 +6,7 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public sealed class Point : Vector<int>
+    public sealed class Point : VectorBase<int>
     {
 
         #region Constructors

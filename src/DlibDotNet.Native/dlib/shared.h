@@ -27,6 +27,18 @@ enum struct matrix_element_type : int
     HsiPixel
 };
 
+enum struct vector_element_type : int
+{
+    UInt8 = 0,
+    UInt16,
+    UInt32,
+    Int8,
+    Int16,
+    Int32,
+    Float,
+    Double
+};
+
 enum element_type : int
 {
     OpHeatmap = 0,

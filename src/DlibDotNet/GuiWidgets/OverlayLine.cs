@@ -11,7 +11,6 @@ namespace DlibDotNet
         public sealed class OverlayLine : DlibObject
         {
 
-
             #region Events
             #endregion
 
@@ -82,13 +81,14 @@ namespace DlibDotNet
 
             #region Methods
 
-            #region Overrids
-            #endregion
+            #region Overrides
 
-            #region Event Handlers
-            #endregion
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+                Native.image_window_overlay_line_delete(this.NativePtr);
+            }
 
-            #region Helpers
             #endregion
 
             #endregion
