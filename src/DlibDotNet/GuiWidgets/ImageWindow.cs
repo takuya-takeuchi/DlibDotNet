@@ -209,7 +209,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
         }
 
@@ -220,7 +220,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
         }
 
@@ -231,7 +231,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Float, ref color);
         }
 
@@ -242,7 +242,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Double, ref color);
         }
 
@@ -253,7 +253,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
         }
 
@@ -264,7 +264,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
         }
 
@@ -275,7 +275,7 @@ namespace DlibDotNet
             if (rects == null)
                 throw new ArgumentNullException(nameof(rects));
 
-            using (var vector = new VectorOfRectangle(rects))
+            using (var vector = new StdVectorOfRectangle(rects))
                 Native.image_window_add_overlay2(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
         }
 
@@ -402,7 +402,7 @@ namespace DlibDotNet
             if (lines == null)
                 throw new ArgumentNullException(nameof(lines));
 
-            using (var vector = new VectorOfImageWindowOverlayLine(lines))
+            using (var vector = new StdVectorOfImageWindowOverlayLine(lines))
                 Native.image_window_add_overlay5(this.NativePtr, vector.NativePtr);
         }
 

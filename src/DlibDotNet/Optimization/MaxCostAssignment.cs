@@ -21,7 +21,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong(assignment))
+            using (var vector = new StdVectorOfLong(assignment))
             {
                 byte result;
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
@@ -44,7 +44,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong(assignment))
+            using (var vector = new StdVectorOfLong(assignment))
             {
                 ushort result;
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
@@ -67,7 +67,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong(assignment))
+            using (var vector = new StdVectorOfLong(assignment))
             {
                 uint result;
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
@@ -90,7 +90,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong(assignment))
+            using (var vector = new StdVectorOfLong(assignment))
             {
                 sbyte result;
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
@@ -113,7 +113,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong(assignment))
+            using (var vector = new StdVectorOfLong(assignment))
             {
                 short result;
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
@@ -136,7 +136,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong(assignment))
+            using (var vector = new StdVectorOfLong(assignment))
             {
                 int result;
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
@@ -162,7 +162,7 @@ namespace DlibDotNet
             if (cost.Rows != cost.Columns)
                 throw new ArgumentException($"{cost.Rows} must equal to {cost.Columns}");
 
-            using (var vector = new VectorOfLong())
+            using (var vector = new StdVectorOfLong())
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
                 var ret = Native.max_cost_assignment(

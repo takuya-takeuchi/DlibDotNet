@@ -7,54 +7,54 @@ using System.Runtime.InteropServices;
 namespace DlibDotNet
 {
 
-    public sealed class VectorOfFullObjectDetection : StdVector<FullObjectDetection>
+    public sealed class StdVectorOfImageWindowOverlayLine : StdVector<ImageWindow.OverlayLine>
     {
 
         #region Constructors
 
-        public VectorOfFullObjectDetection()
+        public StdVectorOfImageWindowOverlayLine()
         {
-            this.NativePtr = Native.stdvector_full_object_detection_new1();
+            this.NativePtr = Native.stdvector_image_window_overlay_line_new1();
         }
 
-        public VectorOfFullObjectDetection(int size)
+        public StdVectorOfImageWindowOverlayLine(int size)
         {
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
 
-            this.NativePtr = Native.stdvector_full_object_detection_new2(new IntPtr(size));
+            this.NativePtr = Native.stdvector_image_window_overlay_line_new2(new IntPtr(size));
         }
 
-        public VectorOfFullObjectDetection(IEnumerable<FullObjectDetection> data)
+        public StdVectorOfImageWindowOverlayLine(IEnumerable<ImageWindow.OverlayLine> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
             var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-            this.NativePtr = Native.stdvector_full_object_detection_new3(array, new IntPtr(array.Length));
+            this.NativePtr = Native.stdvector_image_window_overlay_line_new3(array, new IntPtr(array.Length));
         }
 
         #endregion
 
         #region Properties
 
-        public override IntPtr ElementPtr => Native.stdvector_full_object_detection_getPointer(this.NativePtr);
+        public override IntPtr ElementPtr => Native.stdvector_image_window_overlay_line_getPointer(this.NativePtr);
 
-        public override int Size => Native.stdvector_full_object_detection_getSize(this.NativePtr).ToInt32();
+        public override int Size => Native.stdvector_image_window_overlay_line_getSize(this.NativePtr).ToInt32();
 
         #endregion
 
         #region Methods
 
-        public override FullObjectDetection[] ToArray()
+        public override ImageWindow.OverlayLine[] ToArray()
         {
             var size = Size;
             if (size == 0)
-                return new FullObjectDetection[0];
+                return new ImageWindow.OverlayLine[0];
 
             var dst = new IntPtr[size];
-            Native.stdvector_full_object_detection_copy(this.NativePtr, dst);
-            return dst.Select(p=> new FullObjectDetection(p)).ToArray();
+            Native.stdvector_image_window_overlay_line_copy(this.NativePtr, dst);
+            return dst.Select(p=> new ImageWindow.OverlayLine(p)).ToArray();
         }
 
         #region Overrides
@@ -65,7 +65,7 @@ namespace DlibDotNet
             //foreach (var item in this.ToArray())
             //    item?.Dispose();
 
-            Native.stdvector_full_object_detection_delete(this.NativePtr);
+            Native.stdvector_image_window_overlay_line_delete(this.NativePtr);
             base.DisposeUnmanaged();
         }
 
@@ -77,28 +77,28 @@ namespace DlibDotNet
         {
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_full_object_detection_new1();
+            public static extern IntPtr stdvector_image_window_overlay_line_new1();
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_full_object_detection_new2(IntPtr size);
+            public static extern IntPtr stdvector_image_window_overlay_line_new2(IntPtr size);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_full_object_detection_new3([In] IntPtr[] data, IntPtr dataLength);
+            public static extern IntPtr stdvector_image_window_overlay_line_new3([In] IntPtr[] data, IntPtr dataLength);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_full_object_detection_getSize(IntPtr vector);
+            public static extern IntPtr stdvector_image_window_overlay_line_getSize(IntPtr vector);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_full_object_detection_getPointer(IntPtr vector);
+            public static extern IntPtr stdvector_image_window_overlay_line_getPointer(IntPtr vector);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_full_object_detection_at(IntPtr vector, int index);
+            public static extern IntPtr stdvector_image_window_overlay_line_at(IntPtr vector, int index);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void stdvector_full_object_detection_delete(IntPtr vector);
+            public static extern void stdvector_image_window_overlay_line_delete(IntPtr vector);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void stdvector_full_object_detection_copy(IntPtr vector, IntPtr[] dst);
+            public static extern void stdvector_image_window_overlay_line_copy(IntPtr vector, IntPtr[] dst);
 
         }
 

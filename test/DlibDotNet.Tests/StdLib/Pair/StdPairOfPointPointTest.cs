@@ -6,7 +6,7 @@ namespace DlibDotNet
 {
 
     [TestClass]
-    public class PairOfPointPointTest : TestBase
+    public class StdPairOfPointPointTest : TestBase
     {
 
         [TestMethod]
@@ -14,7 +14,7 @@ namespace DlibDotNet
         {
             var first = new Point();
             var second = new Point();
-            var pair = new PairOfPointPoint(first, second);
+            var pair = new StdPairOfPointPoint(first, second);
             this.DisposeAndCheckDisposedState(pair);
             this.DisposeAndCheckDisposedState(second);
             this.DisposeAndCheckDisposedState(first);
@@ -30,7 +30,7 @@ namespace DlibDotNet
 
             var first = new Point(fx, fy);
             var second = new Point(sx, sy);
-            var pair1 = new PairOfPointPoint(first, second);
+            var pair1 = new StdPairOfPointPoint(first, second);
 
             Assert.AreEqual(pair1.First.X, fx);
             Assert.AreEqual(pair1.First.Y, fy);
@@ -39,7 +39,7 @@ namespace DlibDotNet
             Assert.AreEqual(pair1.First, first);
             Assert.AreEqual(pair1.Second, second);
 
-            var pair2 = new PairOfPointPoint(null, null);
+            var pair2 = new StdPairOfPointPoint(null, null);
             Assert.AreEqual(pair2.First, null);
             Assert.AreEqual(pair2.Second, null);
 
@@ -60,7 +60,7 @@ namespace DlibDotNet
             var first = new Point(fx, fy);
             var second = new Point(sx, sy);
 
-            var pair = new PairOfPointPoint(null, null);
+            var pair = new StdPairOfPointPoint(null, null);
             pair.First = first;
             pair.Second = second;
 

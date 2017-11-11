@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DlibDotNet.ImageProcessing;
 using DlibDotNet.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,13 +9,13 @@ namespace DlibDotNet
 {
 
     [TestClass]
-    public class VectorOfMModRectTest : TestBase
+    public class StdVectorOfVectorMModRectTest : TestBase
     {
 
         [TestMethod]
         public void Create()
         {
-            var vector = new VectorOfMModRect();
+            var vector = new StdVectorOfVectorMModRect();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -22,7 +23,7 @@ namespace DlibDotNet
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new VectorOfMModRect(size);
+            var vector = new StdVectorOfVectorMModRect(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -30,14 +31,18 @@ namespace DlibDotNet
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => new MModRect{Ignore = true, DetectionConfidence = i});
-            var vector = new VectorOfMModRect(source);
+            var source = Enumerable.Range(0, size).Select(j => new List<MModRect>(Enumerable.Range(0, size).Select(i => new MModRect { Ignore = true, DetectionConfidence = i })));
+            var vector = new StdVectorOfVectorMModRect(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
-            for (var i = 0; i < size; i++)
+            for (var j = 0; j < size; j++)
             {
-                Assert.AreEqual(ret[i].DetectionConfidence, i);
-                Assert.AreEqual(ret[i].Ignore, true);
+                var tmp = ret[j].ToArray();
+                for (var i = 0; i < size; i++)
+                {
+                    Assert.AreEqual(tmp[i].DetectionConfidence, i);
+                    Assert.AreEqual(tmp[i].Ignore, true);
+                }
             }
             this.DisposeAndCheckDisposedState(vector);
         }

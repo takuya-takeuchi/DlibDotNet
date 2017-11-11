@@ -92,9 +92,9 @@ namespace DlibDotNet
             point.ThrowIfDisposed();
 
             var ret = Native.hough_transform_get_line(this.NativePtr, point.NativePtr);
-            var first = PairOfPointPoint.Native.pair_point_point_get_first(ret);
-            var second = PairOfPointPoint.Native.pair_point_point_get_second(ret);
-            return new PairOfPointPoint(first, second);
+            var first = StdPairOfPointPoint.Native.stdpair_point_point_get_first(ret);
+            var second = StdPairOfPointPoint.Native.stdpair_point_point_get_second(ret);
+            return new StdPairOfPointPoint(first, second);
         }
 
         public void Operator(Array2DBase inImage, Rectangle rect, Array2DBase outImage)
@@ -181,7 +181,6 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void hough_transform_delete(IntPtr obj);
-
 
         }
 

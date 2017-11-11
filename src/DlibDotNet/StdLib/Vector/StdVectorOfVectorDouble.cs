@@ -7,17 +7,17 @@ using System.Runtime.InteropServices;
 namespace DlibDotNet
 {
 
-    public sealed class VectorOfVectorDouble : StdVector<Vector<double>>
+    public sealed class StdVectorOfVectorDouble : StdVector<Vector<double>>
     {
 
         #region Constructors
 
-        public VectorOfVectorDouble()
+        public StdVectorOfVectorDouble()
         {
             this.NativePtr = Native.stdvector_of_vectordouble_new1();
         }
 
-        public VectorOfVectorDouble(int size)
+        public StdVectorOfVectorDouble(int size)
         {
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
@@ -25,7 +25,7 @@ namespace DlibDotNet
             this.NativePtr = Native.stdvector_of_vectordouble_new2(new IntPtr(size));
         }
 
-        public VectorOfVectorDouble(IEnumerable<Vector<double>> data)
+        public StdVectorOfVectorDouble(IEnumerable<Vector<double>> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -34,7 +34,7 @@ namespace DlibDotNet
             this.NativePtr = Native.stdvector_of_vectordouble_new3(array, new IntPtr(array.Length));
         }
 
-        internal VectorOfVectorDouble(IntPtr ptr)
+        internal StdVectorOfVectorDouble(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));

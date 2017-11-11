@@ -8,7 +8,7 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class VectorOfMatrix<T> : StdVector<Matrix<T>>
+    public sealed class StdVectorOfMatrix<T> : StdVector<Matrix<T>>
         where T : struct
     {
 
@@ -20,7 +20,7 @@ namespace DlibDotNet
 
         #region Constructors
 
-        public VectorOfMatrix()
+        public StdVectorOfMatrix()
         {
             using (var matrix = new Matrix<T>())
             {
@@ -30,7 +30,7 @@ namespace DlibDotNet
             }
         }
 
-        public VectorOfMatrix(int size)
+        public StdVectorOfMatrix(int size)
         {
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
@@ -43,7 +43,7 @@ namespace DlibDotNet
             }
         }
 
-        public VectorOfMatrix(IEnumerable<MatrixBase> data)
+        public StdVectorOfMatrix(IEnumerable<MatrixBase> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -57,7 +57,7 @@ namespace DlibDotNet
             }
         }
 
-        internal VectorOfMatrix(IntPtr ptr)
+        internal StdVectorOfMatrix(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
