@@ -14,7 +14,7 @@ namespace DlibDotNet
 
         public VectorOfInt32()
         {
-            this.NativePtr = Native.vector_int32_new1();
+            this.NativePtr = Native.stdvector_int32_new1();
         }
 
         public VectorOfInt32(int size)
@@ -22,7 +22,7 @@ namespace DlibDotNet
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
 
-            this.NativePtr = Native.vector_int32_new2(new IntPtr(size));
+            this.NativePtr = Native.stdvector_int32_new2(new IntPtr(size));
         }
 
         public VectorOfInt32(IEnumerable<int> data)
@@ -31,16 +31,16 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(data));
 
             var array = data.ToArray();
-            this.NativePtr = Native.vector_int32_new3(array, new IntPtr(array.Length));
+            this.NativePtr = Native.stdvector_int32_new3(array, new IntPtr(array.Length));
         }
 
         #endregion
 
         #region Properties
 
-        public override IntPtr ElementPtr => Native.vector_int32_getPointer(this.NativePtr);
+        public override IntPtr ElementPtr => Native.stdvector_int32_getPointer(this.NativePtr);
 
-        public override int Size => Native.vector_int32_getSize(this.NativePtr).ToInt32();
+        public override int Size => Native.stdvector_int32_getSize(this.NativePtr).ToInt32();
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace DlibDotNet
 
         protected override void DisposeUnmanaged()
         {
-            Native.vector_int32_delete(this.NativePtr);
+            Native.stdvector_int32_delete(this.NativePtr);
             base.DisposeUnmanaged();
         }
 
@@ -73,25 +73,25 @@ namespace DlibDotNet
         {
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_int32_new1();
+            public static extern IntPtr stdvector_int32_new1();
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_int32_new2(IntPtr size);
+            public static extern IntPtr stdvector_int32_new2(IntPtr size);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_int32_new3([In] int[] data, IntPtr dataLength);
+            public static extern IntPtr stdvector_int32_new3([In] int[] data, IntPtr dataLength);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_int32_getSize(IntPtr vector);
+            public static extern IntPtr stdvector_int32_getSize(IntPtr vector);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_int32_getPointer(IntPtr vector);
+            public static extern IntPtr stdvector_int32_getPointer(IntPtr vector);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int vector_int32_at(IntPtr vector, int index);
+            public static extern int stdvector_int32_at(IntPtr vector, int index);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void vector_int32_delete(IntPtr vector);
+            public static extern void stdvector_int32_delete(IntPtr vector);
 
         }
 
