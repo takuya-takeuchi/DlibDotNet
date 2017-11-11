@@ -17,38 +17,15 @@ namespace DlibDotNet
 
         private readonly Dlib.Native.MatrixElementType _ElementType;
 
-        private static readonly Dictionary<Type, MatrixElementTypes> SupportTypes = new Dictionary<Type, MatrixElementTypes>();
-
         private readonly Indexer<T> _Indexer;
 
         #endregion
 
         #region Constructors
 
-        static Matrix()
-        {
-            var types = new[]
-            {
-                new {Type = typeof(byte),           ElementType = MatrixElementTypes.UInt8 },
-                new {Type = typeof(ushort),         ElementType = MatrixElementTypes.UInt16 },
-                new {Type = typeof(uint),           ElementType = MatrixElementTypes.UInt32 },
-                new {Type = typeof(sbyte),          ElementType = MatrixElementTypes.Int8 },
-                new {Type = typeof(short),          ElementType = MatrixElementTypes.Int16 },
-                new {Type = typeof(int),            ElementType = MatrixElementTypes.Int32 },
-                new {Type = typeof(float),          ElementType = MatrixElementTypes.Float },
-                new {Type = typeof(double),         ElementType = MatrixElementTypes.Double },
-                new {Type = typeof(RgbPixel),       ElementType = MatrixElementTypes.RgbPixel },
-                new {Type = typeof(RgbAlphaPixel),  ElementType = MatrixElementTypes.RgbAlphaPixel },
-                new {Type = typeof(HsiPixel),       ElementType = MatrixElementTypes.HsiPixel }
-            };
-
-            foreach (var type in types)
-                SupportTypes.Add(type.Type, type.ElementType);
-        }
-
         public Matrix()
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
+            if (!MatrixBase.TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -60,7 +37,7 @@ namespace DlibDotNet
 
         public Matrix(int row, int column)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
+            if (!MatrixBase.TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
             if (row < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
@@ -178,6 +155,12 @@ namespace DlibDotNet
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        internal static bool TryParse<T>(out MatrixElementTypes result)
+            where T : struct
+        {
+            return MatrixBase.TryParse(typeof(T), out result);
         }
 
         #region Overrides

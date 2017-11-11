@@ -1365,34 +1365,6 @@ namespace DlibDotNet
 
             #endregion
 
-            #region vector_matrix
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_new1(MatrixElementType matrixElementType);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_new2(MatrixElementType matrixElementType, IntPtr size);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_new3([In] MatrixElementType matrixElementType, [In] IntPtr[] data, IntPtr dataLength);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_getSize(IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_getPointer(IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_at(IntPtr vector, int index);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void stdvector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void stdvector_matrix_copy(IntPtr vector, IntPtr[] dst);
-
-            #endregion
-
             #region  extensions
 
             #region extensions_load_image_data
