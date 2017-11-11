@@ -165,10 +165,10 @@ namespace DlibDotNet.ImageTransforms
                 throw new ArgumentException();
 
             using (var matrix = new Matrix<T>())
-            using (var inImages = new VectorOfMatrix<T>(images))
-            using (var inRects = new VectorOfVectorMModRect(rects))
-            using (var outCrops = new VectorOfMatrix<T>())
-            using (var outCropRects = new VectorOfVectorMModRect())
+            using (var inImages = new StdVectorOfMatrix<T>(images))
+            using (var inRects = new StdVectorOfVectorMModRect(rects))
+            using (var outCrops = new StdVectorOfMatrix<T>())
+            using (var outCropRects = new StdVectorOfVectorMModRect())
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = Native.random_cropper_operator(

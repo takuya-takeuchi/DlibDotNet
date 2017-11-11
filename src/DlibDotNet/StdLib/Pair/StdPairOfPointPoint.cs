@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 namespace DlibDotNet
 {
 
-    public sealed class PairOfPointPoint : StdPair<Point, Point>
+    public sealed class StdPairOfPointPoint : StdPair<Point, Point>
     {
 
         #region Constructors
 
-        public PairOfPointPoint(Point first, Point second)
+        public StdPairOfPointPoint(Point first, Point second)
         {
             if (first != null)
                 first.ThrowIfDisposed();
@@ -19,19 +19,19 @@ namespace DlibDotNet
 
             var firstPtr = first == null ? IntPtr.Zero : first.NativePtr;
             var secondPtr = second == null ? IntPtr.Zero : second.NativePtr;
-            this.NativePtr = Native.pair_point_point_new(firstPtr, secondPtr);
+            this.NativePtr = Native.stdpair_point_point_new(firstPtr, secondPtr);
             this._Second = second;
             this._First = first;
         }
 
-        internal PairOfPointPoint(IntPtr first, IntPtr second)
+        internal StdPairOfPointPoint(IntPtr first, IntPtr second)
         {
             if (first == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(first));
             if (second == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(second));
 
-            this.NativePtr = Native.pair_point_point_new(first, second);
+            this.NativePtr = Native.stdpair_point_point_new(first, second);
             this._First = new Point(first);
             this._Second = new Point(second);
         }
@@ -53,7 +53,7 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
                 this._First = value;
-                Native.pair_point_point_set_first(this.NativePtr, value == null ? IntPtr.Zero : value.NativePtr);
+                Native.stdpair_point_point_set_first(this.NativePtr, value == null ? IntPtr.Zero : value.NativePtr);
             }
         }
 
@@ -70,7 +70,7 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
                 this._Second = value;
-                Native.pair_point_point_set_second(this.NativePtr, value == null ? IntPtr.Zero : value.NativePtr);
+                Native.stdpair_point_point_set_second(this.NativePtr, value == null ? IntPtr.Zero : value.NativePtr);
             }
         }
 
@@ -82,7 +82,7 @@ namespace DlibDotNet
 
         protected override void DisposeUnmanaged()
         {
-            Native.pair_point_point_delete(this.NativePtr);
+            Native.stdpair_point_point_delete(this.NativePtr);
             base.DisposeUnmanaged();
         }
 
@@ -94,22 +94,22 @@ namespace DlibDotNet
         {
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr pair_point_point_new(IntPtr first, IntPtr second);
+            public static extern IntPtr stdpair_point_point_new(IntPtr first, IntPtr second);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr pair_point_point_get_first(IntPtr pair);
+            public static extern IntPtr stdpair_point_point_get_first(IntPtr pair);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void pair_point_point_set_first(IntPtr pair, IntPtr first);
+            public static extern void stdpair_point_point_set_first(IntPtr pair, IntPtr first);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr pair_point_point_get_second(IntPtr pair);
+            public static extern IntPtr stdpair_point_point_get_second(IntPtr pair);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void pair_point_point_set_second(IntPtr pair, IntPtr second);
+            public static extern void stdpair_point_point_set_second(IntPtr pair, IntPtr second);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void pair_point_point_delete(IntPtr pair);
+            public static extern void stdpair_point_point_delete(IntPtr pair);
 
         }
 

@@ -31,7 +31,7 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(kvals));
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            using (var dets = new VectorOfRectangle())
+            using (var dets = new StdVectorOfRectangle())
             {
                 var ret = Native.find_candidate_object_locations(array2DType, image.NativePtr, dets.NativePtr, IntPtr.Zero, minSize, maxMergingIterations);
                 if (ret == Native.ErrorType.ArrayTypeNotSupport)

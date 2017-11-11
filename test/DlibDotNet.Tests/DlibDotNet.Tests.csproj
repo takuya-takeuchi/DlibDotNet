@@ -81,16 +81,16 @@
     <Compile Include="Matrix\MatrixTest.cs" />
     <Compile Include="Optimization\MaxCostAssignmentTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StdLib\Pair\PairOfPointPointTest.cs" />
-    <Compile Include="StdLib\Vector\VectorOfMatrixTest.cs" />
-    <Compile Include="StdLib\Vector\VectorOfMModRectTest.cs" />
-    <Compile Include="StdLib\Vector\VectorOfVectorMModRectTest.cs" />
-    <Compile Include="StdLib\Vector\VectorOfVectorRectangleTest.cs" />
+    <Compile Include="StdLib\Pair\StdPairOfPointPointTest.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfMatrixTest.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfMModRectTest.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfVectorMModRectTest.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfVectorRectangleTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestDataBase.cs" />
-    <Compile Include="StdLib\Vector\VectorOfInt32Test.cs" />
-    <Compile Include="StdLib\Vector\VectorOfLongTest.cs" />
-    <Compile Include="StdLib\Vector\VectorOfRectangleTest.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfInt32Test.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfLongTest.cs" />
+    <Compile Include="StdLib\Vector\StdVectorOfRectangleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\Lenna.dng">

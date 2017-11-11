@@ -7,17 +7,17 @@ using System.Runtime.InteropServices;
 namespace DlibDotNet
 {
 
-    public sealed class VectorOfVectorRectangle : StdVector<VectorOfRectangle>
+    public sealed class StdVectorOfVectorRectangle : StdVector<StdVectorOfRectangle>
     {
 
         #region Constructors
 
-        public VectorOfVectorRectangle()
+        public StdVectorOfVectorRectangle()
         {
             this.NativePtr = Native.stdvector_vector_rectangle_new1();
         }
 
-        public VectorOfVectorRectangle(int size)
+        public StdVectorOfVectorRectangle(int size)
         {
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
@@ -25,12 +25,12 @@ namespace DlibDotNet
             this.NativePtr = Native.stdvector_vector_rectangle_new2(new IntPtr(size));
         }
 
-        public VectorOfVectorRectangle(IEnumerable<IEnumerable<Rectangle>> data)
+        public StdVectorOfVectorRectangle(IEnumerable<IEnumerable<Rectangle>> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            var array = data.Select(rects => new VectorOfRectangle(rects.Select(r => r)).NativePtr).ToArray();
+            var array = data.Select(rects => new StdVectorOfRectangle(rects.Select(r => r)).NativePtr).ToArray();
             this.NativePtr = Native.stdvector_vector_rectangle_new3(array, new IntPtr(array.Length));
         }
 
@@ -46,15 +46,15 @@ namespace DlibDotNet
 
         #region Methods
 
-        public override VectorOfRectangle[] ToArray()
+        public override StdVectorOfRectangle[] ToArray()
         {
             var size = Size;
             if (size == 0)
-                return new VectorOfRectangle[0];
+                return new StdVectorOfRectangle[0];
 
             var dst = new IntPtr[size];
             Native.stdvector_vector_rectangle_copy(this.NativePtr, dst);
-            return dst.Select(p => p != IntPtr.Zero ? new VectorOfRectangle(p) : null).ToArray();
+            return dst.Select(p => p != IntPtr.Zero ? new StdVectorOfRectangle(p) : null).ToArray();
         }
 
         #region Overrides

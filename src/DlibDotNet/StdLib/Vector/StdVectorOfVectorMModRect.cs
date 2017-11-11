@@ -8,17 +8,17 @@ using DlibDotNet.ImageProcessing;
 namespace DlibDotNet
 {
 
-    public sealed class VectorOfVectorMModRect : StdVector<VectorOfMModRect>
+    public sealed class StdVectorOfVectorMModRect : StdVector<StdVectorOfMModRect>
     {
 
         #region Constructors
 
-        public VectorOfVectorMModRect()
+        public StdVectorOfVectorMModRect()
         {
             this.NativePtr = Native.stdvector_vector_mmod_rect_new1();
         }
 
-        public VectorOfVectorMModRect(int size)
+        public StdVectorOfVectorMModRect(int size)
         {
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
@@ -26,12 +26,12 @@ namespace DlibDotNet
             this.NativePtr = Native.stdvector_vector_mmod_rect_new2(new IntPtr(size));
         }
 
-        public VectorOfVectorMModRect(IEnumerable<IEnumerable<MModRect>> data)
+        public StdVectorOfVectorMModRect(IEnumerable<IEnumerable<MModRect>> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            var array = data.Select(rects => new VectorOfMModRect(rects.Select(r => r)).NativePtr).ToArray();
+            var array = data.Select(rects => new StdVectorOfMModRect(rects.Select(r => r)).NativePtr).ToArray();
             this.NativePtr = Native.stdvector_vector_mmod_rect_new3(array, new IntPtr(array.Length));
         }
 
@@ -47,15 +47,15 @@ namespace DlibDotNet
 
         #region Methods
 
-        public override VectorOfMModRect[] ToArray()
+        public override StdVectorOfMModRect[] ToArray()
         {
             var size = Size;
             if (size == 0)
-                return new VectorOfMModRect[0];
+                return new StdVectorOfMModRect[0];
 
             var dst = new IntPtr[size];
             Native.stdvector_vector_mmod_rect_copy(this.NativePtr, dst);
-            return dst.Select(p => p != IntPtr.Zero ? new VectorOfMModRect(p) : null).ToArray();
+            return dst.Select(p => p != IntPtr.Zero ? new StdVectorOfMModRect(p) : null).ToArray();
         }
 
         #region Overrides

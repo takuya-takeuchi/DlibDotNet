@@ -7,17 +7,17 @@ using System.Runtime.InteropServices;
 namespace DlibDotNet
 {
 
-    public sealed class VectorOfPerspectiveWindowOverlayDot : StdVector<PerspectiveWindow.OverlayDot>
+    public sealed class StdVectorOfPerspectiveWindowOverlayDot : StdVector<PerspectiveWindow.OverlayDot>
     {
         
         #region Constructors
 
-        public VectorOfPerspectiveWindowOverlayDot()
+        public StdVectorOfPerspectiveWindowOverlayDot()
         {
             this.NativePtr = Native.stdvector_perspective_window_overlay_dot_new1();
         }
 
-        public VectorOfPerspectiveWindowOverlayDot(int size)
+        public StdVectorOfPerspectiveWindowOverlayDot(int size)
         {
             if (size < 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
@@ -25,7 +25,7 @@ namespace DlibDotNet
             this.NativePtr = Native.stdvector_perspective_window_overlay_dot_new2(new IntPtr(size));
         }
 
-        public VectorOfPerspectiveWindowOverlayDot(IEnumerable<PerspectiveWindow.OverlayDot> data)
+        public StdVectorOfPerspectiveWindowOverlayDot(IEnumerable<PerspectiveWindow.OverlayDot> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));

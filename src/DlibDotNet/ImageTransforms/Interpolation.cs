@@ -25,7 +25,7 @@ namespace DlibDotNet
 
             image.ThrowIfDisposed();
 
-            using (var vectorOfChips = new VectorOfChipDetails(chipLocations))
+            using (var vectorOfChips = new StdVectorOfChipDetails(chipLocations))
             {
                 var array = new Array<Array2D<T>>();
                 var array2DType = image.ImageType.ToNativeArray2DType();
@@ -154,8 +154,8 @@ namespace DlibDotNet
             if (dets.Any(detection => detection == null || detection.IsDisposed || detection.Parts != 68))
                 throw new ArgumentException($"{nameof(dets)} includes invalid item.");
 
-            using (var vector = new VectorOfFullObjectDetection(dets))
-            using (var vectorOfChips = new VectorOfChipDetails())
+            using (var vector = new StdVectorOfFullObjectDetection(dets))
+            using (var vectorOfChips = new StdVectorOfChipDetails())
             {
                 Native.get_face_chip_details(vector.NativePtr, size, padding, vectorOfChips.NativePtr);
                 return vectorOfChips.ToArray();

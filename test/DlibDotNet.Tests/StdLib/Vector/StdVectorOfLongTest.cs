@@ -7,13 +7,13 @@ namespace DlibDotNet
 {
 
     [TestClass]
-    public class VectorOfMatrixTest : TestBase
+    public class StdVectorOfLongTest : TestBase
     {
 
         [TestMethod]
         public void Create()
         {
-            var vector = new VectorOfMatrix<int>();
+            var vector = new StdVectorOfLong();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -21,7 +21,7 @@ namespace DlibDotNet
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new VectorOfMatrix<int>(size);
+            var vector = new StdVectorOfLong(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -29,15 +29,12 @@ namespace DlibDotNet
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => new Matrix<int>(i, i));
-            var vector = new VectorOfMatrix<int>(source);
+            var source = Enumerable.Range(0, size).Select(s=>(long)s).ToArray();
+            var vector = new StdVectorOfLong(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
-            for (var i = 0; i < size; i++)
-            {
-                Assert.AreEqual(ret[i].Rows, i);
-                Assert.AreEqual(ret[i].Columns, i);
-            }
+            for (var i = 0; i < size ;i++)
+                Assert.AreEqual(ret[i], i);
             this.DisposeAndCheckDisposedState(vector);
         }
 
