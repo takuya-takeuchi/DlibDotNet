@@ -14,7 +14,7 @@ namespace DlibDotNet
         [TestMethod]
         public void Create()
         {
-            var vector = new StdVectorOfMModRect();
+            var vector = new StdVector<MModRect>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -22,7 +22,7 @@ namespace DlibDotNet
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVectorOfMModRect(size);
+            var vector = new StdVector<MModRect>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -31,7 +31,7 @@ namespace DlibDotNet
         {
             const int size = 10;
             var source = Enumerable.Range(0, size).Select(i => new MModRect{Ignore = true, DetectionConfidence = i});
-            var vector = new StdVectorOfMModRect(source);
+            var vector = new StdVector<MModRect>(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
             for (var i = 0; i < size; i++)

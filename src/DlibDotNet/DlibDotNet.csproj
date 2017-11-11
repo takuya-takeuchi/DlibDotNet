@@ -30,4 +30,12 @@
     <DefineConstants>TRACE;LINUX;RELEASE;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="StdLib\Pair\StdPairOfPointPoint.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="StdLib\Pair\" />
+  </ItemGroup>
+
 </Project>

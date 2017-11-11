@@ -13,7 +13,7 @@ namespace DlibDotNet
         [TestMethod]
         public void Create()
         {
-            var vector = new StdVectorOfRectangle();
+            var vector = new StdVector<Rectangle>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -21,7 +21,7 @@ namespace DlibDotNet
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVectorOfRectangle(size);
+            var vector = new StdVector<Rectangle>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -30,7 +30,7 @@ namespace DlibDotNet
         {
             const int size = 10;
             var source = Enumerable.Range(0, size).Select(i => new Rectangle(i, i, i, i));
-            var vector = new StdVectorOfRectangle(source);
+            var vector = new StdVector<Rectangle>(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
             for (var i = 0; i < size; i++)

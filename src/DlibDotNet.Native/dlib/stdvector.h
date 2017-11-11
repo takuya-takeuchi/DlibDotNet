@@ -120,37 +120,37 @@ DLLEXPORT void stdvector_rectangle_copy(std::vector<rectangle*> *vector, rectang
 
 #pragma region dlib::vector<double>
 
-DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_of_vectordouble_new1()
+DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_vector_double_new1()
 {
     return new std::vector<dlib::vector<double>*>();
 }
 
-DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_of_vectordouble_new2(size_t size)
+DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_vector_double_new2(size_t size)
 {
     return new std::vector<dlib::vector<double>*>(size);
 }
 
-DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_of_vectordouble_new3(dlib::vector<double>** data, size_t dataLength)
+DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_vector_double_new3(dlib::vector<double>** data, size_t dataLength)
 {
     return new std::vector<dlib::vector<double>*>(data, data + dataLength);
 }
 
-DLLEXPORT size_t stdvector_of_vectordouble_getSize(std::vector<dlib::vector<double>*>* vector)
+DLLEXPORT size_t stdvector_vector_double_getSize(std::vector<dlib::vector<double>*>* vector)
 {
     return vector->size();
 }
 
-DLLEXPORT dlib::vector<double>* stdvector_of_vectordouble_getPointer(std::vector<dlib::vector<double>*> *vector)
+DLLEXPORT dlib::vector<double>* stdvector_vector_double_getPointer(std::vector<dlib::vector<double>*> *vector)
 {
     return (vector->at(0));
 }
 
-DLLEXPORT void stdvector_of_vectordouble_delete(std::vector<dlib::vector<double>*> *vector)
+DLLEXPORT void stdvector_vector_double_delete(std::vector<dlib::vector<double>*> *vector)
 {    
     delete vector;
 }
 
-DLLEXPORT void stdvector_of_vectordouble_copy(std::vector<dlib::vector<double>*> *vector, dlib::vector<double>** dst)
+DLLEXPORT void stdvector_vector_double_copy(std::vector<dlib::vector<double>*> *vector, dlib::vector<double>** dst)
 {
     size_t length = sizeof(dlib::vector<double>*)* vector->size();
     memcpy(dst, &(vector->at(0)), length);
@@ -381,38 +381,38 @@ DLLEXPORT void stdvector_matrix_copy(std::vector<void*> *vector, void** dst)
 
 #pragma region std::vector<rectangle>
 
-DLLEXPORT std::vector<std::vector<rectangle*>*>* stdvector_vector_rectangle_new1()
+DLLEXPORT std::vector<std::vector<rectangle*>*>* stdvector_stdvector_rectangle_new1()
 {
     return new std::vector<std::vector<rectangle*>*>;
 }
 
-DLLEXPORT std::vector<std::vector<rectangle*>*>* stdvector_vector_rectangle_new2(size_t size)
+DLLEXPORT std::vector<std::vector<rectangle*>*>* stdvector_stdvector_rectangle_new2(size_t size)
 {
     return new std::vector<std::vector<rectangle*>*>(size);
 }
 
-DLLEXPORT std::vector<std::vector<rectangle*>*>* stdvector_vector_rectangle_new3(std::vector<rectangle*>** data, size_t dataLength)
+DLLEXPORT std::vector<std::vector<rectangle*>*>* stdvector_stdvector_rectangle_new3(std::vector<rectangle*>** data, size_t dataLength)
 {
     return new std::vector<std::vector<rectangle*>*>(data, data + dataLength);
 }
 
-DLLEXPORT size_t stdvector_vector_rectangle_getSize(std::vector<std::vector<rectangle*>*>* vector)
+DLLEXPORT size_t stdvector_stdvector_rectangle_getSize(std::vector<std::vector<rectangle*>*>* vector)
 {
     return vector->size();
 }
 
-DLLEXPORT std::vector<rectangle*>* stdvector_vector_rectangle_getPointer(std::vector<std::vector<rectangle*>*> *vector)
+DLLEXPORT std::vector<rectangle*>* stdvector_stdvector_rectangle_getPointer(std::vector<std::vector<rectangle*>*> *vector)
 {
     return (vector->at(0));
 }
 
-DLLEXPORT void stdvector_vector_rectangle_delete(std::vector<std::vector<rectangle*>*> *vector)
+DLLEXPORT void stdvector_stdvector_rectangle_delete(std::vector<std::vector<rectangle*>*> *vector)
 {    
     delete vector;
 }
 
 // This method is unsafe!!
-DLLEXPORT void stdvector_vector_rectangle_copy(std::vector<std::vector<rectangle*>*> *vector, std::vector<rectangle*>** dst)
+DLLEXPORT void stdvector_stdvector_rectangle_copy(std::vector<std::vector<rectangle*>*> *vector, std::vector<rectangle*>** dst)
 {
     size_t length = sizeof(rectangle*)* vector->size();
     memcpy(dst, &(vector->at(0)), length);
@@ -622,38 +622,38 @@ DLLEXPORT void stdvector_mmod_rect_copy(std::vector<mmod_rect*> *vector, mmod_re
 
 #pragma region std::vector<mmod_rect>
 
-DLLEXPORT std::vector<std::vector<mmod_rect*>*>* stdvector_vector_mmod_rect_new1()
+DLLEXPORT std::vector<std::vector<mmod_rect*>*>* stdvector_stdvector_mmod_rect_new1()
 {
     return new std::vector<std::vector<mmod_rect*>*>;
 }
 
-DLLEXPORT std::vector<std::vector<mmod_rect*>*>* stdvector_vector_mmod_rect_new2(size_t size)
+DLLEXPORT std::vector<std::vector<mmod_rect*>*>* stdvector_stdvector_mmod_rect_new2(size_t size)
 {
     return new std::vector<std::vector<mmod_rect*>*>(size);
 }
 
-DLLEXPORT std::vector<std::vector<mmod_rect*>*>* stdvector_vector_mmod_rect_new3(std::vector<mmod_rect*>** data, size_t dataLength)
+DLLEXPORT std::vector<std::vector<mmod_rect*>*>* stdvector_stdvector_mmod_rect_new3(std::vector<mmod_rect*>** data, size_t dataLength)
 {
     return new std::vector<std::vector<mmod_rect*>*>(data, data + dataLength);
 }
 
-DLLEXPORT size_t stdvector_vector_mmod_rect_getSize(std::vector<std::vector<mmod_rect*>*>* vector)
+DLLEXPORT size_t stdvector_stdvector_mmod_rect_getSize(std::vector<std::vector<mmod_rect*>*>* vector)
 {
     return vector->size();
 }
 
-DLLEXPORT std::vector<mmod_rect*>* stdvector_vector_mmod_rect_getPointer(std::vector<std::vector<mmod_rect*>*> *vector)
+DLLEXPORT std::vector<mmod_rect*>* stdvector_stdvector_mmod_rect_getPointer(std::vector<std::vector<mmod_rect*>*> *vector)
 {
     return (vector->at(0));
 }
 
-DLLEXPORT void stdvector_vector_mmod_rect_delete(std::vector<std::vector<mmod_rect*>*> *vector)
+DLLEXPORT void stdvector_stdvector_mmod_rect_delete(std::vector<std::vector<mmod_rect*>*> *vector)
 {    
     delete vector;
 }
 
 // This method is unsafe!!
-DLLEXPORT void stdvector_vector_mmod_rect_copy(std::vector<std::vector<mmod_rect*>*> *vector, std::vector<mmod_rect*>** dst)
+DLLEXPORT void stdvector_stdvector_mmod_rect_copy(std::vector<std::vector<mmod_rect*>*> *vector, std::vector<mmod_rect*>** dst)
 {
     size_t length = sizeof(mmod_rect*)* vector->size();
     memcpy(dst, &(vector->at(0)), length);

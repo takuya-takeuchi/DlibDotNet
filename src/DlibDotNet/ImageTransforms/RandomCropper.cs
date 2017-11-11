@@ -51,7 +51,7 @@ namespace DlibDotNet.ImageTransforms
             set
             {
                 this.ThrowIfDisposed();
-                if(value == null)
+                if (value == null)
                     throw new ArgumentNullException(nameof(value));
 
                 Native.random_cropper_set_chip_dims(this.NativePtr, value.Rows, value.Columns);
@@ -164,26 +164,39 @@ namespace DlibDotNet.ImageTransforms
             if (count != numRect)
                 throw new ArgumentException();
 
-            using (var matrix = new Matrix<T>())
-            using (var inImages = new StdVectorOfMatrix<T>(images))
-            using (var inRects = new StdVectorOfVectorMModRect(rects))
-            using (var outCrops = new StdVectorOfMatrix<T>())
-            using (var outCropRects = new StdVectorOfVectorMModRect())
-            {
-                var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.random_cropper_operator(
-                    this.NativePtr,
-                    numCrops,
-                    type, 
-                    inImages.NativePtr, 
-                    inRects.NativePtr,
-                    outCrops.NativePtr, 
-                    outCropRects.NativePtr);
-                if (ret == Dlib.Native.ErrorType.ElementTypeNotSupport)
-                    throw new ArgumentException($"{type} is not supported.");
+            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
 
-                crops = outCrops.ToArray();
-                cropRects = outCropRects.ToArray().Select(box => box.ToArray()).ToList();
+            try
+            {
+                listOfVectorOfMModRect = rects.Select(r => new StdVector<MModRect>(r)).ToList();
+
+                using (var matrix = new Matrix<T>())
+                using (var inImages = new StdVector<Matrix<T>>(images))
+                using (var inRects = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                using (var outCrops = new StdVector<Matrix<T>>())
+                using (var outCropRects = new StdVector<StdVector<MModRect>>())
+                {
+                    var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+                    var ret = Native.random_cropper_operator(
+                        this.NativePtr,
+                        numCrops,
+                        type,
+                        inImages.NativePtr,
+                        inRects.NativePtr,
+                        outCrops.NativePtr,
+                        outCropRects.NativePtr);
+                    if (ret == Dlib.Native.ErrorType.ElementTypeNotSupport)
+                        throw new ArgumentException($"{type} is not supported.");
+
+                    crops = outCrops.ToArray();
+                    cropRects = outCropRects.ToArray().Select(box => box.ToArray()).ToList();
+                }
+            }
+            finally
+            {
+                if(listOfVectorOfMModRect!=null)
+                    foreach (var stdVector in listOfVectorOfMModRect)
+                        stdVector?.Dispose();
             }
         }
 

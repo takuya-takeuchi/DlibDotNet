@@ -15,7 +15,7 @@ namespace DlibDotNet
         [TestMethod]
         public void Create()
         {
-            var vector = new StdVectorOfVectorRectangle();
+            var vector = new StdVector<StdVector<Rectangle>>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -23,7 +23,7 @@ namespace DlibDotNet
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVectorOfVectorRectangle(size);
+            var vector = new StdVector<StdVector<Rectangle>>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -31,8 +31,8 @@ namespace DlibDotNet
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(j => new List<Rectangle>(Enumerable.Range(0, size).Select(i => new Rectangle(i, i, i, i))));
-            var vector = new StdVectorOfVectorRectangle(source);
+            var source = Enumerable.Range(0, size).Select(j => new StdVector<Rectangle>(Enumerable.Range(0, size).Select(i => new Rectangle(i, i, i, i))));
+            var vector = new StdVector<StdVector<Rectangle>>(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
             for (var j = 0; j < size; j++)
@@ -46,7 +46,10 @@ namespace DlibDotNet
                     Assert.AreEqual(tmp[i].Bottom, i);
                 }
             }
+
             this.DisposeAndCheckDisposedState(vector);
+            foreach (var s in source)
+                s.Dispose();
         }
 
     }

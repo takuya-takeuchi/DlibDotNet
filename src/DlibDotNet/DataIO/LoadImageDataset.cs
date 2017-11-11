@@ -27,8 +27,8 @@ namespace DlibDotNet
             var str = Encoding.UTF8.GetBytes(path);
 
             using (var matrix = new Matrix<T>())
-            using (var retImages = new StdVectorOfMatrix<T>())
-            using (var retBoxes = new StdVectorOfVectorMModRect())
+            using (var retImages = new StdVector<Matrix<T>>())
+            using (var retBoxes = new StdVector<StdVector<MModRect>>())
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = Native.load_image_dataset(type, retImages.NativePtr, retBoxes.NativePtr, str);

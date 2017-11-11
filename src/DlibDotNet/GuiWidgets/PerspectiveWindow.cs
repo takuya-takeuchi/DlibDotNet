@@ -25,7 +25,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 this.NativePtr = Native.perspective_window_new2(vector.NativePtr);
         }
 
@@ -37,7 +37,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             var str = Encoding.UTF8.GetBytes(title);
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 this.NativePtr = Native.perspective_window_new3(vector.NativePtr, str);
         }
 
@@ -193,7 +193,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay2(this.NativePtr, vector.NativePtr);
         }
 
@@ -208,7 +208,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
         }
 
@@ -221,7 +221,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
         }
 
@@ -234,7 +234,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Int16, ref color);
         }
 
@@ -247,7 +247,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Int32, ref color);
         }
 
@@ -260,7 +260,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Float, ref color);
         }
 
@@ -273,7 +273,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Double, ref color);
         }
 
@@ -286,7 +286,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
         }
 
@@ -299,7 +299,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
         }
 
@@ -312,7 +312,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfVectorDouble(points))
+            using (var vector = new StdVector<Vector<double>>(points))
                 Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
         }
 
@@ -327,7 +327,7 @@ namespace DlibDotNet
 
             overlay.ThrowIfDisposed();
 
-            using (var vector = new StdVectorOfPerspectiveWindowOverlayDot(overlay))
+            using (var vector = new StdVector<OverlayDot>(overlay))
                 Native.perspective_window_add_overlay4(this.NativePtr, vector.NativePtr);
         }
 

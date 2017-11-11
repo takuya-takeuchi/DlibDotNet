@@ -92,9 +92,7 @@ namespace DlibDotNet
             point.ThrowIfDisposed();
 
             var ret = Native.hough_transform_get_line(this.NativePtr, point.NativePtr);
-            var first = StdPairOfPointPoint.Native.stdpair_point_point_get_first(ret);
-            var second = StdPairOfPointPoint.Native.stdpair_point_point_get_second(ret);
-            return new StdPairOfPointPoint(first, second);
+            return new StdPair<Point, Point>(ret);
         }
 
         public void Operator(Array2DBase inImage, Rectangle rect, Array2DBase outImage)

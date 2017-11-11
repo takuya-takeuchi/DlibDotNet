@@ -29,7 +29,7 @@ namespace DlibDotNet
 
             image.ThrowIfDisposed();
 
-            using (var dets = new StdVectorOfRectangle())
+            using (var dets = new StdVector<Rectangle>())
             {
                 var inType = image.ImageType.ToNativeArray2DType();
                 var ret = Native.frontal_face_detector_operator(this.NativePtr, inType, image.NativePtr, threshold, dets.NativePtr);
