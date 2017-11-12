@@ -6,76 +6,62 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public sealed class DPoint : VectorBase<double>
+    public struct DPoint
     {
 
         #region Constructors
 
         public DPoint(double x, double y)
         {
-            this.NativePtr = Native.dpoint_new1(x, y);
+            this._X = x;
+            this._Y = y;
         }
 
-        public DPoint()
+        internal DPoint(IntPtr nativePtr)
         {
-            this.NativePtr = Native.dpoint_new();
-        }
-
-        internal DPoint(IntPtr ptr)
-        {
-            if (ptr == IntPtr.Zero)
-                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
-
-            this.NativePtr = ptr;
+            using (var native = new NativeDPoint(nativePtr))
+            {
+                this._X = native.X;
+                this._Y = native.Y;
+            }
         }
 
         #endregion
 
         #region Properties
 
-        public override double Length
+        public double Length
         {
             get
             {
-                this.ThrowIfDisposed();
-                return Native.dpoint_length(this.NativePtr);
+                using (var point = this.ToNative())
+                    return point.Length;
             }
         }
 
-        public override double LengthSquared
+        public double LengthSquared
         {
             get
             {
-                this.ThrowIfDisposed();
-                return Native.dpoint_length_squared(this.NativePtr);
+                using (var point = this.ToNative())
+                    return point.LengthSquared;
             }
         }
 
-        public override double X
+        private double _X;
+
+        public double X
         {
-            get
-            {
-                this.ThrowIfDisposed();
-                return Native.dpoint_x(this.NativePtr);
-            }
+            get => this._X;
+            set => this._X = value;
         }
 
-        public override double Y
-        {
-            get
-            {
-                this.ThrowIfDisposed();
-                return Native.dpoint_y(this.NativePtr);
-            }
-        }
+        private double _Y;
 
-        public override double Z
+        public double Y
         {
-            get
-            {
-                this.ThrowIfDisposed();
-                return 0;
-            }
+            get => this._Y;
+            set => this._Y = value;
         }
 
         #endregion
@@ -84,15 +70,10 @@ namespace DlibDotNet
 
         public DPoint Rotate(DPoint point, double angle)
         {
-            this.ThrowIfDisposed();
-
-            if (point == null)
-                throw new ArgumentNullException(nameof(point));
-
-            point.ThrowIfDisposed();
-
-            var ret = Native.rotate_dpoint(this.NativePtr, point.NativePtr, MathHelper.ConvertToRadian(angle));
-            return new DPoint(ret);
+            using (var src = this.ToNative())
+            using (var np = point.ToNative())
+            using (var ret = src.Rotate(np, angle))
+                return ret.ToManaged();
         }
 
         public static DPoint Rotate(DPoint center, DPoint point, double angle)
@@ -100,139 +81,303 @@ namespace DlibDotNet
             return center.Rotate(point, angle);
         }
 
-        #region Overrides
+        internal NativeDPoint ToNative()
+        {
+            return new NativeDPoint(this._X, this._Y);
+        }
+
+        #region Overrids
 
         public static DPoint operator +(DPoint point, DPoint rhs)
         {
-            if (point == null)
-                throw new ArgumentNullException(nameof(point));
-            if (rhs == null)
-                throw new ArgumentNullException(nameof(rhs));
-
-            point.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            var ptr = Native.dpoint_operator_add(point.NativePtr, rhs.NativePtr);
-            return new DPoint(ptr);
+            using (var left = point.ToNative())
+            using (var right = rhs.ToNative())
+            using (var ret = left + right)
+                return ret.ToManaged();
         }
 
         public static DPoint operator -(DPoint point, DPoint rhs)
         {
-            if (point == null)
-                throw new ArgumentNullException(nameof(point));
-            if (rhs == null)
-                throw new ArgumentNullException(nameof(rhs));
-
-            point.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            var ptr = Native.dpoint_operator_sub(point.NativePtr, rhs.NativePtr);
-            return new DPoint(ptr);
+            using (var left = point.ToNative())
+            using (var right = rhs.ToNative())
+            using (var ret = left - right)
+                return ret.ToManaged();
         }
 
         public static DPoint operator *(DPoint point, double rhs)
         {
-            if (point == null)
-                throw new ArgumentNullException(nameof(point));
-
-            point.ThrowIfDisposed();
-
-            var ptr = Native.dpoint_operator_mul(point.NativePtr, rhs);
-            return new DPoint(ptr);
+            using (var left = point.ToNative())
+            using (var ret = left * rhs)
+                return ret.ToManaged();
         }
 
         public static DPoint operator /(DPoint point, double rhs)
         {
-            if (point == null)
-                throw new ArgumentNullException(nameof(point));
-
-            point.ThrowIfDisposed();
-
-            if (Math.Abs(rhs) < double.Epsilon)
-                throw new DivideByZeroException();
-
-            var ptr = Native.dpoint_operator_div(point.NativePtr, rhs);
-            return new DPoint(ptr);
+            using (var left = point.ToNative())
+            using (var ret = left / rhs)
+                return ret.ToManaged();
         }
 
         public static bool operator ==(DPoint point, DPoint rhs)
         {
-            if (ReferenceEquals(point, rhs))
-                return true;
-            if (ReferenceEquals(point, null) || ReferenceEquals(rhs, null))
-                return false;
-
-            point.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            return Native.dpoint_operator_equal(point.NativePtr, rhs.NativePtr);
+            using (var left = point.ToNative())
+            using (var right = rhs.ToNative())
+                return left == right;
         }
 
         public static bool operator !=(DPoint point, DPoint rhs)
         {
-            if (ReferenceEquals(point, rhs))
-                return false;
-            if (ReferenceEquals(point, null) || ReferenceEquals(rhs, null))
-                return true;
-
-            point.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            return !Native.dpoint_operator_equal(point.NativePtr, rhs.NativePtr);
+            using (var left = point.ToNative())
+            using (var right = rhs.ToNative())
+                return left != right;
         }
 
-        protected override void DisposeUnmanaged()
-        {
-            base.DisposeUnmanaged();
-            Native.dpoint_delete(this.NativePtr);
-        }
+        #endregion
+
+        #region Event Handlers
+
+        #endregion
+
+        #region Helpers
 
         #endregion
 
         #endregion
 
-        internal sealed class Native
+        internal sealed class NativeDPoint : VectorBase<double>
         {
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr dpoint_new();
+            #region Constructors
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr dpoint_new1(double x, double y);
+            public NativeDPoint(double x, double y)
+            {
+                this.NativePtr = Native.dpoint_new1(x, y);
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void dpoint_delete(IntPtr point);
+            public NativeDPoint()
+            {
+                this.NativePtr = Native.dpoint_new();
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double dpoint_length(IntPtr dpoint);
+            internal NativeDPoint(IntPtr ptr)
+            {
+                if (ptr == IntPtr.Zero)
+                    throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double dpoint_length_squared(IntPtr dpoint);
+                this.NativePtr = ptr;
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double dpoint_x(IntPtr dpoint);
+            #endregion
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double dpoint_y(IntPtr dpoint);
+            #region Properties
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr dpoint_operator_add(IntPtr point, IntPtr rhs);
+            public override double Length
+            {
+                get
+                {
+                    this.ThrowIfDisposed();
+                    return Native.dpoint_length(this.NativePtr);
+                }
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr dpoint_operator_sub(IntPtr point, IntPtr rhs);
+            public override double LengthSquared
+            {
+                get
+                {
+                    this.ThrowIfDisposed();
+                    return Native.dpoint_length_squared(this.NativePtr);
+                }
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr dpoint_operator_mul(IntPtr point, double rhs);
+            public override double X
+            {
+                get
+                {
+                    this.ThrowIfDisposed();
+                    return Native.dpoint_x(this.NativePtr);
+                }
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr dpoint_operator_div(IntPtr point, double rhs);
+            public override double Y
+            {
+                get
+                {
+                    this.ThrowIfDisposed();
+                    return Native.dpoint_y(this.NativePtr);
+                }
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool dpoint_operator_equal(IntPtr point, IntPtr rhs);
+            public override double Z
+            {
+                get
+                {
+                    this.ThrowIfDisposed();
+                    return 0;
+                }
+            }
 
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr rotate_dpoint(IntPtr center, IntPtr p, double rhs);
+            #endregion
+
+            #region Methods
+
+            public NativeDPoint Rotate(NativeDPoint point, double angle)
+            {
+                this.ThrowIfDisposed();
+
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ret = Native.rotate_dpoint(this.NativePtr, point.NativePtr, MathHelper.ConvertToRadian(angle));
+                return new NativeDPoint(ret);
+            }
+
+            public static NativeDPoint Rotate(NativeDPoint center, NativeDPoint point, double angle)
+            {
+                return center.Rotate(point, angle);
+            }
+
+            public DPoint ToManaged()
+            {
+                return new DPoint(this.X, this.Y);
+            }
+
+            #region Overrides
+
+            public static NativeDPoint operator +(NativeDPoint point, NativeDPoint rhs)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+                if (rhs == null)
+                    throw new ArgumentNullException(nameof(rhs));
+
+                point.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                var ptr = Native.dpoint_operator_add(point.NativePtr, rhs.NativePtr);
+                return new NativeDPoint(ptr);
+            }
+
+            public static NativeDPoint operator -(NativeDPoint point, NativeDPoint rhs)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+                if (rhs == null)
+                    throw new ArgumentNullException(nameof(rhs));
+
+                point.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                var ptr = Native.dpoint_operator_sub(point.NativePtr, rhs.NativePtr);
+                return new NativeDPoint(ptr);
+            }
+
+            public static NativeDPoint operator *(NativeDPoint point, double rhs)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ptr = Native.dpoint_operator_mul(point.NativePtr, rhs);
+                return new NativeDPoint(ptr);
+            }
+
+            public static NativeDPoint operator /(NativeDPoint point, double rhs)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                if (Math.Abs(rhs) < double.Epsilon)
+                    throw new DivideByZeroException();
+
+                var ptr = Native.dpoint_operator_div(point.NativePtr, rhs);
+                return new NativeDPoint(ptr);
+            }
+
+            public static bool operator ==(NativeDPoint point, NativeDPoint rhs)
+            {
+                if (ReferenceEquals(point, rhs))
+                    return true;
+                if (ReferenceEquals(point, null) || ReferenceEquals(rhs, null))
+                    return false;
+
+                point.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                return Native.dpoint_operator_equal(point.NativePtr, rhs.NativePtr);
+            }
+
+            public static bool operator !=(NativeDPoint point, NativeDPoint rhs)
+            {
+                if (ReferenceEquals(point, rhs))
+                    return false;
+                if (ReferenceEquals(point, null) || ReferenceEquals(rhs, null))
+                    return true;
+
+                point.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                return !Native.dpoint_operator_equal(point.NativePtr, rhs.NativePtr);
+            }
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+                Native.dpoint_delete(this.NativePtr);
+            }
+
+            #endregion
+
+            #endregion
+
+            internal sealed class Native
+            {
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_new();
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_new1(double x, double y);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern void dpoint_delete(IntPtr point);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern double dpoint_length(IntPtr dpoint);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern double dpoint_length_squared(IntPtr dpoint);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern double dpoint_x(IntPtr dpoint);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern double dpoint_y(IntPtr dpoint);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_operator_add(IntPtr point, IntPtr rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_operator_sub(IntPtr point, IntPtr rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_operator_mul(IntPtr point, double rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_operator_div(IntPtr point, double rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                [return: MarshalAs(UnmanagedType.U1)]
+                public static extern bool dpoint_operator_equal(IntPtr point, IntPtr rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr rotate_dpoint(IntPtr center, IntPtr p, double rhs);
+
+            }
 
         }
 

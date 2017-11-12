@@ -61,7 +61,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var finallyAction = new Action(() =>
                 {
-                    this.DisposeAndCheckDisposedState(rect);
                     this.DisposeAndCheckDisposedState(tracker);
                     if (imageObj != null)
                         this.DisposeAndCheckDisposedState(imageObj);
@@ -119,7 +118,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var finallyAction = new Action(() =>
                 {
-                    this.DisposeAndCheckDisposedState(rect);
                     this.DisposeAndCheckDisposedState(tracker);
                     if (imageObj != null)
                         this.DisposeAndCheckDisposedState(imageObj);
@@ -177,7 +175,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var finallyAction = new Action(() =>
                 {
-                    this.DisposeAndCheckDisposedState(rect);
                     this.DisposeAndCheckDisposedState(tracker);
                     if (imageObj != null)
                         this.DisposeAndCheckDisposedState(imageObj);
@@ -235,7 +232,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var finallyAction = new Action(() =>
                 {
-                    this.DisposeAndCheckDisposedState(rect);
                     this.DisposeAndCheckDisposedState(tracker);
                     if (imageObj != null)
                         this.DisposeAndCheckDisposedState(imageObj);
@@ -293,7 +289,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var finallyAction = new Action(() =>
                 {
-                    this.DisposeAndCheckDisposedState(rect);
                     this.DisposeAndCheckDisposedState(tracker);
                     if (imageObj != null)
                         this.DisposeAndCheckDisposedState(imageObj);
@@ -342,8 +337,8 @@ namespace DlibDotNet.Tests.ImageProcessing
                 var successAction = new Action<Array2DBase>(image =>
                 {
                     tracker.Update(image);
-                    using (var pos = tracker.GetPosition())
-                        Assert.IsFalse(pos.IsEmpty);
+                    var pos = tracker.GetPosition();
+                    Assert.IsFalse(pos.IsEmpty);
                 });
 
                 var failAction = new Action(() =>
@@ -353,7 +348,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var finallyAction = new Action(() =>
                 {
-                    this.DisposeAndCheckDisposedState(rect);
                     this.DisposeAndCheckDisposedState(tracker);
                     if (imageObj != null)
                         this.DisposeAndCheckDisposedState(imageObj);
@@ -392,8 +386,10 @@ namespace DlibDotNet.Tests.ImageProcessing
                         var imageObj = DlibTest.LoadImage(input.Type, file);
 
                         if (index == 0)
-                            using (var rect = DRectangle.CenteredRect(93, 110, 38, 86))
-                                tracker.StartTrack(imageObj, rect);
+                        {
+                            var rect = DRectangle.CenteredRect(93, 110, 38, 86);
+                            tracker.StartTrack(imageObj, rect);
+                        }
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
@@ -407,14 +403,11 @@ namespace DlibDotNet.Tests.ImageProcessing
                         {
                             if (index != 0)
                                 tracker.Update(image);
-                            using (var r = tracker.GetPosition())
+                            var r = tracker.GetPosition();
+                            using (var img = Dlib.LoadImage<RgbPixel>(file.FullName))
                             {
-                                using (var img = Dlib.LoadImage<RgbPixel>(file.FullName))
-                                {
-                                    Dlib.DrawRectangle(img, (Rectangle)r, new RgbPixel { Red = 255 }, 3);
-                                    Dlib.SaveJpeg(img, Path.Combine(this.GetOutDir(type), $"{Path.GetFileNameWithoutExtension(file.FullName)}.jpg"));
-                                }
-
+                                Dlib.DrawRectangle(img, (Rectangle)r, new RgbPixel { Red = 255 }, 3);
+                                Dlib.SaveJpeg(img, Path.Combine(this.GetOutDir(type), $"{Path.GetFileNameWithoutExtension(file.FullName)}.jpg"));
                             }
                         });
 
@@ -426,7 +419,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                         var finallyAction = new Action(() =>
                         {
                             index++;
-                            
+
                             if (imageObj != null)
                                 this.DisposeAndCheckDisposedState(imageObj);
                         });

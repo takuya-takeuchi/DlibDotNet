@@ -65,17 +65,9 @@ namespace Image
                                     // will terminate once the user closes the window.
                                     while (myWindow.GetNextDoubleClick(out var p))
                                     {
-                                        try
-                                        {
-                                            Console.WriteLine($"User double clicked on pixel:         {p}");
-                                            // ToDo
-                                            //Console.WriteLine($"edge pixel value at this location is: {(int)edgeImage[p.y()][p.x()]}");
-                                        }
-                                        finally
-                                        {
-                                            if (p != null)
-                                                p.Dispose();
-                                        }
+                                        Console.WriteLine($"User double clicked on pixel:         {p}");
+                                        // ToDo
+                                        //Console.WriteLine($"edge pixel value at this location is: {(int)edgeImage[p.y()][p.x()]}");
                                     }
 
                                     winHot.WaitUntilClosed();

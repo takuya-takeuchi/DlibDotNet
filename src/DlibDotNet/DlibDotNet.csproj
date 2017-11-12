@@ -31,11 +31,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="StdLib\Pair\StdPairOfPointPoint.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="StdLib\Pair\" />
+    <Compile Remove="StdLib\Pair\**" />
+    <EmbeddedResource Remove="StdLib\Pair\**" />
+    <None Remove="StdLib\Pair\**" />
   </ItemGroup>
 
 </Project>

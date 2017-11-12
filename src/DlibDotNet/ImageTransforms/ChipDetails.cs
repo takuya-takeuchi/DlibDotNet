@@ -80,8 +80,7 @@ namespace DlibDotNet
             if (this.Columns == 0)
                 return false;
 
-            using (var rect = this.Rect)
-                return !rect.IsEmpty;
+            return !this.Rect.IsEmpty;
         }
 
         #region Overrides

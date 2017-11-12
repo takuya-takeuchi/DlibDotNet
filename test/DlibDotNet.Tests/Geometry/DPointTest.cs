@@ -12,7 +12,6 @@ namespace DlibDotNet.Tests.Geometry
         public void Create1()
         {
             var point = new DPoint();
-            this.DisposeAndCheckDisposedState(point);
         }
 
         [TestMethod]
@@ -23,8 +22,6 @@ namespace DlibDotNet.Tests.Geometry
             var point = new DPoint(x, y);
             Assert.AreEqual(point.X, x);
             Assert.AreEqual(point.Y, y);
-            Assert.AreEqual(point.Z, 0);
-            this.DisposeAndCheckDisposedState(point);
         }
 
         [TestMethod]
@@ -35,7 +32,6 @@ namespace DlibDotNet.Tests.Geometry
             var point = new DPoint(x, y);
             var length = Math.Sqrt(x * x + y * y);
             Assert.AreEqual(point.Length, length);
-            this.DisposeAndCheckDisposedState(point);
         }
 
         [TestMethod]
@@ -46,7 +42,6 @@ namespace DlibDotNet.Tests.Geometry
             var point = new DPoint(x, y);
             var lengthSquared = x * x + y * y;
             Assert.AreEqual(point.LengthSquared, lengthSquared);
-            this.DisposeAndCheckDisposedState(point);
         }
 
         [TestMethod]
@@ -78,13 +73,7 @@ namespace DlibDotNet.Tests.Geometry
                         Assert.AreEqual(Math.Round(rotated.Y), y + away, $"Check Y and Rotate: {90 * i}");
                         break;
                 }
-
-                this.DisposeAndCheckDisposedState(rotated);
             }
-
-            this.DisposeAndCheckDisposedState(point);
-            this.DisposeAndCheckDisposedState(move);
-            this.DisposeAndCheckDisposedState(p);
         }
 
         [TestMethod]
@@ -116,13 +105,7 @@ namespace DlibDotNet.Tests.Geometry
                         Assert.AreEqual(Math.Round(rotated.Y), y + away, $"Check Y and Rotate: {90 * i}");
                         break;
                 }
-
-                this.DisposeAndCheckDisposedState(rotated);
             }
-
-            this.DisposeAndCheckDisposedState(point);
-            this.DisposeAndCheckDisposedState(move);
-            this.DisposeAndCheckDisposedState(p);
         }
 
         [TestMethod]
@@ -139,10 +122,6 @@ namespace DlibDotNet.Tests.Geometry
 
             Assert.AreEqual(rl.X, lx + rx);
             Assert.AreEqual(rl.Y, ly + ry);
-
-            this.DisposeAndCheckDisposedState(rl);
-            this.DisposeAndCheckDisposedState(l);
-            this.DisposeAndCheckDisposedState(r);
         }
 
         [TestMethod]
@@ -159,10 +138,6 @@ namespace DlibDotNet.Tests.Geometry
 
             Assert.AreEqual(rl.X, lx - rx);
             Assert.AreEqual(rl.Y, ly - ry);
-
-            this.DisposeAndCheckDisposedState(rl);
-            this.DisposeAndCheckDisposedState(l);
-            this.DisposeAndCheckDisposedState(r);
         }
 
         [TestMethod]
@@ -177,9 +152,6 @@ namespace DlibDotNet.Tests.Geometry
 
             Assert.AreEqual(rl.X, lx * l);
             Assert.AreEqual(rl.Y, ly * l);
-
-            this.DisposeAndCheckDisposedState(rl);
-            this.DisposeAndCheckDisposedState(r);
         }
 
         [TestMethod]
@@ -194,9 +166,6 @@ namespace DlibDotNet.Tests.Geometry
 
             Assert.AreEqual(rl.X, lx / l);
             Assert.AreEqual(rl.Y, ly / l);
-
-            this.DisposeAndCheckDisposedState(rl);
-            this.DisposeAndCheckDisposedState(r);
         }
 
         [TestMethod]
@@ -205,22 +174,15 @@ namespace DlibDotNet.Tests.Geometry
             var lx = (double)this.NextRandom(10, 100);
             var ly = (double)this.NextRandom(10, 100);
 
-            DPoint r = null;
-
             try
             {
-                r = new DPoint(lx, ly);
+                var r = new DPoint(lx, ly);
                 var rl = r / 0;
                 Assert.Fail("Should throw DivideByZeroException when DPoint was divided by 0");
             }
             catch (DivideByZeroException)
             {
                 Console.WriteLine("OK");
-            }
-            finally
-            {
-                if (r != null)
-                    this.DisposeAndCheckDisposedState(r);
             }
         }
 
@@ -238,11 +200,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.IsTrue(r == l, $"1 - RX: {r.X}, RY: {r.Y}\nLX: {l.X}, LY: {l.Y}");
             Assert.IsTrue(r != l1, $"2 - RX: {r.X}, RY: {r.Y}\nLX: {l1.X}, LY: {l1.Y}");
             Assert.IsTrue(r != l2, $"3 - RX: {r.X}, RY: {r.Y}\nLX: {l2.X}, LY: {l2.Y}");
-
-            this.DisposeAndCheckDisposedState(l);
-            this.DisposeAndCheckDisposedState(r);
-            this.DisposeAndCheckDisposedState(l1);
-            this.DisposeAndCheckDisposedState(l2);
         }
 
     }

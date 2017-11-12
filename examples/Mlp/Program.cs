@@ -4,7 +4,6 @@
 
 using System;
 using DlibDotNet;
-
 using SampleType = DlibDotNet.Matrix<double>;
 
 namespace Mlp

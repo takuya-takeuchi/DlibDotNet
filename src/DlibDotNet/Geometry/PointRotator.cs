@@ -39,10 +39,11 @@ namespace DlibDotNet
 
         public override DPoint Operator(DPoint point)
         {
-            point.ThrowIfDisposed();
-
-            var ptr = Native.point_rotator_operator(this.NativePtr, point.NativePtr);
-            return new DPoint(ptr);
+            using (var native = point.ToNative())
+            {
+                var ptr = Native.point_rotator_operator(this.NativePtr, native.NativePtr);
+                return new DPoint(ptr);
+            }
         }
 
         #region Overrides

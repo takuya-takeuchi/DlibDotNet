@@ -27,17 +27,17 @@ namespace DlibDotNet
         {
             var types = new[]
             {
-                new { Type = typeof(int),                          ElementType = ElementTypes.Int32 },
-                new { Type = typeof(long),                         ElementType = ElementTypes.Long  },
-                new { Type = typeof(Rectangle),                    ElementType = ElementTypes.Rectangle },
-                new { Type = typeof(ChipDetails),                  ElementType = ElementTypes.ChipDetails  },
-                new { Type = typeof(FullObjectDetection),          ElementType = ElementTypes.FullObjectDetection  },
-                new { Type = typeof(ImageWindow.OverlayLine),      ElementType = ElementTypes.ImageWindowOverlayLine  },
-                new { Type = typeof(PerspectiveWindow.OverlayDot), ElementType = ElementTypes.PerspectiveWindowOverlayDot  },
-                new { Type = typeof(MModRect),                     ElementType = ElementTypes.MModRect  },
-                new { Type = typeof(Vector<double>),               ElementType = ElementTypes.VectorDouble       },
-                new { Type = typeof(StdVector<Rectangle>),         ElementType = ElementTypes.StdVectorRectangle },
-                new { Type = typeof(StdVector<MModRect>),         ElementType = ElementTypes.StdVectorMModRect  },
+                new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
+                new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
+                new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
+                new { Type = typeof(ChipDetails),                          ElementType = ElementTypes.ChipDetails  },
+                new { Type = typeof(FullObjectDetection),                  ElementType = ElementTypes.FullObjectDetection  },
+                new { Type = typeof(ImageWindow.OverlayLine),              ElementType = ElementTypes.ImageWindowOverlayLine  },
+                new { Type = typeof(PerspectiveWindow.OverlayDot),         ElementType = ElementTypes.PerspectiveWindowOverlayDot  },
+                new { Type = typeof(MModRect),                             ElementType = ElementTypes.MModRect  },
+                new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
+                new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
+                new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
             };
 
             foreach (var type in types)
@@ -576,7 +576,7 @@ namespace DlibDotNet
         }
 
         private sealed class StdVectorMatrixImp<U> : StdVectorImp<Matrix<U>>
-            where U : struct 
+            where U : struct
         {
 
             #region Fields
@@ -732,8 +732,18 @@ namespace DlibDotNet
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
-                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_rectangle_new3(array, new IntPtr(array.Length));
+                var nativeArray = data.Select(rectangle => rectangle.ToNative());
+
+                try
+                {
+                    var array = nativeArray.Select(rectangle => rectangle.NativePtr).ToArray();
+                    return Dlib.Native.stdvector_rectangle_new3(array, new IntPtr(array.Length));
+                }
+                finally
+                {
+                    foreach (var native in nativeArray)
+                        native.Dispose();
+                }
             }
 
             public override void Dispose(IntPtr ptr)
@@ -845,7 +855,7 @@ namespace DlibDotNet
             {
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
-
+                
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
                 return Dlib.Native.stdvector_stdvector_rectangle_new3(array, new IntPtr(array.Length));
             }
