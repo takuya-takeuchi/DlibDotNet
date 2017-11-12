@@ -37,7 +37,7 @@ namespace DlibDotNet
             get
             {
                 var matrix = Native.point_transform_projective_get_m(this.NativePtr);
-                return new Matrix<double>(matrix, MatrixElementTypes.Double);
+                return new Matrix<double>(matrix);
             }
         }
 

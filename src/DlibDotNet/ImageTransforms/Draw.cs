@@ -420,7 +420,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"{imageType} is not supported.");
             }
 
-            return new Matrix<T>(ret_image, MatrixElementTypes.RgbPixel);
+            return new Matrix<T>(ret_image);
         }
 
         #endregion

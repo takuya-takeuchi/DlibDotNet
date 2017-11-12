@@ -247,7 +247,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_uint8_t(this.NativePtr, column, out value);
-                    return new Matrix<byte>(value, MatrixElementTypes.UInt8);
+                    return new Matrix<byte>(value);
                 }
                 set
                 {
@@ -290,7 +290,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_uint16_t(this.NativePtr, column, out value);
-                    return new Matrix<ushort>(value, MatrixElementTypes.UInt16);
+                    return new Matrix<ushort>(value);
                 }
                 set
                 {
@@ -333,7 +333,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_uint32_t(this.NativePtr, column, out value);
-                    return new Matrix<uint>(value, MatrixElementTypes.UInt32);
+                    return new Matrix<uint>(value);
                 }
                 set
                 {
@@ -376,7 +376,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_int8_t(this.NativePtr, column, out value);
-                    return new Matrix<sbyte>(value, MatrixElementTypes.Int8);
+                    return new Matrix<sbyte>(value);
                 }
                 set
                 {
@@ -419,7 +419,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_int16_t(this.NativePtr, column, out value);
-                    return new Matrix<short>(value, MatrixElementTypes.Int16);
+                    return new Matrix<short>(value);
                 }
                 set
                 {
@@ -462,7 +462,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_int32_t(this.NativePtr, column, out value);
-                    return new Matrix<int>(value, MatrixElementTypes.Int32);
+                    return new Matrix<int>(value);
                 }
                 set
                 {
@@ -505,7 +505,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_float(this.NativePtr, column, out value);
-                    return new Matrix<float>(value, MatrixElementTypes.Float);
+                    return new Matrix<float>(value);
                 }
                 set
                 {
@@ -548,7 +548,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_double(this.NativePtr, column, out value);
-                    return new Matrix<double>(value, MatrixElementTypes.Double);
+                    return new Matrix<double>(value);
                 }
                 set
                 {
@@ -591,7 +591,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_rgb_pixel(this.NativePtr, column, out value);
-                    return new Matrix<RgbPixel>(value, MatrixElementTypes.RgbPixel);
+                    return new Matrix<RgbPixel>(value);
                 }
                 set
                 {
@@ -634,7 +634,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_rgb_alpha_pixel(this.NativePtr, column, out value);
-                    return new Matrix<RgbAlphaPixel>(value, MatrixElementTypes.RgbAlphaPixel);
+                    return new Matrix<RgbAlphaPixel>(value);
                 }
                 set
                 {
@@ -677,7 +677,7 @@ namespace DlibDotNet
 
                     IntPtr value;
                     Dlib.Native.array2d_matrix_get_row_column_hsi_pixel(this.NativePtr, column, out value);
-                    return new Matrix<HsiPixel>(value, MatrixElementTypes.HsiPixel);
+                    return new Matrix<HsiPixel>(value);
                 }
                 set
                 {

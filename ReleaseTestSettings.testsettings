@@ -2,8 +2,8 @@
 <TestSettings name="Release TestSettings" id="102b5756-98a4-43ec-b0ac-99f25072bd92" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
   <Deployment>
-    <DeploymentItem filename="test\DlibDotNet.Tests\TestDeployItem\Release\DlibDotNet.Native.dll" />
     <DeploymentItem filename="test\DlibDotNet.Tests\data\" outputDirectory="data" />
+    <DeploymentItem filename="..\src\DlibDotNet.Native\build\Release\DlibDotNet.Native.dll" />
   </Deployment>
   <NamingScheme baseName="Result" appendTimeStamp="false" useDefault="false" />
   <Execution hostProcessPlatform="MSIL">

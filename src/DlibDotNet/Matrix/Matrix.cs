@@ -6,7 +6,7 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class Matrix<TElement> : MatrixBase
+    public class Matrix<TElement> : MatrixBase
         where TElement : struct
     {
 
@@ -50,10 +50,14 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        internal Matrix(IntPtr ptr, MatrixElementTypes type)
+        internal Matrix(IntPtr ptr, bool isEnabledDispose = true)
+            : base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this.NativePtr = ptr;
             this._MatrixElementTypes = type;

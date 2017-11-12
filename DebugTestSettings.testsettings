@@ -2,9 +2,9 @@
 <TestSettings id="cd722878-f0f3-4bf7-8c90-be147fb48456" name="TestSettings1" enableDefaultDataCollectors="false" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description><!--_locID_text="Description1"-->これらはローカル テスト実行用の既定のテスト設定です。</Description>
   <Deployment>
-    <DeploymentItem filename="test\DlibDotNet.Tests\TestDeployItem\Debug\DlibDotNet.Native.dll" />
     <DeploymentItem filename="test\DlibDotNet.Tests\data\" outputDirectory="data" />
-    <DeploymentItem filename="test\DlibDotNet.Tests\TestDeployItem\Debug\DlibDotNet.Native.pdb" />
+    <DeploymentItem filename="..\src\DlibDotNet.Native\build\Debug\DlibDotNet.Native.dll" />
+    <DeploymentItem filename="..\src\DlibDotNet.Native\build\Debug\DlibDotNet.Native.pdb" />
   </Deployment>
   <NamingScheme baseName="Result" appendTimeStamp="false" useDefault="false" />
   <Execution hostProcessPlatform="MSIL">

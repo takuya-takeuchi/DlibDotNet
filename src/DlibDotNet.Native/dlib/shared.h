@@ -152,3 +152,4 @@ typedef struct
 
 // statistics/statistics.h
 #define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -9
+#define ERR_VECTOR_TYPE_NOT_SUPPORT          -10

@@ -34,6 +34,7 @@ namespace DlibDotNet
                 new { Type = typeof(ImageWindow.OverlayLine),              ElementType = ElementTypes.ImageWindowOverlayLine  },
                 new { Type = typeof(PerspectiveWindow.OverlayDot),         ElementType = ElementTypes.PerspectiveWindowOverlayDot  },
                 new { Type = typeof(MModRect),                             ElementType = ElementTypes.MModRect  },
+                new { Type = typeof(SurfPoint),                            ElementType = ElementTypes.SurfPoint  },
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
@@ -125,6 +126,8 @@ namespace DlibDotNet
                         return new StdVectorPerspectiveWindowOverlayDotImp() as StdVectorImp<TItem>;
                     case ElementTypes.MModRect:
                         return new StdVectorMModRectImp() as StdVectorImp<TItem>;
+                    case ElementTypes.SurfPoint:
+                        return new StdVectorSurfPointImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdVectorRectangle:
                         return new StdVectorStdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdVectorMModRect:
@@ -196,6 +199,8 @@ namespace DlibDotNet
             Matrix,
 
             MModRect,
+
+            SurfPoint,
 
             VectorDouble,
 
@@ -574,6 +579,63 @@ namespace DlibDotNet
 
         }
 
+        private sealed class StdVectorSurfPointImp : StdVectorImp<SurfPoint>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return Dlib.Native.stdvector_surf_point_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return Dlib.Native.stdvector_surf_point_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<SurfPoint> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return Dlib.Native.stdvector_surf_point_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                Dlib.Native.stdvector_surf_point_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_surf_point_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_surf_point_getSize(ptr).ToInt32();
+            }
+
+            public override SurfPoint[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new SurfPoint[0];
+
+                var dst = new IntPtr[size];
+                Dlib.Native.stdvector_surf_point_copy(ptr, dst);
+                return dst.Select(p => new SurfPoint(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+
         private sealed class StdVectorMatrixImp<TElement> : StdVectorImp<Matrix<TElement>>
             where TElement : struct
         {
@@ -644,7 +706,7 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 Dlib.Native.stdvector_matrix_copy(ptr, dst);
-                return dst.Select(p => p != IntPtr.Zero ? new Matrix<TElement>(p, this._Type) : null).ToArray();
+                return dst.Select(p => p != IntPtr.Zero ? new Matrix<TElement>(p) : null).ToArray();
             }
 
             #endregion
