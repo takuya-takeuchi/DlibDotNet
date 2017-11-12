@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Extensions;
-using DlibDotNet.ImageProcessing;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DlibDotNet.ImageProcessing
+// ReSharper disable once CheckNamespace
+namespace DlibDotNet
 {
 
     public sealed class MModRect : DlibObject

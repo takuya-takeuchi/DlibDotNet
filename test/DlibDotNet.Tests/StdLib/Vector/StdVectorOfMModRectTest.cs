@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using DlibDotNet.ImageProcessing;
 using DlibDotNet.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
