@@ -348,9 +348,13 @@ DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectan
 {
     int err = ERR_OK;
     
+    std::vector<rectangle*>& vector = *(static_cast<std::vector<rectangle*>*>(r));
     std::vector<rectangle> tmpRects;
-    for (int index = 0 ; index < (*r).size(); index++)
-        tmpRects.push_back(*(*r)[index]);
+    for (int index = 0 ; index < vector.size(); index++)
+    {
+        dlib::rectangle& rect = *(vector[index]);
+        tmpRects.push_back(rect);
+    }
 
     switch(type)
     {

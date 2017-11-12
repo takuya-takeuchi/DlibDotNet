@@ -6,8 +6,8 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public class Array2DMatrix<T> : Array2DMatrixBase
-        where T : struct
+    public class Array2DMatrix<TElement> : Array2DMatrixBase
+        where TElement : struct
     {
 
         #region Fields
@@ -43,8 +43,8 @@ namespace DlibDotNet
 
         public Array2DMatrix()
         {
-            if (!SupportMatrixTypes.TryGetValue(typeof(T), out var matrixType))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportMatrixTypes.TryGetValue(typeof(TElement), out var matrixType))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementType = matrixType.ToNativeMatrixElementType();
 
@@ -57,8 +57,8 @@ namespace DlibDotNet
 
         public Array2DMatrix(int rows, int columns)
         {
-            if (!SupportMatrixTypes.TryGetValue(typeof(T), out var matrixType))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportMatrixTypes.TryGetValue(typeof(TElement), out var matrixType))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementType = matrixType.ToNativeMatrixElementType();
 
@@ -118,7 +118,7 @@ namespace DlibDotNet
             }
         }
 
-        public Row<T> this[int row]
+        public Row<TElement> this[int row]
         {
             get
             {
@@ -133,27 +133,27 @@ namespace DlibDotNet
                 switch (type)
                 {
                     case Dlib.Native.MatrixElementType.UInt8:
-                        return new RowUInt8(ret, type, this) as Row<T>;
+                        return new RowUInt8(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.UInt16:
-                        return new RowUInt16(ret, type, this) as Row<T>;
+                        return new RowUInt16(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.UInt32:
-                        return new RowUInt32(ret, type, this) as Row<T>;
+                        return new RowUInt32(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.Int8:
-                        return new RowInt8(ret, type, this) as Row<T>;
+                        return new RowInt8(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.Int16:
-                        return new RowInt16(ret, type, this) as Row<T>;
+                        return new RowInt16(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.Int32:
-                        return new RowInt32(ret, type, this) as Row<T>;
+                        return new RowInt32(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.Float:
-                        return new RowFloat(ret, type, this) as Row<T>;
+                        return new RowFloat(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.Double:
-                        return new RowDouble(ret, type, this) as Row<T>;
+                        return new RowDouble(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.RgbPixel:
-                        return new RowRgbPixel(ret, type, this) as Row<T>;
+                        return new RowRgbPixel(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.RgbAlphaPixel:
-                        return new RowRgbAlphaPixel(ret, type, this) as Row<T>;
+                        return new RowRgbAlphaPixel(ret, type, this) as Row<TElement>;
                     case Dlib.Native.MatrixElementType.HsiPixel:
-                        return new RowHsiPixel(ret, type, this) as Row<T>;
+                        return new RowHsiPixel(ret, type, this) as Row<TElement>;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

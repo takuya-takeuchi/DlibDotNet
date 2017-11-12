@@ -5,14 +5,14 @@ using System.Collections.Generic;
 namespace DlibDotNet
 {
 
-    public sealed class StdPair<T, U> : DlibObject
+    public sealed class StdPair<TFirst, TSecond> : DlibObject
     {
 
         #region Fields
 
         private static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
 
-        private readonly StdPairImp<T, U> _Imp;
+        private readonly StdPairImp<TFirst, TSecond> _Imp;
 
         #endregion
 
@@ -29,9 +29,9 @@ namespace DlibDotNet
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
-        public StdPair(T first, U second)
+        public StdPair(TFirst first, TSecond second)
         {
-            this._Imp = Create<T, U>();
+            this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create(first, second);
 
             this._Second = second;
@@ -40,7 +40,7 @@ namespace DlibDotNet
 
         public StdPair(IntPtr first, IntPtr second)
         {
-            this._Imp = Create<T, U>();
+            this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create(first, second);
 
             this._First = this._Imp.CreateFirst(first);
@@ -49,7 +49,7 @@ namespace DlibDotNet
 
         internal StdPair(IntPtr ptr)
         {
-            this._Imp = Create<T, U>();
+            this._Imp = CreateImp();
             this.NativePtr = ptr;
 
             this._First = this._Imp.GetFirst(ptr);
@@ -60,9 +60,9 @@ namespace DlibDotNet
 
         #region Properties
 
-        private T _First;
+        private TFirst _First;
 
-        public T First
+        public TFirst First
         {
             get
             {
@@ -76,9 +76,9 @@ namespace DlibDotNet
             }
         }
 
-        private U _Second;
+        private TSecond _Second;
 
-        public U Second
+        public TSecond Second
         {
             get
             {
@@ -98,16 +98,16 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private static StdPairImp<T, U> Create<T, U>()
+        private static StdPairImp<TFirst, TSecond> CreateImp()
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var first))
+            if (!SupportTypes.TryGetValue(typeof(TFirst), out var first))
                 throw new ArgumentOutOfRangeException(nameof(first), first, null);
 
-            if (!SupportTypes.TryGetValue(typeof(U), out var second))
+            if (!SupportTypes.TryGetValue(typeof(TSecond), out var second))
                 throw new ArgumentOutOfRangeException(nameof(second), second, null);
 
             if (first == ElementTypes.Point && second == ElementTypes.Point)
-                return new StdPairPointPointImp() as StdPairImp<T, U>;
+                return new StdPairPointPointImp() as StdPairImp<TFirst, TSecond>;
 
             throw new ArgumentOutOfRangeException();
         }
