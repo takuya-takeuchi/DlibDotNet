@@ -129,6 +129,172 @@ namespace DlibDotNet
             return image;
         }
 
+        #region LoadImageData
+
+        public static Array2D<T> LoadImageData<T>(byte[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.UInt8.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.UInt8} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(ushort[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.UInt16.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.UInt16} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(short[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.Int16.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.Int16} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(int[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.Int32.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.Int32} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(float[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.Float.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.Float} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(double[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.Double.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.Double} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(RgbPixel[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.RgbPixel.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.RgbPixel} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(RgbAlphaPixel[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.RgbAlphaPixel.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.RgbAlphaPixel} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(HsiPixel[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.HsiPixel.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.HsiPixel} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        #endregion
+
         public static void SaveBmp(Array2DBase image, string path)
         {
             if (path == null)
@@ -267,6 +433,27 @@ namespace DlibDotNet
 
             }
 
+            internal enum VectorElementType
+            {
+
+                UInt8 = 0,
+
+                UInt16,
+
+                UInt32,
+
+                Int8,
+
+                Int16,
+
+                Int32,
+
+                Float,
+
+                Double
+
+            }
+
             internal enum InterpolationTypes
             {
 
@@ -298,6 +485,15 @@ namespace DlibDotNet
 
             }
 
+            internal enum RunningStatsType
+            {
+
+                Float = 0,
+
+                Double
+
+            }
+
             internal enum ErrorType
             {
 
@@ -321,7 +517,11 @@ namespace DlibDotNet
 
                 //InputOutputMatrixNotSameSize = -9
 
-                MlpKernelNotSupport = -8
+                MlpKernelNotSupport = -8,
+
+                RunningStatsTypeNotSupport = -9,
+
+                InputVectorTypeNotSupport = -10
 
             }
 
@@ -945,31 +1145,269 @@ namespace DlibDotNet
 
             #endregion
 
-            #region vector_matrix
+            #region running_stats
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_matrix_new1(MatrixElementType matrixElementType);
+            public static extern IntPtr running_stats_new(RunningStatsType type);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_matrix_new2(MatrixElementType matrixElementType, IntPtr size);
+            public static extern ErrorType running_stats_add(RunningStatsType type, IntPtr stats, ref float val);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_matrix_new3([In] MatrixElementType matrixElementType, [In] IntPtr[] data, IntPtr dataLength);
+            public static extern ErrorType running_stats_add(RunningStatsType type, IntPtr stats, ref double val);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_matrix_getSize(IntPtr vector);
+            public static extern ErrorType running_stats_clear(RunningStatsType type, IntPtr stats);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_matrix_getPointer(IntPtr vector);
+            public static extern ErrorType running_stats_current_n(RunningStatsType type, IntPtr stats, out float n);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr vector_matrix_at(IntPtr vector, int index);
+            public static extern ErrorType running_stats_current_n(RunningStatsType type, IntPtr stats, out double n);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void vector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector);
+            public static extern ErrorType running_stats_ex_kurtosis(RunningStatsType type, IntPtr stats, out float ex_kurtosis);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void vector_matrix_copy(IntPtr vector, IntPtr[] dst);
+            public static extern ErrorType running_stats_ex_kurtosis(RunningStatsType type, IntPtr stats, out double ex_kurtosis);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_max(RunningStatsType type, IntPtr stats, out float max);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_max(RunningStatsType type, IntPtr stats, out double max);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_mean(RunningStatsType type, IntPtr stats, out float mean);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_mean(RunningStatsType type, IntPtr stats, out double mean);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_min(RunningStatsType type, IntPtr stats, out float min);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_min(RunningStatsType type, IntPtr stats, out double min);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_scale(RunningStatsType type, IntPtr stats, ref float scale, out float ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_scale(RunningStatsType type, IntPtr stats, ref double scale, out double ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_skewness(RunningStatsType type, IntPtr stats, out float skewness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_skewness(RunningStatsType type, IntPtr stats, out double skewness);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_stddev(RunningStatsType type, IntPtr stats, out float stddev);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_stddev(RunningStatsType type, IntPtr stats, out double stddev);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_variance(RunningStatsType type, IntPtr stats, out float variance);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType running_stats_variance(RunningStatsType type, IntPtr stats, out double variance);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void running_stats_delete(RunningStatsType type, IntPtr stats);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr running_stats_operator_add(RunningStatsType type, IntPtr left, IntPtr right);
+
+            #endregion
+
+            #region vector
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new(VectorElementType type);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_uint8_t(byte x, byte y, byte z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_uint16_t(ushort x, ushort y, ushort z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_uint32_t(uint x, uint y, uint z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_int8_t(sbyte x, sbyte y, sbyte z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_int16_t(short x, short y, short z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_int32_t(int x, int y, int z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_float(float x, float y, float z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_new1_double(double x, double y, double z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_delete(VectorElementType type, IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType vector_operator_left_shift(VectorElementType type, IntPtr vector, IntPtr ofstream);
+
+            #region vector_get_xyz
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_uint8_t(IntPtr vector, out byte x, out byte y, out byte z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_uint16_t(IntPtr vector, out ushort x, out ushort y, out ushort z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_uint32_t(IntPtr vector, out uint x, out uint y, out uint z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_int8_t(IntPtr vector, out sbyte x, out sbyte y, out sbyte z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_int16_t(IntPtr vector, out short x, out short y, out short z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_int32_t(IntPtr vector, out int x, out int y, out int z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_float(IntPtr vector, out float x, out float y, out float z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_get_xyz_double(IntPtr vector, out double x, out double y, out double z);
+
+            #endregion
+
+            #region vector_set_xyz
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_uint8_t(IntPtr vector, byte x, byte y, byte z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_uint16_t(IntPtr vector, ushort x, ushort y, ushort z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_uint32_t(IntPtr vector, uint x, uint y, uint z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_int8_t(IntPtr vector, sbyte x, sbyte y, sbyte z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_int16_t(IntPtr vector, short x, short y, short z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_int32_t(IntPtr vector, int x, int y, int z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_float(IntPtr vector, float x, float y, float z);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void vector_set_xyz_double(IntPtr vector, double x, double y, double z);
+
+            #endregion
+
+            #region vector_operator_add
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_uint8_t(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_uint16_t(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_uint32_t(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_int8_t(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_int16_t(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_int32_t(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_float(IntPtr left, IntPtr right, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_add_double(IntPtr left, IntPtr right, out IntPtr ret);
+
+            #endregion
+
+            #region vector_operator_div
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_uint8_t(IntPtr vector, byte value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_uint16_t(IntPtr vector, ushort value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_uint32_t(IntPtr vector, uint value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_int8_t(IntPtr vector, sbyte value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_int16_t(IntPtr vector, short value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_int32_t(IntPtr vector, int value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_float(IntPtr vector, float value, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr vector_operator_div_double(IntPtr vector, double value, out IntPtr ret);
+
+            #endregion
+
+            #endregion
+
+            #region  extensions
+
+            #region extensions_load_image_data
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, byte[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, ushort[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, uint[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, sbyte[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, short[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, int[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, float[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, double[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, RgbPixel[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, RgbAlphaPixel[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, HsiPixel[] data, uint rows, uint columns, uint steps);
+
+            #endregion
 
             #endregion
 

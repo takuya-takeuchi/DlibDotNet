@@ -23,12 +23,12 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(vector));
 
             matrix.ThrowIfDisposed();
-            vector.ThrowIfDisposed();
 
             if (matrix.Columns != 2 || matrix.Rows != 2)
                 throw new ArgumentException($"{nameof(matrix)} should be 2x2 matrix");
 
-            this.NativePtr = Native.point_transform_affine_new1(matrix.NativePtr, vector.NativePtr);
+            using (var native = vector.ToNative())
+                this.NativePtr = Native.point_transform_affine_new1(matrix.NativePtr, native.NativePtr);
         }
 
         public PointTransformAffine(Matrix<double> matrix, double x, double y)
@@ -41,7 +41,7 @@ namespace DlibDotNet
             if (matrix.Columns != 2 || matrix.Rows != 2)
                 throw new ArgumentException($"{nameof(matrix)} should be 2x2 matrix");
 
-            using (var vector = new DPoint(x, y))
+            using (var vector = new DPoint(x, y).ToNative())
                 this.NativePtr = Native.point_transform_affine_new1(matrix.NativePtr, vector.NativePtr);
         }
 
@@ -71,7 +71,7 @@ namespace DlibDotNet
             get
             {
                 var matrix = Native.point_transform_affine_get_m(this.NativePtr);
-                return new Matrix<double>(matrix, MatrixElementTypes.Double);
+                return new Matrix<double>(matrix);
             }
         }
 
@@ -81,10 +81,11 @@ namespace DlibDotNet
 
         public override DPoint Operator(DPoint point)
         {
-            point.ThrowIfDisposed();
-
-            var ptr = Native.point_transform_affine_operator(this.NativePtr, point.NativePtr);
-            return new DPoint(ptr);
+            using (var native = point.ToNative())
+            {
+                var ptr = Native.point_transform_affine_operator(this.NativePtr, native.NativePtr);
+                return new DPoint(ptr);
+            }
         }
 
         #region Overrides

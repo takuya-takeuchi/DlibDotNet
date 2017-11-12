@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet.Extensions;
 
@@ -7,8 +6,8 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class Matrix<T> : MatrixBase
-        where T : struct
+    public class Matrix<TElement> : MatrixBase
+        where TElement : struct
     {
 
         #region Fields
@@ -17,83 +16,16 @@ namespace DlibDotNet
 
         private readonly Dlib.Native.MatrixElementType _ElementType;
 
-        private static readonly Dictionary<Type, MatrixElementTypes> SupportTypes = new Dictionary<Type, MatrixElementTypes>();
-
-        private readonly Indexer<T> _Indexer;
+        private readonly Indexer<TElement> _Indexer;
 
         #endregion
 
         #region Constructors
 
-        static Matrix()
-        {
-            var types = new[]
-            {
-                new
-                {
-                    Type = typeof(byte),
-                    ElementType = MatrixElementTypes.UInt8
-                },
-                new
-                {
-                    Type = typeof(ushort),
-                    ElementType = MatrixElementTypes.UInt16
-                },
-                new
-                {
-                    Type = typeof(uint),
-                    ElementType = MatrixElementTypes.UInt32
-                },
-                new
-                {
-                    Type = typeof(sbyte),
-                    ElementType = MatrixElementTypes.Int8
-                },
-                new
-                {
-                    Type = typeof(short),
-                    ElementType = MatrixElementTypes.Int16
-                },
-                new
-                {
-                    Type = typeof(int),
-                    ElementType = MatrixElementTypes.Int32
-                },
-                new
-                {
-                    Type = typeof(float),
-                    ElementType = MatrixElementTypes.Float
-                },
-                new
-                {
-                    Type = typeof(double),
-                    ElementType = MatrixElementTypes.Double
-                },
-                new
-                {
-                    Type = typeof(RgbPixel),
-                    ElementType = MatrixElementTypes.RgbPixel
-                },
-                new
-                {
-                    Type = typeof(RgbAlphaPixel),
-                    ElementType = MatrixElementTypes.RgbAlphaPixel
-                },
-                new
-                {
-                    Type = typeof(HsiPixel),
-                    ElementType = MatrixElementTypes.HsiPixel
-                }
-            };
-
-            foreach (var type in types)
-                SupportTypes.Add(type.Type, type.ElementType);
-        }
-
         public Matrix()
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
             this._ElementType = type.ToNativeMatrixElementType();
@@ -104,8 +36,8 @@ namespace DlibDotNet
 
         public Matrix(int row, int column)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
             if (row < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
             if (column < 0)
@@ -118,10 +50,14 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        internal Matrix(IntPtr ptr, MatrixElementTypes type)
+        internal Matrix(IntPtr ptr, bool isEnabledDispose = true)
+            : base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this.NativePtr = ptr;
             this._MatrixElementTypes = type;
@@ -166,13 +102,13 @@ namespace DlibDotNet
             }
         }
 
-        public T this[int index]
+        public TElement this[int index]
         {
             get => this._Indexer[index];
             set => this._Indexer[index] = value;
         }
 
-        public T this[int row, int column]
+        public TElement this[int row, int column]
         {
             get => this._Indexer[row, column];
             set => this._Indexer[row, column] = value;
@@ -182,7 +118,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public void Assign(T[] array)
+        public void Assign(TElement[] array)
         {
             switch (this._MatrixElementTypes)
             {
@@ -222,6 +158,12 @@ namespace DlibDotNet
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        internal static bool TryParse<T>(out MatrixElementTypes result)
+            where T : struct
+        {
+            return MatrixBase.TryParse(typeof(T), out result);
         }
 
         #region Overrides
@@ -273,34 +215,34 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private Indexer<T> CreateIndexer(MatrixElementTypes types)
+        private Indexer<TElement> CreateIndexer(MatrixElementTypes types)
         {
             switch (types)
             {
                 case MatrixElementTypes.UInt8:
-                    return new IndexerUInt8(this) as Indexer<T>;
+                    return new IndexerUInt8(this) as Indexer<TElement>;
                 case MatrixElementTypes.UInt16:
-                    return new IndexerUInt16(this) as Indexer<T>;
+                    return new IndexerUInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.UInt32:
-                    return new IndexerUInt32(this) as Indexer<T>;
+                    return new IndexerUInt32(this) as Indexer<TElement>;
                     ;
                 case MatrixElementTypes.Int8:
-                    return new IndexerInt8(this) as Indexer<T>;
+                    return new IndexerInt8(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int16:
-                    return new IndexerInt16(this) as Indexer<T>;
+                    return new IndexerInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int32:
-                    return new IndexerInt32(this) as Indexer<T>;
+                    return new IndexerInt32(this) as Indexer<TElement>;
                     ;
                 case MatrixElementTypes.Float:
-                    return new IndexerFloat(this) as Indexer<T>;
+                    return new IndexerFloat(this) as Indexer<TElement>;
                 case MatrixElementTypes.Double:
-                    return new IndexerDouble(this) as Indexer<T>;
+                    return new IndexerDouble(this) as Indexer<TElement>;
                 case MatrixElementTypes.RgbPixel:
-                    return new IndexerRgbPixel(this) as Indexer<T>;
+                    return new IndexerRgbPixel(this) as Indexer<TElement>;
                 case MatrixElementTypes.RgbAlphaPixel:
-                    return new IndexerRgbAlphaPixel(this) as Indexer<T>;
+                    return new IndexerRgbAlphaPixel(this) as Indexer<TElement>;
                 case MatrixElementTypes.HsiPixel:
-                    return new IndexerHsiPixel(this) as Indexer<T>;
+                    return new IndexerHsiPixel(this) as Indexer<TElement>;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(types), types, null);
             }

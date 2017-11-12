@@ -61,21 +61,21 @@ namespace DlibDotNet
 
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
 
             image.ThrowIfDisposed();
-            rect.ThrowIfDisposed();
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.shape_predictor_operator(this.NativePtr, inType, image.NativePtr, rect.NativePtr, out var fullObjDetect);
-            switch (ret)
+            using (var native = rect.ToNative())
             {
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inType} is not supported.");
-            }
+                var ret = Native.shape_predictor_operator(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var fullObjDetect);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {inType} is not supported.");
+                }
 
-            return new FullObjectDetection(fullObjDetect);
+                return new FullObjectDetection(fullObjDetect);
+            }
         }
 
         #region Overrides

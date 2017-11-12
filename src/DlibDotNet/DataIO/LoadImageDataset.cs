@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Extensions;
-using DlibDotNet.ImageProcessing;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -27,8 +26,8 @@ namespace DlibDotNet
             var str = Encoding.UTF8.GetBytes(path);
 
             using (var matrix = new Matrix<T>())
-            using (var retImages = new VectorOfMatrix<T>())
-            using (var retBoxes = new VectorOfVectorMModRect())
+            using (var retImages = new StdVector<Matrix<T>>())
+            using (var retBoxes = new StdVector<StdVector<MModRect>>())
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = Native.load_image_dataset(type, retImages.NativePtr, retBoxes.NativePtr, str);

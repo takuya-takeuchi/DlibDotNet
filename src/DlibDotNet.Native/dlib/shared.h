@@ -27,6 +27,18 @@ enum struct matrix_element_type : int
     HsiPixel
 };
 
+enum struct vector_element_type : int
+{
+    UInt8 = 0,
+    UInt16,
+    UInt32,
+    Int8,
+    Int16,
+    Int32,
+    Float,
+    Double
+};
+
 enum element_type : int
 {
     OpHeatmap = 0,
@@ -66,6 +78,15 @@ enum struct mlp_kernel_type : int
 {
 
     Kernel1 = 0 // mlp_kernel_1
+
+};
+
+enum struct running_stats_type : int
+{
+
+    Float = 0,
+
+    Double
 
 };
 
@@ -128,3 +149,7 @@ typedef struct
 // #define ERR_INPUT_OUTPUT_ARRAY_NOT_SAME_SIZE  -8
 // #define ERR_INPUT_OUTPUT_MATRIX_NOT_SAME_SIZE -9
 #define ERR_MLP_KERNEL_NOT_SUPPORT            -8
+
+// statistics/statistics.h
+#define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -9
+#define ERR_VECTOR_TYPE_NOT_SUPPORT          -10

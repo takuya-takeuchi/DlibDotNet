@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using DlibDotNet.Tests.Core;
+using DlibDotNet.Tests.Array2D;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Tests.ImageTransforms

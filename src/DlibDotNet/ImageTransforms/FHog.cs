@@ -28,7 +28,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
-            return new Matrix<byte>(outMatrix, MatrixElementTypes.UInt8);
+            return new Matrix<byte>(outMatrix);
         }
 
         public static Array2DMatrix<T> ExtracFHogFeatures<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
@@ -76,18 +76,18 @@ namespace DlibDotNet
             inImage.ThrowIfDisposed(nameof(inImage));
 
             var hogImage = new Array<Array2D<T>>();
-            using (var array = new Array2D<T>())
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var inType = inImage.ImageType.ToNativeArray2DType();
+            var outType = type.ToNativeArray2DType();
+            var ret = Native.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+            switch (ret)
             {
-                var inType = inImage.ImageType.ToNativeArray2DType();
-                var outType = array.ImageType.ToNativeArray2DType();
-                var ret = Native.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
-                switch (ret)
-                {
-                    case Native.ErrorType.OutputElementTypeNotSupport:
-                        throw new ArgumentException($"Output {outType} is not supported.");
-                    case Native.ErrorType.InputArrayTypeNotSupport:
-                        throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
-                }
+                case Native.ErrorType.OutputElementTypeNotSupport:
+                    throw new ArgumentException($"Output {outType} is not supported.");
+                case Native.ErrorType.InputArrayTypeNotSupport:
+                    throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
             }
 
             return hogImage;
@@ -104,10 +104,11 @@ namespace DlibDotNet
             if (!(filterColsPadding > 0))
                 throw new ArgumentOutOfRangeException(nameof(filterColsPadding));
 
-            point.ThrowIfDisposed();
-
-            var ret = Native.image_to_fhog(point.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
-            return new Point(ret);
+            using (var native = point.ToNative())
+            {
+                var ret = Native.image_to_fhog(native.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+                return new Point(ret);
+            }
         }
 
         #endregion

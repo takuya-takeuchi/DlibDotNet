@@ -37,8 +37,10 @@ namespace VideoTracking
             {
                 var firstFile = files.First();
                 using (var img = Dlib.LoadImage<byte>(firstFile))
-                using (var rect = DRectangle.CenteredRect(93, 110, 38, 86))
+                {
+                    var rect = DRectangle.CenteredRect(93, 110, 38, 86);
                     tracker.StartTrack(img, rect);
+                }
 
                 foreach (var file in files.GetRange(1, files.Count - 1))
                     using (var img = Dlib.LoadImage<byte>(file))
@@ -47,9 +49,7 @@ namespace VideoTracking
 
                         win.SetImage(img);
                         win.ClearOverlay();
-
-                        using (var pos = tracker.GetPosition())
-                            win.AddOverlay(pos);
+                        win.AddOverlay(tracker.GetPosition());
 
                         Console.WriteLine("hit enter to process next frame");
                         Console.ReadKey();

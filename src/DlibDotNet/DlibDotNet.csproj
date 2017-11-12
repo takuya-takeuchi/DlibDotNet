@@ -30,4 +30,10 @@
     <DefineConstants>TRACE;LINUX;RELEASE;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="StdLib\Pair\**" />
+    <EmbeddedResource Remove="StdLib\Pair\**" />
+    <None Remove="StdLib\Pair\**" />
+  </ItemGroup>
+
 </Project>

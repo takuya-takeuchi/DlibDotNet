@@ -23,7 +23,7 @@ namespace DlibDotNet
 
             detection.ThrowIfDisposed(nameof(detection));
 
-            using (var vector = new VectorOfImageWindowOverlayLine())
+            using (var vector = new StdVector<ImageWindow.OverlayLine>())
             {
                 Native.render_face_detections(detection.NativePtr, ref color, vector.NativePtr);
                 return vector.ToArray();
@@ -40,8 +40,8 @@ namespace DlibDotNet
             if (detection == null)
                 throw new ArgumentNullException(nameof(detection));
 
-            using (var vectorIn = new VectorOfFullObjectDetection(detection))
-            using (var vectorOut = new VectorOfImageWindowOverlayLine())
+            using (var vectorIn = new StdVector<FullObjectDetection>(detection))
+            using (var vectorOut = new StdVector<ImageWindow.OverlayLine>())
             {
                 Native.render_face_detections(vectorIn.NativePtr, ref color, vectorOut.NativePtr);
                 return vectorOut.ToArray();

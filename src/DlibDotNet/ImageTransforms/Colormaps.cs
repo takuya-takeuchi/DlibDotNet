@@ -11,6 +11,20 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static RgbPixel ColormapHeat(double value, double minVal, double maxVal)
+        {
+            var pixel = new RgbPixel();
+            Native.colormap_heat(value, minVal, maxVal, ref pixel);
+            return pixel;
+        }
+
+        public static RgbPixel ColormapJet(double value, double minVal, double maxVal)
+        {
+            var pixel = new RgbPixel();
+            Native.colormap_jet(value, minVal, maxVal, ref pixel);
+            return pixel;
+        }
+
         public static MatrixOp Heatmap(Array2DBase image)
         {
             if (image == null)
@@ -83,6 +97,13 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType jet2(Array2DType type, IntPtr img, double maxVal, double minVal, out IntPtr matrix);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void colormap_heat(double value, double min_val, double max_val, ref RgbPixel pixel);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void colormap_jet(double value, double min_val, double max_val, ref RgbPixel pixel);
+
 
         }
 

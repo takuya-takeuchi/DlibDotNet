@@ -94,8 +94,6 @@ namespace DlibDotNet.Tests.ImageTransforms
                 }
                 finally
                 {
-                    if (rects != null)
-                        this.DisposeAndCheckDisposedState(rects);
                     if (inImg != null)
                         this.DisposeAndCheckDisposedState(inImg);
                 }

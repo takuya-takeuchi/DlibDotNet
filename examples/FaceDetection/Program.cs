@@ -35,9 +35,6 @@ namespace FaceDetection
 
                         Console.WriteLine("hit enter to process next frame");
                         Console.ReadKey();
-
-                        foreach (var r in dets)
-                            r.Dispose();
                     }
         }
 

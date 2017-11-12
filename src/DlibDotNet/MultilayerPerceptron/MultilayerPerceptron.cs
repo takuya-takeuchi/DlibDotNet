@@ -77,7 +77,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"{kernelType} is not supported.");
             }
 
-            return new Matrix<double>(retMat, MatrixElementTypes.Double);
+            return new Matrix<double>(retMat);
         }
 
         public void Train(MatrixBase exampleIn, double exampleOut)

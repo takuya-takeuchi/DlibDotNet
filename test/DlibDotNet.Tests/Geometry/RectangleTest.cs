@@ -12,7 +12,6 @@ namespace DlibDotNet.Tests.Geometry
         public void Create1()
         {
             var rect = new Rectangle();
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -23,7 +22,6 @@ namespace DlibDotNet.Tests.Geometry
             var rect = new Rectangle(width, height);
             Assert.AreEqual((uint)rect.Right, (width - 1));
             Assert.AreEqual((uint)rect.Bottom, (height - 1));
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -38,7 +36,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(rect.Top, top);
             Assert.AreEqual(rect.Right, right);
             Assert.AreEqual(rect.Bottom, bottom);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -51,9 +48,6 @@ namespace DlibDotNet.Tests.Geometry
             var p1 = new Point(left, top);
             var p2 = new Point(right, bottom);
             var rect = new Rectangle(p1, p2);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(p1);
-            this.DisposeAndCheckDisposedState(p2);
         }
 
         [TestMethod]
@@ -63,8 +57,6 @@ namespace DlibDotNet.Tests.Geometry
             var top = this.NextRandom(0, 100);
             var p = new Point(left, top);
             var rect = new Rectangle(p);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(p);
         }
 
         [TestMethod]
@@ -74,7 +66,6 @@ namespace DlibDotNet.Tests.Geometry
             var value = this.NextRandom(0, 100);
             rect.Left = value;
             Assert.AreEqual(rect.Left, value);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -84,7 +75,6 @@ namespace DlibDotNet.Tests.Geometry
             var value = this.NextRandom(0, 100);
             rect.Top = value;
             Assert.AreEqual(rect.Top, value);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -94,7 +84,6 @@ namespace DlibDotNet.Tests.Geometry
             var value = this.NextRandom(0, 100);
             rect.Right = value;
             Assert.AreEqual(rect.Right, value);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -104,7 +93,6 @@ namespace DlibDotNet.Tests.Geometry
             var value = this.NextRandom(0, 100);
             rect.Bottom = value;
             Assert.AreEqual(rect.Bottom, value);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -114,7 +102,6 @@ namespace DlibDotNet.Tests.Geometry
             var height = (uint)this.NextRandom(0, 100);
             var rect = new Rectangle(width, height);
             Assert.AreEqual(rect.Width, width);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -124,7 +111,6 @@ namespace DlibDotNet.Tests.Geometry
             var height = (uint)this.NextRandom(0, 100);
             var rect = new Rectangle(width, height);
             Assert.AreEqual(rect.Height, height);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -134,7 +120,6 @@ namespace DlibDotNet.Tests.Geometry
             var height = (uint)this.NextRandom(0, 100);
             var rect = new Rectangle(width, height);
             Assert.AreEqual(rect.Area, width * height);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -146,7 +131,6 @@ namespace DlibDotNet.Tests.Geometry
             var top = bottom * 2;
             var rect1 = new Rectangle(left, top, right, bottom);
             Assert.IsTrue(rect1.IsEmpty);
-            this.DisposeAndCheckDisposedState(rect1);
 
             left = this.NextRandom(1, 100);
             top = this.NextRandom(1, 100);
@@ -154,7 +138,6 @@ namespace DlibDotNet.Tests.Geometry
             bottom = top * 2;
             var rect2 = new Rectangle(left, top, right, bottom);
             Assert.IsFalse(rect2.IsEmpty);
-            this.DisposeAndCheckDisposedState(rect2);
         }
 
         [TestMethod]
@@ -168,8 +151,6 @@ namespace DlibDotNet.Tests.Geometry
             var tl = rect.TopLeft;
             Assert.AreEqual(tl.X, left);
             Assert.AreEqual(tl.Y, top);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(tl);
         }
 
         [TestMethod]
@@ -183,8 +164,6 @@ namespace DlibDotNet.Tests.Geometry
             var tr = rect.TopRight;
             Assert.AreEqual(tr.X, right);
             Assert.AreEqual(tr.Y, top);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(tr);
         }
 
         [TestMethod]
@@ -198,8 +177,6 @@ namespace DlibDotNet.Tests.Geometry
             var bl = rect.BottomLeft;
             Assert.AreEqual(bl.X, left);
             Assert.AreEqual(bl.Y, bottom);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(bl);
         }
 
         [TestMethod]
@@ -213,8 +190,6 @@ namespace DlibDotNet.Tests.Geometry
             var br = rect.BottomRight;
             Assert.AreEqual(br.X, right);
             Assert.AreEqual(br.Y, bottom);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(br);
         }
 
         [TestMethod]
@@ -237,9 +212,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(result.Top, expected.Top);
             Assert.AreEqual(result.Right, expected.Right);
             Assert.AreEqual(result.Bottom, expected.Bottom);
-
-            this.DisposeAndCheckDisposedState(result);
-            this.DisposeAndCheckDisposedState(expected);
         }
 
         [TestMethod]
@@ -263,10 +235,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(result.Top, expected.Top);
             Assert.AreEqual(result.Right, expected.Right);
             Assert.AreEqual(result.Bottom, expected.Bottom);
-
-            this.DisposeAndCheckDisposedState(p);
-            this.DisposeAndCheckDisposedState(result);
-            this.DisposeAndCheckDisposedState(expected);
         }
 
         [TestMethod]
@@ -293,10 +261,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(result.Top, expected.Top);
             Assert.AreEqual(result.Right, expected.Right);
             Assert.AreEqual(result.Bottom, expected.Bottom);
-
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(result);
-            this.DisposeAndCheckDisposedState(expected);
         }
 
         [TestMethod]
@@ -311,7 +275,6 @@ namespace DlibDotNet.Tests.Geometry
             var p = new Point(x, y);
             var rect = new Rectangle(left, top, right, bottom);
             Assert.IsTrue(rect.Contains(p));
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -325,7 +288,6 @@ namespace DlibDotNet.Tests.Geometry
             var y = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
             Assert.IsTrue(rect.Contains(x, y));
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -355,10 +317,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(result.Top, expected.Top);
             Assert.AreEqual(result.Right, expected.Right);
             Assert.AreEqual(result.Bottom, expected.Bottom);
-
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(rect2);
-            this.DisposeAndCheckDisposedState(expected);
         }
 
         [TestMethod]
@@ -374,8 +332,6 @@ namespace DlibDotNet.Tests.Geometry
             var center = rect.Center;
             Assert.AreEqual(center.X, x);
             Assert.AreEqual(center.Y, y);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(center);
         }
 
         [TestMethod]
@@ -391,8 +347,6 @@ namespace DlibDotNet.Tests.Geometry
             var center = rect.DCenter;
             Assert.AreEqual(center.X, x);
             Assert.AreEqual(center.Y, y);
-            this.DisposeAndCheckDisposedState(rect);
-            this.DisposeAndCheckDisposedState(center);
         }
 
         [TestMethod]
@@ -413,10 +367,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(ret.Top, top + y);
             Assert.AreEqual(ret.Right, right + x);
             Assert.AreEqual(ret.Bottom, bottom + y);
-
-            this.DisposeAndCheckDisposedState(ret);
-            this.DisposeAndCheckDisposedState(point);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -437,10 +387,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(ret.Top, top + y);
             Assert.AreEqual(ret.Right, right + x);
             Assert.AreEqual(ret.Bottom, bottom + y);
-
-            this.DisposeAndCheckDisposedState(ret);
-            this.DisposeAndCheckDisposedState(point);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -460,9 +406,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(ret.Top, top + y);
             Assert.AreEqual(ret.Right, right + x);
             Assert.AreEqual(ret.Bottom, bottom + y);
-
-            this.DisposeAndCheckDisposedState(ret);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -483,10 +426,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(ret.Top, top + y);
             Assert.AreEqual(ret.Right, right + x);
             Assert.AreEqual(ret.Bottom, bottom + y);
-
-            this.DisposeAndCheckDisposedState(ret);
-            this.DisposeAndCheckDisposedState(point);
-            this.DisposeAndCheckDisposedState(rect);
         }
 
         [TestMethod]
@@ -509,10 +448,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.AreEqual(rl.Top, Math.Min(l.Top, r.Top));
             Assert.AreEqual(rl.Right, Math.Max(l.Right, r.Right));
             Assert.AreEqual(rl.Bottom, Math.Max(l.Bottom, r.Bottom));
-
-            this.DisposeAndCheckDisposedState(rl);
-            this.DisposeAndCheckDisposedState(l);
-            this.DisposeAndCheckDisposedState(r);
         }
 
         [TestMethod]
@@ -535,13 +470,6 @@ namespace DlibDotNet.Tests.Geometry
             Assert.IsTrue(r != l2);
             Assert.IsTrue(r != l3);
             Assert.IsTrue(r != l4);
-
-            this.DisposeAndCheckDisposedState(l);
-            this.DisposeAndCheckDisposedState(r);
-            this.DisposeAndCheckDisposedState(l1);
-            this.DisposeAndCheckDisposedState(l2);
-            this.DisposeAndCheckDisposedState(l3);
-            this.DisposeAndCheckDisposedState(l4);
         }
 
     }

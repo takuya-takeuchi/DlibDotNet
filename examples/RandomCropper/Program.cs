@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet;
-using DlibDotNet.ImageProcessing;
 
 namespace RandomCropper
 {
@@ -72,11 +71,11 @@ namespace RandomCropper
                             // ignore in boxes then it will still be labeled as ignore in
                             // crop_boxes.  Moreover, objects that are not well contained within
                             // the crop are also set to ignore.
-                            using (var rect = b.Rect)
-                                if (b.Ignore)
-                                    win.AddOverlay(rect, new RgbPixel { Red = 255, Blue = 255 }); // draw ignored boxes as orange 
-                                else
-                                    win.AddOverlay(rect, new RgbPixel { Red = 255 });   // draw other boxes as red
+                            var rect = b.Rect;
+                            if (b.Ignore)
+                                win.AddOverlay(rect, new RgbPixel { Red = 255, Blue = 255 }); // draw ignored boxes as orange 
+                            else
+                                win.AddOverlay(rect, new RgbPixel { Red = 255 });   // draw other boxes as red
                         }
 
                         Console.WriteLine("Hit enter to view the next random crop.");

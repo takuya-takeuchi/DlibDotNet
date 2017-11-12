@@ -1,5 +1,5 @@
 ﻿using System;
-using DlibDotNet.Tests.Core;
+using DlibDotNet.Tests.Array2D;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Tests.Matrix

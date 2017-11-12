@@ -64,37 +64,39 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(point));
 
             image.ThrowIfDisposed();
-            point.ThrowIfDisposed();
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.hough_transform_get_best_hough_point(
+            using (var native = point.ToNative())
+            {
+                var ret = Native.hough_transform_get_best_hough_point(
                 this.NativePtr,
-                point.NativePtr,
+                native.NativePtr,
                 inType,
                 image.NativePtr,
                 out var resultPoint);
-            switch (ret)
-            {
-                case Dlib.Native.ErrorType.ArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {image.ImageType} is not supported.");
-            }
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.ArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {image.ImageType} is not supported.");
+                }
 
-            return new Point(resultPoint);
+                return new Point(resultPoint);
+            }
         }
 
-        public StdPair<Point, Point> GetLine(Point point)
+        public Tuple<Point, Point> GetLine(Point point)
         {
             this.ThrowIfDisposed();
 
             if (point == null)
                 throw new ArgumentNullException(nameof(point));
 
-            point.ThrowIfDisposed();
-
-            var ret = Native.hough_transform_get_line(this.NativePtr, point.NativePtr);
-            var first = PairOfPointPoint.Native.pair_point_point_get_first(ret);
-            var second = PairOfPointPoint.Native.pair_point_point_get_second(ret);
-            return new PairOfPointPoint(first, second);
+            using (var native = point.ToNative())
+            {
+                var ret = Native.hough_transform_get_line(this.NativePtr, native.NativePtr);
+                using (var pairt = new StdPair<Point, Point>(ret))
+                    return new Tuple<Point, Point>(pairt.First, pairt.Second);
+            }
         }
 
         public void Operator(Array2DBase inImage, Rectangle rect, Array2DBase outImage)
@@ -103,30 +105,30 @@ namespace DlibDotNet
 
             if (inImage == null)
                 throw new ArgumentNullException(nameof(inImage));
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
             if (outImage == null)
                 throw new ArgumentNullException(nameof(outImage));
 
             inImage.ThrowIfDisposed();
-            rect.ThrowIfDisposed();
             outImage.ThrowIfDisposed();
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = outImage.ImageType.ToNativeArray2DType();
-            var ret = Native.hough_transform_operator(
-                this.NativePtr,
-                inType,
-                inImage.NativePtr,
-                outType,
-                outImage.NativePtr,
-                rect.NativePtr);
-            switch (ret)
+            using (var native = rect.ToNative())
             {
-                case Dlib.Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outImage.ImageType} is not supported.");
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+                var ret = Native.hough_transform_operator(
+                    this.NativePtr,
+                    inType,
+                    inImage.NativePtr,
+                    outType,
+                    outImage.NativePtr,
+                    native.NativePtr);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.OutputArrayTypeNotSupport:
+                        throw new ArgumentException($"Output {outImage.ImageType} is not supported.");
+                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+                }
             }
         }
 
@@ -181,7 +183,6 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void hough_transform_delete(IntPtr obj);
-
 
         }
 

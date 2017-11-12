@@ -66,9 +66,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 Dlib.DrawRectangle(image, r, new RgbPixel { Green = 255 });
 
             Dlib.SaveBmp(image, Path.Combine(this.GetOutDir(this.GetType().Name), "DetectFace.bmp"));
-
-            this.DisposeAndCheckDisposedState(rects);
-            this.DisposeAndCheckDisposedState(dets);
+            
             this.DisposeAndCheckDisposedState(faceDetector);
             this.DisposeAndCheckDisposedState(image);
         }
@@ -125,7 +123,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                             rects.Add(r);
                         }
-                        this.DisposeAndCheckDisposedState(rects);
 
                         // This test does NOT check whether output image and detect face area are correct
                         //Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"2008_001322_{input.Type}.jpg")}");
@@ -139,8 +136,6 @@ namespace DlibDotNet.Tests.ImageProcessing
                     var finallyAction = new Action(() =>
                     {
                         this.DisposeAndCheckDisposedState(imageObj);
-                        if (dets != null)
-                            this.DisposeAndCheckDisposedState(dets);
                     });
 
                     var exceptionAction = new Action(() =>

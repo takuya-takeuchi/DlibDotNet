@@ -25,3 +25,7 @@ This file is created by converting from Lenna.jpg.
 # Lenna_mini.bmp
 
 This file is created by converting and resizing from Lenna.jpg.
+
+# lena_gray
+
+This file was got from http://eeweb.poly.edu/~yao/EL5123/SampleData.html

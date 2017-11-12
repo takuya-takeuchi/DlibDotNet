@@ -66,6 +66,31 @@ namespace DlibDotNet.Extensions
             }
         }
 
+        internal static Dlib.Native.VectorElementType ToNativeVectorElementType(this VectorElementTypes types)
+        {
+            switch (types)
+            {
+                case VectorElementTypes.UInt8:
+                    return Dlib.Native.VectorElementType.UInt8;
+                case VectorElementTypes.UInt16:
+                    return Dlib.Native.VectorElementType.UInt16;
+                case VectorElementTypes.UInt32:
+                    return Dlib.Native.VectorElementType.UInt32;
+                case VectorElementTypes.Int8:
+                    return Dlib.Native.VectorElementType.Int8;
+                case VectorElementTypes.Int16:
+                    return Dlib.Native.VectorElementType.Int16;
+                case VectorElementTypes.Int32:
+                    return Dlib.Native.VectorElementType.Int32;
+                case VectorElementTypes.Float:
+                    return Dlib.Native.VectorElementType.Float;
+                case VectorElementTypes.Double:
+                    return Dlib.Native.VectorElementType.Double;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+            }
+        }
+
         internal static ImageTypes ToImageTypes(this MatrixElementTypes matrixElementTypes)
         {
             switch (matrixElementTypes)
@@ -132,6 +157,19 @@ namespace DlibDotNet.Extensions
             {
                 case MultilayerPerceptronKernelTypes.Kernel1:
                     return Dlib.Native.MlpKernelType.Kernel1;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+            }
+        }
+
+        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsTypes types)
+        {
+            switch (types)
+            {
+                case RunningStatsTypes.Float:
+                    return Dlib.Native.RunningStatsType.Float;
+                case RunningStatsTypes.Double:
+                    return Dlib.Native.RunningStatsType.Double;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(types), types, null);
             }
