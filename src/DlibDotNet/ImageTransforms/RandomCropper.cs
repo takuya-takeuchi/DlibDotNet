@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
-using DlibDotNet.ImageProcessing;
 
 namespace DlibDotNet.ImageTransforms
 {
