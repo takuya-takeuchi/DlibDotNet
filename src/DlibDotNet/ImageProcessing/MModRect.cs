@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace DlibDotNet.ImageProcessing
 {
-    
+
     public sealed class MModRect : DlibObject
     {
 
@@ -91,11 +89,9 @@ namespace DlibDotNet.ImageProcessing
             set
             {
                 this.ThrowIfDisposed();
-                if(value == null)
-                    throw new ArgumentNullException();
 
-                value.ThrowIfDisposed();
-                Native.mmod_rect_set_rect(this.NativePtr, value.NativePtr);
+                using (var native = value.ToNative())
+                    Native.mmod_rect_set_rect(this.NativePtr, native.NativePtr);
             }
         }
 

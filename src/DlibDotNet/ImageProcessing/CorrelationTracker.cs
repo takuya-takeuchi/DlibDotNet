@@ -50,21 +50,21 @@ namespace DlibDotNet
 
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
 
             image.ThrowIfDisposed();
-            rect.ThrowIfDisposed();
 
             if(rect.IsEmpty)
                 throw new ArgumentException($"{nameof(rect)} must not be empty");
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.correlation_tracker_start_track(this.NativePtr, inType, image.NativePtr, rect.NativePtr);
-            switch (ret)
+            using (var native = rect.ToNative())
             {
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inType} is not supported.");
+                var ret = Native.correlation_tracker_start_track(this.NativePtr, inType, image.NativePtr, native.NativePtr);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {inType} is not supported.");
+                }
             }
         }
 
@@ -74,24 +74,24 @@ namespace DlibDotNet
 
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
-            if (guess == null)
-                throw new ArgumentNullException(nameof(guess));
 
             image.ThrowIfDisposed();
-            guess.ThrowIfDisposed();
 
             if (guess.IsEmpty)
                 throw new ArgumentException($"{nameof(guess)} must not be empty");
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.correlation_tracker_update(this.NativePtr, inType, image.NativePtr, guess.NativePtr, out var confident);
-            switch (ret)
+            using (var native = guess.ToNative())
             {
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inType} is not supported.");
-            }
+                var ret = Native.correlation_tracker_update(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {inType} is not supported.");
+                }
 
-            return confident;
+                return confident;
+            }
         }
 
         public double Update(Array2DBase image)
@@ -120,24 +120,24 @@ namespace DlibDotNet
 
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
-            if (guess == null)
-                throw new ArgumentNullException(nameof(guess));
 
             image.ThrowIfDisposed();
-            guess.ThrowIfDisposed();
 
             if (guess.IsEmpty)
                 throw new ArgumentException($"{nameof(guess)} must not be empty");
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.correlation_tracker_update_noscale(this.NativePtr, inType, image.NativePtr, guess.NativePtr, out var confident);
-            switch (ret)
+            using (var native = guess.ToNative())
             {
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inType} is not supported.");
-            }
+                var ret = Native.correlation_tracker_update_noscale(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {inType} is not supported.");
+                }
 
-            return confident;
+                return confident;
+            }
         }
 
         public double UpdateNoscale(Array2DBase image)

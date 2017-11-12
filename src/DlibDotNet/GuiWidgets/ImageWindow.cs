@@ -110,84 +110,56 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
         }
 
         public void AddOverlay(Rectangle rect, ushort color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
         }
 
         public void AddOverlay(Rectangle rect, float color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.Float, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.Float, ref color);
         }
 
         public void AddOverlay(Rectangle rect, double color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.Double, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.Double, ref color);
         }
 
         public void AddOverlay(Rectangle rect, RgbPixel color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
         }
 
         public void AddOverlay(Rectangle rect, RgbAlphaPixel color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
         }
 
         public void AddOverlay(Rectangle rect, HsiPixel color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
         }
 
         #endregion
@@ -295,84 +267,56 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
         }
 
         public void AddOverlay(DRectangle rect, ushort color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
         }
 
         public void AddOverlay(DRectangle rect, float color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.Float, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.Float, ref color);
         }
 
         public void AddOverlay(DRectangle rect, double color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.Double, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.Double, ref color);
         }
 
         public void AddOverlay(DRectangle rect, RgbPixel color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
         }
 
         public void AddOverlay(DRectangle rect, RgbAlphaPixel color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
         }
 
         public void AddOverlay(DRectangle rect, HsiPixel color)
         {
             this.ThrowIfDisposed();
 
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
-
-            rect.ThrowIfDisposed();
-
-            Native.image_window_add_overlay3(this.NativePtr, rect.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
+            using (var native = rect.ToNative())
+                Native.image_window_add_overlay3(this.NativePtr, native.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
         }
 
         #endregion
@@ -529,7 +473,7 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr image_window_new_matrix_op2(Dlib.Native.ElementType matrixElementType, Dlib.Native.Array2DType type, IntPtr image, byte[] title);
-            
+
             #region image_window_add_overlay
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

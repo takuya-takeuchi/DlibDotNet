@@ -104,10 +104,11 @@ namespace DlibDotNet
             if (!(filterColsPadding > 0))
                 throw new ArgumentOutOfRangeException(nameof(filterColsPadding));
 
-            point.ThrowIfDisposed();
-
-            var ret = Native.image_to_fhog(point.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
-            return new Point(ret);
+            using (var native = point.ToNative())
+            {
+                var ret = Native.image_to_fhog(native.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+                return new Point(ret);
+            }
         }
 
         #endregion

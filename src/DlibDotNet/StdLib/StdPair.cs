@@ -157,14 +157,9 @@ namespace DlibDotNet
 
             public override IntPtr Create(Point first, Point second)
             {
-                if (first != null)
-                    first.ThrowIfDisposed();
-                if (second != null)
-                    second.ThrowIfDisposed();
-
-                var firstPtr = first == null ? IntPtr.Zero : first.NativePtr;
-                var secondPtr = second == null ? IntPtr.Zero : second.NativePtr;
-                return Dlib.Native.stdpair_point_point_new(firstPtr, secondPtr);
+                using (var f = first.ToNative())
+                using (var n = second.ToNative())
+                    return Dlib.Native.stdpair_point_point_new(f.NativePtr, n.NativePtr);
             }
 
             public override IntPtr Create(IntPtr first, IntPtr second)
@@ -184,26 +179,26 @@ namespace DlibDotNet
 
             public override Point GetFirst(IntPtr ptr)
             {
-                return new Point(Dlib.Native.stdpair_point_point_get_first(ptr));
+                using (var native = new Point.NativePoint(Dlib.Native.stdpair_point_point_get_first(ptr)))
+                    return native.ToManaged();
             }
 
             public override Point GetSecond(IntPtr ptr)
             {
-                return new Point(Dlib.Native.stdpair_point_point_get_second(ptr));
+                using (var native = new Point.NativePoint(Dlib.Native.stdpair_point_point_get_second(ptr)))
+                    return native.ToManaged();
             }
 
             public override void SetFirst(IntPtr ptr, Point value)
             {
-                if (value != null)
-                    value.ThrowIfDisposed();
-                Dlib.Native.stdpair_point_point_set_first(ptr, value == null ? IntPtr.Zero : value.NativePtr);
+                using (var native = value.ToNative())
+                    Dlib.Native.stdpair_point_point_set_first(ptr, native.NativePtr);
             }
 
             public override void SetSecond(IntPtr ptr, Point value)
             {
-                if (value != null)
-                    value.ThrowIfDisposed();
-                Dlib.Native.stdpair_point_point_set_second(ptr, value == null ? IntPtr.Zero : value.NativePtr);
+                using (var native = value.ToNative())
+                    Dlib.Native.stdpair_point_point_set_second(ptr, native.NativePtr);
             }
 
             #endregion

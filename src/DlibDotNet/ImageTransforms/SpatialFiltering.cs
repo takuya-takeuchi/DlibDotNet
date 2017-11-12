@@ -43,25 +43,25 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(inImage));
             if (outImage == null)
                 throw new ArgumentNullException(nameof(outImage));
-            if (rect == null)
-                throw new ArgumentNullException(nameof(rect));
 
             inImage.ThrowIfDisposed(nameof(inImage));
             outImage.ThrowIfDisposed(nameof(outImage));
-            rect.ThrowIfDisposed(nameof(rect));
 
             if (inImage.Rows != outImage.Rows || inImage.Columns != outImage.Columns)
                 throw new ArgumentException();
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = outImage.ImageType.ToNativeArray2DType();
-            var ret = Native.sum_filter(inType, inImage.NativePtr, outType, outImage.NativePtr, rect.NativePtr);
-            switch (ret)
+            using (var native = rect.ToNative())
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outImage.ImageType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+                var ret = Native.sum_filter(inType, inImage.NativePtr, outType, outImage.NativePtr, native.NativePtr);
+                switch (ret)
+                {
+                    case Native.ErrorType.OutputArrayTypeNotSupport:
+                        throw new ArgumentException($"Output {outImage.ImageType} is not supported.");
+                    case Native.ErrorType.InputArrayTypeNotSupport:
+                        throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+                }
             }
         }
 

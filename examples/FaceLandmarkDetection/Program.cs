@@ -78,8 +78,6 @@ namespace FaceLandmarkDetection
 
                         foreach (var s in shapes)
                             s.Dispose();
-                        foreach (var r in dets)
-                            r.Dispose();
                     }
                 }
         }

@@ -30,13 +30,11 @@ namespace DlibDotNet.Tests.Array2D
                 Assert.AreEqual(array.Columns, cols);
                 Assert.AreEqual(array.Rows, rows);
                 Assert.AreEqual(array.Size, cols * rows);
-                using (var rect = array.Rect)
-                {
-                    Assert.AreEqual(rect.Width, (uint)cols);
-                    Assert.AreEqual(rect.Height, (uint)rows);
-                    Assert.AreEqual(rect.Left, 0);
-                    Assert.AreEqual(rect.Top, 0);
-                }
+                var rect = array.Rect;
+                Assert.AreEqual(rect.Width, (uint)cols);
+                Assert.AreEqual(rect.Height, (uint)rows);
+                Assert.AreEqual(rect.Left, 0);
+                Assert.AreEqual(rect.Top, 0);
                 this.DisposeAndCheckDisposedState(array);
             }
         }
@@ -73,13 +71,11 @@ namespace DlibDotNet.Tests.Array2D
                 Assert.AreEqual(array2DMatrix.Columns, cols);
                 Assert.AreEqual(array2DMatrix.Rows, rows);
                 Assert.AreEqual(array2DMatrix.Size, cols * rows);
-                using (var rect = array2DMatrix.Rect)
-                {
-                    Assert.AreEqual(rect.Width, (uint)cols);
-                    Assert.AreEqual(rect.Height, (uint)rows);
-                    Assert.AreEqual(rect.Left, 0);
-                    Assert.AreEqual(rect.Top, 0);
-                }
+                var rect = array2DMatrix.Rect;
+                Assert.AreEqual(rect.Width, (uint)cols);
+                Assert.AreEqual(rect.Height, (uint)rows);
+                Assert.AreEqual(rect.Left, 0);
+                Assert.AreEqual(rect.Top, 0);
                 this.DisposeAndCheckDisposedState(array2DMatrix);
             }
         }

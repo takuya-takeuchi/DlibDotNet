@@ -16,8 +16,6 @@ namespace DlibDotNet
             var second = new Point();
             var pair = new StdPair<Point,Point>(first, second);
             this.DisposeAndCheckDisposedState(pair);
-            this.DisposeAndCheckDisposedState(second);
-            this.DisposeAndCheckDisposedState(first);
         }
 
         [TestMethod]
@@ -38,15 +36,8 @@ namespace DlibDotNet
             Assert.AreEqual(pair1.Second.Y, sy);
             Assert.AreEqual(pair1.First, first);
             Assert.AreEqual(pair1.Second, second);
-
-            var pair2 = new StdPair<Point, Point>(null, null);
-            Assert.AreEqual(pair2.First, null);
-            Assert.AreEqual(pair2.Second, null);
-
-            this.DisposeAndCheckDisposedState(pair2);
+            
             this.DisposeAndCheckDisposedState(pair1);
-            this.DisposeAndCheckDisposedState(second);
-            this.DisposeAndCheckDisposedState(first);
         }
 
         [TestMethod]
@@ -59,21 +50,19 @@ namespace DlibDotNet
 
             var first = new Point(fx, fy);
             var second = new Point(sx, sy);
+            var first1 = new Point(fx, fy);
+            var second2 = new Point(sx, sy);
 
-            var pair = new StdPair<Point, Point>(null, null);
-            pair.First = first;
-            pair.Second = second;
+            var pair = new StdPair<Point, Point>(first, second);
+            pair.First = first1;
+            pair.Second = second2;
 
             Assert.AreEqual(pair.First.X, fx);
             Assert.AreEqual(pair.First.Y, fy);
             Assert.AreEqual(pair.Second.X, sx);
             Assert.AreEqual(pair.Second.Y, sy);
-            Assert.AreEqual(pair.First, first);
-            Assert.AreEqual(pair.Second, second);
 
             this.DisposeAndCheckDisposedState(pair);
-            this.DisposeAndCheckDisposedState(second);
-            this.DisposeAndCheckDisposedState(first);
         }
 
     }

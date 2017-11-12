@@ -17,7 +17,7 @@ namespace FHog
             {
                 // Make sure the user entered an argument to this program.  It should be the
                 // filename for an image.
-                if (args.Length != 2)
+                if (args.Length != 1)
                 {
                     Console.WriteLine("error, you have to enter a BMP file as an argument to this program.");
                     return;
@@ -49,14 +49,12 @@ namespace FHog
                             Point p;  // A 2D point, used to represent pixel locations.
                             while (win.GetNextDoubleClick(out p))
                             {
-                                using (var hp = Dlib.ImgaeToFHog(p))
-                                {
-                                    Console.WriteLine($"The point {p} in the input image corresponds to {hp} in hog space.");
-                                    var row = hog[hp.Y];
-                                    var column = row[hp.X];
-                                    var t = Dlib.Trans(column);
-                                    Console.WriteLine($"FHOG features at this point: {t}");
-                                }
+                                var hp = Dlib.ImgaeToFHog(p);
+                                Console.WriteLine($"The point {p} in the input image corresponds to {hp} in hog space.");
+                                var row = hog[hp.Y];
+                                var column = row[hp.X];
+                                var t = Dlib.Trans(column);
+                                Console.WriteLine($"FHOG features at this point: {t}");
                             }
 
                             // Finally, sometimes you want to get a planar representation of the HOG features

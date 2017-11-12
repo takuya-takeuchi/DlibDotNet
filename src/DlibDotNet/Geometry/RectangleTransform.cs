@@ -44,24 +44,20 @@ namespace DlibDotNet
 
         public Rectangle Operator(Rectangle rectangle)
         {
-            if (rectangle == null)
-                throw new ArgumentNullException(nameof(rectangle));
-
-            rectangle.ThrowIfDisposed();
-
-            var ptr = Native.rectangle_transform_operator(this.NativePtr, rectangle.NativePtr);
-            return new Rectangle(ptr);
+            using (var native = rectangle.ToNative())
+            {
+                var ptr = Native.rectangle_transform_operator(this.NativePtr, native.NativePtr);
+                return new Rectangle(ptr);
+            }
         }
 
         public DRectangle Operator(DRectangle drectangle)
         {
-            if (drectangle == null)
-                throw new ArgumentNullException(nameof(drectangle));
-
-            drectangle.ThrowIfDisposed();
-
-            var ptr = Native.rectangle_transform_operator_d(this.NativePtr, drectangle.NativePtr);
-            return new DRectangle(ptr);
+            using (var native = drectangle.ToNative())
+            {
+                var ptr = Native.rectangle_transform_operator_d(this.NativePtr, native.NativePtr);
+                return new DRectangle(ptr);
+            }
         }
 
         #region Overrides

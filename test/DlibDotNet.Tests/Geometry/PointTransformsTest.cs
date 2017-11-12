@@ -51,9 +51,7 @@ namespace DlibDotNet.Tests.Geometry
                     var vector = new DPoint(x, y);
                     var rotator = new PointRotator(15);
                     var ret = rotator.Operator(vector);
-                    this.DisposeAndCheckDisposedState(ret);
                     this.DisposeAndCheckDisposedState(rotator);
-                    this.DisposeAndCheckDisposedState(vector);
                 }
         }
 
@@ -69,27 +67,6 @@ namespace DlibDotNet.Tests.Geometry
         }
 
         [TestMethod]
-        public void PointTransformCreateException()
-        {
-            PointTransform transform = null;
-
-            try
-            {
-                transform = new PointTransform(0, null);
-                Assert.Fail("PointTransformAffine should not accept null object for 2nd argument");
-            }
-            catch
-            {
-                Console.WriteLine("OK");
-            }
-            finally
-            {
-                if (transform != null)
-                    this.DisposeAndCheckDisposedState(transform);
-            }
-        }
-
-        [TestMethod]
         public void PointTransformCreate1()
         {
             for (var angle = -360d; angle <= 360d; angle += 2.5)
@@ -98,7 +75,6 @@ namespace DlibDotNet.Tests.Geometry
                     {
                         var vector = new DPoint(x, y);
                         var transform = new PointTransform(angle, vector);
-                        this.DisposeAndCheckDisposedState(vector);
                         this.DisposeAndCheckDisposedState(transform);
                     }
         }
@@ -115,9 +91,7 @@ namespace DlibDotNet.Tests.Geometry
                         var b = transform.B;
                         Assert.AreEqual(b.X, x);
                         Assert.AreEqual(b.Y, y);
-                        this.DisposeAndCheckDisposedState(b);
                         this.DisposeAndCheckDisposedState(transform);
-                        this.DisposeAndCheckDisposedState(vector);
                     }
         }
 
@@ -136,7 +110,6 @@ namespace DlibDotNet.Tests.Geometry
                         Assert.AreEqual(m.Columns, 2);
                         this.DisposeAndCheckDisposedState(m);
                         this.DisposeAndCheckDisposedState(transform);
-                        this.DisposeAndCheckDisposedState(vector);
                     }
         }
 
@@ -150,10 +123,7 @@ namespace DlibDotNet.Tests.Geometry
                     var vector2 = new DPoint(x * 2, y * 2);
                     var transform = new PointTransform(15, vector);
                     var ret = transform.Operator(vector2);
-                    this.DisposeAndCheckDisposedState(ret);
                     this.DisposeAndCheckDisposedState(transform);
-                    this.DisposeAndCheckDisposedState(vector2);
-                    this.DisposeAndCheckDisposedState(vector);
                 }
         }
 
@@ -172,47 +142,9 @@ namespace DlibDotNet.Tests.Geometry
         public void PointTransformAffineCreateException()
         {
             PointTransformAffine transform = null;
-            DPoint vector = null;
+            DPoint vector;
             Matrix<double> matrix = null;
-
-            try
-            {
-                vector = new DPoint();
-                transform = new PointTransformAffine(null, vector);
-                Assert.Fail("PointTransformAffine should not accept null object for 1st argument");
-            }
-            catch
-            {
-                Console.WriteLine("OK");
-            }
-            finally
-            {
-                if (vector != null)
-                    this.DisposeAndCheckDisposedState(vector);
-                if (transform != null)
-                    this.DisposeAndCheckDisposedState(transform);
-            }
-
-            try
-            {
-                matrix = new Matrix<double>(2, 2);
-                transform = new PointTransformAffine(matrix, null);
-                Assert.Fail("PointTransformAffine should not accept null object for 2nd argument");
-            }
-            catch
-            {
-                Console.WriteLine("OK");
-            }
-            finally
-            {
-                if (matrix != null)
-                    this.DisposeAndCheckDisposedState(matrix);
-                if (vector != null)
-                    this.DisposeAndCheckDisposedState(vector);
-                if (transform != null)
-                    this.DisposeAndCheckDisposedState(transform);
-            }
-
+            
             try
             {
                 matrix = new Matrix<double>();
@@ -228,8 +160,6 @@ namespace DlibDotNet.Tests.Geometry
             {
                 if (matrix != null)
                     this.DisposeAndCheckDisposedState(matrix);
-                if (vector != null)
-                    this.DisposeAndCheckDisposedState(vector);
                 if (transform != null)
                     this.DisposeAndCheckDisposedState(transform);
             }
@@ -245,7 +175,6 @@ namespace DlibDotNet.Tests.Geometry
                     var vector = new DPoint(x, y);
                     var transform = new PointTransformAffine(matrix, vector);
                     this.DisposeAndCheckDisposedState(matrix);
-                    this.DisposeAndCheckDisposedState(vector);
                     this.DisposeAndCheckDisposedState(transform);
                 }
         }
@@ -262,9 +191,7 @@ namespace DlibDotNet.Tests.Geometry
                     var b = transform.B;
                     Assert.AreEqual(b.X, x);
                     Assert.AreEqual(b.Y, y);
-                    this.DisposeAndCheckDisposedState(b);
                     this.DisposeAndCheckDisposedState(transform);
-                    this.DisposeAndCheckDisposedState(vector);
                     this.DisposeAndCheckDisposedState(matrix);
                 }
         }
@@ -284,7 +211,6 @@ namespace DlibDotNet.Tests.Geometry
                     Assert.AreEqual(m.Columns, 2);
                     this.DisposeAndCheckDisposedState(m);
                     this.DisposeAndCheckDisposedState(transform);
-                    this.DisposeAndCheckDisposedState(vector);
                     this.DisposeAndCheckDisposedState(matrix);
                 }
         }
@@ -300,10 +226,7 @@ namespace DlibDotNet.Tests.Geometry
                     var transform = new PointTransformAffine(matrix, vector);
                     var vector2 = new DPoint(x * 2, y * 2);
                     var ret = transform.Operator(vector2);
-                    this.DisposeAndCheckDisposedState(ret);
-                    this.DisposeAndCheckDisposedState(vector2);
                     this.DisposeAndCheckDisposedState(transform);
-                    this.DisposeAndCheckDisposedState(vector);
                     this.DisposeAndCheckDisposedState(matrix);
                 }
         }
@@ -392,7 +315,6 @@ namespace DlibDotNet.Tests.Geometry
                     var transform = new PointTransformProjective(matrix);
                     var vector = new DPoint(x, y);
                     var ret = transform.Operator(vector);
-                    this.DisposeAndCheckDisposedState(ret);
                     this.DisposeAndCheckDisposedState(transform);
                     this.DisposeAndCheckDisposedState(matrix);
                 }
@@ -460,9 +382,7 @@ namespace DlibDotNet.Tests.Geometry
             var rectangle = new Rectangle(l, t, r, b);
             var transform = new RectangleTransform();
             var ret = transform.Operator(rectangle);
-            this.DisposeAndCheckDisposedState(ret);
             this.DisposeAndCheckDisposedState(transform);
-            this.DisposeAndCheckDisposedState(rectangle);
         }
 
         [TestMethod]
@@ -475,9 +395,7 @@ namespace DlibDotNet.Tests.Geometry
             var rectangle = new DRectangle(l, t, r, b);
             var transform = new RectangleTransform();
             var ret = transform.Operator(rectangle);
-            this.DisposeAndCheckDisposedState(ret);
             this.DisposeAndCheckDisposedState(transform);
-            this.DisposeAndCheckDisposedState(rectangle);
         }
 
         #endregion
