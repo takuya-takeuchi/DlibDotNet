@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace DlibDotNet
 {
 
-    public struct DRectangle
+    public struct DRectangle : IEquatable<DRectangle>
     {
 
         #region Constructors
@@ -242,6 +242,11 @@ namespace DlibDotNet
                 return nr.Contains(np);
         }
 
+        public bool Equals(DRectangle other)
+        {
+            return this._Bottom.Equals(other._Bottom) && this._Left.Equals(other._Left) && this._Right.Equals(other._Right) && this._Top.Equals(other._Top);
+        }
+
         public DRectangle Intersect(DRectangle drect)
         {
             using (var np = drect.ToNative())
@@ -282,6 +287,24 @@ namespace DlibDotNet
         }
 
         #region Overrides
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is DRectangle && Equals((DRectangle)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = this._Bottom.GetHashCode();
+                hashCode = (hashCode * 397) ^ this._Left.GetHashCode();
+                hashCode = (hashCode * 397) ^ this._Right.GetHashCode();
+                hashCode = (hashCode * 397) ^ this._Top.GetHashCode();
+                return hashCode;
+            }
+        }
 
         public static explicit operator Rectangle(DRectangle drect)
         {

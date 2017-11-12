@@ -6,7 +6,7 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public struct Point
+    public struct Point : IEquatable<Point>
     {
 
         #region Constructors
@@ -68,6 +68,11 @@ namespace DlibDotNet
 
         #region Methods
 
+        public bool Equals(Point other)
+        {
+            return this._X == other._X && this._Y == other._Y;
+        }
+
         public Point Rotate(Point point, double angle)
         {
             using (var src = this.ToNative())
@@ -87,6 +92,20 @@ namespace DlibDotNet
         }
 
         #region Overrids
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Point && Equals((Point)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (this._X * 397) ^ this._Y;
+            }
+        }
 
         public static Point operator +(Point point, Point rhs)
         {
