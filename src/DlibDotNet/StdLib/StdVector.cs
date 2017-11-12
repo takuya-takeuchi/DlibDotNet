@@ -10,14 +10,14 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public sealed class StdVector<T> : DlibObject
+    public sealed class StdVector<TItem> : DlibObject
     {
 
         #region Fields
 
         private static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
 
-        private readonly StdVectorImp<T> _Imp;
+        private readonly StdVectorImp<TItem> _Imp;
 
         #endregion
 
@@ -46,25 +46,25 @@ namespace DlibDotNet
 
         public StdVector()
         {
-            this._Imp = Create<T>();
+            this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create();
         }
 
         public StdVector(int size)
         {
-            this._Imp = Create<T>();
+            this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create(size);
         }
 
-        public StdVector(IEnumerable<T> data)
+        public StdVector(IEnumerable<TItem> data)
         {
-            this._Imp = Create<T>();
+            this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create(data);
         }
 
         internal StdVector(IntPtr ptr)
         {
-            this._Imp = Create<T>();
+            this._Imp = CreateImp();
             this.NativePtr = ptr;
         }
 
@@ -94,7 +94,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public T[] ToArray()
+        public TItem[] ToArray()
         {
             this.ThrowIfDisposed();
             return this._Imp.ToArray(this.NativePtr);
@@ -102,39 +102,39 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private static StdVectorImp<T> Create<T>()
+        private static StdVectorImp<TItem> CreateImp()
         {
-            if (SupportTypes.TryGetValue(typeof(T), out var type))
+            if (SupportTypes.TryGetValue(typeof(TItem), out var type))
             {
                 switch (type)
                 {
                     case ElementTypes.Int32:
-                        return new StdVectorInt32Imp() as StdVectorImp<T>;
+                        return new StdVectorInt32Imp() as StdVectorImp<TItem>;
                     case ElementTypes.Long:
-                        return new StdVectorLongImp() as StdVectorImp<T>;
+                        return new StdVectorLongImp() as StdVectorImp<TItem>;
                     case ElementTypes.VectorDouble:
-                        return new StdVectorVectorDoubleImp() as StdVectorImp<T>;
+                        return new StdVectorVectorDoubleImp() as StdVectorImp<TItem>;
                     case ElementTypes.Rectangle:
-                        return new StdVectorRectangleImp() as StdVectorImp<T>;
+                        return new StdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.ChipDetails:
-                        return new StdVectorChipDetailsImp() as StdVectorImp<T>;
+                        return new StdVectorChipDetailsImp() as StdVectorImp<TItem>;
                     case ElementTypes.FullObjectDetection:
-                        return new StdVectorFullObjectDetectionImp() as StdVectorImp<T>;
+                        return new StdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
                     case ElementTypes.ImageWindowOverlayLine:
-                        return new StdVectorImageWindowOverlayLineImp() as StdVectorImp<T>;
+                        return new StdVectorImageWindowOverlayLineImp() as StdVectorImp<TItem>;
                     case ElementTypes.PerspectiveWindowOverlayDot:
-                        return new StdVectorPerspectiveWindowOverlayDotImp() as StdVectorImp<T>;
+                        return new StdVectorPerspectiveWindowOverlayDotImp() as StdVectorImp<TItem>;
                     case ElementTypes.MModRect:
-                        return new StdVectorMModRectImp() as StdVectorImp<T>;
+                        return new StdVectorMModRectImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdVectorRectangle:
-                        return new StdVectorStdVectorRectangleImp() as StdVectorImp<T>;
+                        return new StdVectorStdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdVectorMModRect:
-                        return new StdVectorStdVectorMModRectImp() as StdVectorImp<T>;
+                        return new StdVectorStdVectorMModRectImp() as StdVectorImp<TItem>;
                 }
             }
             else
             {
-                var t = typeof(T);
+                var t = typeof(TItem);
                 var matrix = typeof(MatrixBase);
                 if (matrix.IsAssignableFrom(t))
                 {
@@ -144,27 +144,27 @@ namespace DlibDotNet
                         switch (r)
                         {
                             case MatrixElementTypes.UInt8:
-                                return new StdVectorMatrixImp<byte>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<byte>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.UInt16:
-                                return new StdVectorMatrixImp<ushort>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<ushort>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.UInt32:
-                                return new StdVectorMatrixImp<uint>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<uint>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.Int8:
-                                return new StdVectorMatrixImp<sbyte>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<sbyte>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.Int16:
-                                return new StdVectorMatrixImp<short>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<short>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.Int32:
-                                return new StdVectorMatrixImp<int>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<int>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.Float:
-                                return new StdVectorMatrixImp<float>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<float>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.Double:
-                                return new StdVectorMatrixImp<double>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<double>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.RgbPixel:
-                                return new StdVectorMatrixImp<RgbPixel>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<RgbPixel>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.RgbAlphaPixel:
-                                return new StdVectorMatrixImp<RgbAlphaPixel>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<RgbAlphaPixel>() as StdVectorImp<TItem>;
                             case MatrixElementTypes.HsiPixel:
-                                return new StdVectorMatrixImp<HsiPixel>() as StdVectorImp<T>;
+                                return new StdVectorMatrixImp<HsiPixel>() as StdVectorImp<TItem>;
                         }
                     }
                 }
@@ -575,8 +575,8 @@ namespace DlibDotNet
 
         }
 
-        private sealed class StdVectorMatrixImp<U> : StdVectorImp<Matrix<U>>
-            where U : struct
+        private sealed class StdVectorMatrixImp<TElement> : StdVectorImp<Matrix<TElement>>
+            where TElement : struct
         {
 
             #region Fields
@@ -591,7 +591,7 @@ namespace DlibDotNet
 
             public StdVectorMatrixImp()
             {
-                Matrix<U>.TryParse<U>(out var type);
+                Matrix<TElement>.TryParse<TElement>(out var type);
                 this._Type = type;
                 this._NativeType = this._Type.ToNativeMatrixElementType();
             }
@@ -613,7 +613,7 @@ namespace DlibDotNet
                 return Dlib.Native.stdvector_matrix_new2(this._NativeType, new IntPtr(size));
             }
 
-            public override IntPtr Create(IEnumerable<Matrix<U>> data)
+            public override IntPtr Create(IEnumerable<Matrix<TElement>> data)
             {
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
@@ -637,15 +637,15 @@ namespace DlibDotNet
                 return Dlib.Native.stdvector_matrix_getSize(ptr).ToInt32();
             }
 
-            public override Matrix<U>[] ToArray(IntPtr ptr)
+            public override Matrix<TElement>[] ToArray(IntPtr ptr)
             {
                 var size = this.GetSize(ptr);
                 if (size == 0)
-                    return new Matrix<U>[0];
+                    return new Matrix<TElement>[0];
 
                 var dst = new IntPtr[size];
                 Dlib.Native.stdvector_matrix_copy(ptr, dst);
-                return dst.Select(p => p != IntPtr.Zero ? new Matrix<U>(p, this._Type) : null).ToArray();
+                return dst.Select(p => p != IntPtr.Zero ? new Matrix<TElement>(p, this._Type) : null).ToArray();
             }
 
             #endregion
@@ -732,22 +732,17 @@ namespace DlibDotNet
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
-                var nativeArray = data.Select(rectangle => rectangle.ToNative());
+                var nativeArray = data.Select(rectangle => rectangle.ToNative()).ToArray();
+                var array = nativeArray.Select(rectangle => rectangle.NativePtr).ToArray();
 
-                try
-                {
-                    var array = nativeArray.Select(rectangle => rectangle.NativePtr).ToArray();
-                    return Dlib.Native.stdvector_rectangle_new3(array, new IntPtr(array.Length));
-                }
-                finally
-                {
-                    foreach (var native in nativeArray)
-                        native.Dispose();
-                }
+                // Rectangle is struct and it will be cloned in native domain.
+                // So all cloned elemtent must be deleted!!
+                return Dlib.Native.stdvector_rectangle_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
+                // This function delete all element
                 Dlib.Native.stdvector_rectangle_delete(ptr);
             }
 

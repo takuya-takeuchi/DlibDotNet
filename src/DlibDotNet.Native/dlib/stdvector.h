@@ -106,7 +106,11 @@ DLLEXPORT rectangle* stdvector_rectangle_getPointer(std::vector<rectangle*> *vec
 }
 
 DLLEXPORT void stdvector_rectangle_delete(std::vector<rectangle*> *vector)
-{    
+{
+    std::vector<rectangle*>& tmp = *(static_cast<std::vector<rectangle*>*>(vector));
+    for (int index = 0 ; index < tmp.size(); index++)
+        delete tmp[index];
+
     delete vector;
 }
 

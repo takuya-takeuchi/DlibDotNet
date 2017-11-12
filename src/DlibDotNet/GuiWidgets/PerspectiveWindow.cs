@@ -343,7 +343,7 @@ namespace DlibDotNet
 
         #endregion
 
-        internal sealed class Native
+        internal new sealed class Native
         {
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

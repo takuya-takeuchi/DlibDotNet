@@ -6,8 +6,8 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class Vector<T> : VectorBase<T>
-        where T : struct
+    public sealed class Vector<TType> : VectorBase<TType>
+        where TType : struct
     {
 
         #region Fields
@@ -18,7 +18,7 @@ namespace DlibDotNet
 
         private static readonly Dictionary<Type, VectorElementTypes> SupportTypes = new Dictionary<Type, VectorElementTypes>();
 
-        private readonly VectorImp<T> _Imp;
+        private readonly VectorImp<TType> _Imp;
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace DlibDotNet
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
-        public Vector(T x, T y, T z)
+        public Vector(TType x, TType y, TType z)
             : this()
         {
             this._Imp.X = x;
@@ -52,8 +52,8 @@ namespace DlibDotNet
 
         public Vector()
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportTypes.TryGetValue(typeof(TType), out var type))
+                throw new NotSupportedException($"{typeof(TType).Name} does not support");
 
             this._VectorElementTypes = type;
             this._ElementType = type.ToNativeVectorElementType();
@@ -68,8 +68,8 @@ namespace DlibDotNet
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportTypes.TryGetValue(typeof(TType), out var type))
+                throw new NotSupportedException($"{typeof(TType).Name} does not support");
 
             this.NativePtr = ptr;
 
@@ -101,7 +101,7 @@ namespace DlibDotNet
             }
         }
 
-        public override T X
+        public override TType X
         {
             get
             {
@@ -115,7 +115,7 @@ namespace DlibDotNet
             //}
         }
 
-        public override T Y
+        public override TType Y
         {
             get
             {
@@ -129,7 +129,7 @@ namespace DlibDotNet
             //}
         }
 
-        public override T Z
+        public override TType Z
         {
             get
             {
@@ -149,7 +149,7 @@ namespace DlibDotNet
 
         #region Overrides
 
-        public static Vector<T> operator +(Vector<T> left, Vector<T> right)
+        public static Vector<TType> operator +(Vector<TType> left, Vector<TType> right)
         {
             if (left == null)
                 throw new ArgumentNullException(nameof(left));
@@ -162,7 +162,7 @@ namespace DlibDotNet
             return left._Imp.OperatorAdd(left, right);
         }
 
-        public static Vector<T> operator /(Vector<T> vector, T div)
+        public static Vector<TType> operator /(Vector<TType> vector, TType div)
         {
             if (vector == null)
                 throw new ArgumentNullException(nameof(vector));
@@ -182,26 +182,26 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private VectorImp<T> CreateVectorImp(Dlib.Native.VectorElementType types)
+        private VectorImp<TType> CreateVectorImp(Dlib.Native.VectorElementType types)
         {
             switch (types)
             {
                 case Dlib.Native.VectorElementType.UInt8:
-                    return new VectorUInt8Imp(this, types) as VectorImp<T>;
+                    return new VectorUInt8Imp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.UInt16:
-                    return new VectorUInt16Imp(this, types) as VectorImp<T>;
+                    return new VectorUInt16Imp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.UInt32:
-                    return new VectorUInt32Imp(this, types) as VectorImp<T>;
+                    return new VectorUInt32Imp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.Int8:
-                    return new VectorInt8Imp(this, types) as VectorImp<T>;
+                    return new VectorInt8Imp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.Int16:
-                    return new VectorInt16Imp(this, types) as VectorImp<T>;
+                    return new VectorInt16Imp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.Int32:
-                    return new VectorInt32Imp(this, types) as VectorImp<T>;
+                    return new VectorInt32Imp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.Float:
-                    return new VectorFloatImp(this, types) as VectorImp<T>;
+                    return new VectorFloatImp(this, types) as VectorImp<TType>;
                 case Dlib.Native.VectorElementType.Double:
-                    return new VectorDoubleImp(this, types) as VectorImp<T>;
+                    return new VectorDoubleImp(this, types) as VectorImp<TType>;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(types), types, null);
             }
@@ -210,10 +210,6 @@ namespace DlibDotNet
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-        }
 
         internal abstract class VectorImp<T>
             where T : struct
@@ -287,14 +283,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    byte x, y, z;
-                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    byte x, y, z;
-                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint8_t(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -303,14 +297,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    byte x, y, z;
-                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    byte x, y, z;
-                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint8_t(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -319,14 +311,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    byte x, y, z;
-                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    byte x, y, z;
-                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint8_t(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -369,14 +359,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    ushort x, y, z;
-                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    ushort x, y, z;
-                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint16_t(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -385,14 +373,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    ushort x, y, z;
-                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    ushort x, y, z;
-                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint16_t(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -401,14 +387,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    ushort x, y, z;
-                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    ushort x, y, z;
-                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint16_t(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -451,14 +435,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    uint x, y, z;
-                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    uint x, y, z;
-                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint32_t(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -467,14 +449,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    uint x, y, z;
-                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    uint x, y, z;
-                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint32_t(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -483,14 +463,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    uint x, y, z;
-                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    uint x, y, z;
-                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_uint32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_uint32_t(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -533,14 +511,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    sbyte x, y, z;
-                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    sbyte x, y, z;
-                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int8_t(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -549,14 +525,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    sbyte x, y, z;
-                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    sbyte x, y, z;
-                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int8_t(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -565,14 +539,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    sbyte x, y, z;
-                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    sbyte x, y, z;
-                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int8_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int8_t(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -615,14 +587,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    short x, y, z;
-                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    short x, y, z;
-                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int16_t(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -631,14 +601,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    short x, y, z;
-                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    short x, y, z;
-                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int16_t(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -647,14 +615,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    short x, y, z;
-                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    short x, y, z;
-                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int16_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int16_t(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -697,14 +663,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    int x, y, z;
-                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    int x, y, z;
-                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int32_t(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -713,14 +677,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    int x, y, z;
-                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    int x, y, z;
-                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int32_t(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -729,14 +691,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    int x, y, z;
-                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    int x, y, z;
-                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_int32_t(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_int32_t(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -779,14 +739,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    float x, y, z;
-                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    float x, y, z;
-                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_float(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -795,14 +753,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    float x, y, z;
-                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    float x, y, z;
-                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_float(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -811,14 +767,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    float x, y, z;
-                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    float x, y, z;
-                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_float(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_float(this._Parent.NativePtr, x, y, value);
                 }
             }
@@ -861,14 +815,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    double x, y, z;
-                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out var x, out var y, out var z);
                     return x;
                 }
                 set
                 {
-                    double x, y, z;
-                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_double(this._Parent.NativePtr, value, y, z);
                 }
             }
@@ -877,14 +829,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    double x, y, z;
-                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return y;
                 }
                 set
                 {
-                    double x, y, z;
-                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_double(this._Parent.NativePtr, x, value, z);
                 }
             }
@@ -893,14 +843,12 @@ namespace DlibDotNet
             {
                 get
                 {
-                    double x, y, z;
-                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out x, out y, out z);
-                    return x;
+                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out var x, out var y, out var z);
+                    return z;
                 }
                 set
                 {
-                    double x, y, z;
-                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out x, out y, out z);
+                    Dlib.Native.vector_get_xyz_double(this._Parent.NativePtr, out var x, out var y, out var z);
                     Dlib.Native.vector_set_xyz_double(this._Parent.NativePtr, x, y, value);
                 }
             }

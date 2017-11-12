@@ -6,8 +6,8 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class RunningStats<T> : DlibObject
-        where T : struct
+    public sealed class RunningStats<TKernel> : DlibObject
+        where TKernel : struct
     {
 
         #region Fields
@@ -18,7 +18,7 @@ namespace DlibDotNet
 
         private static readonly Dictionary<Type, RunningStatsTypes> SupportTypes = new Dictionary<Type, RunningStatsTypes>();
 
-        private readonly RunningStatsImp<T> _Imp;
+        private readonly RunningStatsImp<TKernel> _Imp;
 
         #endregion
 
@@ -38,8 +38,8 @@ namespace DlibDotNet
 
         public RunningStats()
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportTypes.TryGetValue(typeof(TKernel), out var type))
+                throw new NotSupportedException($"{typeof(TKernel).Name} does not support");
 
             this._RunningStatsType = type.ToRunningStatsType();
 
@@ -52,10 +52,10 @@ namespace DlibDotNet
             switch (this._Type)
             {
                 case RunningStatsTypes.Float:
-                    this._Imp = new RunningStatsFloatImp(this, this._RunningStatsType) as RunningStatsImp<T>;
+                    this._Imp = new RunningStatsFloatImp(this, this._RunningStatsType) as RunningStatsImp<TKernel>;
                     break;
                 case RunningStatsTypes.Double:
-                    this._Imp = new RunningStatsDoubleImp(this, this._RunningStatsType) as RunningStatsImp<T>;
+                    this._Imp = new RunningStatsDoubleImp(this, this._RunningStatsType) as RunningStatsImp<TKernel>;
                     break;
             }
         }
@@ -66,7 +66,7 @@ namespace DlibDotNet
 
         public RunningStatsTypes RunningStatsType => this._Type;
 
-        public T CurrentN
+        public TKernel CurrentN
         {
             get
             {
@@ -75,7 +75,7 @@ namespace DlibDotNet
             }
         }
 
-        public T ExcessKurtosis
+        public TKernel ExcessKurtosis
         {
             get
             {
@@ -84,7 +84,7 @@ namespace DlibDotNet
             }
         }
 
-        public T Max
+        public TKernel Max
         {
             get
             {
@@ -93,7 +93,7 @@ namespace DlibDotNet
             }
         }
 
-        public T Mean
+        public TKernel Mean
         {
             get
             {
@@ -102,7 +102,7 @@ namespace DlibDotNet
             }
         }
 
-        public T Min
+        public TKernel Min
         {
             get
             {
@@ -111,7 +111,7 @@ namespace DlibDotNet
             }
         }
 
-        public T Skewness
+        public TKernel Skewness
         {
             get
             {
@@ -120,7 +120,7 @@ namespace DlibDotNet
             }
         }
 
-        public T StdDev
+        public TKernel StdDev
         {
             get
             {
@@ -129,7 +129,7 @@ namespace DlibDotNet
             }
         }
 
-        public T Variance
+        public TKernel Variance
         {
             get
             {
@@ -142,7 +142,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public void Add(T value)
+        public void Add(TKernel value)
         {
             this.ThrowIfDisposed();
             this._Imp.Add(value);
@@ -154,7 +154,7 @@ namespace DlibDotNet
             Dlib.Native.running_stats_clear(this._RunningStatsType, this.NativePtr);
         }
 
-        public T Scale(T scale)
+        public TKernel Scale(TKernel scale)
         {
             this.ThrowIfDisposed();
             this._Imp.Scale(scale, out var value);

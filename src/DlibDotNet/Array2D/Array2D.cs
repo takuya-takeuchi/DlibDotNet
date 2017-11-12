@@ -6,8 +6,8 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class Array2D<T> : Array2DBase
-        where T : struct
+    public sealed class Array2D<TElement> : Array2DBase
+        where TElement : struct
     {
 
         #region Fields
@@ -41,8 +41,8 @@ namespace DlibDotNet
 
         public Array2D()
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportTypes.TryGetValue(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._Array2DType = type.ToNativeArray2DType();
 
@@ -55,8 +55,8 @@ namespace DlibDotNet
 
         public Array2D(int rows, int columns)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (!SupportTypes.TryGetValue(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._Array2DType = type.ToNativeArray2DType();
 
@@ -127,7 +127,7 @@ namespace DlibDotNet
             }
         }
 
-        public Row<T> this[int row]
+        public Row<TElement> this[int row]
         {
             get
             {
@@ -141,23 +141,23 @@ namespace DlibDotNet
                 switch (this.ImageType)
                 {
                     case ImageTypes.RgbPixel:
-                        return new RowRgbPixel(ret, this.ImageType, this) as Row<T>;
+                        return new RowRgbPixel(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.RgbAlphaPixel:
-                        return new RowRgbAlphaPixel(ret, this.ImageType, this) as Row<T>;
+                        return new RowRgbAlphaPixel(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.UInt8:
-                        return new RowUInt8(ret, this.ImageType, this) as Row<T>;
+                        return new RowUInt8(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.UInt16:
-                        return new RowUInt16(ret, this.ImageType, this) as Row<T>;
+                        return new RowUInt16(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Int16:
-                        return new RowInt16(ret, this.ImageType, this) as Row<T>;
+                        return new RowInt16(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Int32:
-                        return new RowInt32(ret, this.ImageType, this) as Row<T>;
+                        return new RowInt32(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.HsiPixel:
-                        return new RowHsiPixel(ret, this.ImageType, this) as Row<T>;
+                        return new RowHsiPixel(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Float:
-                        return new RowFloat(ret, this.ImageType, this) as Row<T>;
+                        return new RowFloat(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Double:
-                        return new RowDouble(ret, this.ImageType, this) as Row<T>;
+                        return new RowDouble(ret, this.ImageType, this) as Row<TElement>;
                     //case ImageTypes.Matrix:
                     //    break;
                     default:
