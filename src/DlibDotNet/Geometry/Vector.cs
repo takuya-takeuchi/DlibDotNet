@@ -63,7 +63,8 @@ namespace DlibDotNet
             this.NativePtr = Dlib.Native.vector_new(this._ElementType);
         }
 
-        internal Vector(IntPtr ptr)
+        internal Vector(IntPtr ptr, bool isEnabledDispose = true)
+            : base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -176,6 +177,43 @@ namespace DlibDotNet
         {
             base.DisposeUnmanaged();
             Dlib.Native.vector_delete(this._ElementType, this.NativePtr);
+        }
+
+        public override string ToString()
+        {
+            var ofstream = IntPtr.Zero;
+            var stdstr = IntPtr.Zero;
+            string str = null;
+
+            try
+            {
+                ofstream = Dlib.Native.ostringstream_new();
+                var ret = Dlib.Native.vector_operator_left_shift(this._ElementType, this.NativePtr, ofstream);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.OK:
+                        stdstr = Dlib.Native.ostringstream_str(ofstream);
+                        str = StringHelper.FromStdString(stdstr);
+                        break;
+                    case Dlib.Native.ErrorType.InputVectorTypeNotSupport:
+                        throw new ArgumentException($"Input {this._ElementType} is not supported.");
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (stdstr != IntPtr.Zero)
+                    Dlib.Native.string_delete(stdstr);
+                if (ofstream != IntPtr.Zero)
+                    Dlib.Native.ostringstream_delete(ofstream);
+            }
+
+            return str;
         }
 
         #endregion

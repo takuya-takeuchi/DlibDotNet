@@ -6,11 +6,12 @@ namespace DlibDotNet
     public abstract class DlibObject : IDisposable
     {
 
-        #region Fields
-
-        #endregion
-
         #region Constructors
+
+        protected DlibObject(bool isEnabledDispose = true)
+        {
+            this._IsEnableDispose = isEnabledDispose;
+        }
 
         #endregion
 
@@ -21,6 +22,10 @@ namespace DlibDotNet
             get;
             private set;
         }
+
+        private readonly bool _IsEnableDispose;
+
+        public bool IsEnableDispose => this._IsEnableDispose;
 
         private IntPtr _NativePtr;
 
@@ -94,12 +99,14 @@ namespace DlibDotNet
 
             if (disposing)
             {
-                this.DisposeManaged();   
+                if (this._IsEnableDispose)
+                    this.DisposeManaged();
             }
 
-            this.DisposeUnmanaged();
+            if (this._IsEnableDispose)
+                this.DisposeUnmanaged();
 
-            this._NativePtr = IntPtr.Zero;            
+            this._NativePtr = IntPtr.Zero;
         }
 
         #endregion

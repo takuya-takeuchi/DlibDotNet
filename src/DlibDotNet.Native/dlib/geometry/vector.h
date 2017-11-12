@@ -298,6 +298,189 @@ DLLEXPORT void vector_operator_div_double(dlib::vector<double>* vector, double v
 
 #pragma endregion vector_operator_div
 
+DLLEXPORT int vector_operator_left_shift(vector_element_type type, void* matrix, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case vector_element_type::UInt8:
+            {
+                dlib::vector<uint8_t>& mat = *(static_cast<dlib::vector<uint8_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::UInt16:
+            {
+                dlib::vector<uint16_t>& mat = *(static_cast<dlib::vector<uint16_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::UInt32:
+            {
+                dlib::vector<uint32_t>& mat = *(static_cast<dlib::vector<uint32_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int8:
+            {
+                dlib::vector<int8_t>& mat = *(static_cast<dlib::vector<int8_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int16:
+            {
+                dlib::vector<int16_t>& mat = *(static_cast<dlib::vector<int16_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int32:
+            {
+                dlib::vector<int32_t>& mat = *(static_cast<dlib::vector<int32_t>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Float:
+            {
+                dlib::vector<float>& mat = *(static_cast<dlib::vector<float>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Double:
+            {
+                dlib::vector<double>& mat = *(static_cast<dlib::vector<double>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        default:
+            err = ERR_VECTOR_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+DLLEXPORT int vector_2_operator_left_shift(vector_element_type type, void* matrix, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case vector_element_type::UInt8:
+            {
+                dlib::vector<uint8_t,2>& mat = *(static_cast<dlib::vector<uint8_t,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::UInt16:
+            {
+                dlib::vector<uint16_t,2>& mat = *(static_cast<dlib::vector<uint16_t,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::UInt32:
+            {
+                dlib::vector<uint32_t,2>& mat = *(static_cast<dlib::vector<uint32_t,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int8:
+            {
+                dlib::vector<int8_t,2>& mat = *(static_cast<dlib::vector<int8_t,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int16:
+            {
+                dlib::vector<int16_t,2>& mat = *(static_cast<dlib::vector<int16_t,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int32:
+            {
+                dlib::vector<int32_t,2>& mat = *(static_cast<dlib::vector<int32_t,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Float:
+            {
+                dlib::vector<float,2>& mat = *(static_cast<dlib::vector<float,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Double:
+            {
+                dlib::vector<double,2>& mat = *(static_cast<dlib::vector<double,2>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        default:
+            err = ERR_VECTOR_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+DLLEXPORT int vector_3_operator_left_shift(vector_element_type type, void* matrix, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case vector_element_type::UInt8:
+            {
+                dlib::vector<uint8_t,3>& mat = *(static_cast<dlib::vector<uint8_t,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::UInt16:
+            {
+                dlib::vector<uint16_t,3>& mat = *(static_cast<dlib::vector<uint16_t,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::UInt32:
+            {
+                dlib::vector<uint32_t,3>& mat = *(static_cast<dlib::vector<uint32_t,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int8:
+            {
+                dlib::vector<int8_t,3>& mat = *(static_cast<dlib::vector<int8_t,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int16:
+            {
+                dlib::vector<int16_t,3>& mat = *(static_cast<dlib::vector<int16_t,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Int32:
+            {
+                dlib::vector<int32_t,3>& mat = *(static_cast<dlib::vector<int32_t,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Float:
+            {
+                dlib::vector<float,3>& mat = *(static_cast<dlib::vector<float,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        case vector_element_type::Double:
+            {
+                dlib::vector<double,3>& mat = *(static_cast<dlib::vector<double,3>*>(matrix));
+                *stream << mat;
+            }
+            break;
+        default:
+            err = ERR_VECTOR_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
 DLLEXPORT void vector_delete(vector_element_type type, void* vector)
 {
     switch(type)

@@ -6,6 +6,7 @@
 #include <dlib/gui_widgets/widgets.h>
 #include <dlib/image_processing/full_object_detection.h>
 #include <dlib/image_transforms/interpolation.h>
+#include <dlib/image_keypoint/surf.h>
 #include "shared.h"
 
 using namespace dlib;
@@ -623,6 +624,46 @@ DLLEXPORT void stdvector_mmod_rect_copy(std::vector<mmod_rect*> *vector, mmod_re
 }
 
 #pragma endregion mmod_rect
+
+#pragma region dlib::surf_point
+
+DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new1()
+{
+    return new std::vector<dlib::surf_point*>;
+}
+
+DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new2(size_t size)
+{
+    return new std::vector<dlib::surf_point*>(size);
+}
+
+DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new3(dlib::surf_point** data, size_t dataLength)
+{
+    return new std::vector<dlib::surf_point*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_surf_point_getSize(std::vector<dlib::surf_point*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT dlib::surf_point* stdvector_surf_point_getPointer(std::vector<dlib::surf_point*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_surf_point_delete(std::vector<dlib::surf_point*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_surf_point_copy(std::vector<dlib::surf_point*> *vector, dlib::surf_point** dst)
+{
+    size_t length = sizeof(dlib::surf_point*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion dlib::surf_point
 
 #pragma region std::vector<mmod_rect>
 

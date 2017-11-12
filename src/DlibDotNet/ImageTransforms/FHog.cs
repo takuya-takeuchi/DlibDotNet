@@ -28,7 +28,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
-            return new Matrix<byte>(outMatrix, MatrixElementTypes.UInt8);
+            return new Matrix<byte>(outMatrix);
         }
 
         public static Array2DMatrix<T> ExtracFHogFeatures<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)

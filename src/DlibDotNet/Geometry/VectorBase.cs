@@ -5,6 +5,15 @@ namespace DlibDotNet
     public abstract class VectorBase<T> : DlibObject
     {
 
+        #region Constructors
+
+        protected VectorBase(bool isEnabledDispose = true)
+            : base(isEnabledDispose)
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         public abstract double Length

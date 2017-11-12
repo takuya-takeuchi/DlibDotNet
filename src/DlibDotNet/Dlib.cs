@@ -519,7 +519,9 @@ namespace DlibDotNet
 
                 MlpKernelNotSupport = -8,
 
-                RunningStatsTypeNotSupport = -9
+                RunningStatsTypeNotSupport = -9,
+
+                InputVectorTypeNotSupport = -10
 
             }
 
@@ -1250,6 +1252,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void vector_delete(VectorElementType type, IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType vector_operator_left_shift(VectorElementType type, IntPtr vector, IntPtr ofstream);
 
             #region vector_get_xyz
 

@@ -39,6 +39,11 @@ namespace DlibDotNet
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
+        protected MatrixBase(bool isEnabledDispose = true)
+            : base(isEnabledDispose)
+        {
+        }
+
         #endregion
 
         #region Properties
