@@ -45,3 +45,11 @@ the Independent JPEG Group.
 > **Author:** Jean-loup Gailly and Mark Adler
 > 
 > **Principal Use:** To use libpng and DlibDotNet.Native links this library.
+
+#### [Prism](https://zlib.net/)
+
+> **License:** The MIT License
+>
+> **Author:** .NET Foundation
+> 
+> **Principal Use:** Using MVVM for WPF sample application
