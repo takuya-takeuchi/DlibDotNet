@@ -35,5 +35,36 @@ namespace DlibDotNet.Extensions
             }
         }
 
+        internal static Dlib.Native.MatrixElementType ToNativeMatrixElementType(this MatrixElementTypes matrixElementTypes)
+        {
+            switch (matrixElementTypes)
+            {
+                case MatrixElementTypes.UInt8:
+                    return Dlib.Native.MatrixElementType.UInt8;
+                case MatrixElementTypes.UInt16:
+                    return Dlib.Native.MatrixElementType.UInt16;
+                case MatrixElementTypes.UInt32:
+                    return Dlib.Native.MatrixElementType.UInt32;
+                case MatrixElementTypes.Int8:
+                    return Dlib.Native.MatrixElementType.Int8;
+                case MatrixElementTypes.Int16:
+                    return Dlib.Native.MatrixElementType.Int16;
+                case MatrixElementTypes.Int32:
+                    return Dlib.Native.MatrixElementType.Int32;
+                case MatrixElementTypes.Float:
+                    return Dlib.Native.MatrixElementType.Float;
+                case MatrixElementTypes.Double:
+                    return Dlib.Native.MatrixElementType.Double;
+                case MatrixElementTypes.RgbPixel:
+                    return Dlib.Native.MatrixElementType.RgbPixel;
+                case MatrixElementTypes.RgbAlphaPixel:
+                    return Dlib.Native.MatrixElementType.RgbAlphaPixel;
+                case MatrixElementTypes.HsiPixel:
+                    return Dlib.Native.MatrixElementType.HsiPixel;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(matrixElementTypes), matrixElementTypes, null);
+            }
+        }
+
     }
 }

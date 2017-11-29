@@ -45,7 +45,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        internal void ThrowIfDisposed()
+        public void ThrowIfDisposed()
         {
             if (this.IsDisposed)
                 throw new ObjectDisposedException(this.GetType().FullName);
