@@ -232,19 +232,18 @@ DLLEXPORT void extensions_convert_array_to_managed_image(array2d_type src_type, 
     {
         case array2d_type::RgbPixel:
             {
-                // dst is System.Windows.Media.PixelFormats.Bgr24
                 dlib::array2d<dlib::rgb_pixel>& s = *(static_cast<dlib::array2d<dlib::rgb_pixel>*>(src));
                 uint8_t* d = static_cast<uint8_t*>(dst);
                 if (rgb_reverse)
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t dst_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[d_r + d_c + 2] = s[r][c].red;
-                            d[d_r + d_c + 1] = s[r][c].green;
-                            d[d_r + d_c + 0] = s[r][c].blue;
+                            d[dst_row + dst_column + 2] = s[r][c].red;
+                            d[dst_row + dst_column + 1] = s[r][c].green;
+                            d[dst_row + dst_column + 0] = s[r][c].blue;
                         }
                     }
                 }
@@ -252,12 +251,12 @@ DLLEXPORT void extensions_convert_array_to_managed_image(array2d_type src_type, 
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t dst_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[d_r + d_c + 0] = s[r][c].red;
-                            d[d_r + d_c + 1] = s[r][c].green;
-                            d[d_r + d_c + 2] = s[r][c].blue;
+                            d[dst_row + dst_column + 0] = s[r][c].red;
+                            d[dst_row + dst_column + 1] = s[r][c].green;
+                            d[dst_row + dst_column + 2] = s[r][c].blue;
                         }
                     }
                 }
@@ -265,19 +264,19 @@ DLLEXPORT void extensions_convert_array_to_managed_image(array2d_type src_type, 
             break;
         case array2d_type::RgbAlphaPixel:
             {
-                // dst is System.Windows.Media.PixelFormats.Bgr24
                 dlib::array2d<dlib::rgb_alpha_pixel>& s = *(static_cast<dlib::array2d<dlib::rgb_alpha_pixel>*>(src));
                 uint8_t* d = static_cast<uint8_t*>(dst);
                 if (rgb_reverse)
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t dst_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[d_r + d_c + 2] = s[r][c].red;
-                            d[d_r + d_c + 1] = s[r][c].green;
-                            d[d_r + d_c + 0] = s[r][c].blue;
+                            d[dst_row + dst_column + 3] = s[r][c].alpha;
+                            d[dst_row + dst_column + 2] = s[r][c].red;
+                            d[dst_row + dst_column + 1] = s[r][c].green;
+                            d[dst_row + dst_column + 0] = s[r][c].blue;
                         }
                     }
                 }
@@ -285,12 +284,13 @@ DLLEXPORT void extensions_convert_array_to_managed_image(array2d_type src_type, 
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t dst_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[d_r + d_c + 0] = s[r][c].red;
-                            d[d_r + d_c + 1] = s[r][c].green;
-                            d[d_r + d_c + 2] = s[r][c].blue;
+                            d[dst_row + dst_column + 0] = s[r][c].red;
+                            d[dst_row + dst_column + 1] = s[r][c].green;
+                            d[dst_row + dst_column + 2] = s[r][c].blue;
+                            d[dst_row + dst_column + 3] = s[r][c].alpha;
                         }
                     }
                 }
@@ -326,12 +326,12 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t src_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[r][c].red   = s[d_r + d_c + 2];
-                            d[r][c].green = s[d_r + d_c + 1];
-                            d[r][c].blue  = s[d_r + d_c + 0];
+                            d[r][c].red   = s[src_row + dst_column + 2];
+                            d[r][c].green = s[src_row + dst_column + 1];
+                            d[r][c].blue  = s[src_row + dst_column + 0];
                         }
                     }
                 }
@@ -339,12 +339,12 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t src_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[r][c].red   = s[d_r + d_c + 0];
-                            d[r][c].green = s[d_r + d_c + 1];
-                            d[r][c].blue  = s[d_r + d_c + 2];
+                            d[r][c].red   = s[src_row + dst_column + 0];
+                            d[r][c].green = s[src_row + dst_column + 1];
+                            d[r][c].blue  = s[src_row + dst_column + 2];
                         }
                     }
                 }
@@ -359,12 +359,13 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t src_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[r][c].red   = s[d_r + d_c + 2];
-                            d[r][c].green = s[d_r + d_c + 1];
-                            d[r][c].blue  = s[d_r + d_c + 0];
+                            d[r][c].alpha = s[src_row + dst_column + 3];
+                            d[r][c].red   = s[src_row + dst_column + 2];
+                            d[r][c].green = s[src_row + dst_column + 1];
+                            d[r][c].blue  = s[src_row + dst_column + 0];
                         }
                     }
                 }
@@ -372,12 +373,13 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
                 {
                     for (uint32_t r = 0; r < rows; r++)
                     {
-                        uint32_t d_r = steps * r;
-                        for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
+                        uint32_t src_row = steps * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            d[r][c].red   = s[d_r + d_c + 0];
-                            d[r][c].green = s[d_r + d_c + 1];
-                            d[r][c].blue  = s[d_r + d_c + 2];
+                            d[r][c].red   = s[src_row + dst_column + 0];
+                            d[r][c].green = s[src_row + dst_column + 1];
+                            d[r][c].blue  = s[src_row + dst_column + 2];
+                            d[r][c].alpha = s[src_row + dst_column + 3];
                         }
                     }
                 }
@@ -410,9 +412,9 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
                 uint8_t* s = static_cast<uint8_t*>(src);
                 for (uint32_t r = 0; r < rows; r++)
                 {
-                    uint32_t d_r = steps * r;
-                    for (uint32_t c = 0, d_c = 0; c < columns; c++, d_c += channels)
-                        d[r][c] = pallete[s[d_r + d_c]];
+                    uint32_t src_row = steps * r;
+                    for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        d[r][c] = pallete[s[src_row + dst_column]];
                 }
             }
             break;
@@ -422,5 +424,223 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
 }
 
 #pragma endregion extensions_convert_managed_image_to_array_by_pallete
+
+#pragma region extensions_convert_matrix_to_managed_image
+
+DLLEXPORT void extensions_convert_matrix_to_managed_image(matrix_element_type src_type, void* src, void* dst, bool rgb_reverse, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+{
+    switch(src_type)
+    {
+        case matrix_element_type::RgbPixel:
+            {
+                dlib::matrix<dlib::rgb_pixel>& s = *(static_cast<dlib::matrix<dlib::rgb_pixel>*>(src));
+                uint8_t* d = static_cast<uint8_t*>(dst);
+                if (rgb_reverse)
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t dst_row = steps * r;
+                        uint32_t src_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_pixel& rgb = s(src_row + c);
+                            d[dst_row + dst_column + 2] = rgb.red;
+                            d[dst_row + dst_column + 1] = rgb.green;
+                            d[dst_row + dst_column + 0] = rgb.blue;
+                        }
+                    }
+                }
+                else
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t dst_row = steps * r;
+                        uint32_t src_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_pixel& rgb = s(src_row + c);
+                            d[dst_row + dst_column + 0] = rgb.red;
+                            d[dst_row + dst_column + 1] = rgb.green;
+                            d[dst_row + dst_column + 2] = rgb.blue;
+                        }
+                    }
+                }
+            }
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            {
+                dlib::matrix<dlib::rgb_alpha_pixel>& s = *(static_cast<dlib::matrix<dlib::rgb_alpha_pixel>*>(src));
+                uint8_t* d = static_cast<uint8_t*>(dst);
+                if (rgb_reverse)
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t dst_row = steps * r;
+                        uint32_t src_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_alpha_pixel& rgb = s(src_row + c);
+                            d[dst_row + dst_column + 3] = rgb.alpha;
+                            d[dst_row + dst_column + 2] = rgb.red;
+                            d[dst_row + dst_column + 1] = rgb.green;
+                            d[dst_row + dst_column + 0] = rgb.blue;
+                        }
+                    }
+                }
+                else
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t dst_row = steps * r;
+                        uint32_t src_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_alpha_pixel& rgb = s(src_row + c);
+                            d[dst_row + dst_column + 0] = rgb.red;
+                            d[dst_row + dst_column + 1] = rgb.green;
+                            d[dst_row + dst_column + 2] = rgb.blue;
+                            d[dst_row + dst_column + 3] = rgb.alpha;
+                        }
+                    }
+                }
+            }
+            break;
+        case matrix_element_type::UInt8:
+        case matrix_element_type::UInt16:
+        case matrix_element_type::Int16:
+        case matrix_element_type::Int32:
+        case matrix_element_type::Float:
+        case matrix_element_type::Double:
+        case matrix_element_type::HsiPixel:
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma endregion extensions_convert_matrix_to_managed_image
+
+#pragma region extensions_convert_managed_image_to_matrix
+
+DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_element_type dst_type, void* dst, bool rgb_reverse, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+{
+    switch(dst_type)
+    {
+        case matrix_element_type::RgbPixel:
+            {
+                dlib::matrix<dlib::rgb_pixel>& d = *(static_cast<dlib::matrix<dlib::rgb_pixel>*>(dst));
+                uint8_t* s = static_cast<uint8_t*>(src);
+
+                if (rgb_reverse)
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t src_row = steps * r;
+                        uint32_t dst_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_pixel& rgb = d(dst_row + c);
+                            rgb.red   = s[src_row + dst_column + 2];
+                            rgb.green = s[src_row + dst_column + 1];
+                            rgb.blue  = s[src_row + dst_column + 0];
+                        }
+                    }
+                }
+                else
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t src_row = steps * r;
+                        uint32_t dst_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_pixel& rgb = d(dst_row + c);
+                            rgb.red   = s[src_row + dst_column + 0];
+                            rgb.green = s[src_row + dst_column + 1];
+                            rgb.blue  = s[src_row + dst_column + 2];
+                        }
+                    }
+                }
+            }
+            break;
+        case matrix_element_type::RgbAlphaPixel:        
+            {
+                dlib::matrix<dlib::rgb_alpha_pixel>& d = *(static_cast<dlib::matrix<dlib::rgb_alpha_pixel>*>(dst));
+                uint8_t* s = static_cast<uint8_t*>(src);
+
+                if (rgb_reverse)
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t src_row = steps * r;
+                        uint32_t dst_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_alpha_pixel& rgb = d(dst_row + c);
+                            rgb.alpha = s[src_row + dst_column + 3];
+                            rgb.red   = s[src_row + dst_column + 2];
+                            rgb.green = s[src_row + dst_column + 1];
+                            rgb.blue  = s[src_row + dst_column + 0];
+                        }
+                    }
+                }
+                else
+                {
+                    for (uint32_t r = 0; r < rows; r++)
+                    {
+                        uint32_t src_row = steps * r;
+                        uint32_t dst_row = columns * r;
+                        for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        {
+                            dlib::rgb_alpha_pixel& rgb = d(dst_row + c);
+                            rgb.red   = s[src_row + dst_column + 0];
+                            rgb.green = s[src_row + dst_column + 1];
+                            rgb.blue  = s[src_row + dst_column + 2];
+                            rgb.alpha = s[src_row + dst_column + 3];
+                        }
+                    }
+                }
+            }
+            break;
+        case matrix_element_type::UInt8:
+        case matrix_element_type::UInt16:
+        case matrix_element_type::Int16:
+        case matrix_element_type::Int32:
+        case matrix_element_type::Float:
+        case matrix_element_type::Double:
+        case matrix_element_type::HsiPixel:
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma endregion extensions_convert_managed_image_to_matrix
+
+#pragma region extensions_convert_managed_image_to_matrix_by_pallete
+
+DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, matrix_element_type dst_type, void* dst, const dlib::rgb_pixel* pallete, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+{
+    switch(dst_type)
+    {
+        case matrix_element_type::RgbPixel:
+            {
+                dlib::matrix<dlib::rgb_pixel>& d = *(static_cast<dlib::matrix<dlib::rgb_pixel>*>(dst));
+                uint8_t* s = static_cast<uint8_t*>(src);
+                for (uint32_t r = 0; r < rows; r++)
+                {
+                    uint32_t src_row = steps * r;
+                    uint32_t dst_row = columns * r;
+                    for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
+                        d(dst_row + c) = pallete[s[src_row + dst_column]];
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma endregion extensions_convert_managed_image_to_matrix_by_pallete
 
 #endif

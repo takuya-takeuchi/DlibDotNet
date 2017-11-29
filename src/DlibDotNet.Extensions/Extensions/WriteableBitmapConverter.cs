@@ -15,7 +15,9 @@ namespace DlibDotNet.Extensions
 
         private static readonly Dictionary<PixelFormat, int> OptimumChannels;
 
-        private static readonly Dictionary<PixelFormat, ConvertInfo> OptimumConvertInfos;
+        private static readonly Dictionary<PixelFormat, ConvertInfo<ImageTypes>> OptimumConvertImageInfos;
+
+        private static readonly Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>> OptimumConvertMatrixInfos;
 
         #endregion
 
@@ -51,25 +53,26 @@ namespace DlibDotNet.Extensions
             OptimumChannels[PixelFormats.Rgba64] =
             OptimumChannels[PixelFormats.Rgba128Float] = 4;
 
-            OptimumConvertInfos = new Dictionary<PixelFormat, ConvertInfo>();
-            //OptimumConvertInfos[PixelFormats.Gray8] = new ConvertInfo { Type = ImageTypes.UInt8 };
-
-            //OptimumConvertInfos[PixelFormats.Gray32Float] = new ConvertInfo { Type = ImageTypes.Float };
-
-            //OptimumConvertInfos[PixelFormats.Gray16] = new ConvertInfo { Type = ImageTypes.UInt16 };
-
-            OptimumConvertInfos[PixelFormats.Indexed8] = new ConvertInfo { Type = ImageTypes.RgbPixel };
-            OptimumConvertInfos[PixelFormats.Bgr24] = new ConvertInfo { Type = ImageTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertInfos[PixelFormats.Rgb24] = new ConvertInfo { Type = ImageTypes.RgbPixel };
-            OptimumConvertInfos[PixelFormats.Bgr32] = new ConvertInfo { Type = ImageTypes.RgbPixel, RgbReverse = true };
-
-            OptimumConvertInfos[PixelFormats.Bgra32] = new ConvertInfo { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true };
-
+            OptimumConvertImageInfos = new Dictionary<PixelFormat, ConvertInfo<ImageTypes>>();
+            OptimumConvertImageInfos[PixelFormats.Indexed8] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel };
+            OptimumConvertImageInfos[PixelFormats.Bgr24] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true };
+            OptimumConvertImageInfos[PixelFormats.Rgb24] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel };
+            OptimumConvertImageInfos[PixelFormats.Bgr32] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true };
+            OptimumConvertImageInfos[PixelFormats.Bgra32] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true };
+            
+            OptimumConvertMatrixInfos = new Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>>();
+            OptimumConvertMatrixInfos[PixelFormats.Indexed8] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
+            OptimumConvertMatrixInfos[PixelFormats.Bgr24] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true };
+            OptimumConvertMatrixInfos[PixelFormats.Rgb24] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
+            OptimumConvertMatrixInfos[PixelFormats.Bgr32] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true };
+            OptimumConvertMatrixInfos[PixelFormats.Bgra32] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbAlphaPixel, RgbReverse = true };
         }
 
         #endregion
 
         #region Methods
+
+        #region Array2D
 
         public static WriteableBitmap ToWriteableBitmap<T>(this Array2D<T> array)
             where T : struct
@@ -83,6 +86,8 @@ namespace DlibDotNet.Extensions
             int dpiY)
             where T : struct
         {
+            array.ThrowIfDisposed();
+
             var width = array.Columns;
             var height = array.Rows;
             var rgbReverse = false;
@@ -129,7 +134,7 @@ namespace DlibDotNet.Extensions
             where T : struct
         {
             var format = bitmap.Format;
-            if (!OptimumConvertInfos.TryGetValue(format, out var info))
+            if (!OptimumConvertImageInfos.TryGetValue(format, out var info))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
                 throw new NotSupportedException($"{format} is not support");
@@ -161,6 +166,97 @@ namespace DlibDotNet.Extensions
             return array;
         }
 
+        #endregion
+
+        #region Matrix
+
+        public static WriteableBitmap ToWriteableBitmap<T>(this Matrix<T> matrix)
+            where T : struct
+        {
+            return ToWriteableBitmap(matrix, 96, 96);
+        }
+
+        public static WriteableBitmap ToWriteableBitmap<T>(
+            this Matrix<T> matrix,
+            int dpiX,
+            int dpiY)
+            where T : struct
+        {
+            matrix.ThrowIfDisposed();
+
+            var width = matrix.Columns;
+            var height = matrix.Rows;
+            bool rgbReverse;
+            PixelFormat format;
+            int channels;
+
+            switch (matrix.MatrixElementType)
+            {
+                case MatrixElementTypes.RgbPixel:
+                    // Dlib RgbPixel data
+                    // R,G,B,R,G,B,...
+                    // But .NET Bitmap data
+                    // B,G,R,B,G,R,...
+                    rgbReverse = true;
+                    format = PixelFormats.Bgr24;
+                    channels = 3;
+                    break;
+                case MatrixElementTypes.RgbAlphaPixel:
+                    // Dlib RgbAlphaPixel data
+                    // R,G,B,A,R,G,B,A,,...
+                    // But .NET Bitmap data
+                    // B,G,R,A,B,G,R,A,...
+                    rgbReverse = true;
+                    format = PixelFormats.Bgra32;
+                    channels = 4;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var bitmap = new WriteableBitmap(width, height, dpiX, dpiY, format, null);
+            ToManaged(matrix.MatrixElementType, matrix.NativePtr, bitmap, rgbReverse, channels);
+            return bitmap;
+        }
+
+        public static Matrix<T> ToMatrix<T>(this WriteableBitmap bitmap)
+            where T : struct
+        {
+            var format = bitmap.Format;
+            if (!OptimumConvertMatrixInfos.TryGetValue(format, out var info))
+                throw new NotSupportedException($"{format} is not support");
+            if (!OptimumChannels.TryGetValue(format, out var channels))
+                throw new NotSupportedException($"{format} is not support");
+
+            var width = bitmap.PixelWidth;
+            var height = bitmap.PixelHeight;
+            var requireDispose = true;
+
+            Matrix<T> matrix = null;
+
+            try
+            {
+                matrix = new Matrix<T>(height, width);
+                if (matrix.MatrixElementType == info.Type)
+                {
+                    ToNative(bitmap, info.Type, matrix.NativePtr, info.RgbReverse, channels);
+                    requireDispose = false;
+                }
+            }
+            finally
+            {
+                if (requireDispose)
+                {
+                    matrix?.Dispose();
+                    throw new NotSupportedException();
+                }
+            }
+
+            return matrix;
+        }
+
+        #endregion
+
         #region Helpers
 
         private static void ToManaged(ImageTypes type, IntPtr src, WriteableBitmap bitmap, bool rgbReverse, int channels)
@@ -171,6 +267,16 @@ namespace DlibDotNet.Extensions
             var stride = bitmap.BackBufferStride;
             var srctype = type.ToNativeArray2DType();
             Dlib.Native.extensions_convert_array_to_managed_image(srctype, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+        }
+
+        private static void ToManaged(MatrixElementTypes type, IntPtr src, WriteableBitmap bitmap, bool rgbReverse, int channels)
+        {
+            var width = bitmap.PixelWidth;
+            var height = bitmap.PixelHeight;
+            var buffer = bitmap.BackBuffer;
+            var stride = bitmap.BackBufferStride;
+            var srctype = type.ToNativeMatrixElementType();
+            Dlib.Native.extensions_convert_matrix_to_managed_image(srctype, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
         private static void ToNative(WriteableBitmap bitmap, ImageTypes dstType, IntPtr dst, bool rgbReverse, int channels)
@@ -192,26 +298,28 @@ namespace DlibDotNet.Extensions
             }
         }
 
-        #endregion
-
-        #endregion
-
-        private sealed class ConvertInfo
+        private static void ToNative(WriteableBitmap bitmap, MatrixElementTypes dstType, IntPtr dst, bool rgbReverse, int channels)
         {
+            var width = bitmap.PixelWidth;
+            var height = bitmap.PixelHeight;
+            var buffer = bitmap.BackBuffer;
+            var stride = bitmap.BackBufferStride;
+            var usePallete = bitmap.Palette != null && bitmap.Palette.Colors.Count == 256;
 
-            public ImageTypes Type
+            if (!usePallete)
             {
-                get;
-                set;
+                Dlib.Native.extensions_convert_managed_image_to_matrix(buffer, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
-
-            public bool RgbReverse
+            else
             {
-                get;
-                set;
+                var p = bitmap.Palette.Colors.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
+                Dlib.Native.extensions_convert_managed_image_to_matrix_by_pallete(buffer, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
-
         }
+
+        #endregion
+
+        #endregion
 
     }
 
