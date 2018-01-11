@@ -1,9 +1,11 @@
 # Dlib.Net
 .NET wrapper for DLib written in C++ and C#
 
+## Usage
 
+Please refer [wiki](https://github.com/takuya-takeuchi/DlibDotNet/wiki)
 
-## Dependencies Libraries and Products (依存ライブラリとプロダクト)
+## Dependencies Libraries and Products
 
 #### [dlib](http://dlib.net/)
 
