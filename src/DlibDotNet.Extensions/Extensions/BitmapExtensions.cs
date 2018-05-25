@@ -16,9 +16,11 @@ namespace DlibDotNet.Extensions
 
         private static readonly Dictionary<PixelFormat, int> OptimumChannels;
 
-        private static readonly Dictionary<PixelFormat, ConvertInfo<ImageTypes>> OptimumConvertImageInfos;
+        private static readonly Dictionary<PixelFormat, ConvertInfo<ImageTypes>[]> OptimumConvertImageInfos;
 
         private static readonly Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>> OptimumConvertMatrixInfos;
+
+        private static Color[] _8bppColorPalette = new Color[256];
 
         #endregion
 
@@ -32,15 +34,26 @@ namespace DlibDotNet.Extensions
             OptimumChannels[PixelFormat.Format32bppRgb] =
             OptimumChannels[PixelFormat.Format32bppArgb] = 4;
 
-            OptimumConvertImageInfos = new Dictionary<PixelFormat, ConvertInfo<ImageTypes>>();
-            OptimumConvertImageInfos[PixelFormat.Format8bppIndexed] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel };
-            OptimumConvertImageInfos[PixelFormat.Format24bppRgb] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertImageInfos[PixelFormat.Format32bppArgb] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true };
-
+            OptimumConvertImageInfos = new Dictionary<PixelFormat, ConvertInfo<ImageTypes>[]>();
+            OptimumConvertImageInfos[PixelFormat.Format8bppIndexed] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.UInt8 }
+            };
+            OptimumConvertImageInfos[PixelFormat.Format24bppRgb] = new[]
+            {
+                new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbPixel, RgbReverse = true }
+            };
+            OptimumConvertImageInfos[PixelFormat.Format32bppArgb] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true }
+            };
             OptimumConvertMatrixInfos = new Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>>();
             OptimumConvertMatrixInfos[PixelFormat.Format8bppIndexed] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
             OptimumConvertMatrixInfos[PixelFormat.Format24bppRgb] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true };
             OptimumConvertMatrixInfos[PixelFormat.Format32bppArgb] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbAlphaPixel, RgbReverse = true };
+
+            for (var i = 0; i < _8bppColorPalette.Length; i++)
+                _8bppColorPalette[i] = Color.FromArgb(i, i, i);
         }
 
         #endregion
@@ -95,7 +108,7 @@ namespace DlibDotNet.Extensions
             where T : struct
         {
             var format = bitmap.PixelFormat;
-            if (!OptimumConvertImageInfos.TryGetValue(format, out var info))
+            if (!OptimumConvertImageInfos.TryGetValue(format, out var infos))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
                 throw new NotSupportedException($"{format} is not support");
@@ -109,10 +122,15 @@ namespace DlibDotNet.Extensions
             try
             {
                 array = new Array2D<T>(height, width);
-                if (array.ImageType == info.Type)
+                var info = infos.FirstOrDefault(i => i.Type == array.ImageType);
+                if (info != null)
                 {
                     ToNative(bitmap, info.Type, array.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;
+                }
+                else
+                {
+                    throw new NotSupportedException($"Not support converting from {format} to {array.ImageType}");
                 }
             }
             finally
@@ -125,6 +143,108 @@ namespace DlibDotNet.Extensions
             }
 
             return array;
+        }
+
+        #endregion
+
+        #region Bitmap
+
+        public static Bitmap To8bppIndexedGrayscale(this Bitmap bitmap, GrayscalLumaCoefficients coefficients)
+        {
+            float red;
+            float green;
+            float blue;
+
+            switch (coefficients)
+            {
+                case GrayscalLumaCoefficients.ITU_R_BT_601:
+                    red = 0.299F;
+                    green = 0.587F;
+                    blue = 0.1144F;
+                    break;
+                case GrayscalLumaCoefficients.ITU_R_BT_709:
+                    red = 0.2126F;
+                    green = 0.7152F;
+                    blue = 0.0722F;
+                    break;
+                case GrayscalLumaCoefficients.SMPTE_240M:
+                    red = 0.212F;
+                    green = 0.701F;
+                    blue = 0.087F;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(coefficients), coefficients, null);
+            }
+
+            return To8bppIndexedGrayscale(bitmap, red, green, blue);
+        }
+
+        public static Bitmap To8bppIndexedGrayscale(this Bitmap bitmap, float rCoefficient, float gCoefficient, float bCoefficient)
+        {
+            var format = bitmap.PixelFormat;
+            if (format != PixelFormat.Format8bppIndexed &&
+                format != PixelFormat.Format24bppRgb &&
+                format != PixelFormat.Format32bppRgb)
+                throw new NotSupportedException($"{format} is not support");
+
+            if (!OptimumChannels.TryGetValue(format, out var channels))
+                throw new NotSupportedException($"{format} is not support");
+
+            var width = bitmap.Width;
+            var height = bitmap.Height;
+            var rect = new System.Drawing.Rectangle(0, 0, width, height);
+
+            BitmapData srcData = null;
+            BitmapData dstData = null;
+            Bitmap dst = null;
+
+            try
+            {
+                dst = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+
+                srcData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, format);
+                dstData = dst.LockBits(rect, ImageLockMode.WriteOnly, dst.PixelFormat);
+
+                var srcStride = srcData.Stride;
+                var dstStride = dstData.Stride;
+
+                switch (channels)
+                {
+                    case 1:
+                        NativeMethods.memcpy(dstData.Scan0, srcData.Scan0, srcStride * height);
+                        break;
+                    case 3:
+                    case 4:
+                        unsafe
+                        {
+                            for (var y = 0; y < height; y++)
+                            {
+                                var pSrc = ((byte*)srcData.Scan0) + y * srcStride;
+                                var pDst = ((byte*)dstData.Scan0) + y * dstStride;
+                                for (var x = 0; x < width; x++, pSrc += channels, pDst++)
+                                    *pDst = (byte)(pSrc[0] * bCoefficient + pSrc[1] * gCoefficient + pSrc[2] * rCoefficient);
+                            }
+                        }
+
+                        break;
+                }
+            }
+            catch
+            {
+                dst?.Dispose();
+                throw;
+            }
+            finally
+            {
+                UpdatePalette(dst);
+
+                if (srcData != null)
+                    bitmap.UnlockBits(srcData);
+                if (dstData != null)
+                    dst.UnlockBits(dstData);
+            }
+
+            return dst;
         }
 
         #endregion
@@ -319,6 +439,14 @@ namespace DlibDotNet.Extensions
                 if (bitmapData != null)
                     bitmap.UnlockBits(bitmapData);
             }
+        }
+
+        private static void UpdatePalette(Bitmap bitmap)
+        {
+            var palette = bitmap.Palette;
+            for (var i = 0; i < _8bppColorPalette.Length; i++)
+                palette.Entries[i] = Color.FromArgb(i, i, i);
+            bitmap.Palette = palette;
         }
 
         #endregion

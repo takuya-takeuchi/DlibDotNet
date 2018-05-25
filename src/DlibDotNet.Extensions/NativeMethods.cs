@@ -3,7 +3,7 @@
 namespace DlibDotNet.Extensions
 {
 
-    internal static class NativeMethods
+    internal static partial class NativeMethods
     {
 
 #if LINUX
@@ -13,8 +13,8 @@ namespace DlibDotNet.Extensions
 #else
         public const string NativeLibrary = "DlibDotNet.Native.dll";
 
-        public const CallingConvention CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl;
+    public const CallingConvention CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl;
 #endif
 
-    }
+}
 }
