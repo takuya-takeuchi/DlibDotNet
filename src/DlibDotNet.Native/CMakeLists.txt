@@ -24,11 +24,11 @@ add_definitions(-DDLIB_GIF_SUPPORT)
 # include
 # NOTE: You should *NOT* add the dlib folder itself to your compiler's include path.
 set(INCLUDE_DIR
-    $ENV{DLIB_PATH}
-    $ENV{DLIB_PATH}/dlib/external/libjpeg
-    $ENV{DLIB_PATH}/dlib/external/libpng
-    $ENV{DLIB_PATH}/dlib/external/zlib
-    $ENV{GIFLIB_PATH}/lib
+    ${DLIB_PATH}
+    ${DLIB_PATH}/dlib/external/libjpeg
+    ${DLIB_PATH}/dlib/external/libpng
+    ${DLIB_PATH}/dlib/external/zlib
+    ${GIFLIB_PATH}/lib
 )
 include_directories("${INCLUDE_DIR}")
 
@@ -38,11 +38,11 @@ enable_testing()
 # target source and header files
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
-FILE(GLOB_RECURSE DLIB_SOURCES $ENV{DLIB_PATH}/dlib/all/*.cpp)
-FILE(GLOB_RECURSE JPEG_SOURCES $ENV{DLIB_PATH}/dlib/external/libjpeg/*.cpp)
-FILE(GLOB_RECURSE PNG_SOURCES $ENV{DLIB_PATH}/dlib/external/libpng/*.c)
-FILE(GLOB_RECURSE ZLIB_SOURCES $ENV{DLIB_PATH}/dlib/external/zlib/*.c)
-FILE(GLOB_RECURSE GIFLIB_SOURCES $ENV{GIFLIB_PATH}/lib/*.c)
+FILE(GLOB_RECURSE DLIB_SOURCES ${DLIB_PATH}/dlib/all/*.cpp)
+FILE(GLOB_RECURSE JPEG_SOURCES ${DLIB_PATH}/dlib/external/libjpeg/*.cpp)
+FILE(GLOB_RECURSE PNG_SOURCES ${DLIB_PATH}/dlib/external/libpng/*.c)
+FILE(GLOB_RECURSE ZLIB_SOURCES ${DLIB_PATH}/dlib/external/zlib/*.c)
+FILE(GLOB_RECURSE GIFLIB_SOURCES ${GIFLIB_PATH}/lib/*.c)
 add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES} ${DLIB_SOURCES} ${JPEG_SOURCES} ${PNG_SOURCES} ${ZLIB_SOURCES} ${GIFLIB_SOURCES})
 
 # lib
@@ -50,12 +50,12 @@ add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES} ${DLIB_SOURCES} ${JPEG_SOU
 # NOTE: You must add preprocessor DLIB_JPEG_SUPPORT and DLIB_PNG_SUPPORT to DlibDotNet.Native.vcxproj if you wanna load png and jpeg
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
 set(STATIC_LIBRARIES
-    $ENV{DLIB_PATH}/examples/build/dlib_build/${CMAKE_BUILD_TYPE}/dlib.lib
+    ${DLIB_LIBPATH}/dlib.lib
 )
 target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
 else()
 set(STATIC_LIBRARIES
-    $ENV{DLIB_PATH}/examples/build/dlib_build/libdlib.a
+    ${DLIB_LIBPATH}/libdlib.a
 )
 target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
 endif()
