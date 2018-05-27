@@ -80,9 +80,15 @@ DLLEXPORT bool random_cropper_get_max_object_size(random_cropper* cropper, doubl
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_min_object_size(random_cropper* cropper, double* value) 
+DLLEXPORT bool random_cropper_get_min_object_length_long_dim(random_cropper* cropper, long* value) 
 {
-    *value = cropper->get_min_object_size();
+    *value = cropper->get_min_object_length_long_dim();
+    return true;
+}
+
+DLLEXPORT bool random_cropper_get_min_object_length_short_dim(random_cropper* cropper, long* value) 
+{
+    *value = cropper->get_min_object_length_short_dim();
     return true;
 }
 
@@ -114,9 +120,9 @@ DLLEXPORT void random_cropper_set_max_object_size(random_cropper* cropper, doubl
     cropper->set_max_object_size(value);
 }
 
-DLLEXPORT void random_cropper_set_min_object_size(random_cropper* cropper, double value) 
+DLLEXPORT void random_cropper_set_min_object_size(random_cropper* cropper, long long_dim, long short_dim) 
 {
-    cropper->set_min_object_size(value);
+    cropper->set_min_object_size(long_dim, short_dim);
 }
 
 DLLEXPORT void random_cropper_set_randomly_flip(random_cropper* cropper, bool value) 
