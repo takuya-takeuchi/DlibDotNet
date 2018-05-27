@@ -49,15 +49,17 @@ add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES} ${DLIB_SOURCES} ${JPEG_SOU
 # NOTE: These statement should be at after add_library
 # NOTE: You must add preprocessor DLIB_JPEG_SUPPORT and DLIB_PNG_SUPPORT to DlibDotNet.Native.vcxproj if you wanna load png and jpeg
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
-set(STATIC_LIBRARIES
-    ${DLIB_LIBPATH}/dlib.lib
-)
-target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
+  set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} /bigobj")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+  set(STATIC_LIBRARIES
+      ${DLIB_LIBPATH}/dlib.lib
+  )
+  target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
 else()
-set(STATIC_LIBRARIES
-    ${DLIB_LIBPATH}/libdlib.a
-)
-target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
+  set(STATIC_LIBRARIES
+      ${DLIB_LIBPATH}/libdlib.a
+  )
+  target_link_libraries(${PROJ_NAME} ${STATIC_LIBRARIES})
 endif()
 
 # Enforce /MD option
