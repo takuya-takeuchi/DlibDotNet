@@ -342,7 +342,7 @@ DLLEXPORT void* running_stats_operator_add(running_stats_type type, void* left, 
             {
                 running_stats<float>& l = *(static_cast<running_stats<float>*>(left));
                 running_stats<float>& r = *(static_cast<running_stats<float>*>(right));
-                running_stats<float>& ret = l + r;
+                const running_stats<float>& ret = l + r;
                 return new running_stats<float>(ret);
             }
             break;
@@ -350,7 +350,7 @@ DLLEXPORT void* running_stats_operator_add(running_stats_type type, void* left, 
             {
                 running_stats<double>& l = *(static_cast<running_stats<double>*>(left));
                 running_stats<double>& r = *(static_cast<running_stats<double>*>(right));
-                running_stats<double>& ret = l + r;
+                const running_stats<double>& ret = l + r;
                 return new running_stats<double>(ret);
             }
             break;
