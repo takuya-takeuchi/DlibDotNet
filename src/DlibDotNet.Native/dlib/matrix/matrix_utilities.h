@@ -22,46 +22,46 @@ DLLEXPORT int matrix_max_point(matrix_element_type type, void* matrix, dlib::poi
     int err = ERR_OK;
     switch(type)
     {
-        case array2d_type::UInt8:
+        case matrix_element_type::UInt8:
             {
                 auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<uint8_t>>>*>(matrix);
                 auto p = dlib::max_point(*mat_op);
                 *ret = new dlib::point(p);;
             }
             break;
-        case array2d_type::UInt16:
+        case matrix_element_type::UInt16:
             {
                 auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<uint16_t>>>*>(matrix);
                 auto p = dlib::max_point(*mat_op);
                 *ret = new dlib::point(p);;
             }
             break;
-        case array2d_type::Int32:
+        case matrix_element_type::Int32:
             {
                 auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<int32_t>>>*>(matrix);
                 auto p = dlib::max_point(*mat_op);
                 *ret = new dlib::point(p);;
             }
             break;
-        case array2d_type::Float:
+        case matrix_element_type::Float:
             {
                 auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<float>>>*>(matrix);
                 auto p = dlib::max_point(*mat_op);
                 *ret = new dlib::point(p);;
             }
             break;
-        case array2d_type::Double:
+        case matrix_element_type::Double:
             {
                 auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<double>>>*>(matrix);
                 auto p = dlib::max_point(*mat_op);
                 *ret = new dlib::point(p);;
             }
             break;
-        case array2d_type::RgbPixel:
-        case array2d_type::HsiPixel:
-        case array2d_type::RgbAlphaPixel:
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
