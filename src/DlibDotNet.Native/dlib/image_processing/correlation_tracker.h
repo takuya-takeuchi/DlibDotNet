@@ -3,7 +3,6 @@
 
 #include "../export.h"
 #include <dlib/image_processing.h>
-#include <dlib/gui_widgets.h>
 #include "../shared.h"
  
 using namespace dlib;

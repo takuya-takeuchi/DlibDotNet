@@ -3,7 +3,6 @@
 
 #include "../export.h"
 #include <dlib/image_processing/frontal_face_detector.h>
-#include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
 #include <iostream>
  

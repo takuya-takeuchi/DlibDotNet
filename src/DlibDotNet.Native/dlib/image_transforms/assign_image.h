@@ -2,10 +2,9 @@
 #define _CPP_ASSIGN_IMAGE_H_
 
 #include "../export.h"
-#include <dlib/gui_widgets/canvas_drawing.h>
-#include <dlib/gui_core.h>
 #include <dlib/geometry/rectangle.h>
 #include <dlib/geometry/vector.h>
+#include <dlib/image_transforms/assign_image.h>
 #include <dlib/matrix.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
