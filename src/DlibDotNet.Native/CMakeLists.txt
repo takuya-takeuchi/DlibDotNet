@@ -21,6 +21,11 @@ add_definitions(-DDLIB_JPEG_SUPPORT)
 add_definitions(-DDLIB_PNG_SUPPORT)
 add_definitions(-DDLIB_GIF_SUPPORT)
 
+# Ignore GUI Support
+if (NOT WIN32)
+    add_definitions(-DDLIB_NO_GUI_SUPPORT)
+endif()
+
 # include
 # NOTE: You should *NOT* add the dlib folder itself to your compiler's include path.
 set(INCLUDE_DIR
