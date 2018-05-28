@@ -1,3 +1,5 @@
+#ifndef DLIB_NO_GUI_SUPPORT
+
 #ifndef _CPP_RENDER_FACE_DETECTIONS_H_
 #define _CPP_RENDER_FACE_DETECTIONS_H_
 
@@ -37,5 +39,7 @@ DLLEXPORT void render_face_detections2(full_object_detection* det, rgb_pixel* p,
         rets->push_back(line);
     }
 }
+
+#endif
 
 #endif

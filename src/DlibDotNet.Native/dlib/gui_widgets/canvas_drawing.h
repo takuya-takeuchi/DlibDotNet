@@ -1,3 +1,5 @@
+#ifndef DLIB_NO_GUI_SUPPORT
+
 #ifndef _CPP_CANVAS_DRAWING_H_
 #define _CPP_CANVAS_DRAWING_H_
 
@@ -183,5 +185,7 @@ DLLEXPORT int draw_rectangle_canvas_infinity(
 
     return err;
 }
+
+#endif
 
 #endif

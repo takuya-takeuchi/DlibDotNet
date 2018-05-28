@@ -1,3 +1,5 @@
+#ifndef DLIB_NO_GUI_SUPPORT
+
 #ifndef _CPP_WIDGETS_H_
 #define _CPP_WIDGETS_H_
 
@@ -864,5 +866,7 @@ DLLEXPORT void perspective_window_overlay_dot_delete(perspective_window::overlay
 }
 
 #pragma endregion perspective_window::overlay_dot
+
+#endif
 
 #endif

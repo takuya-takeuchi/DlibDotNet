@@ -3,7 +3,11 @@
 
 #include "export.h"
 #include <dlib/geometry/rectangle.h>
+
+#ifndef DLIB_NO_GUI_SUPPORT
 #include <dlib/gui_widgets/widgets.h>
+#endif
+
 #include <dlib/image_processing/full_object_detection.h>
 #include <dlib/image_transforms/interpolation.h>
 #include <dlib/image_keypoint/surf.h>
@@ -425,86 +429,6 @@ DLLEXPORT void stdvector_stdvector_rectangle_copy(std::vector<std::vector<rectan
 
 #pragma endregion std::vector<rectangle>
 
-#pragma region image_window::overlay_line
-
-DLLEXPORT std::vector<image_window::overlay_line*>* stdvector_image_window_overlay_line_new1()
-{
-    return new std::vector<image_window::overlay_line*>;
-}
-
-DLLEXPORT std::vector<image_window::overlay_line*>* stdvector_image_window_overlay_line_new2(size_t size)
-{
-    return new std::vector<image_window::overlay_line*>(size);
-}
-
-DLLEXPORT std::vector<image_window::overlay_line*>* stdvector_image_window_overlay_line_new3(image_window::overlay_line** data, size_t dataLength)
-{
-    return new std::vector<image_window::overlay_line*>(data, data + dataLength);
-}
-
-DLLEXPORT size_t stdvector_image_window_overlay_line_getSize(std::vector<image_window::overlay_line*>* vector)
-{
-    return vector->size();
-}
-
-DLLEXPORT image_window::overlay_line* stdvector_image_window_overlay_line_getPointer(std::vector<image_window::overlay_line*> *vector)
-{
-    return (vector->at(0));
-}
-
-DLLEXPORT void stdvector_image_window_overlay_line_delete(std::vector<image_window::overlay_line*> *vector)
-{    
-    delete vector;
-}
-
-DLLEXPORT void stdvector_image_window_overlay_line_copy(std::vector<image_window::overlay_line*> *vector, image_window::overlay_line** dst)
-{
-    size_t length = sizeof(image_window::overlay_line*)* vector->size();
-    memcpy(dst, &(vector->at(0)), length);
-}
-
-#pragma endregion image_window::overlay_line
-
-#pragma region perspective_window::overlay_dot
-
-DLLEXPORT std::vector<perspective_window::overlay_dot*>* stdvector_perspective_window_overlay_dot_new1()
-{
-    return new std::vector<perspective_window::overlay_dot*>;
-}
-
-DLLEXPORT std::vector<perspective_window::overlay_dot*>* stdvector_perspective_window_overlay_dot_new2(size_t size)
-{
-    return new std::vector<perspective_window::overlay_dot*>(size);
-}
-
-DLLEXPORT std::vector<perspective_window::overlay_dot*>* stdvector_perspective_window_overlay_dot_new3(perspective_window::overlay_dot** data, size_t dataLength)
-{
-    return new std::vector<perspective_window::overlay_dot*>(data, data + dataLength);
-}
-
-DLLEXPORT size_t stdvector_perspective_window_overlay_dot_getSize(std::vector<perspective_window::overlay_dot*>* vector)
-{
-    return vector->size();
-}
-
-DLLEXPORT perspective_window::overlay_dot* stdvector_perspective_window_overlay_dot_getPointer(std::vector<perspective_window::overlay_dot*> *vector)
-{
-    return (vector->at(0));
-}
-
-DLLEXPORT void stdvector_perspective_window_overlay_dot_delete(std::vector<perspective_window::overlay_dot*> *vector)
-{    
-    delete vector;
-}
-
-DLLEXPORT void stdvector_perspective_window_overlay_dot_copy(std::vector<perspective_window::overlay_dot*> *vector, perspective_window::overlay_dot** dst)
-{
-    size_t length = sizeof(perspective_window::overlay_dot*)* vector->size();
-    memcpy(dst, &(vector->at(0)), length);
-}
-
-#pragma endregion perspective_window::overlay_dot
-
 #pragma region full_object_detection
 
 DLLEXPORT std::vector<full_object_detection*>* stdvector_full_object_detection_new1()
@@ -705,5 +629,87 @@ DLLEXPORT void stdvector_stdvector_mmod_rect_copy(std::vector<std::vector<mmod_r
 }
 
 #pragma endregion std::vector<mmod_rect>
+
+#ifndef DLIB_NO_GUI_SUPPORT
+#pragma region image_window::overlay_line
+
+DLLEXPORT std::vector<image_window::overlay_line*>* stdvector_image_window_overlay_line_new1()
+{
+    return new std::vector<image_window::overlay_line*>;
+}
+
+DLLEXPORT std::vector<image_window::overlay_line*>* stdvector_image_window_overlay_line_new2(size_t size)
+{
+    return new std::vector<image_window::overlay_line*>(size);
+}
+
+DLLEXPORT std::vector<image_window::overlay_line*>* stdvector_image_window_overlay_line_new3(image_window::overlay_line** data, size_t dataLength)
+{
+    return new std::vector<image_window::overlay_line*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_image_window_overlay_line_getSize(std::vector<image_window::overlay_line*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT image_window::overlay_line* stdvector_image_window_overlay_line_getPointer(std::vector<image_window::overlay_line*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_image_window_overlay_line_delete(std::vector<image_window::overlay_line*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_image_window_overlay_line_copy(std::vector<image_window::overlay_line*> *vector, image_window::overlay_line** dst)
+{
+    size_t length = sizeof(image_window::overlay_line*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion image_window::overlay_line
+
+#pragma region perspective_window::overlay_dot
+
+DLLEXPORT std::vector<perspective_window::overlay_dot*>* stdvector_perspective_window_overlay_dot_new1()
+{
+    return new std::vector<perspective_window::overlay_dot*>;
+}
+
+DLLEXPORT std::vector<perspective_window::overlay_dot*>* stdvector_perspective_window_overlay_dot_new2(size_t size)
+{
+    return new std::vector<perspective_window::overlay_dot*>(size);
+}
+
+DLLEXPORT std::vector<perspective_window::overlay_dot*>* stdvector_perspective_window_overlay_dot_new3(perspective_window::overlay_dot** data, size_t dataLength)
+{
+    return new std::vector<perspective_window::overlay_dot*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_perspective_window_overlay_dot_getSize(std::vector<perspective_window::overlay_dot*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT perspective_window::overlay_dot* stdvector_perspective_window_overlay_dot_getPointer(std::vector<perspective_window::overlay_dot*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_perspective_window_overlay_dot_delete(std::vector<perspective_window::overlay_dot*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_perspective_window_overlay_dot_copy(std::vector<perspective_window::overlay_dot*> *vector, perspective_window::overlay_dot** dst)
+{
+    size_t length = sizeof(perspective_window::overlay_dot*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion perspective_window::overlay_dot
+#endif
 
 #endif

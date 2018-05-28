@@ -1,3 +1,5 @@
+#ifndef DLIB_NO_GUI_SUPPORT
+
 #ifndef _CPP_SURF_H_
 #define _CPP_SURF_H_
 
@@ -23,5 +25,7 @@ DLLEXPORT void draw_surf_points (
 
     dlib::draw_surf_points(window, tmp);
 }
+
+#endif
 
 #endif

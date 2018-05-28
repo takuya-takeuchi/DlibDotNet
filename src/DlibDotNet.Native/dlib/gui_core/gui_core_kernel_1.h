@@ -1,4 +1,6 @@
 
+#ifndef DLIB_NO_GUI_SUPPORT
+
 #ifndef _CPP_GUI_CORE_KERNEL1_H_
 #define _CPP_GUI_CORE_KERNEL1_H_
 
@@ -19,5 +21,7 @@ DLLEXPORT void base_window_wait_until_closed(base_window* window)
 {
 	window->wait_until_closed();
 }
+
+#endif
 
 #endif
