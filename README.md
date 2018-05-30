@@ -1,11 +1,14 @@
 # Dlib.Net
 DLib .NET wrapper written in C++ and C# for Windows, MacOS and Linux
 
-## Windows Demo
-<img src="images/win.gif?raw=true" width="400x200" title="Video Tracking on Windows"/>
+## Linux Demo
+<img src="images/linux.gif?raw=true" width="400x300" title="Video Tracking on Ubuntu"/>
 
 ## MacOS Demo
 <img src="images/mac.gif?raw=true" width="400x300" title="Video Tracking on MacOS"/>
+
+## Windows Demo
+<img src="images/win.gif?raw=true" width="400x200" title="Video Tracking on Windows"/>
 
 ## Usage
  
