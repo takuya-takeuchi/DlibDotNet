@@ -3,6 +3,11 @@ set(PROJ_NAME DlibDotNet.Native)
 
 project(${PROJ_NAME} VERSION 0.0.0)
 
+# Only GCC requires -fPIC
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_CXX_FLAGS "-fPIC")
+endif()
+
 # Select the release build type by default
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
