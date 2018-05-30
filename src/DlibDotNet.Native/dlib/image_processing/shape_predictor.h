@@ -3,7 +3,6 @@
 
 #include "../export.h"
 #include <dlib/image_processing/shape_predictor.h>
-#include <dlib/gui_widgets.h>
 #include "../shared.h"
  
 using namespace dlib;

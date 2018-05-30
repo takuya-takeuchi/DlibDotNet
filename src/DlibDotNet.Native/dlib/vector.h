@@ -3,7 +3,11 @@
 
 #include "export.h"
 #include <dlib/geometry/rectangle.h>
+
+#ifndef DLIB_NO_GUI_SUPPORT
 #include <dlib/gui_widgets/widgets.h>
+#endif
+
 #include <dlib/image_processing/full_object_detection.h>
 #include <dlib/image_transforms/interpolation.h>
 #include "shared.h"
@@ -380,46 +384,6 @@ DLLEXPORT void vector_vector_rectangle_copy(std::vector<std::vector<rectangle*>*
 
 #pragma endregion std::vector<rectangle>
 
-#pragma region image_window::overlay_line
-
-DLLEXPORT std::vector<image_window::overlay_line*>* vector_image_window_overlay_line_new1()
-{
-    return new std::vector<image_window::overlay_line*>;
-}
-
-DLLEXPORT std::vector<image_window::overlay_line*>* vector_image_window_overlay_line_new2(size_t size)
-{
-    return new std::vector<image_window::overlay_line*>(size);
-}
-
-DLLEXPORT std::vector<image_window::overlay_line*>* vector_image_window_overlay_line_new3(image_window::overlay_line** data, size_t dataLength)
-{
-    return new std::vector<image_window::overlay_line*>(data, data + dataLength);
-}
-
-DLLEXPORT size_t vector_image_window_overlay_line_getSize(std::vector<image_window::overlay_line*>* vector)
-{
-    return vector->size();
-}
-
-DLLEXPORT image_window::overlay_line* vector_image_window_overlay_line_getPointer(std::vector<image_window::overlay_line*> *vector)
-{
-    return (vector->at(0));
-}
-
-DLLEXPORT void vector_image_window_overlay_line_delete(std::vector<image_window::overlay_line*> *vector)
-{    
-    delete vector;
-}
-
-DLLEXPORT void vector_image_window_overlay_line_copy(std::vector<image_window::overlay_line*> *vector, image_window::overlay_line** dst)
-{
-    size_t length = sizeof(image_window::overlay_line*)* vector->size();
-    memcpy(dst, &(vector->at(0)), length);
-}
-
-#pragma endregion image_window::overlay_line
-
 #pragma region full_object_detection
 
 DLLEXPORT std::vector<full_object_detection*>* vector_full_object_detection_new1()
@@ -580,5 +544,47 @@ DLLEXPORT void vector_vector_mmod_rect_copy(std::vector<std::vector<mmod_rect*>*
 }
 
 #pragma endregion std::vector<mmod_rect>
+
+#ifndef DLIB_NO_GUI_SUPPORT
+#pragma region image_window::overlay_line
+
+DLLEXPORT std::vector<image_window::overlay_line*>* vector_image_window_overlay_line_new1()
+{
+    return new std::vector<image_window::overlay_line*>;
+}
+
+DLLEXPORT std::vector<image_window::overlay_line*>* vector_image_window_overlay_line_new2(size_t size)
+{
+    return new std::vector<image_window::overlay_line*>(size);
+}
+
+DLLEXPORT std::vector<image_window::overlay_line*>* vector_image_window_overlay_line_new3(image_window::overlay_line** data, size_t dataLength)
+{
+    return new std::vector<image_window::overlay_line*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t vector_image_window_overlay_line_getSize(std::vector<image_window::overlay_line*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT image_window::overlay_line* vector_image_window_overlay_line_getPointer(std::vector<image_window::overlay_line*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void vector_image_window_overlay_line_delete(std::vector<image_window::overlay_line*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void vector_image_window_overlay_line_copy(std::vector<image_window::overlay_line*> *vector, image_window::overlay_line** dst)
+{
+    size_t length = sizeof(image_window::overlay_line*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion image_window::overlay_line
+#endif
 
 #endif

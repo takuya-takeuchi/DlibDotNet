@@ -28,7 +28,7 @@ namespace DlibDotNet
             var ret = Native.matrix_max_point(type, matrix.NativePtr, out var point);
             switch (ret)
             {
-                case Native.ErrorType.ArrayTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -46,7 +46,7 @@ namespace DlibDotNet
             var ret = Native.matrix_trans(type, matrix.NativePtr, out var matrixOp);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 

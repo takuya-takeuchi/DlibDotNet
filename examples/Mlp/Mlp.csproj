@@ -6,6 +6,7 @@
     <Authors>Takuya Takeuchi</Authors>
     <Description>Sample of DlibDotNet</Description>
     <Company />
+    <Configurations>Debug;Release;DebugLinux;ReleaseLinux;DebugMac;ReleaseMac</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

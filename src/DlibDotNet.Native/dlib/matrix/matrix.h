@@ -468,7 +468,6 @@ DLLEXPORT void matrix_operator_set_one_row_column_float(void* matrix, int index,
 
 DLLEXPORT void matrix_operator_set_one_row_column_rgb_pixel(void* matrix, int index, rgb_pixel value)
 {
-
     dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
     tmp(index) = value;
 }
@@ -608,8 +607,7 @@ DLLEXPORT void matrix_operator_set_row_column_float(void* matrix, int row, int c
 }
 
 DLLEXPORT void matrix_operator_set_row_column_rgb_pixel(void* matrix, int row, int column, rgb_pixel value)
-{
-    
+{    
     dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
     tmp(row, column) = value;
 }

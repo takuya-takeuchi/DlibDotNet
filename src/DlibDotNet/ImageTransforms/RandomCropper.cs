@@ -89,13 +89,13 @@ namespace DlibDotNet.ImageTransforms
                 Native.random_cropper_set_max_rotation_degrees(this.NativePtr, value);
             }
         }
-
-        public double MinObjectSize
+        
+        public long MinObjectLengthLongDim
         {
             get
             {
                 this.ThrowIfDisposed();
-                Native.random_cropper_get_min_object_size(this.NativePtr, out var value);
+                Native.random_cropper_get_min_object_length_long_dim(this.NativePtr, out var value);
                 return value;
             }
             set
@@ -104,7 +104,36 @@ namespace DlibDotNet.ImageTransforms
                     throw new ArgumentOutOfRangeException();
 
                 this.ThrowIfDisposed();
-                Native.random_cropper_set_min_object_size(this.NativePtr, value);
+
+                var s = this.MinObjectLengthShortDim;
+                if (!(0 < s && s <= value))
+                    throw new ArgumentException($"{nameof(this.MinObjectLengthShortDim)} should be more than 0 and {nameof(this.MinObjectLengthShortDim)} should be less than {nameof(MinObjectLengthLongDim)}.");
+                
+                Native.random_cropper_set_min_object_size(this.NativePtr, value, s);
+            }
+        }
+
+        public long MinObjectLengthShortDim
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                Native.random_cropper_get_min_object_length_short_dim(this.NativePtr, out var value);
+                return value;
+            }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException();
+
+                this.ThrowIfDisposed();
+
+                // -0 < short_dim <= long_dim
+                var l = this.MinObjectLengthLongDim;
+                if (!(0 < value && value <= l))
+                    throw new ArgumentException($"{nameof(this.MinObjectLengthShortDim)} should be more than 0 and {nameof(this.MinObjectLengthShortDim)} should be less than {nameof(MinObjectLengthLongDim)}.");
+
+                Native.random_cropper_set_min_object_size(this.NativePtr, l, value);
             }
         }
 
@@ -235,7 +264,11 @@ namespace DlibDotNet.ImageTransforms
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool random_cropper_get_min_object_size(IntPtr cropper, out double ret);
+            public static extern bool random_cropper_get_min_object_length_long_dim(IntPtr cropper, out long ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool random_cropper_get_min_object_length_short_dim(IntPtr cropper, out long ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
@@ -252,7 +285,7 @@ namespace DlibDotNet.ImageTransforms
             public static extern void random_cropper_set_max_object_size(IntPtr cropper, double value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void random_cropper_set_min_object_size(IntPtr cropper, double value);
+            public static extern void random_cropper_set_min_object_size(IntPtr cropper, double longDim, double shortDim);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void random_cropper_set_randomly_flip(IntPtr cropper, bool value);

@@ -6,7 +6,7 @@
     <Description>.NET wrapper for DLib written in C#</Description>
     <Company />
     <Copyright>Takuya Takeuchi</Copyright>
-    <Configurations>Debug;Release;ReleaseLinux;DebugLinux</Configurations>
+    <Configurations>Debug;Release;ReleaseLinux;DebugLinux;DebugMac;ReleaseMac</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,6 +19,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugMac|AnyCPU'">
+    <DefineConstants>TRACE;MAC;NETSTANDARD2_0;DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -28,6 +33,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;LINUX;RELEASE;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseMac|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;MAC;RELEASE;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
