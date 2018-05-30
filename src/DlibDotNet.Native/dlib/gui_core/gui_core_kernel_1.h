@@ -5,7 +5,7 @@
 #define _CPP_GUI_CORE_KERNEL1_H_
 
 #include "../export.h"
-#include <dlib/gui_core/gui_core_kernel_1.h>
+#include <dlib/gui_widgets.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
 
