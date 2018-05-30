@@ -1,11 +1,15 @@
 # Dlib.Net
-.NET wrapper for DLib written in C++ and C#
+DLib .NET wrapper written in C++ and C# for Windows, MacOS and Linux
 
 ## Windows Demo
 <img src="images/win.gif?raw=true" width="400x200" title="Video Tracking on Windows"/>
 
 ## MacOS Demo
 <img src="images/mac.gif?raw=true" width="400x300" title="Video Tracking on MacOS"/>
+
+## Usage
+ 
+Please refer [wiki](https://github.com/takuya-takeuchi/DlibDotNet/wiki)
 
 ## Dependencies Libraries and Products
 
