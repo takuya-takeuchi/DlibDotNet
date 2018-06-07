@@ -624,13 +624,15 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>taskkill /F /IM vstest.executionengine.exe /FI "MEMUSAGE gt 1"
+
 xcopy "$(SolutionDir)src\DlibDotNet.Native\build\$(ConfigurationName)\DlibDotNet.Native.dll" "$(TargetDir)" /y
 if "Debug" == "$(ConfigurationName)" (
 xcopy "$(SolutionDir)src\DlibDotNet.Native\build\$(ConfigurationName)\DlibDotNet.Native.pdb" "$(TargetDir)" /y
 )
-xcopy "$(SolutionDir)src\DlibDotNet.Native\build\$(ConfigurationName)\DlibDotNet.Native.dll" "$(ProjectDir)TestDeployItem\$(ConfigurationName)" /y
+
+xcopy "$(SolutionDir)src\DlibDotNet.Native\build\$(ConfigurationName)\DlibDotNet.Native.dll" "$(ProjectDir)TestDeployItem\$(ConfigurationName)\" /y
 if "Debug" == "$(ConfigurationName)" (
-xcopy "$(SolutionDir)src\DlibDotNet.Native\build\$(ConfigurationName)\DlibDotNet.Native.pdb" "$(ProjectDir)TestDeployItem\$(ConfigurationName)" /y
+xcopy "$(SolutionDir)src\DlibDotNet.Native\build\$(ConfigurationName)\DlibDotNet.Native.pdb" "$(ProjectDir)TestDeployItem\$(ConfigurationName)\" /y
 )</PreBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
