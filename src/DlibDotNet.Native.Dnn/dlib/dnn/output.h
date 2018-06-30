@@ -37,4 +37,38 @@ DLLEXPORT size_t dnn_output_stdvector_float_1_1_getSize(std::vector<dlib::matrix
 
 #pragma endregion matrix<float,0,1>
 
+#pragma region std::vector<mmod_rect>
+
+DLLEXPORT void dnn_output_stdvector_stdvector_mmod_rect_delete(std::vector<std::vector<mmod_rect>>* vector)
+{
+    delete vector;
+}
+
+DLLEXPORT std::vector<mmod_rect>* dnn_output_stdvector_stdvector_mmod_rect_getItem(std::vector<std::vector<mmod_rect>>* vector, const int index)
+{
+    return &(vector->at(index));
+}
+
+DLLEXPORT size_t dnn_output_stdvector_stdvector_mmod_rect_getSize(std::vector<std::vector<mmod_rect>>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT void dnn_output_stdvector_mmod_rect_delete(std::vector<mmod_rect>* vector)
+{
+    delete vector;
+}
+
+DLLEXPORT mmod_rect* dnn_output_stdvector_mmod_rect_getItem(std::vector<mmod_rect>* vector, const int index)
+{
+    return &(vector->at(index));
+}
+
+DLLEXPORT size_t dnn_output_stdvector_mmod_rect_getSize(std::vector<mmod_rect>* vector)
+{
+    return vector->size();
+}
+
+#pragma endregion std::vector<mmod_rect>
+
 #endif

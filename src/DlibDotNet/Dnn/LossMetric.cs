@@ -255,15 +255,3 @@ namespace DlibDotNet.Dnn
     }
 
 }
-
-namespace DlibDotNet
-{
-
-    public interface IUndisposableElementCollection<T> : IEnumerable<T>, IDlibObject
-    {
-
-
-
-    }
-
-}

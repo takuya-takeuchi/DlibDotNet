@@ -55,6 +55,50 @@ do { \
     }\
 } while (0)
 
+#define interpolation_matrix_template(ret, type, img) \
+do { \
+    ret = ERR_OK;\
+    switch(type)\
+    {\
+        case matrix_element_type::UInt8:\
+            dlib::FUNCTION(*((dlib::matrix<uint8_t>*)img));\
+            break;\
+        case matrix_element_type::UInt16:\
+            dlib::FUNCTION(*((dlib::matrix<uint16_t>*)img));\
+            break;\
+        case matrix_element_type::UInt32:\
+            dlib::FUNCTION(*((dlib::matrix<uint32_t>*)img));\
+            break;\
+        case matrix_element_type::Int8:\
+            dlib::FUNCTION(*((dlib::matrix<int8_t>*)img));\
+            break;\
+        case matrix_element_type::Int16:\
+            dlib::FUNCTION(*((dlib::matrix<int16_t>*)img));\
+            break;\
+        case matrix_element_type::Int32:\
+            dlib::FUNCTION(*((dlib::matrix<int32_t>*)img));\
+            break;\
+        case matrix_element_type::Float:\
+            dlib::FUNCTION(*((dlib::matrix<float>*)img));\
+            break;\
+        case matrix_element_type::Double:\
+            dlib::FUNCTION(*((dlib::matrix<double>*)img));\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            dlib::FUNCTION(*((dlib::matrix<rgb_pixel>*)img));\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            dlib::FUNCTION(*((dlib::matrix<hsi_pixel>*)img));\
+            break;\
+        case matrix_element_type::RgbAlphaPixel:\
+            dlib::FUNCTION(*((dlib::matrix<rgb_alpha_pixel>*)img));\
+            break;\
+        default:\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+			break;\
+    }\
+} while (0)
+
 #define interpolation_inout_template(ret, in_type, in_img, out_img) \
 do { \
     ret = ERR_OK;\
@@ -656,6 +700,17 @@ DLLEXPORT int pyramid_up(array2d_type type, void* img)
 
     #define FUNCTION pyramid_up
     interpolation_template(err, type, img);
+    #undef FUNCTION
+
+    return err;
+}
+
+DLLEXPORT int pyramid_up_matrix(matrix_element_type type, void* img)
+{
+    int err = ERR_OK;
+
+    #define FUNCTION pyramid_up
+    interpolation_matrix_template(err, type, img);
     #undef FUNCTION
 
     return err;
