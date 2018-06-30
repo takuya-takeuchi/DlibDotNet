@@ -46,7 +46,7 @@ namespace DlibDotNet
             }
         }
 
-        public static Array2D<T> ExtractImageChips<T>(Array2DBase image, ChipDetails chipLocation)
+        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation)
             where T : struct
         {
             if (image == null)
@@ -74,6 +74,39 @@ namespace DlibDotNet
                     throw new ArgumentException($"{image.ImageType} is not supported.");
                 case Native.ErrorType.OutputArrayTypeNotSupport:
                     throw new ArgumentException($"{chip.ImageType} is not supported.");
+            }
+
+            return chip;
+        }
+
+        public static Matrix<T> ExtractImageChip<T>(MatrixBase image, ChipDetails chipLocation)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (chipLocation == null)
+                throw new ArgumentNullException(nameof(chipLocation));
+
+            image.ThrowIfDisposed();
+            chipLocation.ThrowIfDisposed();
+
+            if (!chipLocation.IsValid())
+                throw new ArgumentException($"{nameof(chipLocation)} is invalid item.");
+
+            var chip = new Matrix<T>();
+            var elementType = image.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.extract_image_chip_matrix(elementType,
+                                                       image.NativePtr,
+                                                       chipLocation.NativePtr,
+                                                       chip.MatrixElementType.ToNativeMatrixElementType(),
+                                                       chip.NativePtr);
+
+            switch (ret)
+            {
+                case Native.ErrorType.InputElementTypeNotSupport:
+                    throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                case Native.ErrorType.OutputElementTypeNotSupport:
+                    throw new ArgumentException($"{chip.MatrixElementType} is not supported.");
             }
 
             return chip;
@@ -178,6 +211,35 @@ namespace DlibDotNet
 
             Native.get_face_chip_details2(det.NativePtr, size, padding, out var ret);
             return new ChipDetails(ret);
+        }
+
+        public static Matrix<T> JitterImage<T>(Matrix<T> image, Rand random)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (random == null)
+                throw new ArgumentNullException(nameof(random));
+
+            image.ThrowIfDisposed();
+            random.ThrowIfDisposed();
+
+            var chip = new Matrix<T>();
+            var elementType = image.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.jitter_image(elementType,
+                                          image.NativePtr,
+                                          random.NativePtr,
+                                          out var retImage);
+
+            switch (ret)
+            {
+                case Native.ErrorType.InputElementTypeNotSupport:
+                    throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                case Native.ErrorType.OutputElementTypeNotSupport:
+                    throw new ArgumentException($"{chip.MatrixElementType} is not supported.");
+            }
+
+            return new Matrix<T>(retImage);
         }
 
         public static void PyramidUp(Array2DBase image)
@@ -332,6 +394,11 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chips(Array2DType img_type, IntPtr in_img, IntPtr chip_locations, Array2DType array_type, IntPtr array);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_chip_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, IntPtr out_chip);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType jitter_image(MatrixElementType in_type, IntPtr in_img, IntPtr rand, out IntPtr out_img);
 
         }
 

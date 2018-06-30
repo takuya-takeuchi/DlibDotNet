@@ -39,9 +39,11 @@ namespace DlibDotNet
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
-        protected MatrixBase(bool isEnabledDispose = true)
+        protected MatrixBase(int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
             : base(isEnabledDispose)
         {
+            this.TemplateRows = templateRows;
+            this.TemplateColumns = temlateColumns;
         }
 
         #endregion
@@ -49,6 +51,16 @@ namespace DlibDotNet
         #region Properties
 
         public abstract MatrixElementTypes MatrixElementType
+        {
+            get;
+        }
+
+        internal int TemplateColumns
+        {
+            get;
+        }
+
+        internal int TemplateRows
         {
             get;
         }

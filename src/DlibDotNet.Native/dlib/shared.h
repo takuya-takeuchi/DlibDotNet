@@ -2,6 +2,8 @@ enum struct array2d_type : int
 {
     UInt8 = 0,
     UInt16,
+    UInt32,
+    Int8,
     Int16,
     Int32,
     Float,
@@ -47,7 +49,10 @@ enum element_type : int
 
     OpArray2dToMat,
     
-    OpTrans
+    OpTrans,
+    
+    OpStdVectToMat
+
 };
 
 enum struct interpolation_type : int

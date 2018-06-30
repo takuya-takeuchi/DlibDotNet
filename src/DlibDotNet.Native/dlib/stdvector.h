@@ -6,6 +6,7 @@
 
 #ifndef DLIB_NO_GUI_SUPPORT
 #include <dlib/gui_widgets/widgets.h>
+#include <dlib/image_keypoint/draw_surf_points.h>
 #endif
 
 #include <dlib/image_processing/full_object_detection.h>
@@ -82,6 +83,40 @@ DLLEXPORT void stdvector_long_delete(std::vector<int64_t> *vector)
 }
 
 #pragma endregion int64_t
+
+#pragma region uint32_t
+
+DLLEXPORT std::vector<uint32_t>* stdvector_uint32_new1()
+{
+    return new std::vector<uint32_t>;
+}
+
+DLLEXPORT std::vector<uint32_t>* stdvector_uint32_new2(size_t size)
+{
+    return new std::vector<uint32_t>(size);
+}
+
+DLLEXPORT std::vector<uint32_t>* stdvector_uint32_new3(uint32_t* data, size_t dataLength)
+{
+    return new std::vector<uint32_t>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_uint32_getSize(std::vector<uint32_t>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT uint32_t* stdvector_uint32_getPointer(std::vector<uint32_t> *vector)
+{
+    return &(vector->at(0));
+}
+
+DLLEXPORT void stdvector_uint32_delete(std::vector<uint32_t> *vector)
+{    
+    delete vector;
+}
+
+#pragma endregion uint32_t
 
 #pragma region rectangle
 
@@ -169,211 +204,470 @@ DLLEXPORT void stdvector_vector_double_copy(std::vector<dlib::vector<double>*> *
 
 #pragma region matrix
 
-DLLEXPORT void* stdvector_matrix_new1(matrix_element_type type)
+#pragma region template
+
+#define ELEMENT element
+#undef ELEMENT
+
+#define stdvector_matrix_new1_template(templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return new std::vector<matrix<ELEMENT>*>();\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        return new std::vector<matrix<ELEMENT, 0, 1>*>();\
+    }\
+    return nullptr;\
+} while (0)
+
+#define stdvector_matrix_new2_template(size, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return new std::vector<matrix<ELEMENT>*>(size);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        return new std::vector<matrix<ELEMENT, 0, 1>*>(size);\
+    }\
+    return nullptr;\
+} while (0)
+
+#define stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        auto tmp = (matrix<ELEMENT>**)(data);\
+        return new std::vector<matrix<ELEMENT>*>(tmp, tmp + dataLength);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        auto tmp = (matrix<ELEMENT, 0, 1>**)(data);\
+        return new std::vector<matrix<ELEMENT, 0, 1>*>(tmp, tmp + dataLength);\
+    }\
+    return nullptr;\
+} while (0)
+
+#define stdvector_matrix_delete_template(in_vector, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        delete ((std::vector<dlib::matrix<ELEMENT>*>*)in_vector);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        delete ((std::vector<dlib::matrix<ELEMENT, 0, 1>*>*)in_vector);\
+    }\
+} while (0)
+
+#define stdvector_matrix_getSize_template(in_vector, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return ((std::vector<dlib::matrix<ELEMENT>*>*)in_vector)->size();\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        return ((std::vector<dlib::matrix<ELEMENT, 0, 1>*>*)in_vector)->size();\
+    }\
+    return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+} while (0)
+
+#define stdvector_matrix_getPointer_template(in_vector, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return ((std::vector<dlib::matrix<ELEMENT>*>*)in_vector)->at(0);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        return ((std::vector<dlib::matrix<ELEMENT, 0, 1>*>*)in_vector)->at(0);\
+    }\
+    return nullptr;\
+} while (0)
+
+#pragma endregion template
+
+DLLEXPORT void* stdvector_matrix_new1(matrix_element_type type, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            return new std::vector<matrix<uint8_t>*>();
+            #define ELEMENT uint8_t
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt16:
-            return new std::vector<matrix<uint16_t>*>();
+            #define ELEMENT uint16_t
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt32:
-            return new std::vector<matrix<uint32_t>*>();
+            #define ELEMENT uint32_t
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
-            return new std::vector<matrix<int8_t>*>();
+            #define ELEMENT int8_t
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int16:
-            return new std::vector<matrix<int16_t>*>();
+            #define ELEMENT int16_t
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int32:
-            return new std::vector<matrix<int32_t>*>();
+            #define ELEMENT int32_t
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Float:
-            return new std::vector<matrix<float>*>();
+            #define ELEMENT float
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Double:
-            return new std::vector<matrix<double>*>();    
+            #define ELEMENT double
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbPixel:
-            return new std::vector<matrix<rgb_pixel>*>();
+            #define ELEMENT rgb_pixel
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
-            return new std::vector<matrix<hsi_pixel>*>();
+            #define ELEMENT hsi_pixel
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            return new std::vector<matrix<rgb_alpha_pixel>*>();
+            #define ELEMENT rgb_alpha_pixel
+            stdvector_matrix_new1_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         default:
             return nullptr;
     }
 }
 
-DLLEXPORT void* stdvector_matrix_new2(matrix_element_type type, size_t size)
+DLLEXPORT void* stdvector_matrix_new2(matrix_element_type type, size_t size, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            return new std::vector<matrix<uint8_t>*>(size);
+            #define ELEMENT uint8_t
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt16:
-            return new std::vector<matrix<uint16_t>*>(size);
+            #define ELEMENT uint16_t
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt32:
-            return new std::vector<matrix<uint32_t>*>(size);
+            #define ELEMENT uint32_t
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
-            return new std::vector<matrix<int8_t>*>(size);
+            #define ELEMENT int8_t
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int16:
-            return new std::vector<matrix<int16_t>*>(size);
+            #define ELEMENT int16_t
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int32:
-            return new std::vector<matrix<int32_t>*>(size);
+            #define ELEMENT int32_t
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Float:
-            return new std::vector<matrix<float>*>(size);
+            #define ELEMENT float
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Double:
-            return new std::vector<matrix<double>*>(size);    
+            #define ELEMENT double
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
         case matrix_element_type::RgbPixel:
-            return new std::vector<matrix<rgb_pixel>*>(size);
+            #define ELEMENT rgb_pixel
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
-            return new std::vector<matrix<hsi_pixel>*>(size);
+            #define ELEMENT hsi_pixel
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            return new std::vector<matrix<rgb_alpha_pixel>*>(size);
+            #define ELEMENT rgb_alpha_pixel
+            stdvector_matrix_new2_template(size, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         default:
             return nullptr;
     }
 }
 
-DLLEXPORT void* stdvector_matrix_new3(matrix_element_type type, void** data, size_t dataLength)
+DLLEXPORT void* stdvector_matrix_new3(matrix_element_type type, void** data, size_t dataLength, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                auto tmp = (matrix<uint8_t>**)(data);
-                return new std::vector<matrix<uint8_t>*>(tmp, tmp + dataLength);
-            }
-            case matrix_element_type::UInt16:
-            {
-                auto tmp = (matrix<uint16_t>**)(data);
-                return new std::vector<matrix<uint16_t>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT uint8_t
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt32:
-            {
-                auto tmp = (matrix<uint32_t>**)(data);
-                return new std::vector<matrix<uint32_t>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT uint32_t
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
-            {
-                auto tmp = (matrix<int8_t>**)(data);
-                return new std::vector<matrix<int8_t>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT int8_t
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int16:
-            {
-                auto tmp = (matrix<int16_t>**)(data);
-                return new std::vector<matrix<int16_t>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT int16_t
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int32:
-            {
-                auto tmp = (matrix<int32_t>**)(data);
-                return new std::vector<matrix<int32_t>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT int32_t
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Float:
-            {
-                auto tmp = (matrix<float>**)(data);
-                return new std::vector<matrix<float>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT float
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Double:
-            {
-                auto tmp = (matrix<double>**)(data);
-                return new std::vector<matrix<double>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT double
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
         case matrix_element_type::RgbPixel:
-            {
-                auto tmp = (matrix<rgb_pixel>**)(data);
-                return new std::vector<matrix<rgb_pixel>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT rgb_pixel
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
-            {
-                auto tmp = (matrix<hsi_pixel>**)(data);
-                return new std::vector<matrix<hsi_pixel>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT hsi_pixel
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                auto tmp = (matrix<rgb_alpha_pixel>**)(data);
-                return new std::vector<matrix<rgb_alpha_pixel>*>(tmp, tmp + dataLength);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            stdvector_matrix_new3_template(data, dataLength, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         default:
             return nullptr;
     }
 }
 
-DLLEXPORT size_t stdvector_matrix_getSize(std::vector<void*>* vector)
+DLLEXPORT size_t stdvector_matrix_getSize(matrix_element_type type, void* vector, const int templateRows, const int templateColumns)
 {
-    return vector->size();
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            stdvector_matrix_getSize_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        default:
+            return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+    }
 }
 
-DLLEXPORT void* stdvector_matrix_getPointer(std::vector<void*> *vector)
+DLLEXPORT void* stdvector_matrix_getPointer(matrix_element_type type, void* vector, const int templateRows, const int templateColumns)
 {
-    return (vector->at(0));
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT 
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            stdvector_matrix_getPointer_template(vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        default:
+            return nullptr;
+    }
 }
 
-DLLEXPORT void stdvector_matrix_delete(matrix_element_type type, std::vector<void*> *vector)
+DLLEXPORT void stdvector_matrix_delete(matrix_element_type type, std::vector<void*> *in_vector, const int templateRows, const int templateColumns)
 {    
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                auto tmp = (std::vector<matrix<uint8_t>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT uint8_t
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                auto tmp = (std::vector<matrix<uint16_t>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT uint16_t
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                auto tmp = (std::vector<matrix<uint32_t>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT uint32_t
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                auto tmp = (std::vector<matrix<int8_t>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT int8_t
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                auto tmp = (std::vector<matrix<int16_t>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT int16_t
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                auto tmp = (std::vector<matrix<int32_t>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT int32_t
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                auto tmp = (std::vector<matrix<float>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT float
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                auto tmp = (std::vector<matrix<double>*>*)(vector);
-                delete tmp;
-            } 
-            break; 
+            #define ELEMENT double
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbPixel:
-            {
-                auto tmp = (std::vector<matrix<rgb_pixel>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT rgb_pixel
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            {
-                auto tmp = (std::vector<matrix<hsi_pixel>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT hsi_pixel
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                auto tmp = (std::vector<matrix<rgb_alpha_pixel>*>*)(vector);
-                delete tmp;
-            }
+            #define ELEMENT rgb_alpha_pixel
+            stdvector_matrix_delete_template(in_vector, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         default:
             break;
@@ -509,6 +803,46 @@ DLLEXPORT void stdvector_chip_details_copy(std::vector<chip_details*> *vector, c
 
 #pragma endregion chip_details
 
+#pragma region sample_pair
+
+DLLEXPORT std::vector<sample_pair*>* stdvector_sample_pair_new1()
+{
+    return new std::vector<sample_pair*>;
+}
+
+DLLEXPORT std::vector<sample_pair*>* stdvector_sample_pair_new2(size_t size)
+{
+    return new std::vector<sample_pair*>(size);
+}
+
+DLLEXPORT std::vector<sample_pair*>* stdvector_sample_pair_new3(sample_pair** data, size_t dataLength)
+{
+    return new std::vector<sample_pair*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_sample_pair_getSize(std::vector<sample_pair*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT sample_pair* stdvector_sample_pair_getPointer(std::vector<sample_pair*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_sample_pair_delete(std::vector<sample_pair*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_sample_pair_copy(std::vector<sample_pair*> *vector, sample_pair** dst)
+{
+    size_t length = sizeof(sample_pair*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion sample_pair
+
 #pragma region mmod_rect
 
 DLLEXPORT std::vector<mmod_rect*>* stdvector_mmod_rect_new1()
@@ -548,46 +882,6 @@ DLLEXPORT void stdvector_mmod_rect_copy(std::vector<mmod_rect*> *vector, mmod_re
 }
 
 #pragma endregion mmod_rect
-
-#pragma region dlib::surf_point
-
-DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new1()
-{
-    return new std::vector<dlib::surf_point*>;
-}
-
-DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new2(size_t size)
-{
-    return new std::vector<dlib::surf_point*>(size);
-}
-
-DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new3(dlib::surf_point** data, size_t dataLength)
-{
-    return new std::vector<dlib::surf_point*>(data, data + dataLength);
-}
-
-DLLEXPORT size_t stdvector_surf_point_getSize(std::vector<dlib::surf_point*>* vector)
-{
-    return vector->size();
-}
-
-DLLEXPORT dlib::surf_point* stdvector_surf_point_getPointer(std::vector<dlib::surf_point*> *vector)
-{
-    return (vector->at(0));
-}
-
-DLLEXPORT void stdvector_surf_point_delete(std::vector<dlib::surf_point*> *vector)
-{    
-    delete vector;
-}
-
-DLLEXPORT void stdvector_surf_point_copy(std::vector<dlib::surf_point*> *vector, dlib::surf_point** dst)
-{
-    size_t length = sizeof(dlib::surf_point*)* vector->size();
-    memcpy(dst, &(vector->at(0)), length);
-}
-
-#pragma endregion dlib::surf_point
 
 #pragma region std::vector<mmod_rect>
 
@@ -710,6 +1004,47 @@ DLLEXPORT void stdvector_perspective_window_overlay_dot_copy(std::vector<perspec
 }
 
 #pragma endregion perspective_window::overlay_dot
+
+#pragma region dlib::surf_point
+
+DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new1()
+{
+    return new std::vector<dlib::surf_point*>;
+}
+
+DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new2(size_t size)
+{
+    return new std::vector<dlib::surf_point*>(size);
+}
+
+DLLEXPORT std::vector<dlib::surf_point*>* stdvector_surf_point_new3(dlib::surf_point** data, size_t dataLength)
+{
+    return new std::vector<dlib::surf_point*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_surf_point_getSize(std::vector<dlib::surf_point*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT dlib::surf_point* stdvector_surf_point_getPointer(std::vector<dlib::surf_point*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_surf_point_delete(std::vector<dlib::surf_point*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_surf_point_copy(std::vector<dlib::surf_point*> *vector, dlib::surf_point** dst)
+{
+    size_t length = sizeof(dlib::surf_point*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion dlib::surf_point
+
 #endif
 
 #endif

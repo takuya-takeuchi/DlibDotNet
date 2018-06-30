@@ -89,6 +89,31 @@ namespace DlibDotNet
 
             #endregion
 
+            #region uint32
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_uint32_new1();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_uint32_new2(IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_uint32_new3([In] uint[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_uint32_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_uint32_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern int stdvector_uint32_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_uint32_delete(IntPtr vector);
+
+            #endregion
+
             #region long
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -173,25 +198,25 @@ namespace DlibDotNet
             #region matrix
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_new1(MatrixElementType matrixElementType);
+            public static extern IntPtr stdvector_matrix_new1(MatrixElementType matrixElementType, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_new2(MatrixElementType matrixElementType, IntPtr size);
+            public static extern IntPtr stdvector_matrix_new2(MatrixElementType matrixElementType, IntPtr size, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_new3([In] MatrixElementType matrixElementType, [In] IntPtr[] data, IntPtr dataLength);
+            public static extern IntPtr stdvector_matrix_new3([In] MatrixElementType matrixElementType, [In] IntPtr[] data, IntPtr dataLength, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_getSize(IntPtr vector);
+            public static extern IntPtr stdvector_matrix_getSize(MatrixElementType matrixElementType, IntPtr vector, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr stdvector_matrix_getPointer(IntPtr vector);
+            public static extern IntPtr stdvector_matrix_getPointer(MatrixElementType matrixElementType, IntPtr vector, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr stdvector_matrix_at(IntPtr vector, int index);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void stdvector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector);
+            public static extern void stdvector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void stdvector_matrix_copy(IntPtr vector, IntPtr[] dst);
@@ -251,6 +276,34 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void stdvector_surf_point_copy(IntPtr vector, IntPtr[] dst);
+
+            #endregion
+
+            #region sample_pair
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_sample_pair_new1();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_sample_pair_new2(IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_sample_pair_new3([In] IntPtr[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_sample_pair_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_sample_pair_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_sample_pair_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_sample_pair_delete(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_sample_pair_copy(IntPtr vector, IntPtr[] dst);
 
             #endregion
 

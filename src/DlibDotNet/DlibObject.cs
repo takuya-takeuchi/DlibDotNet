@@ -3,7 +3,7 @@
 namespace DlibDotNet
 {
 
-    public abstract class DlibObject : IDisposable
+    public abstract class DlibObject : IDlibObject
     {
 
         #region Constructors

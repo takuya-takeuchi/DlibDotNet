@@ -11,6 +11,8 @@ namespace DlibDotNet.Extensions
 
 #if LINUX
         public const string CLibrary = "glibc.so";
+#elif MAC
+        public const string CLibrary = "glibc.so";
 #else
         public const string CLibrary = "msvcrt.dll";
 #endif

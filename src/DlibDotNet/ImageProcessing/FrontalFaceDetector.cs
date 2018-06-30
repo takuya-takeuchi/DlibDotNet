@@ -43,6 +43,29 @@ namespace DlibDotNet
             }
         }
 
+        public Rectangle[] Detect(MatrixBase image, double threshold = 0d)
+        {
+            this.ThrowIfDisposed();
+
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var dets = new StdVector<Rectangle>())
+            {
+                var inType = image.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.frontal_face_detector_matrix_operator(this.NativePtr, inType, image.NativePtr, threshold, dets.NativePtr);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {inType} is not supported.");
+                }
+
+                return dets.ToArray();
+            }
+        }
+
         public static FrontalFaceDetector GetFrontalFaceDetector()
         {
             var ret = Native.get_frontal_face_detector();
@@ -71,6 +94,14 @@ namespace DlibDotNet
             public static extern Dlib.Native.ErrorType frontal_face_detector_operator(
                 IntPtr detector,
                 Dlib.Native.Array2DType imgType,
+                IntPtr img,
+                double adjustThreshold,
+                IntPtr dets);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType frontal_face_detector_matrix_operator(
+                IntPtr detector,
+                Dlib.Native.MatrixElementType imgType,
                 IntPtr img,
                 double adjustThreshold,
                 IntPtr dets);
