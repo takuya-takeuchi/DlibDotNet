@@ -12,10 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet", "src\DlibDotNet\DlibDotNet.csproj", "{B13A6288-7B69-4B53-9138-2E20A8D5CFC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{725DA5C9-9A1B-49BC-8F19-2A403753D8E8}"
-	ProjectSection(SolutionItems) = preProject
-		DebugTestSettings.testsettings = DebugTestSettings.testsettings
-		ReleaseTestSettings.testsettings = ReleaseTestSettings.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}"
 EndProject
