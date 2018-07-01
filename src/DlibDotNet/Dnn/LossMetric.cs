@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +45,7 @@ namespace DlibDotNet.Dnn
             return new LossMetric(ret, type);
         }
 
-        public Matrix<float> Operator<T>(Matrix<T> image)
+        public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image)
             where T : struct
         {
             if (image == null)
@@ -54,21 +53,10 @@ namespace DlibDotNet.Dnn
 
             image.ThrowIfDisposed();
 
-            var ret = Native.loss_metric_operator_matrix(this.NativePtr,
-                                                         this.Type,
-                                                         image.MatrixElementType.ToNativeMatrixElementType(),
-                                                         image.NativePtr,
-                                                         out var matrix);
-            switch (ret)
-            {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
-                    throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-            }
-
-            return new Matrix<float>(matrix, 0, 1);
+            return this.Operator(new[] { image });
         }
 
-        public Output Operator<T>(IEnumerable<Matrix<T>> images)
+        public OutputLabels<Matrix<float>> Operator<T>(IEnumerable<Matrix<T>> images)
             where T : struct
         {
             if (images == null)
@@ -117,11 +105,8 @@ namespace DlibDotNet.Dnn
 
         #endregion
 
-        public sealed class Output : DlibObject, IUndisposableElementCollection<Matrix<float>>
+        private sealed class Output : OutputLabels<Matrix<float>>
         {
-
-            #region Events
-            #endregion
 
             #region Fields
 
@@ -131,9 +116,9 @@ namespace DlibDotNet.Dnn
 
             #region Constructors
 
-            internal Output(IntPtr output)
+            internal Output(IntPtr output) :
+                base(output)
             {
-                this.NativePtr = output;
                 this._Size = Native.dnn_output_stdvector_float_1_1_getSize(output);
             }
 
@@ -141,7 +126,7 @@ namespace DlibDotNet.Dnn
 
             #region Properties
 
-            public int Length
+            public override int Count
             {
                 get
                 {
@@ -150,7 +135,7 @@ namespace DlibDotNet.Dnn
                 }
             }
 
-            public Matrix<float> this[int index]
+            public override Matrix<float> this[int index]
             {
                 get
                 {
@@ -164,7 +149,7 @@ namespace DlibDotNet.Dnn
                 }
             }
 
-            public Matrix<float> this[uint index]
+            public override Matrix<float> this[uint index]
             {
                 get
                 {
@@ -196,7 +181,7 @@ namespace DlibDotNet.Dnn
 
             #region IEnumerable<TItem> Members
 
-            public IEnumerator<Matrix<float>> GetEnumerator()
+            public override IEnumerator<Matrix<float>> GetEnumerator()
             {
                 this.ThrowIfDisposed();
 
@@ -207,16 +192,9 @@ namespace DlibDotNet.Dnn
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                this.ThrowIfDisposed();
-
-                return this.GetEnumerator();
-            }
-
             #endregion
 
-            internal sealed class Native
+            private sealed class Native
             {
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]

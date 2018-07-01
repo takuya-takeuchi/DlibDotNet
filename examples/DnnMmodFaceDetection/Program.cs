@@ -40,11 +40,14 @@ namespace DnnMmodFaceDetection
                             // better parallelism out of your GPU hardware.  However, all the images must be
                             // the same size.  To avoid this requirement on images being the same size we
                             // process them individually in this example.
-                            var dets = net.Operator(img);
-                            win.ClearOverlay();
-                            win.SetImage(img);
-                            foreach (var d in dets)
-                                win.AddOverlay(d);
+                            using (var dets = net.Operator(img))
+                                foreach (var det in dets)
+                                {
+                                    win.ClearOverlay();
+                                    win.SetImage(img);
+                                    foreach (var d in det)
+                                        win.AddOverlay(d);
+                                }
 
                             Console.WriteLine("Hit enter to process the next image.");
                             Console.ReadKey();

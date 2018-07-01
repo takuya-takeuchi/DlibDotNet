@@ -18,7 +18,7 @@ using namespace std;
 // typedef std::vector<mmod_rect> output_label_type;
 // typedef unsigned long output_label_type;
 
-#pragma region matrix<float,0,1>
+#pragma region std::vector<matrix<float,0,1>>
 
 DLLEXPORT void dnn_output_stdvector_float_1_1_delete(std::vector<dlib::matrix<float, 0, 1>>* vector)
 {
@@ -35,9 +35,9 @@ DLLEXPORT size_t dnn_output_stdvector_float_1_1_getSize(std::vector<dlib::matrix
     return vector->size();
 }
 
-#pragma endregion matrix<float,0,1>
+#pragma endregion std::vector<matrix<float,0,1>>
 
-#pragma region std::vector<mmod_rect>
+#pragma region std::vector<std::vector<mmod_rect>>
 
 DLLEXPORT void dnn_output_stdvector_stdvector_mmod_rect_delete(std::vector<std::vector<mmod_rect>>* vector)
 {
@@ -69,6 +69,6 @@ DLLEXPORT size_t dnn_output_stdvector_mmod_rect_getSize(std::vector<mmod_rect>* 
     return vector->size();
 }
 
-#pragma endregion std::vector<mmod_rect>
+#pragma endregion std::vector<std::vector<mmod_rect>>
 
 #endif

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +45,7 @@ namespace DlibDotNet.Dnn
             return new LossMmod(ret, type);
         }
 
-        public Output Operator<T>(Matrix<T> image)
+        public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image)
             where T : struct
         {
             if (image == null)
@@ -54,21 +53,10 @@ namespace DlibDotNet.Dnn
 
             image.ThrowIfDisposed();
 
-            var ret = Native.loss_mmod_operator_matrix(this.NativePtr,
-                                                       this.Type,
-                                                       image.MatrixElementType.ToNativeMatrixElementType(),
-                                                       image.NativePtr,
-                                                       out var output);
-            switch (ret)
-            {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
-                    throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-            }
-
-            return new Output(output);
+            return this.Operator(new[] { image });
         }
 
-        public Outputs Operator<T>(IEnumerable<Matrix<T>> images)
+        public OutputLabels<IEnumerable<MModRect>> Operator<T>(IEnumerable<Matrix<T>> images)
             where T : struct
         {
             if (images == null)
@@ -101,7 +89,7 @@ namespace DlibDotNet.Dnn
                         throw new ArgumentException($"{imageType} is not supported.");
                 }
 
-                return new Outputs(vecOut);
+                return new Output(vecOut);
             }
         }
 
@@ -116,8 +104,8 @@ namespace DlibDotNet.Dnn
         #endregion
 
         #endregion
-
-        public sealed class Output : DlibObject, IEnumerable<MModRect>
+        
+        private sealed class Output : OutputLabels<IEnumerable<MModRect>>
         {
 
             #region Fields
@@ -128,119 +116,9 @@ namespace DlibDotNet.Dnn
 
             #region Constructors
 
-            internal Output(IntPtr output)
+            internal Output(IntPtr output) :
+                base(output)
             {
-                this.NativePtr = output;
-                this._Size = Native.dnn_output_stdvector_mmod_rect_getSize(output);
-            }
-
-            #endregion
-
-            #region Properties
-
-            public int Length
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    return this._Size;
-                }
-            }
-
-            public MModRect this[int index]
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-
-                    if (!(0 <= index && index < this._Size))
-                        throw new ArgumentOutOfRangeException();
-
-                    var ptr = Native.dnn_output_stdvector_mmod_rect_getItem(this.NativePtr, index);
-                    return new MModRect(ptr, false);
-                }
-            }
-
-            public MModRect this[uint index]
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-
-                    if (!(index < this._Size))
-                        throw new ArgumentOutOfRangeException();
-
-                    var ptr = Native.dnn_output_stdvector_mmod_rect_getItem(this.NativePtr, (int)index);
-                    return new MModRect(ptr, false);
-                }
-            }
-
-            #endregion
-
-            #region Methods
-
-            #region Overrides
-
-            protected override void DisposeUnmanaged()
-            {
-                base.DisposeUnmanaged();
-                Native.dnn_output_stdvector_mmod_rect_delete(this.NativePtr);
-            }
-
-            #endregion
-
-            #endregion
-
-            #region IEnumerable<TItem> Members
-
-            public IEnumerator<MModRect> GetEnumerator()
-            {
-                this.ThrowIfDisposed();
-
-                for (var index = 0; index < this._Size; index++)
-                {
-                    var ptr = Native.dnn_output_stdvector_mmod_rect_getItem(this.NativePtr, index);
-                    yield return new MModRect(ptr, false);
-                }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return this.GetEnumerator();
-            }
-
-            #endregion
-
-            internal sealed class Native
-            {
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void dnn_output_stdvector_mmod_rect_delete(IntPtr vector);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr dnn_output_stdvector_mmod_rect_getItem(IntPtr vector, int index);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int dnn_output_stdvector_mmod_rect_getSize(IntPtr vector);
-
-            }
-
-        }
-
-        public sealed class Outputs : DlibObject, IUndisposableElementCollection<IEnumerable<MModRect>>
-        {
-
-            #region Fields
-
-            private readonly int _Size;
-
-            #endregion
-
-            #region Constructors
-
-            internal Outputs(IntPtr output)
-            {
-                this.NativePtr = output;
                 this._Size = Native.dnn_output_stdvector_stdvector_mmod_rect_getSize(output);
             }
 
@@ -248,7 +126,7 @@ namespace DlibDotNet.Dnn
 
             #region Properties
 
-            public int Length
+            public override int Count
             {
                 get
                 {
@@ -257,7 +135,7 @@ namespace DlibDotNet.Dnn
                 }
             }
 
-            public Matrix<float> this[int index]
+            public override IEnumerable<MModRect> this[int index]
             {
                 get
                 {
@@ -267,11 +145,16 @@ namespace DlibDotNet.Dnn
                         throw new ArgumentOutOfRangeException();
 
                     var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, index);
-                    return new Matrix<float>(ptr, 0, 1, false);
+                    var size = Native.dnn_output_stdvector_mmod_rect_getSize(ptr);
+                    for (var i = 0; i < size; i++)
+                    {
+                        var pItem = Native.dnn_output_stdvector_mmod_rect_getItem(ptr, i);
+                        yield return new MModRect(pItem, false);
+                    }
                 }
             }
 
-            public Matrix<float> this[uint index]
+            public override IEnumerable<MModRect> this[uint index]
             {
                 get
                 {
@@ -281,7 +164,12 @@ namespace DlibDotNet.Dnn
                         throw new ArgumentOutOfRangeException();
 
                     var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, (int)index);
-                    return new Matrix<float>(ptr, 0, 1, false);
+                    var size = Native.dnn_output_stdvector_mmod_rect_getSize(ptr);
+                    for (var i = 0; i < size; i++)
+                    {
+                        var pItem = Native.dnn_output_stdvector_mmod_rect_getItem(ptr, i);
+                        yield return new MModRect(pItem, false);
+                    }
                 }
             }
 
@@ -303,28 +191,29 @@ namespace DlibDotNet.Dnn
 
             #region IEnumerable<TItem> Members
 
-            public IEnumerator<IEnumerable<MModRect>> GetEnumerator()
+            public override IEnumerator<IEnumerable<MModRect>> GetEnumerator()
             {
                 this.ThrowIfDisposed();
 
                 for (var index = 0; index < this._Size; index++)
                 {
-                    var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, index);
-                    using (var vector = new StdVector<MModRect>())
-                        yield return vector.ToArray();
+                    var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, (int)index);
+                    var size = Native.dnn_output_stdvector_mmod_rect_getSize(ptr);
+
+                    var list = new List<MModRect>(size);
+                    for (var i = 0; i < size; i++)
+                    {
+                        var pItem = Native.dnn_output_stdvector_mmod_rect_getItem(ptr, i);
+                        list.Add(new MModRect(pItem, false));
+                    }
+
+                    yield return list.ToArray();
                 }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                this.ThrowIfDisposed();
-
-                return this.GetEnumerator();
             }
 
             #endregion
 
-            internal sealed class Native
+            private sealed class Native
             {
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -335,6 +224,15 @@ namespace DlibDotNet.Dnn
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern int dnn_output_stdvector_stdvector_mmod_rect_getSize(IntPtr vector);
+
+                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern void dnn_output_stdvector_mmod_rect_delete(IntPtr vector);
+
+                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dnn_output_stdvector_mmod_rect_getItem(IntPtr vector, int index);
+
+                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern int dnn_output_stdvector_mmod_rect_getSize(IntPtr vector);
 
             }
 

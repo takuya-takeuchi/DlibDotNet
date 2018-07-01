@@ -74,9 +74,9 @@ namespace DnnFaceRecognition
                 // creates a graph of connected faces and then uses the Chinese whispers graph clustering
                 // algorithm to identify how many people there are and which faces belong to whom.
                 var edges = new List<SamplePair>();
-                for (uint i = 0; i < faceDescriptors.Length; ++i)
+                for (uint i = 0; i < faceDescriptors.Count; ++i)
                 {
-                    for (var j = i; j < faceDescriptors.Length; ++j)
+                    for (var j = i; j < faceDescriptors.Count; ++j)
                     {
                         // Faces are connected in the graph if they are close enough.  Here we check if
                         // the distance between two face descriptors is less than 0.6, which is the
