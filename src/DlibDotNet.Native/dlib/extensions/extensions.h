@@ -473,7 +473,7 @@ DLLEXPORT void extensions_convert_matrix_to_managed_image(matrix_element_type sr
                         uint32_t src_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_pixel& rgb = s(src_row + c);
+                            dlib::rgb_pixel& rgb = s(r, c);
                             d[dst_row + dst_column + 2] = rgb.red;
                             d[dst_row + dst_column + 1] = rgb.green;
                             d[dst_row + dst_column + 0] = rgb.blue;
@@ -488,7 +488,7 @@ DLLEXPORT void extensions_convert_matrix_to_managed_image(matrix_element_type sr
                         uint32_t src_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_pixel& rgb = s(src_row + c);
+                            dlib::rgb_pixel& rgb = s(r, c);
                             d[dst_row + dst_column + 0] = rgb.red;
                             d[dst_row + dst_column + 1] = rgb.green;
                             d[dst_row + dst_column + 2] = rgb.blue;
@@ -509,7 +509,7 @@ DLLEXPORT void extensions_convert_matrix_to_managed_image(matrix_element_type sr
                         uint32_t src_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_alpha_pixel& rgb = s(src_row + c);
+                            dlib::rgb_alpha_pixel& rgb = s(r, c);
                             d[dst_row + dst_column + 3] = rgb.alpha;
                             d[dst_row + dst_column + 2] = rgb.red;
                             d[dst_row + dst_column + 1] = rgb.green;
@@ -525,7 +525,7 @@ DLLEXPORT void extensions_convert_matrix_to_managed_image(matrix_element_type sr
                         uint32_t src_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_alpha_pixel& rgb = s(src_row + c);
+                            dlib::rgb_alpha_pixel& rgb = s(r, c);
                             d[dst_row + dst_column + 0] = rgb.red;
                             d[dst_row + dst_column + 1] = rgb.green;
                             d[dst_row + dst_column + 2] = rgb.blue;
@@ -569,7 +569,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
                         uint32_t dst_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_pixel& rgb = d(dst_row + c);
+                            dlib::rgb_pixel& rgb = d(r, c);
                             rgb.red   = s[src_row + dst_column + 2];
                             rgb.green = s[src_row + dst_column + 1];
                             rgb.blue  = s[src_row + dst_column + 0];
@@ -584,7 +584,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
                         uint32_t dst_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_pixel& rgb = d(dst_row + c);
+                            dlib::rgb_pixel& rgb = d(r, c);
                             rgb.red   = s[src_row + dst_column + 0];
                             rgb.green = s[src_row + dst_column + 1];
                             rgb.blue  = s[src_row + dst_column + 2];
@@ -606,7 +606,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
                         uint32_t dst_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_alpha_pixel& rgb = d(dst_row + c);
+                            dlib::rgb_alpha_pixel& rgb = d(r, c);
                             rgb.alpha = s[src_row + dst_column + 3];
                             rgb.red   = s[src_row + dst_column + 2];
                             rgb.green = s[src_row + dst_column + 1];
@@ -622,7 +622,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
                         uint32_t dst_row = columns * r;
                         for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
                         {
-                            dlib::rgb_alpha_pixel& rgb = d(dst_row + c);
+                            dlib::rgb_alpha_pixel& rgb = d(r, c);
                             rgb.red   = s[src_row + dst_column + 0];
                             rgb.green = s[src_row + dst_column + 1];
                             rgb.blue  = s[src_row + dst_column + 2];
