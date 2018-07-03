@@ -9,18 +9,18 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class LossMmod : Net
+    public sealed class LossMulticlassLogPerPixel : Net
     {
 
         #region Constructors
 
-        public LossMmod(int type = 0)
+        public LossMulticlassLogPerPixel(int type = 0)
             : base(type)
         {
-            this.NativePtr = Native.loss_mmod_new(type);
+            this.NativePtr = Native.loss_multiclass_log_per_pixel_new(type);
         }
 
-        internal LossMmod(IntPtr ptr, int type = 0)
+        internal LossMulticlassLogPerPixel(IntPtr ptr, int type = 0)
             : base(type)
         {
             if (ptr == IntPtr.Zero)
@@ -31,9 +31,15 @@ namespace DlibDotNet.Dnn
 
         #endregion
 
+        #region Properties
+
+        public static ushort LabelToIgnore => Native.loss_multiclass_log_per_pixel_get_label_to_ignore();
+
+        #endregion
+
         #region Methods
 
-        public static LossMmod Deserialize(string path, int type = 0)
+        public static LossMulticlassLogPerPixel Deserialize(string path, int type = 0)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -41,11 +47,11 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Encoding.UTF8.GetBytes(path);
-            var ret = Native.loss_mmod_deserialize(str, type);
-            return new LossMmod(ret, type);
+            var ret = Native.loss_multiclass_log_per_pixel_deserialize(str, type);
+            return new LossMulticlassLogPerPixel(ret, type);
         }
 
-        public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image)
+        public OutputLabels<Matrix<ushort>> Operator<T>(Matrix<T> image)
             where T : struct
         {
             if (image == null)
@@ -56,7 +62,7 @@ namespace DlibDotNet.Dnn
             return this.Operator(new[] { image });
         }
 
-        public OutputLabels<IEnumerable<MModRect>> Operator<T>(IEnumerable<Matrix<T>> images)
+        public OutputLabels<Matrix<ushort>> Operator<T>(IEnumerable<Matrix<T>> images)
             where T : struct
         {
             if (images == null)
@@ -74,14 +80,14 @@ namespace DlibDotNet.Dnn
                 var templateRows = images.First().TemplateRows;
                 var templateColumns = images.First().TemplateColumns;
 
-                // vecOut is not std::vector<std::vector<mmod_rect>*>* but std::vector<std::vector<mmod_rect>>*.
-                var ret = Native.loss_mmod_operator_matrixs(this.NativePtr,
-                                                            this.Type,
-                                                            imageType.ToNativeMatrixElementType(),
-                                                            vecIn.NativePtr,
-                                                            templateRows,
-                                                            templateColumns,
-                                                            out var vecOut);
+                // vecOut is not std::vector<Matrix<float>*>* but std::vector<Matrix<float>>*.
+                var ret = Native.loss_multiclass_log_per_pixel_operator_matrixs(this.NativePtr,
+                                                                                this.Type,
+                                                                                imageType.ToNativeMatrixElementType(),
+                                                                                vecIn.NativePtr,
+                                                                                templateRows,
+                                                                                templateColumns,
+                                                                                out var vecOut);
 
                 switch (ret)
                 {
@@ -93,19 +99,19 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        #endregion
+
         #region Overrides 
 
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            Native.loss_mmod_delete(this.NativePtr, this.Type);
+            Native.loss_multiclass_log_per_pixel_delete(this.NativePtr, this.Type);
         }
 
         #endregion
 
-        #endregion
-        
-        private sealed class Output : OutputLabels<IEnumerable<MModRect>>
+        private sealed class Output : OutputLabels<Matrix<ushort>>
         {
 
             #region Fields
@@ -119,7 +125,7 @@ namespace DlibDotNet.Dnn
             internal Output(IntPtr output) :
                 base(output)
             {
-                this._Size = Native.dnn_output_stdvector_stdvector_mmod_rect_getSize(output);
+                this._Size = Native.dnn_output_stdvector_uint16_getSize(output);
             }
 
             #endregion
@@ -135,7 +141,7 @@ namespace DlibDotNet.Dnn
                 }
             }
 
-            public override IEnumerable<MModRect> this[int index]
+            public override Matrix<ushort> this[int index]
             {
                 get
                 {
@@ -144,17 +150,12 @@ namespace DlibDotNet.Dnn
                     if (!(0 <= index && index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, index);
-                    var size = Native.dnn_output_stdvector_mmod_rect_getSize(ptr);
-                    for (var i = 0; i < size; i++)
-                    {
-                        var pItem = Native.dnn_output_stdvector_mmod_rect_getItem(ptr, i);
-                        yield return new MModRect(pItem, false);
-                    }
+                    var ptr = Native.dnn_output_stdvector_uint16_getItem(this.NativePtr, index);
+                    return new Matrix<ushort>(ptr, 0, 0, false);
                 }
             }
 
-            public override IEnumerable<MModRect> this[uint index]
+            public override Matrix<ushort> this[uint index]
             {
                 get
                 {
@@ -163,13 +164,8 @@ namespace DlibDotNet.Dnn
                     if (!(index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, (int)index);
-                    var size = Native.dnn_output_stdvector_mmod_rect_getSize(ptr);
-                    for (var i = 0; i < size; i++)
-                    {
-                        var pItem = Native.dnn_output_stdvector_mmod_rect_getItem(ptr, i);
-                        yield return new MModRect(pItem, false);
-                    }
+                    var ptr = Native.dnn_output_stdvector_uint16_getItem(this.NativePtr, (int)index);
+                    return new Matrix<ushort>(ptr, 0, 0, false);
                 }
             }
 
@@ -182,7 +178,7 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
-                Native.dnn_output_stdvector_stdvector_mmod_rect_delete(this.NativePtr);
+                Native.dnn_output_stdvector_uint16_delete(this.NativePtr);
             }
 
             #endregion
@@ -191,23 +187,14 @@ namespace DlibDotNet.Dnn
 
             #region IEnumerable<TItem> Members
 
-            public override IEnumerator<IEnumerable<MModRect>> GetEnumerator()
+            public override IEnumerator<Matrix<ushort>> GetEnumerator()
             {
                 this.ThrowIfDisposed();
 
                 for (var index = 0; index < this._Size; index++)
                 {
-                    var ptr = Native.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, (int)index);
-                    var size = Native.dnn_output_stdvector_mmod_rect_getSize(ptr);
-
-                    var list = new List<MModRect>(size);
-                    for (var i = 0; i < size; i++)
-                    {
-                        var pItem = Native.dnn_output_stdvector_mmod_rect_getItem(ptr, i);
-                        list.Add(new MModRect(pItem, false));
-                    }
-
-                    yield return list.ToArray();
+                    var ptr = Native.dnn_output_stdvector_uint16_getItem(this.NativePtr, index);
+                    yield return new Matrix<ushort>(ptr, 0, 0, false);
                 }
             }
 
@@ -217,22 +204,13 @@ namespace DlibDotNet.Dnn
             {
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void dnn_output_stdvector_stdvector_mmod_rect_delete(IntPtr vector);
+                public static extern void dnn_output_stdvector_uint16_delete(IntPtr vector);
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr dnn_output_stdvector_stdvector_mmod_rect_getItem(IntPtr vector, int index);
+                public static extern IntPtr dnn_output_stdvector_uint16_getItem(IntPtr vector, int index);
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int dnn_output_stdvector_stdvector_mmod_rect_getSize(IntPtr vector);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void dnn_output_stdvector_mmod_rect_delete(IntPtr vector);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr dnn_output_stdvector_mmod_rect_getItem(IntPtr vector, int index);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int dnn_output_stdvector_mmod_rect_getSize(IntPtr vector);
+                public static extern int dnn_output_stdvector_uint16_getSize(IntPtr vector);
 
             }
 
@@ -242,16 +220,19 @@ namespace DlibDotNet.Dnn
         {
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_mmod_new(int type);
+            public static extern ushort loss_multiclass_log_per_pixel_get_label_to_ignore();
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_mmod_delete(IntPtr obj, int type);
+            public static extern IntPtr loss_multiclass_log_per_pixel_new(int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_mmod_deserialize(byte[] fileName, int type);
-            
+            public static extern void loss_multiclass_log_per_pixel_delete(IntPtr obj, int type);
+
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_mmod_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern IntPtr loss_multiclass_log_per_pixel_deserialize(byte[] fileName, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_per_pixel_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
 
         }
 

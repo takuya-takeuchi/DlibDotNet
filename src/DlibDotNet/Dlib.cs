@@ -408,7 +408,9 @@ namespace DlibDotNet
 
                 OpTrans,
 
-                OpStdVectToMat
+                OpStdVectToMat,
+
+                OpJoinRows
 
             }
 

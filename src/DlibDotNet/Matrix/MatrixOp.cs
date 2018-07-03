@@ -74,6 +74,9 @@ namespace DlibDotNet
                     case Dlib.Native.ElementType.OpStdVectToMat:
                         Native.matrix_op_op_std_vect_to_mat_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
+                    case Dlib.Native.ElementType.OpJoinRows:
+                        Native.matrix_op_op_join_rows_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                        break;
                 }
 
                 return ret;
@@ -81,6 +84,8 @@ namespace DlibDotNet
         }
 
         internal Dlib.Native.ElementType ElementType => this._ElementType;
+
+        internal Dlib.Native.MatrixElementType MatrixElementType => this._MatrixElementType;
 
         public override int Rows
         {
@@ -105,6 +110,9 @@ namespace DlibDotNet
                         break;
                     case Dlib.Native.ElementType.OpStdVectToMat:
                         Native.matrix_op_op_std_vect_to_mat_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                        break;
+                    case Dlib.Native.ElementType.OpJoinRows:
+                        Native.matrix_op_op_join_rows_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                 }
 
@@ -147,6 +155,9 @@ namespace DlibDotNet
                     break;
                 case Dlib.Native.ElementType.OpStdVectToMat:
                     Native.matrix_op_op_std_vect_to_mat_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+                    break;
+                case Dlib.Native.ElementType.OpJoinRows:
+                    Native.matrix_op_op_join_rows_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
                     break;
             }
         }
@@ -233,6 +244,9 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void matrix_op_op_trans_delete(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_op_op_join_rows_delete(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
+
             #endregion
 
             #region nc
@@ -251,6 +265,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_trans_nc(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType matrix_op_op_join_rows_nc(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
 
             #endregion
 
@@ -271,10 +288,13 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_trans_nr(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType matrix_op_op_join_rows_nr(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
+
             #endregion
 
             #region operator
-            
+
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_jet_operator(Dlib.Native.Array2DType type, IntPtr matrix, int r, int c, IntPtr rgbPixel);
 

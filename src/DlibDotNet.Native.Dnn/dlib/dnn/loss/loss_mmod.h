@@ -87,39 +87,6 @@ void convert(std::vector<out_type>& src, std::vector<out_type*>** dst)
     *dst = tmp;
 }
 
-DLLEXPORT int loss_mmod_operator_matrix(void* obj, const int type, matrix_element_type element_type, void* matrix, out_type** ret)
-{
-    // Check type argument and cast to the proper type
-    net_type& net = *(static_cast<net_type*>(obj));
-    int err = ERR_OK;
-    
-    switch(element_type)
-    {
-        case matrix_element_type::RgbPixel:
-            {                
-                dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
-                out_type dets = net(tmp);
-                convert(dets, ret);
-            }
-            break;
-        case matrix_element_type::UInt8:
-        case matrix_element_type::UInt16:
-        case matrix_element_type::UInt32:
-        case matrix_element_type::Int8:
-        case matrix_element_type::Int16:
-        case matrix_element_type::Int32:
-        case matrix_element_type::Float:
-        case matrix_element_type::Double:
-        case matrix_element_type::HsiPixel:
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
-    
-    return err;
-}
-
 // NOTE
 // ret is not std::vector<out_type*>** but std::vector<out_type>**!! It is important!!
 DLLEXPORT int loss_mmod_operator_matrixs(void* obj, const int type, matrix_element_type element_type, void* matrix, int templateRows, int templateColumns, std::vector<out_type>** ret)

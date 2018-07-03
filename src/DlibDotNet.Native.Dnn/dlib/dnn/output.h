@@ -37,6 +37,25 @@ DLLEXPORT size_t dnn_output_stdvector_float_1_1_getSize(std::vector<dlib::matrix
 
 #pragma endregion std::vector<matrix<float,0,1>>
 
+#pragma region std::vector<matrix<uint16_t>>
+
+DLLEXPORT void dnn_output_stdvector_uint16_delete(std::vector<dlib::matrix<uint16_t>>* vector)
+{
+    delete vector;
+}
+
+DLLEXPORT dlib::matrix<uint16_t>* dnn_output_stdvector_uint16_getItem(std::vector<dlib::matrix<uint16_t>>* vector, const int index)
+{
+    return &(vector->at(index));
+}
+
+DLLEXPORT size_t dnn_output_stdvector_uint16_getSize(std::vector<dlib::matrix<uint16_t>>* vector)
+{
+    return vector->size();
+}
+
+#pragma endregion std::vector<matrix<uint16_t>>
+
 #pragma region std::vector<std::vector<mmod_rect>>
 
 DLLEXPORT void dnn_output_stdvector_stdvector_mmod_rect_delete(std::vector<std::vector<mmod_rect>>* vector)

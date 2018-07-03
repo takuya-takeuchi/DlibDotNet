@@ -485,6 +485,22 @@ do { \
     }\
 } while (0)
 
+#define extract_image_chip2_template(ret, in_img, chip, type, out_chip)\
+do { \
+    switch(type)\
+    {\
+        case interpolation_type::NearestNeighbor:\
+            dlib::extract_image_chip(*((array2d<ELEMENT_OUT>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip), interpolate_nearest_neighbor());\
+            break;\
+        case interpolation_type::Bilinear:\
+            dlib::extract_image_chip(*((array2d<ELEMENT_OUT>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip), interpolate_bilinear());\
+            break;\
+        case interpolation_type::Quadratic:\
+            dlib::extract_image_chip(*((array2d<ELEMENT_OUT>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip), interpolate_quadratic());\
+            break;\
+    }\
+} while (0)
+
 #define extract_image_chips_matrix_template(ret, in_type, in_img, chips, array) \
 do { \
     ret = ERR_OK;\
@@ -564,6 +580,22 @@ do { \
         default:\
             ret = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
 			break;\
+    }\
+} while (0)
+
+#define extract_image_chip_matrix2_template(ret, in_type, in_img, chip, type, out_chip) \
+do { \
+    switch(type)\
+    {\
+        case interpolation_type::NearestNeighbor:\
+            dlib::extract_image_chip(*((matrix<ELEMENT_OUT>*)in_img), *chip, *((matrix<ELEMENT_OUT>*)out_chip), interpolate_nearest_neighbor());\
+            break;\
+        case interpolation_type::Bilinear:\
+            dlib::extract_image_chip(*((matrix<ELEMENT_OUT>*)in_img), *chip, *((matrix<ELEMENT_OUT>*)out_chip), interpolate_bilinear());\
+            break;\
+        case interpolation_type::Quadratic:\
+            dlib::extract_image_chip(*((matrix<ELEMENT_OUT>*)in_img), *chip, *((matrix<ELEMENT_OUT>*)out_chip), interpolate_quadratic());\
+            break;\
     }\
 } while (0)
 
@@ -977,6 +1009,20 @@ DLLEXPORT chip_details* chip_details_new()
     return new dlib::chip_details();
 }
 
+DLLEXPORT chip_details* chip_details_new2(drectangle* rect, chip_dims* dims)
+{
+    drectangle& r = *rect;
+    chip_dims& d = *dims;
+    return new dlib::chip_details(r, d);
+}
+
+DLLEXPORT chip_details* chip_details_new3(rectangle* rect, chip_dims* dims)
+{
+    rectangle& r = *rect;
+    chip_dims& d = *dims;
+    return new dlib::chip_details(r, d);
+}
+
 DLLEXPORT bool chip_details_angle(chip_details* chip, double* angle)
 {
     *angle = chip->angle;   
@@ -1169,10 +1215,77 @@ DLLEXPORT int extract_image_chip(array2d_type img_type, void* in_img, chip_detai
             #undef ELEMENT_OUT
             break;
         case array2d_type::RgbAlphaPixel:
-            #define ELEMENT_OUT rgb_alpha_pixel
-            extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
+        default:
+            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_image_chip2(array2d_type img_type, void* in_img, chip_details* chip_location, array2d_type array_type, interpolation_type type, void* out_chip)
+{
+    int err = ERR_OK;
+
+    switch(array_type)
+    {
+        case array2d_type::UInt8:
+            #define ELEMENT_OUT uint8_t
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT            
+            break;
+        case array2d_type::UInt16:
+            #define ELEMENT_OUT uint16_t
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
             #undef ELEMENT_OUT
             break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Float:
+            #define ELEMENT_OUT float
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Double:        
+            #define ELEMENT_OUT double
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::RgbPixel:
+            #define ELEMENT_OUT rgb_pixel
+            extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::HsiPixel:
+            switch(type)
+            {
+                case interpolation_type::NearestNeighbor:
+                    dlib::extract_image_chip(*((array2d<hsi_pixel>*)in_img), *chip_location, *((array2d<hsi_pixel>*)out_chip), interpolate_nearest_neighbor());
+                    break;
+                case interpolation_type::Bilinear:
+                    dlib::extract_image_chip(*((array2d<hsi_pixel>*)in_img), *chip_location, *((array2d<hsi_pixel>*)out_chip), interpolate_bilinear());
+                    break;
+            }
+            break;
+        case array2d_type::RgbAlphaPixel:
         default:
             err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
             break;
@@ -1242,6 +1355,77 @@ DLLEXPORT int extract_image_chip_matrix(matrix_element_type img_type, void* in_i
             extract_image_chip_matrix_template(err, img_type, in_img, chip_location, out_chip);
             #undef ELEMENT_OUT
             break;
+        default:
+            err = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_img, chip_details* chip_location, matrix_element_type array_type, interpolation_type type, void* out_chip)
+{
+    int err = ERR_OK;
+
+    switch(array_type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_OUT uint8_t
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_OUT uint16_t
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_OUT int8_t
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_OUT int16_t
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_OUT int32_t
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_OUT float
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_OUT double
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_OUT rgb_pixel
+            extract_image_chip_matrix2_template(err, img_type, in_img, chip_location, type, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::HsiPixel:
+            switch(type)
+            {
+                case interpolation_type::NearestNeighbor:
+                    dlib::extract_image_chip(*((matrix<hsi_pixel>*)in_img), *chip_location, *((matrix<hsi_pixel>*)out_chip), interpolate_nearest_neighbor());
+                    break;
+                case interpolation_type::Bilinear:
+                    dlib::extract_image_chip(*((matrix<hsi_pixel>*)in_img), *chip_location, *((matrix<hsi_pixel>*)out_chip), interpolate_bilinear());
+                    break;
+            }
+            break;
+        case matrix_element_type::RgbAlphaPixel:
         default:
             err = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
             break;

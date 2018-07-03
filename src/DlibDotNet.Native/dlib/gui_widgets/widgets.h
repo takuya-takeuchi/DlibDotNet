@@ -29,6 +29,12 @@ do { \
         case array2d_type::UInt16:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image));\
             break;\
+        case array2d_type::UInt32:\
+            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint32_t>>>*)image));\
+            break;\
+        case array2d_type::Int8:\
+            ret = new image_window(*((matrix_op<ELEMENT<array2d<int8_t>>>*)image));\
+            break;\
         case array2d_type::Int16:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<int16_t>>>*)image));\
             break;\
@@ -65,6 +71,12 @@ do { \
             break;\
         case array2d_type::UInt16:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image), title);\
+            break;\
+        case array2d_type::UInt32:\
+            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint32_t>>>*)image), title);\
+            break;\
+        case array2d_type::Int8:\
+            ret = new image_window(*((matrix_op<ELEMENT<array2d<int8_t>>>*)image), title);\
             break;\
         case array2d_type::Int16:\
             ret = new image_window(*((matrix_op<ELEMENT<array2d<int16_t>>>*)image), title);\
@@ -103,6 +115,12 @@ do { \
         case array2d_type::UInt16:\
             window->set_image(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image));\
             break;\
+        case array2d_type::UInt32:\
+            window->set_image(*((matrix_op<ELEMENT<array2d<uint32_t>>>*)image));\
+            break;\
+        case array2d_type::Int8:\
+            window->set_image(*((matrix_op<ELEMENT<array2d<int8_t>>>*)image));\
+            break;\
         case array2d_type::Int16:\
             window->set_image(*((matrix_op<ELEMENT<array2d<int16_t>>>*)image));\
             break;\
@@ -130,6 +148,49 @@ do { \
     }\
 } while (0)
 
+#define image_window_set_image_matrix_op_op_join_rows_template(ret, window, type, image) \
+do { \
+    switch(type)\
+    {\
+        case array2d_type::UInt8:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<uint8_t, 0, 0>, matrix<uint8_t, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::UInt16:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<uint16_t, 0, 0>, matrix<uint16_t, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::UInt32:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<uint32_t, 0, 0>, matrix<uint32_t, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::Int8:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<int8_t, 0, 0>, matrix<int8_t, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::Int16:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<int16_t, 0, 0>, matrix<int16_t, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::Int32:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<int32_t, 0, 0>, matrix<int32_t, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::Float:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<float, 0, 0>, matrix<float, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::Double:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<double, 0, 0>, matrix<double, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::RgbPixel:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<rgb_pixel, 0, 0>, matrix<rgb_pixel, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::HsiPixel:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<hsi_pixel, 0, 0>, matrix<hsi_pixel, 0, 0>>>*)image));\
+            break;\
+        case array2d_type::RgbAlphaPixel:\
+            window->set_image(*((matrix_op<op_join_rows<matrix<rgb_alpha_pixel, 0, 0>, matrix<rgb_alpha_pixel, 0, 0>>>*)image));\
+            break;\
+        default:\
+            ret = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
 #pragma endregion template
 
 #pragma region image_window
@@ -149,6 +210,10 @@ DLLEXPORT image_window* image_window_new_array2d1(array2d_type type, void* image
             return new image_window(*((array2d<uint8_t>*)image));
         case array2d_type::UInt16:
             return new image_window(*((array2d<uint16_t>*)image));
+        case array2d_type::UInt32:
+            return new image_window(*((array2d<uint32_t>*)image));
+        case array2d_type::Int8:
+            return new image_window(*((array2d<int8_t>*)image));
         case array2d_type::Int16:
             return new image_window(*((array2d<int16_t>*)image));
         case array2d_type::Int32:
@@ -176,6 +241,10 @@ DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image
             return new image_window(*((array2d<uint8_t>*)image), title);
         case array2d_type::UInt16:
             return new image_window(*((array2d<uint16_t>*)image), title);
+        case array2d_type::UInt32:
+            return new image_window(*((array2d<uint32_t>*)image), title);
+        case array2d_type::Int8:
+            return new image_window(*((array2d<uint8_t>*)image), title);
         case array2d_type::Int16:
             return new image_window(*((array2d<int16_t>*)image), title);
         case array2d_type::Int32:
@@ -317,6 +386,12 @@ DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r,
         case array2d_type::UInt16:
             window->add_overlay(*r, *((uint16_t*)p));
             break;
+        case array2d_type::UInt32:
+            window->add_overlay(*r, *((uint32_t*)p));
+            break;
+        case array2d_type::Int8:
+            window->add_overlay(*r, *((int8_t*)p));
+            break;
         case array2d_type::Int16:
             window->add_overlay(*r, *((int16_t*)p));
             break;
@@ -366,6 +441,12 @@ DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectan
         case array2d_type::UInt16:
             window->add_overlay(tmpRects, *((uint16_t*)p));
             break;
+        case array2d_type::UInt32:
+            window->add_overlay(tmpRects, *((uint32_t*)p));
+            break;
+        case array2d_type::Int8:
+            window->add_overlay(tmpRects, *((int8_t*)p));
+            break;
         case array2d_type::Int16:
             window->add_overlay(tmpRects, *((int16_t*)p));
             break;
@@ -406,6 +487,12 @@ DLLEXPORT int image_window_add_overlay3(image_window* window, dlib::drectangle* 
             break;
         case array2d_type::UInt16:
             window->add_overlay(*r, *((uint16_t*)p));
+            break;
+        case array2d_type::UInt32:
+            window->add_overlay(*r, *((uint32_t*)p));
+            break;
+        case array2d_type::Int8:
+            window->add_overlay(*r, *((int8_t*)p));
             break;
         case array2d_type::Int16:
             window->add_overlay(*r, *((int16_t*)p));
@@ -484,6 +571,12 @@ DLLEXPORT int image_window_set_image_array2d(image_window* window, array2d_type 
         case array2d_type::UInt16:
             window->set_image(*((array2d<uint16_t>*)image));
             break;
+        case array2d_type::UInt32:
+            window->set_image(*((array2d<uint32_t>*)image));
+            break;
+        case array2d_type::Int8:
+            window->set_image(*((array2d<int8_t>*)image));
+            break;
         case array2d_type::Int16:
             window->set_image(*((array2d<int16_t>*)image));
             break;
@@ -560,7 +653,7 @@ DLLEXPORT int image_window_set_image_matrix(image_window* window, matrix_element
     return err;
 }
 
-DLLEXPORT int image_window_set_image_matrix_op(image_window* window, element_type etype, array2d_type type, void* image)
+DLLEXPORT int image_window_set_image_matrix_op_array2d(image_window* window, element_type etype, array2d_type type, void* image)
 {
     int err = ERR_OK;
 
@@ -579,6 +672,25 @@ DLLEXPORT int image_window_set_image_matrix_op(image_window* window, element_typ
         case element_type::OpArray2dToMat:
             #define ELEMENT dlib::op_array2d_to_mat
             image_window_set_image_matrix_op_template(err, window, type, image);
+            #undef ELEMENT
+            break;
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window, element_type etype, matrix_element_type type, void* image)
+{
+    int err = ERR_OK;
+
+    switch(etype)
+    {
+        case element_type::OpJoinRows:
+            #define ELEMENT dlib::op_join_rows
+            image_window_set_image_matrix_op_op_join_rows_template(err, window, type, image);
             #undef ELEMENT
             break;
         default:
@@ -694,6 +806,12 @@ DLLEXPORT int perspective_window_add_overlay(perspective_window* window, dlib::v
         case array2d_type::UInt16:
             window->add_overlay(*p1, *p2, *((uint16_t*)p));
             break;
+        case array2d_type::UInt32:
+            window->add_overlay(*p1, *p2, *((uint32_t*)p));
+            break;
+        case array2d_type::Int8:
+            window->add_overlay(*p1, *p2, *((int8_t*)p));
+            break;
         case array2d_type::Int16:
             window->add_overlay(*p1, *p2, *((int16_t*)p));
             break;
@@ -759,6 +877,12 @@ DLLEXPORT int perspective_window_add_overlay3(perspective_window* window, std::v
             break;
         case array2d_type::UInt16:
             window->add_overlay(tmp, *((uint16_t*)p));
+            break;
+        case array2d_type::UInt32:
+            window->add_overlay(tmp, *((uint32_t*)p));
+            break;
+        case array2d_type::Int8:
+            window->add_overlay(tmp, *((int8_t*)p));
             break;
         case array2d_type::Int16:
             window->add_overlay(tmp, *((int16_t*)p));
@@ -829,6 +953,10 @@ DLLEXPORT perspective_window::overlay_dot* perspective_window_overlay_dot_new2(d
             return new perspective_window::overlay_dot(tmp, *((uint8_t*)p));
         case array2d_type::UInt16:
             return new perspective_window::overlay_dot(tmp, *((uint16_t*)p));
+        case array2d_type::UInt32:
+            return new perspective_window::overlay_dot(tmp, *((uint32_t*)p));
+        case array2d_type::Int8:
+            return new perspective_window::overlay_dot(tmp, *((int8_t*)p));
         case array2d_type::Int16:
             return new perspective_window::overlay_dot(tmp, *((int16_t*)p));
         case array2d_type::Int32:

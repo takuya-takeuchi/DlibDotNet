@@ -11,6 +11,45 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static MatrixOp JoinRows(MatrixBase matrix1, MatrixBase matrix2)
+        {
+            if (matrix1 == null)
+                throw new ArgumentNullException(nameof(matrix1));
+            if (matrix2 == null)
+                throw new ArgumentNullException(nameof(matrix2));
+
+            matrix1.ThrowIfDisposed();
+            matrix2.ThrowIfDisposed();
+
+            var templateRows = matrix1.TemplateRows;
+            var templateColumns = matrix1.TemplateColumns;
+
+            if (templateRows != matrix2.TemplateRows)
+                throw new ArgumentException();
+            if (templateColumns != matrix2.TemplateColumns)
+                throw new ArgumentException();
+
+            var type1 = matrix1.MatrixElementType.ToNativeMatrixElementType();
+            var type2 = matrix2.MatrixElementType.ToNativeMatrixElementType();
+            if (type1 != type2)
+                throw new ArgumentException();
+
+            var ret = Native.matrix_join_rows(type1,
+                                              matrix1.NativePtr,
+                                              matrix2.NativePtr,
+                                              templateRows,
+                                              templateColumns,
+                                              out var matrixOp);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type1} is not supported.");
+            }
+
+            var imageType = matrix1.MatrixElementType;
+            return new MatrixOp(Native.ElementType.OpJoinRows, imageType, matrixOp, templateRows, templateColumns);
+        }
+
         public static double Length(MatrixBase matrix)
         {
             if (matrix == null)
@@ -106,6 +145,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr linspace(double start, double end, int num);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_join_rows(MatrixElementType type, IntPtr matrix1, IntPtr matrix2, int templateRows, int templateColumns, out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);

@@ -188,6 +188,24 @@ do {\
     }\
 } while (0)
 
+#define matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret)\
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN>& mat1 = *static_cast<dlib::matrix<ELEMENT_IN>*>(matrix1);\
+        dlib::matrix<ELEMENT_IN>& mat2 = *static_cast<dlib::matrix<ELEMENT_IN>*>(matrix2);\
+        auto joinedMat = dlib::join_rows(mat1, mat2);\
+        *ret = new matrix_op<op_join_rows<matrix<ELEMENT_IN>, matrix<ELEMENT_IN>>>(joinedMat);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& mat1 = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix1);\
+        dlib::matrix<ELEMENT_IN, 0, 1>& mat2 = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix2);\
+        auto joinedMat = dlib::join_rows(mat1, mat2);\
+        *ret = new matrix_op<op_join_rows<matrix<ELEMENT_IN, 0, 1>, matrix<ELEMENT_IN, 0, 1>>>(joinedMat);\
+    }\
+} while (0)
+
 #define matrix_trans_template(matrix, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -259,6 +277,70 @@ DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int template
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
+        default: 
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
+            break; 
+    } 
+ 
+    return err; 
+}
+
+DLLEXPORT int matrix_join_rows(matrix_element_type type, void* matrix1, void* matrix2, int templateRows, int templateColumns, void** ret) 
+{ 
+    int err = ERR_OK; 
+    switch(type) 
+    { 
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            break; 
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            break; 
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            break; 
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            break; 
         default: 
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
             break; 

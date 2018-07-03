@@ -43,6 +43,7 @@ enum struct vector_element_type : int
 
 enum element_type : int
 {
+
     OpHeatmap = 0,
 
     OpJet,
@@ -51,7 +52,9 @@ enum element_type : int
     
     OpTrans,
     
-    OpStdVectToMat
+    OpStdVectToMat,
+    
+    OpJoinRows
 
 };
 

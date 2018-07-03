@@ -221,10 +221,7 @@ namespace DlibDotNet.Dnn
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr loss_metric_deserialize(byte[] fileName, int type);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_metric_operator_matrix(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrix, out IntPtr ret);
-
+            
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType loss_metric_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
 

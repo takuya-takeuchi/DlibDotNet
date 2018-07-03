@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
@@ -46,7 +47,7 @@ namespace DlibDotNet
             }
         }
 
-        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation)
+        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
             where T : struct
         {
             if (image == null)
@@ -62,11 +63,12 @@ namespace DlibDotNet
 
             var chip = new Array2D<T>();
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.extract_image_chip(array2DType,
-                                                image.NativePtr,
-                                                chipLocation.NativePtr,
-                                                chip.ImageType.ToNativeArray2DType(),
-                                                chip.NativePtr);
+            var ret = Native.extract_image_chip2(array2DType,
+                                                 image.NativePtr,
+                                                 chipLocation.NativePtr,
+                                                 chip.ImageType.ToNativeArray2DType(),
+                                                 type.ToNativeInterpolationTypes(),
+                                                 chip.NativePtr);
 
             switch (ret)
             {
@@ -78,8 +80,8 @@ namespace DlibDotNet
 
             return chip;
         }
-
-        public static Matrix<T> ExtractImageChip<T>(MatrixBase image, ChipDetails chipLocation)
+        
+        public static Matrix<T> ExtractImageChip<T>(MatrixBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
             where T : struct
         {
             if (image == null)
@@ -95,11 +97,12 @@ namespace DlibDotNet
 
             var chip = new Matrix<T>();
             var elementType = image.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.extract_image_chip_matrix(elementType,
-                                                       image.NativePtr,
-                                                       chipLocation.NativePtr,
-                                                       chip.MatrixElementType.ToNativeMatrixElementType(),
-                                                       chip.NativePtr);
+            var ret = Native.extract_image_chip_matrix2(elementType,
+                                                        image.NativePtr,
+                                                        chipLocation.NativePtr,
+                                                        chip.MatrixElementType.ToNativeMatrixElementType(),
+                                                        type.ToNativeInterpolationTypes(),
+                                                        chip.NativePtr);
 
             switch (ret)
             {
@@ -111,7 +114,7 @@ namespace DlibDotNet
 
             return chip;
         }
-
+        
         public static void FlipImageLeftRight(Array2DBase image)
         {
             if (image == null)
@@ -408,10 +411,16 @@ namespace DlibDotNet
             public static extern ErrorType extract_image_chip(Array2DType img_type, IntPtr in_img, IntPtr chip_location, Array2DType array_type, IntPtr out_chip);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_chip2(Array2DType img_type, IntPtr in_img, IntPtr chip_location, Array2DType array_type, InterpolationTypes type, IntPtr out_chip);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chips(Array2DType img_type, IntPtr in_img, IntPtr chip_locations, Array2DType array_type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chip_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, IntPtr out_chip);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_chip_matrix2(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, InterpolationTypes type, IntPtr out_chip);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType jitter_image(MatrixElementType in_type, IntPtr in_img, IntPtr rand, out IntPtr out_img);

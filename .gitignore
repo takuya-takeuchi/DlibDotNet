@@ -304,3 +304,7 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Custom
+src/DlibDotNet.Native/*.bat
+src/DlibDotNet.Native.Dnn/*.bat
