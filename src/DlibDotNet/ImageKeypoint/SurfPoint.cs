@@ -131,7 +131,7 @@ namespace DlibDotNet
             }
 
             internal SurfPointMatrix(IntPtr ptr, bool isEnableDispose)
-                : base(ptr, isEnableDispose)
+                : base(ptr, 0, 0, isEnableDispose)
             {
                 if (!SupportMatrixTypes.TryGetValue(typeof(T), out var matrixType))
                     throw new NotSupportedException($"{typeof(T).Name} does not support");

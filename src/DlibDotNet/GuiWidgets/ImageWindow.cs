@@ -419,7 +419,23 @@ namespace DlibDotNet
 
             matrix.ThrowIfDisposed();
 
-            var ret = Native.image_window_set_image_matrix_op(this.NativePtr, matrix.ElementType, matrix.Array2DType, matrix.NativePtr);
+            Dlib.Native.ErrorType ret;
+            switch (matrix.ElementType)
+            {
+                case Dlib.Native.ElementType.OpHeatmap:
+                case Dlib.Native.ElementType.OpJet:
+                case Dlib.Native.ElementType.OpArray2DToMat:
+                case Dlib.Native.ElementType.OpTrans:
+                case Dlib.Native.ElementType.OpStdVectToMat:
+                    ret = Native.image_window_set_image_matrix_op_array2d(this.NativePtr, matrix.ElementType, matrix.Array2DType, matrix.NativePtr);
+                    break;
+                case Dlib.Native.ElementType.OpJoinRows:
+                    ret = Native.image_window_set_image_matrix_op_matrix(this.NativePtr, matrix.ElementType, matrix.MatrixElementType, matrix.NativePtr);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
@@ -578,7 +594,10 @@ namespace DlibDotNet
             public static extern Dlib.Native.ErrorType image_window_set_image_array2d(IntPtr window, Dlib.Native.Array2DType type, IntPtr image);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType image_window_set_image_matrix_op(IntPtr window, Dlib.Native.ElementType matrixElementType, Dlib.Native.Array2DType type, IntPtr matrix);
+            public static extern Dlib.Native.ErrorType image_window_set_image_matrix_op_array2d(IntPtr window, Dlib.Native.ElementType matrixElementType, Dlib.Native.Array2DType type, IntPtr matrix);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType image_window_set_image_matrix_op_matrix(IntPtr window, Dlib.Native.ElementType matrixElementType, Dlib.Native.MatrixElementType type, IntPtr matrix);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType image_window_set_image_matrix(IntPtr window, Dlib.Native.MatrixElementType type, IntPtr matrix);

@@ -2,7 +2,13 @@
 #define _CPP_MATRIX_H_
 
 #include "../export.h"
+#include <dlib/array.h>
 #include <dlib/pixel.h>
+#include <dlib/image_processing.h>
+#include <dlib/image_processing/full_object_detection.h>
+#include <dlib/image_processing/generic_image.h>
+#include <dlib/image_transforms/interpolation.h>
+#include <dlib/matrix.h>
 #include <dlib/matrix/matrix.h>
 #include <dlib/matrix/matrix_op.h>
 #include "../shared.h"
@@ -10,12 +16,13 @@
 using namespace dlib;
 using namespace std;
 
-#pragma region matrix
-
 #pragma region template
 
 #define ELEMENT element
 #undef ELEMENT
+
+#define OPERAND +
+#undef OPERAND
 
 #define matrix_operator_array_template(matrix, array) \
 do { \
@@ -27,6 +34,144 @@ do { \
         for (long c = 0; c < column; ++c)\
             mat(r, c) = src[r * column + c];\
 } while (0)
+
+#define matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& l = *(static_cast<dlib::matrix<ELEMENT>*>(lhs));\
+        dlib::matrix<ELEMENT>& r = *(static_cast<dlib::matrix<ELEMENT>*>(rhs));\
+        *ret = new dlib::matrix<ELEMENT>(l OPERAND r);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& l = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(lhs));\
+        dlib::matrix<ELEMENT, 0, 1>& r = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(rhs));\
+        *ret = new dlib::matrix<ELEMENT, 0, 1>(l OPERAND r);\
+    }\
+} while (0)
+
+#define matrix_nc_template(matrix, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT>*)matrix)->nc();\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 0, 1>*)matrix)->nc();\
+    }\
+} while (0)
+
+#define matrix_nr_template(matrix, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT>*)matrix)->nr();\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 0, 1>*)matrix)->nr();\
+    }\
+} while (0)
+
+#define matrix_size_template(matrix, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT>*)matrix)->size();\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 0, 1>*)matrix)->size();\
+    }\
+} while (0)
+
+#define matrix_delete_template(matrix, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        delete ((dlib::matrix<ELEMENT>*)matrix);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        delete ((dlib::matrix<ELEMENT, 0, 1>*)matrix);\
+    }\
+} while (0)
+
+#define matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& tmp = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+        *ret = tmp(index);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *ret = tmp(index);\
+    }\
+} while (0)
+
+#define matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& tmp = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+        tmp(index) = value;\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        tmp(index) = value;\
+    }\
+} while (0)
+
+#define matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& tmp = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+        *ret = tmp(row, column);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *ret = tmp(row, column);\
+    }\
+} while (0)
+
+#define matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& tmp = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+        tmp(row, column) = value;\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        tmp(row, column) = value;\
+    }\
+} while (0)
+
+#define matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& mat = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+        *stream << mat;\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *stream << mat;\
+    }\
+} while (0)
+
+#pragma endregion template
+
+#pragma region matrix
 
 DLLEXPORT void* matrix_new(matrix_element_type type)
 {
@@ -90,43 +235,65 @@ DLLEXPORT void* matrix_new1(matrix_element_type type, int num_rows, int num_cols
     }
 }
 
-DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, int* ret)
 {
     int err = ERR_OK;
     switch(type)
     {
         case matrix_element_type::UInt8:
-            *ret = ((dlib::matrix<uint8_t>*)matrix)->nc();
+            #define ELEMENT uint8_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            *ret = ((dlib::matrix<uint16_t>*)matrix)->nc();
+            #define ELEMENT uint16_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            *ret = ((dlib::matrix<uint32_t>*)matrix)->nc();
+            #define ELEMENT uint32_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            *ret = ((dlib::matrix<int8_t>*)matrix)->nc();
+            #define ELEMENT int8_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            *ret = ((dlib::matrix<int16_t>*)matrix)->nc();
+            #define ELEMENT int16_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            *ret = ((dlib::matrix<int32_t>*)matrix)->nc();
+            #define ELEMENT int32_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            *ret = ((dlib::matrix<float>*)matrix)->nc();
+            #define ELEMENT float
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            *ret = ((dlib::matrix<double>*)matrix)->nc();
+            #define ELEMENT double
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            *ret = ((dlib::matrix<rgb_pixel>*)matrix)->nc();
+            #define ELEMENT rgb_pixel
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            *ret = ((dlib::matrix<hsi_pixel>*)matrix)->nc();
+            #define ELEMENT hsi_pixel
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            *ret = ((dlib::matrix<rgb_alpha_pixel>*)matrix)->nc();
+            #define ELEMENT rgb_alpha_pixel
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
@@ -136,43 +303,65 @@ DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, int* ret)
     return err;
 }
 
-DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, int* ret)
 {
     int err = ERR_OK;
     switch(type)
     {
         case matrix_element_type::UInt8:
-            *ret = ((dlib::matrix<uint8_t>*)matrix)->nr();
+            #define ELEMENT uint8_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            *ret = ((dlib::matrix<uint16_t>*)matrix)->nr();
+            #define ELEMENT uint16_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            *ret = ((dlib::matrix<uint32_t>*)matrix)->nr();
+            #define ELEMENT uint32_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            *ret = ((dlib::matrix<int8_t>*)matrix)->nr();
+            #define ELEMENT int8_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            *ret = ((dlib::matrix<int16_t>*)matrix)->nr();
+            #define ELEMENT int16_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            *ret = ((dlib::matrix<int32_t>*)matrix)->nr();
+            #define ELEMENT int32_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            *ret = ((dlib::matrix<float>*)matrix)->nr();
+            #define ELEMENT float
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            *ret = ((dlib::matrix<double>*)matrix)->nr();
+            #define ELEMENT double
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            *ret = ((dlib::matrix<rgb_pixel>*)matrix)->nr();
+            #define ELEMENT rgb_pixel
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            *ret = ((dlib::matrix<hsi_pixel>*)matrix)->nr();
+            #define ELEMENT hsi_pixel
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            *ret = ((dlib::matrix<rgb_alpha_pixel>*)matrix)->nr();
+            #define ELEMENT rgb_alpha_pixel
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
@@ -182,43 +371,65 @@ DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, int* ret)
     return err;
 }
 
-DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, int* ret)
+DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, int* ret)
 {
     int err = ERR_OK;
     switch(type)
     {
         case matrix_element_type::UInt8:
-            *ret = ((dlib::matrix<uint8_t>*)matrix)->size();
+            #define ELEMENT uint8_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            *ret = ((dlib::matrix<uint16_t>*)matrix)->size();
+            #define ELEMENT uint16_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            *ret = ((dlib::matrix<uint32_t>*)matrix)->size();
+            #define ELEMENT uint32_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            *ret = ((dlib::matrix<int8_t>*)matrix)->size();
+            #define ELEMENT int8_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            *ret = ((dlib::matrix<int16_t>*)matrix)->size();
+            #define ELEMENT int16_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            *ret = ((dlib::matrix<int32_t>*)matrix)->size();
+            #define ELEMENT int32_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            *ret = ((dlib::matrix<float>*)matrix)->size();
+            #define ELEMENT float
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            *ret = ((dlib::matrix<double>*)matrix)->size();
+            #define ELEMENT double
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            *ret = ((dlib::matrix<rgb_pixel>*)matrix)->size();
+            #define ELEMENT rgb_pixel
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            *ret = ((dlib::matrix<hsi_pixel>*)matrix)->size();
+            #define ELEMENT hsi_pixel
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            *ret = ((dlib::matrix<rgb_alpha_pixel>*)matrix)->size();
+            #define ELEMENT rgb_alpha_pixel
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
@@ -228,44 +439,8 @@ DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, int* ret)
     return err;
 }
 
-DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix)
+DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns)
 {
-    // switch(type)
-    // {
-    //     case matrix_element_type::UInt8:
-    //         delete ((dlib::matrix<uint8_t>*)matrix);
-    //         break;
-    //     case matrix_element_type::UInt16:
-    //         delete ((dlib::matrix<uint16_t>*)matrix);
-    //         break;
-    //     case matrix_element_type::UInt32:
-    //         delete ((dlib::matrix<uint32_t>*)matrix);
-    //         break;
-    //     case matrix_element_type::Int8:
-    //         delete ((dlib::matrix<int8_t>*)matrix);
-    //         break;
-    //     case matrix_element_type::Int16:
-    //         delete ((dlib::matrix<int16_t>*)matrix);
-    //         break;
-    //     case matrix_element_type::Int32:
-    //         delete ((dlib::matrix<int32_t>*)matrix);
-    //         break;
-    //     case matrix_element_type::Float:
-    //         delete ((dlib::matrix<float>*)matrix);
-    //         break;
-    //     case matrix_element_type::Double:
-    //         delete ((dlib::matrix<double>*)matrix);
-    //         break;
-    //     case matrix_element_type::RgbPixel:
-    //         delete ((dlib::matrix<rgb_pixel>*)matrix);
-    //         break;
-    //     case matrix_element_type::HsiPixel:
-    //         delete ((dlib::matrix<hsi_pixel>*)matrix);
-    //         break;
-    //     case matrix_element_type::RgbAlphaPixel:
-    //         delete ((dlib::matrix<rgb_alpha_pixel>*)matrix);
-    //         break;
-    // }
     // dlib::matrix is template type.
     // Ex. dlib::matrix<float, 31, 1> does NOT equal to dlib::matrix<float>
     // Template argument is decided in compile time rather than runtime.
@@ -273,7 +448,64 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix)
     // In other words, we have to call delete for void* because we do not known exact type.
     // Fortunately, dlib::matrix does not implement destructor.
     // So it is could be no problem when delete void* and destructor is not called.
-    delete matrix;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+    }
 }
 
 DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array)
@@ -348,338 +580,376 @@ DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void
 
 #pragma region matrix_operator_get_one_row_column
 
-DLLEXPORT void matrix_operator_get_one_row_column_uint8_t(void* matrix, int index, uint8_t* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_uint8_t(void* matrix, int index, int templateRows, int templateColumns, uint8_t* ret)
 {
-    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT uint8_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_uint16_t(void* matrix, int index, uint16_t* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_uint16_t(void* matrix, int index, int templateRows, int templateColumns, uint16_t* ret)
 {
-    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT uint16_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_uint32_t(void* matrix, int index, uint32_t* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_uint32_t(void* matrix, int index, int templateRows, int templateColumns, uint32_t* ret)
 {
-    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT uint32_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_int8_t(void* matrix, int index, int8_t* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_int8_t(void* matrix, int index, int templateRows, int templateColumns, int8_t* ret)
 {
-    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT int8_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_int16_t(void* matrix, int index, int16_t* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_int16_t(void* matrix, int index, int templateRows, int templateColumns, int16_t* ret)
 {
-    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT int16_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_int32_t(void* matrix, int index, int32_t* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_int32_t(void* matrix, int index, int templateRows, int templateColumns, int32_t* ret)
 {
-    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT int32_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_double(void* matrix, int index, double* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_double(void* matrix, int index, int templateRows, int templateColumns, double* ret)
 {
-    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT double
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_float(void* matrix, int index, float* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_float(void* matrix, int index, int templateRows, int templateColumns, float* ret)
 {
-    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT float
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_rgb_pixel(void* matrix, int index, rgb_pixel* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_rgb_pixel(void* matrix, int index, int templateRows, int templateColumns, rgb_pixel* ret)
 {
-    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT rgb_pixel
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_rgb_alpha_pixel(void* matrix, int index, rgb_alpha_pixel* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_rgb_alpha_pixel(void* matrix, int index, int templateRows, int templateColumns, rgb_alpha_pixel* ret)
 {
-    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT rgb_alpha_pixel
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_one_row_column_hsi_pixel(void* matrix, int index, hsi_pixel* ret)
+DLLEXPORT void matrix_operator_get_one_row_column_hsi_pixel(void* matrix, int index, int templateRows, int templateColumns, hsi_pixel* ret)
 {
-    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
-    *ret = tmp(index);
+    #define ELEMENT hsi_pixel
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
 #pragma endregion
 
 #pragma region matrix_operator_set_one_row_column
 
-DLLEXPORT void matrix_operator_set_one_row_column_uint8_t(void* matrix, int index, uint8_t value)
+DLLEXPORT void matrix_operator_set_one_row_column_uint8_t(void* matrix, int index, int templateRows, int templateColumns, uint8_t value)
 {
-    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT uint8_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_uint16_t(void* matrix, int index, uint16_t value)
+DLLEXPORT void matrix_operator_set_one_row_column_uint16_t(void* matrix, int index, int templateRows, int templateColumns, uint16_t value)
 {
-    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT uint16_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_uint32_t(void* matrix, int index, uint32_t value)
+DLLEXPORT void matrix_operator_set_one_row_column_uint32_t(void* matrix, int index, int templateRows, int templateColumns, uint32_t value)
 {
-    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT uint32_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_int8_t(void* matrix, int index, int8_t value)
+DLLEXPORT void matrix_operator_set_one_row_column_int8_t(void* matrix, int index, int templateRows, int templateColumns, int8_t value)
 {
-    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT int8_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_int16_t(void* matrix, int index, int16_t value)
+DLLEXPORT void matrix_operator_set_one_row_column_int16_t(void* matrix, int index, int templateRows, int templateColumns, int16_t value)
 {
-    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT int16_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_int32_t(void* matrix, int index, int32_t value)
+DLLEXPORT void matrix_operator_set_one_row_column_int32_t(void* matrix, int index, int templateRows, int templateColumns, int32_t value)
 {
-    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT int32_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_double(void* matrix, int index, double value)
+DLLEXPORT void matrix_operator_set_one_row_column_double(void* matrix, int index, int templateRows, int templateColumns, double value)
 {
-    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT double
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_float(void* matrix, int index, float value)
+DLLEXPORT void matrix_operator_set_one_row_column_float(void* matrix, int index, int templateRows, int templateColumns, float value)
 {
-    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT float
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_rgb_pixel(void* matrix, int index, rgb_pixel value)
+DLLEXPORT void matrix_operator_set_one_row_column_rgb_pixel(void* matrix, int index, int templateRows, int templateColumns, rgb_pixel value)
 {
-    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT rgb_pixel
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_rgb_alpha_pixel(void* matrix, int index, rgb_alpha_pixel value)
+DLLEXPORT void matrix_operator_set_one_row_column_rgb_alpha_pixel(void* matrix, int index, int templateRows, int templateColumns, rgb_alpha_pixel value)
 {
-    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT rgb_alpha_pixel
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_one_row_column_hsi_pixel(void* matrix, int index, hsi_pixel value)
+DLLEXPORT void matrix_operator_set_one_row_column_hsi_pixel(void* matrix, int index, int templateRows, int templateColumns, hsi_pixel value)
 {
-    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
-    tmp(index) = value;
+    #define ELEMENT hsi_pixel
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
 #pragma endregion
 
 #pragma region matrix_operator_get_row_column
 
-DLLEXPORT void matrix_operator_get_row_column_uint8_t(void* matrix, int row, int column, uint8_t* ret)
+DLLEXPORT void matrix_operator_get_row_column_uint8_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint8_t* ret)
 {
-    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT uint8_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_uint16_t(void* matrix, int row, int column, uint16_t* ret)
+DLLEXPORT void matrix_operator_get_row_column_uint16_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint16_t* ret)
 {
-    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT uint16_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_uint32_t(void* matrix, int row, int column, uint32_t* ret)
+DLLEXPORT void matrix_operator_get_row_column_uint32_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint32_t* ret)
 {
-    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT uint32_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_int8_t(void* matrix, int row, int column, int8_t* ret)
+DLLEXPORT void matrix_operator_get_row_column_int8_t(void* matrix, int row, int column, int templateRows, int templateColumns, int8_t* ret)
 {
-    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT int8_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_int16_t(void* matrix, int row, int column, int16_t* ret)
+DLLEXPORT void matrix_operator_get_row_column_int16_t(void* matrix, int row, int column, int templateRows, int templateColumns, int16_t* ret)
 {
-    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT int16_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_int32_t(void* matrix, int row, int column, int32_t* ret)
+DLLEXPORT void matrix_operator_get_row_column_int32_t(void* matrix, int row, int column, int templateRows, int templateColumns, int32_t* ret)
 {
-    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT int32_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_double(void* matrix, int row, int column, double* ret)
+DLLEXPORT void matrix_operator_get_row_column_double(void* matrix, int row, int column, int templateRows, int templateColumns, double* ret)
 {
-    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT double
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_float(void* matrix, int row, int column, float* ret)
+DLLEXPORT void matrix_operator_get_row_column_float(void* matrix, int row, int column, int templateRows, int templateColumns, float* ret)
 {
-    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT float
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_rgb_pixel(void* matrix, int row, int column, rgb_pixel* ret)
+DLLEXPORT void matrix_operator_get_row_column_rgb_pixel(void* matrix, int row, int column, int templateRows, int templateColumns, rgb_pixel* ret)
 {
-    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT rgb_pixel
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_rgb_alpha_pixel(void* matrix, int row, int column, rgb_alpha_pixel* ret)
+DLLEXPORT void matrix_operator_get_row_column_rgb_alpha_pixel(void* matrix, int row, int column, int templateRows, int templateColumns, rgb_alpha_pixel* ret)
 {
-    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT rgb_alpha_pixel
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_get_row_column_hsi_pixel(void* matrix, int row, int column, hsi_pixel* ret)
+DLLEXPORT void matrix_operator_get_row_column_hsi_pixel(void* matrix, int row, int column, int templateRows, int templateColumns, hsi_pixel* ret)
 {
-    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
-    *ret = tmp(row, column);
+    #define ELEMENT hsi_pixel
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
 }
 
 #pragma endregion
 
 #pragma region matrix_operator_set_row_column
 
-DLLEXPORT void matrix_operator_set_row_column_uint8_t(void* matrix, int row, int column, uint8_t value)
+DLLEXPORT void matrix_operator_set_row_column_uint8_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint8_t value)
 {
-    dlib::matrix<uint8_t>& tmp = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT uint8_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_uint16_t(void* matrix, int row, int column, uint16_t value)
+DLLEXPORT void matrix_operator_set_row_column_uint16_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint16_t value)
 {
-    dlib::matrix<uint16_t>& tmp = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT uint16_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_uint32_t(void* matrix, int row, int column, uint32_t value)
+DLLEXPORT void matrix_operator_set_row_column_uint32_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint32_t value)
 {
-    dlib::matrix<uint32_t>& tmp = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT uint32_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_int8_t(void* matrix, int row, int column, int8_t value)
+DLLEXPORT void matrix_operator_set_row_column_int8_t(void* matrix, int row, int column, int templateRows, int templateColumns, int8_t value)
 {
-    dlib::matrix<int8_t>& tmp = *(static_cast<dlib::matrix<int8_t>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT int8_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_int16_t(void* matrix, int row, int column, int16_t value)
+DLLEXPORT void matrix_operator_set_row_column_int16_t(void* matrix, int row, int column, int templateRows, int templateColumns, int16_t value)
 {
-    dlib::matrix<int16_t>& tmp = *(static_cast<dlib::matrix<int16_t>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT int16_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_int32_t(void* matrix, int row, int column, int32_t value)
+DLLEXPORT void matrix_operator_set_row_column_int32_t(void* matrix, int row, int column, int templateRows, int templateColumns, int32_t value)
 {
-    dlib::matrix<int32_t>& tmp = *(static_cast<dlib::matrix<int32_t>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT int32_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_double(void* matrix, int row, int column, double value)
+DLLEXPORT void matrix_operator_set_row_column_double(void* matrix, int row, int column, int templateRows, int templateColumns, double value)
 {
-    dlib::matrix<double>& tmp = *(static_cast<dlib::matrix<double>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT double
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_float(void* matrix, int row, int column, float value)
+DLLEXPORT void matrix_operator_set_row_column_float(void* matrix, int row, int column, int templateRows, int templateColumns, float value)
 {
-    dlib::matrix<float>& tmp = *(static_cast<dlib::matrix<float>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT float
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_rgb_pixel(void* matrix, int row, int column, rgb_pixel value)
+DLLEXPORT void matrix_operator_set_row_column_rgb_pixel(void* matrix, int row, int column, int templateRows, int templateColumns, rgb_pixel value)
 {    
-    dlib::matrix<rgb_pixel>& tmp = *(static_cast<dlib::matrix<rgb_pixel>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT rgb_pixel
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_rgb_alpha_pixel(void* matrix, int row, int column, rgb_alpha_pixel value)
+DLLEXPORT void matrix_operator_set_row_column_rgb_alpha_pixel(void* matrix, int row, int column, int templateRows, int templateColumns, rgb_alpha_pixel value)
 {
-    dlib::matrix<rgb_alpha_pixel>& tmp = *(static_cast<dlib::matrix<rgb_alpha_pixel>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT rgb_alpha_pixel
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
-DLLEXPORT void matrix_operator_set_row_column_hsi_pixel(void* matrix, int row, int column, hsi_pixel value)
+DLLEXPORT void matrix_operator_set_row_column_hsi_pixel(void* matrix, int row, int column, int templateRows, int templateColumns, hsi_pixel value)
 {
-    dlib::matrix<hsi_pixel>& tmp = *(static_cast<dlib::matrix<hsi_pixel>*>(matrix));
-    tmp(row, column) = value;
+    #define ELEMENT hsi_pixel
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
 }
 
 #pragma endregion
 
 #pragma endregion
 
-DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix, std::ostringstream* stream)
+#pragma region operator
+
+DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, std::ostringstream* stream)
 {
     int err = ERR_OK;
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                dlib::matrix<uint8_t>& mat = *(static_cast<dlib::matrix<uint8_t>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT int8_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                dlib::matrix<uint16_t>& mat = *(static_cast<dlib::matrix<uint16_t>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT uint16_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                dlib::matrix<uint32_t>& mat = *(static_cast<dlib::matrix<uint32_t>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT uint32_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                dlib::matrix<int8_t>& mat = *(static_cast<dlib::matrix<int8_t>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT int8_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                dlib::matrix<int16_t>& mat = *(static_cast<dlib::matrix<int16_t>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT int16_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                dlib::matrix<int32_t>& mat = *(static_cast<dlib::matrix<int32_t>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT int32_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                dlib::matrix<float>& mat = *(static_cast<dlib::matrix<float>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT float
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                dlib::matrix<double>& mat = *(static_cast<dlib::matrix<double>*>(matrix));
-                *stream << mat;
-            }
+            #define ELEMENT double
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -691,6 +961,240 @@ DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix,
     
     return err;
 }
+
+DLLEXPORT int matrix_operator_add(matrix_element_type type, void* lhs, void* rhs, const int templateRows, const int templateColumns, void** ret)
+{
+    int err = ERR_OK;
+    #define OPERAND +
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    #undef OPERAND
+    
+    return err;
+}
+
+DLLEXPORT int matrix_operator_subtract(matrix_element_type type, void* lhs, void* rhs, const int templateRows, const int templateColumns, void** ret)
+{
+    int err = ERR_OK;
+    #define OPERAND -
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    #undef OPERAND
+    
+    return err;
+}
+
+DLLEXPORT int matrix_operator_multiply(matrix_element_type type, void* lhs, void* rhs, const int templateRows, const int templateColumns, void** ret)
+{
+    int err = ERR_OK;
+    #define OPERAND *
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    #undef OPERAND
+    
+    return err;
+}
+
+DLLEXPORT int matrix_operator_divide(matrix_element_type type, void* lhs, void* rhs, const int templateRows, const int templateColumns, void** ret)
+{
+    int err = ERR_OK;
+    #define OPERAND /
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    #undef OPERAND
+    
+    return err;
+}
+
+#pragma endregion operator
 
 #pragma endregion matrix
 

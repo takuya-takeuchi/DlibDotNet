@@ -15,7 +15,8 @@ namespace DlibDotNet
             this.NativePtr = Native.mmod_rect_new();
         }
 
-        internal MModRect(IntPtr ptr)
+        internal MModRect(IntPtr ptr, bool isEnabledDispose = true) :
+            base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -110,6 +111,15 @@ namespace DlibDotNet
 
         #endregion
 
+        #region Operators
+
+        public static implicit operator Rectangle(MModRect val)
+        {
+            return val.Rect;
+        }
+
+        #endregion
+
         #endregion
 
         internal sealed class Native
@@ -152,4 +162,5 @@ namespace DlibDotNet
         }
 
     }
+
 }

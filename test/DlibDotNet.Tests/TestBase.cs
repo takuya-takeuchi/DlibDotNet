@@ -49,7 +49,7 @@ namespace DlibDotNet.Tests
             Assert.IsTrue(obj.NativePtr == IntPtr.Zero);
         }
 
-        public void DisposeAndCheckDisposedState(IEnumerable<DlibObject> objs)
+        public void DisposeAndCheckDisposedStates(IEnumerable<DlibObject> objs)
         {
             foreach (var obj in objs)
                 this.DisposeAndCheckDisposedState(obj);

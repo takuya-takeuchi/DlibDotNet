@@ -12,10 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet", "src\DlibDotNet\DlibDotNet.csproj", "{B13A6288-7B69-4B53-9138-2E20A8D5CFC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{725DA5C9-9A1B-49BC-8F19-2A403753D8E8}"
-	ProjectSection(SolutionItems) = preProject
-		DebugTestSettings.testsettings = DebugTestSettings.testsettings
-		ReleaseTestSettings.testsettings = ReleaseTestSettings.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}"
 EndProject
@@ -58,6 +54,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceLandmarkDetection", "examples\WPF\FaceLandmarkDetection\FaceLandmarkDetection.csproj", "{9575AC94-3760-483F-9403-A77E7CFE8F47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlibDotNet.Extensions.Tests", "test\DlibDotNet.Extensions.Tests\DlibDotNet.Extensions.Tests.csproj", "{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnFaceRecognition", "examples\DnnFaceRecognition\DnnFaceRecognition.csproj", "{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMmodFaceDetection", "examples\DnnMmodFaceDetection\DnnMmodFaceDetection.csproj", "{A6302463-CC32-4060-B8DF-466479046038}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnSemanticSegmentation", "examples\DnnSemanticSegmentation\DnnSemanticSegmentation.csproj", "{4DF84F72-0995-44ED-AC0A-A07327F078A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -309,6 +311,42 @@ Global
 		{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2}.ReleaseLinux|Any CPU.Build.0 = Release|Any CPU
 		{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
 		{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
+		{A6302463-CC32-4060-B8DF-466479046038}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,6 +374,9 @@ Global
 		{1523DA42-DB7E-47B5-8AE6-305100F3891B} = {4082257D-FC8E-4D37-8489-89AAFC9D4A38}
 		{9575AC94-3760-483F-9403-A77E7CFE8F47} = {5452AAEA-A679-4056-A2F7-8B6F8137CCAC}
 		{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2} = {44730D39-C672-4CC0-B983-26CC9D7E59C1}
+		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{A6302463-CC32-4060-B8DF-466479046038} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{4DF84F72-0995-44ED-AC0A-A07327F078A2} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}

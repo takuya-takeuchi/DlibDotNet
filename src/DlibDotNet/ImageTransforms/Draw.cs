@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
@@ -423,6 +424,28 @@ namespace DlibDotNet
             return new Matrix<T>(ret_image);
         }
 
+        public static Matrix<T> TileImages<T>(IEnumerable<Matrix<T>> images)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+
+            images.ThrowIfDisposed();
+
+            Matrix<T>.TryParse<T>(out var elementType);
+            using (var vector = new StdVector<Matrix<T>>(images))
+            {
+                var ret = Native.tile_images_matrix(elementType.ToNativeMatrixElementType(), vector.NativePtr, out var retImage);
+                switch (ret)
+                {
+                    case Native.ErrorType.ElementTypeNotSupport:
+                        throw new ArgumentException($"{elementType} is not supported.");
+                }
+
+                return new Matrix<T>(retImage);
+            }
+        }
+
         #endregion
 
         internal sealed partial class Native
@@ -481,8 +504,15 @@ namespace DlibDotNet
 
             #endregion
 
+            #region tile_images
+
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType tile_images(Array2DType inType, IntPtr array, out IntPtr ret_image);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType tile_images_matrix(MatrixElementType in_type, IntPtr images, out IntPtr ret_image);
+
+            #endregion
 
         }
 

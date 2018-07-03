@@ -87,6 +87,97 @@ DLLEXPORT int frontal_face_detector_operator(
     return err;
 }
 
+DLLEXPORT int frontal_face_detector_matrix_operator(
+    frontal_face_detector* detector,
+    matrix_element_type img_type,
+    void* img,
+    double adjust_threshold,
+    std::vector<rectangle*> *dets)
+{
+    int err = ERR_OK;
+
+    std::vector<rectangle>* ret = nullptr;
+    switch(img_type)
+    {
+        case matrix_element_type::UInt8:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<uint8_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::UInt16:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<uint16_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::UInt32:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<uint32_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::Int8:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<int8_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::Int16:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<int16_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::Int32:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<int32_t>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::Float:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<float>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::Double:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<double>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::RgbPixel:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<rgb_pixel>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::HsiPixel:
+            {
+                std::vector<rectangle> result = ((*detector)(*((matrix<hsi_pixel>*)img), adjust_threshold));
+                for(int index = 0; index < result.size(); index++)
+                    dets->push_back(new rectangle(result[index]));
+            }
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
 DLLEXPORT void frontal_face_detector_delete(frontal_face_detector* obj)
 {
 	delete obj;

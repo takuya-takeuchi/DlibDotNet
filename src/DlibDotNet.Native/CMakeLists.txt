@@ -15,8 +15,8 @@ endif()
 
 add_subdirectory(${DLIB_PATH}/dlib dlib_build)
 
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/*.h)
-FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
+FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
+FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
 add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES})
 
 target_link_libraries(${PROJ_NAME} dlib::dlib )
