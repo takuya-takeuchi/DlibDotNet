@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMmodFaceDetection", "exa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnSemanticSegmentation", "examples\DnnSemanticSegmentation\DnnSemanticSegmentation.csproj", "{4DF84F72-0995-44ED-AC0A-A07327F078A2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnInception", "examples\DnnInception\DnnInception.csproj", "{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -347,6 +349,18 @@ Global
 		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
 		{4DF84F72-0995-44ED-AC0A-A07327F078A2}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -377,6 +391,7 @@ Global
 		{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{A6302463-CC32-4060-B8DF-466479046038} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{4DF84F72-0995-44ED-AC0A-A07327F078A2} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}

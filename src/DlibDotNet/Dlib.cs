@@ -529,7 +529,15 @@ namespace DlibDotNet
 
                 RunningStatsTypeNotSupport = -9,
 
-                InputVectorTypeNotSupport = -10
+                InputVectorTypeNotSupport = -10,
+
+                #region Dnn
+
+                DnnError = 0x7F000000,
+
+                DnnNotSupportNetworkType = DnnError | 1
+
+                #endregion
 
             }
 
@@ -1386,6 +1394,142 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr vector_operator_div_double(IntPtr vector, double value, out IntPtr ret);
+
+            #endregion
+
+            #endregion
+
+            #region dnn
+
+            #region loss_metric
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr dnn_trainer_loss_metric_new(IntPtr net, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_metric_delete(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_metric_be_verbose(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_metric_set_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_metric_set_min_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_metric_set_mini_batch_size(IntPtr trainer, int type, uint size);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_metric_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_metric_train(IntPtr trainer,
+                                                                         int type,
+                                                                         Dlib.Native.MatrixElementType dataElementType,
+                                                                         IntPtr data,
+                                                                         Dlib.Native.MatrixElementType labelElementType,
+                                                                         IntPtr label);
+
+            #endregion
+
+            #region loss_mmod
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr dnn_trainer_loss_mmod_new(IntPtr net, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_mmod_delete(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_mmod_be_verbose(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_mmod_set_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_mmod_set_min_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_mmod_set_mini_batch_size(IntPtr trainer, int type, uint size);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_mmod_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_mmod_train(IntPtr trainer,
+                                                                       int type,
+                                                                       Dlib.Native.MatrixElementType dataElementType,
+                                                                       IntPtr data,
+                                                                       Dlib.Native.MatrixElementType labelElementType,
+                                                                       IntPtr label);
+
+            #endregion
+
+            #region loss_multiclass_log
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr dnn_trainer_loss_multiclass_log_new(IntPtr net, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_delete(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_be_verbose(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_set_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_set_min_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_set_mini_batch_size(IntPtr trainer, int type, uint size);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_multiclass_log_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_multiclass_log_train(IntPtr trainer,
+                                                                                 int type,
+                                                                                 Dlib.Native.MatrixElementType dataElementType,
+                                                                                 IntPtr data,
+                                                                                 Dlib.Native.MatrixElementType labelElementType,
+                                                                                 IntPtr label);
+
+            #endregion
+
+            #region loss_multiclass_log_per_pixel
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr dnn_trainer_loss_multiclass_log_per_pixel_new(IntPtr net, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_per_pixel_delete(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(IntPtr trainer, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_per_pixel_set_min_learning_rate(IntPtr trainer, int type, double lr);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void dnn_trainer_loss_multiclass_log_per_pixel_set_mini_batch_size(IntPtr trainer, int type, uint size);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_train(IntPtr trainer,
+                                                                                           int type,
+                                                                                           Dlib.Native.MatrixElementType dataElementType,
+                                                                                           IntPtr data,
+                                                                                           Dlib.Native.MatrixElementType labelElementType,
+                                                                                           IntPtr label);
 
             #endregion
 

@@ -6,25 +6,27 @@ using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Extensions;
 
+using OutputLabelType = System.UInt32;
+
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class LossMetric : Net
+    public sealed class LossMulticlassLog : Net
     {
 
         #region Constructors
 
-        public LossMetric(int networkType = 0)
+        public LossMulticlassLog(int networkType = 0)
         : base(networkType)
         {
-            var ret = Native.loss_metric_new(networkType, out var net);
+            var ret = Native.loss_multiclass_log_new(networkType, out var net);
             if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
             this.NativePtr = net;
         }
 
-        internal LossMetric(IntPtr ptr, int networkType = 0)
+        internal LossMulticlassLog(IntPtr ptr, int networkType = 0)
             : base(networkType)
         {
             if (ptr == IntPtr.Zero)
@@ -43,7 +45,7 @@ namespace DlibDotNet.Dnn
             {
                 this.ThrowIfDisposed();
 
-                return Native.loss_metric_num_layers(this.NetworkType);
+                return Native.loss_multiclass_log_num_layers(this.NetworkType);
             }
         }
 
@@ -55,10 +57,10 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            Native.loss_metric_clean(this.NetworkType);
+            Native.loss_multiclass_log_clean(this.NetworkType);
         }
 
-        public static LossMetric Deserialize(string path, int networkType = 0)
+        public static LossMulticlassLog Deserialize(string path, int networkType = 0)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -66,11 +68,11 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Encoding.UTF8.GetBytes(path);
-            var ret = Native.loss_metric_deserialize(str, networkType);
-            return new LossMetric(ret, networkType);
+            var ret = Native.loss_multiclass_log_deserialize(str, networkType);
+            return new LossMulticlassLog(ret, networkType);
         }
 
-        public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image)
+        public OutputLabels<OutputLabelType> Operator<T>(Matrix<T> image)
             where T : struct
         {
             if (image == null)
@@ -81,7 +83,7 @@ namespace DlibDotNet.Dnn
             return this.Operator(new[] { image });
         }
 
-        public OutputLabels<Matrix<float>> Operator<T>(IEnumerable<Matrix<T>> images)
+        public OutputLabels<OutputLabelType> Operator<T>(IEnumerable<Matrix<T>> images)
             where T : struct
         {
             if (images == null)
@@ -99,8 +101,7 @@ namespace DlibDotNet.Dnn
                 var templateRows = images.First().TemplateRows;
                 var templateColumns = images.First().TemplateColumns;
 
-                // vecOut is not std::vector<Matrix<float>*>* but std::vector<Matrix<float>>*.
-                var ret = Native.loss_metric_operator_matrixs(this.NativePtr,
+                var ret = Native.loss_multiclass_log_operator_matrixs(this.NativePtr,
                                                               this.NetworkType,
                                                               imageType.ToNativeMatrixElementType(),
                                                               vecIn.NativePtr,
@@ -118,7 +119,7 @@ namespace DlibDotNet.Dnn
             }
         }
 
-        public static void Serialize(LossMetric net, string path)
+        public static void Serialize(LossMulticlassLog net, string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -128,7 +129,41 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Encoding.UTF8.GetBytes(path);
-            Native.loss_metric_serialize(net.NativePtr, net.NetworkType, str);
+            Native.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str);
+        }
+
+        public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null) throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var labelVec = new StdVector<uint>(label))
+            {
+                var ret = Native.dnn_trainer_loss_multiclass_log_train(trainer.NativePtr,
+                                                                       trainer.Type,
+                                                                       dataElementTypes.ToNativeMatrixElementType(),
+                                                                       dataVec.NativePtr,
+                                                                       Dlib.Native.MatrixElementType.UInt32,
+                                                                       labelVec.NativePtr);
+
+                if (ret != Dlib.Native.ErrorType.OK)
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        case Dlib.Native.ErrorType.OutputElementTypeNotSupport:
+                        case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+            }
         }
 
         #region Overrides 
@@ -136,7 +171,7 @@ namespace DlibDotNet.Dnn
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            Native.loss_metric_delete(this.NativePtr, this.NetworkType);
+            Native.loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
         }
 
         public override string ToString()
@@ -148,7 +183,7 @@ namespace DlibDotNet.Dnn
             try
             {
                 ofstream = Dlib.Native.ostringstream_new();
-                var ret = Native.loss_metric_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
+                var ret = Native.loss_multiclass_log_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
                 switch (ret)
                 {
                     case Dlib.Native.ErrorType.OK:
@@ -178,7 +213,7 @@ namespace DlibDotNet.Dnn
 
         #endregion
 
-        private sealed class Output : OutputLabels<Matrix<float>>
+        private sealed class Output : OutputLabels<OutputLabelType>
         {
 
             #region Fields
@@ -192,7 +227,7 @@ namespace DlibDotNet.Dnn
             internal Output(IntPtr output) :
                 base(output)
             {
-                this._Size = Native.dnn_output_stdvector_float_1_1_getSize(output);
+                this._Size = Native.dnn_output_uint32_t_getSize(output);
             }
 
             #endregion
@@ -208,7 +243,7 @@ namespace DlibDotNet.Dnn
                 }
             }
 
-            public override Matrix<float> this[int index]
+            public override OutputLabelType this[int index]
             {
                 get
                 {
@@ -217,12 +252,11 @@ namespace DlibDotNet.Dnn
                     if (!(0 <= index && index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    var ptr = Native.dnn_output_stdvector_float_1_1_getItem(this.NativePtr, index);
-                    return new Matrix<float>(ptr, 0, 1, false);
+                    return Native.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
                 }
             }
 
-            public override Matrix<float> this[uint index]
+            public override OutputLabelType this[uint index]
             {
                 get
                 {
@@ -231,8 +265,7 @@ namespace DlibDotNet.Dnn
                     if (!(index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    var ptr = Native.dnn_output_stdvector_float_1_1_getItem(this.NativePtr, (int)index);
-                    return new Matrix<float>(ptr, 0, 1, false);
+                    return Native.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
                 }
             }
 
@@ -245,7 +278,7 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
-                Native.dnn_output_stdvector_float_1_1_delete(this.NativePtr);
+                Native.dnn_output_uint32_t_delete(this.NativePtr);
             }
 
             #endregion
@@ -254,15 +287,12 @@ namespace DlibDotNet.Dnn
 
             #region IEnumerable<TItem> Members
 
-            public override IEnumerator<Matrix<float>> GetEnumerator()
+            public override IEnumerator<OutputLabelType> GetEnumerator()
             {
                 this.ThrowIfDisposed();
 
                 for (var index = 0; index < this._Size; index++)
-                {
-                    var ptr = Native.dnn_output_stdvector_float_1_1_getItem(this.NativePtr, index);
-                    yield return new Matrix<float>(ptr, 0, 1, false);
-                }
+                    yield return Native.dnn_output_uint32_t_getItem(this.NativePtr, index);
             }
 
             #endregion
@@ -271,13 +301,13 @@ namespace DlibDotNet.Dnn
             {
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void dnn_output_stdvector_float_1_1_delete(IntPtr vector);
+                public static extern void dnn_output_uint32_t_delete(IntPtr vector);
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr dnn_output_stdvector_float_1_1_getItem(IntPtr vector, int index);
+                public static extern OutputLabelType dnn_output_uint32_t_getItem(IntPtr vector, int index);
 
                 [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int dnn_output_stdvector_float_1_1_getSize(IntPtr vector);
+                public static extern int dnn_output_uint32_t_getSize(IntPtr vector);
 
             }
 
@@ -287,28 +317,36 @@ namespace DlibDotNet.Dnn
         {
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_metric_new(int type, out IntPtr net);
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_new(int type, out IntPtr net);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_metric_delete(IntPtr obj, int type);
+            public static extern void loss_multiclass_log_delete(IntPtr obj, int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_metric_deserialize(byte[] fileName, int type);
+            public static extern IntPtr loss_multiclass_log_deserialize(byte[] fileName, int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_metric_serialize(IntPtr obj, int type, byte[] fileName);
+            public static extern void loss_multiclass_log_serialize(IntPtr obj, int type, byte[] fileName);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int loss_metric_num_layers(int type);
+            public static extern int loss_multiclass_log_num_layers(int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_metric_clean(int type);
+            public static extern void loss_multiclass_log_clean(int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_metric_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_metric_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType dnn_trainer_loss_multiclass_log_train(IntPtr trainer,
+                                                                                             int type,
+                                                                                             Dlib.Native.MatrixElementType dataElementType,
+                                                                                             IntPtr data,
+                                                                                             Dlib.Native.MatrixElementType labelElementType,
+                                                                                             IntPtr label);
 
         }
 

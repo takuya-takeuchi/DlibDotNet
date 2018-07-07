@@ -1,5 +1,5 @@
-#ifndef _CPP_LOSS_METRIC_H_
-#define _CPP_LOSS_METRIC_H_
+#ifndef _CPP_OUTPUT_H_
+#define _CPP_OUTPUT_H_
 
 #include <dlib/dnn.h>
 #include <dlib/matrix.h>
@@ -17,6 +17,41 @@ using namespace std;
 // typedef matrix<uint16_t> output_label_type;
 // typedef std::vector<mmod_rect> output_label_type;
 // typedef unsigned long output_label_type;
+
+// training_label_type
+// typedef float training_label_type;
+// typedef matrix<float,0,1> training_label_type;
+// typedef matrix<float> training_label_type;
+// typedef matrix<uint16_t> training_label_type;
+// typedef matrix<weighted_label> training_label_type;
+// typedef std::vector<mmod_rect> training_label_type;
+// typedef unsigned long training_label_type;
+
+// input_type
+// typedef matrix<rgb_pixel> input_type;
+// typedef matrix<T,NR,NC,MM,L> input_type;
+// typedef std::array<matrix<T,NR,NC,MM,L>,K> input_type;
+// typedef array2d<T,MM> input_type;
+// typedef matrix<rgb_pixel> input_type;
+
+#pragma region std::vector<unsigned long>
+
+DLLEXPORT void dnn_output_uint32_t_delete(std::vector<unsigned long>* vector)
+{
+    delete vector;
+}
+
+DLLEXPORT unsigned long dnn_output_uint32_t_getItem(std::vector<unsigned long>* vector, const int index)
+{
+    return vector->at(index);
+}
+
+DLLEXPORT size_t dnn_output_uint32_t_getSize(std::vector<unsigned long>* vector)
+{
+    return vector->size();
+}
+
+#pragma endregion std::vector<matrix<uint16_t>>
 
 #pragma region std::vector<matrix<float,0,1>>
 
