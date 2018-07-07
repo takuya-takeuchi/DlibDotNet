@@ -6,20 +6,31 @@
 
         #region Constructors
 
-        protected Net(int type = 0)
+        protected Net(int networkType = 0)
         {
-            this.Type = type;
+            this.NetworkType = networkType;
         }
 
         #endregion
 
         #region Properties
 
-        protected int Type
+        public abstract int NumLayers
+        {
+            get;
+        }
+
+        internal int NetworkType
         {
             get;
             private set;
         }
+
+        #endregion
+        
+        #region Methods
+
+        public abstract void Clean();
 
         #endregion
 

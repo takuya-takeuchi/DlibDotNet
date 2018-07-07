@@ -14,14 +14,18 @@ namespace DlibDotNet.Dnn
 
         #region Constructors
 
-        public LossMmod(int type = 0)
-            : base(type)
+        public LossMmod(int networkType = 0)
+            : base(networkType)
         {
-            this.NativePtr = Native.loss_mmod_new(type);
+            var ret = Native.loss_mmod_new(networkType, out var net);
+            if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(networkType);
+
+            this.NativePtr = net;
         }
 
-        internal LossMmod(IntPtr ptr, int type = 0)
-            : base(type)
+        internal LossMmod(IntPtr ptr, int networkType = 0)
+            : base(networkType)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -31,9 +35,30 @@ namespace DlibDotNet.Dnn
 
         #endregion
 
+        #region Properties
+
+        public override int NumLayers
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                return Native.loss_mmod_num_layers(this.NetworkType);
+            }
+        }
+
+        #endregion
+
         #region Methods
 
-        public static LossMmod Deserialize(string path, int type = 0)
+        public override void Clean()
+        {
+            this.ThrowIfDisposed();
+
+            Native.loss_mmod_clean(this.NetworkType);
+        }
+
+        public static LossMmod Deserialize(string path, int networkType = 0)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -41,8 +66,8 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Encoding.UTF8.GetBytes(path);
-            var ret = Native.loss_mmod_deserialize(str, type);
-            return new LossMmod(ret, type);
+            var ret = Native.loss_mmod_deserialize(str, networkType);
+            return new LossMmod(ret, networkType);
         }
 
         public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image)
@@ -76,7 +101,7 @@ namespace DlibDotNet.Dnn
 
                 // vecOut is not std::vector<std::vector<mmod_rect>*>* but std::vector<std::vector<mmod_rect>>*.
                 var ret = Native.loss_mmod_operator_matrixs(this.NativePtr,
-                                                            this.Type,
+                                                            this.NetworkType,
                                                             imageType.ToNativeMatrixElementType(),
                                                             vecIn.NativePtr,
                                                             templateRows,
@@ -93,18 +118,66 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        public static void Serialize(LossMmod net, string path)
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException();
+
+            net.ThrowIfDisposed();
+
+            var str = Encoding.UTF8.GetBytes(path);
+            Native.loss_mmod_serialize(net.NativePtr, net.NetworkType, str);
+        }
+
         #region Overrides 
 
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            Native.loss_mmod_delete(this.NativePtr, this.Type);
+            Native.loss_mmod_delete(this.NativePtr, this.NetworkType);
+        }
+
+        public override string ToString()
+        {
+            var ofstream = IntPtr.Zero;
+            var stdstr = IntPtr.Zero;
+            var str = "";
+
+            try
+            {
+                ofstream = Dlib.Native.ostringstream_new();
+                var ret = Native.loss_mmod_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.OK:
+                        stdstr = Dlib.Native.ostringstream_str(ofstream);
+                        str = StringHelper.FromStdString(stdstr);
+                        break;
+                    case Dlib.Native.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this.NetworkType);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (stdstr != IntPtr.Zero)
+                    Dlib.Native.string_delete(stdstr);
+                if (ofstream != IntPtr.Zero)
+                    Dlib.Native.ostringstream_delete(ofstream);
+            }
+
+            return str;
         }
 
         #endregion
 
         #endregion
-        
+
         private sealed class Output : OutputLabels<IEnumerable<MModRect>>
         {
 
@@ -242,14 +315,26 @@ namespace DlibDotNet.Dnn
         {
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_mmod_new(int type);
+            public static extern Dlib.Native.ErrorType loss_mmod_new(int type, out IntPtr net);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void loss_mmod_delete(IntPtr obj, int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr loss_mmod_deserialize(byte[] fileName, int type);
-            
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void loss_mmod_serialize(IntPtr obj, int type, byte[] fileName);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern int loss_mmod_num_layers(int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void loss_mmod_clean(int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType loss_mmod_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType loss_mmod_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
 
