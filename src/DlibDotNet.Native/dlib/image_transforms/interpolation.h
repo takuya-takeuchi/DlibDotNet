@@ -23,6 +23,58 @@ using namespace std;
 #undef ELEMENT_IN
 #undef ELEMENT_OUT
 
+#define add_image_left_right_flips_template(images, objects) \
+do { \
+    std::vector<dlib::matrix<ELEMENT_IN>*>& in_images = *(static_cast<std::vector<dlib::matrix<ELEMENT_IN>*>*>(images));\
+    std::vector<matrix<ELEMENT_IN>> tmp_images;\
+    for (int i = 0; i < in_images.size(); i++)\
+    {\
+        matrix<ELEMENT_IN>& m = *in_images[i];\
+        tmp_images.push_back(m);\
+    }\
+    std::vector<std::vector<ELEMENT_OUT*>*>& in_objects = *(static_cast<std::vector<std::vector<ELEMENT_OUT*>*>*>(objects));\
+    std::vector<std::vector<ELEMENT_OUT>> tmp_objects;\
+    for (int i = 0; i < in_images.size(); i++)\
+    {\
+        std::vector<ELEMENT_OUT*>& vec = *in_objects[i];\
+        std::vector<ELEMENT_OUT> tmp_vec;\
+        for (int j = 0; j < vec.size(); j++)\
+        {\
+            ELEMENT_OUT& m = *vec[j];\
+            tmp_vec.push_back(m);\
+        }\
+        tmp_objects.push_back(tmp_vec);\
+    }\
+\
+    add_image_left_right_flips(tmp_images, tmp_objects);\
+\
+    for (int i = 0; i < in_images.size(); i++)\
+        delete in_images[i];\
+    in_images.clear();\
+\
+    for (int i = 0; i < in_objects.size(); i++)\
+    {\
+        std::vector<ELEMENT_OUT*>& tmp = *in_objects[i];\
+        for (int j = 0; j < tmp.size(); j++)\
+            delete tmp[j];\
+        tmp.clear();\
+        delete in_objects[i];\
+    }\
+    in_objects.clear();\
+\
+    for (int i = 0; i < tmp_images.size(); i++)\
+        in_images.push_back(new dlib::matrix<ELEMENT_IN>(tmp_images[i]));\
+\
+    for (int i = 0; i < tmp_objects.size(); i++)\
+    {\
+        std::vector<ELEMENT_OUT>& tmp = tmp_objects[i];\
+        auto vec = new std::vector<ELEMENT_OUT*>();\
+        for (int j = 0; j < tmp.size(); j++)\
+            vec->push_back(new ELEMENT_OUT(tmp[j]));\
+        in_objects.push_back(vec);\
+    }\
+} while (0)
+
 #define interpolation_template(ret, type, img) \
 do { \
     ret = ERR_OK;\
@@ -607,7 +659,156 @@ do { \
     *out_img = new dlib::matrix<ELEMENT_IN>(ret);\
 } while (0)
 
+#define upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects) \
+do { \
+    std::vector<dlib::matrix<ELEMENT_IN>*>& in_images = *(static_cast<std::vector<dlib::matrix<ELEMENT_IN>*>*>(images));\
+    std::vector<matrix<ELEMENT_IN>> tmp_images;\
+    for (int i = 0; i < in_images.size(); i++)\
+    {\
+        matrix<ELEMENT_IN>& m = *in_images[i];\
+        tmp_images.push_back(m);\
+    }\
+    std::vector<std::vector<ELEMENT_OUT*>*>& in_objects = *(static_cast<std::vector<std::vector<ELEMENT_OUT*>*>*>(objects));\
+    std::vector<std::vector<ELEMENT_OUT>> tmp_objects;\
+    for (int i = 0; i < in_images.size(); i++)\
+    {\
+        std::vector<ELEMENT_OUT*>& vec = *in_objects[i];\
+        std::vector<ELEMENT_OUT> tmp_vec;\
+        for (int j = 0; j < vec.size(); j++)\
+        {\
+            ELEMENT_OUT& m = *vec[j];\
+            tmp_vec.push_back(m);\
+        }\
+        tmp_objects.push_back(tmp_vec);\
+    }\
+\
+    switch(pyramid_rate)\
+    {\
+        case 1:\
+            upsample_image_dataset<pyramid_down<1>>(tmp_images, tmp_objects);\
+            break;\
+        case 2:\
+            upsample_image_dataset<pyramid_down<2>>(tmp_images, tmp_objects);\
+            break;\
+        case 3:\
+            upsample_image_dataset<pyramid_down<3>>(tmp_images, tmp_objects);\
+            break;\
+        case 4:\
+            upsample_image_dataset<pyramid_down<4>>(tmp_images, tmp_objects);\
+            break;\
+        case 6:\
+            upsample_image_dataset<pyramid_down<6>>(tmp_images, tmp_objects);\
+            break;\
+        default:\
+            ret = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            break;\
+    }\
+\
+    for (int i = 0; i < in_images.size(); i++)\
+        delete in_images[i];\
+    in_images.clear();\
+\
+    for (int i = 0; i < in_objects.size(); i++)\
+    {\
+        std::vector<ELEMENT_OUT*>& tmp = *in_objects[i];\
+        for (int j = 0; j < tmp.size(); j++)\
+            delete tmp[j];\
+        tmp.clear();\
+        delete in_objects[i];\
+    }\
+    in_objects.clear();\
+\
+    for (int i = 0; i < tmp_images.size(); i++)\
+        in_images.push_back(new dlib::matrix<ELEMENT_IN>(tmp_images[i]));\
+\
+    for (int i = 0; i < tmp_objects.size(); i++)\
+    {\
+        std::vector<ELEMENT_OUT>& tmp = tmp_objects[i];\
+        auto vec = new std::vector<ELEMENT_OUT*>();\
+        for (int j = 0; j < tmp.size(); j++)\
+            vec->push_back(new ELEMENT_OUT(tmp[j]));\
+        in_objects.push_back(vec);\
+    }\
+} while (0)
+
 #pragma endregion template
+
+#pragma region add_image_left_right_flips
+
+DLLEXPORT int add_image_left_right_flips_rectangle(matrix_element_type element_type, void* images, void* objects)
+{
+    int err = ERR_OK;
+
+    #define ELEMENT_OUT dlib::rectangle
+
+    switch(element_type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            add_image_left_right_flips_template(images, objects);
+            #undef ELEMENT_IN
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    #undef ELEMENT_OUT
+
+    return err;
+}
+
+#pragma endregion add_image_left_right_flips
 
 #pragma region flip_image_left_right
 
@@ -1504,5 +1705,82 @@ DLLEXPORT int jitter_image(matrix_element_type in_type, void* in_img, dlib::rand
 }
 
 #pragma endregion jitter_image
+
+#pragma region upsample_image_dataset
+
+DLLEXPORT int upsample_image_dataset_pyramid_down(const unsigned int pyramid_rate, matrix_element_type element_type, void* images, void* objects)
+{
+    int ret = ERR_OK;
+
+    #define ELEMENT_OUT dlib::rectangle
+
+    switch(element_type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            #undef ELEMENT_IN
+            break;
+        default:
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    #undef ELEMENT_OUT
+
+    return ret;
+}
+
+#pragma endregion upsample_image_dataset
 
 #endif

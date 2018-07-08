@@ -502,6 +502,20 @@ namespace DlibDotNet
 
             }
 
+            internal enum PyramidType
+            {
+
+                Down = 0
+
+            }
+
+            internal enum FHogFeatureExtractorType
+            {
+
+                Default = 0
+
+            }
+
             internal enum ErrorType
             {
 
@@ -531,11 +545,29 @@ namespace DlibDotNet
 
                 InputVectorTypeNotSupport = -10,
 
+                #region FHog
+
+                FHogError = 0x7D000000,
+
+                FHogNotSupportExtractor = FHogError | 0x00000001,
+
+                #endregion
+
+                #region Pyramid
+
+                PyramidError = 0x7E000000,
+
+                PyramidNotSupportRate = PyramidError | 0x00000001,
+
+                PyramidNotSupportType = PyramidError | 0x00000002,
+
+                #endregion
+
                 #region Dnn
 
                 DnnError = 0x7F000000,
 
-                DnnNotSupportNetworkType = DnnError | 1
+                DnnNotSupportNetworkType = DnnError | 0x00000001
 
                 #endregion
 
@@ -866,6 +898,166 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_png(Array2DType type, IntPtr array, byte[] path);
+
+            #endregion
+
+            #region scan_fhog_pyramid
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_new(PyramidType pyramidType,
+                                                                 uint pyramidRate,
+                                                                 FHogFeatureExtractorType featureExtractorType,
+                                                                 out IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void scan_fhog_pyramid_delete(PyramidType pyramidType,
+                                                               uint pyramidRate,
+                                                               FHogFeatureExtractorType featureExtractorType,
+                                                               IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_set_detection_window_size(PyramidType pyramid_type, 
+                                                                                       uint pyramid_rate,
+                                                                                       FHogFeatureExtractorType extractor_type,
+                                                                                       IntPtr obj,
+                                                                                       uint width,
+                                                                                       uint height);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_set_nuclear_norm_regularization_strength(PyramidType pyramid_type, 
+                                                                                                      uint pyramid_rate,
+                                                                                                      FHogFeatureExtractorType extractor_type,
+                                                                                                      IntPtr obj,
+                                                                                                      double strength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_evaluate_detectors(PyramidType pyramid_type,
+                                                                                uint pyramid_rate,
+                                                                                FHogFeatureExtractorType extractor_type,
+                                                                                IntPtr[] objects,
+                                                                                int objects_num,
+                                                                                MatrixElementType elementType,
+                                                                                IntPtr image,
+                                                                                double adjust_threshold,
+                                                                                out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_num_separable_filters(PyramidType pyramid_type,
+                                                                                   uint pyramid_rate,
+                                                                                   FHogFeatureExtractorType extractor_type,
+                                                                                   IntPtr obj,
+                                                                                   uint weight_index,
+                                                                                   out uint ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_threshold_filter_singular_values(PyramidType pyramid_type,
+                                                                                              uint pyramid_rate,
+                                                                                              FHogFeatureExtractorType extractor_type,
+                                                                                              IntPtr obj,
+                                                                                              double thresh,
+                                                                                              uint weight_index,
+                                                                                              out IntPtr ret);
+
+            #endregion
+
+            #region structural_object_detection_trainer
+
+            #region scan_fhog_pyramid
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_new(PyramidType pyramidType,
+                                                                                                     uint pyramidRate,
+                                                                                                     FHogFeatureExtractorType featureExtractorType,
+                                                                                                     IntPtr scanner,
+                                                                                                     out IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void structural_object_detection_trainer_scan_fhog_pyramid_delete(PyramidType pyramidType,
+                                                                                                   uint pyramidRate,
+                                                                                                   FHogFeatureExtractorType featureExtractorType,
+                                                                                                   IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(PyramidType pyramid_type,
+                                                                                                            uint pyramid_rate,
+                                                                                                            FHogFeatureExtractorType extractor_type,
+                                                                                                            IntPtr obj);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_set_c(PyramidType pyramid_type,
+                                                                                                       uint pyramid_rate,
+                                                                                                       FHogFeatureExtractorType extractor_type,
+                                                                                                       IntPtr obj,
+                                                                                                       double c);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(PyramidType pyramid_type,
+                                                                                                             uint pyramid_rate,
+                                                                                                             FHogFeatureExtractorType extractor_type,
+                                                                                                             IntPtr obj,
+                                                                                                             double epsilon);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_set_num_threads(PyramidType pyramid_type,
+                                                                                                                 uint pyramid_rate,
+                                                                                                                 FHogFeatureExtractorType extractor_type,
+                                                                                                                 IntPtr obj,
+                                                                                                                 uint thread);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(PyramidType pyramid_type,
+                                                                                                                 uint pyramid_rate,
+                                                                                                                 FHogFeatureExtractorType extractor_type,
+                                                                                                                 IntPtr obj,
+                                                                                                                 MatrixElementType elementType,
+                                                                                                                 IntPtr images,
+                                                                                                                 IntPtr objects,
+                                                                                                                 out IntPtr detector);
+
+            #endregion
+
+            #endregion
+
+            #region object_detector
+
+            #region scan_fhog_pyramid
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_new(PyramidType pyramidType,
+                                                                                 uint pyramidRate,
+                                                                                 FHogFeatureExtractorType featureExtractorType,
+                                                                                 out IntPtr detector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void object_detector_scan_fhog_pyramid_delete(PyramidType pyramidType,
+                                                                               uint pyramidRate,
+                                                                               FHogFeatureExtractorType featureExtractorType,
+                                                                               IntPtr detector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_deserialize(byte[] fileName,
+                                                                                         PyramidType pyramidType,
+                                                                                         uint pyramidRate,
+                                                                                         FHogFeatureExtractorType featureExtractorType,
+                                                                                         IntPtr obj);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_operator(PyramidType pyramidType,
+                                                                                      uint pyramidRate,
+                                                                                      FHogFeatureExtractorType featureExtractorType,
+                                                                                      IntPtr detector,
+                                                                                      MatrixElementType elementType,
+                                                                                      IntPtr matrix,
+                                                                                      out IntPtr dets);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_serialize(byte[] fileName,
+                                                                                       PyramidType pyramidType,
+                                                                                       uint pyramidRate,
+                                                                                       FHogFeatureExtractorType featureExtractorType,
+                                                                                       IntPtr obj);
+
+            #endregion
 
             #endregion
 
