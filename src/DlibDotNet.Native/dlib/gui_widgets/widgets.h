@@ -739,7 +739,7 @@ DLLEXPORT void image_window_overlay_line_delete(image_window::overlay_line* line
 
 #pragma region image_window::get_next_double_click 
 
-DLLEXPORT bool image_window_get_next_double_click(image_window* window, array2d_type type, dlib::point** point) 
+DLLEXPORT bool image_window_get_next_double_click(image_window* window, dlib::point** point) 
 {
     dlib::point p;
     bool ret = window->get_next_double_click(p);
@@ -747,7 +747,7 @@ DLLEXPORT bool image_window_get_next_double_click(image_window* window, array2d_
     return ret;
 } 
 
-DLLEXPORT bool image_window_get_next_double_click2(image_window* window, array2d_type type, dlib::point** point, unsigned long* mouse_button) 
+DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::point** point, unsigned long* mouse_button) 
 {
     dlib::point p;
     unsigned long m;
