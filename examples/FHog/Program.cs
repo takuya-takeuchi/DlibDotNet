@@ -54,7 +54,7 @@ namespace FHog
                                 var row = hog[hp.Y];
                                 var column = row[hp.X];
                                 var t = Dlib.Trans(column);
-                                Console.WriteLine($"FHOG features at this point: {t}");
+                               // Console.WriteLine($"FHOG features at this point: {t}");
                             }
 
                             // Finally, sometimes you want to get a planar representation of the HOG features
