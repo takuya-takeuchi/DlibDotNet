@@ -71,7 +71,8 @@ namespace DlibDotNet
 
             inImage.ThrowIfDisposed(nameof(inImage));
 
-            var hogImage = new FHogArray2DMatrix<T>();
+            //var hogImage = new FHogArray2DMatrix<T>();
+            var hogImage = new Array2DMatrix<T>(31, 1);
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = hogImage.MatrixElementType.ToNativeMatrixElementType();
@@ -183,116 +184,7 @@ namespace DlibDotNet
                                                       int filter_cols_padding);
 
         }
-
-        private sealed class FHogArray2DMatrix<T> : Array2DMatrix<T>
-            where T : struct
-        {
-
-            #region Fields
-
-            private readonly Native.MatrixElementType _MatrixElementType;
-
-            private static readonly Dictionary<Type, MatrixElementTypes> SupportMatrixTypes = new Dictionary<Type, MatrixElementTypes>();
-
-            #endregion
-
-            #region Constructors
-
-            static FHogArray2DMatrix()
-            {
-                var matrixTypes = new[]
-                {
-                    new { Type = typeof(float),         ElementType = MatrixElementTypes.Float },
-                    new { Type = typeof(double),        ElementType = MatrixElementTypes.Double },
-                };
-
-                foreach (var type in matrixTypes)
-                    SupportMatrixTypes.Add(type.Type, type.ElementType);
-            }
-
-            public FHogArray2DMatrix()
-            {
-                if (!SupportMatrixTypes.TryGetValue(typeof(T), out var matrixType))
-                    throw new NotSupportedException($"{typeof(T).Name} does not support");
-
-                this._MatrixElementType = matrixType.ToNativeMatrixElementType();
-
-                this.NativePtr = Dlib.Native.array2d_fhog_matrix_new(this._MatrixElementType);
-                if (this.NativePtr == IntPtr.Zero)
-                    throw new ArgumentException($"{matrixType} is not supported.");
-
-                this.MatrixElementType = matrixType;
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override int Columns
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_nc(this._MatrixElementType, this.NativePtr, out var ret);
-                    return ret;
-                }
-            }
-
-            public override MatrixElementTypes MatrixElementType
-            {
-                get;
-            }
-
-            public override Rectangle Rect
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_get_rect2(this._MatrixElementType, this.NativePtr, out var ret);
-                    return new Rectangle(ret);
-                }
-            }
-
-            public override int Rows
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_nr(this._MatrixElementType, this.NativePtr, out var ret);
-                    return ret;
-                }
-            }
-
-            public override int Size
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_size(this._MatrixElementType, this.NativePtr, out var ret);
-                    return ret;
-                }
-            }
-
-            #endregion
-
-            #region Methods 
-
-            #region Overrides 
-
-            protected override void DisposeUnmanaged()
-            {
-                // Do Not call base.DisposeUnmanaged.
-                // Because base.DisposeUnmanaged calls array2d_matrix_delete and it corrupts memory
-                //base.DisposeUnmanaged();
-                Dlib.Native.array2d_fhog_matrix_delete(this._MatrixElementType, this.NativePtr);
-            }
-
-            #endregion
-
-            #endregion
-
-        }
-
+        
     }
 
 }

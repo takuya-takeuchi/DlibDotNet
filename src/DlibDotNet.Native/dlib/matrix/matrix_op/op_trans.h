@@ -29,6 +29,11 @@ do {\
         auto mat = static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 0, 1>>>*>(obj);\
         delete mat;\
     }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        auto mat = static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 31, 1>>>*>(obj);\
+        delete mat;\
+    }\
 } while (0)
 
 #define matrix_op_op_trans_nc_template(obj, templateRows, templateColumns, ret) \
@@ -41,6 +46,11 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         auto mat = static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 0, 1>>>*>(obj);\
+        *ret = mat->nc();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        auto mat = static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 31, 1>>>*>(obj);\
         *ret = mat->nc();\
     }\
 } while (0)
@@ -57,6 +67,11 @@ do {\
         auto mat = static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 0, 1>>>*>(obj);\
         *ret = mat->nr();\
     }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        auto mat = static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 31, 1>>>*>(obj);\
+        *ret = mat->nr();\
+    }\
 } while (0)
 
 #define matrix_op_op_trans_operator_left_shift_template(obj, templateRows, templateColumns, stream) \
@@ -69,6 +84,11 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         matrix_op<op_trans<matrix<ELEMENT_IN, 0, 1>>>& mat = *(static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 0, 1>>>*>(obj));\
+        *stream << mat;\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        matrix_op<op_trans<matrix<ELEMENT_IN, 31, 1>>>& mat = *(static_cast<matrix_op<op_trans<matrix<ELEMENT_IN, 31, 1>>>*>(obj));\
         *stream << mat;\
     }\
 } while (0)

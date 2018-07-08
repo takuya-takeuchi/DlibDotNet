@@ -200,53 +200,6 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
     return err;
 }
 
-DLLEXPORT int rectangle_get_rect2(matrix_element_type type, void* img, rectangle** rect)
-{
-    int err = ERR_OK;
-
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<uint8_t>>*)img)));
-			break;
-        case matrix_element_type::UInt16:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<uint16_t>>*)img)));
-			break;
-        case matrix_element_type::UInt32:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<uint32_t>>*)img)));
-			break;
-        case matrix_element_type::Int8:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<int8_t>>*)img)));
-			break;
-        case matrix_element_type::Int16:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<int16_t>>*)img)));
-			break;
-        case matrix_element_type::Int32:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<int32_t>>*)img)));
-			break;
-        case matrix_element_type::Float:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<float>>*)img)));
-			break;
-        case matrix_element_type::Double:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<double>>*)img)));
-			break;
-        case matrix_element_type::RgbPixel:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<rgb_pixel>>*)img)));
-			break;
-        case matrix_element_type::HsiPixel:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<hsi_pixel>>*)img)));
-			break;
-        case matrix_element_type::RgbAlphaPixel:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<rgb_alpha_pixel>>*)img)));
-			break;
-        default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
-    
-    return err;
-}
-
 DLLEXPORT rectangle* rectangle_translate_rect(rectangle* rect, point* p)
 {
     rectangle result = dlib::translate_rect(*rect, *p);
