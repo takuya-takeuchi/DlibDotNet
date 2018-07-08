@@ -183,6 +183,15 @@ namespace DlibDotNet
                                                                                              this._FeatureExtractorType,
                                                                                              this.NativePtr);
             }
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+                if(!this.IsDisposed)
+                    Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_delete(this._PyramidType,
+                                                                                             this._PyramidRate,
+                                                                                             this._FeatureExtractorType,
+                                                                                             this.NativePtr);
+            }
 
             public override void SetC(double c)
             {
