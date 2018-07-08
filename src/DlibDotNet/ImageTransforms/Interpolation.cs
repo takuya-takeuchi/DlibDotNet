@@ -14,6 +14,41 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static void AddImageLeftRightFlips<T>(IList<Matrix<T>> images, IList<IEnumerable<Rectangle>> objects)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (objects == null)
+                throw new ArgumentNullException(nameof(objects));
+
+            images.ThrowIfDisposed();
+
+            using (var vecImage = new StdVector<Matrix<T>>(images))
+            {
+                var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
+                using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                {
+                    Matrix<T>.TryParse<T>(out var matrixElementType);
+                    var ret = Native.add_image_left_right_flips_rectangle(matrixElementType.ToNativeMatrixElementType(),
+                                                                          vecImage.NativePtr,
+                                                                          vecObject.NativePtr);
+                    switch (ret)
+                    {
+                        case Native.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{matrixElementType} is not supported.");
+                    }
+
+                    images.Clear();
+                    foreach (var matrix in vecImage.ToArray())
+                        images.Add(matrix);
+                    objects.Clear();
+                    foreach (var list in vecObject.ToArray())
+                        objects.Add(list);
+                }
+            }
+        }
+
         public static Array<Array2D<T>> ExtractImageChips<T>(Array2DBase image, IEnumerable<ChipDetails> chipLocations)
             where T : struct
         {
@@ -80,7 +115,7 @@ namespace DlibDotNet
 
             return chip;
         }
-        
+
         public static Matrix<T> ExtractImageChip<T>(MatrixBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
             where T : struct
         {
@@ -114,7 +149,7 @@ namespace DlibDotNet
 
             return chip;
         }
-        
+
         public static void FlipImageLeftRight(Array2DBase image)
         {
             if (image == null)
@@ -363,10 +398,59 @@ namespace DlibDotNet
             }
         }
 
+        public static void UpsampleImageDataset<T>(uint pyramidRate,
+                                                   IList<Matrix<T>> images,
+                                                   IList<IEnumerable<Rectangle>> objects)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (objects == null)
+                throw new ArgumentNullException(nameof(objects));
+
+            images.ThrowIfDisposed();
+
+            var imageCount = images.Count();
+            var objectCount = objects.Count();
+
+            if (imageCount != objectCount)
+                throw new ArgumentException();
+
+            using (var vecImage = new StdVector<Matrix<T>>(images))
+            {
+                var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
+                using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                {
+                    Matrix<T>.TryParse<T>(out var matrixElementType);
+                    var ret = Native.upsample_image_dataset_pyramid_down(pyramidRate,
+                                                                         matrixElementType.ToNativeMatrixElementType(),
+                                                                         vecImage.NativePtr,
+                                                                         vecObject.NativePtr);
+                    switch (ret)
+                    {
+                        case Native.ErrorType.PyramidNotSupportRate:
+                            throw new ArgumentException($"{pyramidRate} is not supported.");
+                        case Native.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{matrixElementType} is not supported.");
+                    }
+
+                    images.Clear();
+                    foreach (var matrix in vecImage.ToArray())
+                        images.Add(matrix);
+                    objects.Clear();
+                    foreach (var list in vecObject.ToArray())
+                        objects.Add(list);
+                }
+            }
+        }
+
         #endregion
 
         internal sealed partial class Native
         {
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType add_image_left_right_flips_rectangle(MatrixElementType elementType, IntPtr images, IntPtr objects);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType flip_image_left_right(Array2DType type, IntPtr img);
@@ -424,6 +508,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType jitter_image(MatrixElementType in_type, IntPtr in_img, IntPtr rand, out IntPtr out_img);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType upsample_image_dataset_pyramid_down(uint pyramid_rate, MatrixElementType elementType, IntPtr images, IntPtr objects);
 
         }
 

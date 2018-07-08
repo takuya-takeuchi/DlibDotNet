@@ -98,6 +98,20 @@ enum struct running_stats_type : int
 
 };
 
+enum struct pyramid_type : int
+{
+
+    Down = 0
+
+};
+
+enum struct fhog_feature_extractor_type : int
+{
+
+    Default = 0
+
+};
+
 typedef struct
 {
     // uint8_t
@@ -161,6 +175,15 @@ typedef struct
 // statistics/statistics.h
 #define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -9
 #define ERR_VECTOR_TYPE_NOT_SUPPORT          -10
+
+// fhog
+#define ERR_FHOG_ERROR                                       0x7D000000
+#define ERR_FHOG_NOT_SUPPORT_EXTRACTOR      ERR_FHOG_ERROR | 0x00000001
+
+// pyramid
+#define ERR_PYRAMID_ERROR                                    0x7E000000
+#define ERR_PYRAMID_NOT_SUPPORT_RATE     ERR_PYRAMID_ERROR | 0x00000001
+#define ERR_PYRAMID_NOT_SUPPORT_TYPE     ERR_PYRAMID_ERROR | 0x00000002
 
 // Dnn
 #define ERR_DNN_ERROR                                        0x7F000000

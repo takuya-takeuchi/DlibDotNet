@@ -12,7 +12,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static Matrix<byte> DrawHog(Array2DMatrixBase hogImage, int cellDrawSize = 15, float minResponseThreshold = 0.0f)
+        public static Matrix<byte> DrawFHog(Array2DMatrixBase hogImage, int cellDrawSize = 15, float minResponseThreshold = 0.0f)
         {
             if (hogImage == null)
                 throw new ArgumentNullException(nameof(hogImage));
@@ -31,6 +31,32 @@ namespace DlibDotNet
             return new Matrix<byte>(outMatrix);
         }
 
+        public static Matrix<byte> DrawFHog<T>(ObjectDetector<T> hogImage, uint weightIndex = 0,int cellDrawSize = 15)
+            where T : ImageScanner
+        {
+            if (hogImage == null)
+                throw new ArgumentNullException(nameof(hogImage));
+            //// make sure requires clause is not broken
+            //DLIB_ASSERT(weight_index < detector.num_detectors(),
+            //    "\t matrix draw_fhog()"
+            //    << "\n\t Invalid arguments were given to this function. "
+            //    << "\n\t weight_index:             " << weight_index
+            //    << "\n\t detector.num_detectors(): " << detector.num_detectors()
+            //);
+            //DLIB_ASSERT(cell_draw_size > 0 && detector.get_w(weight_index).size() >= detector.get_scanner().get_num_dimensions(),
+            //    "\t matrix draw_fhog()"
+            //    << "\n\t Invalid arguments were given to this function. "
+            //    << "\n\t cell_draw_size:                              " << cell_draw_size
+            //    << "\n\t weight_index:                                " << weight_index
+            //    << "\n\t detector.get_w(weight_index).size():         " << detector.get_w(weight_index).size()
+            //    << "\n\t detector.get_scanner().get_num_dimensions(): " << detector.get_scanner().get_num_dimensions()
+            //);
+
+            hogImage.ThrowIfDisposed();
+
+            return hogImage.DrawFHog(weightIndex, cellDrawSize);
+        }
+
         public static Array2DMatrix<T> ExtracFHogFeatures<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
             where T : struct
         {
@@ -45,7 +71,8 @@ namespace DlibDotNet
 
             inImage.ThrowIfDisposed(nameof(inImage));
 
-            var hogImage = new FHogArray2DMatrix<T>();
+            //var hogImage = new FHogArray2DMatrix<T>();
+            var hogImage = new Array2DMatrix<T>(31, 1);
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = hogImage.MatrixElementType.ToNativeMatrixElementType();
@@ -124,6 +151,15 @@ namespace DlibDotNet
                                                      out IntPtr out_matrix);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType draw_fhog_object_detector_scan_fhog_pyramid(PyramidType pyramid_type,
+                                                                                       uint pyramid_rate,
+                                                                                       FHogFeatureExtractorType extractor_type,
+                                                                                       IntPtr obj,
+                                                                                       uint weightIndex,
+                                                                                       int cellDrawSize,
+                                                                                       out IntPtr out_matrix);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_fhog_features(Array2DType img_type,
                                                                 IntPtr img,
                                                                 MatrixElementType hog_type,
@@ -148,116 +184,7 @@ namespace DlibDotNet
                                                       int filter_cols_padding);
 
         }
-
-        private sealed class FHogArray2DMatrix<T> : Array2DMatrix<T>
-            where T : struct
-        {
-
-            #region Fields
-
-            private readonly Native.MatrixElementType _MatrixElementType;
-
-            private static readonly Dictionary<Type, MatrixElementTypes> SupportMatrixTypes = new Dictionary<Type, MatrixElementTypes>();
-
-            #endregion
-
-            #region Constructors
-
-            static FHogArray2DMatrix()
-            {
-                var matrixTypes = new[]
-                {
-                    new { Type = typeof(float),         ElementType = MatrixElementTypes.Float },
-                    new { Type = typeof(double),        ElementType = MatrixElementTypes.Double },
-                };
-
-                foreach (var type in matrixTypes)
-                    SupportMatrixTypes.Add(type.Type, type.ElementType);
-            }
-
-            public FHogArray2DMatrix()
-            {
-                if (!SupportMatrixTypes.TryGetValue(typeof(T), out var matrixType))
-                    throw new NotSupportedException($"{typeof(T).Name} does not support");
-
-                this._MatrixElementType = matrixType.ToNativeMatrixElementType();
-
-                this.NativePtr = Dlib.Native.array2d_fhog_matrix_new(this._MatrixElementType);
-                if (this.NativePtr == IntPtr.Zero)
-                    throw new ArgumentException($"{matrixType} is not supported.");
-
-                this.MatrixElementType = matrixType;
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override int Columns
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_nc(this._MatrixElementType, this.NativePtr, out var ret);
-                    return ret;
-                }
-            }
-
-            public override MatrixElementTypes MatrixElementType
-            {
-                get;
-            }
-
-            public override Rectangle Rect
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_get_rect2(this._MatrixElementType, this.NativePtr, out var ret);
-                    return new Rectangle(ret);
-                }
-            }
-
-            public override int Rows
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_nr(this._MatrixElementType, this.NativePtr, out var ret);
-                    return ret;
-                }
-            }
-
-            public override int Size
-            {
-                get
-                {
-                    this.ThrowIfDisposed();
-                    Dlib.Native.array2d_fhog_matrix_size(this._MatrixElementType, this.NativePtr, out var ret);
-                    return ret;
-                }
-            }
-
-            #endregion
-
-            #region Methods 
-
-            #region Overrides 
-
-            protected override void DisposeUnmanaged()
-            {
-                // Do Not call base.DisposeUnmanaged.
-                // Because base.DisposeUnmanaged calls array2d_matrix_delete and it corrupts memory
-                //base.DisposeUnmanaged();
-                Dlib.Native.array2d_fhog_matrix_delete(this._MatrixElementType, this.NativePtr);
-            }
-
-            #endregion
-
-            #endregion
-
-        }
-
+        
     }
 
 }

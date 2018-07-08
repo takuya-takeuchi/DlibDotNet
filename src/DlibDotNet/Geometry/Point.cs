@@ -107,6 +107,12 @@ namespace DlibDotNet
             }
         }
 
+        public override string ToString()
+        {
+            using (var point = this.ToNative())
+                return point.ToString();
+        }
+
         public static Point operator +(Point point, Point rhs)
         {
             using (var left = point.ToNative())
@@ -341,6 +347,34 @@ namespace DlibDotNet
                 return !Native.point_operator_equal(point.NativePtr, rhs.NativePtr);
             }
 
+            public override string ToString()
+            {
+                var ofstream = IntPtr.Zero;
+                var stdstr = IntPtr.Zero;
+                var str = "";
+
+                try
+                {
+                    ofstream = Dlib.Native.ostringstream_new();
+                    Native.point_operator_left_shift(this.NativePtr, ofstream);
+                    stdstr = Dlib.Native.ostringstream_str(ofstream);
+                    str = StringHelper.FromStdString(stdstr);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
+                finally
+                {
+                    if (stdstr != IntPtr.Zero)
+                        Dlib.Native.string_delete(stdstr);
+                    if (ofstream != IntPtr.Zero)
+                        Dlib.Native.ostringstream_delete(ofstream);
+                }
+
+                return str;
+            }
+
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
@@ -362,6 +396,9 @@ namespace DlibDotNet
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern void point_delete(IntPtr point);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern void point_operator_left_shift(IntPtr point, IntPtr ofstream);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern double point_length(IntPtr point);

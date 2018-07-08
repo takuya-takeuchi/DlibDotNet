@@ -30,6 +30,11 @@ do {\
         dlib::matrix<ELEMENT_IN, 0, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
         *ret = dlib::length(mat);\
     }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        *ret = dlib::length(mat);\
+    }\
 } while (0)
 
 #define matrix_mean_op_std_vect_to_mat_template(type, matrix, templateRows, templateColumns, ret, err) \
@@ -204,6 +209,13 @@ do {\
         auto joinedMat = dlib::join_rows(mat1, mat2);\
         *ret = new matrix_op<op_join_rows<matrix<ELEMENT_IN, 0, 1>, matrix<ELEMENT_IN, 0, 1>>>(joinedMat);\
     }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat1 = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix1);\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat2 = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix2);\
+        auto joinedMat = dlib::join_rows(mat1, mat2);\
+        *ret = new matrix_op<op_join_rows<matrix<ELEMENT_IN, 31, 1>, matrix<ELEMENT_IN, 31, 1>>>(joinedMat);\
+    }\
 } while (0)
 
 #define matrix_trans_template(matrix, templateRows, templateColumns, ret) \
@@ -219,6 +231,12 @@ do {\
         dlib::matrix<ELEMENT_IN, 0, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
         auto transedMat = dlib::trans(mat);\
         *ret = new matrix_op<op_trans<dlib::matrix<ELEMENT_IN, 0, 1>>>(transedMat);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        auto transedMat = dlib::trans(mat);\
+        *ret = new matrix_op<op_trans<dlib::matrix<ELEMENT_IN, 31, 1>>>(transedMat);\
     }\
 } while (0)
 

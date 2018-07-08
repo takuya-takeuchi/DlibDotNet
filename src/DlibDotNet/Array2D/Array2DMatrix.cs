@@ -41,28 +41,30 @@ namespace DlibDotNet
                 SupportMatrixTypes.Add(type.Type, type.ElementType);
         }
 
-        public Array2DMatrix()
+        public Array2DMatrix(int templateRows = 0, int temlateColumns = 0) :
+            base(templateRows, temlateColumns)
         {
             if (!SupportMatrixTypes.TryGetValue(typeof(TElement), out var matrixType))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementType = matrixType.ToNativeMatrixElementType();
 
-            this.NativePtr = Dlib.Native.array2d_matrix_new(this._MatrixElementType);
+            this.NativePtr = Dlib.Native.array2d_matrix_new(this._MatrixElementType, templateRows, temlateColumns);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{matrixType} is not supported.");
 
             this.MatrixElementType = matrixType;
         }
 
-        public Array2DMatrix(int rows, int columns)
+        public Array2DMatrix(int rows, int columns, int templateRows = 0, int temlateColumns = 0) :
+            base(templateRows, temlateColumns)
         {
             if (!SupportMatrixTypes.TryGetValue(typeof(TElement), out var matrixType))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementType = matrixType.ToNativeMatrixElementType();
 
-            this.NativePtr = Dlib.Native.array2d_matrix_new1(this._MatrixElementType, rows, columns);
+            this.NativePtr = Dlib.Native.array2d_matrix_new1(this._MatrixElementType, rows, columns, templateRows, temlateColumns);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{matrixType} is not supported.");
 
@@ -78,7 +80,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.array2d_matrix_nc(this._MatrixElementType, this.NativePtr, out var ret);
+                Dlib.Native.array2d_matrix_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return ret;
             }
         }
@@ -93,7 +95,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.rectangle_get_rect2(this._MatrixElementType, this.NativePtr, out var ret);
+                Dlib.Native.array2d_matrix_get_rect(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return new Rectangle(ret);
             }
         }
@@ -103,7 +105,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.array2d_matrix_nr(this._MatrixElementType, this.NativePtr, out var ret);
+                Dlib.Native.array2d_matrix_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return ret;
             }
         }
@@ -113,7 +115,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.array2d_matrix_size(this._MatrixElementType, this.NativePtr, out var ret);
+                Dlib.Native.array2d_matrix_size(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return ret;
             }
         }
@@ -128,7 +130,7 @@ namespace DlibDotNet
                     throw new IndexOutOfRangeException();
 
                 var type = this._MatrixElementType;
-                Dlib.Native.array2d_matrix_row(type, this.NativePtr, row, out var ret);
+                Dlib.Native.array2d_matrix_row(type, this.NativePtr, this.TemplateRows, this.TemplateColumns, row, out var ret);
 
                 switch (type)
                 {
@@ -169,7 +171,8 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            Dlib.Native.array2d_matrix_delete(this._MatrixElementType, this.NativePtr);
+            if (!this.IsDisposed)
+                Dlib.Native.array2d_matrix_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
         }
 
         #endregion
@@ -217,7 +220,7 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
-                Dlib.Native.array2d_matrix_row_delete(this._Type, this.NativePtr);
+                Dlib.Native.array2d_matrix_row_delete(this._Type, this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns);
             }
 
             #endregion
@@ -246,8 +249,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_uint8_t(this.NativePtr, column, out value);
-                    return new Matrix<byte>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_uint8_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<byte>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -259,14 +262,14 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_uint8_t(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_uint8_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
             #endregion
 
         }
-        
+
         public sealed class RowUInt16 : Row<ushort>
         {
 
@@ -289,8 +292,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_uint16_t(this.NativePtr, column, out value);
-                    return new Matrix<ushort>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_uint16_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<ushort>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -302,14 +305,14 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_uint16_t(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_uint16_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
             #endregion
 
         }
-        
+
         public sealed class RowUInt32 : Row<uint>
         {
 
@@ -332,8 +335,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_uint32_t(this.NativePtr, column, out value);
-                    return new Matrix<uint>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_uint32_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<uint>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -345,7 +348,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_uint32_t(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_uint32_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -375,8 +378,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_int8_t(this.NativePtr, column, out value);
-                    return new Matrix<sbyte>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_int8_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<sbyte>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -388,7 +391,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_int8_t(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_int8_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -418,8 +421,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_int16_t(this.NativePtr, column, out value);
-                    return new Matrix<short>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_int16_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<short>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -431,7 +434,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_int16_t(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_int16_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -461,8 +464,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_int32_t(this.NativePtr, column, out value);
-                    return new Matrix<int>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_int32_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<int>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -474,7 +477,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_int32_t(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_int32_t(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -504,8 +507,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_float(this.NativePtr, column, out value);
-                    return new Matrix<float>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_float(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<float>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -517,7 +520,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_float(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_float(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -547,8 +550,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_double(this.NativePtr, column, out value);
-                    return new Matrix<double>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_double(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<double>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -560,7 +563,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_double(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_double(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -590,8 +593,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_rgb_pixel(this.NativePtr, column, out value);
-                    return new Matrix<RgbPixel>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_rgb_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<RgbPixel>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -603,14 +606,14 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_rgb_pixel(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_rgb_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
             #endregion
 
         }
-        
+
         public sealed class RowRgbAlphaPixel : Row<RgbAlphaPixel>
         {
 
@@ -633,8 +636,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_rgb_alpha_pixel(this.NativePtr, column, out value);
-                    return new Matrix<RgbAlphaPixel>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_rgb_alpha_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<RgbAlphaPixel>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -646,7 +649,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_rgb_alpha_pixel(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_rgb_alpha_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 
@@ -676,8 +679,8 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     IntPtr value;
-                    Dlib.Native.array2d_matrix_get_row_column_hsi_pixel(this.NativePtr, column, out value);
-                    return new Matrix<HsiPixel>(value);
+                    Dlib.Native.array2d_matrix_get_row_column_hsi_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<HsiPixel>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
                 }
                 set
                 {
@@ -689,7 +692,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_matrix_set_row_column_hsi_pixel(this.NativePtr, column, value.NativePtr);
+                    Dlib.Native.array2d_matrix_set_row_column_hsi_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 

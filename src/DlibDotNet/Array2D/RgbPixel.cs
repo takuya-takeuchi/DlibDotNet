@@ -8,6 +8,13 @@ namespace DlibDotNet
     public struct RgbPixel
     {
 
+        public RgbPixel(byte red, byte green, byte blue)
+        {
+            this.Red = red;
+            this.Green = green;
+            this.Blue = blue;
+        }
+
         public byte Red;
 
         public byte Green;

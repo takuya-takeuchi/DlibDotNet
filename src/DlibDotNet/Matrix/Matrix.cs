@@ -132,14 +132,30 @@ namespace DlibDotNet
 
         public TElement this[int index]
         {
-            get => this._Indexer[index];
-            set => this._Indexer[index] = value;
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._Indexer[index];
+            }
+            set
+            {
+                this.ThrowIfDisposed();
+                this._Indexer[index] = value;
+            }
         }
 
         public TElement this[int row, int column]
         {
-            get => this._Indexer[row, column];
-            set => this._Indexer[row, column] = value;
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._Indexer[row, column];
+            }
+            set
+            {
+                this.ThrowIfDisposed();
+                this._Indexer[row, column] = value;
+            }
         }
 
         #endregion
@@ -361,14 +377,12 @@ namespace DlibDotNet
                     return new IndexerUInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.UInt32:
                     return new IndexerUInt32(this) as Indexer<TElement>;
-                    ;
                 case MatrixElementTypes.Int8:
                     return new IndexerInt8(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int16:
                     return new IndexerInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int32:
                     return new IndexerInt32(this) as Indexer<TElement>;
-                    ;
                 case MatrixElementTypes.Float:
                     return new IndexerFloat(this) as Indexer<TElement>;
                 case MatrixElementTypes.Double:

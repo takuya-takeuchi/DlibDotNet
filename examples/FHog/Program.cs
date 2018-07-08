@@ -39,7 +39,7 @@ namespace FHog
 
                         // Let's see what the image and FHOG features look like.
                         using (var win = new ImageWindow(img))
-                        using (var drawhog = Dlib.DrawHog(hog))
+                        using (var drawhog = Dlib.DrawFHog(hog))
                         using (var winhog = new ImageWindow(drawhog))
                         {
                             // Another thing you might want to do is map between the pixels in img and the
@@ -54,7 +54,7 @@ namespace FHog
                                 var row = hog[hp.Y];
                                 var column = row[hp.X];
                                 var t = Dlib.Trans(column);
-                                Console.WriteLine($"FHOG features at this point: {t}");
+                               // Console.WriteLine($"FHOG features at this point: {t}");
                             }
 
                             // Finally, sometimes you want to get a planar representation of the HOG features

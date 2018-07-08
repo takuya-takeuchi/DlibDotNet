@@ -72,6 +72,12 @@ DLLEXPORT bool point_operator_equal(dlib::point* point, dlib::point* rhs)
     return *point == *rhs;
 }
 
+DLLEXPORT void point_operator_left_shift(dlib::point* point, std::ostringstream* stream)
+{
+    dlib::point& p = *point;
+    *stream << p;
+}
+
 #pragma endregion operator
 
 #endif

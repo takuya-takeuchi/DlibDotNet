@@ -93,7 +93,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         try
                         {
-                            ret = Dlib.DrawHog(image);
+                            ret = Dlib.DrawFHog(image);
                         }
                         catch (Exception e)
                         {
@@ -161,7 +161,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                             throw new ArgumentOutOfRangeException();
                     }
 
-                    MatrixBase matrix = Dlib.DrawHog(outputObj);
+                    MatrixBase matrix = Dlib.DrawFHog(outputObj);
 
                     if (!this.CanGuiDebug)
                     {

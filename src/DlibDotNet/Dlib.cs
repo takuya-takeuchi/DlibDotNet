@@ -502,6 +502,20 @@ namespace DlibDotNet
 
             }
 
+            internal enum PyramidType
+            {
+
+                Down = 0
+
+            }
+
+            internal enum FHogFeatureExtractorType
+            {
+
+                Default = 0
+
+            }
+
             internal enum ErrorType
             {
 
@@ -531,11 +545,29 @@ namespace DlibDotNet
 
                 InputVectorTypeNotSupport = -10,
 
+                #region FHog
+
+                FHogError = 0x7D000000,
+
+                FHogNotSupportExtractor = FHogError | 0x00000001,
+
+                #endregion
+
+                #region Pyramid
+
+                PyramidError = 0x7E000000,
+
+                PyramidNotSupportRate = PyramidError | 0x00000001,
+
+                PyramidNotSupportType = PyramidError | 0x00000002,
+
+                #endregion
+
                 #region Dnn
 
                 DnnError = 0x7F000000,
 
-                DnnNotSupportNetworkType = DnnError | 1
+                DnnNotSupportNetworkType = DnnError | 0x00000001
 
                 #endregion
 
@@ -671,139 +703,111 @@ namespace DlibDotNet
             #region array2d_matrix
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_matrix_new(MatrixElementType type);
+            public static extern IntPtr array2d_matrix_new(MatrixElementType type, int templateRows, int temlateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols);
+            public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols, int templateRows, int temlateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_nc(MatrixElementType type, IntPtr array, out int ret);
+            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_nr(MatrixElementType type, IntPtr array, out int ret);
+            public static extern bool array2d_matrix_nc(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr matrix, out int ret);
+            public static extern bool array2d_matrix_nr(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType rectangle_get_rect2(MatrixElementType type, IntPtr matrix, out IntPtr rect);
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array2d_matrix_get_rect(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out IntPtr rect);
 
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int row, out IntPtr ret);
+            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, int row, out IntPtr ret);
 
             #region array2d_matrix_get_row_column
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
 
             #endregion
 
             #region array2d_matrix_set_row_column
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_uint8_t(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_uint8_t(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_uint16_t(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_uint16_t(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_uint32_t(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_uint32_t(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_int8_t(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_int8_t(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_int16_t(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_int16_t(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_int32_t(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_int32_t(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_double(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_double(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_float(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_float(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_rgb_pixel(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_rgb_pixel(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_rgb_alpha_pixel(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_set_row_column_hsi_pixel(IntPtr row, int column, IntPtr value);
+            public static extern void array2d_matrix_set_row_column_hsi_pixel(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row);
-
-            #region array2d_fhog_matrix
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_fhog_matrix_new(MatrixElementType type);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_fhog_matrix_new1(MatrixElementType type, int rows, int cols);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_fhog_matrix_delete(MatrixElementType type, IntPtr array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_fhog_matrix_nc(MatrixElementType type, IntPtr array, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_fhog_matrix_nr(MatrixElementType type, IntPtr array, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_fhog_matrix_size(MatrixElementType type, IntPtr matrix, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType array2d_fhog_matrix_get_rect2(MatrixElementType type, IntPtr matrix, out IntPtr rect);
-
-            #endregion
-
+            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row, int templateRows, int temlateColumns);
+            
             #endregion
 
             #region load_bmp
@@ -866,6 +870,166 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_png(Array2DType type, IntPtr array, byte[] path);
+
+            #endregion
+
+            #region scan_fhog_pyramid
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_new(PyramidType pyramidType,
+                                                                 uint pyramidRate,
+                                                                 FHogFeatureExtractorType featureExtractorType,
+                                                                 out IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void scan_fhog_pyramid_delete(PyramidType pyramidType,
+                                                               uint pyramidRate,
+                                                               FHogFeatureExtractorType featureExtractorType,
+                                                               IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_set_detection_window_size(PyramidType pyramid_type, 
+                                                                                       uint pyramid_rate,
+                                                                                       FHogFeatureExtractorType extractor_type,
+                                                                                       IntPtr obj,
+                                                                                       uint width,
+                                                                                       uint height);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_set_nuclear_norm_regularization_strength(PyramidType pyramid_type, 
+                                                                                                      uint pyramid_rate,
+                                                                                                      FHogFeatureExtractorType extractor_type,
+                                                                                                      IntPtr obj,
+                                                                                                      double strength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_evaluate_detectors(PyramidType pyramid_type,
+                                                                                uint pyramid_rate,
+                                                                                FHogFeatureExtractorType extractor_type,
+                                                                                IntPtr[] objects,
+                                                                                int objects_num,
+                                                                                MatrixElementType elementType,
+                                                                                IntPtr image,
+                                                                                double adjust_threshold,
+                                                                                out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_num_separable_filters(PyramidType pyramid_type,
+                                                                                   uint pyramid_rate,
+                                                                                   FHogFeatureExtractorType extractor_type,
+                                                                                   IntPtr obj,
+                                                                                   uint weight_index,
+                                                                                   out uint ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType scan_fhog_pyramid_threshold_filter_singular_values(PyramidType pyramid_type,
+                                                                                              uint pyramid_rate,
+                                                                                              FHogFeatureExtractorType extractor_type,
+                                                                                              IntPtr obj,
+                                                                                              double thresh,
+                                                                                              uint weight_index,
+                                                                                              out IntPtr ret);
+
+            #endregion
+
+            #region structural_object_detection_trainer
+
+            #region scan_fhog_pyramid
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_new(PyramidType pyramidType,
+                                                                                                     uint pyramidRate,
+                                                                                                     FHogFeatureExtractorType featureExtractorType,
+                                                                                                     IntPtr scanner,
+                                                                                                     out IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void structural_object_detection_trainer_scan_fhog_pyramid_delete(PyramidType pyramidType,
+                                                                                                   uint pyramidRate,
+                                                                                                   FHogFeatureExtractorType featureExtractorType,
+                                                                                                   IntPtr pyramid);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(PyramidType pyramid_type,
+                                                                                                            uint pyramid_rate,
+                                                                                                            FHogFeatureExtractorType extractor_type,
+                                                                                                            IntPtr obj);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_set_c(PyramidType pyramid_type,
+                                                                                                       uint pyramid_rate,
+                                                                                                       FHogFeatureExtractorType extractor_type,
+                                                                                                       IntPtr obj,
+                                                                                                       double c);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(PyramidType pyramid_type,
+                                                                                                             uint pyramid_rate,
+                                                                                                             FHogFeatureExtractorType extractor_type,
+                                                                                                             IntPtr obj,
+                                                                                                             double epsilon);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_set_num_threads(PyramidType pyramid_type,
+                                                                                                                 uint pyramid_rate,
+                                                                                                                 FHogFeatureExtractorType extractor_type,
+                                                                                                                 IntPtr obj,
+                                                                                                                 uint thread);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(PyramidType pyramid_type,
+                                                                                                                 uint pyramid_rate,
+                                                                                                                 FHogFeatureExtractorType extractor_type,
+                                                                                                                 IntPtr obj,
+                                                                                                                 MatrixElementType elementType,
+                                                                                                                 IntPtr images,
+                                                                                                                 IntPtr objects,
+                                                                                                                 out IntPtr detector);
+
+            #endregion
+
+            #endregion
+
+            #region object_detector
+
+            #region scan_fhog_pyramid
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_new(PyramidType pyramidType,
+                                                                                 uint pyramidRate,
+                                                                                 FHogFeatureExtractorType featureExtractorType,
+                                                                                 out IntPtr detector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void object_detector_scan_fhog_pyramid_delete(PyramidType pyramidType,
+                                                                               uint pyramidRate,
+                                                                               FHogFeatureExtractorType featureExtractorType,
+                                                                               IntPtr detector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_deserialize(byte[] fileName,
+                                                                                         PyramidType pyramidType,
+                                                                                         uint pyramidRate,
+                                                                                         FHogFeatureExtractorType featureExtractorType,
+                                                                                         IntPtr obj);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_operator(PyramidType pyramidType,
+                                                                                      uint pyramidRate,
+                                                                                      FHogFeatureExtractorType featureExtractorType,
+                                                                                      IntPtr detector,
+                                                                                      MatrixElementType elementType,
+                                                                                      IntPtr matrix,
+                                                                                      out IntPtr dets);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType object_detector_scan_fhog_pyramid_serialize(byte[] fileName,
+                                                                                       PyramidType pyramidType,
+                                                                                       uint pyramidRate,
+                                                                                       FHogFeatureExtractorType featureExtractorType,
+                                                                                       IntPtr obj);
+
+            #endregion
 
             #endregion
 

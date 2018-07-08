@@ -4,8 +4,12 @@
 #include "../export.h"
 #include <dlib/pixel.h>
 #include <dlib/image_processing/full_object_detection_abstract.h>
+#include <dlib/image_processing/scan_fhog_pyramid.h>
 #include <dlib/image_processing/generic_image.h>
 #include <dlib/image_transforms.h>
+#include <dlib/svm/cross_validate_object_detection_trainer.h>
+#include <dlib/svm/structural_object_detection_trainer.h>
+#include <dlib/svm/svm.h>
 #include "../shared.h"
 
 using namespace dlib;
@@ -14,6 +18,14 @@ using namespace std;
 #pragma region template
 
 #define ARRAY2D_ELEMENT element
+#define PYRAMID_TYPE PYRAMID_TYPE
+#define EXTRACTOR_TYPE EXTRACTOR_TYPE
+#define ELEMENT_IN element
+#define ELEMENT_OUT element
+#undef ELEMENT_IN
+#undef ELEMENT_OUT
+#undef EXTRACTOR_TYPE
+#undef PYRAMID_TYPE
 #undef ARRAY2D_ELEMENT
 
 #define extract_fhog_features_template(ret, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding)\
@@ -223,12 +235,13 @@ DLLEXPORT point* image_to_fhog(point* p, int cell_size, int filter_rows_padding,
     return new point(ret); 
 }  
 
-DLLEXPORT int draw_fhog(
-    const matrix_element_type hog_type,
-    const void* hog,
-    const int cell_draw_size,
-    const float min_response_threshold,
-    void** out_matrix)
+#pragma region draw_fhog
+
+DLLEXPORT int draw_fhog(const matrix_element_type hog_type,
+                        const void* hog,
+                        const int cell_draw_size,
+                        const float min_response_threshold,
+                        void** out_matrix)
 {
     int ret = ERR_OK;
     switch(hog_type)
@@ -253,114 +266,83 @@ DLLEXPORT int draw_fhog(
     return ret;
 }
 
-#pragma region fhog_matrix
-
-DLLEXPORT void* array2d_fhog_matrix_new(matrix_element_type type)
-{
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            return new dlib::array2d<matrix<float, 31, 1>>();
-        case matrix_element_type::Double:
-            return new dlib::array2d<matrix<double, 31, 1>>();
-        default:
-            return nullptr;
-    }
-}
-
-DLLEXPORT void* array2d_fhog_matrix_new1(matrix_element_type type, int rows, int cols)
-{
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            return new dlib::array2d<matrix<float, 31, 1>>(rows, cols);
-        case matrix_element_type::Double:
-            return new dlib::array2d<matrix<double, 31, 1>>(rows, cols);
-        default:
-            return nullptr;
-    }
-}
-
-DLLEXPORT bool array2d_fhog_matrix_nc(matrix_element_type type, void* array, int* ret)
-{
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            *ret = ((dlib::array2d<matrix<float, 31, 1>>*)array)->nc();
-            return true;
-        case matrix_element_type::Double:
-            *ret = ((dlib::array2d<matrix<double, 31, 1>>*)array)->nc();
-            return true;
-        default:
-            return false;
-    }
-}
-
-DLLEXPORT bool array2d_fhog_matrix_nr(matrix_element_type type, void* array, int* ret)
-{
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            *ret = ((dlib::array2d<matrix<float, 31, 1>>*)array)->nr();
-            return true;
-        case matrix_element_type::Double:
-            *ret = ((dlib::array2d<matrix<double, 31, 1>>*)array)->nr();
-            return true;
-        default:
-            return false;
-    }
-}
-
-DLLEXPORT bool array2d_fhog_matrix_size(matrix_element_type type, void* array, int* ret)
-{
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            *ret = ((dlib::array2d<matrix<float, 31, 1>>*)array)->size();
-            return true;
-        case matrix_element_type::Double:
-            *ret = ((dlib::array2d<matrix<double, 31, 1>>*)array)->size();
-            return true;
-        default:
-            return false;
-    }
-}
-
-DLLEXPORT void array2d_fhog_matrix_delete(matrix_element_type type, void* array)
-{
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            delete ((dlib::array2d<matrix<float, 31, 1>>*)array);
-            break;
-        case matrix_element_type::Double:
-            delete ((dlib::array2d<matrix<double, 31, 1>>*)array);
-            break;
-        default:
-            break;
-    }
-}
-
-DLLEXPORT int array2d_fhog_matrix_get_rect2(matrix_element_type type, void* img, rectangle** rect)
+DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyramid_type, 
+                                                          const unsigned int pyramid_rate,
+                                                          const fhog_feature_extractor_type extractor_type,
+                                                          void* detector,
+                                                          const unsigned int weight_index,
+                                                          const int cell_draw_size,
+                                                          void** out_matrix)
 {
     int err = ERR_OK;
-
-    switch(type)
-    {
-        case matrix_element_type::Float:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<float, 31, 1>>*)img)));
-			break;
-        case matrix_element_type::Double:
-            *rect = new dlib::rectangle(get_rect(*((array2d<matrix<double, 31, 1>>*)img)));
-			break;
-        default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
     
+    switch(pyramid_type)
+    {
+        case pyramid_type::Down:
+            {
+                #define PYRAMID_TYPE pyramid_down
+                switch(extractor_type)
+                {
+                    case fhog_feature_extractor_type::Default:
+                        #define EXTRACTOR_TYPE default_fhog_feature_extractor
+                        switch(pyramid_rate)
+                        {
+                            case 1:
+                                {
+                                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>& d = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>*>(detector));\
+                                    auto mat = dlib::draw_fhog(d, weight_index, cell_draw_size);
+                                    *out_matrix = new dlib::matrix<uint8_t>(mat);
+                                }
+                                break;
+                            case 2:
+                                {
+                                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>& d = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>*>(detector));\
+                                    auto mat = dlib::draw_fhog(d, weight_index, cell_draw_size);
+                                    *out_matrix = new dlib::matrix<uint8_t>(mat);
+                                }
+                                break;
+                            case 3:
+                                {
+                                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>& d = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>*>(detector));\
+                                    auto mat = dlib::draw_fhog(d, weight_index, cell_draw_size);
+                                    *out_matrix = new dlib::matrix<uint8_t>(mat);
+                                }
+                                break;
+                            case 4:
+                                {
+                                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>& d = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>*>(detector));\
+                                    auto mat = dlib::draw_fhog(d, weight_index, cell_draw_size);
+                                    *out_matrix = new dlib::matrix<uint8_t>(mat);
+                                }
+                                break;
+                            case 6:
+                                {
+                                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>& d = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>*>(detector));\
+                                    auto mat = dlib::draw_fhog(d, weight_index, cell_draw_size);
+                                    *out_matrix = new dlib::matrix<uint8_t>(mat);
+                                }
+                                break;
+                            default:
+                                err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+                                break;
+                        }
+                        #undef EXTRACTOR_TYPE
+                        break;
+                    default:
+                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        break;                        
+                }
+                #undef PYRAMID_TYPE
+            }
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            break;  
+    }
+
     return err;
 }
 
-#pragma endregion fhog_matrix
+#pragma endregion draw_fhog
 
 #endif

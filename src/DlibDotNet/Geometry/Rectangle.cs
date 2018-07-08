@@ -675,7 +675,8 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
-                Native.rectangle_delete(this.NativePtr);
+                if (!this.IsDisposed)
+                    Native.rectangle_delete(this.NativePtr);
             }
 
             #endregion

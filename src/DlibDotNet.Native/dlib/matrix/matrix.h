@@ -35,6 +35,20 @@ do { \
             mat(r, c) = src[r * column + c];\
 } while (0)
 
+// ToDo:
+// // You are trying to multiply two incompatible matrices together.  The number of columns 
+//             // in the matrix on the left must match the number of rows in the matrix on the right.
+//             COMPILE_TIME_ASSERT(LHS::NC == RHS::NR || LHS::NC*RHS::NR == 0);
+//             DLIB_ASSERT(lhs.nc() == rhs.nr() && lhs.size() > 0 && rhs.size() > 0, 
+//                 "\tconst matrix_exp operator*(const matrix_exp& lhs, const matrix_exp& rhs)"
+//                 << "\n\tYou are trying to multiply two incompatible matrices together"
+//                 << "\n\tlhs.nr(): " << lhs.nr()
+//                 << "\n\tlhs.nc(): " << lhs.nc()
+//                 << "\n\trhs.nr(): " << rhs.nr()
+//                 << "\n\trhs.nc(): " << rhs.nc()
+//                 << "\n\t&lhs: " << &lhs 
+//                 << "\n\t&rhs: " << &rhs 
+//                 );
 #define matrix_operator_template(lhs, rhs, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -61,6 +75,14 @@ do {\
     {\
         *ret = ((dlib::matrix<ELEMENT, 0, 1>*)matrix)->nc();\
     }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->nc();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 31, 1>*)matrix)->nc();\
+    }\
 } while (0)
 
 #define matrix_nr_template(matrix, templateRows, templateColumns, ret) \
@@ -72,6 +94,14 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         *ret = ((dlib::matrix<ELEMENT, 0, 1>*)matrix)->nr();\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->nr();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 31, 1>*)matrix)->nr();\
     }\
 } while (0)
 
@@ -85,6 +115,14 @@ do {\
     {\
         *ret = ((dlib::matrix<ELEMENT, 0, 1>*)matrix)->size();\
     }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->size();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 31, 1>*)matrix)->size();\
+    }\
 } while (0)
 
 #define matrix_delete_template(matrix, templateRows, templateColumns) \
@@ -96,6 +134,14 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         delete ((dlib::matrix<ELEMENT, 0, 1>*)matrix);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        delete ((dlib::matrix<ELEMENT, 1, 3>*)matrix);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        delete ((dlib::matrix<ELEMENT, 31, 1>*)matrix);\
     }\
 } while (0)
 
@@ -109,6 +155,16 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *ret = tmp(index);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        *ret = tmp(index);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 31, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
         *ret = tmp(index);\
     }\
 } while (0)
@@ -125,6 +181,16 @@ do {\
         dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
         tmp(index) = value;\
     }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        tmp(index) = value;\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 31, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
+        tmp(index) = value;\
+    }\
 } while (0)
 
 #define matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret) \
@@ -137,6 +203,16 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *ret = tmp(row, column);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        *ret = tmp(row, column);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 31, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
         *ret = tmp(row, column);\
     }\
 } while (0)
@@ -153,6 +229,16 @@ do {\
         dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
         tmp(row, column) = value;\
     }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        tmp(row, column) = value;\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 31, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
+        tmp(row, column) = value;\
+    }\
 } while (0)
 
 #define matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream) \
@@ -165,6 +251,16 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         dlib::matrix<ELEMENT, 0, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *stream << mat;\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<ELEMENT, 1, 3>& mat = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        *stream << mat;\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 31, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
         *stream << mat;\
     }\
 } while (0)

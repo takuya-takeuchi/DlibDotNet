@@ -8,6 +8,159 @@
 
 using namespace dlib;
 
+#pragma region template
+
+#define ELEMENT element
+#undef ELEMENT
+
+#define array2d_matrix_new_template(templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return new dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        return new dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>();\
+    }\
+    return nullptr;\
+} while (0)
+
+#define array2d_matrix_new1_template(row, cols, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return new dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>(row, cols);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        return new dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>(row, cols);\
+    }\
+    return nullptr;\
+} while (0)
+
+#define array2d_matrix_delete_template(array, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        delete ((dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>*)array);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        delete ((dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>*)array);\
+    }\
+} while (0)
+
+#define array2d_matrix_nc_template(array, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *ret = ((dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>*)array)->nc();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>*)array)->nc();\
+    }\
+} while (0)
+
+#define array2d_matrix_nr_template(array, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *ret = ((dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>*)array)->nr();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>*)array)->nr();\
+    }\
+} while (0)
+
+#define array2d_matrix_size_template(array, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *ret = ((dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>*)array)->size();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>*)array)->size();\
+    }\
+} while (0)
+
+#define array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        *rect = new dlib::rectangle(get_rect(*((array2d<matrix<ELEMENT, 0, 0>>*)array)));\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        *rect = new dlib::rectangle(get_rect(*((array2d<matrix<ELEMENT, 31, 1>>*)array)));\
+    }\
+} while (0)
+
+#define array2d_matrix_row_template(array, templateRows, templateColumns, row, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>*>(array));\
+        auto r = tmp[row];\
+        *ret = new dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>::row(r);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>*>(array));\
+        auto r = tmp[row];\
+        *ret = new dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>::row(r);\
+    }\
+} while (0)
+
+#define array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>::row*>(row));\
+        *ret = tmp[column];\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>::row*>(row));\
+        *ret = tmp[column];\
+    }\
+} while (0)
+
+#define array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<ELEMENT, 0, 0>*>::row*>(row));\
+        tmp[column] = (dlib::matrix<ELEMENT, 0, 0>*)ret;\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<ELEMENT, 31, 1>*>::row*>(row));\
+        tmp[column] = (dlib::matrix<ELEMENT, 31, 1>*)ret;\
+    }\
+} while (0)
+
+#define array2d_matrix_row_delete_template(row, templateRows, templateColumns) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        auto tmp = static_cast<dlib::array2d<dlib::matrix<ELEMENT, 0, 0>>::row*>(row);\
+        delete tmp;\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        auto tmp = static_cast<dlib::array2d<dlib::matrix<ELEMENT, 31, 1>>::row*>(row);\
+        delete tmp;\
+    }\
+} while (0)
+
+#pragma endregion template
+
+#pragma region array2d
+
 DLLEXPORT void* array2d_new(array2d_type type)
 {
     switch(type)
@@ -203,6 +356,8 @@ DLLEXPORT void array2d_delete(array2d_type type, void* array)
 			break;
     }
 }
+
+#pragma endregion array2d
 
 #pragma region row
 
@@ -468,334 +623,536 @@ DLLEXPORT int array2d_row_delete(array2d_type type, void* row)
 
 #pragma region matrix
 
-DLLEXPORT void* array2d_matrix_new(matrix_element_type type)
+DLLEXPORT void* array2d_matrix_new(matrix_element_type type, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            return new dlib::array2d<matrix<uint8_t>>();
+            #define ELEMENT uint8_t
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt16:
-            return new dlib::array2d<matrix<uint16_t>>();
+            #define ELEMENT uint16_t
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt32:
-            return new dlib::array2d<matrix<uint32_t>>();
+            #define ELEMENT uint32_t
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
-            return new dlib::array2d<matrix<int8_t>>();
+            #define ELEMENT int8_t
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int16:
-            return new dlib::array2d<matrix<int16_t>>();
+            #define ELEMENT int16_t
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int32:
-            return new dlib::array2d<matrix<int32_t>>();
+            #define ELEMENT int32_t
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Float:
-            return new dlib::array2d<matrix<float>>();
+            #define ELEMENT float
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Double:
-            return new dlib::array2d<matrix<double>>();
+            #define ELEMENT double
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbPixel:
-            return new dlib::array2d<matrix<rgb_pixel>>();
+            #define ELEMENT double
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
-            return new dlib::array2d<matrix<hsi_pixel>>();
+            #define ELEMENT hsi_pixel
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            return new dlib::array2d<matrix<rgb_alpha_pixel>>();
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_new_template(templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         default:
             return nullptr;
     }
 }
 
-DLLEXPORT void* array2d_matrix_new1(matrix_element_type type, int rows, int cols)
+DLLEXPORT void* array2d_matrix_new1(matrix_element_type type, const int rows, const int cols, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            return new dlib::array2d<matrix<uint8_t>>(rows, cols);
+            #define ELEMENT uint8_t
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt16:
-            return new dlib::array2d<matrix<uint16_t>>(rows, cols);
+            #define ELEMENT uint16_t
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt32:
-            return new dlib::array2d<matrix<uint32_t>>(rows, cols);
+            #define ELEMENT uint32_t
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
-            return new dlib::array2d<matrix<int8_t>>(rows, cols);
+            #define ELEMENT int8_t
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int16:
-            return new dlib::array2d<matrix<int16_t>>(rows, cols);
+            #define ELEMENT int16_t
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int32:
-            return new dlib::array2d<matrix<int32_t>>(rows, cols);
+            #define ELEMENT int32_t
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Float:
-            return new dlib::array2d<matrix<float>>(rows, cols);
+            #define ELEMENT float
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Double:
-            return new dlib::array2d<matrix<double>>(rows, cols);
+            #define ELEMENT double
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbPixel:
-            return new dlib::array2d<matrix<rgb_pixel>>(rows, cols);
+            #define ELEMENT double
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
-            return new dlib::array2d<matrix<hsi_pixel>>(rows, cols);
+            #define ELEMENT hsi_pixel
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            return new dlib::array2d<matrix<rgb_alpha_pixel>>(rows, cols);
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_new1_template(rows, cols, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         default:
             return nullptr;
     }
 }
 
-DLLEXPORT bool array2d_matrix_nc(matrix_element_type type, void* array, int* ret)
+DLLEXPORT bool array2d_matrix_nc(matrix_element_type type, void* array, const int templateRows, const int templateColumns, int* ret)
+{
+    bool b = true;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT double
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_nc_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        default:
+            b = false;
+            break;
+    }
+
+    return b;
+}
+
+DLLEXPORT bool array2d_matrix_nr(matrix_element_type type, void* array, const int templateRows, const int templateColumns, int* ret)
+{
+    bool b = true;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT double
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_nr_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        default:
+            b = false;
+            break;
+    }
+
+    return b;
+}
+
+DLLEXPORT bool array2d_matrix_size(matrix_element_type type, void* array, const int templateRows, const int templateColumns, int* ret)
+{
+    bool b = true;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT double
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_size_template(array, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        default:
+            b = false;
+            break;
+    }
+
+    return b;
+}
+
+DLLEXPORT void array2d_matrix_delete(matrix_element_type type, void* array, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            *ret = ((dlib::array2d<matrix<uint8_t>>*)array)->nc();
-			return true;
+            #define ELEMENT uint8_t
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt16:
-            *ret = ((dlib::array2d<matrix<uint16_t>>*)array)->nc();
-			return true;
+            #define ELEMENT uint16_t
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::UInt32:
-            *ret = ((dlib::array2d<matrix<uint32_t>>*)array)->nc();
-			return true;
+            #define ELEMENT uint32_t
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
-            *ret = ((dlib::array2d<matrix<int8_t>>*)array)->nc();
-			return true;
+            #define ELEMENT int8_t
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int16:
-            *ret = ((dlib::array2d<matrix<int16_t>>*)array)->nc();
-			return true;
+            #define ELEMENT int16_t
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int32:
-            *ret = ((dlib::array2d<matrix<int32_t>>*)array)->nc();
-			return true;
+            #define ELEMENT int32_t
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Float:
-            *ret = ((dlib::array2d<matrix<float>>*)array)->nc();
-			return true;
+            #define ELEMENT float
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Double:
-            *ret = ((dlib::array2d<matrix<double>>*)array)->nc();
-			return true;
+            #define ELEMENT double
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbPixel:
-            *ret = ((dlib::array2d<matrix<rgb_pixel>>*)array)->nc();
-			return true;
+            #define ELEMENT double
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
-            *ret = ((dlib::array2d<matrix<hsi_pixel>>*)array)->nc();
-			return true;
+            #define ELEMENT hsi_pixel
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            *ret = ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array)->nc();
-			return true;
-        default:
-            return false;
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_delete_template(array, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
     }
 }
 
-DLLEXPORT bool array2d_matrix_nr(matrix_element_type type, void* array, int* ret)
-{
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            *ret = ((dlib::array2d<matrix<uint8_t>>*)array)->nr();
-			return true;
-        case matrix_element_type::UInt16:
-            *ret = ((dlib::array2d<matrix<uint16_t>>*)array)->nr();
-			return true;
-        case matrix_element_type::UInt32:
-            *ret = ((dlib::array2d<matrix<uint32_t>>*)array)->nr();
-			return true;
-        case matrix_element_type::Int8:
-            *ret = ((dlib::array2d<matrix<int8_t>>*)array)->nr();
-			return true;
-        case matrix_element_type::Int16:
-            *ret = ((dlib::array2d<matrix<int16_t>>*)array)->nr();
-			return true;
-        case matrix_element_type::Int32:
-            *ret = ((dlib::array2d<matrix<int32_t>>*)array)->nr();
-			return true;
-        case matrix_element_type::Float:
-            *ret = ((dlib::array2d<matrix<float>>*)array)->nr();
-			return true;
-        case matrix_element_type::Double:
-            *ret = ((dlib::array2d<matrix<double>>*)array)->nr();
-			return true;
-        case matrix_element_type::RgbPixel:
-            *ret = ((dlib::array2d<matrix<rgb_pixel>>*)array)->nr();
-			return true;
-        case matrix_element_type::HsiPixel:
-            *ret = ((dlib::array2d<matrix<hsi_pixel>>*)array)->nr();
-			return true;
-        case matrix_element_type::RgbAlphaPixel:
-            *ret = ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array)->nr();
-			return true;
-        default:
-            return false;
-    }
-}
-
-DLLEXPORT bool array2d_matrix_size(matrix_element_type type, void* array, int* ret)
-{
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            *ret = ((dlib::array2d<matrix<uint8_t>>*)array)->size();
-			return true;
-        case matrix_element_type::UInt16:
-            *ret = ((dlib::array2d<matrix<uint16_t>>*)array)->size();
-			return true;
-        case matrix_element_type::UInt32:
-            *ret = ((dlib::array2d<matrix<uint32_t>>*)array)->size();
-			return true;
-        case matrix_element_type::Int8:
-            *ret = ((dlib::array2d<matrix<int8_t>>*)array)->size();
-			return true;
-        case matrix_element_type::Int16:
-            *ret = ((dlib::array2d<matrix<int16_t>>*)array)->size();
-			return true;
-        case matrix_element_type::Int32:
-            *ret = ((dlib::array2d<matrix<int32_t>>*)array)->size();
-			return true;
-        case matrix_element_type::Float:
-            *ret = ((dlib::array2d<matrix<float>>*)array)->size();
-			return true;
-        case matrix_element_type::Double:
-            *ret = ((dlib::array2d<matrix<double>>*)array)->size();
-			return true;
-        case matrix_element_type::RgbPixel:
-            *ret = ((dlib::array2d<matrix<rgb_pixel>>*)array)->size();
-			return true;
-        case matrix_element_type::HsiPixel:
-            *ret = ((dlib::array2d<matrix<hsi_pixel>>*)array)->size();
-			return true;
-        case matrix_element_type::RgbAlphaPixel:
-            *ret = ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array)->size();
-			return true;
-        default:
-            return false;
-    }
-}
-
-DLLEXPORT void array2d_matrix_delete(matrix_element_type type, void* array)
-{
-    // switch(type)
-    // {
-    //     case matrix_element_type::UInt8:
-    //         delete ((dlib::array2d<matrix<uint8_t>>*)array);
-    //         break;
-    //     case matrix_element_type::UInt16:
-    //         delete ((dlib::array2d<matrix<uint16_t>>*)array);
-    //         break;
-    //     case matrix_element_type::UInt32:
-    //         delete ((dlib::array2d<matrix<uint32_t>>*)array);
-    //         break;
-    //     case matrix_element_type::Int8:
-    //         delete ((dlib::array2d<matrix<int8_t>>*)array);
-    //         break;
-    //     case matrix_element_type::Int16:
-    //         delete ((dlib::array2d<matrix<int16_t>>*)array);
-    //         break;
-    //     case matrix_element_type::Int32:
-    //         delete ((dlib::array2d<matrix<int32_t>>*)array);
-    //         break;
-    //     case matrix_element_type::Float:
-    //         delete ((dlib::array2d<matrix<float>>*)array);
-    //         break;
-    //     case matrix_element_type::Double:
-    //         delete ((dlib::array2d<matrix<double>>*)array);
-    //         break;
-    //     case matrix_element_type::RgbPixel:
-    //         delete ((dlib::array2d<matrix<rgb_pixel>>*)array);
-    //         break;
-    //     case matrix_element_type::HsiPixel:
-    //         delete ((dlib::array2d<matrix<hsi_pixel>>*)array);
-    //         break;
-    //     case matrix_element_type::RgbAlphaPixel:
-    //         delete ((dlib::array2d<matrix<rgb_alpha_pixel>>*)array);
-    //         break;
-    // }
-    // dlib::array2d is template type.
-    // Ex. dlib::array2d<dlib::matrix<float, 31, 1>> does NOT equal to dlib::array2d<dlib::matrix<float>>
-    // Template argument is decided in compile time rather than runtime.
-    // So we can not specify template argument as variable.
-    // In other words, we have to call delete for void* because we do not known exact type.
-    // Unfortunately, dlib::matrix implements destructor.
-    // What should we do?
-    delete array;
-}
-
-#pragma region row
-
-
-
-#pragma endregion row
-
-#pragma endregion matrix
-
-#pragma region matrix row
-
-DLLEXPORT int array2d_matrix_row(matrix_element_type type, void* array, int32_t row, void** ret)
+DLLEXPORT int array2d_matrix_get_rect(matrix_element_type type, void* array, const int templateRows, const int templateColumns, rectangle** rect)
 {
     int err = ERR_OK;
 
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                dlib::array2d<dlib::matrix<uint8_t>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint8_t>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<uint8_t>*>::row(r);
-            }
+            #define ELEMENT uint8_t
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                dlib::array2d<dlib::matrix<uint16_t>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint16_t>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<uint16_t>*>::row(r);
-            }
+            #define ELEMENT uint16_t
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                dlib::array2d<dlib::matrix<uint32_t>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint32_t>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<uint32_t>*>::row(r);
-            }
+            #define ELEMENT uint32_t
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                dlib::array2d<dlib::matrix<int8_t>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<int8_t>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<int8_t>*>::row(r);
-            }
+            #define ELEMENT int8_t
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                dlib::array2d<dlib::matrix<int16_t>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<int16_t>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<int16_t>*>::row(r);
-            }
+            #define ELEMENT int16_t
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                dlib::array2d<dlib::matrix<int32_t>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<int32_t>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<int32_t>*>::row(r);
-            }
+            #define ELEMENT int32_t
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                dlib::array2d<dlib::matrix<float>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<float>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<float>*>::row(r);
-            }
+            #define ELEMENT float
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                dlib::array2d<dlib::matrix<double>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<double>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<double>*>::row(r);
-            }
+            #define ELEMENT double
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            {
-                dlib::array2d<dlib::matrix<rgb_pixel>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<rgb_pixel>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<rgb_pixel>*>::row(r);
-            }
+            #define ELEMENT double
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            {
-                dlib::array2d<dlib::matrix<hsi_pixel>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<hsi_pixel>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<hsi_pixel>*>::row(r);
-            }
+            #define ELEMENT hsi_pixel
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>& tmp = *(static_cast<dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>*>(array));
-                auto r = tmp[row];
-                *ret = new dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>::row(r);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_get_rect_template(array, templateRows, templateColumns, rect);
+            #undef ELEMENT
+            break;
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+#pragma endregion matrix
+
+#pragma region matrix row
+
+DLLEXPORT int array2d_matrix_row(matrix_element_type type, void* array, const int templateRows, const int templateColumns, int32_t row, void** ret)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_row_template(array, templateRows, templateColumns, row, ret);
+            #undef ELEMENT
             break;
         default:
             err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
@@ -807,213 +1164,224 @@ DLLEXPORT int array2d_matrix_row(matrix_element_type type, void* array, int32_t 
 
 #pragma region array2d_get_row_column
 
-DLLEXPORT void array2d_matrix_get_row_column_uint8_t(void* row, int32_t column, dlib::matrix<uint8_t>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_uint8_t(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<uint8_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint8_t>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT uint8_t
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_uint16_t(void* row, int32_t column, dlib::matrix<uint16_t>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_uint16_t(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<uint16_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint16_t>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT uint16_t
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_uint32_t(void* row, int32_t column, dlib::matrix<uint32_t>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_uint32_t(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<uint32_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint32_t>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT uint32_t
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_int8_t(void* row, int32_t column, dlib::matrix<int8_t>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_int8_t(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<int8_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<int8_t>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT int8_t
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_int16_t(void* row, int32_t column, dlib::matrix<int16_t>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_int16_t(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<int16_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<int16_t>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT int16_t
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_int32_t(void* row, int32_t column, dlib::matrix<int32_t>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_int32_t(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<int32_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<int32_t>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT int32_t
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_double(void* row, int32_t column, dlib::matrix<double>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_double(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<double>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<double>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT double
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_float(void* row, int32_t column, dlib::matrix<float>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_float(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<float>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<float>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT float
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_rgb_pixel(void* row, int32_t column, dlib::matrix<rgb_pixel>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_rgb_pixel(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<rgb_pixel>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<rgb_pixel>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT rgb_pixel
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_rgb_alpha_pixel(void* row, int32_t column, dlib::matrix<rgb_alpha_pixel>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_rgb_alpha_pixel(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT rgb_alpha_pixel
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_get_row_column_hsi_pixel(void* row, int32_t column, dlib::matrix<hsi_pixel>** ret)
+DLLEXPORT void array2d_matrix_get_row_column_hsi_pixel(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)
 {
-    dlib::array2d<dlib::matrix<hsi_pixel>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<hsi_pixel>*>::row*>(row));
-    *ret = tmp[column];
+    #define ELEMENT hsi_pixel
+    array2d_matrix_get_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
 #pragma endregion array2d_get_row_column
 
 #pragma region array2d_get_row_column
 
-DLLEXPORT void array2d_matrix_set_row_column_uint8_t(void* row, int32_t column, dlib::matrix<uint8_t>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_uint8_t(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<uint8_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint8_t>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT uint8_t
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_uint16_t(void* row, int32_t column, dlib::matrix<uint16_t>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_uint16_t(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<uint16_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint16_t>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT uint16_t
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_uint32_t(void* row, int32_t column, dlib::matrix<uint32_t>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_uint32_t(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<uint32_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<uint32_t>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT uint32_t
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_int8_t(void* row, int32_t column, dlib::matrix<int8_t>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_int8_t(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<int8_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<int8_t>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT int8_t
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_int16_t(void* row, int32_t column, dlib::matrix<int16_t>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_int16_t(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<int16_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<int16_t>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT int16_t
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_int32_t(void* row, int32_t column, dlib::matrix<int32_t>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_int32_t(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<int32_t>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<int32_t>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT int32_t
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_double(void* row, int32_t column, dlib::matrix<double>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_double(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<double>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<double>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT double
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_float(void* row, int32_t column, dlib::matrix<float>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_float(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<float>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<float>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT float
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_rgb_pixel(void* row, int32_t column, dlib::matrix<rgb_pixel>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_rgb_pixel(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<rgb_pixel>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<rgb_pixel>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT rgb_pixel
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_rgb_alpha_pixel(void* row, int32_t column, dlib::matrix<rgb_alpha_pixel>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_rgb_alpha_pixel(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<rgb_alpha_pixel>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT rgb_alpha_pixel
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
-DLLEXPORT void array2d_matrix_set_row_column_hsi_pixel(void* row, int32_t column, dlib::matrix<hsi_pixel>* ret)
+DLLEXPORT void array2d_matrix_set_row_column_hsi_pixel(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)
 {
-    dlib::array2d<dlib::matrix<hsi_pixel>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<hsi_pixel>*>::row*>(row));
-    tmp[column] = ret;
+    #define ELEMENT hsi_pixel
+    array2d_matrix_set_row_column_template(row, templateRows, templateColumns, column, ret);
+    #undef ELEMENT
 }
 
 #pragma endregion array2d_get_row_column
 
-DLLEXPORT void array2d_matrix_row_delete(matrix_element_type type, void* row)
+DLLEXPORT void array2d_matrix_row_delete(matrix_element_type type, void* row, const int templateRows, const int templateColumns)
 {
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<uint8_t>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT uint8_t
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<uint16_t>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT uint16_t
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<uint32_t>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT uint32_t
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<int8_t>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT int8_t
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<int16_t>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT int16_t
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<int32_t>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT int32_t
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<float>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT float
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<double>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT double
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<rgb_pixel>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT double
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<hsi_pixel>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT hsi_pixel
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                auto tmp = static_cast<dlib::array2d<dlib::matrix<rgb_alpha_pixel>>::row*>(row);
-                delete tmp;
-            }
+            #define ELEMENT rgb_alpha_pixel
+            array2d_matrix_row_delete_template(row, templateRows, templateColumns);
+            #undef ELEMENT
             break;
     }
 }
