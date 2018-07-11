@@ -25,7 +25,7 @@ namespace DlibDotNet.Tests.ImageProcessing
         public void CreateShapePredictorFromFile()
         {
             var path = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
-            this._ShapePredictor = new ShapePredictor(path.FullName);
+            this._ShapePredictor = ShapePredictor.Deserialize(path.FullName);
         }
 
         [TestMethod]

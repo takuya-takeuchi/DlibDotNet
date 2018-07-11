@@ -18,15 +18,12 @@ namespace DlibDotNet
             this.NativePtr = Native.shape_predictor_new();
         }
 
-        public ShapePredictor(string path)
+        internal ShapePredictor(IntPtr ptr)
         {
-            if (path == null)
-                throw new ArgumentNullException(nameof(path));
-            if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
-            var str = Encoding.UTF8.GetBytes(path);
-            this.NativePtr = Native.deserialize_shape_predictor(str);
+            this.NativePtr = ptr;
         }
 
         #endregion
@@ -54,6 +51,18 @@ namespace DlibDotNet
         #endregion
 
         #region Methods
+
+        public static ShapePredictor Deserialize(string path)
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (!File.Exists(path))
+                throw new FileNotFoundException($"{path} is not found", path);
+
+            var str = Encoding.UTF8.GetBytes(path);
+            var ptr = Native.deserialize_shape_predictor(str);
+            return new ShapePredictor(ptr);
+        }
 
         public FullObjectDetection Detect(Array2DBase image, Rectangle rect)
         {

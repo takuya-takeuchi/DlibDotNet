@@ -28,7 +28,7 @@ namespace FaceLandmarkDetection
             using (var win = new ImageWindow())
             using (var winFaces = new ImageWindow())
             using (var detector = FrontalFaceDetector.GetFrontalFaceDetector())
-            using (var sp = new ShapePredictor(args[0]))
+            using (var sp = ShapePredictor.Deserialize(args[0]))
                 foreach (var file in args.ToList().GetRange(1, args.Length - 1))
                 {
                     Console.WriteLine($"processing image {file}");

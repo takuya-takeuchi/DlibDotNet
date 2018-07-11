@@ -25,7 +25,7 @@ namespace FaceLandmarkDetection.ViewModels
 
         public MainViewModel()
         {
-            this._ShapePredictor =new ShapePredictor("shape_predictor_68_face_landmarks.dat");
+            this._ShapePredictor = ShapePredictor.Deserialize("shape_predictor_68_face_landmarks.dat");
         }
 
         #endregion

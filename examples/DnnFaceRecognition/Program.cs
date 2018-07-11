@@ -30,7 +30,7 @@ namespace DnnFaceRecognition
             // find faces in the image we will need a face detector:
             using (var detector = FrontalFaceDetector.GetFrontalFaceDetector())
             // We will also use a face landmarking model to align faces to a standard pose:  (see face_landmark_detection_ex.cpp for an introduction)
-            using (var sp = new ShapePredictor("shape_predictor_5_face_landmarks.dat"))
+            using (var sp =  ShapePredictor.Deserialize("shape_predictor_5_face_landmarks.dat"))
             // And finally we load the DNN responsible for face recognition.
             using (var net = DlibDotNet.Dnn.LossMetric.Deserialize("dlib_face_recognition_resnet_model_v1.dat"))
 
