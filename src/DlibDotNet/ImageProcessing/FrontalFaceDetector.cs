@@ -11,8 +11,11 @@ namespace DlibDotNet
 
         #region Constructors
 
-        private FrontalFaceDetector(IntPtr ptr)
+        internal FrontalFaceDetector(IntPtr ptr)
         {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
             this.NativePtr = ptr;
         }
 
@@ -64,12 +67,6 @@ namespace DlibDotNet
 
                 return dets.ToArray();
             }
-        }
-
-        public static FrontalFaceDetector GetFrontalFaceDetector()
-        {
-            var ret = Native.get_frontal_face_detector();
-            return new FrontalFaceDetector(ret);
         }
 
         #region Overrides

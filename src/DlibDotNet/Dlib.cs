@@ -18,6 +18,12 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static FrontalFaceDetector GetFrontalFaceDetector()
+        {
+            var ret = FrontalFaceDetector.Native.get_frontal_face_detector();
+            return new FrontalFaceDetector(ret);
+        }
+
         public static Rectangle GetRect(HoughTransform houghTransform)
         {
             if (houghTransform == null)

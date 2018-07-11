@@ -73,7 +73,7 @@ namespace FaceLandmarkDetection.ViewModels
 
                    await Task.Run(() =>
                    {
-                       using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+                       using (var faceDetector = Dlib.GetFrontalFaceDetector())
                        using (var img = Dlib.LoadImage<RgbPixel>(path))
                        {
                            Dlib.PyramidUp(img);

@@ -28,7 +28,7 @@ namespace DnnFaceRecognition
 
             // The first thing we are going to do is load all our models.  First, since we need to
             // find faces in the image we will need a face detector:
-            using (var detector = FrontalFaceDetector.GetFrontalFaceDetector())
+            using (var detector = Dlib.GetFrontalFaceDetector())
             // We will also use a face landmarking model to align faces to a standard pose:  (see face_landmark_detection_ex.cpp for an introduction)
             using (var sp =  ShapePredictor.Deserialize("shape_predictor_5_face_landmarks.dat"))
             // And finally we load the DNN responsible for face recognition.

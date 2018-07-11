@@ -44,7 +44,7 @@ namespace FaceLandmarkDetection
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
                 return;
 
-            using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+            using (var faceDetector = Dlib.GetFrontalFaceDetector())
             using (var img = Dlib.LoadImage<RgbPixel>(path))
             {
                 Dlib.PyramidUp(img);
