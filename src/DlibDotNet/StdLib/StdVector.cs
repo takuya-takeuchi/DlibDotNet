@@ -87,7 +87,7 @@ namespace DlibDotNet
                 return this._Imp.GetElementPtr(this.NativePtr);
             }
         }
-        
+
         internal object[] Param
         {
             get;
@@ -976,7 +976,7 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 Dlib.Native.stdvector_rectangle_copy(ptr, dst);
-                return dst.Select(p => new Rectangle(p)).ToArray();
+                return dst.Select(p => new Rectangle(p, false)).ToArray();
             }
 
             #endregion
@@ -1160,7 +1160,7 @@ namespace DlibDotNet
 
         public IEnumerator<TItem> GetEnumerator()
         {
-            return ((IEnumerable<TItem>) this.ToArray()).GetEnumerator();
+            return ((IEnumerable<TItem>)this.ToArray()).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

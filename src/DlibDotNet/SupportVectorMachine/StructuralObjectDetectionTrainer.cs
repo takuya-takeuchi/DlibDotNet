@@ -75,6 +75,7 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+            this._Imp?.Dispose();
         }
 
         #endregion
