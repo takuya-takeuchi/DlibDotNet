@@ -178,16 +178,124 @@ DLLEXPORT void* array_matrix_new1(matrix_element_type type, uint32_t new_size)
     }
 }
 
-DLLEXPORT void array_delete(void* obj)
+DLLEXPORT void array_delete_pixel(array2d_type type, void* array)
 {
-    // dlib::array is template type.
-    // Ex. dlib::array<dlib::matrix<float, 31, 1>> does NOT equal to dlib::array<dlib::matrix<float>>
-    // Template argument is decided in compile time rather than runtime.
-    // So we can not specify template argument as variable.
-    // In other words, we have to call delete for void* because we do not known exact type.
-    // Unfortunately, dlib::array implement destructor.
-    // What should we do?
-    delete obj;
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			delete ((dlib::array<uint8_t>*)array);
+			break;
+        case array2d_type::UInt16:
+			delete ((dlib::array<uint16_t>*)array);
+			break;
+        case array2d_type::UInt32:
+			delete ((dlib::array<uint32_t>*)array);
+			break;
+        case array2d_type::Int8:
+			delete ((dlib::array<int8_t>*)array);
+			break;
+        case array2d_type::Int16:
+			delete ((dlib::array<int16_t>*)array);
+			break;
+        case array2d_type::Int32:
+			delete ((dlib::array<int32_t>*)array);
+			break;
+        case array2d_type::Float:
+			delete ((dlib::array<float>*)array);
+			break;
+        case array2d_type::Double:
+			delete ((dlib::array<double>*)array);
+			break;
+        case array2d_type::RgbPixel:
+			delete ((dlib::array<rgb_pixel>*)array);
+			break;
+        case array2d_type::HsiPixel:
+			delete ((dlib::array<hsi_pixel>*)array);
+			break;
+        case array2d_type::RgbAlphaPixel:
+			delete ((dlib::array<rgb_alpha_pixel>*)array);
+			break;
+    }
+}
+
+DLLEXPORT void array_delete_array2d(array2d_type type, void* array)
+{
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			delete ((dlib::array<array2d<uint8_t>>*)array);
+			break;
+        case array2d_type::UInt16:
+			delete ((dlib::array<array2d<uint16_t>>*)array);
+			break;
+        case array2d_type::UInt32:
+			delete ((dlib::array<array2d<uint32_t>>*)array);
+			break;
+        case array2d_type::Int8:
+			delete ((dlib::array<array2d<int8_t>>*)array);
+			break;
+        case array2d_type::Int16:
+			delete ((dlib::array<array2d<int16_t>>*)array);
+			break;
+        case array2d_type::Int32:
+			delete ((dlib::array<array2d<int32_t>>*)array);
+			break;
+        case array2d_type::Float:
+			delete ((dlib::array<array2d<float>>*)array);
+			break;
+        case array2d_type::Double:
+			delete ((dlib::array<array2d<double>>*)array);
+			break;
+        case array2d_type::RgbPixel:
+			delete ((dlib::array<array2d<rgb_pixel>>*)array);
+			break;
+        case array2d_type::HsiPixel:
+			delete ((dlib::array<array2d<hsi_pixel>>*)array);
+			break;
+        case array2d_type::RgbAlphaPixel:
+			delete ((dlib::array<array2d<rgb_alpha_pixel>>*)array);
+			break;
+    }
+}
+
+DLLEXPORT void array_delete_matrix(matrix_element_type type, void* array)
+{
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+			delete ((dlib::array<matrix<uint8_t>>*)array);
+			break;
+        case matrix_element_type::UInt16:
+			delete ((dlib::array<matrix<uint16_t>>*)array);
+			break;
+        case matrix_element_type::UInt32:
+			delete ((dlib::array<matrix<uint32_t>>*)array);
+			break;
+        case matrix_element_type::Int8:
+			delete ((dlib::array<matrix<int8_t>>*)array);
+			break;
+        case matrix_element_type::Int16:
+			delete ((dlib::array<matrix<int16_t>>*)array);
+			break;
+        case matrix_element_type::Int32:
+			delete ((dlib::array<matrix<int32_t>>*)array);
+			break;
+        case matrix_element_type::Float:
+			delete ((dlib::array<matrix<float>>*)array);
+			break;
+        case matrix_element_type::Double:
+			delete ((dlib::array<matrix<double>>*)array);
+			break;
+        case matrix_element_type::RgbPixel:
+			delete ((dlib::array<matrix<rgb_pixel>>*)array);
+			break;
+        case matrix_element_type::HsiPixel:
+			delete ((dlib::array<matrix<hsi_pixel>>*)array);
+			break;
+        case matrix_element_type::RgbAlphaPixel:
+			delete ((dlib::array<matrix<rgb_alpha_pixel>>*)array);
+			break;
+    }
 }
 
 #endif

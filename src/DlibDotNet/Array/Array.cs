@@ -169,7 +169,18 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            Dlib.Native.array_delete(this.NativePtr);
+            switch (this._ItemType)
+            {
+                case ItemTypes.PixelType:
+                    Dlib.Native.array_delete_pixel(this._Array2DType, this.NativePtr);
+                    break;
+                case ItemTypes.Array2D:
+                    Dlib.Native.array_delete_array2d(this._Array2DType, this.NativePtr);
+                    break;
+                case ItemTypes.Matrix:
+                    Dlib.Native.array_delete_matrix(this._MatrixElementType.ToNativeMatrixElementType(), this.NativePtr);
+                    break;
+            }
         }
 
         #endregion

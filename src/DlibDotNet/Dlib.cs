@@ -608,7 +608,13 @@ namespace DlibDotNet
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array_delete(IntPtr point);
+            public static extern void array_delete_pixel(Array2DType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array_delete_array2d(Array2DType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array_delete_matrix(MatrixElementType type, IntPtr array);
 
             #endregion
 
