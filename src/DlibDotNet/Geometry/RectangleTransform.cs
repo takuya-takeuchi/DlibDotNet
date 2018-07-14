@@ -65,6 +65,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.rectangle_transform_delete(this.NativePtr);
         }
 

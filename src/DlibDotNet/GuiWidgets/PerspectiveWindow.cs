@@ -336,6 +336,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.perspective_window_delete(this.NativePtr);
         }
 

@@ -166,6 +166,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Dlib.Native.running_stats_delete(this._RunningStatsType, this.NativePtr);
         }
 

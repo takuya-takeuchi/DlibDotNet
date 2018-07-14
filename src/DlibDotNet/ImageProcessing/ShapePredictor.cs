@@ -92,6 +92,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.shape_predictor_delete(this.NativePtr);
         }
 

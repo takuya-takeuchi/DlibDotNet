@@ -378,6 +378,10 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Native.point_delete(this.NativePtr);
             }
 

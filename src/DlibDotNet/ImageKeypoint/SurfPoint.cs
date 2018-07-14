@@ -71,6 +71,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.surf_point_delete(this.NativePtr);
         }
 
@@ -210,8 +214,10 @@ namespace DlibDotNet
                 // Do Not call base.DisposeUnmanaged.
                 // Because base.DisposeUnmanaged calls array2d_matrix_delete and it corrupts memory
                 //base.DisposeUnmanaged();
-                if (!this.IsDisposed)
-                    Dlib.Native.matrix_delete(this._MatrixElementType, this.NativePtr, 64, 1);
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                Dlib.Native.matrix_delete(this._MatrixElementType, this.NativePtr, 64, 1);
             }
 
             #endregion

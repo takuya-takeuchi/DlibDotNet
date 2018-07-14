@@ -125,8 +125,10 @@ namespace DlibDotNet
         {
             base.DisposeUnmanaged();
 
-            if (!this.IsDisposed)
-                this._Imp.Dispose();
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            this._Imp.Dispose();
         }
 
         #endregion
@@ -334,11 +336,13 @@ namespace DlibDotNet
             {
                 base.DisposeUnmanaged();
 
-                if (!this.IsDisposed)
-                    Dlib.Native.object_detector_scan_fhog_pyramid_delete(this._PyramidType,
-                                                                         this._PyramidRate,
-                                                                         this._FeatureExtractorType,
-                                                                         this.NativePtr);
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                Dlib.Native.object_detector_scan_fhog_pyramid_delete(this._PyramidType,
+                                                                     this._PyramidRate,
+                                                                     this._FeatureExtractorType,
+                                                                     this.NativePtr);
             }
 
             #endregion

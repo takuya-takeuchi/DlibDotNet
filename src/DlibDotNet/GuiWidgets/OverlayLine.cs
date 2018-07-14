@@ -86,6 +86,10 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Native.image_window_overlay_line_delete(this.NativePtr);
             }
 

@@ -171,6 +171,10 @@ namespace DlibDotNet.Dnn
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
         }
 
@@ -278,6 +282,10 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Native.dnn_output_uint32_t_delete(this.NativePtr);
             }
 

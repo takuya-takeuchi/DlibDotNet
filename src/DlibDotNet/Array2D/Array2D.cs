@@ -181,6 +181,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Dlib.Native.array2d_delete(this._Array2DType, this.NativePtr);
         }
 
@@ -231,6 +235,10 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Dlib.Native.array2d_row_delete(this._Type.ToNativeArray2DType(), this.NativePtr);
             }
 

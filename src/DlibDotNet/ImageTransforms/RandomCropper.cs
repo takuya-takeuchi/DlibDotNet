@@ -233,6 +233,10 @@ namespace DlibDotNet.ImageTransforms
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.random_cropper_delete(this.NativePtr);
         }
 
