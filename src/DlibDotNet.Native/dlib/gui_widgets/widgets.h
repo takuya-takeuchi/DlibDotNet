@@ -372,6 +372,11 @@ DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type typ
 
 #pragma endregion new
 
+DLLEXPORT void image_window_delete(image_window* window)
+{
+	delete window;
+}
+
 #pragma region add_overlay
 
 DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r, array2d_type type, void* p)
@@ -552,9 +557,9 @@ DLLEXPORT void image_window_clear_overlay(image_window* window)
     window->clear_overlay();
 }
 
-DLLEXPORT void image_window_delete(image_window* window)
+DLLEXPORT bool image_window_is_closed(image_window* window)
 {
-	delete window;
+    return window->is_closed();
 }
 
 #pragma region set_image
@@ -703,8 +708,6 @@ DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window, elem
 
 #pragma endregion set_image
 
-#pragma endregion image_window
-
 #pragma region image_window::overlay_line
 
 DLLEXPORT image_window::overlay_line* image_window_overlay_line_new()
@@ -758,6 +761,8 @@ DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::p
 } 
 
 #pragma endregion image_window::get_next_double_click 
+
+#pragma endregion image_window
 
 #pragma region perspective_window
 

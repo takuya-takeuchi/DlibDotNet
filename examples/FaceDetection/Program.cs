@@ -20,7 +20,7 @@ namespace FaceDetection
             }
 
             using (var win = new ImageWindow())
-            using (var detector = FrontalFaceDetector.GetFrontalFaceDetector())
+            using (var detector = Dlib.GetFrontalFaceDetector())
                 foreach (var file in args)
                     using (var img = Dlib.LoadImage<byte>(file))
                     {

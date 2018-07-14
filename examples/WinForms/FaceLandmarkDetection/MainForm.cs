@@ -27,7 +27,7 @@ namespace FaceLandmarkDetection
         public MainForm()
         {
             this.InitializeComponent();
-            this._ShapePredictor = new ShapePredictor("shape_predictor_68_face_landmarks.dat");
+            this._ShapePredictor = ShapePredictor.Deserialize("shape_predictor_68_face_landmarks.dat");
             this._BackgroundWorker = new BackgroundWorker();
             this._BackgroundWorker.DoWork += this.BackgroundWorkerOnDoWork;
         }
@@ -44,7 +44,7 @@ namespace FaceLandmarkDetection
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
                 return;
 
-            using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+            using (var faceDetector = Dlib.GetFrontalFaceDetector())
             using (var img = Dlib.LoadImage<RgbPixel>(path))
             {
                 Dlib.PyramidUp(img);

@@ -376,6 +376,13 @@ namespace DlibDotNet
             return ret;
         }
 
+        public bool IsClosed()
+        {
+            this.ThrowIfDisposed();
+
+            return Native.image_window_is_closed(this.NativePtr);
+        }
+
         public void SetImage(Array2DBase image)
         {
             this.ThrowIfDisposed();
@@ -448,6 +455,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Native.image_window_delete(this.NativePtr);
         }
 
@@ -583,12 +594,13 @@ namespace DlibDotNet
             public static extern void image_window_clear_overlay(IntPtr window);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool image_window_get_next_double_click(IntPtr window, out IntPtr p);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
             public static extern bool image_window_get_next_double_click2(IntPtr window, out IntPtr p, out uint mouseButton);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern bool image_window_is_closed(IntPtr window);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType image_window_set_image_array2d(IntPtr window, Dlib.Native.Array2DType type, IntPtr image);

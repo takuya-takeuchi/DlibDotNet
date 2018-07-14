@@ -42,7 +42,7 @@ namespace FaceDetection
 
             // DlibDotNet can create Array2D from file but this sample demonstrate
             // converting managed image class to dlib class and vice versa.
-            using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+            using (var faceDetector = Dlib.GetFrontalFaceDetector())
             using (var ms = new MemoryStream(File.ReadAllBytes(path)))
             using (var bitmap = (Bitmap)Image.FromStream(ms))
             {

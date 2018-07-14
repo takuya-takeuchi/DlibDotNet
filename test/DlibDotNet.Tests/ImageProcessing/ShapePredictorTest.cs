@@ -25,7 +25,7 @@ namespace DlibDotNet.Tests.ImageProcessing
         public void CreateShapePredictorFromFile()
         {
             var path = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
-            this._ShapePredictor = new ShapePredictor(path.FullName);
+            this._ShapePredictor = ShapePredictor.Deserialize(path.FullName);
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             if (this._ShapePredictor == null)
                 Assert.Fail("ShapePredictor is not initialized!!");
 
-            var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector();
+            var faceDetector = Dlib.GetFrontalFaceDetector();
             //Interpolation.PyramidUp(image);
 
             var path = this.GetDataFile("Lenna.jpg");
@@ -91,7 +91,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false}
             };
             
-            using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+            using (var faceDetector = Dlib.GetFrontalFaceDetector())
                 foreach (var input in tests)
                 {
                     var expectResult = input.ExpectResult;

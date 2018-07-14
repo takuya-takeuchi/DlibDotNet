@@ -15,7 +15,7 @@ namespace DlibDotNet.Tests.ImageProcessing
         [TestMethod]
         public void GetFrontalFaceDetector()
         {
-            this._FrontalFaceDetector = FrontalFaceDetector.GetFrontalFaceDetector();
+            this._FrontalFaceDetector = Dlib.GetFrontalFaceDetector();
         }
 
         [TestMethod]

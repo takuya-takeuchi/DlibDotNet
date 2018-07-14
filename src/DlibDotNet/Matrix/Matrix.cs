@@ -215,6 +215,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Dlib.Native.matrix_delete(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
         }
 

@@ -99,8 +99,14 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            if (!this.IsDisposed)
-                Dlib.Native.scan_fhog_pyramid_delete(this._PyramidType, this._PyramidRate, this._FeatureExtractorType, this.NativePtr);
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            Dlib.Native.scan_fhog_pyramid_delete(this._PyramidType, 
+                                                 this._PyramidRate,
+                                                 this._FeatureExtractorType,
+                                                 this.NativePtr);
         }
 
         internal override FHogPyramidParameter GetFHogPyramidParameter()

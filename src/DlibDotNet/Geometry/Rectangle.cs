@@ -57,12 +57,12 @@ namespace DlibDotNet
             }
         }
 
-        internal Rectangle(IntPtr ptr)
+        internal Rectangle(IntPtr ptr, bool isEnabledDispose = true)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
-            using (var native = new NativeRectangle(ptr))
+            using (var native = new NativeRectangle(ptr, isEnabledDispose))
             {
                 this._Left = native.Left;
                 this._Top = native.Top;
@@ -374,7 +374,8 @@ namespace DlibDotNet
                 this.NativePtr = Native.rectangle_new3(point.NativePtr);
             }
 
-            internal NativeRectangle(IntPtr ptr)
+            internal NativeRectangle(IntPtr ptr, bool isEnabledDispose = true) :
+                base(isEnabledDispose)
             {
                 if (ptr == IntPtr.Zero)
                     throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -675,8 +676,11 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
-                if (!this.IsDisposed)
-                    Native.rectangle_delete(this.NativePtr);
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                Native.rectangle_delete(this.NativePtr);
             }
 
             #endregion

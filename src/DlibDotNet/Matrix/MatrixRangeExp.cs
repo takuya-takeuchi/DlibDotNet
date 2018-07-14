@@ -126,6 +126,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             Dlib.Native.matrix_range_exp_delete(this.NativePtr);
         }
 

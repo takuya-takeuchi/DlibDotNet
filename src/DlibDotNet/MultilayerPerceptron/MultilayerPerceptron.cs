@@ -104,6 +104,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
             Dlib.Native.mlp_kernel_delete(kernelType, this.NativePtr);
         }

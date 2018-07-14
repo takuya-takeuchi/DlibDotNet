@@ -171,8 +171,11 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
-            if (!this.IsDisposed)
-                Dlib.Native.array2d_matrix_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            Dlib.Native.array2d_matrix_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
         }
 
         #endregion
@@ -220,6 +223,10 @@ namespace DlibDotNet
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Dlib.Native.array2d_matrix_row_delete(this._Type, this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns);
             }
 

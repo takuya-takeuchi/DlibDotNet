@@ -46,7 +46,7 @@ namespace FaceDetection.ViewModels
 
                    await Task.Run(() =>
                    {
-                       using (var faceDetector = FrontalFaceDetector.GetFrontalFaceDetector())
+                       using (var faceDetector = Dlib.GetFrontalFaceDetector())
                        using (var data = new MemoryStream(File.ReadAllBytes(path)))
                        {
                            // DlibDotNet can create Array2D from file but this sample demonstrate

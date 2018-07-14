@@ -139,6 +139,10 @@ namespace DlibDotNet
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             switch (this._ElementType)
             {
                 case Dlib.Native.ElementType.OpHeatmap:

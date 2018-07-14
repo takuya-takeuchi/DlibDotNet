@@ -85,8 +85,10 @@ namespace DlibDotNet.Dnn
         {
             base.DisposeUnmanaged();
 
-            if (!this.IsDisposed)
-                this._Imp.Dispose();
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            this._Imp.Dispose();
         }
 
         #endregion
@@ -162,6 +164,10 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Dlib.Native.dnn_trainer_loss_metric_delete(this.NativePtr, this.NetworkType);
             }
 
@@ -224,6 +230,10 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Dlib.Native.dnn_trainer_loss_mmod_delete(this.NativePtr, this.NetworkType);
             }
 
@@ -286,6 +296,10 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Dlib.Native.dnn_trainer_loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
             }
 
@@ -343,6 +357,10 @@ namespace DlibDotNet.Dnn
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
                 Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_delete(this.NativePtr, this.NetworkType);
             }
 

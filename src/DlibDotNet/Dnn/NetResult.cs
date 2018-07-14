@@ -74,6 +74,10 @@ namespace DlibDotNet.Dnn
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
             foreach (var item in this._Array.Cast<IDisposable>().Where(m => m != null))
                 item.Dispose();
 
