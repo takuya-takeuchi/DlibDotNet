@@ -62,6 +62,34 @@ do {\
     }\
 } while (0)
 
+#define pyramid_down_rect_down_template(pyramid_rate, pyramid, rect, ret) \
+do {\
+    pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
+    auto r = pyr.rect_down(*rect);\
+    *ret = new drectangle(r);\
+} while (0)
+
+#define pyramid_down_rect_down2_template(pyramid_rate, pyramid, rect, levels, ret) \
+do {\
+    pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
+    auto r = pyr.rect_down(*rect, levels);\
+    *ret = new drectangle(r);\
+} while (0)
+
+#define pyramid_down_rect_up_template(pyramid_rate, pyramid, rect, ret) \
+do {\
+    pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
+    auto r = pyr.rect_up(*rect);\
+    *ret = new drectangle(r);\
+} while (0)
+
+#define pyramid_down_rect_up2_template(pyramid_rate, pyramid, rect, levels, ret) \
+do {\
+    pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
+    auto r = pyr.rect_up(*rect, levels);\
+    *ret = new drectangle(r);\
+} while (0)
+
 #pragma endregion template
 
 DLLEXPORT int create_tiled_pyramid(const matrix_element_type element_type,
@@ -163,6 +191,193 @@ DLLEXPORT int create_tiled_pyramid(const matrix_element_type element_type,
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            break;
+    }
+
+    return err;
+}
+
+#pragma region pyramid_down
+
+#pragma endregion pyramid_down
+
+DLLEXPORT int pyramid_down_new(const unsigned int pyramid_rate,
+                               void** ret)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            *ret = new pyramid_down<1>();
+            break;
+        case 2:
+            *ret = new pyramid_down<2>();
+            break;
+        case 3:
+            *ret = new pyramid_down<3>();
+            break;
+        case 4:
+            *ret = new pyramid_down<4>();
+            break;
+        case 6:
+            *ret = new pyramid_down<6>();
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT void pyramid_down_delete(const unsigned int pyramid_rate,
+                                   void* pyramid)
+{
+    switch(pyramid_rate)
+    {
+        case 1:
+            delete ((pyramid_down<1>*)pyramid);
+            break;
+        case 2:
+            delete ((pyramid_down<2>*)pyramid);
+            break;
+        case 3:
+            delete ((pyramid_down<3>*)pyramid);
+            break;
+        case 4:
+            delete ((pyramid_down<4>*)pyramid);
+            break;
+        case 6:
+            delete ((pyramid_down<6>*)pyramid);
+            break;
+    }
+}
+
+DLLEXPORT int pyramid_down_rect_down(void* pyramid,
+                                     const unsigned int pyramid_rate,
+                                     drectangle* rect,
+                                     drectangle** ret)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_down_template(1, pyramid, rect, ret);
+            break;
+        case 2:
+            pyramid_down_rect_down_template(2, pyramid, rect, ret);
+            break;
+        case 3:
+            pyramid_down_rect_down_template(3, pyramid, rect, ret);
+            break;
+        case 4:
+            pyramid_down_rect_down_template(4, pyramid, rect, ret);
+            break;
+        case 6:
+            pyramid_down_rect_down_template(6, pyramid, rect, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int pyramid_down_rect_down2(void* pyramid,
+                                      const unsigned int pyramid_rate,
+                                      drectangle* rect,
+                                      unsigned int levels,
+                                      drectangle** ret)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_down2_template(1, pyramid, rect, levels, ret);
+            break;
+        case 2:
+            pyramid_down_rect_down2_template(2, pyramid, rect, levels, ret);
+            break;
+        case 3:
+            pyramid_down_rect_down2_template(3, pyramid, rect, levels, ret);
+            break;
+        case 4:
+            pyramid_down_rect_down2_template(4, pyramid, rect, levels, ret);
+            break;
+        case 6:
+            pyramid_down_rect_down2_template(6, pyramid, rect, levels, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int pyramid_down_rect_up(void* pyramid,
+                                   const unsigned int pyramid_rate,
+                                   drectangle* rect,
+                                   drectangle** ret)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_up_template(1, pyramid, rect, ret);
+            break;
+        case 2:
+            pyramid_down_rect_up_template(2, pyramid, rect, ret);
+            break;
+        case 3:
+            pyramid_down_rect_up_template(3, pyramid, rect, ret);
+            break;
+        case 4:
+            pyramid_down_rect_up_template(4, pyramid, rect, ret);
+            break;
+        case 6:
+            pyramid_down_rect_up_template(6, pyramid, rect, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int pyramid_down_rect_up2(void* pyramid,
+                                    const unsigned int pyramid_rate,
+                                    drectangle* rect,
+                                    unsigned int levels,
+                                    drectangle** ret)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_up2_template(1, pyramid, rect, levels, ret);
+            break;
+        case 2:
+            pyramid_down_rect_up2_template(2, pyramid, rect, levels, ret);
+            break;
+        case 3:
+            pyramid_down_rect_up2_template(3, pyramid, rect, levels, ret);
+            break;
+        case 4:
+            pyramid_down_rect_up2_template(4, pyramid, rect, levels, ret);
+            break;
+        case 6:
+            pyramid_down_rect_up2_template(6, pyramid, rect, levels, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
             break;
     }
 

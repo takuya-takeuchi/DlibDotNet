@@ -16,12 +16,14 @@ using namespace std;
 
 #pragma region template
 
+#define PYRAMID_TYPE PYRAMID_TYPE
 #define FUNCTION function
 #define ELEMENT_IN element
 #define ELEMENT_OUT element
 #undef FUNCTION
 #undef ELEMENT_IN
 #undef ELEMENT_OUT
+#undef PYRAMID_TYPE
 
 #define add_image_left_right_flips_template(images, objects) \
 do { \
@@ -750,6 +752,51 @@ do { \
     }\
 } while (0)
 
+#define pyramid_up_pyramid_matrix_template(pyramid_rate, image) \
+do { \
+    switch(pyramid_rate)\
+    {\
+        case 1:\
+            {\
+                const PYRAMID_TYPE<1> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 2:\
+            {\
+                const PYRAMID_TYPE<2> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 3:\
+            {\
+                const PYRAMID_TYPE<3> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 4:\
+            {\
+                const PYRAMID_TYPE<4> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 6:\
+            {\
+                const PYRAMID_TYPE<6> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        default:\
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            break;\
+    }\
+} while (0)
+
 #pragma endregion template
 
 #pragma region add_image_left_right_flips
@@ -964,6 +1011,90 @@ DLLEXPORT int pyramid_up_matrix(matrix_element_type type, void* img)
     #define FUNCTION pyramid_up
     interpolation_matrix_template(err, type, img);
     #undef FUNCTION
+
+    return err;
+}
+
+DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type, 
+                                        const unsigned int pyramid_rate,
+                                        matrix_element_type element_type,
+                                        void* image)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_type)
+    {
+        case pyramid_type::Down:
+            {
+                #define PYRAMID_TYPE pyramid_down
+                switch(element_type)
+                {
+                    case matrix_element_type::UInt8:
+                        #define ELEMENT_IN uint8_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);                                
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::UInt16:
+                        #define ELEMENT_IN uint16_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::UInt32:
+                        #define ELEMENT_IN uint32_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Int8:
+                        #define ELEMENT_IN int8_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Int16:
+                        #define ELEMENT_IN int16_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Int32:
+                        #define ELEMENT_IN int32_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Float:
+                        #define ELEMENT_IN float
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Double:
+                        #define ELEMENT_IN double
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::RgbPixel:
+                        #define ELEMENT_IN rgb_pixel
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::HsiPixel:
+                        #define ELEMENT_IN hsi_pixel
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::RgbAlphaPixel:
+                        #define ELEMENT_IN rgb_alpha_pixel
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    default:
+                        err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                        break;
+                }
+                #undef PYRAMID_TYPE
+            }
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            break;  
+    }
 
     return err;
 }

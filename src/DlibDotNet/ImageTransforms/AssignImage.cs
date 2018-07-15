@@ -199,6 +199,26 @@ namespace DlibDotNet
             }
         }
 
+        public static void AssignImage(MatrixBase src, MatrixBase dest)
+        {
+            if (src == null)
+                throw new ArgumentNullException(nameof(src));
+            if (dest == null)
+                throw new ArgumentNullException(nameof(dest));
+
+            src.ThrowIfDisposed(nameof(src));
+            dest.ThrowIfDisposed(nameof(dest));
+
+            var inType = src.MatrixElementType.ToNativeMatrixElementType();
+            var outType = dest.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.assign_image_matrix(outType, dest.NativePtr, inType, src.NativePtr);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{outType} is not supported.");
+            }
+        }
+
         #endregion
 
         internal sealed partial class Native
@@ -236,6 +256,12 @@ namespace DlibDotNet
                                                         IntPtr out_img,
                                                         Array2DType in_type,
                                                         IntPtr in_img);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType assign_image_matrix(MatrixElementType out_type,
+                                                               IntPtr out_img,
+                                                               MatrixElementType in_type,
+                                                               IntPtr in_img);
 
         }
 

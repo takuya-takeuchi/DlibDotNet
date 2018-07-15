@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DlibDotNet
 {
 
-    public abstract class Pyramid
+    public abstract class Pyramid : DlibObject
     {
 
         #region Fields
@@ -25,13 +25,18 @@ namespace DlibDotNet
 
         #region Methods
 
+        public abstract DRectangle RectDown(DRectangle rect);
+
+        public abstract DRectangle RectDown(DRectangle rect, uint levels);
+
+        public abstract DRectangle RectUp(DRectangle rect);
+
+        public abstract DRectangle RectUp(DRectangle rect, uint levels);
+
         internal static bool TryGetSupportPyramidType<T>(out Dlib.Native.PyramidType type)
         {
             return SupportPyramidType.TryGetValue(typeof(T), out type);
         }
-
-        #region Helpers
-        #endregion
 
         #endregion
 

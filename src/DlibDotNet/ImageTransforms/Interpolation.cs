@@ -306,6 +306,30 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.MatrixElementType} is not supported.");
         }
 
+        public static void PyramidUp<T>(MatrixBase image, uint pyramidRate)
+            where T : Pyramid
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed(nameof(image));
+
+            var type = image.MatrixElementType.ToNativeMatrixElementType();
+            Pyramid.TryGetSupportPyramidType<T>(out var pyramidType);
+            var ret = Native.pyramid_up_pyramid_matrix(pyramidType,
+                                                       pyramidRate,
+                                                       type,
+                                                       image.NativePtr);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                case Native.ErrorType.PyramidNotSupportType:
+                case Native.ErrorType.PyramidNotSupportRate:
+                    throw new NotSupportedException();
+            }
+        }
+
         public static void ResizeImage(Array2DBase inputImage, double scale)
         {
             if (inputImage == null)
@@ -488,6 +512,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType pyramid_up_matrix(MatrixElementType type, IntPtr img);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType pyramid_up_pyramid_matrix(PyramidType pyramid_type,
+                                                                     uint pyramid_rate,
+                                                                     MatrixElementType elementType,
+                                                                     IntPtr image);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType resize_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
