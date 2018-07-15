@@ -23,7 +23,7 @@ namespace DlibDotNet
         
         #region Methods
 
-        public Rectangle[] Detect(Array2DBase image, double threshold = 0d)
+        public Rectangle[] Operator(Array2DBase image, double threshold = 0d)
         {
             this.ThrowIfDisposed();
 
@@ -46,7 +46,7 @@ namespace DlibDotNet
             }
         }
 
-        public Rectangle[] Detect(MatrixBase image, double threshold = 0d)
+        public Rectangle[] Operator(MatrixBase image, double threshold = 0d)
         {
             this.ThrowIfDisposed();
 

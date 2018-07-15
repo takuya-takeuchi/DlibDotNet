@@ -53,7 +53,7 @@ namespace WebcamFacePose
                             using (var cimg = Dlib.LoadImageData<RgbPixel>(array, (uint)temp.Height, (uint)temp.Width, (uint)(temp.Width * temp.ElemSize())))
                             {
                                 // Detect faces 
-                                var faces = detector.Detect(cimg);
+                                var faces = detector.Operator(cimg);
                                 // Find the pose of each face.
                                 var shapes = new List<FullObjectDetection>();
                                 for (var i = 0; i < faces.Length; ++i)

@@ -54,7 +54,7 @@ namespace FaceDetection.ViewModels
                            var bitmap = new WriteableBitmap(BitmapFrame.Create(data));
                            using (var image = bitmap.ToArray2D<RgbPixel>())
                            {
-                               var dets = faceDetector.Detect(image);
+                               var dets = faceDetector.Operator(image);
                                foreach (var r in dets)
                                    Dlib.DrawRectangle(image, r, new RgbPixel { Green = 255 });
 

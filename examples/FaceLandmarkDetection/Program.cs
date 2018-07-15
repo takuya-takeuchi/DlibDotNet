@@ -37,7 +37,7 @@ namespace FaceLandmarkDetection
                     {
                         Dlib.PyramidUp(img);
 
-                        var dets = detector.Detect(img);
+                        var dets = detector.Operator(img);
                         Console.WriteLine($"Number of faces detected: {dets.Length}");
 
                         var shapes = new List<FullObjectDetection>();

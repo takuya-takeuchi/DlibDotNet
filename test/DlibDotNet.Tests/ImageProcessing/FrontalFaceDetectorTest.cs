@@ -31,7 +31,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             
             //Interpolation.PyramidUp(image);
 
-            var dets = faceDetector.Detect(image);
+            var dets = faceDetector.Operator(image);
             Assert.AreEqual(dets.Length, 3);
 
             foreach (var r in dets)
@@ -74,7 +74,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var outputImageAction = new Func<bool, Rectangle[]>(expect =>
                 {
-                    dets = faceDetector.Detect(imageObj);
+                    dets = faceDetector.Operator(imageObj);
                     return dets;
                 });
 
