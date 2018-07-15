@@ -56,7 +56,7 @@ typedef unsigned long  train_label_type;
 #define ELEMENT element
 #undef ELEMENT
 
-#define operator_template(net, matrix, ret) \
+#define operator_template(net, matrix, batch_size, ret) \
 do {\
     std::vector<dlib::matrix<ELEMENT>*>& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(matrix));\
     std::vector<dlib::matrix<ELEMENT>> in_tmp;\
@@ -66,7 +66,7 @@ do {\
         in_tmp.push_back(mat);\
     }\
 \
-    std::vector<out_type> dets = net(in_tmp);\
+    std::vector<out_type> dets = net(in_tmp, batch_size);\
     *ret = new std::vector<out_type>(dets);\
 } while (0)
 
@@ -110,7 +110,14 @@ DLLEXPORT int loss_multiclass_log_new(const int type, void** net)
 
 // NOTE
 // ret is not std::vector<out_type*>** but std::vector<out_type>**!! It is important!!
-DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj, const int type, matrix_element_type element_type, void* matrix, int templateRows, int templateColumns, std::vector<out_type>** ret)
+DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj, 
+                                                   const int type, 
+                                                   matrix_element_type element_type,
+                                                   void* matrix, 
+                                                   int templateRows, 
+                                                   int templateColumns, 
+                                                   size_t batch_size, 
+                                                   std::vector<out_type>** ret)
 {
     int err = ERR_OK;
     
@@ -124,57 +131,57 @@ DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj, const int type, ma
                 {
                     case matrix_element_type::UInt8:
                         #define ELEMENT uint8_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::UInt16:
                         #define ELEMENT uint16_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::UInt32:
                         #define ELEMENT uint32_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Int8:
                         #define ELEMENT int8_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Int16:
                         #define ELEMENT int16_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Int32:
                         #define ELEMENT int32_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Float:
                         #define ELEMENT float
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Double:
                         #define ELEMENT double
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::RgbPixel:
                         #define ELEMENT rgb_pixel
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::HsiPixel:
                         #define ELEMENT hsi_pixel
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::RgbAlphaPixel:
                         #define ELEMENT rgb_alpha_pixel
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     default:

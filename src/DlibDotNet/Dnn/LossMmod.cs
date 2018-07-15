@@ -97,7 +97,7 @@ namespace DlibDotNet.Dnn
             }
         }
 
-        public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image)
+        public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
             where T : struct
         {
             if (image == null)
@@ -105,10 +105,10 @@ namespace DlibDotNet.Dnn
 
             image.ThrowIfDisposed();
 
-            return this.Operator(new[] { image });
+            return this.Operator(new[] { image }, batchSize);
         }
 
-        public OutputLabels<IEnumerable<MModRect>> Operator<T>(IEnumerable<Matrix<T>> images)
+        public OutputLabels<IEnumerable<MModRect>> Operator<T>(IEnumerable<Matrix<T>> images, ulong batchSize = 128)
             where T : struct
         {
             if (images == null)
@@ -133,6 +133,7 @@ namespace DlibDotNet.Dnn
                                                             vecIn.NativePtr,
                                                             templateRows,
                                                             templateColumns,
+                                                            batchSize,
                                                             out var vecOut);
 
                 switch (ret)
@@ -459,7 +460,14 @@ namespace DlibDotNet.Dnn
             public static extern Dlib.Native.ErrorType loss_mmod_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_mmod_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern Dlib.Native.ErrorType loss_mmod_operator_matrixs(IntPtr obj,
+                                                                                  int type,
+                                                                                  Dlib.Native.MatrixElementType element_type,
+                                                                                  IntPtr matrixs, 
+                                                                                  int templateRows,
+                                                                                  int templateColumns,
+                                                                                  ulong batchSize,
+                                                                                  out IntPtr ret);
 
         }
 
