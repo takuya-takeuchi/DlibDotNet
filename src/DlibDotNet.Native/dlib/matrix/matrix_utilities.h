@@ -18,6 +18,98 @@ using namespace std;
 #undef ELEMENT_IN
 #undef ELEMENT_OUT
 
+#define matrix_cast_template_sub(matrix, templateRows, templateColumns, destType, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN>& mat = *static_cast<dlib::matrix<ELEMENT_IN>*>(matrix);\
+        *ret = new dlib::matrix<destType>(dlib::matrix_cast<destType>(mat));\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
+        *ret = new dlib::matrix<destType, 0, 1>(dlib::matrix_cast<destType>(mat));\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        *ret = new dlib::matrix<destType, 31, 1>(dlib::matrix_cast<destType>(mat));\
+    }\
+} while (0)
+
+#define matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err) \
+do {\
+    switch(desttype)\
+    {\
+        case matrix_element_type::UInt8:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, uint8_t, ret);\
+            break;\
+        case matrix_element_type::UInt16:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, uint16_t, ret);\
+            break;\
+        case matrix_element_type::UInt32:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, uint32_t, ret);\
+            break;\
+        case matrix_element_type::Int8:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, int8_t, ret);\
+            break;\
+        case matrix_element_type::Int16:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, int16_t, ret);\
+            break;\
+        case matrix_element_type::Int32:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, int32_t, ret);\
+            break;\
+        case matrix_element_type::Float:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, float, ret);\
+            break;\
+        case matrix_element_type::Double:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, double, ret);\
+            break;\
+        default:\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
+#define matrix_cast_template_rgb_pixel(desttype, matrix, templateRows, templateColumns, ret, err) \
+do {\
+    switch(desttype)\
+    {\
+        case matrix_element_type::RgbPixel:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, rgb_pixel, ret);\
+            break;\
+        default:\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
+#define matrix_cast_template_hsi_pixel(desttype, matrix, templateRows, templateColumns, ret, err) \
+do {\
+    switch(desttype)\
+    {\
+        case matrix_element_type::HsiPixel:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, hsi_pixel, ret);\
+            break;\
+        default:\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
+#define matrix_cast_template_rgb_alpha_pixel(desttype, matrix, templateRows, templateColumns, ret, err) \
+do {\
+    switch(desttype)\
+    {\
+        case matrix_element_type::RgbAlphaPixel:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, rgb_alpha_pixel, ret);\
+            break;\
+        default:\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
 #define matrix_length_template(matrix, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -271,6 +363,70 @@ DLLEXPORT void* linspace(double start, double end, int num)
 {
     matrix_range_exp<double> ret = dlib::linspace(start, end, num);
     return new matrix_range_exp<double>(ret);
+}
+
+DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRows, int templateColumns, matrix_element_type desttype, void** ret) 
+{ 
+    int err = ERR_OK; 
+    switch(type) 
+    { 
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            break; 
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            matrix_cast_template_rgb_pixel(desttype, matrix, templateRows, templateColumns, ret, err);
+            break; 
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            matrix_cast_template_hsi_pixel(desttype, matrix, templateRows, templateColumns, ret, err);
+            break; 
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            matrix_cast_template_rgb_alpha_pixel(desttype, matrix, templateRows, templateColumns, ret, err);
+            break; 
+        default: 
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
+            break; 
+    } 
+ 
+    return err; 
 }
 
 DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int templateRows, int templateColumns, double* ret) 
