@@ -35,7 +35,7 @@ namespace DlibDotNet
             {
                 return this._NativePtr;
             }
-            protected set
+            internal set
             {
                 this._NativePtr = value;
             }

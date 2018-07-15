@@ -193,6 +193,31 @@ do {\
     }\
 } while (0)
 
+#define matrix_max_pointwise_matrix_template(matrix1, matrix2, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        matrix<ELEMENT_IN, 0, 0>& m1 = *static_cast<matrix<ELEMENT_IN, 0, 0>*>(matrix1);\
+        matrix<ELEMENT_IN, 0, 0>& m2 = *static_cast<matrix<ELEMENT_IN, 0, 0>*>(matrix2);\
+        auto p = dlib::max_pointwise(m1, m2);\
+        *ret = new dlib::matrix<ELEMENT_IN, 0, 0>(p);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        matrix<ELEMENT_IN, 0, 1>& m1 = *static_cast<matrix<ELEMENT_IN, 0, 1>*>(matrix1);\
+        matrix<ELEMENT_IN, 0, 1>& m2 = *static_cast<matrix<ELEMENT_IN, 0, 1>*>(matrix2);\
+        auto p = dlib::max_pointwise(m1, m2);\
+        *ret = new dlib::matrix<ELEMENT_IN, 0, 1>(p);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        matrix<ELEMENT_IN, 31, 1>& m1 = *static_cast<matrix<ELEMENT_IN, 31, 1>*>(matrix1);\
+        matrix<ELEMENT_IN, 31, 1>& m2 = *static_cast<matrix<ELEMENT_IN, 31, 1>*>(matrix2);\
+        auto p = dlib::max_pointwise(m1, m2);\
+        *ret = new dlib::matrix<ELEMENT_IN, 31, 1>(p);\
+    }\
+} while (0)
+
 #define matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret)\
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -406,6 +431,62 @@ DLLEXPORT int matrix_max_point(matrix_element_type type, void* matrix, dlib::poi
                 auto p = dlib::max_point(*mat_op);
                 *ret = new dlib::point(p);;
             }
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int matrix_max_pointwise_matrix(matrix_element_type type, void* matrix1, void* matrix2, void** ret)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            matrix_max_pointwise_matrix_template(matrix1, matrix2, 0, 0, ret);
+            #undef ELEMENT_IN
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:

@@ -6,14 +6,14 @@
 
 using namespace dlib;
 
-DLLEXPORT void deserialize(const char* file_name, std::istream* in)
+DLLEXPORT proxy_deserialize* proxy_deserialize_new(const char* file_name)
 {
-    //dlib::deserialize(*file_name, *in);
+    return new proxy_deserialize(file_name);
 }
 
-DLLEXPORT void serialize(const char* file_name, std::ostream* out)
+DLLEXPORT void proxy_deserialize_delete(proxy_deserialize* deserialize)
 {
-    //dlib::serialize(*file_name, *out);
+    delete deserialize;
 }
 
 #endif

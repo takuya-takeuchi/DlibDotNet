@@ -15,6 +15,12 @@ namespace DlibDotNet
 
         #endregion
 
+        #region Methods
+
+        void ThrowIfDisposed();
+
+        #endregion
+
     }
 
 }

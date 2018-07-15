@@ -23,15 +23,15 @@ namespace DlibDotNet
 
         #region Constructors
 
-        internal MatrixOp(Dlib.Native.ElementType elementType, ImageTypes type, IntPtr ptr, int templateRows = 0, int temlateColumns = 0)
+        internal MatrixOp(Dlib.Native.ElementType elementType, ImageTypes type, IntPtr ptr)
         {
             this._ElementType = elementType;
             this._Array2DType = type.ToNativeArray2DType();
             this.NativePtr = ptr;
             this._ImageType = type;
 
-            this.TemplateRows = templateRows;
-            this.TemplateColumns = temlateColumns;
+            this.TemplateRows = -1;
+            this.TemplateColumns = -1;
         }
 
         internal MatrixOp(Dlib.Native.ElementType elementType, MatrixElementTypes type, IntPtr ptr, int templateRows = 0, int temlateColumns = 0)
@@ -60,10 +60,16 @@ namespace DlibDotNet
                 switch (this._ElementType)
                 {
                     case Dlib.Native.ElementType.OpHeatmap:
-                        Native.matrix_op_op_heatmap_nc(this._Array2DType, this.NativePtr, out ret);
+                        if (this.TemplateRows == -1 && this.TemplateColumns == -1)
+                            Native.matrix_op_op_heatmap_nc(this._Array2DType, this.NativePtr, out ret);
+                        else
+                            Native.matrix_op_op_heatmap_nc_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                     case Dlib.Native.ElementType.OpJet:
-                        Native.matrix_op_op_jet_nc(this._Array2DType, this.NativePtr, out ret);
+                        if (this.TemplateRows == -1 && this.TemplateColumns == -1)
+                            Native.matrix_op_op_jet_nc(this._Array2DType, this.NativePtr, out ret);
+                        else
+                            Native.matrix_op_op_jet_nc_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                     case Dlib.Native.ElementType.OpArray2DToMat:
                         Native.matrix_op_op_array2d_to_mat_nc(this._Array2DType, this.NativePtr, out ret);
@@ -97,10 +103,16 @@ namespace DlibDotNet
                 switch (this._ElementType)
                 {
                     case Dlib.Native.ElementType.OpHeatmap:
-                        Native.matrix_op_op_heatmap_nr(this._Array2DType, this.NativePtr, out ret);
+                        if (this.TemplateRows == -1 && this.TemplateColumns == -1)
+                            Native.matrix_op_op_heatmap_nr(this._Array2DType, this.NativePtr, out ret);
+                        else
+                            Native.matrix_op_op_heatmap_nr_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                     case Dlib.Native.ElementType.OpJet:
-                        Native.matrix_op_op_jet_nr(this._Array2DType, this.NativePtr, out ret);
+                        if (this.TemplateRows == -1 && this.TemplateColumns == -1)
+                            Native.matrix_op_op_jet_nr(this._Array2DType, this.NativePtr, out ret);
+                        else
+                            Native.matrix_op_op_jet_nr_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                     case Dlib.Native.ElementType.OpArray2DToMat:
                         Native.matrix_op_op_array2d_to_mat_nr(this._Array2DType, this.NativePtr, out ret);
@@ -262,7 +274,13 @@ namespace DlibDotNet
             public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nc(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nc_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_jet_nc(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType matrix_op_op_jet_nc_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_std_vect_to_mat_nc(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
@@ -284,7 +302,13 @@ namespace DlibDotNet
             public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nr(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nr_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_jet_nr(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType matrix_op_op_jet_nr_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_std_vect_to_mat_nr(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
@@ -311,7 +335,7 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_std_vect_to_mat_operator_left_shift(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, IntPtr stream);
-            
+
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType matrix_op_op_trans_operator_left_shift(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, IntPtr stream);
 

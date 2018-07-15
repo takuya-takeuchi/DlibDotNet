@@ -92,6 +92,31 @@ namespace DlibDotNet
             return new Point(point);
         }
 
+        public static Matrix<T> MaxPointWise<T>(Matrix<T> matrix1, Matrix<T> matrix2)
+            where T : struct
+        {
+            if (matrix1 == null)
+                throw new ArgumentNullException(nameof(matrix1));
+            if (matrix2 == null)
+                throw new ArgumentNullException(nameof(matrix2));
+
+            matrix1.ThrowIfDisposed();
+            matrix2.ThrowIfDisposed();
+
+            Matrix<T>.TryParse<T>(out var type);
+            var ret = Native.matrix_max_pointwise_matrix(type.ToNativeMatrixElementType(),
+                                                         matrix1.NativePtr,
+                                                         matrix2.NativePtr,
+                                                         out var value);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return new Matrix<T>(value, matrix1.TemplateRows, matrix1.TemplateColumns);
+        }
+
         public static Matrix<T> Mean<T>(MatrixOp matrix)
             where T : struct
         {
@@ -157,6 +182,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_max_point(Array2DType array2DType, IntPtr matrix_op, out IntPtr point);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max_pointwise_matrix(MatrixElementType type, IntPtr matrix1, IntPtr matrix2, out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_trans(MatrixElementType elementType, IntPtr matrix, int templateRows, int templateColumns, out IntPtr matrix_op);

@@ -32,6 +32,11 @@
 
         public abstract void Clean();
 
+        internal abstract DPoint InputTensorToOutputTensor(DPoint p);
+
+        public abstract bool TryGetInputLayer<T>(T layer)
+            where T : Input;
+
         #endregion
 
     }

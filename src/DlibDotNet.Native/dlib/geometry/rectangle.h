@@ -9,6 +9,32 @@
 
 using namespace dlib;
 
+#pragma region template
+
+#define ELEMENT_IN element
+#undef ELEMENT_IN
+
+#define rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 0>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 0>*>(img);\
+        *ret = new rectangle(dlib::get_rect(m));\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(img);\
+        *ret = new rectangle(dlib::get_rect(m));\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(img);\
+        *ret = new rectangle(dlib::get_rect(m));\
+    }\
+} while (0)
+
+#pragma endregion template
+
 DLLEXPORT rectangle* rectangle_new()
 {
     return new rectangle();
@@ -200,6 +226,75 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
     return err;
 }
 
+DLLEXPORT int rectangle_get_rect_matrix(matrix_element_type type, void* img, const int templateRows, const int templateColumns, rectangle** ret)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+		case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+		case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+			break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
 DLLEXPORT rectangle* rectangle_translate_rect(rectangle* rect, point* p)
 {
     rectangle result = dlib::translate_rect(*rect, *p);
@@ -218,6 +313,15 @@ DLLEXPORT void* rectangle_operator_add(rectangle* rect, rectangle* rhs)
 {
     const rectangle result = *rect + *rhs;
     return new rectangle(result);
+}
+
+DLLEXPORT void* rectangle_operator_add_point(rectangle* rect, point* rhs)
+{
+    // rectangle r(*rect);
+    // point p(*rhs);
+    // r += p;    
+    *rect = *rect + rectangle(*rhs);
+    return new rectangle(*rect);
 }
 
 // DLLEXPORT void* rectangle_operator_sub(rectangle* rect, rectangle* rhs)

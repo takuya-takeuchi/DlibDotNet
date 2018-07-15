@@ -72,6 +72,33 @@ namespace DlibDotNet.Dnn
             return new LossMulticlassLog(ret, networkType);
         }
 
+        public static LossMulticlassLog Deserialize(ProxyDeserialize deserialize, int networkType = 0)
+        {
+            if (deserialize == null)
+                throw new ArgumentNullException(nameof(deserialize));
+
+            deserialize.ThrowIfDisposed();
+
+            var ret = Native.loss_multiclass_log_deserialize_proxy(deserialize.NativePtr, networkType);
+            return new LossMulticlassLog(ret, networkType);
+        }
+
+        public Subnet GetSubnet()
+        {
+            this.ThrowIfDisposed();
+
+            return new Subnet(this);
+        }
+
+        internal override DPoint InputTensorToOutputTensor(DPoint p)
+        {
+            using (var np = p.ToNative())
+            {
+                Native.loss_multiclass_log_input_tensor_to_output_tensor(this.NativePtr, this.NetworkType, np.NativePtr, out var ret);
+                return new DPoint(ret);
+            }
+        }
+
         public OutputLabels<OutputLabelType> Operator<T>(Matrix<T> image)
             where T : struct
         {
@@ -166,6 +193,11 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        public override bool TryGetInputLayer<T>(T layer)
+        {
+            throw new NotSupportedException();
+        }
+
         #region Overrides 
 
         protected override void DisposeUnmanaged()
@@ -216,6 +248,68 @@ namespace DlibDotNet.Dnn
         #endregion
 
         #endregion
+
+        public sealed class Subnet : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMulticlassLog _Parent;
+
+            private readonly IntPtr _NativePtr;
+
+            #endregion
+
+            #region Constructors
+
+            internal Subnet(LossMulticlassLog parent)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+
+                var err = Native.loss_multiclass_log_subnet(parent.NativePtr, parent.NetworkType, out var ret);
+                this.NativePtr = ret;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public Tensor Output
+            {
+                get
+                {
+                    this._Parent.ThrowIfDisposed();
+                    var tensor = Native.loss_multiclass_log_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
+                    return new Tensor(tensor);
+                }
+            }
+
+            #endregion
+
+            #region Methods
+
+            #region Overrids
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                Native.loss_multiclass_log_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+            }
+
+            #endregion
+
+            #endregion
+
+        }
 
         private sealed class Output : OutputLabels<OutputLabelType>
         {
@@ -334,13 +428,28 @@ namespace DlibDotNet.Dnn
             public static extern IntPtr loss_multiclass_log_deserialize(byte[] fileName, int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr loss_multiclass_log_deserialize_proxy(IntPtr proxy_deserialize, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void loss_multiclass_log_serialize(IntPtr obj, int type, byte[] fileName);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void loss_multiclass_log_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern int loss_multiclass_log_num_layers(int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void loss_multiclass_log_clean(int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_subnet(IntPtr net, int type, out IntPtr subnet);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void loss_multiclass_log_subnet_delete(int type, IntPtr subnet);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr loss_multiclass_log_subnet_get_output(IntPtr subnet, int type, out Dlib.Native.ErrorType ret);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType loss_multiclass_log_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);

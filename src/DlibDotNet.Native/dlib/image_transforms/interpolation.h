@@ -659,6 +659,25 @@ do { \
     *out_img = new dlib::matrix<ELEMENT_IN>(ret);\
 } while (0)
 
+#define resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 0>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 0>*>(matrix);\
+        dlib::resize_image(scale, m);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
+        dlib::resize_image(scale, m);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        dlib::resize_image(scale, m);\
+    }\
+} while (0)
+
 #define upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects) \
 do { \
     std::vector<dlib::matrix<ELEMENT_IN>*>& in_images = *(static_cast<std::vector<dlib::matrix<ELEMENT_IN>*>*>(images));\
@@ -1064,6 +1083,75 @@ DLLEXPORT int resize_image3(array2d_type type, void* img, double size_scale)
         case array2d_type::RgbAlphaPixel:
         default:
             err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int resize_image_matrix_scale(matrix_element_type type, void* matrix, int templateRows, int templateColumns, double scale)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

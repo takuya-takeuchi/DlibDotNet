@@ -324,6 +324,28 @@ namespace DlibDotNet
             }
         }
 
+        public static void ResizeImage(MatrixBase matrix, double scale)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+            if (scale <= 0)
+                throw new ArgumentException($"{nameof(scale)} is less than or equal to zero.", nameof(scale));
+
+            matrix.ThrowIfDisposed(nameof(matrix));
+
+            var inType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.resize_image_matrix_scale(inType,
+                                                       matrix.NativePtr,
+                                                       matrix.TemplateRows,
+                                                       matrix.TemplateColumns,
+                                                       scale);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+            }
+        }
+
         public static void ResizeImage(Array2DBase inputImage, Array2DBase outputImage, InterpolationTypes interpolationTypes = InterpolationTypes.Bilinear)
         {
             if (inputImage == null)
@@ -475,6 +497,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType resize_image3(Array2DType inType, IntPtr inImg, double scaleSize);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType resize_image_matrix_scale(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, double scaleSize);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType rotate_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg, double angle);

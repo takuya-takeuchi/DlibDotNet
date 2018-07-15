@@ -216,6 +216,24 @@ DLLEXPORT void* loss_multiclass_log_deserialize(const char* file_name, const int
     return nullptr;
 }
 
+DLLEXPORT void* loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy, const int type)
+{
+    // Check type argument and cast to the proper type    
+    switch(type)
+    {
+        case 0:
+            {
+                proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                net_type* net = new net_type();
+                p >> (*net);
+                return net;
+            }
+            break;
+        default:
+            return nullptr;
+    }
+}
+
 DLLEXPORT void loss_multiclass_log_serialize(void* obj, const int type, const char* file_name)
 {
     // Check type argument and cast to the proper type
@@ -242,6 +260,23 @@ DLLEXPORT int loss_multiclass_log_num_layers(const int type)
     return 0;
 }
 
+DLLEXPORT int loss_multiclass_log_subnet(void* obj, const int type, void** subnet)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type*>(obj);
+                auto sn = net->subnet();
+                *subnet = new net_type::subnet_type(sn);
+            }
+            break;
+    }
+
+    return 0;
+}
+
 DLLEXPORT void loss_multiclass_log_clean(void* obj, const int type)
 {
     // Check type argument and cast to the proper type
@@ -252,6 +287,59 @@ DLLEXPORT void loss_multiclass_log_clean(void* obj, const int type)
             break;
     }
 }
+
+DLLEXPORT void loss_multiclass_log_input_tensor_to_output_tensor(void* obj, const int type, dlib::dpoint* p, dlib::dpoint** ret)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type*>(obj);
+                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+                *ret = new dlib::dpoint(rp);
+            }
+            break;
+    }
+}
+
+#pragma region subnet
+
+DLLEXPORT void loss_multiclass_log_subnet_delete(const int type, void* subnet)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            {
+                auto sb = static_cast<net_type::subnet_type*>(subnet);
+                delete sb;
+            }
+            break;
+    }
+}
+
+DLLEXPORT const dlib::tensor* loss_multiclass_log_subnet_get_output(void* subnet, const int type, int* ret)
+{
+    // Check type argument and cast to the proper type
+    *ret = ERR_OK;
+
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type::subnet_type*>(subnet);
+                const dlib::tensor& tensor = net->get_output();
+                return &tensor;
+            }
+            break;
+    }
+
+    *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+    return nullptr;
+}
+
+#pragma endregion subnet
 
 #pragma region operator
 
