@@ -82,6 +82,37 @@ namespace DlibDotNet
             }
         }
 
+        public static Array<Matrix<T>> ExtractImageChips<T>(MatrixBase image, IEnumerable<ChipDetails> chipLocations)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (chipLocations == null)
+                throw new ArgumentNullException(nameof(chipLocations));
+            if (chipLocations.Any(chip => chip == null || chip.IsDisposed || !chip.IsValid()))
+                throw new ArgumentException($"{nameof(chipLocations)} includes invalid item.");
+
+            image.ThrowIfDisposed();
+
+            using (var vectorOfChips = new StdVector<ChipDetails>(chipLocations))
+            {
+                var array = new Array<Matrix<T>>();
+                var matrixElementType = image.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.extract_image_chips_matrix(matrixElementType,
+                                                            image.NativePtr,
+                                                            vectorOfChips.NativePtr,
+                                                            array.MatrixElementTypes.ToNativeMatrixElementType(),
+                                                            array.NativePtr);
+                switch (ret)
+                {
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                }
+
+                return array;
+            }
+        }
+
         public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
             where T : struct
         {
@@ -554,6 +585,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chips(Array2DType img_type, IntPtr in_img, IntPtr chip_locations, Array2DType array_type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_chips_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_locations, MatrixElementType array_type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chip_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, IntPtr out_chip);

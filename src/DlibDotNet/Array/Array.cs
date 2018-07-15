@@ -160,6 +160,8 @@ namespace DlibDotNet
 
         public ImageTypes ImageType => this._ArrayElementType;
 
+        public MatrixElementTypes MatrixElementTypes => this._MatrixElementType;
+
         #endregion
 
         #region Methods 

@@ -510,6 +510,47 @@ do { \
     }\
 } while (0)
 
+#define extract_image_chips_matrix_template(ret, in_type, in_img, chips, array) \
+do { \
+    ret = ERR_OK;\
+    switch(in_type)\
+    {\
+        case matrix_element_type::UInt8:\
+            dlib::extract_image_chips(*((dlib::matrix<uint8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::UInt16:\
+            dlib::extract_image_chips(*((dlib::matrix<uint16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::UInt32:\
+            dlib::extract_image_chips(*((dlib::matrix<uint32_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Int8:\
+            dlib::extract_image_chips(*((dlib::matrix<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Int16:\
+            dlib::extract_image_chips(*((dlib::matrix<int16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Int32:\
+            dlib::extract_image_chips(*((dlib::matrix<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Float:\
+            dlib::extract_image_chips(*((dlib::matrix<float>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Double:\
+            dlib::extract_image_chips(*((dlib::matrix<double>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            dlib::extract_image_chips(*((dlib::matrix<rgb_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            dlib::extract_image_chips(*((dlib::matrix<hsi_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        default:\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+			break;\
+    }\
+} while (0)
+
 #define extract_image_chip_template(ret, in_type, in_img, chip, out_chip) \
 do { \
     ret = ERR_OK;\
@@ -1592,6 +1633,79 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
             break;
         default:
             err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_image_chips_matrix(matrix_element_type img_type, void* in_img, std::vector<chip_details*>* chip_locations, matrix_element_type array_type, void* array)
+{
+    int err = ERR_OK;
+    
+    std::vector<chip_details> chips;
+    for (int index = 0 ; index < chip_locations->size(); index++)
+        chips.push_back(*(*chip_locations)[index]);
+
+    switch(array_type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_OUT dlib::matrix<uint8_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_OUT dlib::matrix<uint16_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_OUT dlib::matrix<uint32_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_OUT dlib::matrix<int8_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_OUT dlib::matrix<int16_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_OUT dlib::matrix<int32_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_OUT dlib::matrix<float>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Double:        
+            #define ELEMENT_OUT dlib::matrix<double>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_OUT dlib::matrix<rgb_pixel>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_OUT dlib::matrix<hsi_pixel>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_OUT dlib::matrix<rgb_alpha_pixel>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
