@@ -298,6 +298,8 @@ DLLEXPORT void array_delete_matrix(matrix_element_type type, void* array)
     }
 }
 
+#pragma region size
+
 DLLEXPORT int array_pixel_size(const array2d_type type, void* array, unsigned long* size)
 {
 	int err = ERR_OK;
@@ -438,5 +440,292 @@ DLLEXPORT int array_matrix_size(const matrix_element_type type, void* array, uns
 
 	return err;
 }
+
+#pragma endregion size
+
+#pragma region getitem
+
+DLLEXPORT int array_pixel_getitem_uint8(const array2d_type type, void* array, const unsigned int index, uint8_t* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			*item = *(((dlib::array<uint8_t>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_uint16(const array2d_type type, void* array, const unsigned int index, uint16_t* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt16:
+			*item = *(((dlib::array<uint16_t>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_uint32(const array2d_type type, void* array, const unsigned int index, uint32_t* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt32:
+			*item = *(((dlib::array<uint32_t>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_int8(const array2d_type type, void* array, const unsigned int index, int8_t* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::Int8:
+			*item = *(((dlib::array<int8_t>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_int16(const array2d_type type, void* array, const unsigned int index, int16_t* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::Int16:
+			*item = *(((dlib::array<int16_t>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_int32(const array2d_type type, void* array, const unsigned int index, int32_t* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::Int32:
+			*item = *(((dlib::array<int32_t>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_float(const array2d_type type, void* array, const unsigned int index, float* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::Float:
+			*item = *(((dlib::array<float>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_double(const array2d_type type, void* array, const unsigned int index, double* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::Double:
+			*item = *(((dlib::array<double>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_rgb_pixel(const array2d_type type, void* array, const unsigned int index, rgb_pixel* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::RgbPixel:
+			*item = *(((dlib::array<rgb_pixel>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_hsi_pixel(const array2d_type type, void* array, const unsigned int index, hsi_pixel* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::HsiPixel:
+			*item = *(((dlib::array<hsi_pixel>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_pixel_getitem_rgb_alpha_pixel(const array2d_type type, void* array, const unsigned int index, rgb_alpha_pixel* item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::RgbAlphaPixel:
+			*item = *(((dlib::array<rgb_alpha_pixel>*)array)->begin() + index);
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_array2d_getitem(const array2d_type type, void* array, const unsigned int index, void** item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			*item = ((dlib::array<array2d<uint8_t>>*)array)->begin() + index;
+			break;
+        case array2d_type::UInt16:
+			*item = ((dlib::array<array2d<uint16_t>>*)array)->begin() + index;
+			break;
+        case array2d_type::UInt32:
+			*item = ((dlib::array<array2d<uint32_t>>*)array)->begin() + index;
+			break;
+        case array2d_type::Int8:
+			*item = ((dlib::array<array2d<int8_t>>*)array)->begin() + index;
+			break;
+        case array2d_type::Int16:
+			*item = ((dlib::array<array2d<int16_t>>*)array)->begin() + index;
+			break;
+        case array2d_type::Int32:
+			*item = ((dlib::array<array2d<int32_t>>*)array)->begin() + index;
+			break;
+        case array2d_type::Float:
+			*item = ((dlib::array<array2d<float>>*)array)->begin() + index;
+			break;
+        case array2d_type::Double:
+			*item = ((dlib::array<array2d<double>>*)array)->begin() + index;
+			break;
+        case array2d_type::RgbPixel:
+			*item = ((dlib::array<array2d<rgb_pixel>>*)array)->begin() + index;
+			break;
+        case array2d_type::HsiPixel:
+			*item = ((dlib::array<array2d<hsi_pixel>>*)array)->begin() + index;
+			break;
+        case array2d_type::RgbAlphaPixel:
+			*item = ((dlib::array<array2d<rgb_alpha_pixel>>*)array)->begin() + index;
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_matrix_getitem(const matrix_element_type type, void* array, const unsigned int index, void** item)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+			*item = ((dlib::array<matrix<uint8_t>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::UInt16:
+			*item = ((dlib::array<matrix<uint16_t>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::UInt32:
+			*item = ((dlib::array<matrix<uint32_t>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::Int8:
+			*item = ((dlib::array<matrix<int8_t>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::Int16:
+			*item = ((dlib::array<matrix<int16_t>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::Int32:
+			*item = ((dlib::array<matrix<int32_t>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::Float:
+			*item = ((dlib::array<matrix<float>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::Double:
+			*item = ((dlib::array<matrix<double>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::RgbPixel:
+			*item = ((dlib::array<matrix<rgb_pixel>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::HsiPixel:
+			*item = ((dlib::array<matrix<hsi_pixel>>*)array)->begin() + index;
+			break;
+        case matrix_element_type::RgbAlphaPixel:
+			*item = ((dlib::array<matrix<rgb_alpha_pixel>>*)array)->begin() + index;
+			break;
+		default:
+			err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+#pragma endregion getitem
 
 #endif

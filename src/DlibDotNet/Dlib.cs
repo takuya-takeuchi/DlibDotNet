@@ -637,6 +637,39 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_pixel_size(Array2DType type, IntPtr array, out uint size);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_uint8(Array2DType type, IntPtr array, uint index, out uint8_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_uint16(Array2DType type, IntPtr array, uint index, out uint16_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_uint32(Array2DType type, IntPtr array, uint index, out uint32_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_int8(Array2DType type, IntPtr array, uint index, out int8_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_int16(Array2DType type, IntPtr array, uint index, out int16_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_int32(Array2DType type, IntPtr array, uint index, out int32_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_float(Array2DType type, IntPtr array, uint index, out float item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_double(Array2DType type, IntPtr array, uint index, out double item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_rgb_pixel(Array2DType type, IntPtr array, uint index, out RgbPixel item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_hsi_pixel(Array2DType type, IntPtr array, uint index, out HsiPixel item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_rgb_alpha_pixel(Array2DType type, IntPtr array, uint index, out RgbAlphaPixel item);
+
             #region array2d
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -650,6 +683,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_array2d_size(Array2DType type, IntPtr array, out uint size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_array2d_getitem(Array2DType type, IntPtr array, uint index, out IntPtr item);
 
             #endregion
 
@@ -666,6 +702,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_matrix_size(MatrixElementType type, IntPtr array, out uint size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_matrix_getitem(MatrixElementType type, IntPtr array, uint index, out IntPtr item);
 
             #endregion
 
