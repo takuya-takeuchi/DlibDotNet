@@ -155,7 +155,7 @@ namespace DlibDotNet
                         var types = typeof(T).GenericTypeArguments;
                         if (types.Length != 1)
                             throw new NotSupportedException($"{typeof(T).Name} does not support");
-                        if (!SupportMatrixElementTypes.TryGetValue(typeof(T), out this._MatrixElementType))
+                        if (!SupportMatrixElementTypes.TryGetValue(types[0], out this._MatrixElementType))
                             throw new NotSupportedException($"{typeof(T).Name} does not support");
 
                         var type = this._MatrixElementType.ToNativeMatrixElementType();
