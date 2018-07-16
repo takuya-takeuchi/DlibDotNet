@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
-    public sealed class Array<T> : DlibObject
-        where T : new()
+    public sealed class Array<T> : DlibObject, IEnumerable<T>
+        where T : DlibObject, new()
     {
 
         #region Fields
@@ -162,6 +164,31 @@ namespace DlibDotNet
 
         public MatrixElementTypes MatrixElementTypes => this._MatrixElementType;
 
+        public int Size
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                uint size = 0;
+                var error = Dlib.Native.ErrorType.OK;
+                switch (this._ItemType)
+                {
+                    case ItemTypes.PixelType:
+                        error = Dlib.Native.array_pixel_size(this._Array2DType, this.NativePtr, out size);
+                        break;
+                    case ItemTypes.Array2D:
+                        error = Dlib.Native.array_array2d_size(this._Array2DType, this.NativePtr, out size);
+                        break;
+                    case ItemTypes.Matrix:
+                        error = Dlib.Native.array_matrix_size(this._MatrixElementType.ToNativeMatrixElementType(), this.NativePtr, out size);
+                        break;
+                }
+
+                return (int)size;
+            }
+        }
+
         #endregion
 
         #region Methods 
@@ -203,6 +230,24 @@ namespace DlibDotNet
             Matrix
 
         }
+
+        #region IEnumerable<T> Members
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            //for (int i = 0, count = this.Size; i < count; i++)
+            //{
+
+            //}
+            return null;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion
 
     }
 

@@ -631,6 +631,12 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr array_new1(Array2DType type, uint newSize);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array_delete_pixel(Array2DType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_size(Array2DType type, IntPtr array, out uint size);
+
             #region array2d
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -638,6 +644,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr array_array2d_new1(Array2DType type, uint newSize);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array_delete_array2d(Array2DType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_array2d_size(Array2DType type, IntPtr array, out uint size);
 
             #endregion
 
@@ -649,16 +661,13 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr array_matrix_new1(MatrixElementType type, uint newSize);
 
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array_delete_pixel(Array2DType type, IntPtr array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array_delete_array2d(Array2DType type, IntPtr array);
-
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void array_delete_matrix(MatrixElementType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_matrix_size(MatrixElementType type, IntPtr array, out uint size);
+
+            #endregion
 
             #endregion
 

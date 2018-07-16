@@ -298,4 +298,145 @@ DLLEXPORT void array_delete_matrix(matrix_element_type type, void* array)
     }
 }
 
+DLLEXPORT int array_pixel_size(const array2d_type type, void* array, unsigned long* size)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			*size = ((dlib::array<uint8_t>*)array)->size();
+			break;
+        case array2d_type::UInt16:
+			*size = ((dlib::array<uint16_t>*)array)->size();
+			break;
+        case array2d_type::UInt32:
+			*size = ((dlib::array<uint32_t>*)array)->size();
+			break;
+        case array2d_type::Int8:
+			*size = ((dlib::array<int8_t>*)array)->size();
+			break;
+        case array2d_type::Int16:
+			*size = ((dlib::array<int16_t>*)array)->size();
+			break;
+        case array2d_type::Int32:
+			*size = ((dlib::array<int32_t>*)array)->size();
+			break;
+        case array2d_type::Float:
+			*size = ((dlib::array<float>*)array)->size();
+			break;
+        case array2d_type::Double:
+			*size = ((dlib::array<double>*)array)->size();
+			break;
+        case array2d_type::RgbPixel:
+			*size = ((dlib::array<rgb_pixel>*)array)->size();
+			break;
+        case array2d_type::HsiPixel:
+			*size = ((dlib::array<hsi_pixel>*)array)->size();
+			break;
+        case array2d_type::RgbAlphaPixel:
+			*size = ((dlib::array<rgb_alpha_pixel>*)array)->size();
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_array2d_size(const array2d_type type, void* array, unsigned long* size)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			*size = ((dlib::array<array2d<uint8_t>>*)array)->size();
+			break;
+        case array2d_type::UInt16:
+			*size = ((dlib::array<array2d<uint16_t>>*)array)->size();
+			break;
+        case array2d_type::UInt32:
+			*size = ((dlib::array<array2d<uint32_t>>*)array)->size();
+			break;
+        case array2d_type::Int8:
+			*size = ((dlib::array<array2d<int8_t>>*)array)->size();
+			break;
+        case array2d_type::Int16:
+			*size = ((dlib::array<array2d<int16_t>>*)array)->size();
+			break;
+        case array2d_type::Int32:
+			*size = ((dlib::array<array2d<int32_t>>*)array)->size();
+			break;
+        case array2d_type::Float:
+			*size = ((dlib::array<array2d<float>>*)array)->size();
+			break;
+        case array2d_type::Double:
+			*size = ((dlib::array<array2d<double>>*)array)->size();
+			break;
+        case array2d_type::RgbPixel:
+			*size = ((dlib::array<array2d<rgb_pixel>>*)array)->size();
+			break;
+        case array2d_type::HsiPixel:
+			*size = ((dlib::array<array2d<hsi_pixel>>*)array)->size();
+			break;
+        case array2d_type::RgbAlphaPixel:
+			*size = ((dlib::array<array2d<rgb_alpha_pixel>>*)array)->size();
+			break;
+		default:
+			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
+DLLEXPORT int array_matrix_size(const matrix_element_type type, void* array, unsigned long* size)
+{
+	int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+			*size = ((dlib::array<matrix<uint8_t>>*)array)->size();
+			break;
+        case matrix_element_type::UInt16:
+			*size = ((dlib::array<matrix<uint16_t>>*)array)->size();
+			break;
+        case matrix_element_type::UInt32:
+			*size = ((dlib::array<matrix<uint32_t>>*)array)->size();
+			break;
+        case matrix_element_type::Int8:
+			*size = ((dlib::array<matrix<int8_t>>*)array)->size();
+			break;
+        case matrix_element_type::Int16:
+			*size = ((dlib::array<matrix<int16_t>>*)array)->size();
+			break;
+        case matrix_element_type::Int32:
+			*size = ((dlib::array<matrix<int32_t>>*)array)->size();
+			break;
+        case matrix_element_type::Float:
+			*size = ((dlib::array<matrix<float>>*)array)->size();
+			break;
+        case matrix_element_type::Double:
+			*size = ((dlib::array<matrix<double>>*)array)->size();
+			break;
+        case matrix_element_type::RgbPixel:
+			*size = ((dlib::array<matrix<rgb_pixel>>*)array)->size();
+			break;
+        case matrix_element_type::HsiPixel:
+			*size = ((dlib::array<matrix<hsi_pixel>>*)array)->size();
+			break;
+        case matrix_element_type::RgbAlphaPixel:
+			*size = ((dlib::array<matrix<rgb_alpha_pixel>>*)array)->size();
+			break;
+		default:
+			err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+			break;
+    }
+
+	return err;
+}
+
 #endif
