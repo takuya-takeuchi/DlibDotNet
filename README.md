@@ -1,16 +1,23 @@
 # Dlib.Net
 .NET wrapper for DLib written in C++ and C#
 
-## Linux Demo
+## Demo
+
+### Linux
 <img src="images/linux.gif?raw=true" width="400x300" title="Video Tracking on Ubuntu"/>
 
-## MacOS Demo
+### MacOS
 <img src="images/mac.gif?raw=true" width="400x300" title="Video Tracking on MacOS"/>
 
-## Windows Demo
+### Windows
 <img src="images/win.gif?raw=true" width="400x200" title="Video Tracking on Windows"/>
 
-## Dependencies Libraries and Products (依存ライブラリとプロダクト)
+## Related Projects
+
+- [FaceRecognition.Net](https://github.com/takuya-takeuchi/FaceRecognitionDotNet)
+  - Face recognition .NET library uses Dlib.Net
+
+## Dependencies Libraries and Products
 
 #### [dlib](http://dlib.net/)
 
