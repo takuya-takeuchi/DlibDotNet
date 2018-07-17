@@ -49,7 +49,7 @@ namespace FaceLandmarkDetection
             {
                 Dlib.PyramidUp(img);
 
-                var dets = faceDetector.Detect(img);
+                var dets = faceDetector.Operator(img);
 
                 var shapes = new List<FullObjectDetection>();
                 foreach (var rect in dets)

@@ -13,6 +13,10 @@ namespace DlibDotNet
 
         UInt16,
 
+        UInt32,
+
+        Int8,
+
         Int16,
 
         Int32,

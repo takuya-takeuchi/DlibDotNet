@@ -8,6 +8,12 @@ namespace DlibDotNet
     public struct Rectangle : IEquatable<Rectangle>
     {
 
+        #region Fields
+
+        public static readonly Rectangle Empty = new Rectangle(0, 0, -1, -1);
+
+        #endregion
+
         #region Constructors
 
         public Rectangle(int left, int top, int right, int bottom)
@@ -306,6 +312,14 @@ namespace DlibDotNet
         }
 
         public static Rectangle operator +(Rectangle rect, Rectangle rhs)
+        {
+            using (var left = rect.ToNative())
+            using (var right = rhs.ToNative())
+            using (var ret = left + right)
+                return ret.ToManaged();
+        }
+
+        public static Rectangle operator +(Rectangle rect, Point rhs)
         {
             using (var left = rect.ToNative())
             using (var right = rhs.ToNative())
@@ -647,6 +661,20 @@ namespace DlibDotNet
                 return new NativeRectangle(ptr);
             }
 
+            public static NativeRectangle operator +(NativeRectangle rect, Point.NativePoint rhs)
+            {
+                if (rect == null)
+                    throw new ArgumentNullException(nameof(rect));
+                if (rhs == null)
+                    throw new ArgumentNullException(nameof(rhs));
+
+                rect.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                var ptr = Native.rectangle_operator_add_point(rect.NativePtr, rhs.NativePtr);
+                return new NativeRectangle(ptr);
+            }
+
             public static bool operator ==(NativeRectangle rect, NativeRectangle rhs)
             {
                 if (ReferenceEquals(rect, rhs))
@@ -791,6 +819,9 @@ namespace DlibDotNet
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr rectangle_operator_add(IntPtr rect, IntPtr rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr rectangle_operator_add_point(IntPtr rect, IntPtr rhs);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 [return: MarshalAs(UnmanagedType.U1)]

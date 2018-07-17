@@ -44,7 +44,7 @@ namespace DnnFaceRecognition
                 // copy that has been normalized to 150x150 pixels in size and appropriately rotated
                 // and centered.
                 var faces = new List<Matrix<RgbPixel>>();
-                foreach (var face in detector.Detect(img))
+                foreach (var face in detector.Operator(img))
                 {
                     var shape = sp.Detect(img, face);
                     var faceChipDetail = Dlib.GetFaceChipDetails(shape, 150, 0.25);

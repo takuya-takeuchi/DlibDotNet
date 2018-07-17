@@ -105,6 +105,130 @@ do { \
     ret = nullptr;\
 } while (0)
 
+#define image_window_new_matrix_op_template3_sub(img, element, templateRows, templateColumns, ret) \
+do { \
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>*>(img);\
+        ret = new image_window(op);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>*>(img);\
+        ret = new image_window(op);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>*>(img);\
+        ret = new image_window(op);\
+    }\
+} while (0)
+
+#define image_window_new_matrix_op_template3(type, img, templateRows, templateColumns, ret) \
+do { \
+    switch(type)\
+    {\
+        case matrix_element_type::UInt8:\
+            image_window_new_matrix_op_template3_sub(img, uint8_t, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::UInt16:\
+            image_window_new_matrix_op_template3_sub(img, uint16_t, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::UInt32:\
+            image_window_new_matrix_op_template3_sub(img, uint32_t, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::Int8:\
+            image_window_new_matrix_op_template3_sub(img, int8_t, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::Int16:\
+            image_window_new_matrix_op_template3_sub(img, int16_t, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::Int32:\
+            image_window_new_matrix_op_template3_sub(img, int32_t, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::Float:\
+            image_window_new_matrix_op_template3_sub(img, float, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::Double:\
+            image_window_new_matrix_op_template3_sub(img, double, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            image_window_new_matrix_op_template3_sub(img, rgb_pixel, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            image_window_new_matrix_op_template3_sub(img, hsi_pixel, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::RgbAlphaPixel:\
+            image_window_new_matrix_op_template3_sub(img, rgb_alpha_pixel, templateRows, templateColumns, ret);\
+            break;\
+        default:\
+            break;\
+    }\
+    ret = nullptr;\
+} while (0)
+
+#define image_window_new_matrix_op_template4_sub(img, element, templateRows, templateColumns, title, ret) \
+do { \
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>*>(img);\
+        ret = new image_window(op, title);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>*>(img);\
+        ret = new image_window(op, title);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>*>(img);\
+        ret = new image_window(op, title);\
+    }\
+} while (0)
+
+#define image_window_new_matrix_op_template4(type, img, templateRows, templateColumns, title, ret) \
+do { \
+    switch(type)\
+    {\
+        case matrix_element_type::UInt8:\
+            image_window_new_matrix_op_template4_sub(img, uint8_t, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::UInt16:\
+            image_window_new_matrix_op_template4_sub(img, uint16_t, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::UInt32:\
+            image_window_new_matrix_op_template4_sub(img, uint32_t, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::Int8:\
+            image_window_new_matrix_op_template4_sub(img, int8_t, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::Int16:\
+            image_window_new_matrix_op_template4_sub(img, int16_t, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::Int32:\
+            image_window_new_matrix_op_template4_sub(img, int32_t, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::Float:\
+            image_window_new_matrix_op_template4_sub(img, float, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::Double:\
+            image_window_new_matrix_op_template4_sub(img, double, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            image_window_new_matrix_op_template4_sub(img, rgb_pixel, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            image_window_new_matrix_op_template4_sub(img, hsi_pixel, templateRows, templateColumns, title, ret);\
+            break;\
+        case matrix_element_type::RgbAlphaPixel:\
+            image_window_new_matrix_op_template4_sub(img, rgb_alpha_pixel, templateRows, templateColumns, title, ret);\
+            break;\
+        default:\
+            break;\
+    }\
+    ret = nullptr;\
+} while (0)
+
 #define image_window_set_image_matrix_op_template(ret, window, type, image) \
 do { \
     switch(type)\
@@ -361,6 +485,59 @@ DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type typ
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
             image_window_new_matrix_op_template2(ret, type, image, title);
+            #undef ELEMENT
+            break;
+        default:
+            break;
+    }
+
+    return ret;
+}
+
+DLLEXPORT void* image_window_new_matrix_op3(element_type etype, 
+                                            matrix_element_type type,
+                                            void* img, 
+                                            const int templateRows,
+                                            const int templateColumns)
+{   
+    void* ret = nullptr;
+    switch(etype)
+    {
+        case element_type::OpHeatmap:
+            #define ELEMENT dlib::op_heatmap
+            image_window_new_matrix_op_template3(type, img, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case element_type::OpJet:
+            #define ELEMENT dlib::op_jet
+            image_window_new_matrix_op_template3(type, img, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        default:
+            break;
+    }
+
+    return ret;
+}
+
+DLLEXPORT void* image_window_new_matrix_op4(element_type etype, 
+                                            matrix_element_type type,
+                                            void* img, 
+                                            const int templateRows,
+                                            const int templateColumns,
+                                            const char* title)
+{   
+    void* ret = nullptr;
+    switch(etype)
+    {
+        case element_type::OpHeatmap:
+            #define ELEMENT dlib::op_heatmap
+            image_window_new_matrix_op_template4(type, img, templateRows, templateColumns, title, ret);
+            #undef ELEMENT
+            break;
+        case element_type::OpJet:
+            #define ELEMENT dlib::op_jet
+            image_window_new_matrix_op_template4(type, img, templateRows, templateColumns, title, ret);
             #undef ELEMENT
             break;
         default:

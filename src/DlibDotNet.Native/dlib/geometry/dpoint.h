@@ -61,6 +61,12 @@ DLLEXPORT void* dpoint_operator_mul(dlib::dpoint* point, double rhs)
     return new dlib::dpoint(result);
 }
 
+DLLEXPORT void* dpoint_operator_mul2(double lhs, dlib::dpoint* point)
+{
+    const dlib::dpoint result = (lhs) * (*point);
+    return new dlib::dpoint(result);
+}
+
 DLLEXPORT void* dpoint_operator_div(dlib::dpoint* point, double rhs)
 {
     const dlib::dpoint result = (*point) / (rhs);

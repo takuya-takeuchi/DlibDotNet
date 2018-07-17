@@ -10,6 +10,17 @@ namespace DlibDotNet
 
         #region Constructors
 
+        public DRectangle(Rectangle rect)
+        {
+            using (var native = new NativeDRectangle(rect.Left, rect.Top, rect.Right, rect.Bottom))
+            {
+                this._Left = native.Left;
+                this._Top = native.Top;
+                this._Right = native.Right;
+                this._Bottom = native.Bottom;
+            }
+        }
+
         public DRectangle(double left, double top, double right, double bottom)
         {
             using (var native = new NativeDRectangle(left, top, right, bottom))

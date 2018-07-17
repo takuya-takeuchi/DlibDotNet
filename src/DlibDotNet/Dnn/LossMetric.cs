@@ -70,7 +70,34 @@ namespace DlibDotNet.Dnn
             return new LossMetric(ret, networkType);
         }
 
-        public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image)
+        public static LossMetric Deserialize(ProxyDeserialize deserialize, int networkType = 0)
+        {
+            if (deserialize == null)
+                throw new ArgumentNullException(nameof(deserialize));
+
+            deserialize.ThrowIfDisposed();
+
+            var ret = Native.loss_metric_deserialize_proxy(deserialize.NativePtr, networkType);
+            return new LossMetric(ret, networkType);
+        }
+
+        public Subnet GetSubnet()
+        {
+            this.ThrowIfDisposed();
+
+            return new Subnet(this);
+        }
+
+        internal override DPoint InputTensorToOutputTensor(DPoint p)
+        {
+            using (var np = p.ToNative())
+            {
+                Native.loss_metric_input_tensor_to_output_tensor(this.NativePtr, this.NetworkType, np.NativePtr, out var ret);
+                return new DPoint(ret);
+            }
+        }
+
+        public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
             where T : struct
         {
             if (image == null)
@@ -78,10 +105,10 @@ namespace DlibDotNet.Dnn
 
             image.ThrowIfDisposed();
 
-            return this.Operator(new[] { image });
+            return this.Operator(new[] { image }, batchSize);
         }
 
-        public OutputLabels<Matrix<float>> Operator<T>(IEnumerable<Matrix<T>> images)
+        public OutputLabels<Matrix<float>> Operator<T>(IEnumerable<Matrix<T>> images, ulong batchSize = 128)
             where T : struct
         {
             if (images == null)
@@ -106,6 +133,7 @@ namespace DlibDotNet.Dnn
                                                               vecIn.NativePtr,
                                                               templateRows,
                                                               templateColumns,
+                                                              batchSize,
                                                               out var vecOut);
 
                 switch (ret)
@@ -129,6 +157,11 @@ namespace DlibDotNet.Dnn
 
             var str = Encoding.UTF8.GetBytes(path);
             Native.loss_metric_serialize(net.NativePtr, net.NetworkType, str);
+        }
+
+        public override bool TryGetInputLayer<T>(T layer)
+        {
+            throw new NotSupportedException();
         }
 
         #region Overrides 
@@ -181,6 +214,66 @@ namespace DlibDotNet.Dnn
         #endregion
 
         #endregion
+
+        public sealed class Subnet : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMetric _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal Subnet(LossMetric parent)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+
+                var err = Native.loss_metric_subnet(parent.NativePtr, parent.NetworkType, out var ret);
+                this.NativePtr = ret;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public Tensor Output
+            {
+                get
+                {
+                    this._Parent.ThrowIfDisposed();
+                    var tensor = Native.loss_metric_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
+                    return new Tensor(tensor);
+                }
+            }
+
+            #endregion
+
+            #region Methods
+
+            #region Overrids
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                Native.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+            }
+
+            #endregion
+
+            #endregion
+
+        }
 
         private sealed class Output : OutputLabels<Matrix<float>>
         {
@@ -304,7 +397,13 @@ namespace DlibDotNet.Dnn
             public static extern IntPtr loss_metric_deserialize(byte[] fileName, int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr loss_metric_deserialize_proxy(IntPtr proxy_deserialize, int type);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void loss_metric_serialize(IntPtr obj, int type, byte[] fileName);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void loss_metric_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern int loss_metric_num_layers(int type);
@@ -313,10 +412,26 @@ namespace DlibDotNet.Dnn
             public static extern void loss_metric_clean(int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType loss_metric_subnet(IntPtr net, int type, out IntPtr subnet);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void loss_metric_subnet_delete(int type, IntPtr subnet);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr loss_metric_subnet_get_output(IntPtr subnet, int type, out Dlib.Native.ErrorType ret);
+
+            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType loss_metric_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_metric_operator_matrixs(IntPtr obj, int type, Dlib.Native.MatrixElementType element_type, IntPtr matrixs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern Dlib.Native.ErrorType loss_metric_operator_matrixs(IntPtr obj,
+                                                                                    int type, 
+                                                                                    Dlib.Native.MatrixElementType element_type,
+                                                                                    IntPtr matrixs,
+                                                                                    int templateRows,
+                                                                                    int templateColumns,
+                                                                                    ulong batchSize,
+                                                                                    out IntPtr ret);
 
         }
 

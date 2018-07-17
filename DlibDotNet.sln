@@ -67,6 +67,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FHogObjectDetector", "examp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebcamFacePose", "examples\WebcamFacePose\WebcamFacePose.csproj", "{0F66ED6A-B9E2-483D-99E3-67D71706C449}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMmodFindCars", "examples\DnnMmodFindCars\DnnMmodFindCars.csproj", "{590A529B-0078-44C6-90B7-03DBD869E689}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -389,6 +391,18 @@ Global
 		{0F66ED6A-B9E2-483D-99E3-67D71706C449}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
 		{0F66ED6A-B9E2-483D-99E3-67D71706C449}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
 		{0F66ED6A-B9E2-483D-99E3-67D71706C449}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
+		{590A529B-0078-44C6-90B7-03DBD869E689}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -422,6 +436,7 @@ Global
 		{F09EAEEB-6630-452D-A6AB-1DCB7E24EE68} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{FC0416FA-3D07-4924-8E5F-E49D833CD58F} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{0F66ED6A-B9E2-483D-99E3-67D71706C449} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{590A529B-0078-44C6-90B7-03DBD869E689} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}

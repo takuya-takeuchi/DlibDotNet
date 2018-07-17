@@ -130,6 +130,13 @@ namespace DlibDotNet
                 return ret.ToManaged();
         }
 
+        public static DPoint operator *(double lhs, DPoint point)
+        {
+            using (var right = point.ToNative())
+            using (var ret = lhs * right)
+                return ret.ToManaged();
+        }
+
         public static DPoint operator /(DPoint point, double rhs)
         {
             using (var left = point.ToNative())
@@ -303,6 +310,17 @@ namespace DlibDotNet
                 return new NativeDPoint(ptr);
             }
 
+            public static NativeDPoint operator *(double lhs, NativeDPoint point)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ptr = Native.dpoint_operator_mul2(lhs, point.NativePtr);
+                return new NativeDPoint(ptr);
+            }
+
             public static NativeDPoint operator /(NativeDPoint point, double rhs)
             {
                 if (point == null)
@@ -389,6 +407,9 @@ namespace DlibDotNet
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr dpoint_operator_mul(IntPtr point, double rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr dpoint_operator_mul2(double rhs, IntPtr point);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr dpoint_operator_div(IntPtr point, double rhs);

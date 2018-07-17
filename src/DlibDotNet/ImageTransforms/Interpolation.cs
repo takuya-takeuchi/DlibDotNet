@@ -82,6 +82,37 @@ namespace DlibDotNet
             }
         }
 
+        public static Array<Matrix<T>> ExtractImageChips<T>(MatrixBase image, IEnumerable<ChipDetails> chipLocations)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (chipLocations == null)
+                throw new ArgumentNullException(nameof(chipLocations));
+            if (chipLocations.Any(chip => chip == null || chip.IsDisposed || !chip.IsValid()))
+                throw new ArgumentException($"{nameof(chipLocations)} includes invalid item.");
+
+            image.ThrowIfDisposed();
+
+            using (var vectorOfChips = new StdVector<ChipDetails>(chipLocations))
+            {
+                var array = new Array<Matrix<T>>();
+                var matrixElementType = image.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.extract_image_chips_matrix(matrixElementType,
+                                                            image.NativePtr,
+                                                            vectorOfChips.NativePtr,
+                                                            array.MatrixElementTypes.ToNativeMatrixElementType(),
+                                                            array.NativePtr);
+                switch (ret)
+                {
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                }
+
+                return array;
+            }
+        }
+
         public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
             where T : struct
         {
@@ -306,6 +337,30 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.MatrixElementType} is not supported.");
         }
 
+        public static void PyramidUp<T>(MatrixBase image, uint pyramidRate)
+            where T : Pyramid
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed(nameof(image));
+
+            var type = image.MatrixElementType.ToNativeMatrixElementType();
+            Pyramid.TryGetSupportPyramidType<T>(out var pyramidType);
+            var ret = Native.pyramid_up_pyramid_matrix(pyramidType,
+                                                       pyramidRate,
+                                                       type,
+                                                       image.NativePtr);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                case Native.ErrorType.PyramidNotSupportType:
+                case Native.ErrorType.PyramidNotSupportRate:
+                    throw new NotSupportedException();
+            }
+        }
+
         public static void ResizeImage(Array2DBase inputImage, double scale)
         {
             if (inputImage == null)
@@ -321,6 +376,28 @@ namespace DlibDotNet
             {
                 case Native.ErrorType.ArrayTypeNotSupport:
                     throw new ArgumentException($"{inputImage.ImageType} is not supported.");
+            }
+        }
+
+        public static void ResizeImage(MatrixBase matrix, double scale)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+            if (scale <= 0)
+                throw new ArgumentException($"{nameof(scale)} is less than or equal to zero.", nameof(scale));
+
+            matrix.ThrowIfDisposed(nameof(matrix));
+
+            var inType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.resize_image_matrix_scale(inType,
+                                                       matrix.NativePtr,
+                                                       matrix.TemplateRows,
+                                                       matrix.TemplateColumns,
+                                                       scale);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
             }
         }
 
@@ -468,6 +545,12 @@ namespace DlibDotNet
             public static extern ErrorType pyramid_up_matrix(MatrixElementType type, IntPtr img);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType pyramid_up_pyramid_matrix(PyramidType pyramid_type,
+                                                                     uint pyramid_rate,
+                                                                     MatrixElementType elementType,
+                                                                     IntPtr image);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType resize_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -475,6 +558,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType resize_image3(Array2DType inType, IntPtr inImg, double scaleSize);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType resize_image_matrix_scale(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, double scaleSize);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType rotate_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg, double angle);
@@ -499,6 +585,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chips(Array2DType img_type, IntPtr in_img, IntPtr chip_locations, Array2DType array_type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_chips_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_locations, MatrixElementType array_type, IntPtr array);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_image_chip_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, IntPtr out_chip);

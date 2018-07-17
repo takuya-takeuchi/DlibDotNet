@@ -67,7 +67,8 @@ namespace DlibDotNet
             this.ImageType = type;
         }
 
-        internal Array2D(IntPtr ptr, ImageTypes type)
+        internal Array2D(IntPtr ptr, ImageTypes type, bool isEnabledDispose = true): 
+            base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));

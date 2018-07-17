@@ -56,7 +56,7 @@ typedef unsigned long  train_label_type;
 #define ELEMENT element
 #undef ELEMENT
 
-#define operator_template(net, matrix, ret) \
+#define operator_template(net, matrix, batch_size, ret) \
 do {\
     std::vector<dlib::matrix<ELEMENT>*>& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(matrix));\
     std::vector<dlib::matrix<ELEMENT>> in_tmp;\
@@ -66,7 +66,7 @@ do {\
         in_tmp.push_back(mat);\
     }\
 \
-    std::vector<out_type> dets = net(in_tmp);\
+    std::vector<out_type> dets = net(in_tmp, batch_size);\
     *ret = new std::vector<out_type>(dets);\
 } while (0)
 
@@ -110,7 +110,14 @@ DLLEXPORT int loss_multiclass_log_new(const int type, void** net)
 
 // NOTE
 // ret is not std::vector<out_type*>** but std::vector<out_type>**!! It is important!!
-DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj, const int type, matrix_element_type element_type, void* matrix, int templateRows, int templateColumns, std::vector<out_type>** ret)
+DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj, 
+                                                   const int type, 
+                                                   matrix_element_type element_type,
+                                                   void* matrix, 
+                                                   int templateRows, 
+                                                   int templateColumns, 
+                                                   size_t batch_size, 
+                                                   std::vector<out_type>** ret)
 {
     int err = ERR_OK;
     
@@ -124,57 +131,57 @@ DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj, const int type, ma
                 {
                     case matrix_element_type::UInt8:
                         #define ELEMENT uint8_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::UInt16:
                         #define ELEMENT uint16_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::UInt32:
                         #define ELEMENT uint32_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Int8:
                         #define ELEMENT int8_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Int16:
                         #define ELEMENT int16_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Int32:
                         #define ELEMENT int32_t
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Float:
                         #define ELEMENT float
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::Double:
                         #define ELEMENT double
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::RgbPixel:
                         #define ELEMENT rgb_pixel
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::HsiPixel:
                         #define ELEMENT hsi_pixel
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     case matrix_element_type::RgbAlphaPixel:
                         #define ELEMENT rgb_alpha_pixel
-                        operator_template(net, matrix, ret);
+                        operator_template(net, matrix, batch_size, ret);
                         #undef ELEMENT
                         break;
                     default:
@@ -216,6 +223,24 @@ DLLEXPORT void* loss_multiclass_log_deserialize(const char* file_name, const int
     return nullptr;
 }
 
+DLLEXPORT void* loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy, const int type)
+{
+    // Check type argument and cast to the proper type    
+    switch(type)
+    {
+        case 0:
+            {
+                proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                net_type* net = new net_type();
+                p >> (*net);
+                return net;
+            }
+            break;
+        default:
+            return nullptr;
+    }
+}
+
 DLLEXPORT void loss_multiclass_log_serialize(void* obj, const int type, const char* file_name)
 {
     // Check type argument and cast to the proper type
@@ -242,6 +267,23 @@ DLLEXPORT int loss_multiclass_log_num_layers(const int type)
     return 0;
 }
 
+DLLEXPORT int loss_multiclass_log_subnet(void* obj, const int type, void** subnet)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type*>(obj);
+                auto sn = net->subnet();
+                *subnet = new net_type::subnet_type(sn);
+            }
+            break;
+    }
+
+    return 0;
+}
+
 DLLEXPORT void loss_multiclass_log_clean(void* obj, const int type)
 {
     // Check type argument and cast to the proper type
@@ -252,6 +294,59 @@ DLLEXPORT void loss_multiclass_log_clean(void* obj, const int type)
             break;
     }
 }
+
+DLLEXPORT void loss_multiclass_log_input_tensor_to_output_tensor(void* obj, const int type, dlib::dpoint* p, dlib::dpoint** ret)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type*>(obj);
+                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+                *ret = new dlib::dpoint(rp);
+            }
+            break;
+    }
+}
+
+#pragma region subnet
+
+DLLEXPORT void loss_multiclass_log_subnet_delete(const int type, void* subnet)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            {
+                auto sb = static_cast<net_type::subnet_type*>(subnet);
+                delete sb;
+            }
+            break;
+    }
+}
+
+DLLEXPORT const dlib::tensor* loss_multiclass_log_subnet_get_output(void* subnet, const int type, int* ret)
+{
+    // Check type argument and cast to the proper type
+    *ret = ERR_OK;
+
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type::subnet_type*>(subnet);
+                const dlib::tensor& tensor = net->get_output();
+                return &tensor;
+            }
+            break;
+    }
+
+    *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+    return nullptr;
+}
+
+#pragma endregion subnet
 
 #pragma region operator
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using uint8_t = System.Byte;
 using uint16_t = System.UInt16;
@@ -18,6 +19,20 @@ namespace DlibDotNet
 
         #region Methods
 
+        #region AssignPixel
+
+        public static void AssignPixel(ref RgbPixel dest, RgbAlphaPixel src)
+        {
+            Native.assign_pixel_rgb_rgbalpha(ref dest, ref src);
+        }
+
+        public static void AssignPixel(ref RgbAlphaPixel dest, RgbPixel src)
+        {
+            Native.assign_pixel_rgbalpha_rgb(ref dest, ref src);
+        }
+
+        #endregion
+
         public static FrontalFaceDetector GetFrontalFaceDetector()
         {
             var ret = FrontalFaceDetector.Native.get_frontal_face_detector();
@@ -33,6 +48,35 @@ namespace DlibDotNet
 
             HoughTransform.Native.hough_transform_get_rect(houghTransform.NativePtr, out var rect);
             return new Rectangle(rect);
+        }
+
+        public static Rectangle GetRect(MatrixBase matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.rectangle_get_rect_matrix(type,
+                                                       matrix.NativePtr,
+                                                       matrix.TemplateRows,
+                                                       matrix.TemplateColumns,
+                                                       out var rect);
+            if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+
+            return new Rectangle(rect);
+        }
+
+        public static Matrix<float> ImagePlane(Tensor tensor, int sample = 0, int k = 0)
+        {
+            if (tensor == null)
+                throw new ArgumentNullException(nameof(tensor));
+
+            tensor.ThrowIfDisposed();
+
+            var ret = Tensor.Native.image_plane(tensor.NativePtr, sample, k);
+            return new Matrix<float>(ret);
         }
 
         public static Array2D<T> LoadBmp<T>(string path)
@@ -587,6 +631,45 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr array_new1(Array2DType type, uint newSize);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array_delete_pixel(Array2DType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_size(Array2DType type, IntPtr array, out uint size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_uint8(Array2DType type, IntPtr array, uint index, out uint8_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_uint16(Array2DType type, IntPtr array, uint index, out uint16_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_uint32(Array2DType type, IntPtr array, uint index, out uint32_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_int8(Array2DType type, IntPtr array, uint index, out int8_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_int16(Array2DType type, IntPtr array, uint index, out int16_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_int32(Array2DType type, IntPtr array, uint index, out int32_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_float(Array2DType type, IntPtr array, uint index, out float item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_double(Array2DType type, IntPtr array, uint index, out double item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_rgb_pixel(Array2DType type, IntPtr array, uint index, out RgbPixel item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_hsi_pixel(Array2DType type, IntPtr array, uint index, out HsiPixel item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_getitem_rgb_alpha_pixel(Array2DType type, IntPtr array, uint index, out RgbAlphaPixel item);
+
             #region array2d
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -594,6 +677,15 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr array_array2d_new1(Array2DType type, uint newSize);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array_delete_array2d(Array2DType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_array2d_size(Array2DType type, IntPtr array, out uint size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_array2d_getitem(Array2DType type, IntPtr array, uint index, out IntPtr item);
 
             #endregion
 
@@ -605,16 +697,16 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr array_matrix_new1(MatrixElementType type, uint newSize);
 
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array_delete_pixel(Array2DType type, IntPtr array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array_delete_array2d(Array2DType type, IntPtr array);
-
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void array_delete_matrix(MatrixElementType type, IntPtr array);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_matrix_size(MatrixElementType type, IntPtr array, out uint size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_matrix_getitem(MatrixElementType type, IntPtr array, uint index, out IntPtr item);
+
+            #endregion
 
             #endregion
 
@@ -643,6 +735,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType rectangle_get_rect(Array2DType type, IntPtr array, out IntPtr rect);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType rectangle_get_rect_matrix(MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array2d_row(Array2DType type, IntPtr array, int row, out IntPtr ret);
@@ -819,7 +914,17 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row, int templateRows, int temlateColumns);
-            
+
+            #endregion
+
+            #region assign_pixel
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void assign_pixel_rgb_rgbalpha(ref RgbPixel dest, ref RgbAlphaPixel src);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void assign_pixel_rgbalpha_rgb(ref RgbAlphaPixel dest, ref RgbPixel src);
+
             #endregion
 
             #region load_bmp
@@ -900,7 +1005,7 @@ namespace DlibDotNet
                                                                IntPtr pyramid);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType scan_fhog_pyramid_set_detection_window_size(PyramidType pyramid_type, 
+            public static extern ErrorType scan_fhog_pyramid_set_detection_window_size(PyramidType pyramid_type,
                                                                                        uint pyramid_rate,
                                                                                        FHogFeatureExtractorType extractor_type,
                                                                                        IntPtr obj,
@@ -908,7 +1013,7 @@ namespace DlibDotNet
                                                                                        uint height);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType scan_fhog_pyramid_set_nuclear_norm_regularization_strength(PyramidType pyramid_type, 
+            public static extern ErrorType scan_fhog_pyramid_set_nuclear_norm_regularization_strength(PyramidType pyramid_type,
                                                                                                       uint pyramid_rate,
                                                                                                       FHogFeatureExtractorType extractor_type,
                                                                                                       IntPtr obj,

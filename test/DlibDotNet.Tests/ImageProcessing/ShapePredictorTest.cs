@@ -40,7 +40,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             var path = this.GetDataFile("Lenna.jpg");
             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
 
-            var dets = faceDetector.Detect(image);
+            var dets = faceDetector.Operator(image);
             Assert.AreEqual(dets.Length, 1);
 
             var rects = new List<Rectangle>();
@@ -100,7 +100,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
                     {
-                        dets = faceDetector.Detect(imageObj);
+                        dets = faceDetector.Operator(imageObj);
                         return imageObj;
                     });
 

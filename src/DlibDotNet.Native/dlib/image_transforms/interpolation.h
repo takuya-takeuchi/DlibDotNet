@@ -16,12 +16,14 @@ using namespace std;
 
 #pragma region template
 
+#define PYRAMID_TYPE PYRAMID_TYPE
 #define FUNCTION function
 #define ELEMENT_IN element
 #define ELEMENT_OUT element
 #undef FUNCTION
 #undef ELEMENT_IN
 #undef ELEMENT_OUT
+#undef PYRAMID_TYPE
 
 #define add_image_left_right_flips_template(images, objects) \
 do { \
@@ -508,6 +510,47 @@ do { \
     }\
 } while (0)
 
+#define extract_image_chips_matrix_template(ret, in_type, in_img, chips, array) \
+do { \
+    ret = ERR_OK;\
+    switch(in_type)\
+    {\
+        case matrix_element_type::UInt8:\
+            dlib::extract_image_chips(*((dlib::matrix<uint8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::UInt16:\
+            dlib::extract_image_chips(*((dlib::matrix<uint16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::UInt32:\
+            dlib::extract_image_chips(*((dlib::matrix<uint32_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Int8:\
+            dlib::extract_image_chips(*((dlib::matrix<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Int16:\
+            dlib::extract_image_chips(*((dlib::matrix<int16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Int32:\
+            dlib::extract_image_chips(*((dlib::matrix<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Float:\
+            dlib::extract_image_chips(*((dlib::matrix<float>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::Double:\
+            dlib::extract_image_chips(*((dlib::matrix<double>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            dlib::extract_image_chips(*((dlib::matrix<rgb_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            dlib::extract_image_chips(*((dlib::matrix<hsi_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        default:\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+			break;\
+    }\
+} while (0)
+
 #define extract_image_chip_template(ret, in_type, in_img, chip, out_chip) \
 do { \
     ret = ERR_OK;\
@@ -659,6 +702,25 @@ do { \
     *out_img = new dlib::matrix<ELEMENT_IN>(ret);\
 } while (0)
 
+#define resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 0>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 0>*>(matrix);\
+        dlib::resize_image(scale, m);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
+        dlib::resize_image(scale, m);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        dlib::resize_image(scale, m);\
+    }\
+} while (0)
+
 #define upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects) \
 do { \
     std::vector<dlib::matrix<ELEMENT_IN>*>& in_images = *(static_cast<std::vector<dlib::matrix<ELEMENT_IN>*>*>(images));\
@@ -728,6 +790,51 @@ do { \
         for (int j = 0; j < tmp.size(); j++)\
             vec->push_back(new ELEMENT_OUT(tmp[j]));\
         in_objects.push_back(vec);\
+    }\
+} while (0)
+
+#define pyramid_up_pyramid_matrix_template(pyramid_rate, image) \
+do { \
+    switch(pyramid_rate)\
+    {\
+        case 1:\
+            {\
+                const PYRAMID_TYPE<1> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 2:\
+            {\
+                const PYRAMID_TYPE<2> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 3:\
+            {\
+                const PYRAMID_TYPE<3> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 4:\
+            {\
+                const PYRAMID_TYPE<4> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        case 6:\
+            {\
+                const PYRAMID_TYPE<6> p;\
+                dlib::matrix<ELEMENT_IN>& m = *(static_cast<dlib::matrix<ELEMENT_IN>*>(image));\
+                dlib::pyramid_up(m, p);\
+            }\
+            break;\
+        default:\
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            break;\
     }\
 } while (0)
 
@@ -949,6 +1056,90 @@ DLLEXPORT int pyramid_up_matrix(matrix_element_type type, void* img)
     return err;
 }
 
+DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type, 
+                                        const unsigned int pyramid_rate,
+                                        matrix_element_type element_type,
+                                        void* image)
+{
+    int err = ERR_OK;
+
+    switch(pyramid_type)
+    {
+        case pyramid_type::Down:
+            {
+                #define PYRAMID_TYPE pyramid_down
+                switch(element_type)
+                {
+                    case matrix_element_type::UInt8:
+                        #define ELEMENT_IN uint8_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);                                
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::UInt16:
+                        #define ELEMENT_IN uint16_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::UInt32:
+                        #define ELEMENT_IN uint32_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Int8:
+                        #define ELEMENT_IN int8_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Int16:
+                        #define ELEMENT_IN int16_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Int32:
+                        #define ELEMENT_IN int32_t
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Float:
+                        #define ELEMENT_IN float
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::Double:
+                        #define ELEMENT_IN double
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::RgbPixel:
+                        #define ELEMENT_IN rgb_pixel
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::HsiPixel:
+                        #define ELEMENT_IN hsi_pixel
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    case matrix_element_type::RgbAlphaPixel:
+                        #define ELEMENT_IN rgb_alpha_pixel
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        #undef ELEMENT_IN
+                        break;
+                    default:
+                        err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                        break;
+                }
+                #undef PYRAMID_TYPE
+            }
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            break;  
+    }
+
+    return err;
+}
+
 #pragma region resize_image
 
 DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img)
@@ -1064,6 +1255,75 @@ DLLEXPORT int resize_image3(array2d_type type, void* img, double size_scale)
         case array2d_type::RgbAlphaPixel:
         default:
             err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int resize_image_matrix_scale(matrix_element_type type, void* matrix, int templateRows, int templateColumns, double scale)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
+            #undef ELEMENT_IN
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1373,6 +1633,79 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
             break;
         default:
             err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_image_chips_matrix(matrix_element_type img_type, void* in_img, std::vector<chip_details*>* chip_locations, matrix_element_type array_type, void* array)
+{
+    int err = ERR_OK;
+    
+    std::vector<chip_details> chips;
+    for (int index = 0 ; index < chip_locations->size(); index++)
+        chips.push_back(*(*chip_locations)[index]);
+
+    switch(array_type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_OUT dlib::matrix<uint8_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_OUT dlib::matrix<uint16_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_OUT dlib::matrix<uint32_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_OUT dlib::matrix<int8_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_OUT dlib::matrix<int16_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_OUT dlib::matrix<int32_t>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_OUT dlib::matrix<float>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::Double:        
+            #define ELEMENT_OUT dlib::matrix<double>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_OUT dlib::matrix<rgb_pixel>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_OUT dlib::matrix<hsi_pixel>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_OUT dlib::matrix<rgb_alpha_pixel>
+            extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
