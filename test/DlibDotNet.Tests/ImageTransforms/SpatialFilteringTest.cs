@@ -209,6 +209,10 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
