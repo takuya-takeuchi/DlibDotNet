@@ -88,6 +88,18 @@ do { \
         case array2d_type::UInt16:\
             dlib::FUNCTION(*((array2d<uint16_t>*)img));\
             break;\
+        case array2d_type::UInt32:\
+            dlib::FUNCTION(*((array2d<uint32_t>*)img));\
+            break;\
+        case array2d_type::Int8:\
+            dlib::FUNCTION(*((array2d<int8_t>*)img));\
+            break;\
+        case array2d_type::Int16:\
+            dlib::FUNCTION(*((array2d<int16_t>*)img));\
+            break;\
+        case array2d_type::Int32:\
+            dlib::FUNCTION(*((array2d<int32_t>*)img));\
+            break;\
         case array2d_type::Float:\
             dlib::FUNCTION(*((array2d<float>*)img));\
             break;\
@@ -164,6 +176,18 @@ do { \
         case array2d_type::UInt16:\
             dlib::FUNCTION(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
             break;\
+        case array2d_type::UInt32:\
+            dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
+        case array2d_type::Int8:\
+            dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
+        case array2d_type::Int16:\
+            dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
+        case array2d_type::Int32:\
+            dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
         case array2d_type::Float:\
             dlib::FUNCTION(*((array2d<float>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
             break;\
@@ -215,6 +239,62 @@ do { \
                     break;\
                 case interpolation_type::Quadratic:\
                     dlib::FUNCTION(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::UInt32:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int8:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int16:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int32:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1, interpolate_quadratic());\
                     break;\
             }\
             break;\
@@ -301,6 +381,62 @@ do { \
                     break;\
             }\
             break;\
+        case array2d_type::UInt32:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int8:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int16:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int32:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor());\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear());\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic());\
+                    break;\
+            }\
+            break;\
         case array2d_type::Float:\
             switch(type)\
             {\
@@ -361,6 +497,18 @@ do { \
             break;\
         case array2d_type::UInt16:\
             dlib::FUNCTION(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1);\
+            break;\
+        case array2d_type::UInt32:\
+            dlib::FUNCTION(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1);\
+            break;\
+        case array2d_type::Int8:\
+            dlib::FUNCTION(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1);\
+            break;\
+        case array2d_type::Int16:\
+            dlib::FUNCTION(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1);\
+            break;\
+        case array2d_type::Int32:\
+            dlib::FUNCTION(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1);\
             break;\
         case array2d_type::Float:\
             dlib::FUNCTION(*((array2d<float>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), arg1);\
@@ -431,6 +579,62 @@ do { \
                     break;\
             }\
             break;\
+        case array2d_type::UInt32:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    transform_image_sub_template(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    transform_image_sub_template(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    transform_image_sub_template(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic(), point_mapping_type, mapping_obj);\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int8:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    transform_image_sub_template(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    transform_image_sub_template(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    transform_image_sub_template(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic(), point_mapping_type, mapping_obj);\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int16:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    transform_image_sub_template(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    transform_image_sub_template(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    transform_image_sub_template(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic(), point_mapping_type, mapping_obj);\
+                    break;\
+            }\
+            break;\
+        case array2d_type::Int32:\
+            switch(type)\
+            {\
+                case interpolation_type::NearestNeighbor:\
+                    transform_image_sub_template(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_nearest_neighbor(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Bilinear:\
+                    transform_image_sub_template(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_bilinear(), point_mapping_type, mapping_obj);\
+                    break;\
+                case interpolation_type::Quadratic:\
+                    transform_image_sub_template(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), interpolate_quadratic(), point_mapping_type, mapping_obj);\
+                    break;\
+            }\
+            break;\
         case array2d_type::Float:\
             switch(type)\
             {\
@@ -492,6 +696,18 @@ do { \
         case array2d_type::UInt16:\
             dlib::extract_image_chips(*((array2d<uint16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
             break;\
+        case array2d_type::UInt32:\
+            dlib::extract_image_chips(*((array2d<uint32_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case array2d_type::Int8:\
+            dlib::extract_image_chips(*((array2d<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case array2d_type::Int16:\
+            dlib::extract_image_chips(*((array2d<int16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
+        case array2d_type::Int32:\
+            dlib::extract_image_chips(*((array2d<int32_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
+            break;\
         case array2d_type::Float:\
             dlib::extract_image_chips(*((array2d<float>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
             break;\
@@ -510,47 +726,6 @@ do { \
     }\
 } while (0)
 
-#define extract_image_chips_matrix_template(ret, in_type, in_img, chips, array) \
-do { \
-    ret = ERR_OK;\
-    switch(in_type)\
-    {\
-        case matrix_element_type::UInt8:\
-            dlib::extract_image_chips(*((dlib::matrix<uint8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::UInt16:\
-            dlib::extract_image_chips(*((dlib::matrix<uint16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::UInt32:\
-            dlib::extract_image_chips(*((dlib::matrix<uint32_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::Int8:\
-            dlib::extract_image_chips(*((dlib::matrix<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::Int16:\
-            dlib::extract_image_chips(*((dlib::matrix<int16_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::Int32:\
-            dlib::extract_image_chips(*((dlib::matrix<int8_t>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::Float:\
-            dlib::extract_image_chips(*((dlib::matrix<float>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::Double:\
-            dlib::extract_image_chips(*((dlib::matrix<double>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::RgbPixel:\
-            dlib::extract_image_chips(*((dlib::matrix<rgb_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        case matrix_element_type::HsiPixel:\
-            dlib::extract_image_chips(*((dlib::matrix<hsi_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
-            break;\
-        default:\
-            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
-			break;\
-    }\
-} while (0)
-
 #define extract_image_chip_template(ret, in_type, in_img, chip, out_chip) \
 do { \
     ret = ERR_OK;\
@@ -561,6 +736,18 @@ do { \
             break;\
         case array2d_type::UInt16:\
             dlib::extract_image_chip(*((array2d<uint16_t>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
+            break;\
+        case array2d_type::UInt32:\
+            dlib::extract_image_chip(*((array2d<uint32_t>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
+            break;\
+        case array2d_type::Int8:\
+            dlib::extract_image_chip(*((array2d<int8_t>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
+            break;\
+        case array2d_type::Int16:\
+            dlib::extract_image_chip(*((array2d<int16_t>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
+            break;\
+        case array2d_type::Int32:\
+            dlib::extract_image_chip(*((array2d<int32_t>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
             break;\
         case array2d_type::Float:\
             dlib::extract_image_chip(*((array2d<float>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
@@ -632,7 +819,7 @@ do { \
             dlib::extract_image_chips(*((matrix<hsi_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -947,6 +1134,26 @@ DLLEXPORT int flip_image_left_right2(array2d_type in_type, void* in_img, array2d
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
             break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
         case array2d_type::Float:
             #define ELEMENT_OUT float
             interpolation_inout_template(err, in_type, in_img, out_img);
@@ -997,6 +1204,26 @@ DLLEXPORT int flip_image_up_down(array2d_type in_type, void* in_img, array2d_typ
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
             break;
@@ -1162,6 +1389,26 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
             break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
+            interpolation_inout_template(err, in_type, in_img, out_img);
+            #undef ELEMENT_OUT
+            break;
         case array2d_type::Float:
             #define ELEMENT_OUT float
             interpolation_inout_template(err, in_type, in_img, out_img);
@@ -1205,6 +1452,26 @@ DLLEXPORT int resize_image2(array2d_type in_type, void* in_img, array2d_type out
             interpolation_inout3_template(err, in_type, in_img, out_img, type);
             #undef ELEMENT_OUT
             break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            interpolation_inout3_template(err, in_type, in_img, out_img, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            interpolation_inout3_template(err, in_type, in_img, out_img, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            interpolation_inout3_template(err, in_type, in_img, out_img, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
+            interpolation_inout3_template(err, in_type, in_img, out_img, type);
+            #undef ELEMENT_OUT
+            break;
         case array2d_type::Float:
             #define ELEMENT_OUT float
             interpolation_inout3_template(err, in_type, in_img, out_img, type);
@@ -1241,6 +1508,18 @@ DLLEXPORT int resize_image3(array2d_type type, void* img, double size_scale)
             break;
         case array2d_type::UInt16:
             dlib::resize_image(size_scale, *((array2d<uint16_t>*)img));
+            break;
+        case array2d_type::UInt32:
+            dlib::resize_image(size_scale, *((array2d<uint32_t>*)img));
+            break;
+        case array2d_type::Int8:
+            dlib::resize_image(size_scale, *((array2d<int8_t>*)img));
+            break;
+        case array2d_type::Int16:
+            dlib::resize_image(size_scale, *((array2d<int16_t>*)img));
+            break;
+        case array2d_type::Int32:
+            dlib::resize_image(size_scale, *((array2d<int32_t>*)img));
             break;
         case array2d_type::Float:
             dlib::resize_image(size_scale, *((array2d<float>*)img));
@@ -1351,6 +1630,26 @@ DLLEXPORT int rotate_image(array2d_type in_type, void* in_img, array2d_type out_
             rotate_image_template(err, in_type, in_img, out_img, angle);
             #undef ELEMENT_OUT
             break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            rotate_image_template(err, in_type, in_img, out_img, angle);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            rotate_image_template(err, in_type, in_img, out_img, angle);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            rotate_image_template(err, in_type, in_img, out_img, angle);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
+            rotate_image_template(err, in_type, in_img, out_img, angle);
+            #undef ELEMENT_OUT
+            break;
         case array2d_type::Float:
             #define ELEMENT_OUT float
             rotate_image_template(err, in_type, in_img, out_img, angle);
@@ -1391,6 +1690,26 @@ DLLEXPORT int rotate_image2(array2d_type in_type, void* in_img, array2d_type out
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
             interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
             #undef ELEMENT_OUT
             break;
@@ -1435,6 +1754,26 @@ DLLEXPORT int transform_image(array2d_type in_type, void* in_img, array2d_type o
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
             transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
             #undef ELEMENT_OUT
             break;
@@ -1606,6 +1945,26 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
             extract_image_chips_template(err, img_type, in_img, chips, array);
             #undef ELEMENT_OUT
             break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT array2d<uint32_t>
+            extract_image_chips_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT array2d<int8_t>
+            extract_image_chips_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT array2d<int16_t>
+            extract_image_chips_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT array2d<int32_t>
+            extract_image_chips_template(err, img_type, in_img, chips, array);
+            #undef ELEMENT_OUT
+            break;
         case array2d_type::Float:
             #define ELEMENT_OUT array2d<float>
             extract_image_chips_template(err, img_type, in_img, chips, array);
@@ -1725,6 +2084,26 @@ DLLEXPORT int extract_image_chip(array2d_type img_type, void* in_img, chip_detai
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
             extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
             #undef ELEMENT_OUT
             break;
