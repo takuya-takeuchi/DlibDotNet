@@ -285,6 +285,13 @@ do {\
     }\
 } while (0)
 
+#define matrix_max_point_template(matrix, ret) \
+do {\
+    auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<ELEMENT_IN>>>*>(matrix);\
+    auto p = dlib::max_point(*mat_op);\
+    *ret = new dlib::point(p);\
+} while (0)
+
 #define matrix_max_pointwise_matrix_template(matrix1, matrix2, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -554,39 +561,44 @@ DLLEXPORT int matrix_max_point(matrix_element_type type, void* matrix, dlib::poi
     switch(type)
     {
         case matrix_element_type::UInt8:
-            {
-                auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<uint8_t>>>*>(matrix);
-                auto p = dlib::max_point(*mat_op);
-                *ret = new dlib::point(p);;
-            }
+            #define ELEMENT_IN uint8_t
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
             break;
         case matrix_element_type::UInt16:
-            {
-                auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<uint16_t>>>*>(matrix);
-                auto p = dlib::max_point(*mat_op);
-                *ret = new dlib::point(p);;
-            }
+            #define ELEMENT_IN uint16_t
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
             break;
         case matrix_element_type::Int32:
-            {
-                auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<int32_t>>>*>(matrix);
-                auto p = dlib::max_point(*mat_op);
-                *ret = new dlib::point(p);;
-            }
+            #define ELEMENT_IN int32_t
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
             break;
         case matrix_element_type::Float:
-            {
-                auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<float>>>*>(matrix);
-                auto p = dlib::max_point(*mat_op);
-                *ret = new dlib::point(p);;
-            }
+            #define ELEMENT_IN float
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
             break;
         case matrix_element_type::Double:
-            {
-                auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<double>>>*>(matrix);
-                auto p = dlib::max_point(*mat_op);
-                *ret = new dlib::point(p);;
-            }
+            #define ELEMENT_IN double
+            matrix_max_point_template(matrix, ret);
+            #undef ELEMENT_IN
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
