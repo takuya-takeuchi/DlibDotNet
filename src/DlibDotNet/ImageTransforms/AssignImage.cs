@@ -49,6 +49,42 @@ namespace DlibDotNet
             }
         }
 
+        public static void AssignAllPpixels(Array2D<uint> dest, uint pixel)
+        {
+            if (dest == null)
+                throw new ArgumentNullException(nameof(dest));
+
+            dest.ThrowIfDisposed(nameof(dest));
+
+            var outType = dest.ImageType.ToNativeArray2DType();
+            var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.Int32, ref pixel);
+            switch (ret)
+            {
+                case Native.ErrorType.OutputArrayTypeNotSupport:
+                    throw new ArgumentException($"Output {outType} is not supported.");
+                case Native.ErrorType.InputArrayTypeNotSupport:
+                    throw new ArgumentException($"Input {Native.Array2DType.Int32} is not supported.");
+            }
+        }
+
+        public static void AssignAllPpixels(Array2D<sbyte> dest, sbyte pixel)
+        {
+            if (dest == null)
+                throw new ArgumentNullException(nameof(dest));
+
+            dest.ThrowIfDisposed(nameof(dest));
+
+            var outType = dest.ImageType.ToNativeArray2DType();
+            var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.UInt8, ref pixel);
+            switch (ret)
+            {
+                case Native.ErrorType.OutputArrayTypeNotSupport:
+                    throw new ArgumentException($"Output {outType} is not supported.");
+                case Native.ErrorType.InputArrayTypeNotSupport:
+                    throw new ArgumentException($"Input {Native.Array2DType.UInt8} is not supported.");
+            }
+        }
+
         public static void AssignAllPpixels(Array2D<short> dest, short pixel)
         {
             if (dest == null)
@@ -229,6 +265,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType assign_all_pixels(Array2DType out_type, IntPtr out_img, Array2DType in_type, ref ushort color);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType assign_all_pixels(Array2DType out_type, IntPtr out_img, Array2DType in_type, ref uint color);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType assign_all_pixels(Array2DType out_type, IntPtr out_img, Array2DType in_type, ref sbyte color);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType assign_all_pixels(Array2DType out_type, IntPtr out_img, Array2DType in_type, ref short color);
