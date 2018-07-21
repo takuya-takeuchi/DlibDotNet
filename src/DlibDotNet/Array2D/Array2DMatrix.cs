@@ -41,15 +41,14 @@ namespace DlibDotNet
                 SupportMatrixTypes.Add(type.Type, type.ElementType);
         }
 
-        public Array2DMatrix(int templateRows = 0, int temlateColumns = 0) :
-            base(templateRows, temlateColumns)
+        public Array2DMatrix()
         {
             if (!SupportMatrixTypes.TryGetValue(typeof(TElement), out var matrixType))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementType = matrixType.ToNativeMatrixElementType();
 
-            this.NativePtr = Dlib.Native.array2d_matrix_new(this._MatrixElementType, templateRows, temlateColumns);
+            this.NativePtr = Dlib.Native.array2d_matrix_new(this._MatrixElementType, 0, 0);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{matrixType} is not supported.");
 
