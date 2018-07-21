@@ -41,6 +41,15 @@ DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, arra
         case array2d_type::UInt16:
             tracker->start_track(*((array2d<uint16_t>*)img), *p);
             break;
+        case array2d_type::UInt32:
+            tracker->start_track(*((array2d<uint32_t>*)img), *p);
+            break;
+        case array2d_type::Int8:
+            tracker->start_track(*((array2d<int8_t>*)img), *p);
+            break;
+        case array2d_type::Int16:
+            tracker->start_track(*((array2d<int16_t>*)img), *p);
+            break;
         case array2d_type::Int32:
             tracker->start_track(*((array2d<int32_t>*)img), *p);
             break;
@@ -88,6 +97,15 @@ DLLEXPORT int correlation_tracker_update_noscale(
         case array2d_type::UInt16:
             *confident = tracker->update_noscale(*((array2d<uint16_t>*)img), *guess);
             break;
+        case array2d_type::UInt32:
+            *confident = tracker->update_noscale(*((array2d<uint32_t>*)img), *guess);
+            break;
+        case array2d_type::Int8:
+            *confident = tracker->update_noscale(*((array2d<int8_t>*)img), *guess);
+            break;
+        case array2d_type::Int16:
+            *confident = tracker->update_noscale(*((array2d<int16_t>*)img), *guess);
+            break;
         case array2d_type::Int32:
             *confident = tracker->update_noscale(*((array2d<int32_t>*)img), *guess);
             break;
@@ -127,6 +145,15 @@ DLLEXPORT int correlation_tracker_update_noscale2(
             break;
         case array2d_type::UInt16:
             *confident = tracker->update_noscale(*((array2d<uint16_t>*)img));
+            break;
+        case array2d_type::UInt32:
+            *confident = tracker->update_noscale(*((array2d<uint32_t>*)img));
+            break;
+        case array2d_type::Int8:
+            *confident = tracker->update_noscale(*((array2d<int8_t>*)img));
+            break;
+        case array2d_type::Int16:
+            *confident = tracker->update_noscale(*((array2d<int16_t>*)img));
             break;
         case array2d_type::Int32:
             *confident = tracker->update_noscale(*((array2d<int32_t>*)img));
@@ -169,6 +196,15 @@ DLLEXPORT int correlation_tracker_update(
         case array2d_type::UInt16:
             *confident = tracker->update(*((array2d<uint16_t>*)img), *guess);
             break;
+        case array2d_type::UInt32:
+            *confident = tracker->update(*((array2d<uint32_t>*)img), *guess);
+            break;
+        case array2d_type::Int8:
+            *confident = tracker->update(*((array2d<int8_t>*)img), *guess);
+            break;
+        case array2d_type::Int16:
+            *confident = tracker->update(*((array2d<int16_t>*)img), *guess);
+            break;
         case array2d_type::Int32:
             *confident = tracker->update(*((array2d<int32_t>*)img), *guess);
             break;
@@ -208,6 +244,15 @@ DLLEXPORT int correlation_tracker_update2(
             break;
         case array2d_type::UInt16:
             *confident = tracker->update(*((array2d<uint16_t>*)img));
+            break;
+        case array2d_type::UInt32:
+            *confident = tracker->update(*((array2d<uint32_t>*)img));
+            break;
+        case array2d_type::Int8:
+            *confident = tracker->update(*((array2d<int8_t>*)img));
+            break;
+        case array2d_type::Int16:
+            *confident = tracker->update(*((array2d<int16_t>*)img));
             break;
         case array2d_type::Int32:
             *confident = tracker->update(*((array2d<int32_t>*)img));
