@@ -723,6 +723,10 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<byte>();
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>();
+                case ImageTypes.UInt32:
+                    return new Array2D<uint>();
+                case ImageTypes.Int8:
+                    return new Array2D<sbyte>();
                 case ImageTypes.Int16:
                     return new Array2D<short>();
                 case ImageTypes.Int32:
