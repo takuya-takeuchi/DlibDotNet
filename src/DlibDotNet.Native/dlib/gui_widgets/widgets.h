@@ -368,7 +368,7 @@ DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image
         case array2d_type::UInt32:
             return new image_window(*((array2d<uint32_t>*)image), title);
         case array2d_type::Int8:
-            return new image_window(*((array2d<uint8_t>*)image), title);
+            return new image_window(*((array2d<int8_t>*)image), title);
         case array2d_type::Int16:
             return new image_window(*((array2d<int16_t>*)image), title);
         case array2d_type::Int32:

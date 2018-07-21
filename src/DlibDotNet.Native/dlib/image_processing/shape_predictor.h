@@ -8,6 +8,25 @@
 using namespace dlib;
 using namespace std;
 
+#pragma region template
+
+#define ELEMENT element
+#undef ELEMENT
+
+#define shape_predictor_operator_template(img, full_obj_detect) \
+do {\
+    auto result = (*predictor)(*((array2d<ELEMENT>*)img), *rect);\
+    *full_obj_detect = new full_object_detection(result);\
+} while (0)
+
+#define shape_predictor_matrix_operator_template(img, full_obj_detect) \
+do {\
+    auto result = (*predictor)(*((matrix<ELEMENT>*)img), *rect);\
+    *full_obj_detect = new full_object_detection(result);\
+} while (0)
+
+#pragma endregion template
+
 DLLEXPORT shape_predictor* shape_predictor_new()
 {
     return new shape_predictor();
@@ -42,52 +61,59 @@ DLLEXPORT int shape_predictor_operator(shape_predictor* predictor,
     switch(img_type)
     {
         case array2d_type::UInt8:
-            {
-                full_object_detection result = (*predictor)(*((array2d<uint8_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint8_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::UInt16:
-            {
-                full_object_detection result = (*predictor)(*((array2d<uint16_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint16_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT uint32_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT int8_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT int16_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::Int32:
-            {
-                full_object_detection result = (*predictor)(*((array2d<int32_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int32_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::Float:
-            {
-                full_object_detection result = (*predictor)(*((array2d<float>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT float
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::Double:
-            {
-                full_object_detection result = (*predictor)(*((array2d<double>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT double
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::RgbPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<rgb_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_pixel
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::HsiPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<hsi_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT hsi_pixel
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::RgbAlphaPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<rgb_alpha_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         default:
             err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
@@ -109,70 +135,59 @@ DLLEXPORT int shape_predictor_matrix_operator(shape_predictor* predictor,
     switch(img_type)
     {
         case matrix_element_type::UInt8:
-            {
-                full_object_detection result = (*predictor)(*((matrix<uint8_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint8_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                full_object_detection result = (*predictor)(*((matrix<uint16_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint16_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                full_object_detection result = (*predictor)(*((matrix<uint32_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint32_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                full_object_detection result = (*predictor)(*((matrix<int8_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int8_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                full_object_detection result = (*predictor)(*((matrix<int16_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int16_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                full_object_detection result = (*predictor)(*((matrix<int32_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int32_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                full_object_detection result = (*predictor)(*((matrix<float>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT float
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                full_object_detection result = (*predictor)(*((matrix<double>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT double
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            {
-                full_object_detection result = (*predictor)(*((matrix<rgb_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_pixel
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            {
-                full_object_detection result = (*predictor)(*((matrix<hsi_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT hsi_pixel
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<rgb_alpha_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
@@ -194,52 +209,59 @@ DLLEXPORT int shape_predictor_operator_mmod_rect(shape_predictor* predictor,
     switch(img_type)
     {
         case array2d_type::UInt8:
-            {
-                full_object_detection result = (*predictor)(*((array2d<uint8_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint8_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::UInt16:
-            {
-                full_object_detection result = (*predictor)(*((array2d<uint16_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint16_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT uint32_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT int8_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT int16_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::Int32:
-            {
-                full_object_detection result = (*predictor)(*((array2d<int32_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int32_t
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::Float:
-            {
-                full_object_detection result = (*predictor)(*((array2d<float>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT float
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::Double:
-            {
-                full_object_detection result = (*predictor)(*((array2d<double>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT double
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::RgbPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<rgb_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_pixel
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::HsiPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<hsi_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT hsi_pixel
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case array2d_type::RgbAlphaPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<rgb_alpha_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            shape_predictor_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         default:
             err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
@@ -261,70 +283,59 @@ DLLEXPORT int shape_predictor_matrix_operator_mmod_rect(shape_predictor* predict
     switch(img_type)
     {
         case matrix_element_type::UInt8:
-            {
-                full_object_detection result = (*predictor)(*((matrix<uint8_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint8_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt16:
-            {
-                full_object_detection result = (*predictor)(*((matrix<uint16_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint16_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::UInt32:
-            {
-                full_object_detection result = (*predictor)(*((matrix<uint32_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT uint32_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int8:
-            {
-                full_object_detection result = (*predictor)(*((matrix<int8_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int8_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int16:
-            {
-                full_object_detection result = (*predictor)(*((matrix<int16_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int16_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Int32:
-            {
-                full_object_detection result = (*predictor)(*((matrix<int32_t>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT int32_t
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Float:
-            {
-                full_object_detection result = (*predictor)(*((matrix<float>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT float
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::Double:
-            {
-                full_object_detection result = (*predictor)(*((matrix<double>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT double
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            {
-                full_object_detection result = (*predictor)(*((matrix<rgb_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_pixel
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::HsiPixel:
-            {
-                full_object_detection result = (*predictor)(*((matrix<hsi_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT hsi_pixel
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         case matrix_element_type::RgbAlphaPixel:
-            {
-                full_object_detection result = (*predictor)(*((array2d<rgb_alpha_pixel>*)img), *rect);
-                *full_obj_detect = new full_object_detection(result);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            shape_predictor_matrix_operator_template(img, full_obj_detect);
+            #undef ELEMENT
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;

@@ -73,6 +73,16 @@ DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_ty
             sobel_edge_detector_template(in_img, out_type, horz, vert);
             #undef ARRAY2D_ELEMENT
             break;
+        case array2d_type::UInt32:
+            #define ARRAY2D_ELEMENT uint32_t
+            sobel_edge_detector_template(in_img, out_type, horz, vert);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ARRAY2D_ELEMENT int8_t
+            sobel_edge_detector_template(in_img, out_type, horz, vert);
+            #undef ARRAY2D_ELEMENT
+            break;
         case array2d_type::Int16:
             #define ARRAY2D_ELEMENT int16_t
             sobel_edge_detector_template(in_img, out_type, horz, vert);
@@ -139,6 +149,16 @@ DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void*
             break;
         case array2d_type::UInt16:
             #define ARRAY2D_ELEMENT uint16_t
+            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::UInt32:
+            #define ARRAY2D_ELEMENT uint32_t
+            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ARRAY2D_ELEMENT int8_t
             suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
             #undef ARRAY2D_ELEMENT
             break;

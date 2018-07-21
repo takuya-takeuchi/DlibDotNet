@@ -47,6 +47,18 @@ DLLEXPORT int draw_line(
          case array2d_type::UInt16:
              dlib::draw_line(*((array2d<uint16_t>*)image), *p1, *p2, *((uint16_t*)p));
              break;
+         case array2d_type::UInt32:
+             dlib::draw_line(*((array2d<uint32_t>*)image), *p1, *p2, *((uint32_t*)p));
+             break;
+         case array2d_type::Int8:
+             dlib::draw_line(*((array2d<int8_t>*)image), *p1, *p2, *((int8_t*)p));
+             break;
+         case array2d_type::Int16:
+             dlib::draw_line(*((array2d<int16_t>*)image), *p1, *p2, *((int16_t*)p));
+             break;
+         case array2d_type::Int32:
+             dlib::draw_line(*((array2d<int32_t>*)image), *p1, *p2, *((int16_t*)p));
+             break;
          case array2d_type::Float:
              dlib::draw_line(*((array2d<float>*)image), *p1, *p2, *((float*)p));
              break;
@@ -87,8 +99,17 @@ DLLEXPORT int draw_line(
          case array2d_type::UInt16:
              dlib::draw_rectangle(*((array2d<uint16_t>*)image), *rect, *((uint16_t*)p), thickness);
              break;
+         case array2d_type::UInt32:
+             dlib::draw_rectangle(*((array2d<uint32_t>*)image), *rect, *((uint32_t*)p), thickness);
+             break;
+         case array2d_type::Int8:
+             dlib::draw_rectangle(*((array2d<int8_t>*)image), *rect, *((int8_t*)p), thickness);
+             break;
+         case array2d_type::Int16:
+             dlib::draw_rectangle(*((array2d<int16_t>*)image), *rect, *((int16_t*)p), thickness);
+             break;
          case array2d_type::Int32:
-             dlib::draw_rectangle(*((array2d<int32_t>*)image), *rect, *((uint16_t*)p), thickness);
+             dlib::draw_rectangle(*((array2d<int32_t>*)image), *rect, *((uint32_t*)p), thickness);
              break;
          case array2d_type::Float:
              dlib::draw_rectangle(*((array2d<float>*)image), *rect, *((float*)p), thickness);
@@ -124,6 +145,18 @@ DLLEXPORT int tile_images(array2d_type in_type, void* images, void** ret_image)
             break;
         case array2d_type::UInt16:
             *ret_image = new dlib::matrix<uint16_t>(dlib::tile_images(*((dlib::array<dlib::array2d<uint16_t>>*)images)));
+            break;
+        case array2d_type::UInt32:
+            *ret_image = new dlib::matrix<uint32_t>(dlib::tile_images(*((dlib::array<dlib::array2d<uint32_t>>*)images)));
+            break;
+        case array2d_type::Int8:
+            *ret_image = new dlib::matrix<int8_t>(dlib::tile_images(*((dlib::array<dlib::array2d<int8_t>>*)images)));
+            break;
+        case array2d_type::Int16:
+            *ret_image = new dlib::matrix<int16_t>(dlib::tile_images(*((dlib::array<dlib::array2d<int16_t>>*)images)));
+            break;
+        case array2d_type::Int32:
+            *ret_image = new dlib::matrix<int32_t>(dlib::tile_images(*((dlib::array<dlib::array2d<int32_t>>*)images)));
             break;
         case array2d_type::Float:
             *ret_image = new dlib::matrix<float>(dlib::tile_images(*((dlib::array<dlib::array2d<float>>*)images)));

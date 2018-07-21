@@ -25,6 +25,18 @@ do { \
         case array2d_type::UInt16:\
             dlib::gaussian_blur(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
             break;\
+        case array2d_type::UInt32:\
+            dlib::gaussian_blur(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            break;\
+        case array2d_type::Int8:\
+            dlib::gaussian_blur(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            break;\
+        case array2d_type::Int16:\
+            dlib::gaussian_blur(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            break;\
+        case array2d_type::Int32:\
+            dlib::gaussian_blur(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            break;\
         case array2d_type::Float:\
             dlib::gaussian_blur(*((array2d<float>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
             break;\
@@ -55,6 +67,18 @@ do { \
         case array2d_type::UInt16:\
             dlib::sum_filter(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
             break;\
+        case array2d_type::UInt32:\
+            dlib::sum_filter(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            break;\
+        case array2d_type::Int8:\
+            dlib::sum_filter(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            break;\
+        case array2d_type::Int16:\
+            dlib::sum_filter(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            break;\
+        case array2d_type::Int32:\
+            dlib::sum_filter(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            break;\
         case array2d_type::Float:\
             dlib::sum_filter(*((array2d<float>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
             break;\
@@ -84,6 +108,26 @@ DLLEXPORT int gaussian_blur(array2d_type in_type, void* in_img, array2d_type out
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
             gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
             #undef ELEMENT_OUT
             break;
@@ -132,6 +176,26 @@ DLLEXPORT int sum_filter(array2d_type in_type, void* in_img, array2d_type out_ty
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            sum_filter_template(err, in_type, in_img, out_img, rect);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            sum_filter_template(err, in_type, in_img, out_img, rect);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            sum_filter_template(err, in_type, in_img, out_img, rect);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
+            sum_filter_template(err, in_type, in_img, out_img, rect);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT_OUT int32_t
             sum_filter_template(err, in_type, in_img, out_img, rect);
             #undef ELEMENT_OUT
             break;

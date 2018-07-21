@@ -102,6 +102,8 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -128,6 +130,22 @@ namespace DlibDotNet.Tests.Array2D
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
                                 Assert.AreEqual(row[0], 255, "Array<ushort> failed");
+                        }
+                        break;
+                    case ImageTypes.UInt32:
+                        {
+                            var array = (Array2D<uint>)array2D;
+                            Dlib.AssignAllPpixels(array, 255);
+                            using (var row = array[0])
+                                Assert.AreEqual(row[0], 255u, "Array<uint> failed");
+                        }
+                        break;
+                    case ImageTypes.Int8:
+                        {
+                            var array = (Array2D<sbyte>)array2D;
+                            Dlib.AssignAllPpixels(array, 127);
+                            using (var row = array[0])
+                                Assert.AreEqual(row[0], 127, "Array<sbyte> failed");
                         }
                         break;
                     case ImageTypes.Int16:
@@ -243,6 +261,8 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -274,6 +294,28 @@ namespace DlibDotNet.Tests.Array2D
                             {
                                 row[50] = 0;
                                 Assert.AreEqual(row[50], 0, "Array<ushort> failed");
+                            }
+                        }
+                        break;
+                    case ImageTypes.UInt32:
+                        {
+                            var array = (Array2D<uint>)array2D;
+                            Dlib.AssignAllPpixels(array, 255);
+                            using (var row = array[0])
+                            {
+                                row[50] = 0;
+                                Assert.AreEqual(row[50], 0u, "Array<uint> failed");
+                            }
+                        }
+                        break;
+                    case ImageTypes.Int8:
+                        {
+                            var array = (Array2D<sbyte>)array2D;
+                            Dlib.AssignAllPpixels(array, 127);
+                            using (var row = array[0])
+                            {
+                                row[50] = 0;
+                                Assert.AreEqual(row[50], 0, "Array<sbyte> failed");
                             }
                         }
                         break;
@@ -681,6 +723,10 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<byte>();
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>();
+                case ImageTypes.UInt32:
+                    return new Array2D<uint>();
+                case ImageTypes.Int8:
+                    return new Array2D<sbyte>();
                 case ImageTypes.Int16:
                     return new Array2D<short>();
                 case ImageTypes.Int32:
@@ -708,6 +754,10 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<byte>(rows, columns);
                 case ImageTypes.UInt16:
                     return new Array2D<ushort>(rows, columns);
+                case ImageTypes.UInt32:
+                    return new Array2D<uint>(rows, columns);
+                case ImageTypes.Int8:
+                    return new Array2D<sbyte>(rows, columns);
                 case ImageTypes.Int16:
                     return new Array2D<short>(rows, columns);
                 case ImageTypes.Int32:

@@ -29,6 +29,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
                 new { Type = ImageTypes.UInt16,        ExpectResult = true },
+                new { Type = ImageTypes.UInt32,        ExpectResult = true },
+                new { Type = ImageTypes.Int8,          ExpectResult = true },
+                new { Type = ImageTypes.Int16,         ExpectResult = true },
+                new { Type = ImageTypes.Int32,         ExpectResult = true },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false },
                 new { Type = ImageTypes.Float,         ExpectResult = true },
                 new { Type = ImageTypes.Double,        ExpectResult = true }
@@ -66,8 +70,6 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         if (test.ExpectResult)
                         {
-                            matrix = Heatmap(test.Type, outputImage);
-
                             Assert.AreEqual(matrix.Columns, LoadTargetWidth);
                             Assert.AreEqual(matrix.Rows, LoadTargetHeight);
 
@@ -127,18 +129,26 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
-                new { Type = ImageTypes.RgbPixel,      ExpectResult = true,   Max = 255,  Min = 0},
-                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 255,  Min = 0},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true,   Max = 255,  Min = 0},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.Int8,          ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 255,  Min = 0},
-                new { Type = ImageTypes.RgbPixel,      ExpectResult = true,   Max = 75,   Min = 50},
-                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 75,   Min = 50},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true,   Max = 75,   Min = 50},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.Int8,          ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 75,   Min = 50}
             };
@@ -169,19 +179,41 @@ namespace DlibDotNet.Tests.ImageTransforms
                     Dlib.SobelEdgeDetector(image, horz, vert);
                     Dlib.SuppressNonMaximumEdges(horz, vert, outputImage);
 
-                    matrix = Heatmap(test.Type, outputImage, test.Max, test.Min);
-                    if (this.CanGuiDebug)
+                    try
                     {
-                        var window = new ImageWindow(matrix, $"{test.Type} - Max: {test.Max}, Min : {test.Min}");
-                        windowObj = window;
-                    }
+                        matrix = Heatmap(test.Type, outputImage, test.Max, test.Min);
 
-                    Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "Heatmap2"), $"{LoadTarget}_{test.Type}_{test.Max}_{test.Min}.bmp")}");
+                        if (test.ExpectResult)
+                        {
+                            if (this.CanGuiDebug)
+                            {
+                                var window = new ImageWindow(matrix, $"{test.Type} - Max: {test.Max}, Min : {test.Min}");
+                                windowObj = window;
+                            }
+
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "Heatmap2"), $"{LoadTarget}_{test.Type}_{test.Max}_{test.Min}.bmp")}");
+                        }
+                        else
+                        {
+                            Assert.Fail($"Failed to execute Heatmap2 to Type: {test.Type}");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (!test.ExpectResult)
+                        {
+                            Console.WriteLine("OK");
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.StackTrace);
-                    Console.WriteLine($"Failed to execute Heatmap to Type: {test.Type}");
+                    Console.WriteLine($"Failed to execute Heatmap2 to Type: {test.Type}");
                     throw;
                 }
                 finally
@@ -217,6 +249,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
                 new { Type = ImageTypes.UInt16,        ExpectResult = true },
+                new { Type = ImageTypes.UInt32,        ExpectResult = true },
+                new { Type = ImageTypes.Int8,          ExpectResult = true },
+                new { Type = ImageTypes.Int16,         ExpectResult = true },
+                new { Type = ImageTypes.Int32,         ExpectResult = true },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false },
                 new { Type = ImageTypes.Float,         ExpectResult = true },
                 new { Type = ImageTypes.Double,        ExpectResult = true }
@@ -254,8 +290,6 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         if (test.ExpectResult)
                         {
-                            matrix = Jet(test.Type, outputImage);
-
                             Assert.AreEqual(matrix.Columns, LoadTargetWidth);
                             Assert.AreEqual(matrix.Rows, LoadTargetHeight);
 
@@ -315,18 +349,26 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
-                new { Type = ImageTypes.RgbPixel,      ExpectResult = true,   Max = 255,  Min = 0},
-                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 255,  Min = 0},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true,   Max = 255,  Min = 0},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.Int8,          ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 255,  Min = 0},
-                new { Type = ImageTypes.RgbPixel,      ExpectResult = true,   Max = 75,   Min = 50},
-                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 75,   Min = 50},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true,   Max = 75,   Min = 50},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.Int8,          ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 75,   Min = 50},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 75,   Min = 50}
             };
@@ -357,19 +399,41 @@ namespace DlibDotNet.Tests.ImageTransforms
                     Dlib.SobelEdgeDetector(image, horz, vert);
                     Dlib.SuppressNonMaximumEdges(horz, vert, outputImage);
 
-                    matrix = Jet(test.Type, outputImage, test.Max, test.Min);
-                    if (this.CanGuiDebug)
+                    try
                     {
-                        var window = new ImageWindow(matrix, $"{test.Type} - Max: {test.Max}, Min : {test.Min}");
-                        windowObj = window;
-                    }
+                        matrix = Jet(test.Type, outputImage, test.Max, test.Min);
 
-                    Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "Jet2"), $"{LoadTarget}_{test.Type}_{test.Max}_{test.Min}.bmp")}");
+                        if (test.ExpectResult)
+                        {
+                            if (this.CanGuiDebug)
+                            {
+                                var window = new ImageWindow(matrix, $"{test.Type} - Max: {test.Max}, Min : {test.Min}");
+                                windowObj = window;
+                            }
+
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "Jet2"), $"{LoadTarget}_{test.Type}_{test.Max}_{test.Min}.bmp")}");
+                        }
+                        else
+                        {
+                            Assert.Fail($"Failed to execute Jet2 to Type: {test.Type}");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (!test.ExpectResult)
+                        {
+                            Console.WriteLine("OK");
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.StackTrace);
-                    Console.WriteLine($"Failed to execute Jet to Type: {test.Type}");
+                    Console.WriteLine($"Failed to execute Jet2 to Type: {test.Type}");
                     throw;
                 }
                 finally
@@ -409,6 +473,18 @@ namespace DlibDotNet.Tests.ImageTransforms
                 case ImageTypes.UInt16:
                     matrixOp = Dlib.Heatmap(obj as Array2D<ushort>);
                     break;
+                case ImageTypes.UInt32:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<uint>);
+                    break;
+                case ImageTypes.Int8:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<sbyte>);
+                    break;
+                case ImageTypes.Int16:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<short>);
+                    break;
+                case ImageTypes.Int32:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<int>);
+                    break;
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Heatmap(obj as Array2D<HsiPixel>);
                     break;
@@ -441,6 +517,18 @@ namespace DlibDotNet.Tests.ImageTransforms
                     break;
                 case ImageTypes.UInt16:
                     matrixOp = Dlib.Heatmap(obj as Array2D<ushort>, max, min);
+                    break;
+                case ImageTypes.UInt32:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<uint>, max, min);
+                    break;
+                case ImageTypes.Int8:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<sbyte>, max, min);
+                    break;
+                case ImageTypes.Int16:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<short>, max, min);
+                    break;
+                case ImageTypes.Int32:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<int>, max, min);
                     break;
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Heatmap(obj as Array2D<HsiPixel>, max, min);
@@ -475,6 +563,18 @@ namespace DlibDotNet.Tests.ImageTransforms
                 case ImageTypes.UInt16:
                     matrixOp = Dlib.Jet(obj as Array2D<ushort>);
                     break;
+                case ImageTypes.UInt32:
+                    matrixOp = Dlib.Jet(obj as Array2D<uint>);
+                    break;
+                case ImageTypes.Int8:
+                    matrixOp = Dlib.Jet(obj as Array2D<sbyte>);
+                    break;
+                case ImageTypes.Int16:
+                    matrixOp = Dlib.Jet(obj as Array2D<short>);
+                    break;
+                case ImageTypes.Int32:
+                    matrixOp = Dlib.Jet(obj as Array2D<int>);
+                    break;
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Jet(obj as Array2D<HsiPixel>);
                     break;
@@ -507,6 +607,18 @@ namespace DlibDotNet.Tests.ImageTransforms
                     break;
                 case ImageTypes.UInt16:
                     matrixOp = Dlib.Jet(obj as Array2D<ushort>, max, min);
+                    break;
+                case ImageTypes.UInt32:
+                    matrixOp = Dlib.Jet(obj as Array2D<uint>, max, min);
+                    break;
+                case ImageTypes.Int8:
+                    matrixOp = Dlib.Jet(obj as Array2D<sbyte>, max, min);
+                    break;
+                case ImageTypes.Int16:
+                    matrixOp = Dlib.Jet(obj as Array2D<short>, max, min);
+                    break;
+                case ImageTypes.Int32:
+                    matrixOp = Dlib.Jet(obj as Array2D<int>, max, min);
                     break;
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Jet(obj as Array2D<HsiPixel>, max, min);

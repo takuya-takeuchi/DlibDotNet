@@ -26,6 +26,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
@@ -86,6 +90,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
@@ -139,7 +147,7 @@ namespace DlibDotNet.Tests.ImageTransforms
         [TestMethod]
         public void FlipImageUpDown()
         {
-            const string testName = "PyramidUp";
+            const string testName = "FlipImageUpDown";
             var path = this.GetDataFile($"{LoadTarget}.bmp");
 
             var tests = new[]
@@ -148,6 +156,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
@@ -210,6 +222,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
@@ -269,6 +285,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -322,6 +342,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -385,6 +409,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -442,6 +470,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -507,6 +539,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -576,6 +612,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -649,6 +689,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -737,6 +781,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };

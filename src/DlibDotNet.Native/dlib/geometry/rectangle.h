@@ -203,6 +203,18 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
         case array2d_type::UInt16:
             *rect = new dlib::rectangle(get_rect(*((array2d<uint16_t>*)img)));
             break;
+        case array2d_type::UInt32:
+            *rect = new dlib::rectangle(get_rect(*((array2d<uint32_t>*)img)));
+            break;
+        case array2d_type::Int8:
+            *rect = new dlib::rectangle(get_rect(*((array2d<int8_t>*)img)));
+            break;
+        case array2d_type::Int16:
+            *rect = new dlib::rectangle(get_rect(*((array2d<int16_t>*)img)));
+            break;
+        case array2d_type::Int32:
+            *rect = new dlib::rectangle(get_rect(*((array2d<int32_t>*)img)));
+            break;
         case array2d_type::Float:
             *rect = new dlib::rectangle(get_rect(*((array2d<float>*)img)));
             break;

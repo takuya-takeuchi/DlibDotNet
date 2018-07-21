@@ -26,6 +26,8 @@ namespace DlibDotNet
             {
                 new { Type = typeof(byte),          ElementType = ImageTypes.UInt8  },
                 new { Type = typeof(ushort),        ElementType = ImageTypes.UInt16 },
+                new { Type = typeof(uint),          ElementType = ImageTypes.UInt32 },
+                new { Type = typeof(sbyte),         ElementType = ImageTypes.Int8  },
                 new { Type = typeof(short),         ElementType = ImageTypes.Int16 },
                 new { Type = typeof(int),           ElementType = ImageTypes.Int32 },
                 new { Type = typeof(float),         ElementType = ImageTypes.Float  },
@@ -149,6 +151,10 @@ namespace DlibDotNet
                         return new RowUInt8(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.UInt16:
                         return new RowUInt16(ret, this.ImageType, this) as Row<TElement>;
+                    case ImageTypes.UInt32:
+                        return new RowUInt32(ret, this.ImageType, this) as Row<TElement>;
+                    case ImageTypes.Int8:
+                        return new RowInt8(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Int16:
                         return new RowInt16(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Int32:
@@ -316,6 +322,82 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     Dlib.Native.array2d_set_row_column_uint16_t(this.NativePtr, column, value);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowUInt32 : Row<uint>
+        {
+
+            #region Constructors
+
+            public RowUInt32(IntPtr ptr, ImageTypes type, Array2DBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override uint this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    uint value;
+                    Dlib.Native.array2d_get_row_column_uint32_t(this.NativePtr, column, out value);
+                    return value;
+                }
+                set
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_set_row_column_uint32_t(this.NativePtr, column, value);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowInt8 : Row<sbyte>
+        {
+
+            #region Constructors
+
+            public RowInt8(IntPtr ptr, ImageTypes type, Array2DBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override sbyte this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    sbyte value;
+                    Dlib.Native.array2d_get_row_column_int8_t(this.NativePtr, column, out value);
+                    return value;
+                }
+                set
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.array2d_set_row_column_int8_t(this.NativePtr, column, value);
                 }
             }
 

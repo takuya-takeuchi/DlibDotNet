@@ -22,6 +22,9 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true}
             };
 
@@ -74,6 +77,9 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true}
             };
 
@@ -126,6 +132,9 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true}
             };
 

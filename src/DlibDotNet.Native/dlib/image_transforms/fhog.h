@@ -104,6 +104,16 @@ DLLEXPORT int extract_fhog_features(
             extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
             #undef ARRAY2D_ELEMENT
             break;
+        case array2d_type::UInt32:
+            #define ARRAY2D_ELEMENT uint32_t
+            extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ARRAY2D_ELEMENT int8_t
+            extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
+            #undef ARRAY2D_ELEMENT
+            break;
         case array2d_type::Int16:
             #define ARRAY2D_ELEMENT int16_t
             extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);

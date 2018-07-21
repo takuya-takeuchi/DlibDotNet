@@ -72,7 +72,7 @@ namespace DlibDotNet
             inImage.ThrowIfDisposed(nameof(inImage));
 
             //var hogImage = new FHogArray2DMatrix<T>();
-            var hogImage = new Array2DMatrix<T>(31, 1);
+            var hogImage = new Array2DMatrix<T>(0, 0, 31, 1);
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = hogImage.MatrixElementType.ToNativeMatrixElementType();
@@ -161,21 +161,21 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_fhog_features(Array2DType img_type,
-                                                                IntPtr img,
-                                                                MatrixElementType hog_type,
-                                                                IntPtr hog,
-                                                                int cell_size,
-                                                                int filter_rows_padding,
-                                                                int filter_cols_padding);
+                                                                 IntPtr img,
+                                                                 MatrixElementType hog_type,
+                                                                 IntPtr hog,
+                                                                 int cell_size,
+                                                                 int filter_rows_padding,
+                                                                 int filter_cols_padding);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extract_fhog_features_array(Array2DType img_type,
-                                                                        IntPtr img,
-                                                                        Array2DType hog_type,
-                                                                        IntPtr hog,
-                                                                        int cell_size,
-                                                                        int filter_rows_padding,
-                                                                        int filter_cols_padding);
+                                                                       IntPtr img,
+                                                                       Array2DType hog_type,
+                                                                       IntPtr hog,
+                                                                       int cell_size,
+                                                                       int filter_rows_padding,
+                                                                       int filter_cols_padding);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr image_to_fhog(IntPtr p,

@@ -751,6 +751,12 @@ namespace DlibDotNet
             public static extern void array2d_get_row_column_uint16_t(IntPtr row, int column, out ushort value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_uint32_t(IntPtr row, int column, out uint value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_get_row_column_int8_t(IntPtr row, int column, out sbyte value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void array2d_get_row_column_int16_t(IntPtr row, int column, out short value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -780,6 +786,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void array2d_set_row_column_uint16_t(IntPtr row, int column, ushort value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_uint32_t(IntPtr row, int column, uint value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void array2d_set_row_column_int8_t(IntPtr row, int column, sbyte value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void array2d_set_row_column_int16_t(IntPtr row, int column, short value);
