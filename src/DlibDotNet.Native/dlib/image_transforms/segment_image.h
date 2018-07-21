@@ -33,6 +33,15 @@ DLLEXPORT int find_candidate_object_locations(
         case array2d_type::UInt16:
             dlib::find_candidate_object_locations(*((array2d<uint16_t>*)in_img), tmpRects);
             break;
+        case array2d_type::UInt32:
+            dlib::find_candidate_object_locations(*((array2d<uint32_t>*)in_img), tmpRects);
+            break;
+        case array2d_type::Int8:
+            dlib::find_candidate_object_locations(*((array2d<int8_t>*)in_img), tmpRects);
+            break;
+        case array2d_type::Int16:
+            dlib::find_candidate_object_locations(*((array2d<int16_t>*)in_img), tmpRects);
+            break;
         case array2d_type::Int32:
             dlib::find_candidate_object_locations(*((array2d<int32_t>*)in_img), tmpRects);
             break;
