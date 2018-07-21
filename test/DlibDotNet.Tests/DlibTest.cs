@@ -105,6 +105,10 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
@@ -126,6 +130,18 @@ namespace DlibDotNet.Tests
                         break;
                     case ImageTypes.UInt16:
                         image = Dlib.LoadDng<ushort>(path.FullName);
+                        break;
+                    case ImageTypes.UInt32:
+                        image = Dlib.LoadDng<uint>(path.FullName);
+                        break;
+                    case ImageTypes.Int8:
+                        image = Dlib.LoadDng<sbyte>(path.FullName);
+                        break;
+                    case ImageTypes.Int16:
+                        image = Dlib.LoadDng<short>(path.FullName);
+                        break;
+                    case ImageTypes.Int32:
+                        image = Dlib.LoadDng<int>(path.FullName);
                         break;
                     case ImageTypes.HsiPixel:
                         image = Dlib.LoadDng<HsiPixel>(path.FullName);
