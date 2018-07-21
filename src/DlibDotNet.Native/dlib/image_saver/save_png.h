@@ -23,6 +23,12 @@ DLLEXPORT int save_png(array2d_type type, void* image, const char* file_name)
         case array2d_type::UInt16:
             dlib::save_png(*((array2d<uint16_t>*)image), file_name);
             break;
+        case array2d_type::UInt32:
+            dlib::save_png(*((array2d<uint32_t>*)image), file_name);
+            break;
+        case array2d_type::Int8:
+            dlib::save_png(*((array2d<int8_t>*)image), file_name);
+            break;
         case array2d_type::Int16:
             dlib::save_png(*((array2d<int16_t>*)image), file_name);
             break;
