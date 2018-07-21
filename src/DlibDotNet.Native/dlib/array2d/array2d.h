@@ -75,6 +75,13 @@ do {\
     }\
 } while (0)
 
+#define array2d_row_template(array, row, ret) \
+do {\
+    auto tmp = static_cast<dlib::array2d<ELEMENT>*>(array);\
+    auto r = (*tmp)[row];\
+    *ret = new dlib::array2d<ELEMENT>::row(r);\
+} while (0)
+
 #define array2d_matrix_size_template(array, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -169,6 +176,10 @@ DLLEXPORT void* array2d_new(array2d_type type)
 			return new dlib::array2d<uint8_t>();
         case array2d_type::UInt16:
 			return new dlib::array2d<uint16_t>();
+        case array2d_type::UInt32:
+			return new dlib::array2d<uint32_t>();
+        case array2d_type::Int8:
+			return new dlib::array2d<int8_t>();
         case array2d_type::Int16:
 			return new dlib::array2d<int16_t>();
         case array2d_type::Int32:
@@ -196,6 +207,10 @@ DLLEXPORT void* array2d_new1(array2d_type type, int rows, int cols)
 			return new dlib::array2d<uint8_t>(rows, cols);
         case array2d_type::UInt16:
 			return new dlib::array2d<uint16_t>(rows, cols);
+        case array2d_type::UInt32:
+			return new dlib::array2d<uint32_t>(rows, cols);
+        case array2d_type::Int8:
+			return new dlib::array2d<int8_t>(rows, cols);
         case array2d_type::Int16:
 			return new dlib::array2d<int16_t>(rows, cols);
         case array2d_type::Int32:
@@ -224,6 +239,12 @@ DLLEXPORT bool array2d_nc(array2d_type type, void* array, int* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((array2d<uint16_t>*)array)->nc();
+			return true;
+        case array2d_type::UInt32:
+			*ret = ((array2d<uint32_t>*)array)->nc();
+			return true;
+        case array2d_type::Int8:
+			*ret = ((array2d<int8_t>*)array)->nc();
 			return true;
         case array2d_type::Int16:
 			*ret = ((array2d<int16_t>*)array)->nc();
@@ -261,6 +282,12 @@ DLLEXPORT bool array2d_nr(array2d_type type, void* array, int* ret)
         case array2d_type::UInt16:
 			*ret = ((array2d<uint16_t>*)array)->nr();
 			return true;
+        case array2d_type::UInt32:
+			*ret = ((array2d<uint32_t>*)array)->nr();
+			return true;
+        case array2d_type::Int8:
+			*ret = ((array2d<int8_t>*)array)->nr();
+			return true;
         case array2d_type::Int16:
 			*ret = ((array2d<int16_t>*)array)->nr();
 			return true;
@@ -296,6 +323,12 @@ DLLEXPORT bool array2d_size(array2d_type type, void* array, uint64_t* ret)
 			return true;
         case array2d_type::UInt16:
 			*ret = ((array2d<uint16_t>*)array)->size();
+			return true;
+        case array2d_type::UInt32:
+			*ret = ((array2d<uint32_t>*)array)->size();
+			return true;
+        case array2d_type::Int8:
+			*ret = ((array2d<int8_t>*)array)->size();
 			return true;
         case array2d_type::Int16:
 			*ret = ((array2d<int16_t>*)array)->size();
@@ -333,6 +366,12 @@ DLLEXPORT void array2d_delete(array2d_type type, void* array)
         case array2d_type::UInt16:
 			delete ((array2d<uint16_t>*)array);
 			break;
+        case array2d_type::UInt32:
+			delete ((array2d<uint32_t>*)array);
+			break;
+        case array2d_type::Int8:
+			delete ((array2d<int8_t>*)array);
+			break;
         case array2d_type::Int16:
 			delete ((array2d<int16_t>*)array);
 			break;
@@ -368,67 +407,59 @@ DLLEXPORT int array2d_row(array2d_type type, void* array, int32_t row, void** re
     switch(type)
     {
         case array2d_type::UInt8:
-            {
-                auto tmp = static_cast<dlib::array2d<uint8_t>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<uint8_t>::row(r);
-            }
+            #define ELEMENT uint8_t
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::UInt16:
-            {
-                auto tmp = static_cast<dlib::array2d<uint16_t>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<uint16_t>::row(r);
-            }
+            #define ELEMENT uint16_t
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT uint32_t
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT int8_t
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::Int16:
-            {
-                auto tmp = static_cast<dlib::array2d<int16_t>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<int16_t>::row(r);
-            }
+            #define ELEMENT int16_t
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::Int32:
-            {
-                auto tmp = static_cast<dlib::array2d<int32_t>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<int32_t>::row(r);
-            }
+            #define ELEMENT int32_t
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::Float:
-            {
-                auto tmp = static_cast<dlib::array2d<float>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<float>::row(r);
-            }
+            #define ELEMENT float
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::Double:
-            {
-                auto tmp = static_cast<dlib::array2d<double>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<double>::row(r);
-            }
+            #define ELEMENT double
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::RgbPixel:
-            {
-                auto tmp = static_cast<dlib::array2d<rgb_pixel>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<rgb_pixel>::row(r);
-            }
+            #define ELEMENT rgb_pixel
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::HsiPixel:
-            {
-                auto tmp = static_cast<dlib::array2d<hsi_pixel>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<hsi_pixel>::row(r);
-            }
+            #define ELEMENT hsi_pixel
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         case array2d_type::RgbAlphaPixel:
-            {
-                auto tmp = static_cast<dlib::array2d<rgb_alpha_pixel>*>(array);
-                auto r = (*tmp)[row];
-                *ret = new dlib::array2d<rgb_alpha_pixel>::row(r);
-            }
+            #define ELEMENT rgb_alpha_pixel
+            array2d_row_template(array, row, ret);
+            #undef ELEMENT
             break;
         default:
             err = ERR_ARRAY_TYPE_NOT_SUPPORT;
@@ -450,6 +481,18 @@ DLLEXPORT void array2d_get_row_column_uint16_t(void* row, int32_t column, uint16
 {
     dlib::array2d<uint16_t>::row& tmp = *(static_cast<dlib::array2d<uint16_t>::row*>(row));
     *((uint16_t*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_uint32_t(void* row, int32_t column, uint32_t* ret)
+{
+    dlib::array2d<uint32_t>::row& tmp = *(static_cast<dlib::array2d<uint32_t>::row*>(row));
+    *((uint32_t*)ret) = tmp[column];
+}
+
+DLLEXPORT void array2d_get_row_column_int8_t(void* row, int32_t column, int8_t* ret)
+{
+    dlib::array2d<int8_t>::row& tmp = *(static_cast<dlib::array2d<int8_t>::row*>(row));
+    *((int8_t*)ret) = tmp[column];
 }
 
 DLLEXPORT void array2d_get_row_column_int16_t(void* row, int32_t column, int16_t* ret)
@@ -507,6 +550,18 @@ DLLEXPORT void array2d_set_row_column_uint8_t(void* row, int32_t column, uint8_t
 DLLEXPORT void array2d_set_row_column_uint16_t(void* row, int32_t column, uint16_t ret)
 {
     dlib::array2d<uint16_t>::row& tmp = *(static_cast<dlib::array2d<uint16_t>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_uint32_t(void* row, int32_t column, uint32_t ret)
+{
+    dlib::array2d<uint32_t>::row& tmp = *(static_cast<dlib::array2d<uint32_t>::row*>(row));
+    tmp[column] = ret;
+}
+
+DLLEXPORT void array2d_set_row_column_int8_t(void* row, int32_t column, int8_t ret)
+{
+    dlib::array2d<int8_t>::row& tmp = *(static_cast<dlib::array2d<int8_t>::row*>(row));
     tmp[column] = ret;
 }
 
@@ -569,6 +624,18 @@ DLLEXPORT int array2d_row_delete(array2d_type type, void* row)
         case array2d_type::UInt16:
             {
                 auto tmp = static_cast<dlib::array2d<uint16_t>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::UInt32:
+            {
+                auto tmp = static_cast<dlib::array2d<uint32_t>::row*>(row);
+                delete tmp;
+            }
+            break;
+        case array2d_type::Int8:
+            {
+                auto tmp = static_cast<dlib::array2d<int8_t>::row*>(row);
                 delete tmp;
             }
             break;
