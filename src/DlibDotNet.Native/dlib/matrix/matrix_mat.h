@@ -36,6 +36,12 @@ do {\
     }\
 } while (0)
 
+#define mat_array2d_template(array, mat_op) \
+do {\
+    auto ret = mat(*((array2d<ELEMENT_IN>*)array));\
+	*mat_op = new matrix_op<op_array2d_to_mat<array2d<ELEMENT_IN>>>(ret);\
+} while (0)
+
 #define mat_matrix_template(rc, dst) \
 do {\
     dlib::array2d<ELEMENT_IN>& array = *static_cast<dlib::array2d<ELEMENT_IN>*>(src);\
@@ -52,52 +58,59 @@ DLLEXPORT int mat_array2d(array2d_type type, void* array, void** mat_op)
     switch(type)
     {
 		case array2d_type::UInt8:
-			{
-                auto ret = mat(*((array2d<uint8_t>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<uint8_t>>>(ret);
-			}
+            #define ELEMENT_IN uint8_t
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::UInt16:
-			{
-                auto ret = mat(*((array2d<uint16_t>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<uint16_t>>>(ret);
-			}
+            #define ELEMENT_IN uint16_t
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
+			break;
+        case array2d_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
+			break;
+		case array2d_type::Int8:
+            #define ELEMENT_IN int8_t
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
+			break;
+        case array2d_type::Int16:
+            #define ELEMENT_IN int16_t
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::Int32:
-			{
-                auto ret = mat(*((array2d<int32_t>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<int32_t>>>(ret);
-			}
+            #define ELEMENT_IN int32_t
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::Float:
-			{
-                auto ret = mat(*((array2d<float>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<float>>>(ret);
-			}
+            #define ELEMENT_IN float
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::Double:
-			{
-                auto ret = mat(*((array2d<double>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<double>>>(ret);
-			}
+            #define ELEMENT_IN double
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::RgbPixel:
-			{
-                auto ret = mat(*((array2d<rgb_pixel>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<rgb_pixel>>>(ret);
-			}
+            #define ELEMENT_IN rgb_pixel
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::HsiPixel:
-			{
-                auto ret = mat(*((array2d<hsi_pixel>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<hsi_pixel>>>(ret);
-			}
+            #define ELEMENT_IN hsi_pixel
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         case array2d_type::RgbAlphaPixel:
-			{
-                auto ret = mat(*((array2d<rgb_alpha_pixel>*)array));
-				*mat_op = new matrix_op<op_array2d_to_mat<array2d<rgb_alpha_pixel>>>(ret);
-			}
+            #define ELEMENT_IN rgb_alpha_pixel
+            mat_array2d_template(array, mat_op);
+            #undef ELEMENT_IN
 			break;
         default:
 			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
