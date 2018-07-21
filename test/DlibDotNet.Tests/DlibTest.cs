@@ -1338,6 +1338,62 @@ namespace DlibDotNet.Tests
             return image;
         }
 
+        internal static MatrixBase LoadImageAsMatrix(MatrixElementTypes type, FileInfo path)
+        {
+            MatrixBase matrix;
+            switch (type)
+            {
+                case MatrixElementTypes.RgbPixel:
+                    using (var image = Dlib.LoadImage<RgbPixel>(path.FullName))
+                        matrix = new Matrix<RgbPixel>(image);
+                    break;
+                case MatrixElementTypes.RgbAlphaPixel:
+                    using (var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName))
+                        matrix = new Matrix<RgbAlphaPixel>(image);
+                    break;
+                case MatrixElementTypes.UInt8:
+                    using (var image = Dlib.LoadImage<byte>(path.FullName))
+                        matrix = new Matrix<byte>(image);
+                    break;
+                case MatrixElementTypes.UInt16:
+                    using (var image = Dlib.LoadImage<ushort>(path.FullName))
+                        matrix = new Matrix<ushort>(image);
+                    break;
+                case MatrixElementTypes.UInt32:
+                    using (var image = Dlib.LoadImage<uint>(path.FullName))
+                        matrix = new Matrix<uint>(image);
+                    break;
+                case MatrixElementTypes.Int8:
+                    using (var image = Dlib.LoadImage<sbyte>(path.FullName))
+                        matrix = new Matrix<sbyte>(image);
+                    break;
+                case MatrixElementTypes.Int16:
+                    using (var image = Dlib.LoadImage<short>(path.FullName))
+                        matrix = new Matrix<short>(image);
+                    break;
+                case MatrixElementTypes.Int32:
+                    using (var image = Dlib.LoadImage<int>(path.FullName))
+                        matrix = new Matrix<int>(image);
+                    break;
+                case MatrixElementTypes.HsiPixel:
+                    using (var image = Dlib.LoadImage<HsiPixel>(path.FullName))
+                        matrix = new Matrix<HsiPixel>(image);
+                    break;
+                case MatrixElementTypes.Float:
+                    using (var image = Dlib.LoadImage<float>(path.FullName))
+                        matrix = new Matrix<float>(image);
+                    break;
+                case MatrixElementTypes.Double:
+                    using (var image = Dlib.LoadImage<double>(path.FullName))
+                        matrix = new Matrix<double>(image);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return matrix;
+        }
+
     }
 
 }
