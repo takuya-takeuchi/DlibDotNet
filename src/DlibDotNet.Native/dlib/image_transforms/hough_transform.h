@@ -23,6 +23,15 @@ do { \
         case array2d_type::UInt16:\
             (*obj)(*((array2d<uint16_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
             break;\
+        case array2d_type::UInt32:\
+            (*obj)(*((array2d<uint32_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
+        case array2d_type::Int8:\
+            (*obj)(*((array2d<int8_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
+        case array2d_type::Int16:\
+            (*obj)(*((array2d<int16_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
+            break;\
         case array2d_type::Int32:\
             (*obj)(*((array2d<int32_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
             break;\
@@ -90,6 +99,15 @@ DLLEXPORT int hough_transform_get_best_hough_point(dlib::hough_transform* obj, d
         case array2d_type::UInt16:
             *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<uint16_t>*)img)));
             break;
+        case array2d_type::UInt32:
+            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<uint32_t>*)img)));
+            break;
+        case array2d_type::Int8:
+            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<int8_t>*)img)));
+            break;
+        case array2d_type::Int16:
+            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<int16_t>*)img)));
+            break;
         case array2d_type::Int32:
             *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<int32_t>*)img)));
             break;
@@ -128,6 +146,21 @@ DLLEXPORT int hough_transform_operator(
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
+            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT_OUT uint32_t
+            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT_OUT int8_t
+            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
+            #undef ELEMENT_OUT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT_OUT int16_t
             hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
             #undef ELEMENT_OUT
             break;
