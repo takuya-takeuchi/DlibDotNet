@@ -26,6 +26,8 @@ namespace DlibDotNet
             {
                 new { Type = typeof(byte),          ElementType = ImageTypes.UInt8  },
                 new { Type = typeof(ushort),        ElementType = ImageTypes.UInt16 },
+                new { Type = typeof(uint),          ElementType = ImageTypes.UInt32 },
+                new { Type = typeof(sbyte),         ElementType = ImageTypes.Int8  },
                 new { Type = typeof(short),         ElementType = ImageTypes.Int16 },
                 new { Type = typeof(int),           ElementType = ImageTypes.Int32 },
                 new { Type = typeof(float),         ElementType = ImageTypes.Float  },
