@@ -99,37 +99,37 @@ do { \
     err = ERR_OK;\
     switch(out_type)\
     {\
-        case array2d_type::UInt8:\
+        case matrix_element_type::UInt8:\
             dlib::assign_image(*((matrix<uint8_t>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::UInt16:\
+        case matrix_element_type::UInt16:\
             dlib::assign_image(*((matrix<uint16_t>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::UInt32:\
+        case matrix_element_type::UInt32:\
             dlib::assign_image(*((matrix<uint32_t>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::Int8:\
+        case matrix_element_type::Int8:\
             dlib::assign_image(*((matrix<int8_t>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::Int16:\
+        case matrix_element_type::Int16:\
             dlib::assign_image(*((matrix<int16_t>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::Int32:\
+        case matrix_element_type::Int32:\
             dlib::assign_image(*((matrix<int32_t>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::Float:\
+        case matrix_element_type::Float:\
             dlib::assign_image(*((matrix<float>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::Double:\
+        case matrix_element_type::Double:\
             dlib::assign_image(*((matrix<double>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::RgbPixel:\
+        case matrix_element_type::RgbPixel:\
             dlib::assign_image(*((matrix<rgb_pixel>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::HsiPixel:\
+        case matrix_element_type::HsiPixel:\
             dlib::assign_image(*((matrix<hsi_pixel>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
-        case array2d_type::RgbAlphaPixel:\
+        case matrix_element_type::RgbAlphaPixel:\
             dlib::assign_image(*((matrix<rgb_alpha_pixel>*)out_img), *((matrix<ELEMENT_IN>*)in_img));\
             break;\
         default:\
