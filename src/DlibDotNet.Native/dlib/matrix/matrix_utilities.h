@@ -415,18 +415,22 @@ DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRo
         case matrix_element_type::Double:
             #define ELEMENT_IN double
             matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::RgbPixel:
             #define ELEMENT_IN rgb_pixel
             matrix_cast_template_rgb_pixel(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::HsiPixel:
             #define ELEMENT_IN hsi_pixel
             matrix_cast_template_hsi_pixel(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::RgbAlphaPixel:
             #define ELEMENT_IN rgb_alpha_pixel
             matrix_cast_template_rgb_alpha_pixel(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
             break; 
         default: 
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
@@ -479,6 +483,7 @@ DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int template
         case matrix_element_type::Double:
             #define ELEMENT_IN double
             matrix_length_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -534,18 +539,22 @@ DLLEXPORT int matrix_join_rows(matrix_element_type type, void* matrix1, void* ma
         case matrix_element_type::Double:
             #define ELEMENT_IN double
             matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::RgbPixel:
             #define ELEMENT_IN rgb_pixel
             matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::HsiPixel:
             #define ELEMENT_IN hsi_pixel
             matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
             break; 
         case matrix_element_type::RgbAlphaPixel:
             #define ELEMENT_IN rgb_alpha_pixel
             matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
             break; 
         default: 
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
