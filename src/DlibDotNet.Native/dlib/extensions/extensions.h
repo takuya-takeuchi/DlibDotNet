@@ -761,18 +761,22 @@ DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, co
         case matrix_element_type::Double:
             #define ELEMENT double
             extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
             break; 
         case matrix_element_type::RgbPixel:
             #define ELEMENT rgb_pixel
             extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
             break; 
         case matrix_element_type::HsiPixel:
             #define ELEMENT hsi_pixel
             extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
             break; 
         case matrix_element_type::RgbAlphaPixel:
             #define ELEMENT rgb_alpha_pixel
             extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
             break; 
         default: 
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
