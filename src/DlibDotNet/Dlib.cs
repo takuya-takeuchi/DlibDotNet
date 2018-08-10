@@ -585,6 +585,8 @@ namespace DlibDotNet
 
                 MatrixElementTypeNotSupport = -7,
 
+                MatrixElementTemplateSizeNotSupport = -8,
+
                 //InputOutputArrayNotSameSize = -8,
 
                 //InputOutputMatrixNotSameSize = -9
@@ -1866,6 +1868,9 @@ namespace DlibDotNet
             public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, HsiPixel[] data, uint rows, uint columns, uint steps);
 
             #endregion
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType extensions_matrix_to_array(IntPtr src, MatrixElementType type, int templateRows, int templateColumns, IntPtr dst);
 
             #endregion
 

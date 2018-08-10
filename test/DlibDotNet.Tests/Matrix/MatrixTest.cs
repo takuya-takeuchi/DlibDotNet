@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,6 +9,8 @@ namespace DlibDotNet.Tests.Matrix
     [TestClass]
     public class MatrixTest : TestBase
     {
+
+        private const string LoadTarget = "Lenna_mini";
 
         [TestMethod]
         public void Create()
@@ -110,6 +113,233 @@ namespace DlibDotNet.Tests.Matrix
                             this.DisposeAndCheckDisposedState(matrix);
                     }
                 }
+        }
+
+        [TestMethod]
+        public void ToArrayTest()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<byte>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<ushort>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<uint>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<sbyte>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<short>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<int>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<float>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<double>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbAlphaPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<HsiPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                }
+            }
         }
 
         [TestMethod]

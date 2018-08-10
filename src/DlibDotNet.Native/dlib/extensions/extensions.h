@@ -11,6 +11,31 @@
 
 using namespace dlib;
 
+#pragma region template
+
+#define ELEMENT element
+#undef ELEMENT
+
+#define extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& s = *(static_cast<dlib::matrix<ELEMENT>*>(src));\
+        ELEMENT* d = static_cast<ELEMENT*>(dst);\
+        const uint32_t rows = s.nr();\
+        const uint32_t columns = s.nc();\
+        for (uint32_t r = 0; r < rows; r++)\
+        for (uint32_t c = 0, step = r * columns; c < columns; c++)\
+            d[step + c] = s(r, c);\
+    }\
+    else\
+    {\
+        ret = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
+} while (0)
+
+#pragma endregion template
+
 #pragma region extensions_load_image_data
 
 #define extensions_load_image_data_from_to_sametype(data, rows, columns, steps) \
@@ -690,5 +715,73 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, 
 }
 
 #pragma endregion extensions_convert_managed_image_to_matrix_by_pallete
+
+#pragma region extensions_to_array
+
+DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, const int templateRows, const int templateColumns, void* dst)
+{
+    int err = ERR_OK; 
+    switch(type) 
+    { 
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            #undef ELEMENT
+            break; 
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            break; 
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            break; 
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            break; 
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
+            break; 
+        default: 
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
+            break; 
+    } 
+ 
+    return err;
+}
+
+#pragma endregion extensions_to_array
 
 #endif
