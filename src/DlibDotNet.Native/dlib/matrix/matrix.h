@@ -24,6 +24,17 @@ using namespace std;
 #define OPERAND +
 #undef OPERAND
 
+#define matrix_new2_template(num_rows, num_cols, src) \
+do { \
+    auto m = new matrix<ELEMENT>(num_rows, num_cols);\
+    auto &d = *m;\
+    ELEMENT* s = static_cast<ELEMENT*>(src);\
+    for (uint32_t r = 0; r < num_rows; r++)\
+    for (uint32_t c = 0, step = r * num_cols; c < num_cols; c++)\
+        d(r, c) = s[step + c];\
+    return m;\
+} while (0)
+
 #define matrix_operator_array_template(matrix, array) \
 do { \
     dlib::matrix<ELEMENT>& mat = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
@@ -326,6 +337,70 @@ DLLEXPORT void* matrix_new1(matrix_element_type type, int num_rows, int num_cols
             return new matrix<hsi_pixel>(num_rows, num_cols);
         case matrix_element_type::RgbAlphaPixel:
             return new matrix<rgb_alpha_pixel>(num_rows, num_cols);
+        default:
+            return nullptr;
+    }
+}
+
+DLLEXPORT void* matrix_new2(const matrix_element_type type, const int num_rows, const int num_cols, void* src)
+{
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
         default:
             return nullptr;
     }

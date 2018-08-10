@@ -78,6 +78,110 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
+        public Matrix(TElement[] array, int row, int column)
+        {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (row < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
+            if (column < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(column)}", $"{nameof(column)} should be positive value.");
+            if (array.Length != row * column)
+                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}.");
+
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            this._MatrixElementTypes = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                switch (this._ElementType)
+                {
+                    case Dlib.Native.MatrixElementType.UInt8:
+                        {
+                            var tmp = array as byte[];
+                            fixed (byte* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.UInt16:
+                        {
+                            var tmp = array as ushort[];
+                            fixed (ushort* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.UInt32:
+                        {
+                            var tmp = array as uint[];
+                            fixed (uint* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Int8:
+                        {
+                            var tmp = array as sbyte[];
+                            fixed (sbyte* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Int16:
+                        {
+                            var tmp = array as short[];
+                            fixed (short* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Int32:
+                        {
+                            var tmp = array as int[];
+                            fixed (int* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Float:
+                        {
+                            var tmp = array as float[];
+                            fixed (float* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Double:
+                        {
+                            var tmp = array as double[];
+                            fixed (double* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.RgbPixel:
+                        {
+                            var tmp = array as RgbPixel[];
+                            fixed (RgbPixel* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.RgbAlphaPixel:
+                        {
+                            var tmp = array as RgbAlphaPixel[];
+                            fixed (RgbAlphaPixel* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.HsiPixel:
+                        {
+                            var tmp = array as HsiPixel[];
+                            fixed (HsiPixel* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                }
+            }
+
+            this._Indexer = this.CreateIndexer(type);
+        }
+
         internal Matrix(IntPtr ptr, int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
             : base(templateRows, temlateColumns, isEnabledDispose)
         {
