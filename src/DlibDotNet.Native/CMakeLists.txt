@@ -8,6 +8,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set(CMAKE_CXX_FLAGS "-fPIC")
 endif()
 
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+	# The file contains a character that cannot be represented in the current code page
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819")
+endif()
+
 # Select the release build type by default
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
