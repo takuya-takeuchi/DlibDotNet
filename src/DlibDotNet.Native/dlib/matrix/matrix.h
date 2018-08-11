@@ -29,8 +29,8 @@ do { \
     auto m = new matrix<ELEMENT>(num_rows, num_cols);\
     auto &d = *m;\
     ELEMENT* s = static_cast<ELEMENT*>(src);\
-    for (uint32_t r = 0; r < num_rows; r++)\
-    for (uint32_t c = 0, step = r * num_cols; c < num_cols; c++)\
+    for (int32_t r = 0; r < num_rows; r++)\
+    for (int32_t c = 0, step = r * num_cols; c < num_cols; c++)\
         d(r, c) = s[step + c];\
     return m;\
 } while (0)
