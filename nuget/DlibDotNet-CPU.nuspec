@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DlibDotNet</id>
+    <version>19.15.0.20180825-pre</version>
+    <title>DlibDotNet</title>
+    <authors>Takuya Takeuchi</authors>
+    <owners>Takuya Takeuchi</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <description>DLib .NET wrapper written in C++ and C# for Windows, MacOS and Linux
+
+Requirements: Visual C++ 2017 Redistributable Package</description>
+    <releaseNotes></releaseNotes>
+    <copyright>© Takuya Takeuchi 2018</copyright>
+    <tags>dlib .net machinelearning</tags>
+    <serviceable>true</serviceable>
+    <dependencies>
+      <group targetFramework="netstandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
+    <!-- <file src="..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.xml" target="lib\netstandard2.0" /> -->
+
+    <file src="..\src\DlibDotNet.Native\build_cpu\Release\DlibDotNet.Native.dll" target="lib\netstandard2.0" />
+    <file src="..\src\DlibDotNet.Native.Dnn\build_cpu\Release\DlibDotNet.Native.Dnn.dll" target="lib\netstandard2.0" />
+  </files>
+</package>
