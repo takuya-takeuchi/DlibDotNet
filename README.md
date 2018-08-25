@@ -1,5 +1,11 @@
-# Dlib.Net
-.NET wrapper for DLib written in C++ and C#
+# ![Alt text](nuget/ml48.png "Dlib.Net") Dlib.Net [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
+Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
+
+|Package|NuGet|
+|---|---|
+|DlibDotNet|[![NuGet version](https://badge.fury.io/nu/DlibDotNet.svg)](https://badge.fury.io/nu/DlibDotNet)|
+|DlibDotNet With CUDA|[![NuGet version](https://badge.fury.io/nu/DlibDotNet-WithCUDA.svg)](https://badge.fury.io/nu/DlibDotNet-WithCUDA)|
 
 ## Demo
 
