@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,6 +9,8 @@ namespace DlibDotNet.Tests.Matrix
     [TestClass]
     public class MatrixTest : TestBase
     {
+
+        private const string LoadTarget = "Lenna_mini";
 
         [TestMethod]
         public void Create()
@@ -110,6 +113,469 @@ namespace DlibDotNet.Tests.Matrix
                             this.DisposeAndCheckDisposedState(matrix);
                     }
                 }
+        }
+
+        [TestMethod]
+        public void Create2()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                //new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                //new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                //new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                //new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                //new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                //new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                //new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<byte>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<byte>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<ushort>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<ushort>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<uint>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<uint>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<sbyte>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<sbyte>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<short>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<short>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<int>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<int>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<float>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<float>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<double>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<double>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<RgbPixel>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}]");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbAlphaPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<RgbAlphaPixel>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}, {a.Alpha}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}, {m.Alpha}]");
+                                        }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<HsiPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<HsiPixel>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
+                                        }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ToArrayTest()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<byte>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<ushort>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<uint>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<sbyte>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<short>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<int>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<float>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<double>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}]");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbAlphaPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}, {a.Alpha}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}, {m.Alpha}]");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<HsiPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: array[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
+                                    }
+                            }
+                        }
+                        break;
+                }
+            }
         }
 
         [TestMethod]
@@ -989,6 +1455,411 @@ namespace DlibDotNet.Tests.Matrix
                     Console.WriteLine($"Failed to check {obj.GetType().Name}");
                     throw;
                 }
+            }
+        }
+
+        [TestMethod]
+        public void Addition()
+        {
+            this.AdditionSub<byte>();
+            this.AdditionSub<ushort>();
+            this.AdditionSub<uint>();
+            this.AdditionSub<sbyte>();
+            this.AdditionSub<short>();
+            this.AdditionSub<int>();
+            this.AdditionSub<float>();
+            this.AdditionSub<double>();
+            this.AdditionSub<RgbPixel>(false);
+            this.AdditionSub<RgbAlphaPixel>(false);
+            this.AdditionSub<HsiPixel>(false);
+        }
+
+        private void AdditionSub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false},
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                        ret = lhs + rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                            ret = lhs + rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction()
+        {
+            this.SubtractionSub<byte>();
+            this.SubtractionSub<ushort>();
+            this.SubtractionSub<uint>();
+            this.SubtractionSub<sbyte>();
+            this.SubtractionSub<short>();
+            this.SubtractionSub<int>();
+            this.SubtractionSub<float>();
+            this.SubtractionSub<double>();
+            this.SubtractionSub<RgbPixel>(false);
+            this.SubtractionSub<RgbAlphaPixel>(false);
+            this.SubtractionSub<HsiPixel>(false);
+        }
+
+        private void SubtractionSub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false},
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                        ret = lhs - rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                            ret = lhs - rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Multuply()
+        {
+            this.MultuplySub<byte>();
+            this.MultuplySub<ushort>();
+            this.MultuplySub<uint>();
+            this.MultuplySub<sbyte>();
+            this.MultuplySub<short>();
+            this.MultuplySub<int>();
+            this.MultuplySub<float>();
+            this.MultuplySub<double>();
+            this.MultuplySub<RgbPixel>(false);
+            this.MultuplySub<RgbAlphaPixel>(false);
+            this.MultuplySub<HsiPixel>(false);
+        }
+
+        private void MultuplySub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 0,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =   0, RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 5,  RightRow = 10, ExpectResult = false}
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                        ret = lhs * rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                            ret = lhs * rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Division()
+        {
+            this.DivisionSub<byte>();
+            this.DivisionSub<ushort>();
+            this.DivisionSub<uint>();
+            this.DivisionSub<sbyte>();
+            this.DivisionSub<short>();
+            this.DivisionSub<int>();
+            this.DivisionSub<float>();
+            this.DivisionSub<double>();
+            this.DivisionSub<RgbPixel>(false);
+            this.DivisionSub<RgbAlphaPixel>(false);
+            this.DivisionSub<HsiPixel>(false);
+        }
+
+        private void DivisionSub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  0,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  0,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 0,  RightRow =  1, Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow =  0, Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  1,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  1,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  0,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  0,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 0,  RightRow =  1, Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow =  0, Fill = false, ExpectResult = false}
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+
+                        if (r.Fill)
+                            FillMatrixByNonZero(rhs, r.RightRow * r.RightColumn);
+
+                        ret = lhs / rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+
+                            if (r.Fill)
+                                FillMatrixByNonZero(rhs, r.RightRow * r.RightColumn);
+
+                            ret = lhs / rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        private static void FillMatrixByNonZero<T>(Matrix<T> matrix, int length)
+            where T : struct
+        {
+            var rand = new Random();
+            switch (matrix.MatrixElementType)
+            {
+                case MatrixElementTypes.UInt8:
+                    {
+                        var tmp = matrix as Matrix<byte>;
+                        var array = new byte[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (byte)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.UInt16:
+                    {
+                        var tmp = matrix as Matrix<ushort>;
+                        var array = new ushort[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (ushort)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.UInt32:
+                    {
+                        var tmp = matrix as Matrix<uint>;
+                        var array = new uint[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (uint)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Int8:
+                    {
+                        var tmp = matrix as Matrix<sbyte>;
+                        var array = new sbyte[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (sbyte)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Int16:
+                    {
+                        var tmp = matrix as Matrix<short>;
+                        var array = new short[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (short)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Int32:
+                    {
+                        var tmp = matrix as Matrix<int>;
+                        var array = new int[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (int)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Float:
+                    {
+                        var tmp = matrix as Matrix<float>;
+                        var array = new float[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (float)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Double:
+                    {
+                        var tmp = matrix as Matrix<double>;
+                        var array = new double[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (double)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
             }
         }
 

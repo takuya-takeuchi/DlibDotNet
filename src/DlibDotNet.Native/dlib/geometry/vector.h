@@ -488,49 +488,49 @@ DLLEXPORT void vector_delete(vector_element_type type, void* vector)
         case vector_element_type::UInt8:
             {
                 dlib::vector<uint8_t>* tmp = (dlib::vector<uint8_t>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::UInt16:
             {
                 dlib::vector<uint16_t>* tmp = (dlib::vector<uint16_t>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::UInt32:
             {
                 dlib::vector<uint32_t>* tmp = (dlib::vector<uint32_t>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::Int8:
             {
                 dlib::vector<int8_t>* tmp = (dlib::vector<int8_t>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::Int16:
             {
                 dlib::vector<int16_t>* tmp = (dlib::vector<int16_t>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::Int32:
             {
                 dlib::vector<int32_t>* tmp = (dlib::vector<int32_t>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::Float:
             {
                 dlib::vector<float>* tmp = (dlib::vector<float>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         case vector_element_type::Double:
             {
                 dlib::vector<double>* tmp = (dlib::vector<double>*)vector;
-                delete vector;
+                delete tmp;
             }
             break;
         default:

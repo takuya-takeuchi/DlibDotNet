@@ -5,8 +5,13 @@
     <Authors>Takuya Takeuchi</Authors>
     <Description>.NET wrapper for DLib written in C#</Description>
     <Company />
-    <Copyright>Takuya Takeuchi</Copyright>
+    <Copyright>© Takuya Takeuchi 2018</Copyright>
     <Configurations>Debug;Release;ReleaseLinux;DebugLinux;DebugMac;ReleaseMac</Configurations>
+    <Version>19.15.0</Version>
+    <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
+    <PackageTags>dlib .net machinelearning</PackageTags>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

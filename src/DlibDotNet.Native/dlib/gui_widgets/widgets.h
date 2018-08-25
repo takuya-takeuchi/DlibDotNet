@@ -276,41 +276,41 @@ do { \
 do { \
     switch(type)\
     {\
-        case array2d_type::UInt8:\
+        case matrix_element_type::UInt8:\
             window->set_image(*((matrix_op<op_join_rows<matrix<uint8_t, 0, 0>, matrix<uint8_t, 0, 0>>>*)image));\
             break;\
-        case array2d_type::UInt16:\
+        case matrix_element_type::UInt16:\
             window->set_image(*((matrix_op<op_join_rows<matrix<uint16_t, 0, 0>, matrix<uint16_t, 0, 0>>>*)image));\
             break;\
-        case array2d_type::UInt32:\
+        case matrix_element_type::UInt32:\
             window->set_image(*((matrix_op<op_join_rows<matrix<uint32_t, 0, 0>, matrix<uint32_t, 0, 0>>>*)image));\
             break;\
-        case array2d_type::Int8:\
+        case matrix_element_type::Int8:\
             window->set_image(*((matrix_op<op_join_rows<matrix<int8_t, 0, 0>, matrix<int8_t, 0, 0>>>*)image));\
             break;\
-        case array2d_type::Int16:\
+        case matrix_element_type::Int16:\
             window->set_image(*((matrix_op<op_join_rows<matrix<int16_t, 0, 0>, matrix<int16_t, 0, 0>>>*)image));\
             break;\
-        case array2d_type::Int32:\
+        case matrix_element_type::Int32:\
             window->set_image(*((matrix_op<op_join_rows<matrix<int32_t, 0, 0>, matrix<int32_t, 0, 0>>>*)image));\
             break;\
-        case array2d_type::Float:\
+        case matrix_element_type::Float:\
             window->set_image(*((matrix_op<op_join_rows<matrix<float, 0, 0>, matrix<float, 0, 0>>>*)image));\
             break;\
-        case array2d_type::Double:\
+        case matrix_element_type::Double:\
             window->set_image(*((matrix_op<op_join_rows<matrix<double, 0, 0>, matrix<double, 0, 0>>>*)image));\
             break;\
-        case array2d_type::RgbPixel:\
+        case matrix_element_type::RgbPixel:\
             window->set_image(*((matrix_op<op_join_rows<matrix<rgb_pixel, 0, 0>, matrix<rgb_pixel, 0, 0>>>*)image));\
             break;\
-        case array2d_type::HsiPixel:\
+        case matrix_element_type::HsiPixel:\
             window->set_image(*((matrix_op<op_join_rows<matrix<hsi_pixel, 0, 0>, matrix<hsi_pixel, 0, 0>>>*)image));\
             break;\
-        case array2d_type::RgbAlphaPixel:\
+        case matrix_element_type::RgbAlphaPixel:\
             window->set_image(*((matrix_op<op_join_rows<matrix<rgb_alpha_pixel, 0, 0>, matrix<rgb_alpha_pixel, 0, 0>>>*)image));\
             break;\
         default:\
-            ret = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
             break;\
     }\
 } while (0)

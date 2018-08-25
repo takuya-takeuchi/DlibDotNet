@@ -78,6 +78,110 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
+        public Matrix(TElement[] array, int row, int column)
+        {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (row < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
+            if (column < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(column)}", $"{nameof(column)} should be positive value.");
+            if (array.Length != row * column)
+                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}.");
+
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            this._MatrixElementTypes = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                switch (this._ElementType)
+                {
+                    case Dlib.Native.MatrixElementType.UInt8:
+                        {
+                            var tmp = array as byte[];
+                            fixed (byte* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.UInt16:
+                        {
+                            var tmp = array as ushort[];
+                            fixed (ushort* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.UInt32:
+                        {
+                            var tmp = array as uint[];
+                            fixed (uint* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Int8:
+                        {
+                            var tmp = array as sbyte[];
+                            fixed (sbyte* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Int16:
+                        {
+                            var tmp = array as short[];
+                            fixed (short* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Int32:
+                        {
+                            var tmp = array as int[];
+                            fixed (int* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Float:
+                        {
+                            var tmp = array as float[];
+                            fixed (float* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.Double:
+                        {
+                            var tmp = array as double[];
+                            fixed (double* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.RgbPixel:
+                        {
+                            var tmp = array as RgbPixel[];
+                            fixed (RgbPixel* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.RgbAlphaPixel:
+                        {
+                            var tmp = array as RgbAlphaPixel[];
+                            fixed (RgbAlphaPixel* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                    case Dlib.Native.MatrixElementType.HsiPixel:
+                        {
+                            var tmp = array as HsiPixel[];
+                            fixed (HsiPixel* src = &tmp[0])
+                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
+                }
+            }
+
+            this._Indexer = this.CreateIndexer(type);
+        }
+
         internal Matrix(IntPtr ptr, int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
             : base(templateRows, temlateColumns, isEnabledDispose)
         {
@@ -204,6 +308,228 @@ namespace DlibDotNet
             }
         }
 
+        public TElement[] ToArray()
+        {
+            this.ThrowIfDisposed();
+
+            TElement[] result;
+            Dlib.Native.ErrorType err;
+
+            switch (this._MatrixElementTypes)
+            {
+                case MatrixElementTypes.UInt8:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new byte[row * column];
+                        fixed (byte* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.UInt16:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new ushort[row * column];
+                        fixed (ushort* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.UInt32:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new uint[row * column];
+                        fixed (uint* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.Int8:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new sbyte[row * column];
+                        fixed (sbyte* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.Int16:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new short[row * column];
+                        fixed (short* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.Int32:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new int[row * column];
+                        fixed (int* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.Float:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new float[row * column];
+                        fixed (float* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.Double:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new double[row * column];
+                        fixed (double* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.RgbPixel:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new RgbPixel[row * column];
+                        fixed (RgbPixel* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.RgbAlphaPixel:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new RgbAlphaPixel[row * column];
+                        fixed (RgbAlphaPixel* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                case MatrixElementTypes.HsiPixel:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new HsiPixel[row * column];
+                        fixed (HsiPixel* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            switch (err)
+            {
+                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{this._ElementType} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateRows)} is not supported.");
+            }
+
+            return result;
+        }
+
         internal static bool TryParse<T>(out MatrixElementTypes result)
             where T : struct
         {
@@ -269,21 +595,31 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(lhs.Rows == rhs.Rows && lhs.Columns == rhs.Columns))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_add(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
+            var ret = Dlib.Native.matrix_operator_add(type,
+                                                      lhs.NativePtr,
+                                                      rhs.NativePtr,
+                                                      leftTemplateRows,
+                                                      leftTemplateColumns,
+                                                      rihgtTemplateRows,
+                                                      rihgtTemplateColumns,
+                                                      out var matrix);
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
             }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            return new Matrix<TElement>(matrix);
         }
 
         public static Matrix<TElement> operator -(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -296,21 +632,31 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(lhs.Rows == rhs.Rows && lhs.Columns == rhs.Columns))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_subtract(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
+            var ret = Dlib.Native.matrix_operator_subtract(type,
+                                                           lhs.NativePtr,
+                                                           rhs.NativePtr,
+                                                           leftTemplateRows,
+                                                           leftTemplateColumns,
+                                                           rihgtTemplateRows,
+                                                           rihgtTemplateColumns,
+                                                           out var matrix);
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
             }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            return new Matrix<TElement>(matrix);
         }
 
         public static Matrix<TElement> operator *(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -323,21 +669,31 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(lhs.Columns == rhs.Rows && lhs.Size > 0 && rhs.Size > 0))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_multiply(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
+            var ret = Dlib.Native.matrix_operator_multiply(type,
+                                                           lhs.NativePtr,
+                                                           rhs.NativePtr,
+                                                           leftTemplateRows,
+                                                           leftTemplateColumns,
+                                                           rihgtTemplateRows,
+                                                           rihgtTemplateColumns,
+                                                           out var matrix);
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
             }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            return new Matrix<TElement>(matrix);
         }
 
         public static Matrix<TElement> operator /(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -350,21 +706,40 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(rhs.Columns == 1 && rhs.Rows == 1))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_divide(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
-            switch (ret)
+            try
             {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                    throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
-            }
+                var ret = Dlib.Native.matrix_operator_divide(type,
+                                                             lhs.NativePtr,
+                                                             rhs.NativePtr,
+                                                             leftTemplateRows,
+                                                             leftTemplateColumns,
+                                                             rihgtTemplateRows,
+                                                             rihgtTemplateColumns,
+                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+                return new Matrix<TElement>(matrix);
+            }
+            catch (DivideByZeroException)
+            {
+                // NOTE
+                // Hide the source which throw exception
+                throw new DivideByZeroException("Right operand may be zero matrix.");
+            }
         }
 
         #endregion

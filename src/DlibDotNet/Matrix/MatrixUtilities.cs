@@ -21,9 +21,11 @@ namespace DlibDotNet
             matrix1.ThrowIfDisposed();
             matrix2.ThrowIfDisposed();
 
+            // Need not to check whether both TemplateColumns and TemplateRows are same
             var templateRows = matrix1.TemplateRows;
             var templateColumns = matrix1.TemplateColumns;
 
+            // In the future, these statement shold be removed because above comment
             if (templateRows != matrix2.TemplateRows)
                 throw new ArgumentException();
             if (templateColumns != matrix2.TemplateColumns)

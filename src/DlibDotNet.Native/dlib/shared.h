@@ -1,3 +1,6 @@
+#ifndef _CPP_SHARED_H_
+#define _CPP_SHARED_H_
+
 enum struct array2d_type : int
 {
     UInt8 = 0,
@@ -160,14 +163,15 @@ typedef struct
     int num;
 } matrix_range_exp_create_param;
 
-#define ERR_OK                                 0
-#define ERR_ARRAY_TYPE_NOT_SUPPORT            -1
-#define ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT      -2
-#define ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT     -3
-#define ERR_ELEMENT_TYPE_NOT_SUPPORT          -4
-#define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT    -5
-#define ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT   -6
-#define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT   -7
+#define ERR_OK                                          0
+#define ERR_ARRAY_TYPE_NOT_SUPPORT                     -1
+#define ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT               -2
+#define ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT              -3
+#define ERR_ELEMENT_TYPE_NOT_SUPPORT                   -4
+#define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT             -5
+#define ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT            -6
+#define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT            -7
+#define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT   -8
 // #define ERR_INPUT_OUTPUT_ARRAY_NOT_SAME_SIZE  -8
 // #define ERR_INPUT_OUTPUT_MATRIX_NOT_SAME_SIZE -9
 #define ERR_MLP_KERNEL_NOT_SUPPORT            -8
@@ -188,3 +192,5 @@ typedef struct
 // Dnn
 #define ERR_DNN_ERROR                                        0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE      ERR_DNN_ERROR | 0x00000001
+
+#endif

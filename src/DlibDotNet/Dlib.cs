@@ -585,6 +585,8 @@ namespace DlibDotNet
 
                 MatrixElementTypeNotSupport = -7,
 
+                MatrixElementTemplateSizeNotSupport = -8,
+
                 //InputOutputArrayNotSameSize = -8,
 
                 //InputOutputMatrixNotSameSize = -9
@@ -1171,6 +1173,9 @@ namespace DlibDotNet
             public static extern IntPtr matrix_new1(MatrixElementType matrixElementType, int row, int column);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr matrix_new2(MatrixElementType matrixElementType, int row, int column, IntPtr src);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -1370,17 +1375,44 @@ namespace DlibDotNet
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_add(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern ErrorType matrix_operator_add(MatrixElementType matrixElementType,
+                                                               IntPtr lhs,
+                                                               IntPtr rhs,
+                                                               int leftTemplateRows,
+                                                               int leftTemplateColumns,
+                                                               int rightTemplateRows,
+                                                               int rightTemplateColumns,
+                                                               out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_subtract(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern ErrorType matrix_operator_subtract(MatrixElementType matrixElementType,
+                                                                    IntPtr lhs,
+                                                                    IntPtr rhs,
+                                                                    int leftTemplateRows,
+                                                                    int leftTemplateColumns,
+                                                                    int rightTemplateRows,
+                                                                    int rightTemplateColumns,
+                                                                    out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_multiply(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern ErrorType matrix_operator_multiply(MatrixElementType matrixElementType,
+                                                                    IntPtr lhs,
+                                                                    IntPtr rhs,
+                                                                    int leftTemplateRows,
+                                                                    int leftTemplateColumns,
+                                                                    int rightTemplateRows,
+                                                                    int rightTemplateColumns,
+                                                                    out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_divide(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
-
+            public static extern ErrorType matrix_operator_divide(MatrixElementType matrixElementType,
+                                                                  IntPtr lhs,
+                                                                  IntPtr rhs,
+                                                                  int leftTemplateRows,
+                                                                  int leftTemplateColumns,
+                                                                  int rightTemplateRows,
+                                                                  int rightTemplateColumns,
+                                                                  out IntPtr ret);
 
             #endregion
 
@@ -1866,6 +1898,9 @@ namespace DlibDotNet
             public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, HsiPixel[] data, uint rows, uint columns, uint steps);
 
             #endregion
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType extensions_matrix_to_array(IntPtr src, MatrixElementType type, int templateRows, int templateColumns, IntPtr dst);
 
             #endregion
 
