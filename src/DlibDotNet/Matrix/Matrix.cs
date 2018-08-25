@@ -595,21 +595,31 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(lhs.Rows == rhs.Rows && lhs.Columns == rhs.Columns))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_add(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
+            var ret = Dlib.Native.matrix_operator_add(type,
+                                                      lhs.NativePtr,
+                                                      rhs.NativePtr,
+                                                      leftTemplateRows,
+                                                      leftTemplateColumns,
+                                                      rihgtTemplateRows,
+                                                      rihgtTemplateColumns,
+                                                      out var matrix);
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
             }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            return new Matrix<TElement>(matrix);
         }
 
         public static Matrix<TElement> operator -(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -622,21 +632,31 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(lhs.Rows == rhs.Rows && lhs.Columns == rhs.Columns))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_subtract(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
+            var ret = Dlib.Native.matrix_operator_subtract(type,
+                                                           lhs.NativePtr,
+                                                           rhs.NativePtr,
+                                                           leftTemplateRows,
+                                                           leftTemplateColumns,
+                                                           rihgtTemplateRows,
+                                                           rihgtTemplateColumns,
+                                                           out var matrix);
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
             }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            return new Matrix<TElement>(matrix);
         }
 
         public static Matrix<TElement> operator *(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -649,21 +669,31 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(lhs.Columns == rhs.Rows && lhs.Size > 0 && rhs.Size > 0))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_multiply(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
+            var ret = Dlib.Native.matrix_operator_multiply(type,
+                                                           lhs.NativePtr,
+                                                           rhs.NativePtr,
+                                                           leftTemplateRows,
+                                                           leftTemplateColumns,
+                                                           rihgtTemplateRows,
+                                                           rihgtTemplateColumns,
+                                                           out var matrix);
             switch (ret)
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
             }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            return new Matrix<TElement>(matrix);
         }
 
         public static Matrix<TElement> operator /(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -676,21 +706,40 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            if (lhs.TemplateColumns != rhs.TemplateColumns || lhs.TemplateRows != rhs.TemplateRows)
+            if (!(rhs.Columns == 1 && rhs.Rows == 1))
                 throw new ArgumentException();
 
-            var templateRows = lhs.TemplateRows;
-            var templateColumns = lhs.TemplateColumns;
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+            var rihgtTemplateRows = rhs.TemplateRows;
+            var rihgtTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_divide(type, lhs.NativePtr, rhs.NativePtr, templateRows, templateColumns, out var matrix);
-            switch (ret)
+            try
             {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                    throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
-            }
+                var ret = Dlib.Native.matrix_operator_divide(type,
+                                                             lhs.NativePtr,
+                                                             rhs.NativePtr,
+                                                             leftTemplateRows,
+                                                             leftTemplateColumns,
+                                                             rihgtTemplateRows,
+                                                             rihgtTemplateColumns,
+                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                }
 
-            return new Matrix<TElement>(matrix, templateRows, templateColumns);
+                return new Matrix<TElement>(matrix);
+            }
+            catch (DivideByZeroException)
+            {
+                // NOTE
+                // Hide the source which throw exception
+                throw new DivideByZeroException("Right operand may be zero matrix.");
+            }
         }
 
         #endregion

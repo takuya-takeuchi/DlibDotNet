@@ -1375,17 +1375,44 @@ namespace DlibDotNet
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_add(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern ErrorType matrix_operator_add(MatrixElementType matrixElementType,
+                                                               IntPtr lhs,
+                                                               IntPtr rhs,
+                                                               int leftTemplateRows,
+                                                               int leftTemplateColumns,
+                                                               int rightTemplateRows,
+                                                               int rightTemplateColumns,
+                                                               out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_subtract(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern ErrorType matrix_operator_subtract(MatrixElementType matrixElementType,
+                                                                    IntPtr lhs,
+                                                                    IntPtr rhs,
+                                                                    int leftTemplateRows,
+                                                                    int leftTemplateColumns,
+                                                                    int rightTemplateRows,
+                                                                    int rightTemplateColumns,
+                                                                    out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_multiply(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
+            public static extern ErrorType matrix_operator_multiply(MatrixElementType matrixElementType,
+                                                                    IntPtr lhs,
+                                                                    IntPtr rhs,
+                                                                    int leftTemplateRows,
+                                                                    int leftTemplateColumns,
+                                                                    int rightTemplateRows,
+                                                                    int rightTemplateColumns,
+                                                                    out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_operator_divide(MatrixElementType matrixElementType, IntPtr lhs, IntPtr rhs, int templateRows, int templateColumns, out IntPtr ret);
-
+            public static extern ErrorType matrix_operator_divide(MatrixElementType matrixElementType,
+                                                                  IntPtr lhs,
+                                                                  IntPtr rhs,
+                                                                  int leftTemplateRows,
+                                                                  int leftTemplateColumns,
+                                                                  int rightTemplateRows,
+                                                                  int rightTemplateColumns,
+                                                                  out IntPtr ret);
 
             #endregion
 

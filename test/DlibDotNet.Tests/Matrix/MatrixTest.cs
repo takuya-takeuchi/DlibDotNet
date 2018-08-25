@@ -1458,6 +1458,411 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
+        [TestMethod]
+        public void Addition()
+        {
+            this.AdditionSub<byte>();
+            this.AdditionSub<ushort>();
+            this.AdditionSub<uint>();
+            this.AdditionSub<sbyte>();
+            this.AdditionSub<short>();
+            this.AdditionSub<int>();
+            this.AdditionSub<float>();
+            this.AdditionSub<double>();
+            this.AdditionSub<RgbPixel>(false);
+            this.AdditionSub<RgbAlphaPixel>(false);
+            this.AdditionSub<HsiPixel>(false);
+        }
+
+        private void AdditionSub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false},
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                        ret = lhs + rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                            ret = lhs + rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction()
+        {
+            this.SubtractionSub<byte>();
+            this.SubtractionSub<ushort>();
+            this.SubtractionSub<uint>();
+            this.SubtractionSub<sbyte>();
+            this.SubtractionSub<short>();
+            this.SubtractionSub<int>();
+            this.SubtractionSub<float>();
+            this.SubtractionSub<double>();
+            this.SubtractionSub<RgbPixel>(false);
+            this.SubtractionSub<RgbAlphaPixel>(false);
+            this.SubtractionSub<HsiPixel>(false);
+        }
+
+        private void SubtractionSub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false},
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                        ret = lhs - rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                            ret = lhs - rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Multuply()
+        {
+            this.MultuplySub<byte>();
+            this.MultuplySub<ushort>();
+            this.MultuplySub<uint>();
+            this.MultuplySub<sbyte>();
+            this.MultuplySub<short>();
+            this.MultuplySub<int>();
+            this.MultuplySub<float>();
+            this.MultuplySub<double>();
+            this.MultuplySub<RgbPixel>(false);
+            this.MultuplySub<RgbAlphaPixel>(false);
+            this.MultuplySub<HsiPixel>(false);
+        }
+
+        private void MultuplySub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 0,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =   0, RightColumn = 10, RightRow = 10, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 5,  RightRow = 10, ExpectResult = false}
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                        ret = lhs * rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+                            ret = lhs * rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Division()
+        {
+            this.DivisionSub<byte>();
+            this.DivisionSub<ushort>();
+            this.DivisionSub<uint>();
+            this.DivisionSub<sbyte>();
+            this.DivisionSub<short>();
+            this.DivisionSub<int>();
+            this.DivisionSub<float>();
+            this.DivisionSub<double>();
+            this.DivisionSub<RgbPixel>(false);
+            this.DivisionSub<RgbAlphaPixel>(false);
+            this.DivisionSub<HsiPixel>(false);
+        }
+
+        private void DivisionSub<T>(bool exprectResult = true)
+            where T : struct
+        {
+            var rules = new[]
+            {
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  1,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  0,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  0,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 0,  RightRow =  1, Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow =  0, Fill = true,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  1,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  1,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  0,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  0,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 0,  RightRow =  1, Fill = false, ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow =  0, Fill = false, ExpectResult = false}
+            };
+
+            foreach (var r in rules)
+            {
+                Matrix<T> lhs = null;
+                Matrix<T> rhs = null;
+                Matrix<T> ret = null;
+
+                try
+                {
+                    if (r.ExpectResult)
+                    {
+                        lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                        rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+
+                        if (r.Fill)
+                            FillMatrixByNonZero(rhs, r.RightRow * r.RightColumn);
+
+                        ret = lhs / rhs;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            lhs = new Matrix<T>(r.LeftRow, r.LeftColumn);
+                            rhs = new Matrix<T>(r.RightRow, r.RightColumn);
+
+                            if (r.Fill)
+                                FillMatrixByNonZero(rhs, r.RightRow * r.RightColumn);
+
+                            ret = lhs / rhs;
+
+                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                        }
+                        catch
+                        {
+                            Console.WriteLine("OK");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine($"Failed to create for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                    throw;
+                }
+                finally
+                {
+                    if (lhs != null)
+                        this.DisposeAndCheckDisposedState(lhs);
+                    if (rhs != null)
+                        this.DisposeAndCheckDisposedState(rhs);
+                    if (ret != null)
+                        this.DisposeAndCheckDisposedState(ret);
+                }
+            }
+        }
+
+        private static void FillMatrixByNonZero<T>(Matrix<T> matrix, int length)
+            where T : struct
+        {
+            var rand = new Random();
+            switch (matrix.MatrixElementType)
+            {
+                case MatrixElementTypes.UInt8:
+                    {
+                        var tmp = matrix as Matrix<byte>;
+                        var array = new byte[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (byte)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.UInt16:
+                    {
+                        var tmp = matrix as Matrix<ushort>;
+                        var array = new ushort[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (ushort)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.UInt32:
+                    {
+                        var tmp = matrix as Matrix<uint>;
+                        var array = new uint[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (uint)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Int8:
+                    {
+                        var tmp = matrix as Matrix<sbyte>;
+                        var array = new sbyte[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (sbyte)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Int16:
+                    {
+                        var tmp = matrix as Matrix<short>;
+                        var array = new short[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (short)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Int32:
+                    {
+                        var tmp = matrix as Matrix<int>;
+                        var array = new int[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (int)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Float:
+                    {
+                        var tmp = matrix as Matrix<float>;
+                        var array = new float[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (float)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+                case MatrixElementTypes.Double:
+                    {
+                        var tmp = matrix as Matrix<double>;
+                        var array = new double[length];
+                        for (var index = 0; index < array.Length; index++)
+                            array[index] = (double)rand.Next(1, 100);
+                        tmp.Assign(array);
+                    }
+                    break;
+            }
+        }
+
         private void Assign(TwoDimentionObjectBase obj, int[] array)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
