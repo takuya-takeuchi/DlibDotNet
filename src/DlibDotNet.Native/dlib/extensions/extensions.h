@@ -28,6 +28,16 @@ do {\
         for (uint32_t c = 0, step = r * columns; c < columns; c++)\
             d[step + c] = s(r, c);\
     }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& s = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(src));\
+        ELEMENT* d = static_cast<ELEMENT*>(dst);\
+        const uint32_t rows = s.nr();\
+        const uint32_t columns = s.nc();\
+        for (uint32_t r = 0; r < rows; r++)\
+        for (uint32_t c = 0, step = r * columns; c < columns; c++)\
+            d[step + c] = s(r, c);\
+    }\
     else\
     {\
         ret = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\

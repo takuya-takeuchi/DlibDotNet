@@ -315,6 +315,9 @@ namespace DlibDotNet
             TElement[] result;
             Dlib.Native.ErrorType err;
 
+            var templateRows = this.TemplateRows;
+            var templateColumns = this.TemplateColumns;
+
             switch (this._MatrixElementTypes)
             {
                 case MatrixElementTypes.UInt8:
@@ -328,7 +331,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -346,7 +349,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -364,7 +367,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -382,7 +385,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -400,7 +403,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -418,7 +421,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -436,7 +439,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -454,7 +457,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -472,7 +475,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -490,7 +493,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -508,7 +511,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, 0, 0, (IntPtr)dst);
+                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
