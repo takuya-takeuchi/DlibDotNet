@@ -9,6 +9,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
     <description>DLib .NET wrapper written in C++ and C# for Windows, MacOS and Linux
 
 Requirements: Visual C++ 2017 Redistributable Package</description>
