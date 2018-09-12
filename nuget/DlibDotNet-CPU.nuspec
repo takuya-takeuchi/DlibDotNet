@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet</id>
-    <version>19.15.0.20180911-pre</version>
+    <version>19.15.0.20180911</version>
     <title>DlibDotNet</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -22,10 +22,12 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
     </dependencies>
   </metadata>
   <files>
+    <file src="DlibDotNet.props" target="build\DlibDotNet.props" />
+
     <file src="..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
     <!-- <file src="..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.xml" target="lib\netstandard2.0" /> -->
 
-    <file src="..\src\DlibDotNet.Native\build_cpu\Release\DlibDotNet.Native.dll" target="lib\netstandard2.0" />
-    <file src="..\src\DlibDotNet.Native.Dnn\build_cpu\Release\DlibDotNet.Native.Dnn.dll" target="lib\netstandard2.0" />
+    <file src="..\src\DlibDotNet.Native\build_cpu\Release\DlibDotNet.Native.dll" target="NativeDlls\DlibDotNet.Native.dll" />
+    <file src="..\src\DlibDotNet.Native.Dnn\build_cpu\Release\DlibDotNet.Native.Dnn.dll" target="NativeDlls\DlibDotNet.Native.Dnn.dll" />
   </files>
 </package>
