@@ -165,6 +165,7 @@ DLLEXPORT int frontal_face_detector_matrix_operator(
             #define ELEMENT rgb_pixel
             frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
             #undef ELEMENT
+            break;
         case matrix_element_type::HsiPixel:
             #define ELEMENT hsi_pixel
             frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
