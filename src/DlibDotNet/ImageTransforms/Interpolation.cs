@@ -337,6 +337,25 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.MatrixElementType} is not supported.");
         }
 
+        public static void PyramidUp<T>(Matrix<T> image, PyramidDown pyramid, out Matrix<T> matrix)
+            where T: struct 
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (pyramid == null)
+                throw new ArgumentNullException(nameof(pyramid));
+
+            image.ThrowIfDisposed(nameof(image));
+            pyramid.ThrowIfDisposed(nameof(pyramid));
+
+            var type = image.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.pyramid_up_matrix2(type, image.NativePtr, pyramid.NativePtr, pyramid.PyramidRate, out var ptr);
+            if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+
+            matrix = new Matrix<T>(ptr);
+        }
+
         public static void PyramidUp<T>(MatrixBase image, uint pyramidRate)
             where T : Pyramid
         {
@@ -543,6 +562,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType pyramid_up_matrix(MatrixElementType type, IntPtr img);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType pyramid_up_matrix2(MatrixElementType type, IntPtr img, IntPtr pyramid_down, uint pyramid_rate, out IntPtr matrix);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType pyramid_up_pyramid_matrix(PyramidType pyramid_type,
