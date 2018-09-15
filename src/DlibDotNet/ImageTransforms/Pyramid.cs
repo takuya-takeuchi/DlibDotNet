@@ -25,9 +25,17 @@ namespace DlibDotNet
 
         #region Methods
 
+        public abstract Rectangle RectDown(Rectangle rect);
+
+        public abstract Rectangle RectDown(Rectangle rect, uint levels);
+
         public abstract DRectangle RectDown(DRectangle rect);
 
         public abstract DRectangle RectDown(DRectangle rect, uint levels);
+
+        public abstract Rectangle RectUp(Rectangle rect);
+
+        public abstract Rectangle RectUp(Rectangle rect, uint levels);
 
         public abstract DRectangle RectUp(DRectangle rect);
 
