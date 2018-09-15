@@ -27,6 +27,11 @@ namespace DlibDotNet
                 var detectionConfidence = Native.full_detection_get_detection_confidence(this.NativePtr);
                 return detectionConfidence;
             }
+            set
+            {
+                this.ThrowIfDisposed();
+                Native.full_detection_set_detection_confidence(this.NativePtr, value);
+            }
         }
 
         public FullObjectDetection Rect
@@ -37,6 +42,15 @@ namespace DlibDotNet
                 var rect = Native.full_detection_get_rect(this.NativePtr);
                 return new FullObjectDetection(rect);
             }
+            set
+            {
+                this.ThrowIfDisposed();
+
+                if (value == null)
+                    throw new ArgumentException(nameof(value));
+
+                Native.full_detection_set_rect(this.NativePtr, value.NativePtr);
+            }
         }
 
         public ulong WeightIndex
@@ -46,6 +60,11 @@ namespace DlibDotNet
                 this.ThrowIfDisposed();
                 var weightIndex = Native.full_detection_get_weight_index(this.NativePtr);
                 return weightIndex;
+            }
+            set
+            {
+                this.ThrowIfDisposed();
+                Native.full_detection_set_weight_index(this.NativePtr, value);
             }
         }
 
@@ -76,10 +95,19 @@ namespace DlibDotNet
             public static extern double full_detection_get_detection_confidence(IntPtr detection);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void full_detection_set_detection_confidence(IntPtr detection, double detection_confidence);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr full_detection_get_rect(IntPtr detection);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void full_detection_set_rect(IntPtr detection, IntPtr rect);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ulong full_detection_get_weight_index(IntPtr detection);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void full_detection_set_weight_index(IntPtr detection, ulong weight_index);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void full_detection_delete(IntPtr detection);
