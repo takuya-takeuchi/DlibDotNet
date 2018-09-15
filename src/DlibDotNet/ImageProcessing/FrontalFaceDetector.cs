@@ -92,23 +92,21 @@ namespace DlibDotNet
             public static extern IntPtr get_frontal_face_detector();
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType frontal_face_detector_operator(
-                IntPtr detector,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                double adjustThreshold,
-                IntPtr dets);
+            public static extern Dlib.Native.ErrorType frontal_face_detector_operator(IntPtr detector,
+                                                                                      Dlib.Native.Array2DType imgType,
+                                                                                      IntPtr img,
+                                                                                      double adjustThreshold,
+                                                                                      IntPtr dets);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType frontal_face_detector_matrix_operator(
-                IntPtr detector,
-                Dlib.Native.MatrixElementType imgType,
-                IntPtr img,
-                double adjustThreshold,
-                IntPtr dets);
+            public static extern Dlib.Native.ErrorType frontal_face_detector_matrix_operator(IntPtr detector,
+                                                                                             Dlib.Native.MatrixElementType imgType,
+                                                                                             IntPtr img,
+                                                                                             double adjustThreshold,
+                                                                                             IntPtr dets);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void frontal_face_detector_delete(IntPtr point);
+            public static extern void frontal_face_detector_delete(IntPtr detector);
 
         }
 
