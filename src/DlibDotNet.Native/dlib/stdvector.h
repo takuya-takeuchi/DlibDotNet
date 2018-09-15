@@ -10,6 +10,7 @@
 #endif
 
 #include <dlib/image_processing/full_object_detection.h>
+#include <dlib/image_processing/object_detector.h>
 #include <dlib/image_transforms/interpolation.h>
 #include <dlib/image_keypoint/surf.h>
 #include "shared.h"
@@ -762,6 +763,46 @@ DLLEXPORT void stdvector_full_object_detection_copy(std::vector<full_object_dete
 }
 
 #pragma endregion full_object_detection
+
+#pragma region rect_detection
+
+DLLEXPORT std::vector<rect_detection*>* stdvector_rect_detection_new1()
+{
+    return new std::vector<rect_detection*>;
+}
+
+DLLEXPORT std::vector<rect_detection*>* stdvector_rect_detection_new2(size_t size)
+{
+    return new std::vector<rect_detection*>(size);
+}
+
+DLLEXPORT std::vector<rect_detection*>* stdvector_rect_detection_new3(rect_detection** data, size_t dataLength)
+{
+    return new std::vector<rect_detection*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_rect_detection_getSize(std::vector<rect_detection*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT rect_detection* stdvector_rect_detection_getPointer(std::vector<rect_detection*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_rect_detection_delete(std::vector<rect_detection*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_rect_detection_copy(std::vector<rect_detection*> *vector, rect_detection** dst)
+{
+    size_t length = sizeof(rect_detection*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion rect_detection
 
 #pragma region chip_details
 
