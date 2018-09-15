@@ -167,6 +167,34 @@ namespace DlibDotNet
 
             #endregion
 
+            #region rect_detection
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_rect_detection_new1();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_rect_detection_new2(IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_rect_detection_new3([In] IntPtr[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_rect_detection_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_rect_detection_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_rect_detection_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_rect_detection_delete(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_rect_detection_copy(IntPtr vector, IntPtr[] dst);
+
+            #endregion
+
             #region image_window_overlay_line
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

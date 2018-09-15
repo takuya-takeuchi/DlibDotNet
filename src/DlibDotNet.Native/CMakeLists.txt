@@ -3,6 +3,12 @@ set(PROJ_NAME DlibDotNet.Native)
 
 project(${PROJ_NAME} VERSION 0.0.0)
 
+# Version info
+set(VERSION_MAJOR 19)
+set(VERSION_MINOR 15)
+set(VERSION_PATCH 0)
+set(VERSION_DATE 20180915)
+
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set(CMAKE_CXX_FLAGS "-fPIC")
@@ -23,7 +29,26 @@ add_subdirectory(${DLIB_PATH}/dlib dlib_build)
 
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
-add_library(${PROJ_NAME} SHARED ${HEADERS} ${SOURCES})
+
+if (${DLIB_USE_CUDA})
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc
+        @ONLY)
+
+    add_library(${PROJ_NAME} SHARED ${HEADERS}
+                                    ${SOURCES}
+                                    ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc)
+else()
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/version.rc
+        @ONLY)
+
+    add_library(${PROJ_NAME} SHARED ${HEADERS}
+                                    ${SOURCES}
+                                    ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+endif()
 
 target_link_libraries(${PROJ_NAME} dlib::dlib )
 

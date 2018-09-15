@@ -56,7 +56,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!expect)
                             {
-                                Assert.Fail($"GaussianBlur should throw excption for InputType: {input.Type}, OutputType: {output.Type}");
+                                Assert.Fail($"GaussianBlur should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
                             }
                             else
                             {
@@ -169,7 +169,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     if (!test.ExpectResult)
                     {
-                        Assert.Fail($"GaussianBlur should throw excption for Type: {test.Type}, Sigma: {test.Sigma}, MaxSize: {test.MaxSize}.");
+                        Assert.Fail($"GaussianBlur should throw exception for Type: {test.Type}, Sigma: {test.Sigma}, MaxSize: {test.MaxSize}.");
                     }
 
                     Dlib.SaveJpeg(outImage, $"{Path.Combine(this.GetOutDir(type, "GaussianBlurThrowException"), $"{LoadTarget}_{test.Type}_{test.Sigma}_{test.MaxSize}.jpg")}");
@@ -244,7 +244,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!expect)
                             {
-                                Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}");
+                                Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
                             }
                             else
                             {

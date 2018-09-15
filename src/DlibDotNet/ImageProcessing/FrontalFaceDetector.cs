@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
@@ -69,6 +70,33 @@ namespace DlibDotNet
             }
         }
 
+        public void Operator(MatrixBase image, out IEnumerable<RectDetection> detections, double threshold = 0d)
+        {
+            this.ThrowIfDisposed();
+
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var dets = new StdVector<RectDetection>())
+            {
+                var inType = image.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.frontal_face_detector_matrix_operator2(this.NativePtr,
+                                                                        inType, 
+                                                                        image.NativePtr,
+                                                                        threshold,
+                                                                        dets.NativePtr);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {inType} is not supported.");
+                }
+
+                detections = dets.ToArray();
+            }
+        }
+
         #region Overrides
 
         protected override void DisposeUnmanaged()
@@ -92,23 +120,28 @@ namespace DlibDotNet
             public static extern IntPtr get_frontal_face_detector();
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType frontal_face_detector_operator(
-                IntPtr detector,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                double adjustThreshold,
-                IntPtr dets);
+            public static extern Dlib.Native.ErrorType frontal_face_detector_operator(IntPtr detector,
+                                                                                      Dlib.Native.Array2DType imgType,
+                                                                                      IntPtr img,
+                                                                                      double adjustThreshold,
+                                                                                      IntPtr dets);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType frontal_face_detector_matrix_operator(
-                IntPtr detector,
-                Dlib.Native.MatrixElementType imgType,
-                IntPtr img,
-                double adjustThreshold,
-                IntPtr dets);
+            public static extern Dlib.Native.ErrorType frontal_face_detector_matrix_operator(IntPtr detector,
+                                                                                             Dlib.Native.MatrixElementType imgType,
+                                                                                             IntPtr img,
+                                                                                             double adjustThreshold,
+                                                                                             IntPtr dets);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void frontal_face_detector_delete(IntPtr point);
+            public static extern Dlib.Native.ErrorType frontal_face_detector_matrix_operator2(IntPtr detector,
+                                                                                              Dlib.Native.MatrixElementType imgType,
+                                                                                              IntPtr img,
+                                                                                              double adjustThreshold,
+                                                                                              IntPtr dets);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void frontal_face_detector_delete(IntPtr detector);
 
         }
 

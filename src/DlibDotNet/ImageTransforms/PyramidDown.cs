@@ -37,6 +37,45 @@ namespace DlibDotNet
 
         #region Methods
 
+        public override Rectangle RectDown(Rectangle rect)
+        {
+            using (var p = rect.ToNative())
+            {
+                var err = Native.pyramid_down_rect_down_rectangle(this.NativePtr,
+                                                                  this.PyramidRate,
+                                                                  p.NativePtr,
+                                                                  out var ret);
+
+                switch (err)
+                {
+                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
+                        throw new NotSupportedException();
+                }
+
+                return new Rectangle(ret);
+            }
+        }
+
+        public override Rectangle RectDown(Rectangle rect, uint levels)
+        {
+            using (var p = rect.ToNative())
+            {
+                var err = Native.pyramid_down_rect_down2_rectangle(this.NativePtr,
+                                                                   this.PyramidRate,
+                                                                   p.NativePtr,
+                                                                   levels,
+                                                                   out var ret);
+
+                switch (err)
+                {
+                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
+                        throw new NotSupportedException();
+                }
+
+                return new Rectangle(ret);
+            }
+        }
+
         public override DRectangle RectDown(DRectangle rect)
         {
             using (var p = rect.ToNative())
@@ -73,6 +112,45 @@ namespace DlibDotNet
                 }
 
                 return new DRectangle(ret);
+            }
+        }
+
+        public override Rectangle RectUp(Rectangle rect)
+        {
+            using (var p = rect.ToNative())
+            {
+                var err = Native.pyramid_down_rect_up_rectangle(this.NativePtr,
+                                                                this.PyramidRate,
+                                                                p.NativePtr,
+                                                                out var ret);
+
+                switch (err)
+                {
+                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
+                        throw new NotSupportedException();
+                }
+
+                return new Rectangle(ret);
+            }
+        }
+
+        public override Rectangle RectUp(Rectangle rect, uint levels)
+        {
+            using (var p = rect.ToNative())
+            {
+                var err = Native.pyramid_down_rect_up2_rectangle(this.NativePtr,
+                                                                 this.PyramidRate,
+                                                                 p.NativePtr,
+                                                                 levels,
+                                                                 out var ret);
+
+                switch (err)
+                {
+                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
+                        throw new NotSupportedException();
+                }
+
+                return new Rectangle(ret);
             }
         }
 
@@ -147,11 +225,24 @@ namespace DlibDotNet
                                                                             out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType pyramid_down_rect_up_rectangle(IntPtr pyramid,
+                                                                                      uint pyramidRate,
+                                                                                      IntPtr rect,
+                                                                                      out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType pyramid_down_rect_up2(IntPtr pyramid,
                                                                              uint pyramidRate,
                                                                              IntPtr rect,
                                                                              uint levels,
                                                                              out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType pyramid_down_rect_up2_rectangle(IntPtr pyramid,
+                                                                                       uint pyramidRate,
+                                                                                       IntPtr rect,
+                                                                                       uint levels,
+                                                                                       out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType pyramid_down_rect_down(IntPtr pyramid,
@@ -160,11 +251,24 @@ namespace DlibDotNet
                                                                               out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType pyramid_down_rect_down_rectangle(IntPtr pyramid,
+                                                                                        uint pyramidRate,
+                                                                                        IntPtr rect,
+                                                                                        out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType pyramid_down_rect_down2(IntPtr pyramid,
                                                                                uint pyramidRate,
                                                                                IntPtr rect,
                                                                                uint levels,
                                                                                out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern Dlib.Native.ErrorType pyramid_down_rect_down2_rectangle(IntPtr pyramid,
+                                                                                         uint pyramidRate,
+                                                                                         IntPtr rect,
+                                                                                         uint levels,
+                                                                                         out IntPtr ret);
 
         }
 

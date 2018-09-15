@@ -55,7 +55,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw excption for InputType: {input.Type}.");
+                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -120,7 +120,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}.");
+                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -186,7 +186,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}.");
+                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -250,7 +250,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {test.Type}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -313,7 +313,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, Scale: {scale}.");
+                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, Scale: {scale}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -372,7 +372,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {itype}.");
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {itype}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -439,7 +439,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}, Angle: {angle}.");
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle: {angle}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -575,7 +575,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}.");
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -652,7 +652,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -743,7 +743,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                                 var failAction = new Action(() =>
                                 {
-                                    Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
+                                    Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
                                 });
 
                                 var finallyAction = new Action(() =>
@@ -833,7 +833,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                                 var failAction = new Action(() =>
                                 {
-                                    Assert.Fail($"{testName} should throw excption for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
+                                    Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
                                 });
 
                                 var finallyAction = new Action(() =>

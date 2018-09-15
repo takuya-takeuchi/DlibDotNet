@@ -17,10 +17,12 @@ using namespace std;
 
 #define PYRAMID_RATE 0
 #define PYRAMID_TYPE PYRAMID_TYPE
+#define RECTANGLE_TYPE drectangle
 #define ELEMENT_IN element
 #define ELEMENT_OUT element
 #undef ELEMENT_IN
 #undef ELEMENT_OUT
+#undef RECTANGLE_TYPE
 #undef PYRAMID_TYPE
 #undef PYRAMID_RATE
 
@@ -66,28 +68,28 @@ do {\
 do {\
     pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
     auto r = pyr.rect_down(*rect);\
-    *ret = new drectangle(r);\
+    *ret = new RECTANGLE_TYPE(r);\
 } while (0)
 
 #define pyramid_down_rect_down2_template(pyramid_rate, pyramid, rect, levels, ret) \
 do {\
     pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
     auto r = pyr.rect_down(*rect, levels);\
-    *ret = new drectangle(r);\
+    *ret = new RECTANGLE_TYPE(r);\
 } while (0)
 
 #define pyramid_down_rect_up_template(pyramid_rate, pyramid, rect, ret) \
 do {\
     pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
     auto r = pyr.rect_up(*rect);\
-    *ret = new drectangle(r);\
+    *ret = new RECTANGLE_TYPE(r);\
 } while (0)
 
 #define pyramid_down_rect_up2_template(pyramid_rate, pyramid, rect, levels, ret) \
 do {\
     pyramid_down<pyramid_rate>& pyr = *static_cast<pyramid_down<pyramid_rate>*>(pyramid);\
     auto r = pyr.rect_up(*rect, levels);\
-    *ret = new drectangle(r);\
+    *ret = new RECTANGLE_TYPE(r);\
 } while (0)
 
 #pragma endregion template
@@ -261,6 +263,8 @@ DLLEXPORT int pyramid_down_rect_down(void* pyramid,
 {
     int err = ERR_OK;
 
+    #define RECTANGLE_TYPE drectangle
+
     switch(pyramid_rate)
     {
         case 1:
@@ -283,6 +287,44 @@ DLLEXPORT int pyramid_down_rect_down(void* pyramid,
             break;
     }
 
+    #undef RECTANGLE_TYPE
+
+    return err;
+}
+
+DLLEXPORT int pyramid_down_rect_down_rectangle(void* pyramid,
+                                               const unsigned int pyramid_rate,
+                                               rectangle* rect,
+                                               rectangle** ret)
+{
+    int err = ERR_OK;
+
+    #define RECTANGLE_TYPE rectangle
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_down_template(1, pyramid, rect, ret);
+            break;
+        case 2:
+            pyramid_down_rect_down_template(2, pyramid, rect, ret);
+            break;
+        case 3:
+            pyramid_down_rect_down_template(3, pyramid, rect, ret);
+            break;
+        case 4:
+            pyramid_down_rect_down_template(4, pyramid, rect, ret);
+            break;
+        case 6:
+            pyramid_down_rect_down_template(6, pyramid, rect, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    #undef RECTANGLE_TYPE
+
     return err;
 }
 
@@ -293,6 +335,8 @@ DLLEXPORT int pyramid_down_rect_down2(void* pyramid,
                                       drectangle** ret)
 {
     int err = ERR_OK;
+
+    #define RECTANGLE_TYPE drectangle
 
     switch(pyramid_rate)
     {
@@ -316,8 +360,48 @@ DLLEXPORT int pyramid_down_rect_down2(void* pyramid,
             break;
     }
 
+    #undef RECTANGLE_TYPE
+
     return err;
 }
+
+DLLEXPORT int pyramid_down_rect_down2_rectangle(void* pyramid,
+                                                const unsigned int pyramid_rate,
+                                                rectangle* rect,
+                                                unsigned int levels,
+                                                rectangle** ret)
+{
+    int err = ERR_OK;
+
+    #define RECTANGLE_TYPE rectangle
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_down2_template(1, pyramid, rect, levels, ret);
+            break;
+        case 2:
+            pyramid_down_rect_down2_template(2, pyramid, rect, levels, ret);
+            break;
+        case 3:
+            pyramid_down_rect_down2_template(3, pyramid, rect, levels, ret);
+            break;
+        case 4:
+            pyramid_down_rect_down2_template(4, pyramid, rect, levels, ret);
+            break;
+        case 6:
+            pyramid_down_rect_down2_template(6, pyramid, rect, levels, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    #undef RECTANGLE_TYPE
+
+    return err;
+}
+
 
 DLLEXPORT int pyramid_down_rect_up(void* pyramid,
                                    const unsigned int pyramid_rate,
@@ -325,6 +409,8 @@ DLLEXPORT int pyramid_down_rect_up(void* pyramid,
                                    drectangle** ret)
 {
     int err = ERR_OK;
+
+    #define RECTANGLE_TYPE drectangle
 
     switch(pyramid_rate)
     {
@@ -348,6 +434,44 @@ DLLEXPORT int pyramid_down_rect_up(void* pyramid,
             break;
     }
 
+    #undef RECTANGLE_TYPE
+
+    return err;
+}
+
+DLLEXPORT int pyramid_down_rect_up_rectangle(void* pyramid,
+                                             const unsigned int pyramid_rate,
+                                             rectangle* rect,
+                                             rectangle** ret)
+{
+    int err = ERR_OK;
+
+    #define RECTANGLE_TYPE rectangle
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_up_template(1, pyramid, rect, ret);
+            break;
+        case 2:
+            pyramid_down_rect_up_template(2, pyramid, rect, ret);
+            break;
+        case 3:
+            pyramid_down_rect_up_template(3, pyramid, rect, ret);
+            break;
+        case 4:
+            pyramid_down_rect_up_template(4, pyramid, rect, ret);
+            break;
+        case 6:
+            pyramid_down_rect_up_template(6, pyramid, rect, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    #undef RECTANGLE_TYPE
+
     return err;
 }
 
@@ -358,6 +482,8 @@ DLLEXPORT int pyramid_down_rect_up2(void* pyramid,
                                     drectangle** ret)
 {
     int err = ERR_OK;
+
+    #define RECTANGLE_TYPE drectangle
 
     switch(pyramid_rate)
     {
@@ -380,6 +506,45 @@ DLLEXPORT int pyramid_down_rect_up2(void* pyramid,
             err = ERR_PYRAMID_NOT_SUPPORT_RATE;
             break;
     }
+
+    #undef RECTANGLE_TYPE
+
+    return err;
+}
+
+DLLEXPORT int pyramid_down_rect_up2_rectangle(void* pyramid,
+                                              const unsigned int pyramid_rate,
+                                              rectangle* rect,
+                                              unsigned int levels,
+                                              rectangle** ret)
+{
+    int err = ERR_OK;
+
+    #define RECTANGLE_TYPE rectangle
+
+    switch(pyramid_rate)
+    {
+        case 1:
+            pyramid_down_rect_up2_template(1, pyramid, rect, levels, ret);
+            break;
+        case 2:
+            pyramid_down_rect_up2_template(2, pyramid, rect, levels, ret);
+            break;
+        case 3:
+            pyramid_down_rect_up2_template(3, pyramid, rect, levels, ret);
+            break;
+        case 4:
+            pyramid_down_rect_up2_template(4, pyramid, rect, levels, ret);
+            break;
+        case 6:
+            pyramid_down_rect_up2_template(6, pyramid, rect, levels, ret);
+            break;
+        default:
+            err = ERR_PYRAMID_NOT_SUPPORT_RATE;
+            break;
+    }
+
+    #undef RECTANGLE_TYPE
 
     return err;
 }

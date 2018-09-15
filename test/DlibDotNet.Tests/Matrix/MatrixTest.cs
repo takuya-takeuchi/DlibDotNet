@@ -93,7 +93,7 @@ namespace DlibDotNet.Tests.Matrix
                             try
                             {
                                 matrix = CreateMatrix(test.Type, r.Row, r.Column);
-                                Assert.Fail($"{matrix.GetType().Name} should throw excption for Type: {test.Type}, Row: {r.Row}, Column: {r.Column}.");
+                                Assert.Fail($"{matrix.GetType().Name} should throw exception for Type: {test.Type}, Row: {r.Row}, Column: {r.Column}.");
                             }
                             catch
                             {
@@ -626,7 +626,7 @@ namespace DlibDotNet.Tests.Matrix
                             matrix = CreateMatrix(test.Type, 3, 3);
 
                             var str = matrix.ToString();
-                            Assert.Fail($"{matrix.GetType().Name} should throw excption for Type: {test.Type}.");
+                            Assert.Fail($"{matrix.GetType().Name} should throw exception for Type: {test.Type}.");
                         }
                         catch
                         {
@@ -1508,7 +1508,7 @@ namespace DlibDotNet.Tests.Matrix
                             rhs = new Matrix<T>(r.RightRow, r.RightColumn);
                             ret = lhs + rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -1584,7 +1584,7 @@ namespace DlibDotNet.Tests.Matrix
                             rhs = new Matrix<T>(r.RightRow, r.RightColumn);
                             ret = lhs - rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -1659,7 +1659,7 @@ namespace DlibDotNet.Tests.Matrix
                             rhs = new Matrix<T>(r.RightRow, r.RightColumn);
                             ret = lhs * rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -1756,7 +1756,7 @@ namespace DlibDotNet.Tests.Matrix
 
                             ret = lhs / rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw excption for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {

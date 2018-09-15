@@ -45,7 +45,7 @@ namespace DlibDotNet.Tests.Matrix
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {output.Type}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {output.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -100,7 +100,7 @@ namespace DlibDotNet.Tests.Matrix
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {output.Type}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {output.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -162,7 +162,7 @@ namespace DlibDotNet.Tests.Matrix
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {output.Type}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {output.Type}.");
                 });
 
                 var finallyAction = new Action(() =>

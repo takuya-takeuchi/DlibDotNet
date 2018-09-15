@@ -487,6 +487,132 @@ do { \
     }\
 } while (0)
 
+#define pyramid_up_matrix_template_sub(ret, type, img, pyramid, matrix) \
+do { \
+    ret = ERR_OK;\
+    switch(type)\
+    {\
+        case matrix_element_type::UInt8:\
+            {\
+                dlib::matrix<uint8_t> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<uint8_t>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<uint8_t>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::UInt16:\
+            {\
+                dlib::matrix<uint16_t> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<uint16_t>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<uint16_t>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::UInt32:\
+            {\
+                dlib::matrix<uint32_t> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<uint32_t>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<uint32_t>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::Int8:\
+            {\
+                dlib::matrix<int8_t> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<int8_t>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<int8_t>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::Int16:\
+            {\
+                dlib::matrix<int16_t> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<int16_t>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<int16_t>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::Int32:\
+            {\
+                dlib::matrix<int32_t> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<int32_t>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<int32_t>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::Float:\
+            {\
+                dlib::matrix<float> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<float>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<float>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::Double:\
+            {\
+                dlib::matrix<double> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<double>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<double>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            {\
+                dlib::matrix<rgb_pixel> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<rgb_pixel>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<rgb_pixel>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            {\
+                dlib::matrix<hsi_pixel> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<hsi_pixel>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<hsi_pixel>(tmp);\
+            }\
+            break;\
+        case matrix_element_type::RgbAlphaPixel:\
+            {\
+                dlib::matrix<rgb_alpha_pixel> tmp;\
+                dlib::pyramid_up(*((dlib::matrix<rgb_alpha_pixel>*)img), tmp, pyramid);\
+                *matrix = new dlib::matrix<rgb_alpha_pixel>(tmp);\
+            }\
+            break;\
+        default:\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+			break;\
+    }\
+} while (0)
+
+#define pyramid_up_matrix_template(ret, type, img, pyramid_down, pyramid_rate, matrix) \
+do { \
+    ret = ERR_OK;\
+    switch(pyramid_rate)\
+    {\
+        case 1:\
+            {\
+                dlib::pyramid_down<1>& pyramid = *(static_cast<dlib::pyramid_down<1>*>(pyramid_down));\
+                pyramid_up_matrix_template_sub(ret, type, img, pyramid, matrix);\
+            }\
+            break;\
+        case 2:\
+            {\
+                dlib::pyramid_down<2>& pyramid = *(static_cast<dlib::pyramid_down<2>*>(pyramid_down));\
+                pyramid_up_matrix_template_sub(ret, type, img, pyramid, matrix);\
+            }\
+            break;\
+        case 3:\
+            {\
+                dlib::pyramid_down<3>& pyramid = *(static_cast<dlib::pyramid_down<3>*>(pyramid_down));\
+                pyramid_up_matrix_template_sub(ret, type, img, pyramid, matrix);\
+            }\
+            break;\
+        case 4:\
+            {\
+                dlib::pyramid_down<4>& pyramid = *(static_cast<dlib::pyramid_down<4>*>(pyramid_down));\
+                pyramid_up_matrix_template_sub(ret, type, img, pyramid, matrix);\
+            }\
+            break;\
+        case 6:\
+            {\
+                dlib::pyramid_down<6>& pyramid = *(static_cast<dlib::pyramid_down<6>*>(pyramid_down));\
+                pyramid_up_matrix_template_sub(ret, type, img, pyramid, matrix);\
+            }\
+            break;\
+    }\
+} while (0)
+
 #define rotate_image_template(ret, in_type, in_img, out_img, arg1) \
 do { \
     ret = ERR_OK;\
@@ -1280,6 +1406,13 @@ DLLEXPORT int pyramid_up_matrix(matrix_element_type type, void* img)
     interpolation_matrix_template(err, type, img);
     #undef FUNCTION
 
+    return err;
+}
+
+DLLEXPORT int pyramid_up_matrix2(matrix_element_type type, void* img, void* pyramid_down, unsigned int pyramid_rate, void** matrix)
+{
+    int err = ERR_OK;
+    pyramid_up_matrix_template(err, type, img, pyramid_down, pyramid_rate, matrix);
     return err;
 }
 
