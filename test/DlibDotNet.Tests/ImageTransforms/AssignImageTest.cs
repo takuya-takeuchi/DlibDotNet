@@ -52,7 +52,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!expect)
                             {
-                                Assert.Fail($"AssignImage should throw excption for InputType: {input.Type}, OutputType: {output.Type}");
+                                Assert.Fail($"AssignImage should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
                             }
                             else
                             {

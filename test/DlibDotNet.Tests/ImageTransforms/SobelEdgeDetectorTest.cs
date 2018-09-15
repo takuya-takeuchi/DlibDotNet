@@ -57,7 +57,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!test.ExpectResult)
                             {
-                                Assert.Fail($"SobelEdgeDetector should throw excption for InputType: {inputType}, Type: {test.Type}.");
+                                Assert.Fail($"SobelEdgeDetector should throw exception for InputType: {inputType}, Type: {test.Type}.");
                             }
                             else
                             {
@@ -145,7 +145,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!test.ExpectResult)
                             {
-                                Assert.Fail($"SuppressNonMaximumEdges should throw excption for InputType: {inputType}, Type: {test.Type}.");
+                                Assert.Fail($"SuppressNonMaximumEdges should throw exception for InputType: {inputType}, Type: {test.Type}.");
                             }
                             else
                             {

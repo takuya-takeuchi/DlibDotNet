@@ -60,7 +60,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -121,7 +121,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -182,7 +182,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -243,7 +243,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -304,7 +304,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -367,7 +367,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -437,7 +437,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw excption for InputType: {inputType}.");
+                            Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
                         });
 
                         var finallyAction = new Action(() =>

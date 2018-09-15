@@ -109,7 +109,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw excption for InputType: {inputType}, OutputType: {output.Type}.");
+                        Assert.Fail($"{testName} should throw exception for InputType: {inputType}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
