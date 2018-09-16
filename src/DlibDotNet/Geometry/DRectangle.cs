@@ -364,6 +364,7 @@ namespace DlibDotNet
 
         #endregion
 
+#pragma warning disable CS0660, CS0661
         internal sealed class NativeDRectangle : DlibObject
         {
 
@@ -849,6 +850,7 @@ namespace DlibDotNet
             }
 
         }
+#pragma warning restore CS0660, CS0661
 
     }
 

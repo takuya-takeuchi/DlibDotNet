@@ -44,6 +44,15 @@ do {\
     }\
 } while (0)
 
+#define extensions_convert_array_to_bytes_template(src, dst, rows, columns) \
+do {\
+    dlib::array2d<ELEMENT>& s = *(static_cast<dlib::array2d<ELEMENT>*>(src));\
+    auto d = static_cast<uint8_t*>(dst);\
+    for (uint32_t r = 0; r < rows; r++)\
+    for (uint32_t c = 0, dst_row = (columns * sizeof(ELEMENT)) * r, dst_column = 0; c < columns; c++, dst_column += sizeof(ELEMENT))\
+        memcpy(&d[dst_row + dst_column], &(s[r][c]), sizeof(ELEMENT));\
+} while (0)
+
 #pragma endregion template
 
 #pragma region extensions_load_image_data
@@ -469,9 +478,9 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
 
 #pragma endregion extensions_convert_managed_image_to_array
 
-#pragma region extensions_convert_managed_image_to_array_by_pallete
+#pragma region extensions_convert_managed_image_to_array_by_palette
 
-DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, array2d_type dst_type, void* dst, const dlib::rgb_pixel* pallete, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+DLLEXPORT void extensions_convert_managed_image_to_array_by_palette(void* src, array2d_type dst_type, void* dst, const dlib::rgb_pixel* palette, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
 {
     switch(dst_type)
     {
@@ -484,7 +493,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
                     uint32_t src_row = steps * r;
                     auto row = d[r];
                     for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
-                        row[c] = pallete[s[src_row + dst_column]];
+                        row[c] = palette[s[src_row + dst_column]];
                 }
             }
             break;
@@ -497,7 +506,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
                     uint32_t src_row = steps * r;
                     auto row = d[r];
                     for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
-                        row[c] = pallete[s[src_row + dst_column]].red;
+                        row[c] = palette[s[src_row + dst_column]].red;
                 }
             }
             break;
@@ -506,7 +515,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
     }
 }
 
-#pragma endregion extensions_convert_managed_image_to_array_by_pallete
+#pragma endregion extensions_convert_managed_image_to_array_by_palette
 
 #pragma region extensions_convert_matrix_to_managed_image
 
@@ -700,9 +709,9 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
 
 #pragma endregion extensions_convert_managed_image_to_matrix
 
-#pragma region extensions_convert_managed_image_to_matrix_by_pallete
+#pragma region extensions_convert_managed_image_to_matrix_by_palette
 
-DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, matrix_element_type dst_type, void* dst, const dlib::rgb_pixel* pallete, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+DLLEXPORT void extensions_convert_managed_image_to_matrix_by_palette(void* src, matrix_element_type dst_type, void* dst, const dlib::rgb_pixel* palette, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
 {
     switch(dst_type)
     {
@@ -715,7 +724,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, 
                     uint32_t src_row = steps * r;
                     uint32_t dst_row = columns * r;
                     for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
-                        d(dst_row + c) = pallete[s[src_row + dst_column]];
+                        d(dst_row + c) = palette[s[src_row + dst_column]];
                 }
             }
             break;
@@ -724,7 +733,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, 
     }
 }
 
-#pragma endregion extensions_convert_managed_image_to_matrix_by_pallete
+#pragma endregion extensions_convert_managed_image_to_matrix_by_palette
 
 #pragma region extensions_to_array
 
@@ -797,5 +806,78 @@ DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, co
 }
 
 #pragma endregion extensions_to_array
+
+#pragma region extensions_convert_array_to_bytes
+
+DLLEXPORT int extensions_convert_array_to_bytes(array2d_type src_type, void* src, void* dst, uint32_t rows, uint32_t columns)
+{
+    int err = ERR_OK;
+
+    switch(src_type)
+    {
+        case array2d_type::UInt8:
+            #define ELEMENT uint8_t
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int8:
+            #define ELEMENT int8_t
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::UInt16:
+            #define ELEMENT uint16_t
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int16:
+            #define ELEMENT int16_t
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::UInt32:
+            #define ELEMENT uint32_t
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::Int32:
+            #define ELEMENT int32_t
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::Float:
+            #define ELEMENT float
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::Double:
+            #define ELEMENT double
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::RgbPixel:
+            #define ELEMENT dlib::rgb_pixel
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::RgbAlphaPixel:
+            #define ELEMENT dlib::rgb_alpha_pixel
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        case array2d_type::HsiPixel:
+            #define ELEMENT dlib::hsi_pixel
+            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
+            #undef ELEMENT
+            break;
+        default:
+            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+#pragma endregion extensions_convert_array_to_bytes
 
 #endif

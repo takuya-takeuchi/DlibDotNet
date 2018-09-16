@@ -82,7 +82,7 @@ namespace DlibDotNet.Extensions
             public static extern void extensions_convert_managed_image_to_array(IntPtr src, Array2DType dst_type, IntPtr dst, bool rgb_reverse, uint rows, uint columns, uint steps, uint channels);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void extensions_convert_managed_image_to_array_by_pallete(IntPtr src, Array2DType dst_type, IntPtr dst, RgbPixel[] pallete, uint rows, uint columns, uint steps, uint channels);
+            public static extern void extensions_convert_managed_image_to_array_by_palette(IntPtr src, Array2DType dst_type, IntPtr dst, RgbPixel[] palette, uint rows, uint columns, uint steps, uint channels);
 
             #endregion
 
@@ -95,7 +95,7 @@ namespace DlibDotNet.Extensions
             public static extern void extensions_convert_managed_image_to_matrix(IntPtr src, MatrixElementType dst_type, IntPtr dst, bool rgb_reverse, uint rows, uint columns, uint steps, uint channels);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void extensions_convert_managed_image_to_matrix_by_pallete(IntPtr src, MatrixElementType dst_type, IntPtr dst, RgbPixel[] pallete, uint rows, uint columns, uint steps, uint channels);
+            public static extern void extensions_convert_managed_image_to_matrix_by_palette(IntPtr src, MatrixElementType dst_type, IntPtr dst, RgbPixel[] palette, uint rows, uint columns, uint steps, uint channels);
 
             #endregion
 

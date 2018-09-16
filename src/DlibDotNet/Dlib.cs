@@ -75,7 +75,7 @@ namespace DlibDotNet
 
             tensor.ThrowIfDisposed();
 
-            var ret = Tensor.Native.image_plane(tensor.NativePtr, sample, k);
+            var ret = Tensor.TensorNative.image_plane(tensor.NativePtr, sample, k);
             return new Matrix<float>(ret);
         }
 
@@ -1176,6 +1176,9 @@ namespace DlibDotNet
             public static extern IntPtr matrix_new2(MatrixElementType matrixElementType, int row, int column, IntPtr src);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public unsafe static extern IntPtr matrix_new3(MatrixElementType matrixElementType, int row, int column, byte* src);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -1901,6 +1904,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType extensions_matrix_to_array(IntPtr src, MatrixElementType type, int templateRows, int templateColumns, IntPtr dst);
+            
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extensions_convert_array_to_bytes(Array2DType src_type, IntPtr src, byte[] dst, uint rows, uint columns);
 
             #endregion
 
