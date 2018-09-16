@@ -1690,12 +1690,12 @@ namespace DlibDotNet.Tests.Matrix
             this.AdditionSub<HsiPixel>(false);
         }
 
-        private void AdditionSub<T>(bool exprectResult = true)
+        private void AdditionSub<T>(bool expectResult = true)
             where T : struct
         {
             var rules = new[]
             {
-                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = expectResult},
                 new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
@@ -1766,12 +1766,12 @@ namespace DlibDotNet.Tests.Matrix
             this.SubtractionSub<HsiPixel>(false);
         }
 
-        private void SubtractionSub<T>(bool exprectResult = true)
+        private void SubtractionSub<T>(bool expectResult = true)
             where T : struct
         {
             var rules = new[]
             {
-                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = expectResult},
                 new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
@@ -1827,27 +1827,27 @@ namespace DlibDotNet.Tests.Matrix
         }
 
         [TestMethod]
-        public void Multuply()
+        public void Multiply()
         {
-            this.MultuplySub<byte>();
-            this.MultuplySub<ushort>();
-            this.MultuplySub<uint>();
-            this.MultuplySub<sbyte>();
-            this.MultuplySub<short>();
-            this.MultuplySub<int>();
-            this.MultuplySub<float>();
-            this.MultuplySub<double>();
-            this.MultuplySub<RgbPixel>(false);
-            this.MultuplySub<RgbAlphaPixel>(false);
-            this.MultuplySub<HsiPixel>(false);
+            this.MultiplySub<byte>();
+            this.MultiplySub<ushort>();
+            this.MultiplySub<uint>();
+            this.MultiplySub<sbyte>();
+            this.MultiplySub<short>();
+            this.MultiplySub<int>();
+            this.MultiplySub<float>();
+            this.MultiplySub<double>();
+            this.MultiplySub<RgbPixel>(false);
+            this.MultiplySub<RgbAlphaPixel>(false);
+            this.MultiplySub<HsiPixel>(false);
         }
 
-        private void MultuplySub<T>(bool exprectResult = true)
+        private void MultiplySub<T>(bool expectResult = true)
             where T : struct
         {
             var rules = new[]
             {
-                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = expectResult},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 0,  ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =   0, RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 5,  RightRow = 10, ExpectResult = false}
@@ -1917,16 +1917,16 @@ namespace DlibDotNet.Tests.Matrix
             this.DivisionSub<HsiPixel>(false);
         }
 
-        private void DivisionSub<T>(bool exprectResult = true)
+        private void DivisionSub<T>(bool expectResult = true)
             where T : struct
         {
             var rules = new[]
             {
-                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
-                new { LeftColumn =  1,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
-                new { LeftColumn =  1,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
-                new { LeftColumn =  0,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
-                new { LeftColumn =  0,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = exprectResult},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = expectResult},
+                new { LeftColumn =  1,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = expectResult},
+                new { LeftColumn =  1,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = expectResult},
+                new { LeftColumn =  0,  LeftRow =  1,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = expectResult},
+                new { LeftColumn =  0,  LeftRow =  0,  RightColumn = 1,  RightRow = 1,  Fill = true,  ExpectResult = expectResult},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  Fill = true,  ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, Fill = true,  ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 0,  RightRow =  1, Fill = true,  ExpectResult = false},
@@ -2348,93 +2348,93 @@ namespace DlibDotNet.Tests.Matrix
             throw new NotSupportedException();
         }
 
-        private void CheckRowsColumnsSize(TwoDimentionObjectBase obj, int row, int columnn)
+        private void CheckRowsColumnsSize(TwoDimentionObjectBase obj, int row, int column)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
                 Assert.AreEqual(sbyteMatrix.Rows, row);
-                Assert.AreEqual(sbyteMatrix.Columns, columnn);
-                Assert.AreEqual(sbyteMatrix.Size, row * columnn);
+                Assert.AreEqual(sbyteMatrix.Columns, column);
+                Assert.AreEqual(sbyteMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<short> shortMatrix)
             {
                 Assert.AreEqual(shortMatrix.Rows, row);
-                Assert.AreEqual(shortMatrix.Columns, columnn);
-                Assert.AreEqual(shortMatrix.Size, row * columnn);
+                Assert.AreEqual(shortMatrix.Columns, column);
+                Assert.AreEqual(shortMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<int> intMatrix)
             {
                 Assert.AreEqual(intMatrix.Rows, row);
-                Assert.AreEqual(intMatrix.Columns, columnn);
-                Assert.AreEqual(intMatrix.Size, row * columnn);
+                Assert.AreEqual(intMatrix.Columns, column);
+                Assert.AreEqual(intMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<byte> byteMatrix)
             {
                 Assert.AreEqual(byteMatrix.Rows, row);
-                Assert.AreEqual(byteMatrix.Columns, columnn);
-                Assert.AreEqual(byteMatrix.Size, row * columnn);
+                Assert.AreEqual(byteMatrix.Columns, column);
+                Assert.AreEqual(byteMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<ushort> ushortMatrix)
             {
                 Assert.AreEqual(ushortMatrix.Rows, row);
-                Assert.AreEqual(ushortMatrix.Columns, columnn);
-                Assert.AreEqual(ushortMatrix.Size, row * columnn);
+                Assert.AreEqual(ushortMatrix.Columns, column);
+                Assert.AreEqual(ushortMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<uint> uintMatrix)
             {
                 Assert.AreEqual(uintMatrix.Rows, row);
-                Assert.AreEqual(uintMatrix.Columns, columnn);
-                Assert.AreEqual(uintMatrix.Size, row * columnn);
+                Assert.AreEqual(uintMatrix.Columns, column);
+                Assert.AreEqual(uintMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<float> floatMatrix)
             {
                 Assert.AreEqual(floatMatrix.Rows, row);
-                Assert.AreEqual(floatMatrix.Columns, columnn);
-                Assert.AreEqual(floatMatrix.Size, row * columnn);
+                Assert.AreEqual(floatMatrix.Columns, column);
+                Assert.AreEqual(floatMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<double> doubleMatrix)
             {
                 Assert.AreEqual(doubleMatrix.Rows, row);
-                Assert.AreEqual(doubleMatrix.Columns, columnn);
-                Assert.AreEqual(doubleMatrix.Size, row * columnn);
+                Assert.AreEqual(doubleMatrix.Columns, column);
+                Assert.AreEqual(doubleMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<RgbPixel> rgbPixelMatrix)
             {
                 Assert.AreEqual(rgbPixelMatrix.Rows, row);
-                Assert.AreEqual(rgbPixelMatrix.Columns, columnn);
-                Assert.AreEqual(rgbPixelMatrix.Size, row * columnn);
+                Assert.AreEqual(rgbPixelMatrix.Columns, column);
+                Assert.AreEqual(rgbPixelMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<RgbAlphaPixel> rgbAlphaPixelMatrix)
             {
                 Assert.AreEqual(rgbAlphaPixelMatrix.Rows, row);
-                Assert.AreEqual(rgbAlphaPixelMatrix.Columns, columnn);
-                Assert.AreEqual(rgbAlphaPixelMatrix.Size, row * columnn);
+                Assert.AreEqual(rgbAlphaPixelMatrix.Columns, column);
+                Assert.AreEqual(rgbAlphaPixelMatrix.Size, row * column);
                 return;
             }
 
-            if (obj is Matrix<HsiPixel> hsiPicelMatrix)
+            if (obj is Matrix<HsiPixel> hsiPixelMatrix)
             {
-                Assert.AreEqual(hsiPicelMatrix.Rows, row);
-                Assert.AreEqual(hsiPicelMatrix.Columns, columnn);
-                Assert.AreEqual(hsiPicelMatrix.Size, row * columnn);
+                Assert.AreEqual(hsiPixelMatrix.Rows, row);
+                Assert.AreEqual(hsiPixelMatrix.Columns, column);
+                Assert.AreEqual(hsiPixelMatrix.Size, row * column);
                 return;
             }
 
