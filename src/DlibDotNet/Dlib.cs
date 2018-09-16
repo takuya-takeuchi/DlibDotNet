@@ -1176,6 +1176,9 @@ namespace DlibDotNet
             public static extern IntPtr matrix_new2(MatrixElementType matrixElementType, int row, int column, IntPtr src);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public unsafe static extern IntPtr matrix_new3(MatrixElementType matrixElementType, int row, int column, byte* src);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

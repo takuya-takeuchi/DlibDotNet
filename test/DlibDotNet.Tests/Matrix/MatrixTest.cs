@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Tests.Matrix
@@ -345,6 +346,222 @@ namespace DlibDotNet.Tests.Matrix
                                             if (a != m)
                                                 Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
                                         }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Create3()
+        {
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            const int row1 = 10;
+            const int column1 = 10;
+
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var matrix = FillMatrixByNonZero<byte>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var matrix = FillMatrixByNonZero<ushort>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var matrix = FillMatrixByNonZero<uint>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var matrix = FillMatrixByNonZero<sbyte>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var matrix = FillMatrixByNonZero<short>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var matrix = FillMatrixByNonZero<int>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var matrix = FillMatrixByNonZero<float>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var matrix = FillMatrixByNonZero<double>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row1, column1, out var result))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
                             }
                         }
                         break;
@@ -1861,6 +2078,210 @@ namespace DlibDotNet.Tests.Matrix
                     }
                     break;
             }
+        }
+
+        private static unsafe Matrix<T> FillMatrixByNonZero<T>(int row, int column, out T[] result)
+            where T : struct
+        {
+            var rand = new Random();
+            var length = row * column;
+            using (var matrix = new Matrix<T>())
+                switch (matrix.MatrixElementType)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            var array = new byte[length];
+                            for (var index = 0; index < array.Length; index++)
+                                array[index] = (byte)rand.Next(1, 100);
+                            result = array as T[];
+                            return new Matrix<byte>(array, row, column, 1) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.UInt16:
+                        {
+                            var tmp = new ushort[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                                tmp[index] = (ushort)rand.Next(1, 100);
+
+                            var array = new byte[length * sizeof(ushort)];
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                var t = BitConverter.GetBytes(tmp[i]);
+                                for (var j = 0; j < t.Length; j++)
+                                    array[i * t.Length + j] = t[j];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<ushort>(array, row, column, sizeof(ushort)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.UInt32:
+                        {
+                            var tmp = new uint[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                                tmp[index] = (uint)rand.Next(1, 100);
+
+                            var array = new byte[length * sizeof(uint)];
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                var t = BitConverter.GetBytes(tmp[i]);
+                                for (var j = 0; j < t.Length; j++)
+                                    array[i * t.Length + j] = t[j];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<uint>(array, row, column, sizeof(uint)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.Int8:
+                        {
+                            var tmp = new sbyte[length];
+                            var array = new byte[length];
+                            for (var index = 0; index < array.Length; index++)
+                            {
+                                array[index] = (byte)rand.Next(1, 100);
+                                tmp[index] = (sbyte)array[index];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<sbyte>(array, row, column, 1) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.Int16:
+                        {
+                            var tmp = new short[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                                tmp[index] = (short)rand.Next(1, 100);
+
+                            var array = new byte[length * sizeof(short)];
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                var t = BitConverter.GetBytes(tmp[i]);
+                                for (var j = 0; j < t.Length; j++)
+                                    array[i * t.Length + j] = t[j];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<short>(array, row, column, sizeof(short)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.Int32:
+                        {
+                            var tmp = new int[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                                tmp[index] = (int)rand.Next(1, 100);
+
+                            var array = new byte[length * sizeof(int)];
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                var t = BitConverter.GetBytes(tmp[i]);
+                                for (var j = 0; j < t.Length; j++)
+                                    array[i * t.Length + j] = t[j];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<int>(array, row, column, sizeof(int)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.Float:
+                        {
+                            var tmp = new float[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                                tmp[index] = (float)rand.Next(1, 100);
+
+                            var array = new byte[length * sizeof(float)];
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                var t = BitConverter.GetBytes(tmp[i]);
+                                for (var j = 0; j < t.Length; j++)
+                                    array[i * t.Length + j] = t[j];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<float>(array, row, column, sizeof(float)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.Double:
+                        {
+                            var tmp = new double[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                                tmp[index] = rand.Next(1, 100);
+
+                            var array = new byte[length * sizeof(double)];
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                var t = BitConverter.GetBytes(tmp[i]);
+                                for (var j = 0; j < t.Length; j++)
+                                    array[i * t.Length + j] = t[j];
+                            }
+
+                            result = tmp as T[];
+                            return new Matrix<double>(array, row, column, sizeof(double)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            var tmp = new RgbPixel[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                            {
+                                tmp[index].Blue = (byte)rand.Next(1, 100);
+                                tmp[index].Green = (byte)rand.Next(1, 100);
+                                tmp[index].Red = (byte)rand.Next(1, 100);
+                            }
+
+                            var array = new byte[length * sizeof(RgbPixel)];
+                            var buffer = Marshal.AllocHGlobal(sizeof(RgbPixel));
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                Marshal.StructureToPtr(tmp[i], buffer, false);
+                                Marshal.Copy(buffer, array, i * sizeof(RgbPixel), sizeof(RgbPixel));
+                            }
+                            Marshal.FreeHGlobal(buffer);
+
+                            result = tmp as T[];
+                            return new Matrix<RgbPixel>(array, row, column, sizeof(RgbPixel)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            var tmp = new RgbAlphaPixel[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                            {
+                                tmp[index].Blue = (byte)rand.Next(1, 100);
+                                tmp[index].Green = (byte)rand.Next(1, 100);
+                                tmp[index].Red = (byte)rand.Next(1, 100);
+                                tmp[index].Alpha = (byte)rand.Next(1, 100);
+                            }
+
+                            var array = new byte[length * sizeof(RgbAlphaPixel)];
+                            var buffer = Marshal.AllocHGlobal(sizeof(RgbAlphaPixel));
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                Marshal.StructureToPtr(tmp[i], buffer, false);
+                                Marshal.Copy(buffer, array, i * sizeof(RgbAlphaPixel), sizeof(RgbAlphaPixel));
+                            }
+                            Marshal.FreeHGlobal(buffer);
+
+                            result = tmp as T[];
+                            return new Matrix<RgbAlphaPixel>(array, row, column, sizeof(RgbAlphaPixel)) as Matrix<T>;
+                        }
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            var tmp = new HsiPixel[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                            {
+                                tmp[index].H = (byte)rand.Next(1, 100);
+                                tmp[index].S = (byte)rand.Next(1, 100);
+                                tmp[index].I = (byte)rand.Next(1, 100);
+                            }
+
+                            var array = new byte[length * sizeof(HsiPixel)];
+                            var buffer = Marshal.AllocHGlobal(sizeof(HsiPixel));
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                Marshal.StructureToPtr(tmp[i], buffer, false);
+                                Marshal.Copy(buffer, array, i * sizeof(HsiPixel), sizeof(HsiPixel));
+                            }
+                            Marshal.FreeHGlobal(buffer);
+
+                            result = tmp as T[];
+                            return new Matrix<HsiPixel>(array, row, column, sizeof(HsiPixel)) as Matrix<T>;
+                        }
+                }
+
+            result = null;
+            return null;
         }
 
         private void Assign(TwoDimentionObjectBase obj, int[] array)
