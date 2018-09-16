@@ -338,8 +338,8 @@ namespace DlibDotNet.Extensions
 
                 var scan0 = bitmapData.Scan0;
                 var stride = bitmapData.Stride;
-                var srctype = type.ToNativeArray2DType();
-                Dlib.Native.extensions_convert_array_to_managed_image(srctype, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                var srcType = type.ToNativeArray2DType();
+                Dlib.Native.extensions_convert_array_to_managed_image(srcType, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
             finally
             {
@@ -363,8 +363,8 @@ namespace DlibDotNet.Extensions
 
                 var scan0 = bitmapData.Scan0;
                 var stride = bitmapData.Stride;
-                var srctype = type.ToNativeMatrixElementType();
-                Dlib.Native.extensions_convert_matrix_to_managed_image(srctype, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                var srcType = type.ToNativeMatrixElementType();
+                Dlib.Native.extensions_convert_matrix_to_managed_image(srcType, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
             finally
             {

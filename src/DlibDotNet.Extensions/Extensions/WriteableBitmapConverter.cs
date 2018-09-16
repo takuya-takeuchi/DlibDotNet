@@ -265,8 +265,8 @@ namespace DlibDotNet.Extensions
             var height = bitmap.PixelHeight;
             var buffer = bitmap.BackBuffer;
             var stride = bitmap.BackBufferStride;
-            var srctype = type.ToNativeArray2DType();
-            Dlib.Native.extensions_convert_array_to_managed_image(srctype, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+            var srcType = type.ToNativeArray2DType();
+            Dlib.Native.extensions_convert_array_to_managed_image(srcType, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
         private static void ToManaged(MatrixElementTypes type, IntPtr src, WriteableBitmap bitmap, bool rgbReverse, int channels)
@@ -275,8 +275,8 @@ namespace DlibDotNet.Extensions
             var height = bitmap.PixelHeight;
             var buffer = bitmap.BackBuffer;
             var stride = bitmap.BackBufferStride;
-            var srctype = type.ToNativeMatrixElementType();
-            Dlib.Native.extensions_convert_matrix_to_managed_image(srctype, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+            var srcType = type.ToNativeMatrixElementType();
+            Dlib.Native.extensions_convert_matrix_to_managed_image(srcType, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
         private static void ToNative(WriteableBitmap bitmap, ImageTypes dstType, IntPtr dst, bool rgbReverse, int channels)
