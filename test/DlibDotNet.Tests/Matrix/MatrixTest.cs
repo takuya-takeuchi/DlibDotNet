@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -380,7 +379,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     case MatrixElementTypes.UInt8:
                         {
-                            using (var matrix = FillMatrixByNonZero<byte>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<byte>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -397,7 +396,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.UInt16:
                         {
-                            using (var matrix = FillMatrixByNonZero<ushort>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<ushort>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -414,7 +413,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.UInt32:
                         {
-                            using (var matrix = FillMatrixByNonZero<uint>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<uint>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -431,7 +430,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int8:
                         {
-                            using (var matrix = FillMatrixByNonZero<sbyte>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<sbyte>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -448,7 +447,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int16:
                         {
-                            using (var matrix = FillMatrixByNonZero<short>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<short>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -465,7 +464,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int32:
                         {
-                            using (var matrix = FillMatrixByNonZero<int>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<int>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -482,7 +481,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Float:
                         {
-                            using (var matrix = FillMatrixByNonZero<float>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<float>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -499,7 +498,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Double:
                         {
-                            using (var matrix = FillMatrixByNonZero<double>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<double>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -516,7 +515,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.RgbPixel:
                         {
-                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -533,7 +532,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.RgbAlphaPixel:
                         {
-                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -550,7 +549,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.HsiPixel:
                         {
-                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row1, column1, out var result, out var bytes))
+                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row1, column1, out var result, out _))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -1146,7 +1145,7 @@ namespace DlibDotNet.Tests.Matrix
                     for (var r = 0; r < 3; r++)
                         for (var c = 0; c < 3; c++)
                         {
-                            var v = (int)(r + c);
+                            var v = r + c;
                             matrix[r, c] = v;
                             Assert.AreEqual(v, matrix[r, c]);
                         }
@@ -1344,7 +1343,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     for (var index = 0; index < 3; index++)
                     {
-                        var v = (int)(index);
+                        var v = index;
                         matrix[index] = v;
                         Assert.AreEqual(v, matrix[index]);
                     }
@@ -1537,7 +1536,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     for (var index = 0; index < 3; index++)
                     {
-                        var v = (int)(index);
+                        var v = index;
                         matrix[index] = v;
                         Assert.AreEqual(v, matrix[index]);
                     }
@@ -1700,7 +1699,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
-                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false}
             };
 
             foreach (var r in rules)
@@ -1776,7 +1775,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { LeftColumn =  1,  LeftRow =  10, RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  1,  RightColumn = 10, RightRow = 10, ExpectResult = false},
                 new { LeftColumn =  10, LeftRow =  10, RightColumn = 1,  RightRow = 10, ExpectResult = false},
-                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false},
+                new { LeftColumn =  10, LeftRow =  10, RightColumn = 10, RightRow = 1,  ExpectResult = false}
             };
 
             foreach (var r in rules)
@@ -2055,7 +2054,7 @@ namespace DlibDotNet.Tests.Matrix
                         var tmp = matrix as Matrix<int>;
                         var array = new int[length];
                         for (var index = 0; index < array.Length; index++)
-                            array[index] = (int)rand.Next(1, 100);
+                            array[index] = rand.Next(1, 100);
                         tmp.Assign(array);
                     }
                     break;
@@ -2064,7 +2063,7 @@ namespace DlibDotNet.Tests.Matrix
                         var tmp = matrix as Matrix<float>;
                         var array = new float[length];
                         for (var index = 0; index < array.Length; index++)
-                            array[index] = (float)rand.Next(1, 100);
+                            array[index] = rand.Next(1, 100);
                         tmp.Assign(array);
                     }
                     break;
@@ -2073,7 +2072,7 @@ namespace DlibDotNet.Tests.Matrix
                         var tmp = matrix as Matrix<double>;
                         var array = new double[length];
                         for (var index = 0; index < array.Length; index++)
-                            array[index] = (double)rand.Next(1, 100);
+                            array[index] = rand.Next(1, 100);
                         tmp.Assign(array);
                     }
                     break;
@@ -2169,7 +2168,7 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var tmp = new int[length];
                             for (var index = 0; index < tmp.Length; index++)
-                                tmp[index] = (int)rand.Next(1, 100);
+                                tmp[index] = rand.Next(1, 100);
 
                             var array = new byte[length * sizeof(int)];
                             for (var i = 0; i < tmp.Length; i++)
@@ -2187,7 +2186,7 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var tmp = new float[length];
                             for (var index = 0; index < tmp.Length; index++)
-                                tmp[index] = (float)rand.Next(1, 100);
+                                tmp[index] = rand.Next(1, 100);
 
                             var array = new byte[length * sizeof(float)];
                             for (var i = 0; i < tmp.Length; i++)
@@ -2312,7 +2311,7 @@ namespace DlibDotNet.Tests.Matrix
 
             if (obj is Matrix<int> intMatrix)
             {
-                intMatrix.Assign(array.Select(i => (int)i).ToArray());
+                intMatrix.Assign(array.Select(i => i).ToArray());
                 return;
             }
 
