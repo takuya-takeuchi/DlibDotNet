@@ -285,16 +285,16 @@ namespace DlibDotNet.Extensions
             var height = bitmap.PixelHeight;
             var buffer = bitmap.BackBuffer;
             var stride = bitmap.BackBufferStride;
-            var usePallete = bitmap.Palette != null && bitmap.Palette.Colors.Count == 256;
+            var usePalette = bitmap.Palette != null && bitmap.Palette.Colors.Count == 256;
 
-            if (!usePallete)
+            if (!usePalette)
             {
                 Dlib.Native.extensions_convert_managed_image_to_array(buffer, dstType.ToNativeArray2DType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
             else
             {
                 var p = bitmap.Palette.Colors.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                Dlib.Native.extensions_convert_managed_image_to_array_by_pallete(buffer, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                Dlib.Native.extensions_convert_managed_image_to_array_by_palette(buffer, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
         }
 
@@ -304,16 +304,16 @@ namespace DlibDotNet.Extensions
             var height = bitmap.PixelHeight;
             var buffer = bitmap.BackBuffer;
             var stride = bitmap.BackBufferStride;
-            var usePallete = bitmap.Palette != null && bitmap.Palette.Colors.Count == 256;
+            var usePalette = bitmap.Palette != null && bitmap.Palette.Colors.Count == 256;
 
-            if (!usePallete)
+            if (!usePalette)
             {
                 Dlib.Native.extensions_convert_managed_image_to_matrix(buffer, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
             else
             {
                 var p = bitmap.Palette.Colors.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                Dlib.Native.extensions_convert_managed_image_to_matrix_by_pallete(buffer, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                Dlib.Native.extensions_convert_managed_image_to_matrix_by_palette(buffer, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
         }
 

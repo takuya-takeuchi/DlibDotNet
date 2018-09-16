@@ -378,8 +378,8 @@ namespace DlibDotNet.Extensions
             var format = bitmap.PixelFormat;
             var width = bitmap.Width;
             var height = bitmap.Height;
-            var pallete = bitmap.Palette;
-            var usePallete = bitmap.Palette.Entries.Length == 256;
+            var palette = bitmap.Palette;
+            var usePalette = bitmap.Palette.Entries.Length == 256;
 
             BitmapData bitmapData = null;
             try
@@ -390,14 +390,14 @@ namespace DlibDotNet.Extensions
 
                 var scan0 = bitmapData.Scan0;
                 var stride = bitmapData.Stride;
-                if (!usePallete)
+                if (!usePalette)
                 {
                     Dlib.Native.extensions_convert_managed_image_to_array(scan0, dstType.ToNativeArray2DType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
                 }
                 else
                 {
-                    var p = pallete.Entries.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                    Dlib.Native.extensions_convert_managed_image_to_array_by_pallete(scan0, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                    var p = palette.Entries.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
+                    Dlib.Native.extensions_convert_managed_image_to_array_by_palette(scan0, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
                 }
             }
             finally
@@ -412,8 +412,8 @@ namespace DlibDotNet.Extensions
             var format = bitmap.PixelFormat;
             var width = bitmap.Width;
             var height = bitmap.Height;
-            var pallete = bitmap.Palette;
-            var usePallete = bitmap.Palette.Entries.Length == 256;
+            var palette = bitmap.Palette;
+            var usePalette = bitmap.Palette.Entries.Length == 256;
 
             BitmapData bitmapData = null;
             try
@@ -424,14 +424,14 @@ namespace DlibDotNet.Extensions
 
                 var scan0 = bitmapData.Scan0;
                 var stride = bitmapData.Stride;
-                if (!usePallete)
+                if (!usePalette)
                 {
                     Dlib.Native.extensions_convert_managed_image_to_matrix(scan0, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
                 }
                 else
                 {
-                    var p = pallete.Entries.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                    Dlib.Native.extensions_convert_managed_image_to_matrix_by_pallete(scan0, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                    var p = palette.Entries.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
+                    Dlib.Native.extensions_convert_managed_image_to_matrix_by_palette(scan0, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
                 }
             }
             finally

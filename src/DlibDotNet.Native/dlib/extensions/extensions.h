@@ -478,9 +478,9 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
 
 #pragma endregion extensions_convert_managed_image_to_array
 
-#pragma region extensions_convert_managed_image_to_array_by_pallete
+#pragma region extensions_convert_managed_image_to_array_by_palette
 
-DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, array2d_type dst_type, void* dst, const dlib::rgb_pixel* pallete, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+DLLEXPORT void extensions_convert_managed_image_to_array_by_palette(void* src, array2d_type dst_type, void* dst, const dlib::rgb_pixel* palette, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
 {
     switch(dst_type)
     {
@@ -493,7 +493,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
                     uint32_t src_row = steps * r;
                     auto row = d[r];
                     for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
-                        row[c] = pallete[s[src_row + dst_column]];
+                        row[c] = palette[s[src_row + dst_column]];
                 }
             }
             break;
@@ -506,7 +506,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
                     uint32_t src_row = steps * r;
                     auto row = d[r];
                     for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
-                        row[c] = pallete[s[src_row + dst_column]].red;
+                        row[c] = palette[s[src_row + dst_column]].red;
                 }
             }
             break;
@@ -515,7 +515,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array_by_pallete(void* src, a
     }
 }
 
-#pragma endregion extensions_convert_managed_image_to_array_by_pallete
+#pragma endregion extensions_convert_managed_image_to_array_by_palette
 
 #pragma region extensions_convert_matrix_to_managed_image
 
@@ -709,9 +709,9 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
 
 #pragma endregion extensions_convert_managed_image_to_matrix
 
-#pragma region extensions_convert_managed_image_to_matrix_by_pallete
+#pragma region extensions_convert_managed_image_to_matrix_by_palette
 
-DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, matrix_element_type dst_type, void* dst, const dlib::rgb_pixel* pallete, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
+DLLEXPORT void extensions_convert_managed_image_to_matrix_by_palette(void* src, matrix_element_type dst_type, void* dst, const dlib::rgb_pixel* palette, uint32_t rows, uint32_t columns, uint32_t steps, uint32_t channels)
 {
     switch(dst_type)
     {
@@ -724,7 +724,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, 
                     uint32_t src_row = steps * r;
                     uint32_t dst_row = columns * r;
                     for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += channels)
-                        d(dst_row + c) = pallete[s[src_row + dst_column]];
+                        d(dst_row + c) = palette[s[src_row + dst_column]];
                 }
             }
             break;
@@ -733,7 +733,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_pallete(void* src, 
     }
 }
 
-#pragma endregion extensions_convert_managed_image_to_matrix_by_pallete
+#pragma endregion extensions_convert_managed_image_to_matrix_by_palette
 
 #pragma region extensions_to_array
 
