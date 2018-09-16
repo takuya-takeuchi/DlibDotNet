@@ -380,7 +380,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     case MatrixElementTypes.UInt8:
                         {
-                            using (var matrix = FillMatrixByNonZero<byte>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<byte>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -397,7 +397,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.UInt16:
                         {
-                            using (var matrix = FillMatrixByNonZero<ushort>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<ushort>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -414,7 +414,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.UInt32:
                         {
-                            using (var matrix = FillMatrixByNonZero<uint>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<uint>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -431,7 +431,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int8:
                         {
-                            using (var matrix = FillMatrixByNonZero<sbyte>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<sbyte>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -448,7 +448,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int16:
                         {
-                            using (var matrix = FillMatrixByNonZero<short>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<short>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -465,7 +465,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int32:
                         {
-                            using (var matrix = FillMatrixByNonZero<int>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<int>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -482,7 +482,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Float:
                         {
-                            using (var matrix = FillMatrixByNonZero<float>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<float>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -499,7 +499,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Double:
                         {
-                            using (var matrix = FillMatrixByNonZero<double>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<double>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -516,7 +516,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.RgbPixel:
                         {
-                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -533,7 +533,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.RgbAlphaPixel:
                         {
-                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -550,7 +550,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.HsiPixel:
                         {
-                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row1, column1, out var result))
+                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row1, column1, out var result, out var bytes))
                             {
                                 var column = matrix.Columns;
                                 var row = matrix.Rows;
@@ -2080,7 +2080,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        private static unsafe Matrix<T> FillMatrixByNonZero<T>(int row, int column, out T[] result)
+        internal static unsafe Matrix<T> FillMatrixByNonZero<T>(int row, int column, out T[] result, out byte[] bytes)
             where T : struct
         {
             var rand = new Random();
@@ -2094,6 +2094,7 @@ namespace DlibDotNet.Tests.Matrix
                             for (var index = 0; index < array.Length; index++)
                                 array[index] = (byte)rand.Next(1, 100);
                             result = array as T[];
+                            bytes = array;
                             return new Matrix<byte>(array, row, column, 1) as Matrix<T>;
                         }
                     case MatrixElementTypes.UInt16:
@@ -2111,6 +2112,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<ushort>(array, row, column, sizeof(ushort)) as Matrix<T>;
                         }
                     case MatrixElementTypes.UInt32:
@@ -2128,6 +2130,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<uint>(array, row, column, sizeof(uint)) as Matrix<T>;
                         }
                     case MatrixElementTypes.Int8:
@@ -2141,6 +2144,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<sbyte>(array, row, column, 1) as Matrix<T>;
                         }
                     case MatrixElementTypes.Int16:
@@ -2158,6 +2162,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<short>(array, row, column, sizeof(short)) as Matrix<T>;
                         }
                     case MatrixElementTypes.Int32:
@@ -2175,6 +2180,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<int>(array, row, column, sizeof(int)) as Matrix<T>;
                         }
                     case MatrixElementTypes.Float:
@@ -2192,6 +2198,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<float>(array, row, column, sizeof(float)) as Matrix<T>;
                         }
                     case MatrixElementTypes.Double:
@@ -2209,6 +2216,7 @@ namespace DlibDotNet.Tests.Matrix
                             }
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<double>(array, row, column, sizeof(double)) as Matrix<T>;
                         }
                     case MatrixElementTypes.RgbPixel:
@@ -2231,6 +2239,7 @@ namespace DlibDotNet.Tests.Matrix
                             Marshal.FreeHGlobal(buffer);
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<RgbPixel>(array, row, column, sizeof(RgbPixel)) as Matrix<T>;
                         }
                     case MatrixElementTypes.RgbAlphaPixel:
@@ -2254,6 +2263,7 @@ namespace DlibDotNet.Tests.Matrix
                             Marshal.FreeHGlobal(buffer);
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<RgbAlphaPixel>(array, row, column, sizeof(RgbAlphaPixel)) as Matrix<T>;
                         }
                     case MatrixElementTypes.HsiPixel:
@@ -2276,11 +2286,13 @@ namespace DlibDotNet.Tests.Matrix
                             Marshal.FreeHGlobal(buffer);
 
                             result = tmp as T[];
+                            bytes = array;
                             return new Matrix<HsiPixel>(array, row, column, sizeof(HsiPixel)) as Matrix<T>;
                         }
                 }
 
             result = null;
+            bytes = null;
             return null;
         }
 

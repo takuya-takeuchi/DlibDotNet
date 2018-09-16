@@ -1,4 +1,5 @@
 ﻿using System;
+using DlibDotNet.Tests.Matrix;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Tests.Array2D
@@ -712,6 +713,244 @@ namespace DlibDotNet.Tests.Array2D
                         throw new ArgumentOutOfRangeException(nameof(array2DMatrix.MatrixElementType), array2DMatrix.MatrixElementType, null);
                 }
                 this.DisposeAndCheckDisposedState(array2DMatrix);
+            }
+        }
+
+        [TestMethod]
+        public void ToBytes()
+        {
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            const int row = 10;
+            const int column = 10;
+
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var array2D = new Array2D<byte>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<byte>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var array2D = new Array2D<ushort>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<ushort>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var array2D = new Array2D<uint>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<uint>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var array2D = new Array2D<sbyte>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<sbyte>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var array2D = new Array2D<short>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<short>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var array2D = new Array2D<int>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<int>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var array2D = new Array2D<float>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<float>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var array2D = new Array2D<double>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<double>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var array2D = new Array2D<RgbPixel>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<RgbPixel>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var array2D = new Array2D<RgbAlphaPixel>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<RgbAlphaPixel>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var array2D = new Array2D<HsiPixel>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<HsiPixel>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                for (var c = 0; c < column; c++)
+                                    array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.Fail($"{input.Type}");
+                            }
+                        }
+                        break;
+                }
             }
         }
 
