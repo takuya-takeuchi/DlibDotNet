@@ -2,13 +2,14 @@
 <package >
   <metadata>
     <id>DlibDotNet</id>
-    <version>19.15.0.20180915</version>
+    <version>19.15.0.20180916</version>
     <title>DlibDotNet</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
     <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
 
 Requirements: Visual C++ 2017 Redistributable Package</description>
