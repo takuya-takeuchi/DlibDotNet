@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -16,11 +18,29 @@ namespace DlibDotNet
 
         private readonly Dlib.Native.MatrixElementType _ElementType;
 
+        private static readonly IDictionary<Dlib.Native.MatrixElementType, int> ElementSizeDictionary;
+
         private readonly Indexer<TElement> _Indexer;
 
         #endregion
 
         #region Constructors
+
+        static Matrix()
+        {
+            ElementSizeDictionary = new Dictionary<Dlib.Native.MatrixElementType, int>();
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt8, sizeof(byte));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt16, sizeof(ushort));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt32, sizeof(uint));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int8, sizeof(sbyte));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int16, sizeof(short));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int32, sizeof(int));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Float, sizeof(float));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Double, sizeof(double));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbPixel, Marshal.SizeOf<RgbPixel>());
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbAlphaPixel, Marshal.SizeOf<RgbAlphaPixel>());
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.HsiPixel, Marshal.SizeOf<HsiPixel>());
+        }
 
         public Matrix()
         {
@@ -177,6 +197,38 @@ namespace DlibDotNet
                         }
                         break;
                 }
+            }
+
+            this._Indexer = this.CreateIndexer(type);
+        }
+
+        public Matrix(byte[] array, int row, int column, int elementSize)
+        {
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (row < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
+            if (column < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(column)}", $"{nameof(column)} should be positive value.");
+            if (column < 1)
+                throw new ArgumentOutOfRangeException($"{nameof(elementSize)} should be more than 1");
+            if (array.Length != row * column * elementSize)
+                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}*{nameof(elementSize)}.");
+
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            this._MatrixElementTypes = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+
+            var size = ElementSizeDictionary[this._ElementType];
+            if (size != elementSize)
+                throw new ArgumentOutOfRangeException($"The size of {typeof(TElement).Name} does not equalt to {nameof(elementSize)}.");
+
+            unsafe
+            {
+                fixed (byte* src = &array[0])
+                    this.NativePtr = Dlib.Native.matrix_new3(this._ElementType, row, column, src);
             }
 
             this._Indexer = this.CreateIndexer(type);

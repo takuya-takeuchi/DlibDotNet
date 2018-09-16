@@ -4,8 +4,8 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class InputRgbImagePyramid<T> : Input
-        where T : Pyramid
+    public sealed class InputRgbImagePyramid<P> : Input
+        where P : Pyramid
     {
 
         #region Fields
@@ -21,7 +21,7 @@ namespace DlibDotNet.Dnn
         public InputRgbImagePyramid(uint pyramidRate)
         {
             this._PyramidRate = pyramidRate;
-            Pyramid.TryGetSupportPyramidType<T>(out this._PyramidType);
+            Pyramid.TryGetSupportPyramidType<P>(out this._PyramidType);
 
             //var err = Native.input_rgb_image_pyramid_new(this._PyramidType, this._PyramidRate, out var ret);
             //this.NativePtr = ret;

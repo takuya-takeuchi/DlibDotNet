@@ -25,13 +25,13 @@ namespace DlibDotNet.Dnn
         {
             get
             {
-                return Native.tensor_k(this.NativePtr);
+                return TensorNative.tensor_k(this.NativePtr);
             }
         }
 
         #endregion
 
-        internal sealed class Native
+        internal static class TensorNative
         {
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]

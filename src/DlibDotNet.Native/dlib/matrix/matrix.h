@@ -418,6 +418,70 @@ DLLEXPORT void* matrix_new2(const matrix_element_type type, const int num_rows, 
     }
 }
 
+DLLEXPORT void* matrix_new3(const matrix_element_type type, const int num_rows, const int num_cols, void* src)
+{
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT rgb_pixel
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT hsi_pixel
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT rgb_alpha_pixel
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        default:
+            return nullptr;
+    }
+}
+
 DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, int* ret)
 {
     int err = ERR_OK;

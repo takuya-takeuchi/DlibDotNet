@@ -10,7 +10,7 @@ namespace DlibDotNet.Dnn
         #region Constructors
 
         public ResizableTensor() :
-            base(Native.resizable_tensor_new())
+            base(ResizableTensorNative.resizable_tensor_new())
         {
         }
 
@@ -27,14 +27,14 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.resizable_tensor_delete(this.NativePtr);
+            ResizableTensorNative.resizable_tensor_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
 
-        private sealed class Native
+        private static class ResizableTensorNative
         {
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]

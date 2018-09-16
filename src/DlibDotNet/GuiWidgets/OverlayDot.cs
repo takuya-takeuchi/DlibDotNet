@@ -75,8 +75,6 @@ namespace DlibDotNet
 
             #region Properties
 
-            private RgbPixel _Color;
-
             public RgbPixel Color
             {
                 get

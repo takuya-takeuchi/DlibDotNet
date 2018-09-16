@@ -257,8 +257,6 @@ namespace DlibDotNet.Dnn
 
             private readonly LossMulticlassLog _Parent;
 
-            private readonly IntPtr _NativePtr;
-
             #endregion
 
             #region Constructors

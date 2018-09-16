@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -14,6 +15,8 @@ namespace DlibDotNet
 
         private readonly Dlib.Native.Array2DType _Array2DType;
 
+        private static readonly IDictionary<ImageTypes, int> ElementSizeDictionary = new Dictionary<ImageTypes, int>();
+
         private static readonly Dictionary<Type, ImageTypes> SupportTypes = new Dictionary<Type, ImageTypes>();
 
         #endregion
@@ -24,21 +27,24 @@ namespace DlibDotNet
         {
             var types = new[]
             {
-                new { Type = typeof(byte),          ElementType = ImageTypes.UInt8  },
-                new { Type = typeof(ushort),        ElementType = ImageTypes.UInt16 },
-                new { Type = typeof(uint),          ElementType = ImageTypes.UInt32 },
-                new { Type = typeof(sbyte),         ElementType = ImageTypes.Int8  },
-                new { Type = typeof(short),         ElementType = ImageTypes.Int16 },
-                new { Type = typeof(int),           ElementType = ImageTypes.Int32 },
-                new { Type = typeof(float),         ElementType = ImageTypes.Float  },
-                new { Type = typeof(double),        ElementType = ImageTypes.Double },
-                new { Type = typeof(RgbPixel),      ElementType = ImageTypes.RgbPixel },
-                new { Type = typeof(RgbAlphaPixel), ElementType = ImageTypes.RgbAlphaPixel },
-                new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel }
+                new { Type = typeof(byte),          ElementType = ImageTypes.UInt8,         Size = sizeof(byte) },
+                new { Type = typeof(ushort),        ElementType = ImageTypes.UInt16,        Size = sizeof(ushort) },
+                new { Type = typeof(uint),          ElementType = ImageTypes.UInt32,        Size = sizeof(uint) },
+                new { Type = typeof(sbyte),         ElementType = ImageTypes.Int8,          Size = sizeof(sbyte) },
+                new { Type = typeof(short),         ElementType = ImageTypes.Int16,         Size = sizeof(short) },
+                new { Type = typeof(int),           ElementType = ImageTypes.Int32,         Size = sizeof(int) },
+                new { Type = typeof(float),         ElementType = ImageTypes.Float,         Size = sizeof(float) },
+                new { Type = typeof(double),        ElementType = ImageTypes.Double,        Size = sizeof(double) },
+                new { Type = typeof(RgbPixel),      ElementType = ImageTypes.RgbPixel,      Size = Marshal.SizeOf<RgbPixel>() },
+                new { Type = typeof(RgbAlphaPixel), ElementType = ImageTypes.RgbAlphaPixel, Size = Marshal.SizeOf<RgbAlphaPixel>() },
+                new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel,      Size = Marshal.SizeOf<HsiPixel>() }
             };
 
             foreach (var type in types)
+            {
                 SupportTypes.Add(type.Type, type.ElementType);
+                ElementSizeDictionary.Add(type.ElementType, type.Size);
+            }
         }
 
         public Array2D()
@@ -69,7 +75,7 @@ namespace DlibDotNet
             this.ImageType = type;
         }
 
-        internal Array2D(IntPtr ptr, ImageTypes type, bool isEnabledDispose = true): 
+        internal Array2D(IntPtr ptr, ImageTypes type, bool isEnabledDispose = true) :
             base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
@@ -176,6 +182,38 @@ namespace DlibDotNet
         #endregion
 
         #region Methods 
+
+        public byte[] ToBytes()
+        {
+            switch (this._Array2DType)
+            {
+                case Dlib.Native.Array2DType.UInt8:
+                case Dlib.Native.Array2DType.UInt16:
+                case Dlib.Native.Array2DType.UInt32:
+                case Dlib.Native.Array2DType.Int8:
+                case Dlib.Native.Array2DType.Int16:
+                case Dlib.Native.Array2DType.Int32:
+                case Dlib.Native.Array2DType.Float:
+                case Dlib.Native.Array2DType.Double:
+                case Dlib.Native.Array2DType.RgbPixel:
+                case Dlib.Native.Array2DType.RgbAlphaPixel:
+                case Dlib.Native.Array2DType.HsiPixel:
+                    var rows = (uint)this.Rows;
+                    var columns = (uint)this.Columns;
+                    var size = ElementSizeDictionary[this.ImageType];
+                    var src = this.NativePtr;
+                    var dst = new byte[(int)(rows * columns * size)];
+                    var ret = Dlib.Native.extensions_convert_array_to_bytes(this._Array2DType, src, dst, rows, columns);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.ArrayTypeNotSupport:
+                            throw new ArgumentException($"Cannot convert Array2D<{this.ImageType}> to byte array.");
+                    }
+                    return dst;
+            }
+
+            throw new ArgumentException($"Cannot convert {this.GetType().Name} to byte array.");
+        }
 
         internal static bool TryParse<T>(out ImageTypes type)
             where T : struct
