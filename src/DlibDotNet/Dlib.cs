@@ -75,7 +75,7 @@ namespace DlibDotNet
 
             tensor.ThrowIfDisposed();
 
-            var ret = Tensor.Native.image_plane(tensor.NativePtr, sample, k);
+            var ret = Tensor.TensorNative.image_plane(tensor.NativePtr, sample, k);
             return new Matrix<float>(ret);
         }
 
