@@ -49,6 +49,42 @@ do {\
     err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
 } while (0)
 
+#define nearest_center_template_sub(template_row, template_column) \
+do {\
+    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>* tmp_centers = static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(centers);\
+    dlib::matrix<ELEMENT, template_row, template_column>& in_sample = *static_cast<dlib::matrix<ELEMENT, template_row, template_column>*>(sample);\
+    std::vector<dlib::matrix<ELEMENT, template_row, template_column>> in_centers;\
+    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>& tmp = *tmp_centers;\
+    for (int index = 0; index < tmp.size(); index++)\
+    {\
+        dlib::matrix<ELEMENT, template_row, template_column>* p = tmp[index];\
+        dlib::matrix<ELEMENT, template_row, template_column>& mat = *p;\
+        in_centers.push_back(mat);\
+    }\
+    *ret = dlib::nearest_center(in_centers, in_sample);\
+} while (0)
+
+#define nearest_center_template(templateRows, templateColumns, samples, centers, max_iter) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        nearest_center_template_sub(0, 0);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        nearest_center_template_sub(0, 1);\
+    }\
+    else if (templateRows == 5 && templateColumns == 1)\
+    {\
+        nearest_center_template_sub(5, 1);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        nearest_center_template_sub(31, 1);\
+    }\
+    err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+} while (0)
+
 #define pick_initial_centers_template_sub(template_row, template_column) \
 do {\
     std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>* tmp_centers = static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(centers);\
@@ -156,6 +192,72 @@ DLLEXPORT int find_clusters_using_angular_kmeans(const matrix_element_type type,
 }
 
 #pragma endregion find_clusters_using_angular_kmeans
+
+#pragma region nearest_center
+
+DLLEXPORT int nearest_center(const matrix_element_type type,
+                             const int templateRows,
+                             const int templateColumns,
+                             void* centers,
+                             void* sample,
+                             unsigned long* ret)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT uint8_t
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT uint16_t
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT uint32_t
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT int8_t
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT int16_t
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT int32_t
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT float
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT double
+            nearest_center_template(templateRows, templateColumns, centers, sample, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+#pragma endregion nearest_center
 
 #pragma region pick_initial_centers
 
