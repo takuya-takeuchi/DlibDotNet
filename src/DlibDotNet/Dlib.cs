@@ -1521,6 +1521,14 @@ namespace DlibDotNet
                                                                   int rightTemplateColumns,
                                                                   out IntPtr ret);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_operator_divide_double(MatrixElementType matrixElementType,
+                                                                         IntPtr lhs,
+                                                                         double rhs,
+                                                                         int leftTemplateRows,
+                                                                         int leftTemplateColumns,
+                                                                         out IntPtr ret);
+
             #endregion
 
             #region matrix_range_exp

@@ -797,6 +797,42 @@ namespace DlibDotNet
             }
         }
 
+        public static Matrix<TElement> operator /(Matrix<TElement> lhs, double rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            // Need not to check whether both TemplateColumns and TemplateRows are same
+            var leftTemplateRows = lhs.TemplateRows;
+            var leftTemplateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+            try
+            {
+                var ret = Dlib.Native.matrix_operator_divide_double(type,
+                                                                    lhs.NativePtr,
+                                                                    rhs,
+                                                                    leftTemplateRows,
+                                                                    leftTemplateColumns,
+                                                                    out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix);
+            }
+            catch (DivideByZeroException)
+            {
+                // NOTE
+                // Hide the source which throw exception
+                throw new DivideByZeroException("Right operand may be zero matrix.");
+            }
+        }
+
         #endregion
 
         #region Helpers
