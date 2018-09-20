@@ -31,7 +31,7 @@ namespace DlibDotNet
 
             var center = centerArray.FirstOrDefault();
             if (center == null)
-                throw new ArgumentException($"{nameof(centers)} contains null object", nameof(samples));
+                throw new ArgumentException($"{nameof(centers)} contains null object", nameof(centers));
 
             var sample = sampleArray.FirstOrDefault();
             if (sample == null)
@@ -57,6 +57,46 @@ namespace DlibDotNet
                     case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(sample.TemplateColumns)} or {nameof(sample.TemplateRows)} is not supported.");
                 }
+            }
+        }
+
+        public static uint NearestCenter<T>(IEnumerable<Matrix<T>> centers, Matrix<T> sample)
+            where T : struct
+        {
+            if (centers == null)
+                throw new ArgumentNullException(nameof(centers));
+            if (sample == null)
+                throw new ArgumentNullException(nameof(sample));
+
+            var centerArray = centers.ToArray();
+            if (!centerArray.Any())
+                throw new ArgumentException($"{nameof(centers)} does not contain any element");
+
+            var center = centerArray.FirstOrDefault();
+            if (center == null)
+                throw new ArgumentException($"{nameof(centers)} contains null object", nameof(centers));
+
+            var templateRow = sample.TemplateRows;
+            var templateColumn = sample.TemplateColumns;
+
+            using (var inCenters = new StdVector<Matrix<T>>(centerArray, templateRow, templateColumn))
+            {
+                var type = sample.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.nearest_center(type,
+                                                templateRow,
+                                                templateColumn,
+                                                inCenters.NativePtr,
+                                                sample.NativePtr,
+                                                out var result);
+                switch (ret)
+                {
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{type} is not supported.");
+                    case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(sample.TemplateColumns)} or {nameof(sample.TemplateRows)} is not supported.");
+                }
+
+                return result;
             }
         }
 
@@ -114,6 +154,14 @@ namespace DlibDotNet
 
         internal sealed partial class Native
         {
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType nearest_center(MatrixElementType type,
+                                                          int templateRows,
+                                                          int templateColumns,
+                                                          IntPtr centers,
+                                                          IntPtr sample,
+                                                          out uint ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType find_clusters_using_angular_kmeans(MatrixElementType type,
