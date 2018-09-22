@@ -407,6 +407,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void SaveBmp()
         {
+            const string testName = nameof(this.SaveBmp);
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
@@ -431,77 +432,77 @@ namespace DlibDotNet.Tests
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.RgbAlphaPixel:
                         {
                             var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt8:
                         {
                             var image = Dlib.LoadImage<byte>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt16:
                         {
                             var image = Dlib.LoadImage<ushort>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt32:
                         {
                             var image = Dlib.LoadImage<uint>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int8:
                         {
                             var image = Dlib.LoadImage<sbyte>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int16:
                         {
                             var image = Dlib.LoadImage<short>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int32:
                         {
                             var image = Dlib.LoadImage<int>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.HsiPixel:
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Float:
                         {
                             var image = Dlib.LoadImage<float>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Double:
                         {
                             var image = Dlib.LoadImage<double>(path.FullName);
-                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, "SaveBmp"), $"{LoadTarget}_{test.Type}.bmp")}");
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
@@ -518,6 +519,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void SaveDng()
         {
+            const string testName = nameof(this.SaveDng);
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
@@ -542,77 +544,77 @@ namespace DlibDotNet.Tests
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.RgbAlphaPixel:
                         {
                             var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt8:
                         {
                             var image = Dlib.LoadImage<byte>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt16:
                         {
                             var image = Dlib.LoadImage<ushort>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt32:
                         {
                             var image = Dlib.LoadImage<uint>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int8:
                         {
                             var image = Dlib.LoadImage<sbyte>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int16:
                         {
                             var image = Dlib.LoadImage<short>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int32:
                         {
                             var image = Dlib.LoadImage<int>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.HsiPixel:
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Float:
                         {
                             var image = Dlib.LoadImage<float>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Double:
                         {
                             var image = Dlib.LoadImage<double>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, "SaveDng"), $"{LoadTarget}_{test.Type}.dng")}");
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
@@ -629,6 +631,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void SaveJpeg()
         {
+            const string testName = nameof(this.SaveJpeg);
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
@@ -653,77 +656,77 @@ namespace DlibDotNet.Tests
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.RgbAlphaPixel:
                         {
                             var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt8:
                         {
                             var image = Dlib.LoadImage<byte>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt16:
                         {
                             var image = Dlib.LoadImage<ushort>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt32:
                         {
                             var image = Dlib.LoadImage<uint>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int8:
                         {
                             var image = Dlib.LoadImage<sbyte>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int16:
                         {
                             var image = Dlib.LoadImage<short>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int32:
                         {
                             var image = Dlib.LoadImage<int>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.HsiPixel:
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Float:
                         {
                             var image = Dlib.LoadImage<float>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Double:
                         {
                             var image = Dlib.LoadImage<double>(path.FullName);
-                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, "SaveJpeg"), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
@@ -736,6 +739,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void SaveJpegThrowException()
         {
+            const string testName = nameof(this.SaveJpegThrowException);
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
@@ -789,7 +793,7 @@ namespace DlibDotNet.Tests
             foreach (var test in tests)
             {
                 TwoDimentionObjectBase dimentionObject = null;
-                var filepath = $"{Path.Combine(this.GetOutDir(type, "SaveJpegThrowException"), $"{LoadTarget}_{test.Type}_{test.Quality}.jpg")}";
+                var filepath = $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{test.Quality}.jpg")}";
 
                 try
                 {
@@ -917,6 +921,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void SavePng()
         {
+            const string testName = nameof(this.SavePng);
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
@@ -941,77 +946,77 @@ namespace DlibDotNet.Tests
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.RgbAlphaPixel:
                         {
                             var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt8:
                         {
                             var image = Dlib.LoadImage<byte>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt16:
                         {
                             var image = Dlib.LoadImage<ushort>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.UInt32:
                         {
                             var image = Dlib.LoadImage<uint>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int8:
                         {
                             var image = Dlib.LoadImage<sbyte>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int16:
                         {
                             var image = Dlib.LoadImage<short>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Int32:
                         {
                             var image = Dlib.LoadImage<int>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.HsiPixel:
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Float:
                         {
                             var image = Dlib.LoadImage<float>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
                     case ImageTypes.Double:
                         {
                             var image = Dlib.LoadImage<double>(path.FullName);
-                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, "SavePng"), $"{LoadTarget}_{test.Type}.png")}");
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
@@ -1204,7 +1209,7 @@ namespace DlibDotNet.Tests
                                 var data = new double[rows * cols];
                                 for (var r = 0; r < rows; r++)
                                     for (var c = 0; c < cols; c++)
-                                        data[steps * r + c] = (double)random.NextDouble();
+                                        data[steps * r + c] = random.NextDouble();
 
                                 image = Dlib.LoadImageData<double>(data, rows, cols, steps);
 
