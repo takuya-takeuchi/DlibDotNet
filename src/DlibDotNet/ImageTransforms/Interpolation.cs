@@ -113,7 +113,7 @@ namespace DlibDotNet
             }
         }
 
-        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
+        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.Bilinear)
             where T : struct
         {
             if (image == null)
