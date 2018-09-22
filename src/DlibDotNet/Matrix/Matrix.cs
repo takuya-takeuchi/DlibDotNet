@@ -360,8 +360,7 @@ namespace DlibDotNet
             }
         }
 
-        public static Matrix<TElement> CreateTemplateParameterizeMatrix<TElement>(uint templateRows, uint templateColumns)
-            where TElement : struct
+        public static Matrix<TElement> CreateTemplateParameterizeMatrix(uint templateRows, uint templateColumns)
         {
             if (!MatrixBase.TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
