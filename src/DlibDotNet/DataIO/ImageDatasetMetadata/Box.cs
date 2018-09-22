@@ -16,6 +16,14 @@ namespace DlibDotNet.ImageDatasetMetadata
             this.NativePtr = Native.image_dataset_metadata_box_new();
         }
 
+        internal Box(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            this.NativePtr = ptr;
+        }
+
         #endregion
 
         #region Methods
