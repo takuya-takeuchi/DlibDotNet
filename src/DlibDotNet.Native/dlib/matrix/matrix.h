@@ -26,6 +26,27 @@ using namespace std;
 #define OPERAND +
 #undef OPERAND
 
+#define matrix_new4_template(ELEMENT) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        return new dlib::matrix<ELEMENT>();\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        return new dlib::matrix<ELEMENT, 0, 1>();\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        return new dlib::matrix<ELEMENT, 1, 3>();\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        return new dlib::matrix<ELEMENT, 31, 1>();\
+    }\
+    return nullptr;\
+} while (0)
+
 #define matrix_new2_template(num_rows, num_cols, src) \
 do { \
     auto m = new matrix<ELEMENT>(num_rows, num_cols);\
@@ -476,6 +497,48 @@ DLLEXPORT void* matrix_new3(const matrix_element_type type, const int num_rows, 
             #define ELEMENT rgb_alpha_pixel
             matrix_new2_template(num_rows, num_cols, src);
             #undef ELEMENT
+            break;
+        default:
+            return nullptr;
+    }
+}
+
+DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, const int templateColumns)
+{
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_new4_template(uint8_t);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_new4_template(uint16_t);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_new4_template(uint32_t);
+            break;
+        case matrix_element_type::Int8:
+            matrix_new4_template(int8_t);
+            break;
+        case matrix_element_type::Int16:
+            matrix_new4_template(int16_t);
+            break;
+        case matrix_element_type::Int32:
+            matrix_new4_template(int32_t);
+            break;
+        case matrix_element_type::Float:
+            matrix_new4_template(float);
+            break;
+        case matrix_element_type::Double:
+            matrix_new4_template(double);
+            break;
+        case matrix_element_type::RgbPixel:
+            matrix_new4_template(rgb_pixel);
+            break;
+        case matrix_element_type::HsiPixel:
+            matrix_new4_template(hsi_pixel);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            matrix_new4_template(rgb_alpha_pixel);
             break;
         default:
             return nullptr;

@@ -360,6 +360,16 @@ namespace DlibDotNet
             }
         }
 
+        public static Matrix<TElement> CreateTemplateParameterizeMatrix<TElement>(uint templateRows, uint templateColumns)
+            where TElement : struct
+        {
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            var ptr = Dlib.Native.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
+            return new Matrix<TElement>(ptr, (int)templateRows, (int)templateColumns);
+        }
+
         public TElement[] ToArray()
         {
             this.ThrowIfDisposed();
