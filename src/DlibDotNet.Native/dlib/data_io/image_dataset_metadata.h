@@ -164,6 +164,14 @@ DLLEXPORT std::vector<image_dataset_metadata::image*>* image_dataset_metadata_da
     return dst;
 }
 
+DLLEXPORT void image_dataset_metadata_dataset_set_images(image_dataset_metadata::dataset* dataset, std::vector<image_dataset_metadata::image*>* images)
+{
+    dataset->images.clear();
+    std::vector<image_dataset_metadata::image*>& tmp = *(static_cast<std::vector<image_dataset_metadata::image*>*>(images));
+    for (int i = 0, size = tmp.size(); i < size; i++ )
+        dataset->images.push_back(*tmp[i]);
+}
+
 DLLEXPORT std::string* image_dataset_metadata_dataset_get_name(image_dataset_metadata::dataset* dataset)
 {
     return new std::string(dataset->name);
@@ -199,6 +207,14 @@ DLLEXPORT std::vector<image_dataset_metadata::box*>* image_dataset_metadata_data
     auto dst = new std::vector<image_dataset_metadata::box*>();
     vector_to_new_instance(dlib::image_dataset_metadata::box, src, dst);
     return dst;
+}
+
+DLLEXPORT void image_dataset_metadata_dataset_set_boxes(image_dataset_metadata::image* image, std::vector<image_dataset_metadata::box*>* boxes)
+{
+    image->boxes.clear();
+    std::vector<image_dataset_metadata::box*>& tmp = *(static_cast<std::vector<image_dataset_metadata::box*>*>(boxes));
+    for (int i = 0, size = tmp.size(); i < size; i++ )
+        image->boxes.push_back(*tmp[i]);
 }
 
 DLLEXPORT std::string* image_dataset_metadata_image_get_filename(image_dataset_metadata::image* image)

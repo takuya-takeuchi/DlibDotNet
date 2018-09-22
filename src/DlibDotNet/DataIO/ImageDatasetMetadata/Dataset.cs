@@ -45,6 +45,11 @@ namespace DlibDotNet.ImageDatasetMetadata
                 using (var vector = new StdVector<Image>(images))
                     return vector.ToArray();
             }
+            set
+            {
+                using (var vector = value != null ? new StdVector<Image>(value, null) : new StdVector<Image>())
+                    Native.image_dataset_metadata_dataset_set_images(this.NativePtr, vector.NativePtr);
+            }
         }
 
         public string Name
@@ -93,6 +98,9 @@ namespace DlibDotNet.ImageDatasetMetadata
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr image_dataset_metadata_dataset_get_images(IntPtr dataset);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void image_dataset_metadata_dataset_set_images(IntPtr dataset, IntPtr images);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr image_dataset_metadata_dataset_get_name(IntPtr dataset);
