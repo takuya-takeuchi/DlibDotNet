@@ -33,7 +33,7 @@ namespace FHog
                 {
                     // Now convert the image into a FHOG feature image.  The output, hog, is a 2D array
                     // of 31 dimensional vectors.
-                    using (var hog = Dlib.ExtracFHogFeatures<float>(img))
+                    using (var hog = Dlib.ExtractFHogFeatures<float>(img))
                     {
                         Console.WriteLine($"hog image has {hog.Rows} rows and {hog.Columns} columns.");
 

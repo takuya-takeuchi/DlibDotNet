@@ -48,37 +48,37 @@ namespace DlibDotNet.Tests.ImageTransforms
                         switch (output.Type)
                         {
                             case MatrixElementTypes.UInt8:
-                                outputObj = Dlib.ExtracFHogFeatures<byte>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<byte>(imageObj);
                                 break;
                             case MatrixElementTypes.UInt16:
-                                outputObj = Dlib.ExtracFHogFeatures<ushort>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<ushort>(imageObj);
                                 break;
                             case MatrixElementTypes.UInt32:
-                                outputObj = Dlib.ExtracFHogFeatures<uint>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<uint>(imageObj);
                                 break;
                             case MatrixElementTypes.Int8:
-                                outputObj = Dlib.ExtracFHogFeatures<sbyte>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<sbyte>(imageObj);
                                 break;
                             case MatrixElementTypes.Int16:
-                                outputObj = Dlib.ExtracFHogFeatures<short>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<short>(imageObj);
                                 break;
                             case MatrixElementTypes.Int32:
-                                outputObj = Dlib.ExtracFHogFeatures<int>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<int>(imageObj);
                                 break;
                             case MatrixElementTypes.Float:
-                                outputObj = Dlib.ExtracFHogFeatures<float>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<float>(imageObj);
                                 break;
                             case MatrixElementTypes.Double:
-                                outputObj = Dlib.ExtracFHogFeatures<double>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<double>(imageObj);
                                 break;
                             case MatrixElementTypes.RgbPixel:
-                                outputObj = Dlib.ExtracFHogFeatures<RgbPixel>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<RgbPixel>(imageObj);
                                 break;
                             case MatrixElementTypes.RgbAlphaPixel:
-                                outputObj = Dlib.ExtracFHogFeatures<RgbAlphaPixel>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<RgbAlphaPixel>(imageObj);
                                 break;
                             case MatrixElementTypes.HsiPixel:
-                                outputObj = Dlib.ExtracFHogFeatures<HsiPixel>(imageObj);
+                                outputObj = Dlib.ExtractFHogFeatures<HsiPixel>(imageObj);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -152,10 +152,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                     switch (output.Type)
                     {
                         case MatrixElementTypes.Float:
-                            outputObj = Dlib.ExtracFHogFeatures<float>(imageObj);
+                            outputObj = Dlib.ExtractFHogFeatures<float>(imageObj);
                             break;
                         case MatrixElementTypes.Double:
-                            outputObj = Dlib.ExtracFHogFeatures<double>(imageObj);
+                            outputObj = Dlib.ExtractFHogFeatures<double>(imageObj);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -220,37 +220,37 @@ namespace DlibDotNet.Tests.ImageTransforms
                         switch (output.Type)
                         {
                             case MatrixElementTypes.UInt8:
-                                Dlib.ExtracFHogFeatures<byte>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<byte>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.UInt16:
-                                Dlib.ExtracFHogFeatures<ushort>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<ushort>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.UInt32:
-                                Dlib.ExtracFHogFeatures<uint>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<uint>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.Int8:
-                                Dlib.ExtracFHogFeatures<sbyte>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<sbyte>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.Int16:
-                                Dlib.ExtracFHogFeatures<short>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<short>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.Int32:
-                                Dlib.ExtracFHogFeatures<int>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<int>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.Float:
-                                Dlib.ExtracFHogFeatures<float>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<float>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.Double:
-                                Dlib.ExtracFHogFeatures<double>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<double>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.RgbPixel:
-                                Dlib.ExtracFHogFeatures<RgbPixel>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<RgbPixel>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.RgbAlphaPixel:
-                                Dlib.ExtracFHogFeatures<RgbAlphaPixel>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<RgbAlphaPixel>(imageObj, out outputObj);
                                 break;
                             case MatrixElementTypes.HsiPixel:
-                                Dlib.ExtracFHogFeatures<HsiPixel>(imageObj, out outputObj);
+                                Dlib.ExtractFHogFeatures<HsiPixel>(imageObj, out outputObj);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
