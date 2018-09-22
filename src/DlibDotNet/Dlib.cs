@@ -349,7 +349,7 @@ namespace DlibDotNet
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
-            // NOTE: save_bmp does not throw excpetion but it does NOT output any file.
+            // NOTE: save_bmp does not throw exception but it does NOT output any file.
             //       So it should throw exception in this timing!!
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
@@ -366,7 +366,7 @@ namespace DlibDotNet
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
-            // NOTE: save_dng does not throw excpetion but it does NOT output any file.
+            // NOTE: save_dng does not throw exception but it does NOT output any file.
             //       So it should throw exception in this timing!!
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
