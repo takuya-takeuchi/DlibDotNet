@@ -57,7 +57,7 @@ namespace DlibDotNet
             return hogImage.DrawFHog(weightIndex, cellDrawSize);
         }
 
-        public static Array2DMatrix<T> ExtracFHogFeatures<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
+        public static Array2DMatrix<T> ExtractFHogFeatures<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
             where T : struct
         {
             if (inImage == null)
@@ -88,7 +88,7 @@ namespace DlibDotNet
             return hogImage;
         }
 
-        public static void ExtracFHogFeatures<T>(Array2DBase inImage, out Matrix<double> feature, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
+        public static void ExtractFHogFeatures<T>(Array2DBase inImage, out Matrix<double> feature, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
             where T : struct
         {
             if (inImage == null)
