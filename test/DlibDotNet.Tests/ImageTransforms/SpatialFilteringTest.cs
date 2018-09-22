@@ -37,8 +37,8 @@ namespace DlibDotNet.Tests.ImageTransforms
             foreach (var input in tests)
                 foreach (var output in tests)
                 {
-                    TwoDimentionObjectBase outObj = null;
-                    TwoDimentionObjectBase inObj = null;
+                    TwoDimensionObjectBase outObj = null;
+                    TwoDimensionObjectBase inObj = null;
 
                     var expect = input.ExpectResult && output.ExpectResult;
 
@@ -224,8 +224,8 @@ namespace DlibDotNet.Tests.ImageTransforms
             foreach (var input in tests)
                 foreach (var output in tests)
                 {
-                    TwoDimentionObjectBase outObj = null;
-                    TwoDimentionObjectBase inObj = null;
+                    TwoDimensionObjectBase outObj = null;
+                    TwoDimensionObjectBase inObj = null;
                     var rect = new Rectangle(3, 3);
 
                     var expect = input.ExpectResult && output.ExpectResult;

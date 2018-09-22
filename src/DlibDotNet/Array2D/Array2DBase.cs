@@ -2,7 +2,7 @@
 namespace DlibDotNet
 {
 
-    public abstract class Array2DBase : TwoDimentionObjectBase
+    public abstract class Array2DBase : TwoDimensionObjectBase
     {
 
         #region Constructors

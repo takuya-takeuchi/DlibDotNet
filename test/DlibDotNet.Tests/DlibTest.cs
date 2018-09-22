@@ -41,7 +41,7 @@ namespace DlibDotNet.Tests
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase image;
+                TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
                     case ImageTypes.RgbPixel:
@@ -116,7 +116,7 @@ namespace DlibDotNet.Tests
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase image;
+                TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
                     case ImageTypes.RgbPixel:
@@ -202,7 +202,7 @@ namespace DlibDotNet.Tests
 
                 foreach (var test in tests)
                 {
-                    TwoDimentionObjectBase image;
+                    TwoDimensionObjectBase image;
                     switch (test.Type)
                     {
                         case ImageTypes.RgbPixel:
@@ -278,7 +278,7 @@ namespace DlibDotNet.Tests
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase image;
+                TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
                     case ImageTypes.RgbPixel:
@@ -353,7 +353,7 @@ namespace DlibDotNet.Tests
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase image;
+                TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
                     case ImageTypes.RgbPixel:
@@ -1182,7 +1182,7 @@ namespace DlibDotNet.Tests
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase dimensionObject = null;
+                TwoDimensionObjectBase dimensionObject = null;
                 var filepath = $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{test.Quality}.jpg")}";
 
                 try
@@ -1360,7 +1360,7 @@ namespace DlibDotNet.Tests
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase dimensionObject = null;
+                TwoDimensionObjectBase dimensionObject = null;
                 var filepath = $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{test.Quality}.jpg")}";
 
                 try
@@ -1771,7 +1771,7 @@ namespace DlibDotNet.Tests
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase image;
+                TwoDimensionObjectBase image;
                 using (var win = new ImageWindow())
                 {
                     switch (test.Type)
@@ -1839,7 +1839,7 @@ namespace DlibDotNet.Tests
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase image;
+                TwoDimensionObjectBase image;
                 using (var win = new ImageWindow())
                 {
                     switch (test.Type)

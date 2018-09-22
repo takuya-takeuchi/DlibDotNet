@@ -80,7 +80,7 @@ namespace DlibDotNet.Tests.Matrix
             foreach (var r in rules)
                 foreach (var test in tests)
                 {
-                    TwoDimentionObjectBase matrix = null;
+                    TwoDimensionObjectBase matrix = null;
 
                     try
                     {
@@ -824,7 +824,7 @@ namespace DlibDotNet.Tests.Matrix
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase matrix = null;
+                TwoDimensionObjectBase matrix = null;
 
                 try
                 {
@@ -2295,7 +2295,7 @@ namespace DlibDotNet.Tests.Matrix
             return null;
         }
 
-        private void Assign(TwoDimentionObjectBase obj, int[] array)
+        private void Assign(TwoDimensionObjectBase obj, int[] array)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
@@ -2348,7 +2348,7 @@ namespace DlibDotNet.Tests.Matrix
             throw new NotSupportedException();
         }
 
-        private void CheckRowsColumnsSize(TwoDimentionObjectBase obj, int row, int column)
+        private void CheckRowsColumnsSize(TwoDimensionObjectBase obj, int row, int column)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
@@ -2441,7 +2441,7 @@ namespace DlibDotNet.Tests.Matrix
             throw new NotSupportedException();
         }
 
-        internal static TwoDimentionObjectBase CreateMatrix(MatrixElementTypes elementTypes)
+        internal static TwoDimensionObjectBase CreateMatrix(MatrixElementTypes elementTypes)
         {
             switch (elementTypes)
             {
@@ -2472,7 +2472,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        internal static TwoDimentionObjectBase CreateMatrix(MatrixElementTypes elementTypes, int rows = 0, int columns = 0)
+        internal static TwoDimensionObjectBase CreateMatrix(MatrixElementTypes elementTypes, int rows = 0, int columns = 0)
         {
             switch (elementTypes)
             {
@@ -2506,7 +2506,7 @@ namespace DlibDotNet.Tests.Matrix
         internal sealed class TestData : TestDataBase
         {
 
-            public TwoDimentionObjectBase Data
+            public TwoDimensionObjectBase Data
             {
                 get;
                 set;
