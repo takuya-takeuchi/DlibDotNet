@@ -175,6 +175,26 @@ namespace DlibDotNet
 
         public MatrixElementTypes MatrixElementTypes => this._MatrixElementType;
 
+        public T this[int index]
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                switch (this._ItemType)
+                {
+                    case ItemTypes.PixelType:
+                        return (T)this.GetPixelItem(this._ArrayElementType, (uint)index);
+                    case ItemTypes.Array2D:
+                        return (T)this.GetArray2DItem(this._Array2DType, (uint)index);
+                    case ItemTypes.Matrix:
+                        return (T)this.GetMatrixItem(this._MatrixElementType, (uint)index);
+                }
+
+                return default(T);
+            }
+        }
+
         public int Size
         {
             get
