@@ -5,11 +5,11 @@ namespace DlibDotNet
     public abstract class Array2DMatrixBase : TwoDimensionObjectBase
     {
 
-        protected Array2DMatrixBase(int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
+        protected Array2DMatrixBase(int templateRows = 0, int templateColumns = 0, bool isEnabledDispose = true)
             : base(isEnabledDispose)
         {
             this.TemplateRows = templateRows;
-            this.TemplateColumns = temlateColumns;
+            this.TemplateColumns = templateColumns;
         }
 
         public abstract MatrixElementTypes MatrixElementType
