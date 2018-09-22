@@ -347,6 +347,11 @@ namespace DlibDotNet
 
         public static void SaveBmp(Array2DBase image, string path)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             // NOTE: save_bmp does not throw exception but it does NOT output any file.
@@ -365,6 +370,11 @@ namespace DlibDotNet
         public static void SaveBmp<T>(Matrix<T> matrix, string path)
             where T : struct
         {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             // NOTE: save_bmp does not throw exception but it does NOT output any file.
@@ -387,6 +397,11 @@ namespace DlibDotNet
 
         public static void SaveDng(Array2DBase image, string path)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             // NOTE: save_dng does not throw exception but it does NOT output any file.
@@ -405,6 +420,11 @@ namespace DlibDotNet
         public static void SaveDng<T>(Matrix<T> matrix, string path)
             where T : struct
         {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             // NOTE: save_dng does not throw exception but it does NOT output any file.
@@ -427,6 +447,11 @@ namespace DlibDotNet
 
         public static void SaveJpeg(Array2DBase image, string path, int quality = 75)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (image.Rows <= 0 || image.Columns <= 0)
@@ -447,6 +472,11 @@ namespace DlibDotNet
         public static void SaveJpeg<T>(Matrix<T> matrix, string path, int quality = 75)
             where T : struct
         {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (matrix.Rows <= 0 || matrix.Columns <= 0)
@@ -471,6 +501,11 @@ namespace DlibDotNet
 
         public static void SavePng(Array2DBase image, string path)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (image.Rows <= 0 || image.Columns <= 0)
@@ -487,6 +522,11 @@ namespace DlibDotNet
         public static void SavePng<T>(Matrix<T> matrix, string path)
             where T : struct
         {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (matrix.Rows <= 0 || matrix.Columns <= 0)
