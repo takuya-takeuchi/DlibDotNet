@@ -37,6 +37,18 @@ namespace DlibDotNet
                 this.NativePtr = Native.chip_details_new3(tmp.NativePtr, dims.NativePtr);
         }
 
+        public ChipDetails(DRectangle rect, uint size)
+        {
+            using (var tmp = rect.ToNative())
+                this.NativePtr = Native.chip_details_new4(tmp.NativePtr, size);
+        }
+
+        public ChipDetails(DRectangle rect, uint size, double angle)
+        {
+            using (var tmp = rect.ToNative())
+                this.NativePtr = Native.chip_details_new5(tmp.NativePtr, size, angle);
+        }
+
         internal ChipDetails(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
@@ -132,6 +144,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr chip_details_new3(IntPtr rect, IntPtr dims);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr chip_details_new4(IntPtr rect, uint size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr chip_details_new5(IntPtr rect, uint size, double angle);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
