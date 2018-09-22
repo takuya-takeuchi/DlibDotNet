@@ -362,6 +362,29 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        public static void SaveBmp<T>(Matrix<T> matrix, string path)
+            where T : struct
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            // NOTE: save_bmp does not throw exception but it does NOT output any file.
+            //       So it should throw exception in this timing!!
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_bmp_matrix(matrixElementType, matrix.NativePtr, str);
+            switch (ret)
+            {
+                case Native.ErrorType.ElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
+        }
+
         public static void SaveDng(Array2DBase image, string path)
         {
             if (path == null)
@@ -377,6 +400,29 @@ namespace DlibDotNet
             var ret = Native.save_dng(array2DType, image.NativePtr, str);
             if (ret == Native.ErrorType.ArrayTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
+        }
+
+        public static void SaveDng<T>(Matrix<T> matrix, string path)
+            where T : struct
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            // NOTE: save_dng does not throw exception but it does NOT output any file.
+            //       So it should throw exception in this timing!!
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_dng_matrix(matrixElementType, matrix.NativePtr, str);
+            switch (ret)
+            {
+                case Native.ErrorType.ElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
         }
 
         public static void SaveJpeg(Array2DBase image, string path, int quality = 75)
@@ -398,6 +444,31 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        public static void SaveJpeg<T>(Matrix<T> matrix, string path, int quality = 75)
+            where T : struct
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+            if (quality < 0)
+                throw new ArgumentOutOfRangeException(nameof(quality), $"{nameof(quality)} is less than zero.");
+            if (quality > 100)
+                throw new ArgumentOutOfRangeException(nameof(quality), $"{nameof(quality)} is greater than 100.");
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_jpeg_matrix(matrixElementType, matrix.NativePtr, str, quality);
+            switch (ret)
+            {
+                case Native.ErrorType.ElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
+        }
+
         public static void SavePng(Array2DBase image, string path)
         {
             if (path == null)
@@ -411,6 +482,27 @@ namespace DlibDotNet
             var ret = Native.save_png(array2DType, image.NativePtr, str);
             if (ret == Native.ErrorType.ArrayTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
+        }
+
+        public static void SavePng<T>(Matrix<T> matrix, string path)
+            where T : struct
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_png_matrix(matrixElementType, matrix.NativePtr, str);
+            switch (ret)
+            {
+                case Native.ErrorType.ElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
         }
 
         #endregion
@@ -981,12 +1073,18 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_bmp(Array2DType type, IntPtr array, byte[] path);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_bmp_matrix(MatrixElementType type, IntPtr matrix, byte[] path);
+
             #endregion
 
             #region save_dng
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_dng(Array2DType type, IntPtr array, byte[] path);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_dng_matrix(MatrixElementType type, IntPtr matrix, byte[] path);
 
             #endregion
 
@@ -995,12 +1093,18 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_jpeg(Array2DType type, IntPtr array, byte[] path, int quality);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_jpeg_matrix(MatrixElementType type, IntPtr matrix, byte[] path, int quality);
+
             #endregion
 
             #region save_png
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_png(Array2DType type, IntPtr array, byte[] path);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_png_matrix(MatrixElementType type, IntPtr matrix, byte[] path);
 
             #endregion
 
