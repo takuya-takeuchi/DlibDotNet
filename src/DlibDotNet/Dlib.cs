@@ -375,7 +375,7 @@ namespace DlibDotNet
             var str = Encoding.UTF8.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.save_bmp_matrix(matrixElementType, matrix.NativePtr, str);
+            var ret = Native.save_bmp_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
             switch (ret)
             {
                 case Native.ErrorType.ElementTypeNotSupport:
@@ -415,7 +415,7 @@ namespace DlibDotNet
             var str = Encoding.UTF8.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.save_dng_matrix(matrixElementType, matrix.NativePtr, str);
+            var ret = Native.save_dng_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
             switch (ret)
             {
                 case Native.ErrorType.ElementTypeNotSupport:
@@ -459,7 +459,7 @@ namespace DlibDotNet
             var str = Encoding.UTF8.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.save_jpeg_matrix(matrixElementType, matrix.NativePtr, str, quality);
+            var ret = Native.save_jpeg_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, quality);
             switch (ret)
             {
                 case Native.ErrorType.ElementTypeNotSupport:
@@ -495,7 +495,7 @@ namespace DlibDotNet
             var str = Encoding.UTF8.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.save_png_matrix(matrixElementType, matrix.NativePtr, str);
+            var ret = Native.save_png_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
             switch (ret)
             {
                 case Native.ErrorType.ElementTypeNotSupport:
@@ -1074,7 +1074,7 @@ namespace DlibDotNet
             public static extern ErrorType save_bmp(Array2DType type, IntPtr array, byte[] path);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType save_bmp_matrix(MatrixElementType type, IntPtr matrix, byte[] path);
+            public static extern ErrorType save_bmp_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path);
 
             #endregion
 
@@ -1084,7 +1084,7 @@ namespace DlibDotNet
             public static extern ErrorType save_dng(Array2DType type, IntPtr array, byte[] path);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType save_dng_matrix(MatrixElementType type, IntPtr matrix, byte[] path);
+            public static extern ErrorType save_dng_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path);
 
             #endregion
 
@@ -1094,7 +1094,7 @@ namespace DlibDotNet
             public static extern ErrorType save_jpeg(Array2DType type, IntPtr array, byte[] path, int quality);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType save_jpeg_matrix(MatrixElementType type, IntPtr matrix, byte[] path, int quality);
+            public static extern ErrorType save_jpeg_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path, int quality);
 
             #endregion
 
@@ -1104,7 +1104,7 @@ namespace DlibDotNet
             public static extern ErrorType save_png(Array2DType type, IntPtr array, byte[] path);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType save_png_matrix(MatrixElementType type, IntPtr matrix, byte[] path);
+            public static extern ErrorType save_png_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path);
 
             #endregion
 
