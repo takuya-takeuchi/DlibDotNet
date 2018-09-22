@@ -175,6 +175,26 @@ namespace DlibDotNet
 
         public MatrixElementTypes MatrixElementTypes => this._MatrixElementType;
 
+        public T this[int index]
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                switch (this._ItemType)
+                {
+                    case ItemTypes.PixelType:
+                        return (T)this.GetPixelItem(this._ArrayElementType, (uint)index);
+                    case ItemTypes.Array2D:
+                        return (T)this.GetArray2DItem(this._Array2DType, (uint)index);
+                    case ItemTypes.Matrix:
+                        return (T)this.GetMatrixItem(this._MatrixElementType, (uint)index);
+                }
+
+                return default(T);
+            }
+        }
+
         public int Size
         {
             get
@@ -202,7 +222,29 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Methods 
+        #region Methods
+
+        public void PushBack(T item)
+        {
+            this.ThrowIfDisposed();
+
+            switch (this._ItemType)
+            {
+                case ItemTypes.PixelType:
+                    this.PushBackPixelItem(this._ArrayElementType, item);
+                    break;
+                case ItemTypes.Array2D:
+                    // NOTE
+                    // item is moved. So item content get to be undefined value
+                    this.PushBackArray2DItem(this._Array2DType, item as DlibObject);
+                    break;
+                case ItemTypes.Matrix:
+                    // NOTE
+                    // item is moved. So item content get to be undefined value
+                    this.PushBackMatrixItem(this._MatrixElementType.ToNativeMatrixElementType(), item as DlibObject);
+                    break;
+            }
+        }
 
         #region Overrides 
 
@@ -231,42 +273,42 @@ namespace DlibDotNet
 
         #region Helpers 
 
-        private object GetPixelItem(Dlib.Native.Array2DType type, uint index)
+        private object GetPixelItem(ImageTypes type, uint index)
         {
             switch (type)
             {
-                case Dlib.Native.Array2DType.UInt8:
-                    Dlib.Native.array_pixel_getitem_uint8(type, this.NativePtr, index, out var b8);
+                case ImageTypes.UInt8:
+                    Dlib.Native.array_pixel_getitem_uint8(type.ToNativeArray2DType(), this.NativePtr, index, out var b8);
                     return b8;
-                case Dlib.Native.Array2DType.UInt16:
-                    Dlib.Native.array_pixel_getitem_uint16(type, this.NativePtr, index, out var b16);
+                case ImageTypes.UInt16:
+                    Dlib.Native.array_pixel_getitem_uint16(type.ToNativeArray2DType(), this.NativePtr, index, out var b16);
                     return b16;
-                case Dlib.Native.Array2DType.UInt32:
-                    Dlib.Native.array_pixel_getitem_uint32(type, this.NativePtr, index, out var b32);
+                case ImageTypes.UInt32:
+                    Dlib.Native.array_pixel_getitem_uint32(type.ToNativeArray2DType(), this.NativePtr, index, out var b32);
                     return b32;
-                case Dlib.Native.Array2DType.Int8:
-                    Dlib.Native.array_pixel_getitem_int8(type, this.NativePtr, index, out var u8);
+                case ImageTypes.Int8:
+                    Dlib.Native.array_pixel_getitem_int8(type.ToNativeArray2DType(), this.NativePtr, index, out var u8);
                     return u8;
-                case Dlib.Native.Array2DType.Int16:
-                    Dlib.Native.array_pixel_getitem_int16(type, this.NativePtr, index, out var u16);
+                case ImageTypes.Int16:
+                    Dlib.Native.array_pixel_getitem_int16(type.ToNativeArray2DType(), this.NativePtr, index, out var u16);
                     return u16;
-                case Dlib.Native.Array2DType.Int32:
-                    Dlib.Native.array_pixel_getitem_int32(type, this.NativePtr, index, out var u32);
+                case ImageTypes.Int32:
+                    Dlib.Native.array_pixel_getitem_int32(type.ToNativeArray2DType(), this.NativePtr, index, out var u32);
                     return u32;
-                case Dlib.Native.Array2DType.Float:
-                    Dlib.Native.array_pixel_getitem_float(type, this.NativePtr, index, out var f);
+                case ImageTypes.Float:
+                    Dlib.Native.array_pixel_getitem_float(type.ToNativeArray2DType(), this.NativePtr, index, out var f);
                     return f;
-                case Dlib.Native.Array2DType.Double:
-                    Dlib.Native.array_pixel_getitem_double(type, this.NativePtr, index, out var d);
+                case ImageTypes.Double:
+                    Dlib.Native.array_pixel_getitem_double(type.ToNativeArray2DType(), this.NativePtr, index, out var d);
                     return d;
-                case Dlib.Native.Array2DType.RgbPixel:
-                    Dlib.Native.array_pixel_getitem_rgb_pixel(type, this.NativePtr, index, out var rgb);
+                case ImageTypes.RgbPixel:
+                    Dlib.Native.array_pixel_getitem_rgb_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var rgb);
                     return rgb;
-                case Dlib.Native.Array2DType.RgbAlphaPixel:
-                    Dlib.Native.array_pixel_getitem_rgb_alpha_pixel(type, this.NativePtr, index, out var rgba);
+                case ImageTypes.RgbAlphaPixel:
+                    Dlib.Native.array_pixel_getitem_rgb_alpha_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var rgba);
                     return rgba;
-                case Dlib.Native.Array2DType.HsiPixel:
-                    Dlib.Native.array_pixel_getitem_hsi_pixel(type, this.NativePtr, index, out var hsi);
+                case ImageTypes.HsiPixel:
+                    Dlib.Native.array_pixel_getitem_hsi_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var hsi);
                     return hsi;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -345,6 +387,60 @@ namespace DlibDotNet
             }
         }
 
+        private void PushBackArray2DItem(Dlib.Native.Array2DType type, IDlibObject item)
+        {
+            item.ThrowIfDisposed();
+            Dlib.Native.array_array2d_pushback(type, this.NativePtr, item.NativePtr);
+        }
+        
+        private void PushBackMatrixItem(Dlib.Native.MatrixElementType type, IDlibObject item)
+        {
+            item.ThrowIfDisposed();
+            Dlib.Native.array_matrix_pushback(type, this.NativePtr, item.NativePtr);
+        }
+
+        private void PushBackPixelItem(ImageTypes type, object item)
+        {
+            switch (type)
+            {
+                case ImageTypes.UInt8:
+                    Dlib.Native.array_pixel_pushback_uint8(type.ToNativeArray2DType(), this.NativePtr, (byte)item);
+                    break;
+                case ImageTypes.UInt16:
+                    Dlib.Native.array_pixel_pushback_uint16(type.ToNativeArray2DType(), this.NativePtr, (ushort)item);
+                    break;
+                case ImageTypes.UInt32:
+                    Dlib.Native.array_pixel_pushback_uint32(type.ToNativeArray2DType(), this.NativePtr, (uint)item);
+                    break;
+                case ImageTypes.Int8:
+                    Dlib.Native.array_pixel_pushback_int8(type.ToNativeArray2DType(), this.NativePtr, (sbyte)item);
+                    break;
+                case ImageTypes.Int16:
+                    Dlib.Native.array_pixel_pushback_int16(type.ToNativeArray2DType(), this.NativePtr, (short)item);
+                    break;
+                case ImageTypes.Int32:
+                    Dlib.Native.array_pixel_pushback_int32(type.ToNativeArray2DType(), this.NativePtr, (int)item);
+                    break;
+                case ImageTypes.Float:
+                    Dlib.Native.array_pixel_pushback_float(type.ToNativeArray2DType(), this.NativePtr, (float)item);
+                    break;
+                case ImageTypes.Double:
+                    Dlib.Native.array_pixel_pushback_double(type.ToNativeArray2DType(), this.NativePtr, (double)item);
+                    break;
+                case ImageTypes.RgbPixel:
+                    Dlib.Native.array_pixel_pushback_rgb_pixel(type.ToNativeArray2DType(), this.NativePtr, (RgbPixel)item);
+                    break;
+                case ImageTypes.RgbAlphaPixel:
+                    Dlib.Native.array_pixel_pushback_rgb_alpha_pixel(type.ToNativeArray2DType(), this.NativePtr, (RgbAlphaPixel)item);
+                    break;
+                case ImageTypes.HsiPixel:
+                    Dlib.Native.array_pixel_pushback_hsi_pixel(type.ToNativeArray2DType(), this.NativePtr, (HsiPixel)item);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }
+
         #endregion
 
         #endregion
@@ -370,7 +466,7 @@ namespace DlibDotNet
             {
                 case ItemTypes.PixelType:
                     for (int i = 0, count = this.Size; i < count; i++)
-                        yield return (T)this.GetPixelItem(this._Array2DType, (uint)i);
+                        yield return (T)this.GetPixelItem(this._ArrayElementType, (uint)i);
                     break;
                 case ItemTypes.Array2D:
                     for (int i = 0, count = this.Size; i < count; i++)
