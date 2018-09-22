@@ -665,8 +665,8 @@ namespace DlibDotNet
             // Need not to check whether both TemplateColumns and TemplateRows are same
             var leftTemplateRows = lhs.TemplateRows;
             var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
+            var rightTemplateRows = rhs.TemplateRows;
+            var rightTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
             var ret = Dlib.Native.matrix_operator_add(type,
@@ -674,8 +674,8 @@ namespace DlibDotNet
                                                       rhs.NativePtr,
                                                       leftTemplateRows,
                                                       leftTemplateColumns,
-                                                      rihgtTemplateRows,
-                                                      rihgtTemplateColumns,
+                                                      rightTemplateRows,
+                                                      rightTemplateColumns,
                                                       out var matrix);
             switch (ret)
             {
@@ -702,8 +702,8 @@ namespace DlibDotNet
             // Need not to check whether both TemplateColumns and TemplateRows are same
             var leftTemplateRows = lhs.TemplateRows;
             var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
+            var rightTemplateRows = rhs.TemplateRows;
+            var rightTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
             var ret = Dlib.Native.matrix_operator_subtract(type,
@@ -711,8 +711,8 @@ namespace DlibDotNet
                                                            rhs.NativePtr,
                                                            leftTemplateRows,
                                                            leftTemplateColumns,
-                                                           rihgtTemplateRows,
-                                                           rihgtTemplateColumns,
+                                                           rightTemplateRows,
+                                                           rightTemplateColumns,
                                                            out var matrix);
             switch (ret)
             {
@@ -739,8 +739,8 @@ namespace DlibDotNet
             // Need not to check whether both TemplateColumns and TemplateRows are same
             var leftTemplateRows = lhs.TemplateRows;
             var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
+            var rightTemplateRows = rhs.TemplateRows;
+            var rightTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
             var ret = Dlib.Native.matrix_operator_multiply(type,
@@ -748,8 +748,8 @@ namespace DlibDotNet
                                                            rhs.NativePtr,
                                                            leftTemplateRows,
                                                            leftTemplateColumns,
-                                                           rihgtTemplateRows,
-                                                           rihgtTemplateColumns,
+                                                           rightTemplateRows,
+                                                           rightTemplateColumns,
                                                            out var matrix);
             switch (ret)
             {
@@ -776,8 +776,8 @@ namespace DlibDotNet
             // Need not to check whether both TemplateColumns and TemplateRows are same
             var leftTemplateRows = lhs.TemplateRows;
             var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
+            var rightTemplateRows = rhs.TemplateRows;
+            var rightTemplateColumns = rhs.TemplateColumns;
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
             try
@@ -787,8 +787,8 @@ namespace DlibDotNet
                                                              rhs.NativePtr,
                                                              leftTemplateRows,
                                                              leftTemplateColumns,
-                                                             rihgtTemplateRows,
-                                                             rihgtTemplateColumns,
+                                                             rightTemplateRows,
+                                                             rightTemplateColumns,
                                                              out var matrix);
                 switch (ret)
                 {
