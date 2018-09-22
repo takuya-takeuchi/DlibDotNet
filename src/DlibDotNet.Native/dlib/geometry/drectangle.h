@@ -144,6 +144,11 @@ DLLEXPORT void drectangle_delete(const drectangle* rect)
     delete rect;
 }
 
+DLLEXPORT drectangle* drectangle_set_aspect_ratio(drectangle* rect, const double ratio)
+{
+    return new drectangle(dlib::set_aspect_ratio(*rect, ratio));
+}
+
 DLLEXPORT drectangle* drectangle_translate_rect(drectangle* rect, point* p)
 {
     drectangle result = dlib::translate_rect(*rect, *p);

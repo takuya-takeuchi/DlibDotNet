@@ -307,6 +307,11 @@ DLLEXPORT int rectangle_get_rect_matrix(matrix_element_type type, void* img, con
     return err;
 }
 
+DLLEXPORT rectangle* rectangle_set_aspect_ratio(rectangle* rect, const double ratio)
+{
+    return new rectangle(dlib::set_aspect_ratio(*rect, ratio));
+}
+
 DLLEXPORT rectangle* rectangle_translate_rect(rectangle* rect, point* p)
 {
     rectangle result = dlib::translate_rect(*rect, *p);

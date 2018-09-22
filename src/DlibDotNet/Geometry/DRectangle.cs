@@ -258,6 +258,16 @@ namespace DlibDotNet
             return this._Bottom.Equals(other._Bottom) && this._Left.Equals(other._Left) && this._Right.Equals(other._Right) && this._Top.Equals(other._Top);
         }
 
+        public static DRectangle SetAspectRatio(DRectangle rect, double ratio)
+        {
+            if(!(ratio > 0))
+                throw new ArgumentOutOfRangeException(nameof(ratio));
+
+            using (var nr = rect.ToNative())
+            using (var result = nr.SetAspectRatio(ratio))
+                return result.ToManaged();
+        }
+
         public DRectangle Intersect(DRectangle drect)
         {
             using (var np = drect.ToNative())
@@ -609,6 +619,12 @@ namespace DlibDotNet
                 return new NativeDRectangle(result);
             }
 
+            public NativeDRectangle SetAspectRatio(double ratio)
+            {
+                var result = Native.drectangle_set_aspect_ratio(this.NativePtr, ratio);
+                return new NativeDRectangle(result);
+            }
+
             public NativeDRectangle Translate(Point.NativePoint point)
             {
                 return Translate(this, point);
@@ -827,6 +843,9 @@ namespace DlibDotNet
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr drectangle_centered_rect1(IntPtr drect, double width, double height);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr drectangle_set_aspect_ratio(IntPtr rect, double ratio);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr drectangle_translate_rect(IntPtr rect, IntPtr p);

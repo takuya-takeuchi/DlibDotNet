@@ -320,6 +320,31 @@ namespace DlibDotNet.Tests.Geometry
         }
 
         [TestMethod]
+        public void SetAspectRatio()
+        {
+            const double left = 0;
+            const double top = 0;
+            const double right = 100;
+            const double bottom = 100;
+            var rect = new DRectangle(left, top, right, bottom);
+            rect = DRectangle.SetAspectRatio(rect, 2);
+
+            Assert.AreEqual(rect.Left, -20.917784899841294);
+            Assert.AreEqual(rect.Top, 14.791107550079353);
+            Assert.AreEqual(rect.Right, 120.91778489984129);
+            Assert.AreEqual(rect.Bottom, 85.208892449920654);
+
+            try
+            {
+                rect = DRectangle.SetAspectRatio(rect, 0);
+                Assert.Fail($"{nameof(DRectangle.SetAspectRatio)} should throw {nameof(ArgumentOutOfRangeException)} if ration is 0");
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+            }
+        }
+
+        [TestMethod]
         public void Translate()
         {
             const int left = 0;

@@ -350,6 +350,31 @@ namespace DlibDotNet.Tests.Geometry
         }
 
         [TestMethod]
+        public void SetAspectRatio()
+        {
+            const int left = 0;
+            const int top = 0;
+            const int right = 100;
+            const int bottom = 100;
+            var rect = new Rectangle(left, top, right, bottom);
+            rect = Rectangle.SetAspectRatio(rect, 2);
+
+            Assert.AreEqual(rect.Left, -21);
+            Assert.AreEqual(rect.Top, 15);
+            Assert.AreEqual(rect.Right, 120);
+            Assert.AreEqual(rect.Bottom, 85);
+
+            try
+            {
+                rect = Rectangle.SetAspectRatio(rect, 0);
+                Assert.Fail($"{nameof(Rectangle.SetAspectRatio)} should throw {nameof(ArgumentOutOfRangeException)} if ration is 0");
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+            }
+        }
+
+        [TestMethod]
         public void Translate()
         {
             const int left = 0;
