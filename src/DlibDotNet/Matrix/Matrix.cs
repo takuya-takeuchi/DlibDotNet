@@ -234,8 +234,8 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        internal Matrix(IntPtr ptr, int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
-            : base(templateRows, temlateColumns, isEnabledDispose)
+        internal Matrix(IntPtr ptr, int templateRows = 0, int templateColumns = 0, bool isEnabledDispose = true)
+            : base(templateRows, templateColumns, isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -358,6 +358,16 @@ namespace DlibDotNet
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static Matrix<TElement> CreateTemplateParameterizeMatrix<TElement>(uint templateRows, uint templateColumns)
+            where TElement : struct
+        {
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            var ptr = Dlib.Native.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
+            return new Matrix<TElement>(ptr, (int)templateRows, (int)templateColumns);
         }
 
         public TElement[] ToArray()

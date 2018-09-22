@@ -34,14 +34,14 @@ namespace DlibDotNet
             this.TemplateColumns = -1;
         }
 
-        internal MatrixOp(Dlib.Native.ElementType elementType, MatrixElementTypes type, IntPtr ptr, int templateRows = 0, int temlateColumns = 0)
+        internal MatrixOp(Dlib.Native.ElementType elementType, MatrixElementTypes type, IntPtr ptr, int templateRows = 0, int templateColumns = 0)
         {
             this._ElementType = elementType;
             this._MatrixElementType = type.ToNativeMatrixElementType();
             this.NativePtr = ptr;
 
             this.TemplateRows = templateRows;
-            this.TemplateColumns = temlateColumns;
+            this.TemplateColumns = templateColumns;
         }
 
         #endregion

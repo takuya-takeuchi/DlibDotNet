@@ -1003,68 +1003,68 @@ namespace DlibDotNet
             #region array2d_matrix
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_matrix_new(MatrixElementType type, int templateRows, int temlateColumns);
+            public static extern IntPtr array2d_matrix_new(MatrixElementType type, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols, int templateRows, int temlateColumns);
+            public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_nc(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_nr(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+            public static extern bool array2d_matrix_nc(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+            public static extern bool array2d_matrix_nr(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType array2d_matrix_get_rect(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out IntPtr rect);
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array2d_matrix_get_rect(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out IntPtr rect);
 
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, int row, out IntPtr ret);
+            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, int row, out IntPtr ret);
 
             #region array2d_matrix_get_row_column
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             #endregion
 
@@ -1106,7 +1106,7 @@ namespace DlibDotNet
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row, int templateRows, int temlateColumns);
+            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row, int templateRows, int templateColumns);
 
             #endregion
 
@@ -1356,7 +1356,7 @@ namespace DlibDotNet
             #endregion
 
             #region linear_kernel
-            
+
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr linear_kernel_new(MatrixElementType matrixElementType, int templateRow, int templateColumn);
 
@@ -1377,7 +1377,10 @@ namespace DlibDotNet
             public static extern IntPtr matrix_new2(MatrixElementType matrixElementType, int row, int column, IntPtr src);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public unsafe static extern IntPtr matrix_new3(MatrixElementType matrixElementType, int row, int column, byte* src);
+            public static extern unsafe IntPtr matrix_new3(MatrixElementType matrixElementType, int row, int column, byte* src);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr matrix_new4(MatrixElementType matrixElementType, uint templateRows, uint templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
