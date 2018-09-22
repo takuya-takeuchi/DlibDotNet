@@ -234,8 +234,8 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        internal Matrix(IntPtr ptr, int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
-            : base(templateRows, temlateColumns, isEnabledDispose)
+        internal Matrix(IntPtr ptr, int templateRows = 0, int templateColumns = 0, bool isEnabledDispose = true)
+            : base(templateRows, templateColumns, isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
