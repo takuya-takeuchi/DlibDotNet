@@ -10,12 +10,12 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         private const string LoadTarget = "Lenna_mini";
 
-        #region ExtracFHogFeatures
+        #region ExtractFHogFeatures
 
         [TestMethod]
-        public void ExtracFHogFeatures()
+        public void ExtractFHogFeatures()
         {
-            const string testName = "ExtracFHogFeatures";
+            const string testName = nameof(this.ExtractFHogFeatures);
             var path = this.GetDataFile($"{LoadTarget}.bmp");
 
             var tests = new[]
@@ -130,7 +130,7 @@ namespace DlibDotNet.Tests.ImageTransforms
         }
 
         [TestMethod]
-        public void ExtracFHogFeatures2()
+        public void ExtractFHogFeatures2()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
 
@@ -182,6 +182,107 @@ namespace DlibDotNet.Tests.ImageTransforms
                         this.DisposeAndCheckDisposedState(outputObj);
                 }
             }
+        }
+
+        [TestMethod]
+        public void ExtractFHogFeatures3()
+        {
+            const string testName = nameof(this.ExtractFHogFeatures3);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true}
+            };
+
+            foreach (ImageTypes inputType in Enum.GetValues(typeof(ImageTypes)))
+                foreach (var output in tests)
+                {
+                    if (inputType == ImageTypes.Matrix)
+                        continue;
+
+                    var expectResult = output.ExpectResult;
+                    var imageObj = DlibTest.LoadImage(inputType, path);
+                    Matrix<double> outputObj = null;
+
+                    var outputImageAction = new Func<bool, Matrix<double>>(expect =>
+                    {
+                        switch (output.Type)
+                        {
+                            case MatrixElementTypes.UInt8:
+                                Dlib.ExtracFHogFeatures<byte>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.UInt16:
+                                Dlib.ExtracFHogFeatures<ushort>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.UInt32:
+                                Dlib.ExtracFHogFeatures<uint>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.Int8:
+                                Dlib.ExtracFHogFeatures<sbyte>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.Int16:
+                                Dlib.ExtracFHogFeatures<short>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.Int32:
+                                Dlib.ExtracFHogFeatures<int>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.Float:
+                                Dlib.ExtracFHogFeatures<float>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.Double:
+                                Dlib.ExtracFHogFeatures<double>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.RgbPixel:
+                                Dlib.ExtracFHogFeatures<RgbPixel>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.RgbAlphaPixel:
+                                Dlib.ExtracFHogFeatures<RgbAlphaPixel>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.HsiPixel:
+                                Dlib.ExtracFHogFeatures<HsiPixel>(imageObj, out outputObj);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        return outputObj;
+                    });
+
+                    var successAction = new Action<Matrix<double>>(image =>
+                    {
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw exception for InputType: {inputType}, OutputType: {output.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        if (imageObj != null)
+                            this.DisposeAndCheckDisposedState(imageObj);
+                        if (outputObj != null)
+                            this.DisposeAndCheckDisposedState(outputObj);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {inputType}, OutputType: {output.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
         }
 
         #endregion

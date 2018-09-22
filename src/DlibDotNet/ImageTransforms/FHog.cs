@@ -88,6 +88,37 @@ namespace DlibDotNet
             return hogImage;
         }
 
+        public static void ExtracFHogFeatures<T>(Array2DBase inImage, out Matrix<double> feature, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
+            where T : struct
+        {
+            if (inImage == null)
+                throw new ArgumentNullException(nameof(inImage));
+            if (!(cellSize > 0))
+                throw new ArgumentOutOfRangeException(nameof(cellSize));
+            if (!(filterRowsPadding > 0))
+                throw new ArgumentOutOfRangeException(nameof(filterRowsPadding));
+            if (!(filterColsPadding > 0))
+                throw new ArgumentOutOfRangeException(nameof(filterColsPadding));
+
+            inImage.ThrowIfDisposed(nameof(inImage));
+
+            //var hogImage = new FHogArray2DMatrix<T>();
+            var hogImage = new Array2DMatrix<T>(0, 0, 31, 1);
+
+            var inType = inImage.ImageType.ToNativeArray2DType();
+            var outType = hogImage.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.extract_fhog_features2(inType, inImage.NativePtr, outType, cellSize, filterRowsPadding, filterColsPadding, out var hog);
+            switch (ret)
+            {
+                case Native.ErrorType.OutputElementTypeNotSupport:
+                    throw new ArgumentException($"Output {outType} is not supported.");
+                case Native.ErrorType.InputArrayTypeNotSupport:
+                    throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+            }
+
+            feature = new Matrix<double>(hog, 0, 1);
+        }
+
         public static Array<Array2D<T>> ExtracFHogFeaturesArray<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
             where T : struct
         {
@@ -176,6 +207,15 @@ namespace DlibDotNet
                                                                        int cell_size,
                                                                        int filter_rows_padding,
                                                                        int filter_cols_padding);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_fhog_features2(Array2DType img_type,
+                                                                  IntPtr img,
+                                                                  MatrixElementType hog_type,
+                                                                  int cell_size,
+                                                                  int filter_rows_padding,
+                                                                  int filter_cols_padding,
+                                                                  out IntPtr hog);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr image_to_fhog(IntPtr p,

@@ -45,6 +45,12 @@ do {\
     }\
 } while (0)
 
+#define extract_fhog_features2_template(ARRAY2D_ELEMENT)\
+do {\
+    auto result = dlib::extract_fhog_features(*((array2d<ARRAY2D_ELEMENT>*)img), cell_size, filter_rows_padding, filter_cols_padding);\
+    *hog = new dlib::matrix<double, 0, 1>(result);\
+} while (0)
+
 #define extract_fhog_features_array_template(ret, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding)\
 do {\
     ret = ERR_OK;\
@@ -148,6 +154,58 @@ DLLEXPORT int extract_fhog_features(
             #define ARRAY2D_ELEMENT rgb_alpha_pixel
             extract_fhog_features_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
             #undef ARRAY2D_ELEMENT
+            break;
+        default:
+            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_fhog_features2(array2d_type img_type,
+                                     void* img,
+                                     matrix_element_type hog_type,
+                                     int cell_size,
+                                     int filter_rows_padding,
+                                     int filter_cols_padding,
+                                     void** hog)
+{
+    int err = ERR_OK;
+    switch(img_type)
+    {
+        case array2d_type::UInt8:
+            extract_fhog_features2_template(uint8_t);
+            break;
+        case array2d_type::UInt16:
+            extract_fhog_features2_template(uint16_t);
+            break;
+        case array2d_type::UInt32:
+            extract_fhog_features2_template(uint32_t);
+            break;
+        case array2d_type::Int8:
+            extract_fhog_features2_template(int8_t);
+            break;
+        case array2d_type::Int16:
+            extract_fhog_features2_template(int16_t);
+            break;
+        case array2d_type::Int32:
+            extract_fhog_features2_template(int32_t);
+            break;
+        case array2d_type::Float:
+            extract_fhog_features2_template(float);
+            break;
+        case array2d_type::Double:
+            extract_fhog_features2_template(double);
+            break;
+        case array2d_type::RgbPixel:
+            extract_fhog_features2_template(rgb_pixel);
+            break;
+        case array2d_type::HsiPixel:
+            extract_fhog_features2_template(hsi_pixel);
+            break;
+        case array2d_type::RgbAlphaPixel:
+            extract_fhog_features2_template(rgb_alpha_pixel);
             break;
         default:
             err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
