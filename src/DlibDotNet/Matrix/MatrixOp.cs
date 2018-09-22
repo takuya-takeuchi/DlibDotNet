@@ -6,7 +6,7 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class MatrixOp : TwoDimentionObjectBase
+    public sealed class MatrixOp : TwoDimensionObjectBase
     {
 
         #region Fields

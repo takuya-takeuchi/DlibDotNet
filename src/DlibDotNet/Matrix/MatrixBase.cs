@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DlibDotNet
 {
 
-    public abstract class MatrixBase : TwoDimentionObjectBase
+    public abstract class MatrixBase : TwoDimensionObjectBase
     {
 
         #region Fields

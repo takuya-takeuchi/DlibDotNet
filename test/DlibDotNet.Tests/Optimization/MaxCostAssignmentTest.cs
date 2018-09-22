@@ -140,7 +140,7 @@ namespace DlibDotNet.Tests.Optimization
                 }
             }
         }
-        private void ExecuteMaxCostAssignment(TwoDimentionObjectBase obj)
+        private void ExecuteMaxCostAssignment(TwoDimensionObjectBase obj)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
@@ -214,7 +214,7 @@ namespace DlibDotNet.Tests.Optimization
         internal sealed class TestData : TestDataBase
         {
 
-            public TwoDimentionObjectBase Data
+            public TwoDimensionObjectBase Data
             {
                 get;
                 set;

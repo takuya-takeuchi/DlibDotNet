@@ -2,7 +2,7 @@
 namespace DlibDotNet
 {
 
-    public abstract class Array2DMatrixBase : TwoDimentionObjectBase
+    public abstract class Array2DMatrixBase : TwoDimensionObjectBase
     {
 
         protected Array2DMatrixBase(int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)

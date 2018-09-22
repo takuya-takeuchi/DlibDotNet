@@ -2,12 +2,12 @@
 namespace DlibDotNet
 {
 
-    public abstract class TwoDimentionObjectBase : DlibObject
+    public abstract class TwoDimensionObjectBase : DlibObject
     {
 
         #region Constructors
 
-        protected TwoDimentionObjectBase(bool isEnabledDispose = true)
+        protected TwoDimensionObjectBase(bool isEnabledDispose = true)
             : base(isEnabledDispose)
         {
         }

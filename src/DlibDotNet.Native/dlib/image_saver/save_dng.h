@@ -12,6 +12,38 @@
 using namespace dlib;
 using namespace std;
 
+#pragma region template
+
+#define save_dng_matrix_template(ELEMENT) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& mat = *(static_cast<dlib::matrix<ELEMENT>*>(matrix));\
+        dlib::save_dng(mat, file_name);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        dlib::save_dng(mat, file_name);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<ELEMENT, 1, 3>& mat = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        dlib::save_dng(mat, file_name);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 31, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
+        dlib::save_dng(mat, file_name);\
+    }\
+    else\
+    {\
+        err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
+} while (0)
+
+#pragma endregion template
+
 DLLEXPORT int save_dng(array2d_type type, void* image, const char* file_name)
 {
     int err = ERR_OK;
@@ -52,6 +84,53 @@ DLLEXPORT int save_dng(array2d_type type, void* image, const char* file_name)
             break;
         default:
             err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int save_dng_matrix(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, const char* file_name)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            save_dng_matrix_template(uint8_t);
+            break;
+        case matrix_element_type::UInt16:
+            save_dng_matrix_template(uint16_t);
+            break;
+        case matrix_element_type::UInt32:
+            save_dng_matrix_template(uint32_t);
+            break;
+        case matrix_element_type::Int8:
+            save_dng_matrix_template(int8_t);
+            break;
+        case matrix_element_type::Int16:
+            save_dng_matrix_template(int16_t);
+            break;
+        case matrix_element_type::Int32:
+            save_dng_matrix_template(int32_t);
+            break;
+        case matrix_element_type::Float:
+            save_dng_matrix_template(float);
+            break;
+        case matrix_element_type::Double:
+            save_dng_matrix_template(double);
+            break;
+        case matrix_element_type::RgbPixel:
+            save_dng_matrix_template(rgb_pixel);
+            break;
+        case matrix_element_type::HsiPixel:
+            save_dng_matrix_template(hsi_pixel);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            save_dng_matrix_template(rgb_alpha_pixel);
+            break;
+        default:
+            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

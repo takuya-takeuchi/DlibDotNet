@@ -456,7 +456,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #endregion
 
-        internal static MatrixOp Heatmap(ImageTypes type, TwoDimentionObjectBase obj)
+        internal static MatrixOp Heatmap(ImageTypes type, TwoDimensionObjectBase obj)
         {
             MatrixOp matrixOp;
             switch (type)
@@ -501,7 +501,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             return matrixOp;
         }
 
-        internal static MatrixOp Heatmap(ImageTypes type, TwoDimentionObjectBase obj, double max, double min = 0)
+        internal static MatrixOp Heatmap(ImageTypes type, TwoDimensionObjectBase obj, double max, double min = 0)
         {
             MatrixOp matrixOp;
             switch (type)
@@ -546,7 +546,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             return matrixOp;
         }
 
-        internal static MatrixOp Jet(ImageTypes type, TwoDimentionObjectBase obj)
+        internal static MatrixOp Jet(ImageTypes type, TwoDimensionObjectBase obj)
         {
             MatrixOp matrixOp;
             switch (type)
@@ -591,7 +591,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             return matrixOp;
         }
 
-        internal static MatrixOp Jet(ImageTypes type, TwoDimentionObjectBase obj, double max, double min = 0)
+        internal static MatrixOp Jet(ImageTypes type, TwoDimensionObjectBase obj, double max, double min = 0)
         {
             MatrixOp matrixOp;
             switch (type)
