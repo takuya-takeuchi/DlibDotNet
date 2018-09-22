@@ -1182,7 +1182,7 @@ namespace DlibDotNet.Tests
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase dimentionObject = null;
+                TwoDimentionObjectBase dimensionObject = null;
                 var filepath = $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{test.Quality}.jpg")}";
 
                 try
@@ -1192,7 +1192,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.RgbPixel:
                             {
                                 var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1200,7 +1200,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.RgbAlphaPixel:
                             {
                                 var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1208,7 +1208,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.UInt8:
                             {
                                 var image = Dlib.LoadImage<byte>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1216,7 +1216,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.UInt16:
                             {
                                 var image = Dlib.LoadImage<ushort>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1224,7 +1224,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.UInt32:
                             {
                                 var image = Dlib.LoadImage<uint>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1232,7 +1232,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Int8:
                             {
                                 var image = Dlib.LoadImage<sbyte>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1240,7 +1240,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Int16:
                             {
                                 var image = Dlib.LoadImage<short>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1248,7 +1248,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Int32:
                             {
                                 var image = Dlib.LoadImage<int>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1256,7 +1256,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.HsiPixel:
                             {
                                 var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1264,7 +1264,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Float:
                             {
                                 var image = Dlib.LoadImage<float>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1272,7 +1272,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Double:
                             {
                                 var image = Dlib.LoadImage<double>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 Dlib.SaveJpeg(image, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(image);
                             }
@@ -1298,8 +1298,8 @@ namespace DlibDotNet.Tests
                 }
                 finally
                 {
-                    if (dimentionObject != null && !dimentionObject.IsDisposed)
-                        this.DisposeAndCheckDisposedState(dimentionObject);
+                    if (dimensionObject != null && !dimensionObject.IsDisposed)
+                        this.DisposeAndCheckDisposedState(dimensionObject);
                 }
             }
         }
@@ -1360,7 +1360,7 @@ namespace DlibDotNet.Tests
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase dimentionObject = null;
+                TwoDimentionObjectBase dimensionObject = null;
                 var filepath = $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{test.Quality}.jpg")}";
 
                 try
@@ -1370,7 +1370,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.RgbPixel:
                             {
                                 var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<RgbPixel>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1380,7 +1380,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.RgbAlphaPixel:
                             {
                                 var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<RgbAlphaPixel>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1390,7 +1390,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.UInt8:
                             {
                                 var image = Dlib.LoadImage<byte>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<byte>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1400,7 +1400,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.UInt16:
                             {
                                 var image = Dlib.LoadImage<ushort>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<ushort>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1410,7 +1410,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.UInt32:
                             {
                                 var image = Dlib.LoadImage<uint>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<uint>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1420,7 +1420,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Int8:
                             {
                                 var image = Dlib.LoadImage<sbyte>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<sbyte>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1430,7 +1430,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Int16:
                             {
                                 var image = Dlib.LoadImage<short>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<short>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1440,7 +1440,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Int32:
                             {
                                 var image = Dlib.LoadImage<int>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<int>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1450,7 +1450,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.HsiPixel:
                             {
                                 var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<HsiPixel>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1460,7 +1460,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Float:
                             {
                                 var image = Dlib.LoadImage<float>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<float>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1470,7 +1470,7 @@ namespace DlibDotNet.Tests
                         case ImageTypes.Double:
                             {
                                 var image = Dlib.LoadImage<double>(path.FullName);
-                                dimentionObject = image;
+                                dimensionObject = image;
                                 var matrix = new Matrix<double>(image);
                                 Dlib.SaveJpeg(matrix, filepath, test.Quality);
                                 this.DisposeAndCheckDisposedState(matrix);
@@ -1498,8 +1498,8 @@ namespace DlibDotNet.Tests
                 }
                 finally
                 {
-                    if (dimentionObject != null && !dimentionObject.IsDisposed)
-                        this.DisposeAndCheckDisposedState(dimentionObject);
+                    if (dimensionObject != null && !dimensionObject.IsDisposed)
+                        this.DisposeAndCheckDisposedState(dimensionObject);
                 }
             }
         }
