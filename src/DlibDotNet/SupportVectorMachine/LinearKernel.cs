@@ -60,7 +60,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.linear_kernel_delete(this.NativePtr, this.TemplateRows, this.TemplateColumns);
+            Dlib.Native.linear_kernel_delete(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
         }
 
         #endregion
