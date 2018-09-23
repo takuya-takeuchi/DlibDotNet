@@ -32,7 +32,7 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         public Box[] Boxs
         {
@@ -65,6 +65,10 @@ namespace DlibDotNet.ImageDatasetMetadata
                 Native.image_dataset_metadata_image_set_filename(this.NativePtr, str);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         #region Overrides 
 

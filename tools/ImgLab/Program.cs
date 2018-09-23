@@ -53,6 +53,7 @@ namespace ImgLab
                             case "pascal-xml":
                                 break;
                             case "pascal-v1":
+                                ConvertPascalV1(app);
                                 break;
                             case "idl":
                                 break;
