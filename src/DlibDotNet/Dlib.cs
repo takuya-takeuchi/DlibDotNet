@@ -1355,6 +1355,16 @@ namespace DlibDotNet
 
             #endregion
 
+            #region linear_kernel
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr linear_kernel_new(MatrixElementType matrixElementType, int templateRow, int templateColumn);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void linear_kernel_delete(MatrixElementType matrixElementType, IntPtr linerKernel, int templateRow, int templateColumn);
+
+            #endregion
+
             #region matrix
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

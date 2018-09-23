@@ -1819,46 +1819,6 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
-        public void Addition5()
-        {
-            const int rows = 31;
-            const int columns = 1;
-
-            try
-            {
-                using (var lhs = new Matrix<double>(rows, columns))
-                using (var rhs = new Matrix<double>(2, 3))
-                using (var ret = lhs + rhs)
-                    Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
-            }
-
-            try
-            {
-                using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
-                using (var rhs = new Matrix<double>(2, 3))
-                using (var ret = lhs + rhs)
-                    Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
-            }
-
-            try
-            {
-                using (var lhs = new Matrix<double>(2, 3))
-                using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
-                using (var ret = lhs + rhs)
-                    Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
-            }
-        }
-
         private void AdditionSub<T>(bool expectResult = true)
             where T : struct
         {
@@ -2060,46 +2020,6 @@ namespace DlibDotNet.Tests.Matrix
                 }
 
                 Assert.IsTrue(index == rows * columns);
-            }
-        }
-
-        [TestMethod]
-        public void Subtraction5()
-        {
-            const int rows = 31;
-            const int columns = 1;
-
-            try
-            {
-                using (var lhs = new Matrix<double>(rows, columns))
-                using (var rhs = new Matrix<double>(2, 3))
-                using (var ret = lhs - rhs)
-                    Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
-            }
-
-            try
-            {
-                using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
-                using (var rhs = new Matrix<double>(2, 3))
-                using (var ret = lhs - rhs)
-                    Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
-            }
-
-            try
-            {
-                using (var lhs = new Matrix<double>(2, 3))
-                using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
-                using (var ret = lhs - rhs)
-                    Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
             }
         }
 

@@ -39,6 +39,8 @@ namespace DlibDotNet
                 new { Type = typeof(MModRect),                             ElementType = ElementTypes.MModRect  },
                 new { Type = typeof(SurfPoint),                            ElementType = ElementTypes.SurfPoint  },
                 new { Type = typeof(SamplePair),                           ElementType = ElementTypes.SamplePair  },
+                new { Type = typeof(ImageDatasetMetadata.Image),           ElementType = ElementTypes.ImageDatasetMetadataImage },
+                new { Type = typeof(ImageDatasetMetadata.Box),             ElementType = ElementTypes.ImageDatasetMetadataBox },
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
@@ -142,6 +144,10 @@ namespace DlibDotNet
                         return new StdVectorImageWindowOverlayLineImp() as StdVectorImp<TItem>;
                     case ElementTypes.PerspectiveWindowOverlayDot:
                         return new StdVectorPerspectiveWindowOverlayDotImp() as StdVectorImp<TItem>;
+                    case ElementTypes.ImageDatasetMetadataImage:
+                        return new StdVectorImageDatasetMetadataImageImp() as StdVectorImp<TItem>;
+                    case ElementTypes.ImageDatasetMetadataBox:
+                        return new StdVectorImageDatasetMetadataBoxImp() as StdVectorImp<TItem>;
                     case ElementTypes.MModRect:
                         return new StdVectorMModRectImp() as StdVectorImp<TItem>;
                     case ElementTypes.SurfPoint:
@@ -241,6 +247,10 @@ namespace DlibDotNet
             StdVectorRectangle,
 
             StdVectorMModRect,
+
+            ImageDatasetMetadataImage,
+
+            ImageDatasetMetadataBox
 
         }
 
@@ -665,6 +675,120 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 Dlib.Native.stdvector_image_window_overlay_line_copy(ptr, dst);
                 return dst.Select(p => new ImageWindow.OverlayLine(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorImageDatasetMetadataImageImp : StdVectorImp<ImageDatasetMetadata.Image>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return Dlib.Native.stdvector_image_dataset_metadata_image_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return Dlib.Native.stdvector_image_dataset_metadata_image_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<ImageDatasetMetadata.Image> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return Dlib.Native.stdvector_image_dataset_metadata_image_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                Dlib.Native.stdvector_image_dataset_metadata_image_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_image_dataset_metadata_image_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_image_dataset_metadata_image_getSize(ptr).ToInt32();
+            }
+
+            public override ImageDatasetMetadata.Image[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new ImageDatasetMetadata.Image[0];
+
+                var dst = new IntPtr[size];
+                Dlib.Native.stdvector_image_dataset_metadata_image_copy(ptr, dst);
+                return dst.Select(p => new ImageDatasetMetadata.Image(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorImageDatasetMetadataBoxImp : StdVectorImp<ImageDatasetMetadata.Box>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return Dlib.Native.stdvector_image_dataset_metadata_box_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return Dlib.Native.stdvector_image_dataset_metadata_box_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<ImageDatasetMetadata.Box> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return Dlib.Native.stdvector_image_dataset_metadata_box_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                Dlib.Native.stdvector_image_dataset_metadata_box_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_image_dataset_metadata_box_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_image_dataset_metadata_box_getSize(ptr).ToInt32();
+            }
+
+            public override ImageDatasetMetadata.Box[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new ImageDatasetMetadata.Box[0];
+
+                var dst = new IntPtr[size];
+                Dlib.Native.stdvector_image_dataset_metadata_box_copy(ptr, dst);
+                return dst.Select(p => new ImageDatasetMetadata.Box(p)).ToArray();
             }
 
             #endregion

@@ -193,4 +193,22 @@ typedef struct
 #define ERR_DNN_ERROR                                        0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE      ERR_DNN_ERROR | 0x00000001
 
+#pragma region macro
+
+#define ELEMENT_TYPE element
+#undef ELEMENT_TYPE
+
+#define vector_to_new_instance(__TYPE__, src, dst) \
+do {\
+    for (int index = 0; index < src.size(); index++)\
+    {\
+        __TYPE__& tmp = src[index];\
+        dst->push_back(new __TYPE__(tmp));\
+    }\
+} while (0)
+
+#pragma endregion template
+
+#pragma endregion macro
+
 #endif

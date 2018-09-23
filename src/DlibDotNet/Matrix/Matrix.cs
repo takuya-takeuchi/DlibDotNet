@@ -659,20 +659,36 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            // Need to check whether both Columns and Rows are same
-            var leftRows = lhs.Rows;
-            var leftColumns = lhs.Columns;
-            var rightRows = rhs.Rows;
-            var rightColumns = rhs.Columns;
-
-            if (!(leftRows == rightRows && leftColumns == rightColumns))
-                throw new ArgumentException();
-
-            // Need not to check whether both TemplateColumns and TemplateRows are same
             var leftTemplateRows = lhs.TemplateRows;
             var leftTemplateColumns = lhs.TemplateColumns;
             var rightTemplateRows = rhs.TemplateRows;
             var rightTemplateColumns = rhs.TemplateColumns;
+
+            // NOTE
+            // In C++, the following codes are completely different.
+            //
+            // 1.
+            // matrix<double> left; 
+            // matrix<double> right;
+            // left += right;
+            //
+            // 2.
+            // matrix<double> left; 
+            // matrix<double> right;
+            // auto ret = left + right;
+            //
+            // For 2, dlib checks whether both columns and rows are same.
+            // But for 1, dlib resize left operand if both columns and rows are different.
+            //
+
+            //var leftRows = lhs.Rows;
+            //var leftColumns = lhs.Columns;
+            //var rightRows = rhs.Rows;
+            //var rightColumns = rhs.Columns;
+
+            //if (!(leftRows == rightRows && leftColumns == rightColumns) &&
+            //    !(leftTemplateRows == rightTemplateRows && leftTemplateColumns == rightTemplateColumns))
+            //    throw new ArgumentException();
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
             var ret = Dlib.Native.matrix_operator_add(type,
@@ -702,20 +718,36 @@ namespace DlibDotNet
             lhs.ThrowIfDisposed();
             rhs.ThrowIfDisposed();
 
-            // Need to check whether both Columns and Rows are same
-            var leftRows = lhs.Rows;
-            var leftColumns = lhs.Columns;
-            var rightRows = rhs.Rows;
-            var rightColumns = rhs.Columns;
-
-            if (!(leftRows == rightRows && leftColumns == rightColumns))
-                throw new ArgumentException();
-
-            // Need not to check whether both TemplateColumns and TemplateRows are same
             var leftTemplateRows = lhs.TemplateRows;
             var leftTemplateColumns = lhs.TemplateColumns;
             var rightTemplateRows = rhs.TemplateRows;
             var rightTemplateColumns = rhs.TemplateColumns;
+
+            // NOTE
+            // In C++, the following codes are completely different.
+            //
+            // 1.
+            // matrix<double> left; 
+            // matrix<double> right;
+            // left -= right;
+            //
+            // 2.
+            // matrix<double> left; 
+            // matrix<double> right;
+            // auto ret = left - right;
+            //
+            // For 2, dlib checks whether both columns and rows are same.
+            // But for 1, dlib resize left operand if both columns and rows are different.
+            //
+
+            //var leftRows = lhs.Rows;
+            //var leftColumns = lhs.Columns;
+            //var rightRows = rhs.Rows;
+            //var rightColumns = rhs.Columns;
+
+            //if (!(leftRows == rightRows && leftColumns == rightColumns) &&
+            //    !(leftTemplateRows == rightTemplateRows && leftTemplateColumns == rightTemplateColumns))
+            //    throw new ArgumentException();
 
             var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
             var ret = Dlib.Native.matrix_operator_subtract(type,

@@ -45,6 +45,20 @@ do {\
     }\
 } while (0)
 
+#define matrix_cast_left_without_type_parameter_template(lhs, leftTemplateRows, leftTemplateColumns, left) \
+do {\
+    if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT>& tmp = *(static_cast<dlib::matrix<ELEMENT>*>(lhs));\
+        left = new dlib::matrix<ELEMENT>(tmp);\
+    }\
+    else if (leftTemplateRows == 0 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 0, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(lhs));\
+        left = new dlib::matrix<ELEMENT>(tmp);\
+    }\
+} while (0)
+
 #pragma endregion template
 
 #endif

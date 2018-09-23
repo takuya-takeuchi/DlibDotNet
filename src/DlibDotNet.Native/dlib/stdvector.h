@@ -9,6 +9,7 @@
 #include <dlib/image_keypoint/draw_surf_points.h>
 #endif
 
+#include <dlib/data_io/image_dataset_metadata.h>
 #include <dlib/image_processing/full_object_detection.h>
 #include <dlib/image_processing/object_detector.h>
 #include <dlib/image_transforms/interpolation.h>
@@ -964,6 +965,87 @@ DLLEXPORT void stdvector_stdvector_mmod_rect_copy(std::vector<std::vector<mmod_r
 }
 
 #pragma endregion std::vector<mmod_rect>
+
+#pragma region image_dataset_metadata::image
+
+DLLEXPORT std::vector<image_dataset_metadata::image*>* stdvector_image_dataset_metadata_image_new1()
+{
+    return new std::vector<image_dataset_metadata::image*>;
+}
+
+DLLEXPORT std::vector<image_dataset_metadata::image*>* stdvector_image_dataset_metadata_image_new2(size_t size)
+{
+    return new std::vector<image_dataset_metadata::image*>(size);
+}
+
+DLLEXPORT std::vector<image_dataset_metadata::image*>* stdvector_image_dataset_metadata_image_new3(image_dataset_metadata::image** data, size_t dataLength)
+{
+    return new std::vector<image_dataset_metadata::image*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_image_dataset_metadata_image_getSize(std::vector<image_dataset_metadata::image*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT image_dataset_metadata::image* stdvector_image_dataset_metadata_image_getPointer(std::vector<image_dataset_metadata::image*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_image_dataset_metadata_image_delete(std::vector<image_dataset_metadata::image*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_image_dataset_metadata_image_copy(std::vector<image_dataset_metadata::image*> *vector, image_dataset_metadata::image** dst)
+{
+    size_t length = sizeof(image_dataset_metadata::image*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion image_dataset_metadata::image
+
+#pragma region image_dataset_metadata::box
+
+DLLEXPORT std::vector<image_dataset_metadata::box*>* stdvector_image_dataset_metadata_box_new1()
+{
+    return new std::vector<image_dataset_metadata::box*>;
+}
+
+DLLEXPORT std::vector<image_dataset_metadata::box*>* stdvector_image_dataset_metadata_box_new2(size_t size)
+{
+    return new std::vector<image_dataset_metadata::box*>(size);
+}
+
+DLLEXPORT std::vector<image_dataset_metadata::box*>* stdvector_image_dataset_metadata_box_new3(image_dataset_metadata::box** data, size_t dataLength)
+{
+    return new std::vector<image_dataset_metadata::box*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_image_dataset_metadata_box_getSize(std::vector<image_dataset_metadata::box*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT image_dataset_metadata::box* stdvector_image_dataset_metadata_box_getPointer(std::vector<image_dataset_metadata::box*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_image_dataset_metadata_box_delete(std::vector<image_dataset_metadata::box*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_image_dataset_metadata_box_copy(std::vector<image_dataset_metadata::box*> *vector, image_dataset_metadata::box** dst)
+{
+    size_t length = sizeof(image_dataset_metadata::box*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion image_dataset_metadata::box
+
 
 #ifndef DLIB_NO_GUI_SUPPORT
 #pragma region image_window::overlay_line
