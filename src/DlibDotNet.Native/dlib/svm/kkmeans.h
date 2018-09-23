@@ -14,21 +14,32 @@ using namespace dlib;
 
 #define find_clusters_using_angular_kmeans_template_sub(template_row, template_column) \
 do {\
-    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>* tmp_centers = static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(centers);\
-    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>* tmp_samples = static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(samples);\
+    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>& tmp_centers = *static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(centers);\
+    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>& tmp_samples = *static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(samples);\
+    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>& tmp_result = *static_cast<std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>*>(result);\
     std::vector<dlib::matrix<ELEMENT, template_row, template_column>> out_centers;\
     std::vector<dlib::matrix<ELEMENT, template_row, template_column>> in_samples;\
-    std::vector<dlib::matrix<ELEMENT, template_row, template_column>*>& tmp = *tmp_samples;\
-    for (int index = 0; index < tmp.size(); index++)\
+    for (int index = 0; index < tmp_centers.size(); index++)\
     {\
-        dlib::matrix<ELEMENT, template_row, template_column>* p = tmp[index];\
+        dlib::matrix<ELEMENT, template_row, template_column>* p = tmp_centers[index];\
+        dlib::matrix<ELEMENT, template_row, template_column>& mat = *p;\
+        out_centers.push_back(mat);\
+    }\
+    for (int index = 0; index < tmp_samples.size(); index++)\
+    {\
+        dlib::matrix<ELEMENT, template_row, template_column>* p = tmp_samples[index];\
         dlib::matrix<ELEMENT, template_row, template_column>& mat = *p;\
         in_samples.push_back(mat);\
     }\
     dlib::find_clusters_using_angular_kmeans(in_samples, out_centers, max_iter);\
+    std::cout << out_centers.size() << std::endl;\
+    for (int index = 0; index < out_centers.size(); index++)\
+    {\
+        tmp_result.push_back(new dlib::matrix<ELEMENT, template_row, template_column>(out_centers[index]));\
+    }\
 } while (0)
 
-#define find_clusters_using_angular_kmeans_template(templateRows, templateColumns, samples, centers, max_iter) \
+#define find_clusters_using_angular_kmeans_template(templateRows, templateColumns, samples, centers, max_iter, result) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
     {\
@@ -46,7 +57,10 @@ do {\
     {\
         find_clusters_using_angular_kmeans_template_sub(31, 1);\
     }\
-    err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    else\
+    {\
+        err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
 } while (0)
 
 #define nearest_center_template_sub(template_row, template_column) \
@@ -82,7 +96,10 @@ do {\
     {\
         nearest_center_template_sub(31, 1);\
     }\
-    err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    else\
+    {\
+        err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
 } while (0)
 
 #define pick_initial_centers_template_sub(template_row, template_column) \
@@ -122,7 +139,10 @@ do {\
     {\
         pick_initial_centers_template_sub(31, 1);\
     }\
-    err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    else\
+    {\
+        err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
 } while (0)
 
 #pragma endregion
@@ -134,7 +154,8 @@ DLLEXPORT int find_clusters_using_angular_kmeans(const matrix_element_type type,
                                                  const int templateColumns,
                                                  void* centers,
                                                  void* samples,
-                                                 const unsigned long max_iter)
+                                                 const unsigned long max_iter,
+                                                 void* result)
 {
     int err = ERR_OK;
 
