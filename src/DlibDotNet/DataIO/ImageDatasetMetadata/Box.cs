@@ -151,6 +151,8 @@ namespace DlibDotNet.ImageDatasetMetadata
             }
         }
 
+        public PartCollection Parts => new PartCollection(this);
+
         public double Pose
         {
             get
@@ -292,6 +294,42 @@ namespace DlibDotNet.ImageDatasetMetadata
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void image_dataset_metadata_box_delete(IntPtr dataset);
+
+        }
+
+        public sealed class PartCollection
+        {
+
+            #region Fields
+
+            private readonly Box _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal PartCollection(Box parent)
+            {
+                this._Parent = parent;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public Point this[string key]
+            {
+                get
+                {
+                    return new Point();
+                }
+                set
+                {
+
+                }
+            }
+
+            #endregion
 
         }
 
