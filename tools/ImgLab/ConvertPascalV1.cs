@@ -42,7 +42,7 @@ namespace ImgLab
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine($"Error while processing file {arg}");
+                        Console.WriteLine($"Error while processing file {arg}\n");
                         throw;
                     }
                 }
