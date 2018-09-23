@@ -33,7 +33,7 @@ namespace ImgLab
             app.HelpOption("-h|--help");
 
             var createOption = new CommandOption("-c|--create", CommandOptionType.SingleValue);
-            var convertOption = new CommandOption("-convert|--convert", CommandOptionType.NoValue);
+            var convertOption = new CommandOption("-convert|--convert", CommandOptionType.SingleValue);
             var clusterOption = new CommandOption("-cluster|--cluster", CommandOptionType.SingleValue);
 
             app.Options.Add(createOption);
@@ -51,6 +51,7 @@ namespace ImgLab
                         switch (value)
                         {
                             case "pascal-xml":
+                                ConvertPascalXml(app);
                                 break;
                             case "pascal-v1":
                                 ConvertPascalV1(app);
