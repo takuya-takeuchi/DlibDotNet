@@ -18,7 +18,7 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         public string Comment
         {
@@ -67,6 +67,10 @@ namespace DlibDotNet.ImageDatasetMetadata
                 Native.image_dataset_metadata_dataset_set_name(this.NativePtr, str);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         #region Overrides 
 

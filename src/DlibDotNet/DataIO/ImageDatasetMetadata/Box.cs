@@ -26,7 +26,7 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         public double Age
         {
@@ -164,7 +164,7 @@ namespace DlibDotNet.ImageDatasetMetadata
                 Native.image_dataset_metadata_box_set_pose(this.NativePtr, value);
             }
         }
-        
+
         public Rectangle Rect
         {
             get
@@ -194,6 +194,10 @@ namespace DlibDotNet.ImageDatasetMetadata
                 Native.image_dataset_metadata_box_set_truncated(this.NativePtr, value);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         #region Overrides 
 
