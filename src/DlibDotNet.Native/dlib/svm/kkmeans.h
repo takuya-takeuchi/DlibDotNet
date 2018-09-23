@@ -39,7 +39,7 @@ do {\
     }\
 } while (0)
 
-#define find_clusters_using_angular_kmeans_template(templateRows, templateColumns, samples, centers, max_iter, result) \
+#define find_clusters_using_angular_kmeans_template(templateRows, templateColumns, samples, centers, max_iter) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
     {\
