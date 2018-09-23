@@ -1690,6 +1690,175 @@ namespace DlibDotNet.Tests.Matrix
             this.AdditionSub<HsiPixel>(false);
         }
 
+        [TestMethod]
+        public void Addition2()
+        {
+            const int rows = 3;
+            const int columns = 4;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                for (var c = 0; c < columns; c++)
+                {
+                    var v1 = this.NextInt32Random();
+                    lhs[r, c] = v1;
+                    tmpLeft[index] = v1;
+
+                    var v2 = this.NextInt32Random();
+                    rhs[r, c] = v2;
+                    tmpRight[index] = v2;
+
+                    index++;
+                }
+
+                using (var ret = lhs + rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var mv = ret[r, c];
+                        var av = tmpLeft[index] + tmpRight[index];
+                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                        index++;
+                    }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Addition3()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                for (var c = 0; c < columns; c++)
+                {
+                    var v1 = this.NextInt32Random();
+                    lhs[r, c] = v1;
+                    tmpLeft[index] = v1;
+
+                    var v2 = this.NextInt32Random();
+                    rhs[r, c] = v2;
+                    tmpRight[index] = v2;
+
+                    index++;
+                }
+
+                using (var ret = lhs + rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var mv = ret[r, c];
+                        var av = tmpLeft[index] + tmpRight[index];
+                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                        index++;
+                    }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Addition4()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                for (var c = 0; c < columns; c++)
+                {
+                    var v1 = this.NextInt32Random();
+                    lhs[r, c] = v1;
+                    tmpLeft[index] = v1;
+
+                    var v2 = this.NextInt32Random();
+                    rhs[r, c] = v2;
+                    tmpRight[index] = v2;
+
+                    index++;
+                }
+
+                using (var ret = lhs + rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var mv = ret[r, c];
+                        var av = tmpLeft[index] + tmpRight[index];
+                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                        index++;
+                    }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Addition5()
+        {
+            const int rows = 31;
+            const int columns = 1;
+
+            try
+            {
+                using (var lhs = new Matrix<double>(rows, columns))
+                using (var rhs = new Matrix<double>(2, 3))
+                using (var ret = lhs + rhs)
+                    Assert.Fail();
+            }
+            catch (ArgumentException)
+            {
+            }
+
+            try
+            {
+                using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+                using (var rhs = new Matrix<double>(2, 3))
+                using (var ret = lhs + rhs)
+                    Assert.Fail();
+            }
+            catch (ArgumentException)
+            {
+            }
+
+            try
+            {
+                using (var lhs = new Matrix<double>(2, 3))
+                using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+                using (var ret = lhs + rhs)
+                    Assert.Fail();
+            }
+            catch (ArgumentException)
+            {
+            }
+        }
+
         private void AdditionSub<T>(bool expectResult = true)
             where T : struct
         {
@@ -1764,6 +1933,174 @@ namespace DlibDotNet.Tests.Matrix
             this.SubtractionSub<RgbPixel>(false);
             this.SubtractionSub<RgbAlphaPixel>(false);
             this.SubtractionSub<HsiPixel>(false);
+        }
+        [TestMethod]
+        public void Subtraction2()
+        {
+            const int rows = 3;
+            const int columns = 4;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
+
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
+
+                        index++;
+                    }
+
+                using (var ret = lhs - rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] - tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction3()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
+
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
+
+                        index++;
+                    }
+
+                using (var ret = lhs - rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] - tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction4()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
+
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
+
+                        index++;
+                    }
+
+                using (var ret = lhs - rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] - tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction5()
+        {
+            const int rows = 31;
+            const int columns = 1;
+
+            try
+            {
+                using (var lhs = new Matrix<double>(rows, columns))
+                using (var rhs = new Matrix<double>(2, 3))
+                using (var ret = lhs - rhs)
+                    Assert.Fail();
+            }
+            catch (ArgumentException)
+            {
+            }
+
+            try
+            {
+                using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+                using (var rhs = new Matrix<double>(2, 3))
+                using (var ret = lhs - rhs)
+                    Assert.Fail();
+            }
+            catch (ArgumentException)
+            {
+            }
+
+            try
+            {
+                using (var lhs = new Matrix<double>(2, 3))
+                using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+                using (var ret = lhs - rhs)
+                    Assert.Fail();
+            }
+            catch (ArgumentException)
+            {
+            }
         }
 
         private void SubtractionSub<T>(bool expectResult = true)

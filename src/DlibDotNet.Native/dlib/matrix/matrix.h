@@ -109,6 +109,300 @@ do {\
         delete right;\
 } while (0)
 
+#define matrix_operator_add_template(TYPE)\
+do {\
+    if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
+    {\
+        dlib::matrix<TYPE, 0, 0> l = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l += r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l += r;\
+        }\
+        else if (rightTemplateRows == 1 && rightTemplateColumns == 3)\
+        {\
+            dlib::matrix<TYPE, 1, 3>& r = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(rhs));\
+            l += r;\
+        }\
+        else if (rightTemplateRows == 31 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 31, 1>& r = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(rhs));\
+            l += r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 0>(l);\
+    }\
+    else if (leftTemplateRows == 0 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 0, 1> l = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l += r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l += r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 1>(l);\
+    }\
+    else if (leftTemplateRows == 1 && leftTemplateColumns == 3)\
+    {\
+        dlib::matrix<TYPE, 1, 3> l = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l += r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 1, 3>(l);\
+    }\
+    else if (leftTemplateRows == 31 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 31, 1> l = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l += r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l += r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 31, 1>(l);\
+    }\
+} while (0)
+
+#define matrix_operator_subtract_template(TYPE)\
+do {\
+    if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
+    {\
+        dlib::matrix<TYPE, 0, 0> l = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l -= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l -= r;\
+        }\
+        else if (rightTemplateRows == 1 && rightTemplateColumns == 3)\
+        {\
+            dlib::matrix<TYPE, 1, 3>& r = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(rhs));\
+            l -= r;\
+        }\
+        else if (rightTemplateRows == 31 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 31, 1>& r = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(rhs));\
+            l -= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 0>(l);\
+    }\
+    else if (leftTemplateRows == 0 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 0, 1> l = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l -= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l -= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 1>(l);\
+    }\
+    else if (leftTemplateRows == 1 && leftTemplateColumns == 3)\
+    {\
+        dlib::matrix<TYPE, 1, 3> l = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l -= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 1, 3>(l);\
+    }\
+    else if (leftTemplateRows == 31 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 31, 1> l = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l -= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l -= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 31, 1>(l);\
+    }\
+} while (0)
+
+#define matrix_operator_multiply_template(TYPE)\
+do {\
+    if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
+    {\
+        dlib::matrix<TYPE, 0, 0> l = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l *= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l *= r;\
+        }\
+        else if (rightTemplateRows == 1 && rightTemplateColumns == 3)\
+        {\
+            dlib::matrix<TYPE, 1, 3>& r = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(rhs));\
+            l *= r;\
+        }\
+        else if (rightTemplateRows == 31 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 31, 1>& r = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(rhs));\
+            l *= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 0>(l);\
+    }\
+    else if (leftTemplateRows == 0 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 0, 1> l = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l *= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l *= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 1>(l);\
+    }\
+    else if (leftTemplateRows == 1 && leftTemplateColumns == 3)\
+    {\
+        dlib::matrix<TYPE, 1, 3> l = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l *= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 1, 3>(l);\
+    }\
+    else if (leftTemplateRows == 31 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 31, 1> l = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l *= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l *= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 31, 1>(l);\
+    }\
+} while (0)
+
+#define matrix_operator_divide_template(TYPE)\
+do {\
+    if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
+    {\
+        dlib::matrix<TYPE, 0, 0> l = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l /= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l /= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 0>(l);\
+    }\
+    else if (leftTemplateRows == 0 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 0, 1> l = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l /= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l /= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 0, 1>(l);\
+    }\
+    else if (leftTemplateRows == 1 && leftTemplateColumns == 3)\
+    {\
+        dlib::matrix<TYPE, 1, 3> l = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l /= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 1, 3>(l);\
+    }\
+    else if (leftTemplateRows == 31 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 31, 1> l = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(lhs));\
+        if (rightTemplateRows == 0 && rightTemplateColumns == 0)\
+        {\
+            dlib::matrix<TYPE, 0, 0>& r = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(rhs));\
+            l /= r;\
+        }\
+        else if (rightTemplateRows == 0 && rightTemplateColumns == 1)\
+        {\
+            dlib::matrix<TYPE, 0, 1>& r = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(rhs));\
+            l /= r;\
+        }\
+        *ret = new dlib::matrix<TYPE, 31, 1>(l);\
+    }\
+} while (0)
+
+#define matrix_operator_primitive_template(TYPE) \
+do {\
+    if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
+    {\
+        dlib::matrix<TYPE, 0, 0> l = *(static_cast<dlib::matrix<TYPE, 0, 0>*>(lhs));\
+        l OPERAND= rhs;\
+        *ret = new dlib::matrix<TYPE, 0, 0>(l);\
+    }\
+    else if (leftTemplateRows == 0 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 0, 1> l = *(static_cast<dlib::matrix<TYPE, 0, 1>*>(lhs));\
+        l OPERAND= rhs;\
+        *ret = new dlib::matrix<TYPE, 0, 1>(l);\
+    }\
+    else if (leftTemplateRows == 1 && leftTemplateColumns == 3)\
+    {\
+        dlib::matrix<TYPE, 1, 3> l = *(static_cast<dlib::matrix<TYPE, 1, 3>*>(lhs));\
+        l OPERAND= rhs;\
+        *ret = new dlib::matrix<TYPE, 1, 3>(l);\
+    }\
+    else if (leftTemplateRows == 31 && leftTemplateColumns == 1)\
+    {\
+        dlib::matrix<TYPE, 31, 1> l = *(static_cast<dlib::matrix<TYPE, 31, 1>*>(lhs));\
+        l OPERAND= rhs;\
+        *ret = new dlib::matrix<TYPE, 31, 1>(l);\
+    }\
+} while (0)
+
 #define matrix_nc_template(matrix, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -1282,48 +1576,32 @@ DLLEXPORT int matrix_operator_add(matrix_element_type type,
                                   void** ret)
 {
     int err = ERR_OK;
-    #define OPERAND +
+    
     switch(type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(uint8_t);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(uint16_t);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(uint32_t);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(int8_t);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(int16_t);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(int32_t);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(float);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_add_template(double);
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -1332,7 +1610,6 @@ DLLEXPORT int matrix_operator_add(matrix_element_type type,
             err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    #undef OPERAND
     
     return err;
 }
@@ -1347,48 +1624,32 @@ DLLEXPORT int matrix_operator_subtract(matrix_element_type type,
                                        void** ret)
 {
     int err = ERR_OK;
-    #define OPERAND -
+    
     switch(type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(uint8_t);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(uint16_t);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(uint32_t);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(int8_t);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(int16_t);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(int32_t);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(float);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_subtract_template(double);
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -1397,7 +1658,6 @@ DLLEXPORT int matrix_operator_subtract(matrix_element_type type,
             err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    #undef OPERAND
     
     return err;
 }
@@ -1412,48 +1672,32 @@ DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
                                        void** ret)
 {
     int err = ERR_OK;
-    #define OPERAND *
+    
     switch(type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(uint8_t);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(uint16_t);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(uint32_t);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(int8_t);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(int16_t);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(int32_t);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(float);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_multiply_template(double);
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -1462,7 +1706,6 @@ DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
             err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    #undef OPERAND
     
     return err;
 }
@@ -1477,48 +1720,79 @@ DLLEXPORT int matrix_operator_divide(matrix_element_type type,
                                      void** ret)
 {
     int err = ERR_OK;
+    
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_operator_divide_template(uint8_t);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_operator_divide_template(uint16_t);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_operator_divide_template(uint32_t);
+            break;
+        case matrix_element_type::Int8:
+            matrix_operator_divide_template(int8_t);
+            break;
+        case matrix_element_type::Int16:
+            matrix_operator_divide_template(int16_t);
+            break;
+        case matrix_element_type::Int32:
+            matrix_operator_divide_template(int32_t);
+            break;
+        case matrix_element_type::Float:
+            matrix_operator_divide_template(float);
+            break;
+        case matrix_element_type::Double:
+            matrix_operator_divide_template(double);
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+
+DLLEXPORT int matrix_operator_divide_double(matrix_element_type type,
+                                            void* lhs,
+                                            double rhs,
+                                            const int leftTemplateRows,
+                                            const int leftTemplateColumns,
+                                            void** ret)
+{
+    int err = ERR_OK;
     #define OPERAND /
     switch(type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(uint8_t);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(uint16_t);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(uint32_t);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(int8_t);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(int16_t);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(int32_t);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(float);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            matrix_operator_template(lhs, rhs, leftTemplateRows, leftTemplateColumns, rightTemplateRows, rightTemplateColumns, ret);
-            #undef ELEMENT
+            matrix_operator_primitive_template(double);
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
