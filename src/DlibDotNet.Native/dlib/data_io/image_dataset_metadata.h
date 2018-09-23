@@ -87,9 +87,9 @@ DLLEXPORT std::string* image_dataset_metadata_box_get_label(image_dataset_metada
     return new std::string(box->label);
 }
 
-DLLEXPORT void image_dataset_metadata_box_set_label(image_dataset_metadata::box* box, std::string* value)
+DLLEXPORT void image_dataset_metadata_box_set_label(image_dataset_metadata::box* box, const char* value)
 {
-    box->label = *value;
+    box->label = std::string(value);
 }
 
 DLLEXPORT bool image_dataset_metadata_box_get_occluded(image_dataset_metadata::box* box)
@@ -151,9 +151,9 @@ DLLEXPORT std::string* image_dataset_metadata_dataset_get_comment(image_dataset_
     return new std::string(dataset->comment);
 }
 
-DLLEXPORT void image_dataset_metadata_dataset_set_comment(image_dataset_metadata::dataset* dataset, std::string* value)
+DLLEXPORT void image_dataset_metadata_dataset_set_comment(image_dataset_metadata::dataset* dataset, const char* value)
 {
-    dataset->comment = *value;
+    dataset->comment = std::string(value);
 }
 
 DLLEXPORT std::vector<image_dataset_metadata::image*>* image_dataset_metadata_dataset_get_images(image_dataset_metadata::dataset* dataset)
@@ -177,9 +177,9 @@ DLLEXPORT std::string* image_dataset_metadata_dataset_get_name(image_dataset_met
     return new std::string(dataset->name);
 }
 
-DLLEXPORT void image_dataset_metadata_dataset_set_name(image_dataset_metadata::dataset* dataset, std::string* value)
+DLLEXPORT void image_dataset_metadata_dataset_set_name(image_dataset_metadata::dataset* dataset, const char* value)
 {
-    dataset->name = *value;
+    dataset->name = std::string(value);
 }
 
 DLLEXPORT void image_dataset_metadata_dataset_delete(image_dataset_metadata::dataset* dataset)
@@ -222,9 +222,9 @@ DLLEXPORT std::string* image_dataset_metadata_image_get_filename(image_dataset_m
     return new std::string(image->filename);
 }
 
-DLLEXPORT void image_dataset_metadata_image_set_filename(image_dataset_metadata::image* image, std::string* value)
+DLLEXPORT void image_dataset_metadata_image_set_filename(image_dataset_metadata::image* image, const char* value)
 {
-    image->filename = *value;
+    image->filename = std::string(value);
 }
 
 DLLEXPORT void image_dataset_metadata_image_delete(image_dataset_metadata::image* image)
