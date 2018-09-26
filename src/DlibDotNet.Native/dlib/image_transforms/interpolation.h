@@ -2035,6 +2035,19 @@ DLLEXPORT void chip_dims_delete(dlib::chip_dims* obj)
 
 #pragma endregion chip_dims
 
+#pragma region flip_rect_left_right
+
+DLLEXPORT dlib::rectangle* flip_rect_left_right(dlib::rectangle* rect, dlib::rectangle* window)
+{
+    dlib::rectangle& r = *static_cast<dlib::rectangle*>(rect);
+    dlib::rectangle& w = *static_cast<dlib::rectangle*>(window);
+
+    auto ret = impl::flip_rect_left_right(r, w);
+    return new dlib::rectangle(ret);
+}
+
+#pragma endregion flip_rect_left_right
+
 #pragma region get_face_chip_details
 
 DLLEXPORT int get_face_chip_details(std::vector<full_object_detection*>* dets, const unsigned int size, const double padding, std::vector<chip_details*>* rets)

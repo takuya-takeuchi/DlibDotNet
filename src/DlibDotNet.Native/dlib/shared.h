@@ -198,6 +198,16 @@ typedef struct
 #define ELEMENT_TYPE element
 #undef ELEMENT_TYPE
 
+#define new_instance_vector_to_instance(__TYPE__, src, dst) \
+do {\
+    std::vector<__TYPE__*>& tmp_src = *static_cast<std::vector<__TYPE__*>*>(src);\
+    for (int index = 0; index < tmp_src.size(); index++)\
+    {\
+        __TYPE__& tmp = *tmp_src[index];\
+        dst.push_back(tmp);\
+    }\
+} while (0)
+
 #define vector_to_new_instance(__TYPE__, src, dst) \
 do {\
     for (int index = 0; index < src.size(); index++)\
