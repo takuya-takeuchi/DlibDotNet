@@ -281,6 +281,186 @@ namespace DlibDotNet
 
         #endregion
 
+        #region Min
+
+        public static byte Min(Matrix<byte> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out byte result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static ushort Min(Matrix<ushort> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out ushort result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static uint Min(Matrix<uint> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out uint result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static sbyte Min(Matrix<sbyte> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out sbyte result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static short Min(Matrix<short> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out short result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static int Min(Matrix<int> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out int result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static float Min(Matrix<float> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out float result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static double Min(Matrix<double> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_min(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out double result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        #endregion
+
         public static Point MaxPoint(MatrixOp matrix)
         {
             if (matrix == null)
@@ -412,6 +592,34 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
+
+            #endregion
+
+            #region matrix_min
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out byte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out ushort ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out uint ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out sbyte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out short ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out float ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
 
             #endregion
 
