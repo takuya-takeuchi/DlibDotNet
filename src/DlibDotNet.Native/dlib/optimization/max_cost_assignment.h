@@ -67,7 +67,15 @@ DLLEXPORT int assignment_cost(matrix_element_type type, void* cost, std::vector<
             #undef ARRAY2D_ELEMENT
             break;
         case matrix_element_type::Float:
+            #define ARRAY2D_ELEMENT float
+            assignment_cost_template(ret, cost, assignment);
+            #undef ARRAY2D_ELEMENT
+            break;
         case matrix_element_type::Double:
+            #define ARRAY2D_ELEMENT double
+            assignment_cost_template(ret, cost, assignment);
+            #undef ARRAY2D_ELEMENT
+            break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:

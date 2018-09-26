@@ -1254,6 +1254,13 @@ namespace DlibDotNet
 
             #endregion
 
+            #region shape_predictor
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr normalizing_tform(IntPtr rect);
+
+            #endregion
+
             #region structural_object_detection_trainer
 
             #region scan_fhog_pyramid
@@ -1713,6 +1720,15 @@ namespace DlibDotNet
             public static extern void mlp_kernel_delete(MlpKernelType kernel_type, IntPtr kernel);
 
             #endregion
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr find_similarity_transform_dpoint(IntPtr from_points, IntPtr to_points);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr find_similarity_transform_point(IntPtr from_points, IntPtr to_points);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr rotation_matrix(double angle);
 
             #region running_stats
 

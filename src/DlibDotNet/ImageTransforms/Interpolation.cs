@@ -245,6 +245,16 @@ namespace DlibDotNet
             }
         }
 
+        public static Rectangle FlipRectLeftRight(Rectangle rect, Rectangle window)
+        {
+            using(var rectNative = rect.ToNative())
+            using (var windowNative = window.ToNative())
+            {
+                var ret = Native.flip_rect_left_right(rectNative.NativePtr, windowNative.NativePtr);
+                return new Rectangle(ret);
+            }
+        }
+
         public static ChipDetails[] GetFaceChipDetails(IEnumerable<FullObjectDetection> dets, uint size = 200, double padding = 0.2d)
         {
             if (dets == null)
@@ -556,6 +566,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType flip_image_up_down(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr flip_rect_left_right(IntPtr rect, IntPtr window);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType pyramid_up(Array2DType type, IntPtr img);

@@ -47,6 +47,14 @@ DLLEXPORT shape_predictor* deserialize_shape_predictor_proxy(proxy_deserialize* 
     return predictor;
 }
 
+DLLEXPORT dlib::point_transform_affine* normalizing_tform(dlib::rectangle* rect)
+{
+    dlib::rectangle& r = *static_cast<dlib::rectangle*>(rect);
+
+    auto ret = impl::normalizing_tform(r);
+    return new dlib::point_transform_affine(ret);
+}
+
 #pragma region shape_predictor_operator
 
 DLLEXPORT int shape_predictor_operator(shape_predictor* predictor,

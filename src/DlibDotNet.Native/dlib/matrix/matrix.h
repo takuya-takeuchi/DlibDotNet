@@ -417,6 +417,10 @@ do {\
     {\
         *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->nc();\
     }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 2, 2>*)matrix)->nc();\
+    }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
         *ret = ((dlib::matrix<ELEMENT, 31, 1>*)matrix)->nc();\
@@ -436,6 +440,10 @@ do {\
     else if (templateRows == 1 && templateColumns == 3)\
     {\
         *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->nr();\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 2, 2>*)matrix)->nr();\
     }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
@@ -457,6 +465,10 @@ do {\
     {\
         *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->size();\
     }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 2, 2>*)matrix)->size();\
+    }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
         *ret = ((dlib::matrix<ELEMENT, 31, 1>*)matrix)->size();\
@@ -476,6 +488,10 @@ do {\
     else if (templateRows == 1 && templateColumns == 3)\
     {\
         delete ((dlib::matrix<ELEMENT, 1, 3>*)matrix);\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        delete ((dlib::matrix<ELEMENT, 2, 2>*)matrix);\
     }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
@@ -498,6 +514,11 @@ do {\
     else if (templateRows == 1 && templateColumns == 3)\
     {\
         dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        *ret = tmp(index);\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<ELEMENT, 2, 2>& tmp = *(static_cast<dlib::matrix<ELEMENT, 2, 2>*>(matrix));\
         *ret = tmp(index);\
     }\
     else if (templateRows == 31 && templateColumns == 1)\
@@ -524,6 +545,11 @@ do {\
         dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
         tmp(index) = value;\
     }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<ELEMENT, 2, 2>& tmp = *(static_cast<dlib::matrix<ELEMENT, 2, 2>*>(matrix));\
+        tmp(index) = value;\
+    }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
         dlib::matrix<ELEMENT, 31, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
@@ -548,6 +574,11 @@ do {\
         dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
         *ret = tmp(row, column);\
     }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<ELEMENT, 2, 2>& tmp = *(static_cast<dlib::matrix<ELEMENT, 2, 2>*>(matrix));\
+        *ret = tmp(row, column);\
+    }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
         dlib::matrix<ELEMENT, 31, 1>& tmp = *(static_cast<dlib::matrix<ELEMENT, 31, 1>*>(matrix));\
@@ -570,6 +601,11 @@ do {\
     else if (templateRows == 1 && templateColumns == 3)\
     {\
         dlib::matrix<ELEMENT, 1, 3>& tmp = *(static_cast<dlib::matrix<ELEMENT, 1, 3>*>(matrix));\
+        tmp(row, column) = value;\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<ELEMENT, 2, 2>& tmp = *(static_cast<dlib::matrix<ELEMENT, 2, 2>*>(matrix));\
         tmp(row, column) = value;\
     }\
     else if (templateRows == 31 && templateColumns == 1)\

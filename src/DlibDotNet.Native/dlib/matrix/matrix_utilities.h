@@ -129,6 +129,44 @@ do {\
     }\
 } while (0)
 
+#define matrix_max_template(matrix, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN>& mat = *static_cast<dlib::matrix<ELEMENT_IN>*>(matrix);\
+        *((ELEMENT_IN*)ret) = dlib::max(mat);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
+        *((ELEMENT_IN*)ret) = dlib::max(mat);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        *((ELEMENT_IN*)ret) = dlib::max(mat);\
+    }\
+} while (0)
+
+#define matrix_min_template(matrix, templateRows, templateColumns, ret) \
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<ELEMENT_IN>& mat = *static_cast<dlib::matrix<ELEMENT_IN>*>(matrix);\
+        *((ELEMENT_IN*)ret) = dlib::min(mat);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 0, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
+        *((ELEMENT_IN*)ret) = dlib::min(mat);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT_IN, 31, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
+        *((ELEMENT_IN*)ret) = dlib::min(mat);\
+    }\
+} while (0)
+
 #define matrix_mean_op_std_vect_to_mat_template(type, matrix, templateRows, templateColumns, ret, err) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
@@ -556,6 +594,118 @@ DLLEXPORT int matrix_join_rows(matrix_element_type type, void* matrix1, void* ma
             matrix_join_rows_template(matrix1, matrix2, templateRows, templateColumns, ret);
             #undef ELEMENT_IN
             break; 
+        default: 
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
+            break; 
+    } 
+ 
+    return err; 
+}
+
+DLLEXPORT int matrix_max(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void* ret) 
+{ 
+    int err = ERR_OK; 
+    switch(type) 
+    { 
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            matrix_max_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default: 
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
+            break; 
+    } 
+ 
+    return err; 
+}
+
+DLLEXPORT int matrix_min(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void* ret) 
+{ 
+    int err = ERR_OK; 
+    switch(type) 
+    { 
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            matrix_min_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
         default: 
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
             break; 
