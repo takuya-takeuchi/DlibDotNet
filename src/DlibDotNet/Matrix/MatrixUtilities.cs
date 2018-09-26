@@ -86,7 +86,7 @@ namespace DlibDotNet
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
             Matrix<T>.TryParse<T>(out var destElementType);
-            var ret = Native.matrix_cast(type, 
+            var ret = Native.matrix_cast(type,
                                          matrix.NativePtr,
                                          matrix.TemplateRows,
                                          matrix.TemplateColumns,
@@ -100,6 +100,186 @@ namespace DlibDotNet
 
             return new Matrix<T>(mat, matrix.TemplateRows, matrix.TemplateColumns);
         }
+        
+        #region Max
+
+        public static byte Max(Matrix<byte> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out byte result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static ushort Max(Matrix<ushort> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out ushort result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static uint Max(Matrix<uint> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out uint result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static sbyte Max(Matrix<sbyte> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out sbyte result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static short Max(Matrix<short> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out short result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static int Max(Matrix<int> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out int result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static float Max(Matrix<float> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out float result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        public static double Max(Matrix<double> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.matrix_max(type,
+                                        matrix.NativePtr,
+                                        matrix.TemplateRows,
+                                        matrix.TemplateColumns,
+                                        out double result);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+            }
+
+            return result;
+        }
+
+        #endregion
 
         public static Point MaxPoint(MatrixOp matrix)
         {
@@ -206,6 +386,34 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_cast(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, MatrixElementType desttype, out IntPtr ret);
+
+            #region matrix_max
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out byte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out ushort ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out uint ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out sbyte ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out short ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out float ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
+
+            #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_mean(MatrixElementType array2DType, IntPtr matrix_op, int templateRows, int templateColumns, ElementType type, out IntPtr point);
