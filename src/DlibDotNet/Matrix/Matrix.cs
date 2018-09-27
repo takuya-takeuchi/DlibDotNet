@@ -767,6 +767,40 @@ namespace DlibDotNet
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
         }
 
+        public static Matrix<TElement> operator -(Matrix<TElement> lhs, DPoint rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+            using (var native = rhs.ToNative())
+            {
+                var ret = Dlib.Native.matrix_operator_subtract_dpoint(type,
+                                                                      lhs.NativePtr,
+                                                                      native.NativePtr,
+                                                                      templateRows,
+                                                                      templateColumns,
+                                                                      out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
         public static Matrix<TElement> operator *(Matrix<TElement> lhs, Matrix<TElement> rhs)
         {
             if (lhs == null)
@@ -802,6 +836,40 @@ namespace DlibDotNet
             }
 
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, DPoint rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+            using (var native = rhs.ToNative())
+            {
+                var ret = Dlib.Native.matrix_operator_multiply_dpoint(type,
+                                                                      lhs.NativePtr,
+                                                                      native.NativePtr,
+                                                                      templateRows,
+                                                                      templateColumns,
+                                                                      out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
         }
 
         public static Matrix<TElement> operator /(Matrix<TElement> lhs, Matrix<TElement> rhs)

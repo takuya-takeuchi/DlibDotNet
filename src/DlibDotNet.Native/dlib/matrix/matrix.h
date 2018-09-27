@@ -3,6 +3,7 @@
 
 #include "../export.h"
 #include <dlib/array.h>
+#include <dlib/geometry.h>
 #include <dlib/pixel.h>
 #include <dlib/image_processing.h>
 #include <dlib/image_processing/full_object_detection.h>
@@ -247,6 +248,41 @@ do {\
     }\
 } while (0)
 
+#define matrix_operator_subtract_right_template(__TYPE__, lhs, templateRows, templateColumns, __RIGHT_TYPE__ ,rhs, ret)\
+do {\
+    __RIGHT_TYPE__& r = *static_cast<__RIGHT_TYPE__*>(rhs);\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<__TYPE__, 0, 0>& l = *(static_cast<dlib::matrix<__TYPE__, 0, 0>*>(lhs));\
+        dlib::matrix<__TYPE__, 0, 0> m = l - r;\
+        *ret = new dlib::matrix<__TYPE__, 0, 0>(m);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<__TYPE__, 0, 1>& l = *(static_cast<dlib::matrix<__TYPE__, 0, 1>*>(lhs));\
+        dlib::matrix<__TYPE__, 0, 1> m = l - r;\
+        *ret = new dlib::matrix<__TYPE__, 0, 1>(m);\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<__TYPE__, 2, 2>& l = *(static_cast<dlib::matrix<__TYPE__, 2, 2>*>(lhs));\
+        dlib::matrix<__TYPE__, 2, 2> m = l - r;\
+        *ret = new dlib::matrix<__TYPE__, 2, 2>(m);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<__TYPE__, 1, 3>& l = *(static_cast<dlib::matrix<__TYPE__, 1, 3>*>(lhs));\
+        dlib::matrix<__TYPE__, 1, 3> m = l - r;\
+        *ret = new dlib::matrix<__TYPE__, 1, 3>(m);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<__TYPE__, 31, 1>& l = *(static_cast<dlib::matrix<__TYPE__, 31, 1>*>(lhs));\
+        dlib::matrix<__TYPE__, 31, 1> m = l - r;\
+        *ret = new dlib::matrix<__TYPE__, 31, 1>(m);\
+    }\
+} while (0)
+
 #define matrix_operator_multiply_template(TYPE)\
 do {\
     if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
@@ -313,6 +349,41 @@ do {\
             l *= r;\
         }\
         *ret = new dlib::matrix<TYPE, 31, 1>(l);\
+    }\
+} while (0)
+
+#define matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, __RIGHT_TYPE__ ,rhs, ret)\
+do {\
+    __RIGHT_TYPE__& r = *static_cast<__RIGHT_TYPE__*>(rhs);\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<__TYPE__, 0, 0>& l = *(static_cast<dlib::matrix<__TYPE__, 0, 0>*>(lhs));\
+        dlib::matrix<__TYPE__, 0, 0> m = l * r;\
+        *ret = new dlib::matrix<__TYPE__, 0, 0>(m);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<__TYPE__, 0, 1>& l = *(static_cast<dlib::matrix<__TYPE__, 0, 1>*>(lhs));\
+        dlib::matrix<__TYPE__, 0, 1> m = l * r;\
+        *ret = new dlib::matrix<__TYPE__, 0, 1>(m);\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<__TYPE__, 2, 2>& l = *(static_cast<dlib::matrix<__TYPE__, 2, 2>*>(lhs));\
+        dlib::matrix<__TYPE__, 2, 2> m = l * r;\
+        *ret = new dlib::matrix<__TYPE__, 2, 2>(m);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<__TYPE__, 1, 3>& l = *(static_cast<dlib::matrix<__TYPE__, 1, 3>*>(lhs));\
+        dlib::matrix<__TYPE__, 1, 3> m = l * r;\
+        *ret = new dlib::matrix<__TYPE__, 1, 3>(m);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<__TYPE__, 31, 1>& l = *(static_cast<dlib::matrix<__TYPE__, 31, 1>*>(lhs));\
+        dlib::matrix<__TYPE__, 31, 1> m = l * r;\
+        *ret = new dlib::matrix<__TYPE__, 31, 1>(m);\
     }\
 } while (0)
 
@@ -1698,6 +1769,52 @@ DLLEXPORT int matrix_operator_subtract(matrix_element_type type,
     return err;
 }
 
+DLLEXPORT int matrix_operator_subtract_dpoint(matrix_element_type type,
+                                              void* lhs,
+                                              dlib::dpoint* rhs,
+                                              const int templateRows,
+                                              const int templateColumns,
+                                              void** ret)
+{
+    int err = ERR_OK;
+    
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_operator_subtract_right_template(uint8_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_operator_subtract_right_template(uint16_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_operator_subtract_right_template(uint32_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Int8:
+            matrix_operator_subtract_right_template(int8_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Int16:
+            matrix_operator_subtract_right_template(int16_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Int32:
+            matrix_operator_subtract_right_template(int32_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Float:
+            matrix_operator_subtract_right_template(float, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Double:
+            matrix_operator_subtract_right_template(double, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
 DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
                                        void* lhs,
                                        void* rhs,
@@ -1734,6 +1851,52 @@ DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
             break;
         case matrix_element_type::Double:
             matrix_operator_multiply_template(double);
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+DLLEXPORT int matrix_operator_multiply_dpoint(matrix_element_type type,
+                                              void* lhs,
+                                              dlib::dpoint* rhs,
+                                              const int templateRows,
+                                              const int templateColumns,
+                                              void** ret)
+{
+    int err = ERR_OK;
+    
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_operator_multiply_right_template(uint8_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_operator_multiply_right_template(uint16_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_operator_multiply_right_template(uint32_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Int8:
+            matrix_operator_multiply_right_template(int8_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Int16:
+            matrix_operator_multiply_right_template(int16_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Int32:
+            matrix_operator_multiply_right_template(int32_t, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Float:
+            matrix_operator_multiply_right_template(float, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
+            break;
+        case matrix_element_type::Double:
+            matrix_operator_multiply_right_template(double, lhs, templateRows, templateColumns, dlib::dpoint, rhs, ret);
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
