@@ -643,6 +643,31 @@ namespace DlibDotNet
                 Double
 
             }
+            
+            internal enum NumericType
+            {
+
+                UInt8 = 0,
+
+                UInt16,
+
+                UInt32,
+
+                UInt64,
+
+                Int8,
+
+                Int16,
+
+                Int32,
+
+                Int64,
+
+                Float,
+
+                Double
+
+            }
 
             internal enum InterpolationTypes
             {
@@ -1633,6 +1658,15 @@ namespace DlibDotNet
                                                                            int templateRows,
                                                                            int templateColumns,
                                                                            out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_operator_multiply_left_numeric(NumericType numeric_type,
+                                                                                 IntPtr lhs,
+                                                                                 MatrixElementType type,
+                                                                                 IntPtr rhs,
+                                                                                 int templateRows,
+                                                                                 int templateColumns,
+                                                                                 out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_operator_divide(MatrixElementType matrixElementType,

@@ -511,28 +511,34 @@ do {\
 do {\
     switch(numeric_type)\
     {\
-        case matrix_element_type::UInt8:\
+        case numeric_type::UInt8:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, uint8_t, rhs, ret);\
             break;\
-        case matrix_element_type::UInt16:\
+        case numeric_type::UInt16:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, uint16_t, rhs, ret);\
             break;\
-        case matrix_element_type::UInt32:\
+        case numeric_type::UInt32:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, uint32_t, rhs, ret);\
             break;\
-        case matrix_element_type::Int8:\
+        case numeric_type::UInt64:\
+            matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, uint64_t, rhs, ret);\
+            break;\
+        case numeric_type::Int8:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, int8_t, rhs, ret);\
             break;\
-        case matrix_element_type::Int16:\
+        case numeric_type::Int16:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, int16_t, rhs, ret);\
             break;\
-        case matrix_element_type::Int32:\
+        case numeric_type::Int32:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, int32_t, rhs, ret);\
             break;\
-        case matrix_element_type::Float:\
+        case numeric_type::Int64:\
+            matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, int64_t, rhs, ret);\
+            break;\
+        case numeric_type::Float:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, float, rhs, ret);\
             break;\
-        case matrix_element_type::Double:\
+        case numeric_type::Double:\
             matrix_operator_multiply_right_template(__TYPE__, lhs, templateRows, templateColumns, double, rhs, ret);\
             break;\
     }\
@@ -2122,7 +2128,7 @@ DLLEXPORT int matrix_operator_multiply_dpoint(matrix_element_type type,
     return err;
 }
 
-DLLEXPORT int matrix_operator_multiply_left_numeric( matrix_element_type numeric_type,
+DLLEXPORT int matrix_operator_multiply_left_numeric(numeric_type numeric_type,
                                                     void* lhs,
                                                     matrix_element_type type,
                                                     void* rhs,
@@ -2134,33 +2140,36 @@ DLLEXPORT int matrix_operator_multiply_left_numeric( matrix_element_type numeric
     
     switch(numeric_type)
     {
-        case matrix_element_type::UInt8:
+        case numeric_type::UInt8:
             matrix_operator_multiply_left_numeric_template(uint8_t, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::UInt16:
+        case numeric_type::UInt16:
             matrix_operator_multiply_left_numeric_template(uint16_t, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::UInt32:
+        case numeric_type::UInt32:
             matrix_operator_multiply_left_numeric_template(uint32_t, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::Int8:
+        case numeric_type::UInt64:
+            matrix_operator_multiply_left_numeric_template(uint64_t, lhs, type, rhs, templateRows, templateColumns, ret);
+            break;
+        case numeric_type::Int8:
             matrix_operator_multiply_left_numeric_template(int8_t, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::Int16:
+        case numeric_type::Int16:
             matrix_operator_multiply_left_numeric_template(int16_t, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::Int32:
+        case numeric_type::Int32:
             matrix_operator_multiply_left_numeric_template(int32_t, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::Float:
+        case numeric_type::Int64:
+            matrix_operator_multiply_left_numeric_template(int64_t, lhs, type, rhs, templateRows, templateColumns, ret);
+            break;
+        case numeric_type::Float:
             matrix_operator_multiply_left_numeric_template(float, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::Double:
+        case numeric_type::Double:
             matrix_operator_multiply_left_numeric_template(double, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
-        case matrix_element_type::RgbPixel:
-        case matrix_element_type::HsiPixel:
-        case matrix_element_type::RgbAlphaPixel:
         default:
             err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
             break;
@@ -2173,7 +2182,7 @@ DLLEXPORT int matrix_operator_multiply_right_numeric(matrix_element_type type,
                                                      void* lhs,
                                                      const int templateRows,
                                                      const int templateColumns,
-                                                     matrix_element_type numeric_type,
+                                                     numeric_type numeric_type,
                                                      void* rhs,
                                                      void** ret)
 {
