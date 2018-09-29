@@ -546,6 +546,18 @@ DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int template
     return err; 
 }
 
+DLLEXPORT void matrix_length_dpoint(void* point, int* ret) 
+{ 
+    dlib::dpoint& p = *static_cast<dlib::dpoint*>(point);
+    *ret = dlib::length(p);
+}
+
+DLLEXPORT void matrix_length_point(void* point, int* ret) 
+{ 
+    dlib::point& p = *static_cast<dlib::point*>(point);
+    *ret = dlib::length(p);
+}
+
 DLLEXPORT int matrix_length_squared(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void* ret) 
 { 
     int err = ERR_OK; 
