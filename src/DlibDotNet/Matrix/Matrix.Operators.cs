@@ -68,6 +68,33 @@ namespace DlibDotNet
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
         }
 
+        public static Matrix<TElement> operator -(Matrix<TElement> matrix)
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var templateRows = matrix.TemplateRows;
+            var templateColumns = matrix.TemplateColumns;
+
+            var type = matrix._MatrixElementTypes.ToNativeMatrixElementType();
+            var ret = Dlib.Native.matrix_operator_negative(type,
+                                                           matrix.NativePtr,
+                                                           templateRows,
+                                                           templateColumns,
+                                                           out var ptr);
+            switch (ret)
+            {
+                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    throw new ArgumentException($"Input {matrix._MatrixElementTypes} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+            }
+
+            return new Matrix<TElement>(ptr, templateRows, templateColumns);
+        }
+
         public static Matrix<TElement> operator -(Matrix<TElement> lhs, Matrix<TElement> rhs)
         {
             if (lhs == null)
