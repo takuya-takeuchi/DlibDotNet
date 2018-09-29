@@ -44,6 +44,20 @@ enum struct vector_element_type : int
     Double
 };
 
+enum struct numeric_type : int
+{
+    UInt8 = 0,
+    UInt16,
+    UInt32,
+    UInt64,
+    Int8,
+    Int16,
+    Int32,
+    Int64,
+    Float,
+    Double
+};
+
 enum element_type : int
 {
 

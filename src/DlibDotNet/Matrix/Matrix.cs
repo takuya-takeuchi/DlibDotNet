@@ -767,6 +767,42 @@ namespace DlibDotNet
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
         }
 
+        public static Matrix<TElement> operator -(Matrix<TElement> lhs, DPoint rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+            using (var native = rhs.ToNative())
+            {
+                var ret = Dlib.Native.matrix_operator_subtract_dpoint(type,
+                                                                      lhs.NativePtr,
+                                                                      native.NativePtr,
+                                                                      templateRows,
+                                                                      templateColumns,
+                                                                      out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
         public static Matrix<TElement> operator *(Matrix<TElement> lhs, Matrix<TElement> rhs)
         {
             if (lhs == null)
@@ -802,6 +838,782 @@ namespace DlibDotNet
             }
 
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, DPoint rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+            using (var native = rhs.ToNative())
+            {
+                var ret = Dlib.Native.matrix_operator_multiply_dpoint(type,
+                                                                      lhs.NativePtr,
+                                                                      native.NativePtr,
+                                                                      templateRows,
+                                                                      templateColumns,
+                                                                      out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                if(templateRows == 0 && templateColumns == 0)
+                    return new Matrix<TElement>(matrix);
+                return new Matrix<TElement>(matrix, 2, 1);
+            }
+        }
+        
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, byte rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.UInt8,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, ushort rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.UInt16,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, uint rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.UInt32,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, ulong rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.UInt64,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, sbyte rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.Int8,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, short rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.Int16,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, int rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.Int32,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, long rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.Int64,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, float rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.Float,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(Matrix<TElement> lhs, double rhs)
+        {
+            if (lhs == null)
+                throw new ArgumentNullException(nameof(lhs));
+
+            lhs.ThrowIfDisposed();
+
+            if (!(lhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = lhs.TemplateRows;
+            var templateColumns = lhs.TemplateColumns;
+
+            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&rhs);
+                var ret = Dlib.Native.matrix_operator_multiply_right_numeric(type,
+                                                                             lhs.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             Dlib.Native.NumericType.Double,
+                                                                             p,
+                                                                             out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(byte lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.UInt8,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(ushort lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.UInt16,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(uint lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.UInt32,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(ulong lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.UInt64,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(sbyte lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.Int8,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(short lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.Int16,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(int lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.Int32,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(long lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.Int64,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(float lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.Float,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
+        }
+
+        public static Matrix<TElement> operator *(double lhs, Matrix<TElement> rhs)
+        {
+            if (rhs == null)
+                throw new ArgumentNullException(nameof(rhs));
+
+            rhs.ThrowIfDisposed();
+
+            if (!(rhs.Size > 0))
+                throw new ArgumentException();
+
+            var templateRows = rhs.TemplateRows;
+            var templateColumns = rhs.TemplateColumns;
+
+            var type = rhs._MatrixElementTypes.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                var p = (IntPtr)(&lhs);
+                var ret = Dlib.Native.matrix_operator_multiply_left_numeric(Dlib.Native.NumericType.Double,
+                                                                            p,
+                                                                            type,
+                                                                            rhs.NativePtr,
+                                                                            templateRows,
+                                                                            templateColumns,
+                                                                            out var matrix);
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                        throw new ArgumentException($"Input {rhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+            }
         }
 
         public static Matrix<TElement> operator /(Matrix<TElement> lhs, Matrix<TElement> rhs)
@@ -995,8 +1807,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    byte value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1011,7 +1828,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1077,8 +1899,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    ushort value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1093,7 +1920,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1159,8 +1991,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    uint value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1175,7 +2012,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1241,8 +2083,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    sbyte value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1257,7 +2104,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1323,8 +2175,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    short value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1339,7 +2196,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1405,8 +2267,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    int value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1421,7 +2288,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1487,8 +2359,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    float value;
-                    Dlib.Native.matrix_operator_get_one_row_column_float(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_float(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1503,7 +2380,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_float(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_float(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1569,8 +2451,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    double value;
-                    Dlib.Native.matrix_operator_get_one_row_column_double(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_double(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1585,7 +2472,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_double(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_double(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1651,8 +2543,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    RgbPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1667,7 +2564,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1733,8 +2635,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    RgbAlphaPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1749,7 +2656,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1815,8 +2727,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    HsiPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1831,7 +2748,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
