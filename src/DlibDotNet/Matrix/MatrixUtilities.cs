@@ -380,10 +380,10 @@ namespace DlibDotNet
 
         #endregion
 
-        public static MatrixRangeExp<double> Linspace(double start, double end, int num)
+        public static Matrix<double> Linspace(double start, double end, int num)
         {
-            var matrixRange = Native.linspace(start, end, num);
-            return new MatrixRangeExp<double>(matrixRange);
+            var matrix = Native.linspace(start, end, num);
+            return new Matrix<double>(matrix);
         }
 
         public static Matrix<T> MatrixCast<T>(MatrixBase matrix)

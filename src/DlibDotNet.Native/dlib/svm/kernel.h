@@ -55,10 +55,6 @@ do {\
         dlib::linear_kernel<dlib::matrix<ELEMENT, 31, 1>>* k = static_cast<dlib::linear_kernel<dlib::matrix<ELEMENT, 31, 1>>*>(kernel);\
         delete k;\
     }\
-    else\
-    {\
-        return nullptr;\
-    }\
 } while (0)
 
 #pragma endregion
@@ -131,10 +127,10 @@ DLLEXPORT void* linear_kernel_new(matrix_element_type type,
     }
 }
 
-DLLEXPORT void* linear_kernel_delete(matrix_element_type type,
-                                     void* kernel,
-                                     const int templateRows,
-                                     const int templateColumns)
+DLLEXPORT void linear_kernel_delete(matrix_element_type type,
+                                    void* kernel,
+                                    const int templateRows,
+                                    const int templateColumns)
 {
     switch(type)
     {
@@ -193,8 +189,6 @@ DLLEXPORT void* linear_kernel_delete(matrix_element_type type,
             linear_kernel_delete_template(kernel, templateRows, templateColumns);
             #undef ELEMENT
             break;
-        default:
-            return nullptr;
     }
 }
 

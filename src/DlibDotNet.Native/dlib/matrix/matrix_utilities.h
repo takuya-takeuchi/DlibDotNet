@@ -434,8 +434,8 @@ do {\
 
 DLLEXPORT void* linspace(double start, double end, int num)
 {
-    matrix_range_exp<double> ret = dlib::linspace(start, end, num);
-    return new matrix_range_exp<double>(ret);
+    dlib::matrix<double> ret = dlib::linspace(start, end, num);
+    return new dlib::matrix<double>(ret);
 }
 
 DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRows, int templateColumns, matrix_element_type desttype, void** ret) 
