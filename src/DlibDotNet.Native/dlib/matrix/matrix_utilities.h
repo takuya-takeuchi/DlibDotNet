@@ -110,22 +110,22 @@ do {\
     }\
 } while (0)
 
-#define matrix_length_template(matrix, templateRows, templateColumns, ret) \
+#define matrix_length_template(__TYPE__, matrix, templateRows, templateColumns, ret) \
 do {\
     if (templateRows == 0 && templateColumns == 0)\
     {\
-        dlib::matrix<ELEMENT_IN>& mat = *static_cast<dlib::matrix<ELEMENT_IN>*>(matrix);\
-        *ret = dlib::length(mat);\
+        dlib::matrix<__TYPE__>& mat = *static_cast<dlib::matrix<__TYPE__>*>(matrix);\
+        *((__TYPE__*)ret) = dlib::length(mat);\
     }\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
-        dlib::matrix<ELEMENT_IN, 0, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
-        *ret = dlib::length(mat);\
+        dlib::matrix<__TYPE__, 0, 1>& mat = *static_cast<dlib::matrix<__TYPE__, 0, 1>*>(matrix);\
+        *((__TYPE__*)ret) = dlib::length(mat);\
     }\
     else if (templateRows == 31 && templateColumns == 1)\
     {\
-        dlib::matrix<ELEMENT_IN, 31, 1>& mat = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
-        *ret = dlib::length(mat);\
+        dlib::matrix<__TYPE__, 31, 1>& mat = *static_cast<dlib::matrix<__TYPE__, 31, 1>*>(matrix);\
+        *((__TYPE__*)ret) = dlib::length(mat);\
     }\
 } while (0)
 
@@ -506,50 +506,34 @@ DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRo
     return err; 
 }
 
-DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int templateRows, int templateColumns, double* ret) 
+DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void* ret) 
 { 
     int err = ERR_OK; 
     switch(type) 
     { 
         case matrix_element_type::UInt8:
-            #define ELEMENT_IN uint8_t
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(uint8_t, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::UInt16:
-            #define ELEMENT_IN uint16_t
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(uint16_t, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::UInt32:
-            #define ELEMENT_IN uint32_t
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(uint32_t, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::Int8:
-            #define ELEMENT_IN int8_t
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(int8_t, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::Int16:
-            #define ELEMENT_IN int16_t
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(int16_t, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::Int32:
-            #define ELEMENT_IN int32_t
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(int32_t, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::Float:
-            #define ELEMENT_IN float
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(float, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::Double:
-            #define ELEMENT_IN double
-            matrix_length_template(matrix, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            matrix_length_template(double, matrix, templateRows, templateColumns, ret);
             break; 
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
