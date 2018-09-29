@@ -12,6 +12,7 @@ using int32_t = System.Int32;
 namespace DlibDotNet
 {
 
+    [Obsolete]
     public sealed class MatrixRangeExp<T> : MatrixBase
         where T : struct
     {
