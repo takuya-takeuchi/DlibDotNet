@@ -1047,6 +1047,189 @@ namespace DlibDotNet.Tests.Matrix
         }
 
         [TestMethod]
+        public void Enumerator()
+        {
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            const int row = 10;
+            const int column = 10;
+
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var matrix = FillMatrixByNonZero<byte>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var matrix = FillMatrixByNonZero<ushort>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var matrix = FillMatrixByNonZero<uint>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var matrix = FillMatrixByNonZero<sbyte>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var matrix = FillMatrixByNonZero<short>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var matrix = FillMatrixByNonZero<int>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var matrix = FillMatrixByNonZero<float>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var matrix = FillMatrixByNonZero<double>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        [TestMethod]
         public void Indexer()
         {
             try
@@ -2759,24 +2942,7 @@ namespace DlibDotNet.Tests.Matrix
                     throw new ArgumentOutOfRangeException(nameof(elementTypes), elementTypes, null);
             }
         }
-
-        internal sealed class TestData : TestDataBase
-        {
-
-            public TwoDimensionObjectBase Data
-            {
-                get;
-                set;
-            }
-
-            public MatrixElementTypes MatrixElementType
-            {
-                get;
-                set;
-            }
-
-        }
-
+        
     }
 
 }
