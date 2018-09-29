@@ -179,6 +179,38 @@ do {\
     }\
 } while (0)
 
+#define matrix_operator_negative_template(__TYPE__, matrix, templateRows, templateColumns, ret, err)\
+do {\
+    if (templateRows == 0 && templateColumns == 0)\
+    {\
+        dlib::matrix<__TYPE__, 0, 0>& m = *(static_cast<dlib::matrix<__TYPE__, 0, 0>*>(matrix));\
+        auto tmp = -m;\
+        *ret = new dlib::matrix<__TYPE__, 0, 0>(tmp);\
+    }\
+    else if (templateRows == 0 && templateColumns == 1)\
+    {\
+        dlib::matrix<__TYPE__, 0, 1>& m = *(static_cast<dlib::matrix<__TYPE__, 0, 1>*>(matrix));\
+        auto tmp = -m;\
+        *ret = new dlib::matrix<__TYPE__, 0, 1>(tmp);\
+    }\
+    else if (templateRows == 1 && templateColumns == 3)\
+    {\
+        dlib::matrix<__TYPE__, 1, 3>& m = *(static_cast<dlib::matrix<__TYPE__, 1, 3>*>(matrix));\
+        auto tmp = -m;\
+        *ret = new dlib::matrix<__TYPE__, 1, 3>(tmp);\
+    }\
+    else if (templateRows == 31 && templateColumns == 1)\
+    {\
+        dlib::matrix<__TYPE__, 31, 1>& m = *(static_cast<dlib::matrix<__TYPE__, 31, 1>*>(matrix));\
+        auto tmp = -m;\
+        *ret = new dlib::matrix<__TYPE__, 31, 1>(tmp);\
+    }\
+    else\
+    {\
+        err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
+} while (0)
+
 #define matrix_operator_subtract_template(TYPE)\
 do {\
     if (leftTemplateRows == 0 && leftTemplateColumns == 0)\
@@ -2104,6 +2136,51 @@ DLLEXPORT int matrix_operator_add(matrix_element_type type,
             break;
         case matrix_element_type::Double:
             matrix_operator_add_template(double);
+            break;
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+    
+    return err;
+}
+
+DLLEXPORT int matrix_operator_negative(matrix_element_type type,
+                                       void* matrix,
+                                       const int templateRows,
+                                       const int templateColumns,
+                                       void** ret)
+{
+    int err = ERR_OK;
+    
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_operator_negative_template(uint8_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_operator_negative_template(uint16_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_operator_negative_template(uint32_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Int8:
+            matrix_operator_negative_template(int8_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Int16:
+            matrix_operator_negative_template(int16_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Int32:
+            matrix_operator_negative_template(int32_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Float:
+            matrix_operator_negative_template(float, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Double:
+            matrix_operator_negative_template(double, matrix, templateRows, templateColumns, ret, err);
             break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
