@@ -1669,6 +1669,15 @@ namespace DlibDotNet
                                                                                  out IntPtr ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_operator_multiply_right_numeric(MatrixElementType type,
+                                                                                  IntPtr lhs,
+                                                                                  int templateRows,
+                                                                                  int templateColumns,
+                                                                                  NumericType numeric_type,
+                                                                                  IntPtr rhs,
+                                                                                  out IntPtr ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_operator_divide(MatrixElementType matrixElementType,
                                                                   IntPtr lhs,
                                                                   IntPtr rhs,
