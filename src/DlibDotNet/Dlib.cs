@@ -1443,74 +1443,74 @@ namespace DlibDotNet
             #region matrix_operator_get_one_row_column
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_uint8_t(IntPtr matrix, int index, int templateRows, int templateColumns, out byte ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_uint8_t(IntPtr matrix, int index, int templateRows, int templateColumns, out byte ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_uint16_t(IntPtr matrix, int index, int templateRows, int templateColumns, out ushort ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_uint16_t(IntPtr matrix, int index, int templateRows, int templateColumns, out ushort ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_uint32_t(IntPtr matrix, int index, int templateRows, int templateColumns, out uint ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_uint32_t(IntPtr matrix, int index, int templateRows, int templateColumns, out uint ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_int8_t(IntPtr matrix, int index, int templateRows, int templateColumns, out sbyte ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_int8_t(IntPtr matrix, int index, int templateRows, int templateColumns, out sbyte ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_int16_t(IntPtr matrix, int index, int templateRows, int templateColumns, out short ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_int16_t(IntPtr matrix, int index, int templateRows, int templateColumns, out short ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_int32_t(IntPtr matrix, int index, int templateRows, int templateColumns, out int ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_int32_t(IntPtr matrix, int index, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_double(IntPtr matrix, int index, int templateRows, int templateColumns, out double ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_double(IntPtr matrix, int index, int templateRows, int templateColumns, out double ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_float(IntPtr matrix, int index, int templateRows, int templateColumns, out float ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_float(IntPtr matrix, int index, int templateRows, int templateColumns, out float ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_rgb_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out RgbPixel ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_rgb_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out RgbPixel ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out RgbAlphaPixel ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out RgbAlphaPixel ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_hsi_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out HsiPixel ret);
+            public static extern ErrorType matrix_operator_get_one_row_column_hsi_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out HsiPixel ret);
 
             #endregion
 
             #region matrix_operator_set_one_row_column
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_uint8_t(IntPtr matrix, int index, int templateRows, int templateColumns, byte value);
+            public static extern ErrorType matrix_operator_set_one_row_column_uint8_t(IntPtr matrix, int index, int templateRows, int templateColumns, byte value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_uint16_t(IntPtr matrix, int index, int templateRows, int templateColumns, ushort value);
+            public static extern ErrorType matrix_operator_set_one_row_column_uint16_t(IntPtr matrix, int index, int templateRows, int templateColumns, ushort value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_uint32_t(IntPtr matrix, int index, int templateRows, int templateColumns, uint value);
+            public static extern ErrorType matrix_operator_set_one_row_column_uint32_t(IntPtr matrix, int index, int templateRows, int templateColumns, uint value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_int8_t(IntPtr matrix, int index, int templateRows, int templateColumns, sbyte value);
+            public static extern ErrorType matrix_operator_set_one_row_column_int8_t(IntPtr matrix, int index, int templateRows, int templateColumns, sbyte value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_int16_t(IntPtr matrix, int index, int templateRows, int templateColumns, short value);
+            public static extern ErrorType matrix_operator_set_one_row_column_int16_t(IntPtr matrix, int index, int templateRows, int templateColumns, short value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_int32_t(IntPtr matrix, int index, int templateRows, int templateColumns, int value);
+            public static extern ErrorType matrix_operator_set_one_row_column_int32_t(IntPtr matrix, int index, int templateRows, int templateColumns, int value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_double(IntPtr matrix, int index, int templateRows, int templateColumns, double value);
+            public static extern ErrorType matrix_operator_set_one_row_column_double(IntPtr matrix, int index, int templateRows, int templateColumns, double value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_float(IntPtr matrix, int index, int templateRows, int templateColumns, float value);
+            public static extern ErrorType matrix_operator_set_one_row_column_float(IntPtr matrix, int index, int templateRows, int templateColumns, float value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_rgb_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, RgbPixel value);
+            public static extern ErrorType matrix_operator_set_one_row_column_rgb_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, RgbPixel value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, RgbAlphaPixel value);
+            public static extern ErrorType matrix_operator_set_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, RgbAlphaPixel value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_hsi_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, HsiPixel value);
+            public static extern ErrorType matrix_operator_set_one_row_column_hsi_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, HsiPixel value);
 
             #endregion
 

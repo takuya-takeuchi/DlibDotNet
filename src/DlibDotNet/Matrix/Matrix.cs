@@ -795,6 +795,8 @@ namespace DlibDotNet
                 {
                     case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                         throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                 }
 
                 return new Matrix<TElement>(matrix, templateRows, templateColumns);
@@ -866,9 +868,13 @@ namespace DlibDotNet
                 {
                     case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                         throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                 }
 
-                return new Matrix<TElement>(matrix, templateRows, templateColumns);
+                if(templateRows == 0 && templateColumns == 0)
+                    return new Matrix<TElement>(matrix);
+                return new Matrix<TElement>(matrix, 2, 1);
             }
         }
 
@@ -1063,8 +1069,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    byte value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1079,7 +1090,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1145,8 +1161,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    ushort value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1161,7 +1182,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1227,8 +1253,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    uint value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1243,7 +1274,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1309,8 +1345,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    sbyte value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1325,7 +1366,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1391,8 +1437,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    short value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1407,7 +1458,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1473,8 +1529,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    int value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1489,7 +1550,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1555,8 +1621,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    float value;
-                    Dlib.Native.matrix_operator_get_one_row_column_float(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_float(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1571,7 +1642,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_float(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_float(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1637,8 +1713,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    double value;
-                    Dlib.Native.matrix_operator_get_one_row_column_double(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_double(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1653,7 +1734,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_double(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_double(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1719,8 +1805,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    RgbPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1735,7 +1826,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1801,8 +1897,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    RgbAlphaPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1817,7 +1918,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
@@ -1883,8 +1989,13 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    HsiPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, out value);
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
                     return value;
                 }
                 set
@@ -1899,7 +2010,12 @@ namespace DlibDotNet
                     if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.matrix_operator_set_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
                 }
             }
 
