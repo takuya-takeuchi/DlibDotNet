@@ -1305,6 +1305,24 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
+                using (var matrix = new Matrix<ulong>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                    for (var c = 0; c < 3; c++)
+                    {
+                        var v = (ulong)(r + c);
+                        matrix[r, c] = v;
+                        Assert.AreEqual(v, matrix[r, c]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+            }
+
+            try
+            {
                 using (var matrix = new Matrix<short>(3, 3))
                 {
                     for (var r = 0; r < 3; r++)
@@ -1337,6 +1355,24 @@ namespace DlibDotNet.Tests.Matrix
             catch (Exception)
             {
                 Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<long>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                    for (var c = 0; c < 3; c++)
+                    {
+                        var v = (long)(r + c);
+                        matrix[r, c] = v;
+                        Assert.AreEqual(v, matrix[r, c]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1488,6 +1524,23 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
+                using (var matrix = new Matrix<ulong>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (ulong)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+            }
+
+            try
+            {
                 using (var matrix = new Matrix<sbyte>(3, 1))
                 {
                     for (var index = 0; index < 3; index++)
@@ -1535,6 +1588,23 @@ namespace DlibDotNet.Tests.Matrix
             catch (Exception)
             {
                 Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<long>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (long)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1681,6 +1751,23 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
+                using (var matrix = new Matrix<ulong>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (ulong)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+            }
+
+            try
+            {
                 using (var matrix = new Matrix<sbyte>(1, 3))
                 {
                     for (var index = 0; index < 3; index++)
@@ -1728,6 +1815,23 @@ namespace DlibDotNet.Tests.Matrix
             catch (Exception)
             {
                 Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<long>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (long)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(long)}");
             }
 
             try

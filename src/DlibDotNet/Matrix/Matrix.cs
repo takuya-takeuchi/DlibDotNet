@@ -633,6 +633,8 @@ namespace DlibDotNet
                         break;
                     case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                     default:
                         throw new ArgumentException();
                 }

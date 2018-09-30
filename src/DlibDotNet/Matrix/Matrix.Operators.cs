@@ -63,6 +63,8 @@ namespace DlibDotNet
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
             }
 
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
@@ -149,6 +151,8 @@ namespace DlibDotNet
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
             }
 
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
@@ -222,6 +226,8 @@ namespace DlibDotNet
             {
                 case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                     throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
             }
 
             return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
@@ -1037,6 +1043,8 @@ namespace DlibDotNet
                 {
                     case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                         throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                 }
 
                 return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
@@ -1073,6 +1081,8 @@ namespace DlibDotNet
                 {
                     case Dlib.Native.ErrorType.InputElementTypeNotSupport:
                         throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                 }
 
                 return new Matrix<TElement>(matrix, leftTemplateRows, leftTemplateColumns);
