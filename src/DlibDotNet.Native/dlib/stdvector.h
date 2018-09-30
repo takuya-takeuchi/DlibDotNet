@@ -164,6 +164,50 @@ DLLEXPORT void stdvector_rectangle_copy(std::vector<rectangle*> *vector, rectang
 
 #pragma endregion rectangle
 
+#pragma region point
+
+DLLEXPORT std::vector<point*>* stdvector_point_new1()
+{
+    return new std::vector<point*>();
+}
+
+DLLEXPORT std::vector<point*>* stdvector_point_new2(size_t size)
+{
+    return new std::vector<point*>(size);
+}
+
+DLLEXPORT std::vector<point*>* stdvector_point_new3(point** data, size_t dataLength)
+{
+    return new std::vector<point*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_point_getSize(std::vector<point*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT point* stdvector_point_getPointer(std::vector<point*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_point_delete(std::vector<point*> *vector)
+{
+    std::vector<point*>& tmp = *(static_cast<std::vector<point*>*>(vector));
+    for (int index = 0 ; index < tmp.size(); index++)
+        delete tmp[index];
+
+    delete vector;
+}
+
+DLLEXPORT void stdvector_point_copy(std::vector<point*> *vector, point** dst)
+{
+    size_t length = sizeof(point*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion point
+
 #pragma region dlib::vector<double>
 
 DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_vector_double_new1()

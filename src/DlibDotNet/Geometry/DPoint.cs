@@ -17,9 +17,12 @@ namespace DlibDotNet
             this._Y = y;
         }
 
-        internal DPoint(IntPtr nativePtr)
+        internal DPoint(IntPtr ptr, bool isEnabledDispose = true)
         {
-            using (var native = new NativeDPoint(nativePtr))
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            using (var native = new NativeDPoint(ptr, isEnabledDispose))
             {
                 this._X = native.X;
                 this._Y = native.Y;
@@ -185,8 +188,9 @@ namespace DlibDotNet
             {
                 this.NativePtr = Native.dpoint_new();
             }
-
-            internal NativeDPoint(IntPtr ptr)
+            
+            internal NativeDPoint(IntPtr ptr, bool isEnabledDispose = true) :
+                base(isEnabledDispose)
             {
                 if (ptr == IntPtr.Zero)
                     throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));

@@ -502,6 +502,34 @@ namespace DlibDotNet
             public static extern void stdvector_rectangle_copy(IntPtr vector, IntPtr[] dst);
 
             #endregion
+            
+            #region point
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_point_new1();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_point_new2(IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_point_new3([In] IntPtr[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_point_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_point_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_point_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_point_delete(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_point_copy(IntPtr vector, IntPtr[] dst);
+
+            #endregion
 
             #region vectordouble
 
