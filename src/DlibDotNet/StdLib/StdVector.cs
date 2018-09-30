@@ -32,6 +32,7 @@ namespace DlibDotNet
                 new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
                 new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
                 new { Type = typeof(ChipDetails),                          ElementType = ElementTypes.ChipDetails  },
+                new { Type = typeof(StdString),                            ElementType = ElementTypes.StdString  },
                 new { Type = typeof(FullObjectDetection),                  ElementType = ElementTypes.FullObjectDetection  },
                 new { Type = typeof(RectDetection),                        ElementType = ElementTypes.RectDetection  },
                 new { Type = typeof(ImageWindow.OverlayLine),              ElementType = ElementTypes.ImageWindowOverlayLine  },
@@ -136,6 +137,8 @@ namespace DlibDotNet
                         return new StdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.ChipDetails:
                         return new StdVectorChipDetailsImp() as StdVectorImp<TItem>;
+                    case ElementTypes.StdString:
+                        return new StdVectorStdStringImp() as StdVectorImp<TItem>;
                     case ElementTypes.FullObjectDetection:
                         return new StdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
                     case ElementTypes.RectDetection:
@@ -233,6 +236,8 @@ namespace DlibDotNet
             RectDetection,
 
             ChipDetails,
+
+            StdString,
 
             Matrix,
 
@@ -504,6 +509,63 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 Dlib.Native.stdvector_chip_details_copy(ptr, dst);
                 return dst.Select(p => new ChipDetails(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorStdStringImp : StdVectorImp<StdString>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return Dlib.Native.stdvector_string_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return Dlib.Native.stdvector_string_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<StdString> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return Dlib.Native.stdvector_string_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                Dlib.Native.stdvector_string_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_string_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_string_getSize(ptr).ToInt32();
+            }
+
+            public override StdString[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new StdString[0];
+
+                var dst = new IntPtr[size];
+                Dlib.Native.stdvector_string_copy(ptr, dst);
+                return dst.Select(p => new StdString(p)).ToArray();
             }
 
             #endregion

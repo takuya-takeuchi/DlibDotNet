@@ -419,6 +419,34 @@ namespace DlibDotNet
 
             #endregion
 
+            #region std::string
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_string_new1();
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_string_new2(IntPtr size);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_string_new3([In] IntPtr[] data, IntPtr dataLength);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_string_getSize(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_string_getPointer(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr stdvector_string_at(IntPtr vector, int index);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_string_delete(IntPtr vector);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void stdvector_string_copy(IntPtr vector, IntPtr[] dst);
+
+            #endregion
+
             #region perspective_window_overlay_dot
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

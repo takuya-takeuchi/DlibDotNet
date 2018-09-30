@@ -845,6 +845,46 @@ DLLEXPORT void stdvector_chip_details_copy(std::vector<chip_details*> *vector, c
 
 #pragma endregion chip_details
 
+#pragma region std::string
+
+DLLEXPORT std::vector<std::string*>* stdvector_string_new1()
+{
+    return new std::vector<std::string*>;
+}
+
+DLLEXPORT std::vector<std::string*>* stdvector_string_new2(size_t size)
+{
+    return new std::vector<std::string*>(size);
+}
+
+DLLEXPORT std::vector<std::string*>* stdvector_string_new3(std::string** data, size_t dataLength)
+{
+    return new std::vector<std::string*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_string_getSize(std::vector<std::string*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT std::string* stdvector_string_getPointer(std::vector<std::string*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_string_delete(std::vector<std::string*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_string_copy(std::vector<std::string*> *vector, std::string** dst)
+{
+    size_t length = sizeof(std::string*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion std::string
+
 #pragma region sample_pair
 
 DLLEXPORT std::vector<sample_pair*>* stdvector_sample_pair_new1()
