@@ -32,7 +32,7 @@ namespace DlibDotNet
                 throw new ArgumentException();
 
             using (var f = new StdVector<Point>(fromPoints))
-            using (var t = new StdVector<Point>(fromPoints))
+            using (var t = new StdVector<Point>(toPoints))
             {
                 var ptr = Native.find_similarity_transform_point(f.NativePtr, t.NativePtr);
                 return new PointTransformAffine(ptr);
@@ -50,7 +50,7 @@ namespace DlibDotNet
                 throw new ArgumentException();
 
             using (var f = new StdVector<DPoint>(fromPoints))
-            using (var t = new StdVector<DPoint>(fromPoints))
+            using (var t = new StdVector<DPoint>(toPoints))
             {
                 var ptr = Native.find_similarity_transform_dpoint(f.NativePtr, t.NativePtr);
                 return new PointTransformAffine(ptr);
