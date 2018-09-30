@@ -442,7 +442,7 @@ do {\
 
 #define matrix_operator_multiply_left_numeric_template(__NUMERIC_TYPE__, lhs, type ,rhs, templateRows, templateColumns, ret)\
 do {\
-    switch(numeric_type)\
+    switch(type)\
     {\
         case matrix_element_type::UInt8:\
             matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, uint8_t, rhs, templateRows, templateColumns, ret);\
