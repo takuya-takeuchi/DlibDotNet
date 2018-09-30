@@ -35,11 +35,15 @@ namespace ImgLab
             var createOption = new CommandOption("-c|--create", CommandOptionType.SingleValue);
             var convertOption = new CommandOption("-convert|--convert", CommandOptionType.SingleValue);
             var clusterOption = new CommandOption("-cluster|--cluster", CommandOptionType.SingleValue);
+            var flipOption = new CommandOption("-flip|--flip", CommandOptionType.SingleValue);
+            var flipBasicOption = new CommandOption("-flip-basic|--flip-basic", CommandOptionType.SingleValue);
 
             app.Options.Add(createOption);
             app.Options.Add(clusterOption);
             app.Options.Add(new CommandOption("-r|--r", CommandOptionType.NoValue));
             app.Options.Add(convertOption);
+            app.Options.Add(flipOption);
+            app.Options.Add(flipBasicOption);
 
             app.OnExecute(() =>
             {
@@ -70,6 +74,9 @@ namespace ImgLab
 
                 if (clusterOption.HasValue())
                     ClusterDataset(app);
+
+                if (flipOption.HasValue() || flipBasicOption.HasValue())
+                    FlipDataset(app);
 
                 return 0;
             });

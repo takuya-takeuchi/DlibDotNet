@@ -127,7 +127,7 @@ namespace ImgLab
 
                     using (var img = Dlib.LoadImage<RgbPixel>(dataImages[i].FileName))
                     {
-                        var boxes = dataImages[i].Boxs;
+                        var boxes = dataImages[i].Boxes;
                         for (var j = 0; j < boxes.Length; ++j)
                         {
                             if (boxes[j].Ignore || boxes[j].Rect.Area < 10)
@@ -178,7 +178,7 @@ namespace ImgLab
                             continue;
 
                         var idataBoxes = new List<Box>();
-                        var boxes = dataImages[i].Boxs;
+                        var boxes = dataImages[i].Boxes;
                         for (var j = 0; j < boxes.Length; ++j)
                         {
                             idataBoxes.Add(boxes[j]);
@@ -197,7 +197,7 @@ namespace ImgLab
                             ++idx;
                         }
 
-                        idata[i].Second.Boxs = idataBoxes.ToArray();
+                        idata[i].Second.Boxes = idataBoxes.ToArray();
                     }
 
                     // now save idata to an xml file.
@@ -252,7 +252,7 @@ namespace ImgLab
 
         private static bool HasNonIgnoredBoxes(Image image)
         {
-            var boxes = image.Boxs;
+            var boxes = image.Boxes;
 
             try
             {
@@ -275,7 +275,7 @@ namespace ImgLab
             var images = data.Images;
             for (var index = 0; index < images.Length; ++index)
             {
-                var boxes = images[index].Boxs;
+                var boxes = images[index].Boxes;
                 for (var j = 0; j < boxes.Length; ++j)
                 {
                     var rect = boxes[j].Rect;

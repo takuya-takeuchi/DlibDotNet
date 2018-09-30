@@ -103,7 +103,7 @@ namespace ImgLab
                     boxes.Add(box);
                 }
 
-                image.Boxs = boxes.ToArray();
+                image.Boxes = boxes.ToArray();
             }
             catch (Exception)
             {

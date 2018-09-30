@@ -7,6 +7,12 @@ namespace ImgLab
     partial class Program
     {
 
+        #region
+
+        private const int JpegQuality = 90;
+
+        #endregion
+
         #region Methods
 
         private static void MakeEmptyFile(string filename)
