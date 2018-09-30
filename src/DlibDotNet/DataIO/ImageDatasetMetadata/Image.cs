@@ -34,7 +34,7 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #region Properties
 
-        public Box[] Boxs
+        public Box[] Boxes
         {
             get
             {

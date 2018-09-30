@@ -57,6 +57,48 @@ DLLEXPORT double image_dataset_metadata_box_get_detection_score(image_dataset_me
     return box->detection_score;
 }
 
+DLLEXPORT bool image_dataset_metadata_box_get_parts_get_value(image_dataset_metadata::box* box, const char* key, dlib::point** result)
+{
+    std::map<std::string,point>& m = box->parts;
+    if (m.find(key) == m.end())
+    {
+        return false;
+    }
+    else
+    {
+        *result = new dlib::point(m[key]);
+        return true;
+    }
+}
+
+DLLEXPORT void image_dataset_metadata_box_get_parts_set_value(image_dataset_metadata::box* box, const char* key, dlib::point* value)
+{
+    std::map<std::string,dlib::point>& m = box->parts;
+    dlib::point p(*value);
+    m[key] = p;
+}
+
+DLLEXPORT void image_dataset_metadata_box_parts_clear(image_dataset_metadata::box* box)
+{
+    std::map<std::string,dlib::point>& m = box->parts;
+    m.clear();
+}
+
+DLLEXPORT void image_dataset_metadata_box_get_parts_get_all(image_dataset_metadata::box* box,
+                                                            std::vector<std::string*>* strings,
+                                                            std::vector<dlib::point*>* points)
+{
+    std::map<std::string,dlib::point>& m = box->parts;
+    auto end = m.end();
+    for (auto it = m.begin(); it != end; it++)
+    {
+        auto f = it->first;
+        auto s = it->second;
+        strings->push_back(new std::string(f));
+        points->push_back(new dlib::point(s));
+    }
+}
+
 DLLEXPORT void image_dataset_metadata_box_set_detection_score(image_dataset_metadata::box* box, double value)
 {
     box->detection_score = value;

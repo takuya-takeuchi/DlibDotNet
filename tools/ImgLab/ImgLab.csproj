@@ -53,6 +53,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="ConvertPascalV1.cs" />
     <Compile Include="ConvertPascalXml.cs" />
+    <Compile Include="FlipDataset.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

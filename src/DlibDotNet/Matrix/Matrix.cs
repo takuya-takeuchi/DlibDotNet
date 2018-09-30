@@ -33,9 +33,11 @@ namespace DlibDotNet
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt8, sizeof(byte));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt16, sizeof(ushort));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt32, sizeof(uint));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt64, sizeof(ulong));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int8, sizeof(sbyte));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int16, sizeof(short));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int32, sizeof(int));
+            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int64, sizeof(long));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Float, sizeof(float));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Double, sizeof(double));
             ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbPixel, Marshal.SizeOf<RgbPixel>());
@@ -664,12 +666,16 @@ namespace DlibDotNet
                     return new IndexerUInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.UInt32:
                     return new IndexerUInt32(this) as Indexer<TElement>;
+                case MatrixElementTypes.UInt64:
+                    return new IndexerUInt64(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int8:
                     return new IndexerInt8(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int16:
                     return new IndexerInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int32:
                     return new IndexerInt32(this) as Indexer<TElement>;
+                case MatrixElementTypes.Int64:
+                    return new IndexerInt64(this) as Indexer<TElement>;
                 case MatrixElementTypes.Float:
                     return new IndexerFloat(this) as Indexer<TElement>;
                 case MatrixElementTypes.Double:

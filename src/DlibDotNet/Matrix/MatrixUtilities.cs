@@ -214,6 +214,24 @@ namespace DlibDotNet
             return length;
         }
 
+        public static double Length(DPoint point)
+        {
+            using (var native = point.ToNative())
+            {
+                Native.matrix_length_dpoint(native.NativePtr, out var length);
+                return length;
+            }
+        }
+
+        public static double Length(Point point)
+        {
+            using (var native = point.ToNative())
+            {
+                Native.matrix_length_point(native.NativePtr, out var length);
+                return length;
+            }
+        }
+
         #endregion
 
         #region LengthSquared
@@ -896,6 +914,12 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_length_point(IntPtr point, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void matrix_length_dpoint(IntPtr point, out double ret);
 
             #endregion
 

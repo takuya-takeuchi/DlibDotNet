@@ -50,6 +50,9 @@ do {\
         case matrix_element_type::UInt32:\
             matrix_cast_template_sub(matrix, templateRows, templateColumns, uint32_t, ret);\
             break;\
+        case matrix_element_type::UInt64:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, uint64_t, ret);\
+            break;\
         case matrix_element_type::Int8:\
             matrix_cast_template_sub(matrix, templateRows, templateColumns, int8_t, ret);\
             break;\
@@ -58,6 +61,9 @@ do {\
             break;\
         case matrix_element_type::Int32:\
             matrix_cast_template_sub(matrix, templateRows, templateColumns, int32_t, ret);\
+            break;\
+        case matrix_element_type::Int64:\
+            matrix_cast_template_sub(matrix, templateRows, templateColumns, int64_t, ret);\
             break;\
         case matrix_element_type::Float:\
             matrix_cast_template_sub(matrix, templateRows, templateColumns, float, ret);\
@@ -458,6 +464,11 @@ DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRo
             matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
             #undef ELEMENT_IN
             break; 
+        case matrix_element_type::UInt64:
+            #define ELEMENT_IN uint64_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
         case matrix_element_type::Int8:
             #define ELEMENT_IN int8_t
             matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
@@ -470,6 +481,11 @@ DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRo
             break; 
         case matrix_element_type::Int32:
             #define ELEMENT_IN int32_t
+            matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
+            #undef ELEMENT_IN
+            break; 
+        case matrix_element_type::Int64:
+            #define ELEMENT_IN int64_t
             matrix_cast_template(desttype, matrix, templateRows, templateColumns, ret, err);
             #undef ELEMENT_IN
             break; 
@@ -544,6 +560,18 @@ DLLEXPORT int matrix_length(matrix_element_type type, void* matrix, int template
     } 
  
     return err; 
+}
+
+DLLEXPORT void matrix_length_dpoint(void* point, double* ret) 
+{ 
+    dlib::dpoint& p = *static_cast<dlib::dpoint*>(point);
+    *ret = dlib::length(p);
+}
+
+DLLEXPORT void matrix_length_point(void* point, int* ret) 
+{ 
+    dlib::point& p = *static_cast<dlib::point*>(point);
+    *ret = dlib::length(p);
 }
 
 DLLEXPORT int matrix_length_squared(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void* ret) 

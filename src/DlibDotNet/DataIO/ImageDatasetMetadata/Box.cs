@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -275,6 +278,18 @@ namespace DlibDotNet.ImageDatasetMetadata
             public static extern void image_dataset_metadata_box_set_occluded(IntPtr dataset, bool occluded);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void image_dataset_metadata_box_get_parts_get_all(IntPtr box, IntPtr strings, IntPtr points);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern bool image_dataset_metadata_box_get_parts_get_value(IntPtr box, byte[] key, out IntPtr result);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void image_dataset_metadata_box_get_parts_set_value(IntPtr box, byte[] key, IntPtr value);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern void image_dataset_metadata_box_parts_clear(IntPtr box);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern double image_dataset_metadata_box_get_pose(IntPtr dataset);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -297,7 +312,7 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         }
 
-        public sealed class PartCollection
+        public sealed class PartCollection : IEnumerable<KeyValuePair<string, Point>>
         {
 
             #region Fields
@@ -321,12 +336,69 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 get
                 {
-                    return new Point();
+                    this._Parent.ThrowIfDisposed();
+
+                    var str = Encoding.UTF8.GetBytes(key ?? "");
+                    var native = this._Parent.NativePtr;
+                    if (!Native.image_dataset_metadata_box_get_parts_get_value(native, str, out var p))
+                        throw new KeyNotFoundException();
+
+                    return new Point(p);
                 }
                 set
                 {
+                    this._Parent.ThrowIfDisposed();
 
+                    var str = Encoding.UTF8.GetBytes(key ?? "");
+                    var native = this._Parent.NativePtr;
+                    using (var pp = value.ToNative())
+                        Native.image_dataset_metadata_box_get_parts_set_value(native, str, pp.NativePtr);
                 }
+            }
+
+            #endregion
+
+            #region Methods
+
+            public void Clear()
+            {
+                this._Parent.ThrowIfDisposed();
+
+                Native.image_dataset_metadata_box_parts_clear(this._Parent.NativePtr);
+            }
+
+            #endregion
+
+            #region  Implements
+
+            public IEnumerator<KeyValuePair<string, Point>> GetEnumerator()
+            {
+                this._Parent.ThrowIfDisposed();
+
+                using (var strings = new StdVector<StdString>())
+                using (var points = new StdVector<Point>())
+                {
+                    Native.image_dataset_metadata_box_get_parts_get_all(this._Parent.NativePtr, strings.NativePtr, points.NativePtr);
+
+                    var stdStrings = strings.ToArray();
+                    var stringArray = stdStrings.Select(stdstr => StringHelper.FromStdString(stdstr.NativePtr)).ToArray();
+                    var pointArray = points.ToArray();
+
+                    foreach (var stdString in stdStrings)
+                        stdString.Dispose();
+
+                    for (var index = 0; index < stringArray.Length; index++)
+                    {
+                        var s = stringArray[index];
+                        var p = pointArray[index];
+                        yield return new KeyValuePair<string, Point>(s, p);
+                    }
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
             }
 
             #endregion

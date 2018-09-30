@@ -421,6 +421,115 @@ namespace DlibDotNet
 
         }
 
+        internal sealed class IndexerUInt64 : Indexer<ulong>
+        {
+
+            #region Constructors
+
+            public IndexerUInt64(MatrixBase parent)
+                : base(parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override ulong this[int index]
+            {
+                get
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+                    if (!(r == 1 || c == 1))
+                        throw new NotSupportedException();
+
+                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
+                        throw new IndexOutOfRangeException();
+
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_uint64_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
+                    return value;
+                }
+                set
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+                    if (!(r == 1 || c == 1))
+                        throw new NotSupportedException();
+
+                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
+                        throw new IndexOutOfRangeException();
+
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_uint64_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+                }
+            }
+
+            public override ulong this[int row, int column]
+            {
+                get
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+
+                    if (!(0 <= column && column < c) && (0 <= row && row < r))
+                        throw new IndexOutOfRangeException();
+
+                    ulong value;
+                    Dlib.Native.matrix_operator_get_row_column_uint64_t(this._Parent.NativePtr, row, column, tr, tc, out value);
+                    return value;
+                }
+                set
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+
+                    if (!(0 <= column && column < c) && (0 <= row && row < r))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.matrix_operator_set_row_column_uint64_t(this._Parent.NativePtr, row, column, tr, tc, value);
+                }
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override IEnumerator<ulong> GetEnumerator()
+            {
+                this.GetBeginEnd(out var begin, out var end);
+
+                var length = ((ulong)end - (ulong)begin) / sizeof(ulong);
+
+                var array = new ulong[length];
+                InteropHelper.Copy(begin, array, (uint)array.Length);
+
+                foreach (var b in array)
+                    yield return b;
+            }
+
+            #endregion
+
+        }
+
         internal sealed class IndexerInt8 : Indexer<sbyte>
         {
 
@@ -738,6 +847,115 @@ namespace DlibDotNet
                 var length = ((ulong)end - (ulong)begin) / sizeof(int);
 
                 var array = new int[length];
+                Marshal.Copy(begin, array, 0, array.Length);
+
+                foreach (var b in array)
+                    yield return b;
+            }
+
+            #endregion
+
+        }
+
+        internal sealed class IndexerInt64 : Indexer<long>
+        {
+
+            #region Constructors
+
+            public IndexerInt64(MatrixBase parent)
+                : base(parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override long this[int index]
+            {
+                get
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+                    if (!(r == 1 || c == 1))
+                        throw new NotSupportedException();
+
+                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
+                        throw new IndexOutOfRangeException();
+
+                    var ret = Dlib.Native.matrix_operator_get_one_row_column_int64_t(this._Parent.NativePtr, index, tr, tc, out var value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+
+                    return value;
+                }
+                set
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+                    if (!(r == 1 || c == 1))
+                        throw new NotSupportedException();
+
+                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
+                        throw new IndexOutOfRangeException();
+
+                    var ret = Dlib.Native.matrix_operator_set_one_row_column_int64_t(this._Parent.NativePtr, index, tr, tc, value);
+                    switch (ret)
+                    {
+                        case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                            throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                    }
+                }
+            }
+
+            public override long this[int row, int column]
+            {
+                get
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+
+                    if (!(0 <= column && column < c) && (0 <= row && row < r))
+                        throw new IndexOutOfRangeException();
+
+                    long value;
+                    Dlib.Native.matrix_operator_get_row_column_int64_t(this._Parent.NativePtr, row, column, tr, tc, out value);
+                    return value;
+                }
+                set
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+
+                    if (!(0 <= column && column < c) && (0 <= row && row < r))
+                        throw new IndexOutOfRangeException();
+
+                    Dlib.Native.matrix_operator_set_row_column_int64_t(this._Parent.NativePtr, row, column, tr, tc, value);
+                }
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override IEnumerator<long> GetEnumerator()
+            {
+                this.GetBeginEnd(out var begin, out var end);
+
+                var length = ((ulong)end - (ulong)begin) / sizeof(long);
+
+                var array = new long[length];
                 Marshal.Copy(begin, array, 0, array.Length);
 
                 foreach (var b in array)

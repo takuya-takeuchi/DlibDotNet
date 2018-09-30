@@ -26,6 +26,18 @@ namespace DlibDotNet
             }
         }
 
+        internal Point(IntPtr ptr, bool isEnabledDispose = true)
+        {
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
+
+            using (var native = new NativePoint(ptr, isEnabledDispose))
+            {
+                this._X = native.X;
+                this._Y = native.Y;
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -183,7 +195,8 @@ namespace DlibDotNet
                 this.NativePtr = Native.point_new();
             }
 
-            internal NativePoint(IntPtr ptr)
+            internal NativePoint(IntPtr ptr, bool isEnabledDispose = true) :
+                base(isEnabledDispose)
             {
                 if (ptr == IntPtr.Zero)
                     throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));

@@ -164,6 +164,94 @@ DLLEXPORT void stdvector_rectangle_copy(std::vector<rectangle*> *vector, rectang
 
 #pragma endregion rectangle
 
+#pragma region point
+
+DLLEXPORT std::vector<point*>* stdvector_point_new1()
+{
+    return new std::vector<point*>();
+}
+
+DLLEXPORT std::vector<point*>* stdvector_point_new2(size_t size)
+{
+    return new std::vector<point*>(size);
+}
+
+DLLEXPORT std::vector<point*>* stdvector_point_new3(point** data, size_t dataLength)
+{
+    return new std::vector<point*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_point_getSize(std::vector<point*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT point* stdvector_point_getPointer(std::vector<point*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_point_delete(std::vector<point*> *vector)
+{
+    std::vector<point*>& tmp = *(static_cast<std::vector<point*>*>(vector));
+    for (int index = 0 ; index < tmp.size(); index++)
+        delete tmp[index];
+
+    delete vector;
+}
+
+DLLEXPORT void stdvector_point_copy(std::vector<point*> *vector, point** dst)
+{
+    size_t length = sizeof(point*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion point
+
+#pragma region dpoint
+
+DLLEXPORT std::vector<dpoint*>* stdvector_dpoint_new1()
+{
+    return new std::vector<dpoint*>();
+}
+
+DLLEXPORT std::vector<dpoint*>* stdvector_dpoint_new2(size_t size)
+{
+    return new std::vector<dpoint*>(size);
+}
+
+DLLEXPORT std::vector<dpoint*>* stdvector_dpoint_new3(dpoint** data, size_t dataLength)
+{
+    return new std::vector<dpoint*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_dpoint_getSize(std::vector<dpoint*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT dpoint* stdvector_dpoint_getPointer(std::vector<dpoint*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_dpoint_delete(std::vector<dpoint*> *vector)
+{
+    std::vector<dpoint*>& tmp = *(static_cast<std::vector<dpoint*>*>(vector));
+    for (int index = 0 ; index < tmp.size(); index++)
+        delete tmp[index];
+
+    delete vector;
+}
+
+DLLEXPORT void stdvector_dpoint_copy(std::vector<dpoint*> *vector, dpoint** dst)
+{
+    size_t length = sizeof(dpoint*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion dpoint
+
 #pragma region dlib::vector<double>
 
 DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_vector_double_new1()
@@ -844,6 +932,46 @@ DLLEXPORT void stdvector_chip_details_copy(std::vector<chip_details*> *vector, c
 }
 
 #pragma endregion chip_details
+
+#pragma region std::string
+
+DLLEXPORT std::vector<std::string*>* stdvector_string_new1()
+{
+    return new std::vector<std::string*>;
+}
+
+DLLEXPORT std::vector<std::string*>* stdvector_string_new2(size_t size)
+{
+    return new std::vector<std::string*>(size);
+}
+
+DLLEXPORT std::vector<std::string*>* stdvector_string_new3(std::string** data, size_t dataLength)
+{
+    return new std::vector<std::string*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_string_getSize(std::vector<std::string*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT std::string* stdvector_string_getPointer(std::vector<std::string*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_string_delete(std::vector<std::string*> *vector)
+{    
+    delete vector;
+}
+
+DLLEXPORT void stdvector_string_copy(std::vector<std::string*> *vector, std::string** dst)
+{
+    size_t length = sizeof(std::string*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion std::string
 
 #pragma region sample_pair
 
