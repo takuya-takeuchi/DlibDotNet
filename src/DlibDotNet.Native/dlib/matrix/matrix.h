@@ -781,6 +781,10 @@ do {\
     {\
         *ret = ((dlib::matrix<ELEMENT, 1, 3>*)matrix)->size();\
     }\
+    else if (templateRows == 2 && templateColumns == 1)\
+    {\
+        *ret = ((dlib::matrix<ELEMENT, 2, 1>*)matrix)->size();\
+    }\
     else if (templateRows == 2 && templateColumns == 2)\
     {\
         *ret = ((dlib::matrix<ELEMENT, 2, 2>*)matrix)->size();\
@@ -943,6 +947,16 @@ do {\
     else if (templateRows == 0 && templateColumns == 1)\
     {\
         dlib::matrix<ELEMENT, 0, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(matrix));\
+        *stream << mat;\
+    }\
+    else if (templateRows == 2 && templateColumns == 1)\
+    {\
+        dlib::matrix<ELEMENT, 2, 1>& mat = *(static_cast<dlib::matrix<ELEMENT, 2, 1>*>(matrix));\
+        *stream << mat;\
+    }\
+    else if (templateRows == 2 && templateColumns == 2)\
+    {\
+        dlib::matrix<ELEMENT, 2, 2>& mat = *(static_cast<dlib::matrix<ELEMENT, 2, 2>*>(matrix));\
         *stream << mat;\
     }\
     else if (templateRows == 1 && templateColumns == 3)\
