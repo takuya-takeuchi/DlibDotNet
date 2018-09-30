@@ -25,6 +25,12 @@ namespace DlibDotNet.Interop
                 NativeMethods.memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * sizeof(sbyte)));
         }
 
+        public static unsafe void Copy(IntPtr ptrSource, ulong[] dest, uint elements)
+        {
+            fixed (ulong* ptrDest = &dest[0])
+                NativeMethods.memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * sizeof(ulong)));
+        }
+
         public static unsafe void Copy(IntPtr ptrSource, RgbPixel[] dest, uint elements)
         {
             fixed (RgbPixel* ptrDest = &dest[0])
@@ -59,6 +65,12 @@ namespace DlibDotNet.Interop
         {
             fixed (sbyte* ptrSource = &source[0])
                 NativeMethods.memcpy(ptrDest, (IntPtr)ptrSource, (int)(elements * sizeof(sbyte)));
+        }
+
+        public static unsafe void Copy(ulong[] source, IntPtr ptrDest, uint elements)
+        {
+            fixed (ulong* ptrSource = &source[0])
+                NativeMethods.memcpy(ptrDest, (IntPtr)ptrSource, (int)(elements * sizeof(ulong)));
         }
 
         public static unsafe void Copy(RgbPixel[] source, IntPtr ptrDest, uint elements)

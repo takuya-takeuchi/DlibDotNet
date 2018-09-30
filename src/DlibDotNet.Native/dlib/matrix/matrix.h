@@ -453,6 +453,9 @@ do {\
         case matrix_element_type::UInt32:\
             matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, uint32_t, rhs, templateRows, templateColumns, ret);\
             break;\
+        case matrix_element_type::UInt64:\
+            matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, uint64_t, rhs, templateRows, templateColumns, ret);\
+            break;\
         case matrix_element_type::Int8:\
             matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, int8_t, rhs, templateRows, templateColumns, ret);\
             break;\
@@ -461,6 +464,9 @@ do {\
             break;\
         case matrix_element_type::Int32:\
             matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, int32_t, rhs, templateRows, templateColumns, ret);\
+            break;\
+        case matrix_element_type::Int64:\
+            matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, int64_t, rhs, templateRows, templateColumns, ret);\
             break;\
         case matrix_element_type::Float:\
             matrix_operator_multiply_left_template(__NUMERIC_TYPE__, lhs, float, rhs, templateRows, templateColumns, ret);\
@@ -985,12 +991,16 @@ DLLEXPORT void* matrix_new(matrix_element_type type)
             return new matrix<uint16_t>();
         case matrix_element_type::UInt32:
             return new matrix<uint32_t>();
+        case matrix_element_type::UInt64:
+            return new matrix<uint64_t>();
         case matrix_element_type::Int8:
             return new matrix<int8_t>();
         case matrix_element_type::Int16:
             return new matrix<int16_t>();
         case matrix_element_type::Int32:
             return new matrix<int32_t>();
+        case matrix_element_type::Int64:
+            return new matrix<int64_t>();
         case matrix_element_type::Float:
             return new matrix<float>();
         case matrix_element_type::Double:
@@ -1016,12 +1026,16 @@ DLLEXPORT void* matrix_new1(matrix_element_type type, int num_rows, int num_cols
             return new matrix<uint16_t>(num_rows, num_cols);
         case matrix_element_type::UInt32:
             return new matrix<uint32_t>(num_rows, num_cols);
+        case matrix_element_type::UInt64:
+            return new matrix<uint64_t>(num_rows, num_cols);
         case matrix_element_type::Int8:
             return new matrix<int8_t>(num_rows, num_cols);
         case matrix_element_type::Int16:
             return new matrix<int16_t>(num_rows, num_cols);
         case matrix_element_type::Int32:
             return new matrix<int32_t>(num_rows, num_cols);
+        case matrix_element_type::Int64:
+            return new matrix<int64_t>(num_rows, num_cols);
         case matrix_element_type::Float:
             return new matrix<float>(num_rows, num_cols);
         case matrix_element_type::Double:
@@ -1056,6 +1070,11 @@ DLLEXPORT void* matrix_new2(const matrix_element_type type, const int num_rows, 
             matrix_new2_template(num_rows, num_cols, src);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_new2_template(num_rows, num_cols, src);
@@ -1068,6 +1087,11 @@ DLLEXPORT void* matrix_new2(const matrix_element_type type, const int num_rows, 
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_new2_template(num_rows, num_cols, src);
             #undef ELEMENT
             break;
@@ -1120,6 +1144,11 @@ DLLEXPORT void* matrix_new3(const matrix_element_type type, const int num_rows, 
             matrix_new2_template(num_rows, num_cols, src);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_new2_template(num_rows, num_cols, src);
@@ -1132,6 +1161,11 @@ DLLEXPORT void* matrix_new3(const matrix_element_type type, const int num_rows, 
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_new2_template(num_rows, num_cols, src);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_new2_template(num_rows, num_cols, src);
             #undef ELEMENT
             break;
@@ -1178,6 +1212,9 @@ DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, co
         case matrix_element_type::UInt32:
             matrix_new4_template(uint32_t);
             break;
+        case matrix_element_type::UInt64:
+            matrix_new4_template(uint64_t);
+            break;
         case matrix_element_type::Int8:
             matrix_new4_template(int8_t);
             break;
@@ -1186,6 +1223,9 @@ DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, co
             break;
         case matrix_element_type::Int32:
             matrix_new4_template(int32_t);
+            break;
+        case matrix_element_type::Int64:
+            matrix_new4_template(int64_t);
             break;
         case matrix_element_type::Float:
             matrix_new4_template(float);
@@ -1221,6 +1261,9 @@ DLLEXPORT int matrix_begin(matrix_element_type type, void* matrix, const int tem
         case matrix_element_type::UInt32:
             matrix_begin_template(uint32_t, matrix, templateRows, templateColumns, ret, err);
             break;
+        case matrix_element_type::UInt64:
+            matrix_begin_template(uint64_t, matrix, templateRows, templateColumns, ret, err);
+            break;
         case matrix_element_type::Int8:
             matrix_begin_template(int8_t, matrix, templateRows, templateColumns, ret, err);
             break;
@@ -1229,6 +1272,9 @@ DLLEXPORT int matrix_begin(matrix_element_type type, void* matrix, const int tem
             break;
         case matrix_element_type::Int32:
             matrix_begin_template(int32_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Int64:
+            matrix_begin_template(int64_t, matrix, templateRows, templateColumns, ret, err);
             break;
         case matrix_element_type::Float:
             matrix_begin_template(float, matrix, templateRows, templateColumns, ret, err);
@@ -1267,6 +1313,9 @@ DLLEXPORT int matrix_end(matrix_element_type type, void* matrix, const int templ
         case matrix_element_type::UInt32:
             matrix_end_template(uint32_t, matrix, templateRows, templateColumns, ret, err);
             break;
+        case matrix_element_type::UInt64:
+            matrix_end_template(uint64_t, matrix, templateRows, templateColumns, ret, err);
+            break;
         case matrix_element_type::Int8:
             matrix_end_template(int8_t, matrix, templateRows, templateColumns, ret, err);
             break;
@@ -1275,6 +1324,9 @@ DLLEXPORT int matrix_end(matrix_element_type type, void* matrix, const int templ
             break;
         case matrix_element_type::Int32:
             matrix_end_template(int32_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Int64:
+            matrix_end_template(int64_t, matrix, templateRows, templateColumns, ret, err);
             break;
         case matrix_element_type::Float:
             matrix_end_template(float, matrix, templateRows, templateColumns, ret, err);
@@ -1319,6 +1371,11 @@ DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, const int templa
             matrix_nc_template(matrix, templateRows, templateColumns, ret);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_nc_template(matrix, templateRows, templateColumns, ret);
@@ -1331,6 +1388,11 @@ DLLEXPORT int matrix_nc(matrix_element_type type, void* matrix, const int templa
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_nc_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_nc_template(matrix, templateRows, templateColumns, ret);
             #undef ELEMENT
             break;
@@ -1387,6 +1449,11 @@ DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, const int templa
             matrix_nr_template(matrix, templateRows, templateColumns, ret);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_nr_template(matrix, templateRows, templateColumns, ret);
@@ -1399,6 +1466,11 @@ DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, const int templa
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_nr_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_nr_template(matrix, templateRows, templateColumns, ret);
             #undef ELEMENT
             break;
@@ -1455,6 +1527,11 @@ DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, const int temp
             matrix_size_template(matrix, templateRows, templateColumns, ret);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_size_template(matrix, templateRows, templateColumns, ret);
@@ -1467,6 +1544,11 @@ DLLEXPORT int matrix_size(matrix_element_type type, void* matrix, const int temp
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_size_template(matrix, templateRows, templateColumns, ret);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_size_template(matrix, templateRows, templateColumns, ret);
             #undef ELEMENT
             break;
@@ -1529,6 +1611,11 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix, const int t
             matrix_delete_template(matrix, templateRows, templateColumns);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_delete_template(matrix, templateRows, templateColumns);
@@ -1541,6 +1628,11 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix, const int t
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_delete_template(matrix, templateRows, templateColumns);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_delete_template(matrix, templateRows, templateColumns);
             #undef ELEMENT
             break;
@@ -1592,6 +1684,11 @@ DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void
             matrix_operator_array_template(matrix, array);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_operator_array_template(matrix, array);
@@ -1604,6 +1701,11 @@ DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_operator_array_template(matrix, array);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_operator_array_template(matrix, array);
             #undef ELEMENT
             break;
@@ -1677,6 +1779,17 @@ DLLEXPORT int matrix_operator_get_one_row_column_uint32_t(void* matrix, int inde
     return err;
 }
 
+DLLEXPORT int matrix_operator_get_one_row_column_uint64_t(void* matrix, int index, int templateRows, int templateColumns, uint64_t* ret)
+{
+    int err = ERR_OK;
+
+    #define ELEMENT uint64_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
+
+    return err;
+}
+
 DLLEXPORT int matrix_operator_get_one_row_column_int8_t(void* matrix, int index, int templateRows, int templateColumns, int8_t* ret)
 {
     int err = ERR_OK;
@@ -1704,6 +1817,17 @@ DLLEXPORT int matrix_operator_get_one_row_column_int32_t(void* matrix, int index
     int err = ERR_OK;
 
     #define ELEMENT int32_t
+    matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
+    #undef ELEMENT
+
+    return err;
+}
+
+DLLEXPORT int matrix_operator_get_one_row_column_int64_t(void* matrix, int index, int templateRows, int templateColumns, int64_t* ret)
+{
+    int err = ERR_OK;
+
+    #define ELEMENT int64_t
     matrix_operator_get_one_row_column_template(matrix, index, templateRows, templateColumns, ret);
     #undef ELEMENT
 
@@ -1802,6 +1926,17 @@ DLLEXPORT int matrix_operator_set_one_row_column_uint32_t(void* matrix, int inde
     return err;
 }
 
+DLLEXPORT int matrix_operator_set_one_row_column_uint64_t(void* matrix, int index, int templateRows, int templateColumns, uint64_t value)
+{
+    int err = ERR_OK;
+
+    #define ELEMENT uint64_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
+
+    return err;
+}
+
 DLLEXPORT int matrix_operator_set_one_row_column_int8_t(void* matrix, int index, int templateRows, int templateColumns, int8_t value)
 {
     int err = ERR_OK;
@@ -1829,6 +1964,17 @@ DLLEXPORT int matrix_operator_set_one_row_column_int32_t(void* matrix, int index
     int err = ERR_OK;
 
     #define ELEMENT int32_t
+    matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
+    #undef ELEMENT
+
+    return err;
+}
+
+DLLEXPORT int matrix_operator_set_one_row_column_int64_t(void* matrix, int index, int templateRows, int templateColumns, int64_t value)
+{
+    int err = ERR_OK;
+
+    #define ELEMENT int64_t
     matrix_operator_set_one_row_column_template(matrix, index, templateRows, templateColumns, value);
     #undef ELEMENT
 
@@ -1915,6 +2061,13 @@ DLLEXPORT void matrix_operator_get_row_column_uint32_t(void* matrix, int row, in
     #undef ELEMENT
 }
 
+DLLEXPORT void matrix_operator_get_row_column_uint64_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint64_t* ret)
+{
+    #define ELEMENT uint64_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
+}
+
 DLLEXPORT void matrix_operator_get_row_column_int8_t(void* matrix, int row, int column, int templateRows, int templateColumns, int8_t* ret)
 {
     #define ELEMENT int8_t
@@ -1932,6 +2085,13 @@ DLLEXPORT void matrix_operator_get_row_column_int16_t(void* matrix, int row, int
 DLLEXPORT void matrix_operator_get_row_column_int32_t(void* matrix, int row, int column, int templateRows, int templateColumns, int32_t* ret)
 {
     #define ELEMENT int32_t
+    matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
+    #undef ELEMENT
+}
+
+DLLEXPORT void matrix_operator_get_row_column_int64_t(void* matrix, int row, int column, int templateRows, int templateColumns, int64_t* ret)
+{
+    #define ELEMENT int64_t
     matrix_operator_get_row_column_template(matrix, row, column, templateRows, templateColumns, ret);
     #undef ELEMENT
 }
@@ -1996,6 +2156,13 @@ DLLEXPORT void matrix_operator_set_row_column_uint32_t(void* matrix, int row, in
     #undef ELEMENT
 }
 
+DLLEXPORT void matrix_operator_set_row_column_uint64_t(void* matrix, int row, int column, int templateRows, int templateColumns, uint64_t value)
+{
+    #define ELEMENT uint64_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
+}
+
 DLLEXPORT void matrix_operator_set_row_column_int8_t(void* matrix, int row, int column, int templateRows, int templateColumns, int8_t value)
 {
     #define ELEMENT int8_t
@@ -2013,6 +2180,13 @@ DLLEXPORT void matrix_operator_set_row_column_int16_t(void* matrix, int row, int
 DLLEXPORT void matrix_operator_set_row_column_int32_t(void* matrix, int row, int column, int templateRows, int templateColumns, int32_t value)
 {
     #define ELEMENT int32_t
+    matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
+    #undef ELEMENT
+}
+
+DLLEXPORT void matrix_operator_set_row_column_int64_t(void* matrix, int row, int column, int templateRows, int templateColumns, int64_t value)
+{
+    #define ELEMENT int64_t
     matrix_operator_set_row_column_template(matrix, row, column, templateRows, templateColumns, value);
     #undef ELEMENT
 }
@@ -2078,6 +2252,11 @@ DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix,
             matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
             #undef ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ELEMENT uint64_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ELEMENT int8_t
             matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
@@ -2090,6 +2269,11 @@ DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix,
             break;
         case matrix_element_type::Int32:
             #define ELEMENT int32_t
+            matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
+            #undef ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ELEMENT int64_t
             matrix_operator_left_shift_template(matrix, templateRows, templateColumns, stream);
             #undef ELEMENT
             break;
@@ -2136,6 +2320,9 @@ DLLEXPORT int matrix_operator_add(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_add_template(uint32_t);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_add_template(uint64_t);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_add_template(int8_t);
             break;
@@ -2144,6 +2331,9 @@ DLLEXPORT int matrix_operator_add(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_add_template(int32_t);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_add_template(int64_t);
             break;
         case matrix_element_type::Float:
             matrix_operator_add_template(float);
@@ -2181,6 +2371,9 @@ DLLEXPORT int matrix_operator_negative(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_negative_template(uint32_t, matrix, templateRows, templateColumns, ret, err);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_negative_template(uint64_t, matrix, templateRows, templateColumns, ret, err);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_negative_template(int8_t, matrix, templateRows, templateColumns, ret, err);
             break;
@@ -2189,6 +2382,9 @@ DLLEXPORT int matrix_operator_negative(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_negative_template(int32_t, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_negative_template(int64_t, matrix, templateRows, templateColumns, ret, err);
             break;
         case matrix_element_type::Float:
             matrix_operator_negative_template(float, matrix, templateRows, templateColumns, ret, err);
@@ -2229,6 +2425,9 @@ DLLEXPORT int matrix_operator_subtract(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_subtract_template(uint32_t);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_subtract_template(uint64_t);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_subtract_template(int8_t);
             break;
@@ -2237,6 +2436,9 @@ DLLEXPORT int matrix_operator_subtract(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_subtract_template(int32_t);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_subtract_template(int64_t);
             break;
         case matrix_element_type::Float:
             matrix_operator_subtract_template(float);
@@ -2272,9 +2474,11 @@ DLLEXPORT int matrix_operator_subtract_dpoint(matrix_element_type type,
         case matrix_element_type::UInt8:
         case matrix_element_type::UInt16:
         case matrix_element_type::UInt32:
+        case matrix_element_type::UInt64:
         case matrix_element_type::Int8:
         case matrix_element_type::Int16:
         case matrix_element_type::Int32:
+        case matrix_element_type::Int64:
         case matrix_element_type::Float:
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -2309,6 +2513,9 @@ DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_multiply_template(uint32_t);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_multiply_template(uint64_t);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_multiply_template(int8_t);
             break;
@@ -2317,6 +2524,9 @@ DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_multiply_template(int32_t);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_multiply_template(int64_t);
             break;
         case matrix_element_type::Float:
             matrix_operator_multiply_template(float);
@@ -2352,9 +2562,11 @@ DLLEXPORT int matrix_operator_multiply_dpoint(matrix_element_type type,
         case matrix_element_type::UInt8:
         case matrix_element_type::UInt16:
         case matrix_element_type::UInt32:
+        case matrix_element_type::UInt64:
         case matrix_element_type::Int8:
         case matrix_element_type::Int16:
         case matrix_element_type::Int32:
+        case matrix_element_type::Int64:
         case matrix_element_type::Float:
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
@@ -2438,6 +2650,9 @@ DLLEXPORT int matrix_operator_multiply_right_numeric(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_multiply_right_numeric_template(uint32_t, lhs, templateRows, templateColumns, numeric_type, rhs, ret);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_multiply_right_numeric_template(uint64_t, lhs, templateRows, templateColumns, numeric_type, rhs, ret);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_multiply_right_numeric_template(int8_t, lhs, templateRows, templateColumns, numeric_type, rhs, ret);
             break;
@@ -2446,6 +2661,9 @@ DLLEXPORT int matrix_operator_multiply_right_numeric(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_multiply_right_numeric_template(int32_t, lhs, templateRows, templateColumns, numeric_type, rhs, ret);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_multiply_right_numeric_template(int64_t, lhs, templateRows, templateColumns, numeric_type, rhs, ret);
             break;
         case matrix_element_type::Float:
             matrix_operator_multiply_right_numeric_template(float, lhs, templateRows, templateColumns, numeric_type, rhs, ret);
@@ -2486,6 +2704,9 @@ DLLEXPORT int matrix_operator_divide(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_divide_template(uint32_t);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_divide_template(uint64_t);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_divide_template(int8_t);
             break;
@@ -2494,6 +2715,9 @@ DLLEXPORT int matrix_operator_divide(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_divide_template(int32_t);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_divide_template(int64_t);
             break;
         case matrix_element_type::Float:
             matrix_operator_divide_template(float);
@@ -2533,6 +2757,9 @@ DLLEXPORT int matrix_operator_divide_double(matrix_element_type type,
         case matrix_element_type::UInt32:
             matrix_operator_primitive_template(uint32_t);
             break;
+        case matrix_element_type::UInt64:
+            matrix_operator_primitive_template(uint64_t);
+            break;
         case matrix_element_type::Int8:
             matrix_operator_primitive_template(int8_t);
             break;
@@ -2541,6 +2768,9 @@ DLLEXPORT int matrix_operator_divide_double(matrix_element_type type,
             break;
         case matrix_element_type::Int32:
             matrix_operator_primitive_template(int32_t);
+            break;
+        case matrix_element_type::Int64:
+            matrix_operator_primitive_template(int64_t);
             break;
         case matrix_element_type::Float:
             matrix_operator_primitive_template(float);

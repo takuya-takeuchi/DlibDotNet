@@ -107,6 +107,11 @@ DLLEXPORT int max_cost_assignment(matrix_element_type type, void* cost, std::vec
             max_cost_assignment_template(cost, assignments);
             #undef ARRAY2D_ELEMENT
             break;
+        case matrix_element_type::UInt64:
+            #define ARRAY2D_ELEMENT uint64_t
+            max_cost_assignment_template(cost, assignments);
+            #undef ARRAY2D_ELEMENT
+            break;
         case matrix_element_type::Int8:
             #define ARRAY2D_ELEMENT int8_t
             max_cost_assignment_template(cost, assignments);
@@ -119,6 +124,11 @@ DLLEXPORT int max_cost_assignment(matrix_element_type type, void* cost, std::vec
             break;
         case matrix_element_type::Int32:
             #define ARRAY2D_ELEMENT int32_t
+            max_cost_assignment_template(cost, assignments);
+            #undef ARRAY2D_ELEMENT
+            break;
+        case matrix_element_type::Int64:
+            #define ARRAY2D_ELEMENT int64_t
             max_cost_assignment_template(cost, assignments);
             #undef ARRAY2D_ELEMENT
             break;
