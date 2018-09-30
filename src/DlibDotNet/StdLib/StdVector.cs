@@ -1342,7 +1342,7 @@ namespace DlibDotNet
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_dpoint_getDPointer(ptr);
+                return Dlib.Native.stdvector_dpoint_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
