@@ -208,6 +208,50 @@ DLLEXPORT void stdvector_point_copy(std::vector<point*> *vector, point** dst)
 
 #pragma endregion point
 
+#pragma region dpoint
+
+DLLEXPORT std::vector<dpoint*>* stdvector_dpoint_new1()
+{
+    return new std::vector<dpoint*>();
+}
+
+DLLEXPORT std::vector<dpoint*>* stdvector_dpoint_new2(size_t size)
+{
+    return new std::vector<dpoint*>(size);
+}
+
+DLLEXPORT std::vector<dpoint*>* stdvector_dpoint_new3(dpoint** data, size_t dataLength)
+{
+    return new std::vector<dpoint*>(data, data + dataLength);
+}
+
+DLLEXPORT size_t stdvector_dpoint_getSize(std::vector<dpoint*>* vector)
+{
+    return vector->size();
+}
+
+DLLEXPORT dpoint* stdvector_dpoint_getPointer(std::vector<dpoint*> *vector)
+{
+    return (vector->at(0));
+}
+
+DLLEXPORT void stdvector_dpoint_delete(std::vector<dpoint*> *vector)
+{
+    std::vector<dpoint*>& tmp = *(static_cast<std::vector<dpoint*>*>(vector));
+    for (int index = 0 ; index < tmp.size(); index++)
+        delete tmp[index];
+
+    delete vector;
+}
+
+DLLEXPORT void stdvector_dpoint_copy(std::vector<dpoint*> *vector, dpoint** dst)
+{
+    size_t length = sizeof(dpoint*)* vector->size();
+    memcpy(dst, &(vector->at(0)), length);
+}
+
+#pragma endregion dpoint
+
 #pragma region dlib::vector<double>
 
 DLLEXPORT std::vector<dlib::vector<double>*>* stdvector_vector_double_new1()

@@ -32,6 +32,7 @@ namespace DlibDotNet
                 new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
                 new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
                 new { Type = typeof(Point),                                ElementType = ElementTypes.Point },
+                new { Type = typeof(DPoint),                               ElementType = ElementTypes.DPoint },
                 new { Type = typeof(ChipDetails),                          ElementType = ElementTypes.ChipDetails  },
                 new { Type = typeof(StdString),                            ElementType = ElementTypes.StdString  },
                 new { Type = typeof(FullObjectDetection),                  ElementType = ElementTypes.FullObjectDetection  },
@@ -138,6 +139,8 @@ namespace DlibDotNet
                         return new StdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.Point:
                         return new StdVectorPointImp() as StdVectorImp<TItem>;
+                    case ElementTypes.DPoint:
+                        return new StdVectorDPointImp() as StdVectorImp<TItem>;
                     case ElementTypes.ChipDetails:
                         return new StdVectorChipDetailsImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdString:
@@ -231,6 +234,8 @@ namespace DlibDotNet
             Rectangle,
 
             Point,
+
+            DPoint,
 
             PerspectiveWindowOverlayDot,
 
@@ -1292,6 +1297,68 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 Dlib.Native.stdvector_point_copy(ptr, dst);
                 return dst.Select(p => new Point(p, false)).ToArray();
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorDPointImp : StdVectorImp<DPoint>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return Dlib.Native.stdvector_dpoint_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return Dlib.Native.stdvector_dpoint_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<DPoint> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var nativeArray = data.Select(dpoint => dpoint.ToNative()).ToArray();
+                var array = nativeArray.Select(dpoint => dpoint.NativePtr).ToArray();
+
+                // DPoint is struct and it will be cloned in native domain.
+                // So all cloned elemtent must be deleted!!
+                return Dlib.Native.stdvector_dpoint_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                // This function delete all element
+                Dlib.Native.stdvector_dpoint_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_dpoint_getDPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return Dlib.Native.stdvector_dpoint_getSize(ptr).ToInt32();
+            }
+
+            public override DPoint[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new DPoint[0];
+
+                var dst = new IntPtr[size];
+                Dlib.Native.stdvector_dpoint_copy(ptr, dst);
+                return dst.Select(p => new DPoint(p, false)).ToArray();
             }
 
             #endregion
