@@ -61,6 +61,7 @@ namespace ImgLab
                                 ConvertPascalV1(app);
                                 break;
                             case "idl":
+                                ConvertIdl(app);
                                 break;
                         }
                     }
