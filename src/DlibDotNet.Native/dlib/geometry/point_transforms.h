@@ -236,7 +236,7 @@ DLLEXPORT dlib::dpoint* rotate_dpoint(dlib::dpoint* center, dlib::dpoint* p, con
 DLLEXPORT void* rotation_matrix(const double angle)
 {
     auto ret = dlib::rotation_matrix(angle);
-    return new dlib::matrix<double>(ret);
+    return new dlib::matrix<double, 2, 2>(ret);
 }
 
 #endif
