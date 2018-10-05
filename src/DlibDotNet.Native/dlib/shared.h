@@ -180,16 +180,21 @@ typedef struct
 } matrix_range_exp_create_param;
 
 #define ERR_OK                                          0
-#define ERR_ARRAY_TYPE_NOT_SUPPORT                     -1
+
+// array2d
+#define ERR_ARRAY2D_ERROR                                                 0x7B000000
+#define ERR_ARRAY2D_TYPE_NOT_SUPPORT                  ERR_ARRAY2D_ERROR | 0x00000001
+
 #define ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT               -2
-#define ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT              -3
 #define ERR_ELEMENT_TYPE_NOT_SUPPORT                   -4
 #define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT             -5
 #define ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT            -6
-#define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT            -7
-#define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT   -8
-// #define ERR_INPUT_OUTPUT_ARRAY_NOT_SAME_SIZE  -8
-// #define ERR_INPUT_OUTPUT_MATRIX_NOT_SAME_SIZE -9
+
+// matrix
+#define ERR_MATRIX_ERROR                                                  0x7C000000
+#define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT            ERR_MATRIX_ERROR | 0x00000001
+#define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT   ERR_MATRIX_ERROR | 0x00000002
+
 #define ERR_MLP_KERNEL_NOT_SUPPORT            -8
 
 // statistics/statistics.h

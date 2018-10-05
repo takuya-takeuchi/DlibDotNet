@@ -75,7 +75,7 @@ DLLEXPORT int draw_line(
              dlib::draw_line(*((array2d<dlib::rgb_alpha_pixel>*)image), *p1, *p2, *((dlib::rgb_alpha_pixel*)p));
              break;
          default:
-             err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+             err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
              break;
      }
  
@@ -127,7 +127,7 @@ DLLEXPORT int draw_line(
              dlib::draw_rectangle(*((array2d<dlib::rgb_alpha_pixel>*)image), *rect, *((dlib::rgb_alpha_pixel*)p), thickness);
              break;
          default:
-             err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+             err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
              break;
      }
  
@@ -174,7 +174,7 @@ DLLEXPORT int tile_images(array2d_type in_type, void* images, void** ret_image)
             *ret_image = new dlib::matrix<rgb_alpha_pixel>(dlib::tile_images(*((dlib::array<dlib::array2d<rgb_alpha_pixel>>*)images)));
             break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -243,7 +243,7 @@ DLLEXPORT int tile_images_matrix(matrix_element_type in_type, void* images, void
             #undef ELEMENT
             break;
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

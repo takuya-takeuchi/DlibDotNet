@@ -36,7 +36,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -62,7 +62,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -88,7 +88,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -114,7 +114,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -140,7 +140,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -166,7 +166,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -191,7 +191,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -230,7 +230,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -260,7 +260,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -290,7 +290,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -320,7 +320,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -350,7 +350,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -380,7 +380,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}
@@ -410,7 +410,7 @@ namespace DlibDotNet
         //        ref color);
         //    switch (ret)
         //    {
-        //        case Native.ErrorType.ArrayTypeNotSupport:
+        //        case Native.ErrorType.Array2DTypeTypeNotSupport:
         //            throw new ArgumentException($"{color} is not supported.");
         //    }
         //}

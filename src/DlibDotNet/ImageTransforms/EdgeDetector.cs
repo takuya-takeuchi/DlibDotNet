@@ -33,10 +33,8 @@ namespace DlibDotNet
             var ret = Native.sobel_edge_detector(inType, image.NativePtr, horzType, horizontalGradient.NativePtr, verticalGradient.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"{image.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"{nameof(horizontalGradient)} or {nameof(verticalGradient)} should be signed grayscale image.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{nameof(horizontalGradient)}, {nameof(verticalGradient)} should be signed grayscale image. Or input {image.ImageType} is not supported.");
             }
         }
 
@@ -62,10 +60,8 @@ namespace DlibDotNet
             var ret = Native.suppress_non_maximum_edges(horzType, horizontalGradient.NativePtr, verticalGradient.NativePtr, outType, outImage.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"{nameof(horizontalGradient)} or {nameof(verticalGradient)} should be signed grayscale image.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"{outImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{nameof(horizontalGradient)}, {nameof(verticalGradient)} should be signed grayscale image. Or output {outImage.ImageType} is not supported.");
             }
         }
 

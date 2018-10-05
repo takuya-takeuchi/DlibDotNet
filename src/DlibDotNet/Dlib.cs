@@ -93,7 +93,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_bmp(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
@@ -113,7 +113,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_dng(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
@@ -133,7 +133,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_image(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
@@ -153,7 +153,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_jpeg(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
@@ -173,7 +173,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_png(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
@@ -363,7 +363,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_bmp(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
@@ -388,7 +388,7 @@ namespace DlibDotNet
             var ret = Native.save_bmp_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
                 case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
@@ -413,7 +413,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_dng(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
@@ -438,7 +438,7 @@ namespace DlibDotNet
             var ret = Native.save_dng_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
                 case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
@@ -465,7 +465,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_jpeg(array2DType, image.NativePtr, str, quality);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
@@ -492,7 +492,7 @@ namespace DlibDotNet
             var ret = Native.save_jpeg_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, quality);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
                 case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
@@ -515,7 +515,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_png(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
@@ -538,7 +538,7 @@ namespace DlibDotNet
             var ret = Native.save_png_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
                 case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
@@ -732,11 +732,15 @@ namespace DlibDotNet
 
                 OK = 0,
 
-                ArrayTypeNotSupport = -1,
+                #region Array2D
+
+                Array2DError = 0x7B000000,
+
+                Array2DTypeTypeNotSupport = Array2DError | 0x00000001,
+
+                #endregion
 
                 InputArrayTypeNotSupport = -2,
-
-                OutputArrayTypeNotSupport = -3,
 
                 ElementTypeNotSupport = -4,
 
@@ -744,9 +748,15 @@ namespace DlibDotNet
 
                 OutputElementTypeNotSupport = -6,
 
-                MatrixElementTypeNotSupport = -7,
+                #region Matrix
 
-                MatrixElementTemplateSizeNotSupport = -8,
+                MatrixError = 0x7C000000,
+
+                MatrixElementTypeNotSupport = MatrixError | 0x00000001,
+
+                MatrixElementTemplateSizeNotSupport = MatrixError | 0x00000002,
+
+                #endregion
 
                 //InputOutputArrayNotSameSize = -8,
 

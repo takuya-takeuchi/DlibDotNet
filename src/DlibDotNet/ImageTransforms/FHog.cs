@@ -24,7 +24,7 @@ namespace DlibDotNet
             var ret = Native.draw_fhog(inType, hogImage.NativePtr, cellDrawSize, minResponseThreshold, out var outMatrix);
             switch (ret)
             {
-                case Native.ErrorType.InputElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
@@ -79,9 +79,9 @@ namespace DlibDotNet
             var ret = Native.extract_fhog_features(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
             switch (ret)
             {
-                case Native.ErrorType.OutputElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
             }
 
@@ -110,9 +110,9 @@ namespace DlibDotNet
             var ret = Native.extract_fhog_features2(inType, inImage.NativePtr, outType, cellSize, filterRowsPadding, filterColsPadding, out var hog);
             switch (ret)
             {
-                case Native.ErrorType.OutputElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
             }
 
@@ -142,10 +142,8 @@ namespace DlibDotNet
             var ret = Native.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
             switch (ret)
             {
-                case Native.ErrorType.OutputElementTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Input or output element type is not supported.");
             }
 
             return hogImage;

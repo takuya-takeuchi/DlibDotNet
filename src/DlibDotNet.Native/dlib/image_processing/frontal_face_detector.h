@@ -110,19 +110,18 @@ DLLEXPORT int frontal_face_detector_operator(
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
     return err;
 }
 
-DLLEXPORT int frontal_face_detector_matrix_operator(
-    frontal_face_detector* detector,
-    matrix_element_type img_type,
-    void* img,
-    double adjust_threshold,
-    std::vector<rectangle*> *dets)
+DLLEXPORT int frontal_face_detector_matrix_operator(frontal_face_detector* detector,
+                                                    matrix_element_type img_type,
+                                                    void* img,
+                                                    double adjust_threshold,
+                                                    std::vector<rectangle*> *dets)
 {
     int err = ERR_OK;
 
@@ -181,7 +180,7 @@ DLLEXPORT int frontal_face_detector_matrix_operator(
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -250,7 +249,7 @@ DLLEXPORT int frontal_face_detector_matrix_operator2(frontal_face_detector* dete
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

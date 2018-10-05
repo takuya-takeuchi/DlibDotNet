@@ -124,7 +124,7 @@ DLLEXPORT int shape_predictor_operator(shape_predictor* predictor,
             #undef ELEMENT
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -272,7 +272,7 @@ DLLEXPORT int shape_predictor_operator_mmod_rect(shape_predictor* predictor,
             #undef ELEMENT
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

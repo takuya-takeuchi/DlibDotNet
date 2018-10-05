@@ -71,7 +71,7 @@ namespace DlibDotNet
             var ret = Dlib.Native.mlp_kernel_operator(kernelType, this.NativePtr, type, data.NativePtr, out var retMat);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
                 case Dlib.Native.ErrorType.MlpKernelNotSupport:
                     throw new ArgumentException($"{kernelType} is not supported.");
@@ -92,7 +92,7 @@ namespace DlibDotNet
             var ret = Dlib.Native.mlp_kernel_train(kernelType, this.NativePtr, type, exampleIn.NativePtr, exampleOut);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
                 case Dlib.Native.ErrorType.MlpKernelNotSupport:
                     throw new ArgumentException($"{kernelType} is not supported.");

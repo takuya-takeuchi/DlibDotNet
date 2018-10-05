@@ -76,7 +76,7 @@ namespace DlibDotNet
                 out var resultPoint);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.ArrayTypeNotSupport:
+                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {image.ImageType} is not supported.");
                 }
 
@@ -124,10 +124,8 @@ namespace DlibDotNet
                     native.NativePtr);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.OutputArrayTypeNotSupport:
-                        throw new ArgumentException($"Output {outImage.ImageType} is not supported.");
-                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
-                        throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
+                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException("Output or input type is not supported.");
                 }
             }
         }

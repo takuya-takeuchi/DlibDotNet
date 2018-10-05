@@ -206,7 +206,7 @@ namespace DlibDotNet
                     var ret = Dlib.Native.extensions_convert_array_to_bytes(this._Array2DType, src, dst, rows, columns);
                     switch (ret)
                     {
-                        case Dlib.Native.ErrorType.ArrayTypeNotSupport:
+                        case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
                             throw new ArgumentException($"Cannot convert Array2D<{this.ImageType}> to byte array.");
                     }
                     return dst;

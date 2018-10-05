@@ -116,7 +116,7 @@ do { \
             dlib::FUNCTION(*((array2d<rgb_alpha_pixel>*)img));\
             break;\
         default:\
-            ret = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -204,7 +204,7 @@ do { \
             dlib::FUNCTION(*((array2d<rgb_alpha_pixel>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -343,7 +343,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -482,7 +482,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -648,7 +648,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -806,7 +806,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -847,7 +847,7 @@ do { \
             dlib::extract_image_chips(*((array2d<hsi_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -888,7 +888,7 @@ do { \
             dlib::extract_image_chip(*((array2d<hsi_pixel>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -986,7 +986,7 @@ do { \
             dlib::extract_image_chip(*((matrix<hsi_pixel>*)in_img), *chip, *((matrix<ELEMENT_OUT>*)out_chip));\
             break;\
         default:\
-            ret = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -1306,7 +1306,7 @@ DLLEXPORT int flip_image_left_right2(array2d_type in_type, void* in_img, array2d
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1379,7 +1379,7 @@ DLLEXPORT int flip_image_up_down(array2d_type in_type, void* in_img, array2d_typ
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1507,7 +1507,7 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
     int err = ERR_OK;
 
     if (in_type == array2d_type::HsiPixel || in_type == array2d_type::RgbAlphaPixel)
-        return ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+        return ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 
     #define FUNCTION resize_image
     switch(out_type)
@@ -1560,7 +1560,7 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1623,7 +1623,7 @@ DLLEXPORT int resize_image2(array2d_type in_type, void* in_img, array2d_type out
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1666,7 +1666,7 @@ DLLEXPORT int resize_image3(array2d_type type, void* img, double size_scale)
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1801,7 +1801,7 @@ DLLEXPORT int rotate_image(array2d_type in_type, void* in_img, array2d_type out_
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1864,7 +1864,7 @@ DLLEXPORT int rotate_image2(array2d_type in_type, void* in_img, array2d_type out
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1928,7 +1928,7 @@ DLLEXPORT int transform_image(array2d_type in_type, void* in_img, array2d_type o
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2149,7 +2149,7 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2287,7 +2287,7 @@ DLLEXPORT int extract_image_chip(array2d_type img_type, void* in_img, chip_detai
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2358,7 +2358,7 @@ DLLEXPORT int extract_image_chip2(array2d_type img_type, void* in_img, chip_deta
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2427,7 +2427,7 @@ DLLEXPORT int extract_image_chip_matrix(matrix_element_type img_type, void* in_i
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2498,7 +2498,7 @@ DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2567,7 +2567,7 @@ DLLEXPORT int jitter_image(matrix_element_type in_type, void* in_img, dlib::rand
             break;
         case matrix_element_type::RgbAlphaPixel:     
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

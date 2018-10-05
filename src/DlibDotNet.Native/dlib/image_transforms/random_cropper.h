@@ -145,14 +145,13 @@ DLLEXPORT void random_cropper_set_translate_amount(random_cropper* cropper, doub
     cropper->set_translate_amount(value);
 }
 
-DLLEXPORT int random_cropper_operator(
-    random_cropper* cropper, 
-    size_t num_crops,
-    matrix_element_type type,
-    void* images,
-    void* rects,
-    void* crops,
-    void* crop_rects)
+DLLEXPORT int random_cropper_operator(random_cropper* cropper, 
+                                      size_t num_crops,
+                                      matrix_element_type type,
+                                      void* images,
+                                      void* rects,
+                                      void* crops,
+                                      void* crop_rects)
 {
     int err = ERR_OK;
 
@@ -210,7 +209,7 @@ DLLEXPORT int random_cropper_operator(
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
     

@@ -871,7 +871,7 @@ DLLEXPORT int extensions_convert_array_to_bytes(array2d_type src_type, void* src
             #undef ELEMENT
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

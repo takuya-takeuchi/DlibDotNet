@@ -54,7 +54,7 @@ do { \
             dlib::assign_all_pixels(*((array2d<rgb_alpha_pixel>*)out_img), *((ELEMENT_IN*)in_pixel));\
             break;\
         default:\
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -89,7 +89,7 @@ do { \
             dlib::assign_image(*((array2d<rgb_alpha_pixel>*)out_img), *((array2d<ELEMENT_IN>*)in_img));\
             break;\
         default:\
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -200,7 +200,7 @@ DLLEXPORT int assign_all_pixels(array2d_type out_type, void* out_img, array2d_ty
            #undef ELEMENT_IN
            break;
        default:
-           err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+           err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
            break;
    }
 
@@ -254,7 +254,7 @@ DLLEXPORT int assign_image(array2d_type out_type, void* out_img, array2d_type in
             #undef ELEMENT_IN
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

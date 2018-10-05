@@ -45,7 +45,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -121,20 +121,19 @@ DLLEXPORT int hough_transform_get_best_hough_point(dlib::hough_transform* obj, d
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;;
     }
 
     return err;
 }
 
-DLLEXPORT int hough_transform_operator(
-    dlib::hough_transform* obj,
-    array2d_type in_type,
-    void* in_img,
-    array2d_type out_type,
-    void* out_img,
-    dlib::rectangle* rectangle)
+DLLEXPORT int hough_transform_operator(dlib::hough_transform* obj,
+                                       array2d_type in_type,
+                                       void* in_img,
+                                       array2d_type out_type,
+                                       void* out_img,
+                                       dlib::rectangle* rectangle)
 {
     int ret = ERR_OK;
     switch(out_type)
@@ -183,7 +182,7 @@ DLLEXPORT int hough_transform_operator(
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            ret = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;;
     }
 

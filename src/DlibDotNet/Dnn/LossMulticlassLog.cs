@@ -167,7 +167,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(trainer));
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
-            if (label == null) throw new ArgumentNullException(nameof(label));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
@@ -180,17 +181,11 @@ namespace DlibDotNet.Dnn
                                                                        dataVec.NativePtr,
                                                                        Dlib.Native.MatrixElementType.UInt32,
                                                                        labelVec.NativePtr);
-
-                if (ret != Dlib.Native.ErrorType.OK)
-                    switch (ret)
-                    {
-                        case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                        case Dlib.Native.ErrorType.OutputElementTypeNotSupport:
-                        case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                switch (ret)
+                {
+                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
+                }
             }
         }
 

@@ -83,7 +83,7 @@ DLLEXPORT int save_bmp(array2d_type type, void* image, const char* file_name)
             dlib::save_bmp(*((array2d<rgb_alpha_pixel>*)image), file_name);
             break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -130,7 +130,7 @@ DLLEXPORT int save_bmp_matrix(matrix_element_type type, void* matrix, const int 
             save_bmp_matrix_template(rgb_alpha_pixel);
             break;
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

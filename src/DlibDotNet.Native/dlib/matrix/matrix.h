@@ -1893,7 +1893,7 @@ DLLEXPORT int matrix_operator_left_shift(matrix_element_type type, void* matrix,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1947,7 +1947,7 @@ DLLEXPORT int matrix_operator_add(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1998,7 +1998,7 @@ DLLEXPORT int matrix_operator_negative(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2052,7 +2052,7 @@ DLLEXPORT int matrix_operator_subtract(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2086,7 +2086,7 @@ DLLEXPORT int matrix_operator_subtract_dpoint(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2140,7 +2140,7 @@ DLLEXPORT int matrix_operator_multiply(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2174,7 +2174,7 @@ DLLEXPORT int matrix_operator_multiply_dpoint(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2224,7 +2224,7 @@ DLLEXPORT int matrix_operator_multiply_left_numeric(numeric_type numeric_type,
             matrix_operator_multiply_left_numeric_template(double, lhs, type, rhs, templateRows, templateColumns, ret);
             break;
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2277,7 +2277,7 @@ DLLEXPORT int matrix_operator_multiply_right_numeric(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2331,7 +2331,7 @@ DLLEXPORT int matrix_operator_divide(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2384,7 +2384,7 @@ DLLEXPORT int matrix_operator_divide_double(matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

@@ -71,7 +71,7 @@ namespace DlibDotNet
             {
                 switch (error)
                 {
-                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._Type} is not supported.");
                     case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");

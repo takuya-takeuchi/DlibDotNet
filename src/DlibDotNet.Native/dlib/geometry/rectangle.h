@@ -231,7 +231,7 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
             *rect = new dlib::rectangle(get_rect(*((array2d<rgb_alpha_pixel>*)img)));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

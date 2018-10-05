@@ -108,7 +108,7 @@ DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
     
@@ -180,7 +180,7 @@ DLLEXPORT int load_image_dataset_rectangle(matrix_element_type type,
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

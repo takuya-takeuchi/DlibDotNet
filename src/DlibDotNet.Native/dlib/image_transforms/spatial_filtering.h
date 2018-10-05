@@ -51,7 +51,7 @@ do { \
             break;\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -89,7 +89,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -153,7 +153,7 @@ DLLEXPORT int gaussian_blur(array2d_type in_type, void* in_img, array2d_type out
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -213,7 +213,7 @@ DLLEXPORT int sum_filter(array2d_type in_type, void* in_img, array2d_type out_ty
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

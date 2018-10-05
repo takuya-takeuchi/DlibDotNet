@@ -205,7 +205,7 @@ DLLEXPORT int find_clusters_using_angular_kmeans(const matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
     
@@ -271,7 +271,7 @@ DLLEXPORT int nearest_center(const matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
     
@@ -339,7 +339,7 @@ DLLEXPORT int pick_initial_centers(const matrix_element_type type,
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
     

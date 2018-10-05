@@ -486,7 +486,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_train(void* trainer,
     int err = ERR_OK;
     
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
         
     switch(data_element_type)
     {

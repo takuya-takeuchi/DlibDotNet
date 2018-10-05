@@ -42,7 +42,7 @@ namespace DlibDotNet
                                                                  maxMergingIterations);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{image.ImageType} is not supported.");
                     case Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{matrixType} is not supported.");
