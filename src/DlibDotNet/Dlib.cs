@@ -746,8 +746,6 @@ namespace DlibDotNet
 
                 InputElementTypeNotSupport = -5,
 
-                OutputElementTypeNotSupport = -6,
-
                 #region Matrix
 
                 MatrixError = 0x7C000000,
@@ -762,11 +760,29 @@ namespace DlibDotNet
 
                 //InputOutputMatrixNotSameSize = -9
 
-                MlpKernelNotSupport = -8,
+                #region Mlp
 
-                RunningStatsTypeNotSupport = -9,
+                MlpError = 0x7A000000,
 
-                InputVectorTypeNotSupport = -10,
+                MlpKernelNotSupport = MlpError | 0x00000001,
+
+                #endregion
+
+                #region RunningStats
+
+                RunningStatsError = 0x78000000,
+
+                RunningStatsTypeNotSupport = RunningStatsError | 0x00000001,
+
+                #endregion
+
+                #region Vector
+
+                VectorError = 0x79000000,
+
+                VectorTypeNotSupport = VectorError | 0x00000001,
+
+                #endregion
 
                 #region FHog
 

@@ -188,18 +188,23 @@ typedef struct
 #define ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT               -2
 #define ERR_ELEMENT_TYPE_NOT_SUPPORT                   -4
 #define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT             -5
-#define ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT            -6
 
 // matrix
 #define ERR_MATRIX_ERROR                                                  0x7C000000
 #define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT            ERR_MATRIX_ERROR | 0x00000001
 #define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT   ERR_MATRIX_ERROR | 0x00000002
 
-#define ERR_MLP_KERNEL_NOT_SUPPORT            -8
+// mlp
+#define ERR_MLP_ERROR                                                     0x7A000000
+#define ERR_MLP_KERNEL_NOT_SUPPORT                        ERR_MLP_ERROR | 0x00000001
 
 // statistics/statistics.h
-#define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -9
-#define ERR_VECTOR_TYPE_NOT_SUPPORT          -10
+#define ERR_RUNNING_STATS_ERROR                                           0x78000000
+#define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT      ERR_RUNNING_STATS_ERROR | 0x00000001
+
+// vector
+#define ERR_VECTOR_ERROR                                                  0x79000000
+#define ERR_VECTOR_TYPE_NOT_SUPPORT                    ERR_VECTOR_ERROR | 0x00000001
 
 // fhog
 #define ERR_FHOG_ERROR                                       0x7D000000
