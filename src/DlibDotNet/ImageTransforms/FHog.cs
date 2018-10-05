@@ -119,7 +119,7 @@ namespace DlibDotNet
             feature = new Matrix<double>(hog, 0, 1);
         }
 
-        public static Array<Array2D<T>> ExtracFHogFeaturesArray<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
+        public static Array<Array2D<T>> ExtractFHogFeaturesArray<T>(Array2DBase inImage, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
             where T : struct
         {
             if (inImage == null)
