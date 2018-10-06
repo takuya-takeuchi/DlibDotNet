@@ -13,29 +13,25 @@ using namespace std;
 
 #pragma region matrix
 
-#define ELEMENT element
-#undef ELEMENT
-
-#define tile_images_matrix_template(images, ret_image) \
+#define tile_images_matrix_template(__TYPE__, images, ret_image) \
 do { \
-    std::vector<dlib::matrix<ELEMENT>*>& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(images));\
-    std::vector<dlib::matrix<ELEMENT>> tmp_images;\
+    std::vector<dlib::matrix<__TYPE__>*>& tmp = *(static_cast<std::vector<dlib::matrix<__TYPE__>*>*>(images));\
+    std::vector<dlib::matrix<__TYPE__>> tmp_images;\
     for (int index = 0; index < tmp.size(); index++)\
     {\
-        dlib::matrix<ELEMENT>& matrix = *(static_cast<dlib::matrix<ELEMENT>*>(tmp[index]));\
+        dlib::matrix<__TYPE__>& matrix = *(static_cast<dlib::matrix<__TYPE__>*>(tmp[index]));\
         tmp_images.push_back(matrix);\
     }\
-    *ret_image = new dlib::matrix<ELEMENT>(dlib::tile_images(tmp_images));\
+    *ret_image = new dlib::matrix<__TYPE__>(dlib::tile_images(tmp_images));\
 } while (0)
 
 #pragma endregion template
 
-DLLEXPORT int draw_line(
-    array2d_type type,
-    void* image, 
-    dlib::point* p1,
-    dlib::point* p2,
-    void* p)
+DLLEXPORT int draw_line(array2d_type type,
+                        void* image, 
+                        dlib::point* p1,
+                        dlib::point* p2,
+                        void* p)
  {
      int err = ERR_OK;
  
@@ -82,12 +78,11 @@ DLLEXPORT int draw_line(
      return err;
  }
 
- DLLEXPORT int draw_rectangle(
-    array2d_type type,
-    void* image, 
-    dlib::rectangle* rect,
-    void* p,
-    unsigned int thickness)
+ DLLEXPORT int draw_rectangle(array2d_type type,
+                              void* image, 
+                              dlib::rectangle* rect,
+                              void* p,
+                              unsigned int thickness)
  {
      int err = ERR_OK;
  
@@ -188,59 +183,37 @@ DLLEXPORT int tile_images_matrix(matrix_element_type in_type, void* images, void
     switch(in_type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(uint8_t, images, ret_image);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(uint16_t, images, ret_image);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(uint32_t, images, ret_image);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(int8_t, images, ret_image);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(int16_t, images, ret_image);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(int32_t, images, ret_image);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(float, images, ret_image);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(double, images, ret_image);
             break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT rgb_pixel
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(rgb_pixel, images, ret_image);
             break;
         case matrix_element_type::HsiPixel:
-            #define ELEMENT hsi_pixel
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(hsi_pixel, images, ret_image);
             break;
         case matrix_element_type::RgbAlphaPixel:
-            #define ELEMENT rgb_alpha_pixel
-            tile_images_matrix_template(images, ret_image);
-            #undef ELEMENT
+            tile_images_matrix_template(rgb_alpha_pixel, images, ret_image);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;

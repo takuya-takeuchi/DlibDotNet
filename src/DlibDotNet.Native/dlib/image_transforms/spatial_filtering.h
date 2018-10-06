@@ -11,43 +11,40 @@
 using namespace dlib;
 using namespace std;
 
-#define ELEMENT_OUT element
-#undef ELEMENT_OUT
-
-#define gaussian_blur_template(ret, in_type, in_img, out_img, sigma, max_size) \
+#define gaussian_blur_template(__TYPE__, ret, in_type, in_img, out_img, sigma, max_size) \
 do { \
     ret = ERR_OK;\
     switch(in_type)\
     {\
         case array2d_type::UInt8:\
-            dlib::gaussian_blur(*((array2d<uint8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<uint8_t>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::UInt16:\
-            dlib::gaussian_blur(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<uint16_t>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::UInt32:\
-            dlib::gaussian_blur(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<uint32_t>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::Int8:\
-            dlib::gaussian_blur(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<int8_t>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::Int16:\
-            dlib::gaussian_blur(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<int16_t>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::Int32:\
-            dlib::gaussian_blur(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<int32_t>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::Float:\
-            dlib::gaussian_blur(*((array2d<float>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<float>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::Double:\
-            dlib::gaussian_blur(*((array2d<double>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<double>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::RgbPixel:\
-            dlib::gaussian_blur(*((array2d<rgb_pixel>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<rgb_pixel>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::HsiPixel:\
-            dlib::gaussian_blur(*((array2d<hsi_pixel>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), sigma, max_size);\
+            dlib::gaussian_blur(*((array2d<hsi_pixel>*)in_img), *((array2d<__TYPE__>*)out_img), sigma, max_size);\
             break;\
         case array2d_type::RgbAlphaPixel:\
         default:\
@@ -56,34 +53,34 @@ do { \
     }\
 } while (0)
 
-#define sum_filter_template(ret, in_type, in_img, out_img, rect) \
+#define sum_filter_template(__TYPE__, ret, in_type, in_img, out_img, rect) \
 do { \
     ret = ERR_OK;\
     switch(in_type)\
     {\
         case array2d_type::UInt8:\
-            dlib::sum_filter(*((array2d<uint8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<uint8_t>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::UInt16:\
-            dlib::sum_filter(*((array2d<uint16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<uint16_t>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::UInt32:\
-            dlib::sum_filter(*((array2d<uint32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<uint32_t>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::Int8:\
-            dlib::sum_filter(*((array2d<int8_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<int8_t>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::Int16:\
-            dlib::sum_filter(*((array2d<int16_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<int16_t>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::Int32:\
-            dlib::sum_filter(*((array2d<int32_t>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<int32_t>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::Float:\
-            dlib::sum_filter(*((array2d<float>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<float>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::Double:\
-            dlib::sum_filter(*((array2d<double>*)in_img), *((array2d<ELEMENT_OUT>*)out_img), *rect);\
+            dlib::sum_filter(*((array2d<double>*)in_img), *((array2d<__TYPE__>*)out_img), *rect);\
             break;\
         case array2d_type::RgbPixel:\
         case array2d_type::HsiPixel:\
@@ -102,54 +99,34 @@ DLLEXPORT int gaussian_blur(array2d_type in_type, void* in_img, array2d_type out
     switch(out_type)
     {
         case array2d_type::UInt8:
-            #define ELEMENT_OUT uint8_t
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(uint8_t, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::UInt16:
-            #define ELEMENT_OUT uint16_t
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(uint16_t, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::UInt32:
-            #define ELEMENT_OUT uint32_t
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(uint32_t, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::Int8:
-            #define ELEMENT_OUT int8_t
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(int8_t, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::Int16:
-            #define ELEMENT_OUT int16_t
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(int16_t, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::Int32:
-            #define ELEMENT_OUT int32_t
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(int32_t, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::Float:
-            #define ELEMENT_OUT float
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(float, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::Double:
-            #define ELEMENT_OUT double
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(double, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::RgbPixel:
-            #define ELEMENT_OUT rgb_pixel
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(rgb_pixel, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::HsiPixel:
-            #define ELEMENT_OUT hsi_pixel
-            gaussian_blur_template(err, in_type, in_img, out_img, sigma, max_size);
-            #undef ELEMENT_OUT
+            gaussian_blur_template(hsi_pixel, err, in_type, in_img, out_img, sigma, max_size);
             break;
         case array2d_type::RgbAlphaPixel:
         default:
@@ -170,44 +147,28 @@ DLLEXPORT int sum_filter(array2d_type in_type, void* in_img, array2d_type out_ty
     switch(out_type)
     {
         case array2d_type::UInt8:
-            #define ELEMENT_OUT uint8_t
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(uint8_t, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::UInt16:
-            #define ELEMENT_OUT uint16_t
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(uint16_t, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::UInt32:
-            #define ELEMENT_OUT uint32_t
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(uint32_t, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::Int8:
-            #define ELEMENT_OUT int8_t
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(int8_t, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::Int16:
-            #define ELEMENT_OUT int16_t
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(int16_t, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::Int32:
-            #define ELEMENT_OUT int32_t
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(int32_t, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::Float:
-            #define ELEMENT_OUT float
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(float, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::Double:
-            #define ELEMENT_OUT double
-            sum_filter_template(err, in_type, in_img, out_img, rect);
-            #undef ELEMENT_OUT
+            sum_filter_template(double, err, in_type, in_img, out_img, rect);
             break;
         case array2d_type::RgbPixel:
         case array2d_type::HsiPixel:
