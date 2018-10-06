@@ -1436,7 +1436,7 @@ DLLEXPORT void array2d_matrix_row_delete(matrix_element_type type, void* row, co
             #undef ELEMENT
             break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT double
+            #define ELEMENT rgb_pixel
             array2d_matrix_row_delete_template(row, templateRows, templateColumns);
             #undef ELEMENT
             break;
