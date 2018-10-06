@@ -740,8 +740,6 @@ namespace DlibDotNet
 
                 #endregion
 
-                InputArrayTypeNotSupport = -2,
-
                 ElementTypeNotSupport = -4,
 
                 InputElementTypeNotSupport = -5,

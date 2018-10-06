@@ -185,7 +185,6 @@ typedef struct
 #define ERR_ARRAY2D_ERROR                                                 0x7B000000
 #define ERR_ARRAY2D_TYPE_NOT_SUPPORT                  ERR_ARRAY2D_ERROR | 0x00000001
 
-#define ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT               -2
 #define ERR_ELEMENT_TYPE_NOT_SUPPORT                   -4
 #define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT             -5
 

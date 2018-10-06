@@ -25,7 +25,7 @@ namespace DlibDotNet
             var ret = Native.mat_array2d(imageType, array.NativePtr, out var matrix);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{imageType} is not supported.");
             }
 
