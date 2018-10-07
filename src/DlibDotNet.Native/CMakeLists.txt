@@ -36,6 +36,10 @@ if (${DLIB_USE_CUDA})
         ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc
         @ONLY)
 
+    # include CUDA Runtime Library
+    include_directories("$ENV{CUDA_PATH}/include")
+    link_libraries("$ENV{CUDA_PATH}/lib/x64/cudart_static.lib")
+
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}
                                     ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc)

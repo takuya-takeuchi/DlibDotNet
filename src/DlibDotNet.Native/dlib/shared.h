@@ -1,6 +1,8 @@
 #ifndef _CPP_SHARED_H_
 #define _CPP_SHARED_H_
 
+#include <regex>
+
 enum struct array2d_type : int
 {
     UInt8 = 0,
@@ -218,10 +220,36 @@ typedef struct
 #define ERR_DNN_ERROR                                                     0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE                 -(ERR_DNN_ERROR | 0x00000001)
 
+// CUDA
+#define ERR_CUDA_ERROR                                                    0x77000000
+#define ERR_CUDA_OUT_OF_MEMORY                         -(ERR_CUDA_ERROR | 0x00000001)
+
 #pragma region macro
 
 #define ELEMENT_TYPE element
 #undef ELEMENT_TYPE
+
+#pragma region CUDA
+
+// Ex.
+// Error while calling cudaGetDevice(&the_device_id) in file d:\works\lib\dlib\19.15\dlib\cuda\gpu_data.cpp:178. code: 35, reason: CUDA driver version is insufficient for CUDA runtime version
+#define cuda_errot_to_error_code(cuda_error, error) \
+do {\
+    error = ERR_CUDA_ERROR;\
+    std::cmatch results;\
+    if (std::regex_search(cuda_error.info.c_str(), results, std::regex(".+code: (\\d+), reason: .*")))\
+    {\
+        if (results.size() == 2)\
+        {\
+            auto code = results[1].str();\
+            auto icode = std::stoi(code);\
+            error = ERR_CUDA_ERROR + icode;\
+        }\
+    }\
+    error = -error;\
+} while (0)
+
+#pragma endregion CUDA
 
 #define new_instance_vector_to_instance(__TYPE__, src, dst) \
 do {\
