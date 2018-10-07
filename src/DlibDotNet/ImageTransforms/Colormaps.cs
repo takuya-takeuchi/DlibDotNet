@@ -33,7 +33,7 @@ namespace DlibDotNet
             var array2DType = image.ImageType.ToNativeArray2DType();
 
             var ret = Native.heatmap(array2DType, image.NativePtr, out var matrix);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return new MatrixOp(Native.ElementType.OpHeatmap, image.ImageType, matrix);
@@ -64,7 +64,7 @@ namespace DlibDotNet
             var array2DType = image.ImageType.ToNativeArray2DType();
 
             var ret = Native.heatmap2(array2DType, image.NativePtr, maxValue, minValue, out var matrix);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return new MatrixOp(Native.ElementType.OpHeatmap, image.ImageType, matrix);
@@ -97,7 +97,7 @@ namespace DlibDotNet
             var array2DType = image.ImageType.ToNativeArray2DType();
 
             var ret = Native.jet(array2DType, image.NativePtr, out var matrix);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return new MatrixOp(Native.ElementType.OpJet, image.ImageType, matrix);
@@ -128,7 +128,7 @@ namespace DlibDotNet
             var array2DType = image.ImageType.ToNativeArray2DType();
 
             var ret = Native.jet2(array2DType, image.NativePtr, maxValue, minValue, out var matrix);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return new MatrixOp(Native.ElementType.OpJet, image.ImageType, matrix);

@@ -57,7 +57,7 @@ DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_ty
 		case array2d_type::Double:
 			break;
         default:
-            return ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            return ERR_ARRAY2D_TYPE_NOT_SUPPORT;
     }
 
     int err = ERR_OK;
@@ -119,7 +119,7 @@ DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_ty
             #undef ARRAY2D_ELEMENT
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -136,7 +136,7 @@ DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void*
 		case array2d_type::Double:
 			break;
         default:
-            return ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            return ERR_ARRAY2D_TYPE_NOT_SUPPORT;
     }
 
     int err = ERR_OK;
@@ -198,7 +198,7 @@ DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void*
             #undef ARRAY2D_ELEMENT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

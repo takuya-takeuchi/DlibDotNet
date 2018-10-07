@@ -59,7 +59,7 @@ namespace FHog
 
                             // Finally, sometimes you want to get a planar representation of the HOG features
                             // rather than the explicit vector (i.e. interlaced) representation used above.  
-                            var planar_hog = Dlib.ExtracFHogFeaturesArray<float>(img);
+                            var planar_hog = Dlib.ExtractFHogFeaturesArray<float>(img);
                             // Now we have an array of 31 float valued image planes, each representing one of
                             // the dimensions of the HOG feature vector.  
                         }

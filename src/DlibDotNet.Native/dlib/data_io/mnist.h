@@ -10,13 +10,11 @@
 using namespace dlib;
 using namespace std;
 
-DLLEXPORT void load_mnist_dataset (
-        const char* folder_name,
-        std::vector<matrix<unsigned char>*>** training_images,
-        std::vector<unsigned long>** training_labels,
-        std::vector<matrix<unsigned char>*>** testing_images,
-        std::vector<unsigned long>** testing_labels
-    )
+DLLEXPORT void load_mnist_dataset(const char* folder_name,
+                                  std::vector<matrix<unsigned char>*>** training_images,
+                                  std::vector<unsigned long>** training_labels,
+                                  std::vector<matrix<unsigned char>*>** testing_images,
+                                  std::vector<unsigned long>** testing_labels)
 {
     std::string tmp(folder_name);
     std::vector<matrix<unsigned char>> tmp_training_images;

@@ -48,30 +48,13 @@ typedef unsigned long train_label_type;
 
 #pragma region template
 
-#define ELEMENT element
-#undef ELEMENT
-
-#define operator_template(net, images, batch_size, ret) \
+#define train_template(trainer, __TYPE__, data, labels) \
 do {\
-    std::vector<dlib::matrix<ELEMENT>*>& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(images));\
-    std::vector<dlib::matrix<ELEMENT>> in_tmp;\
-    for (int i = 0; i< tmp.size(); i++)\
-    {\
-        dlib::matrix<ELEMENT>& mat = *tmp[i];\
-        in_tmp.push_back(mat);\
-    }\
-\
-    std::vector<out_type> dets = net(in_tmp, batch_size);\
-    *ret = new std::vector<out_type>(dets);\
-} while (0)
-
-#define train_template(trainer, data, labels) \
-do {\
-    std::vector<matrix<ELEMENT>*>& tmp_data = *(static_cast<std::vector<matrix<ELEMENT>*>*>(data));\
-    std::vector<matrix<ELEMENT>> in_tmp_data;\
+    std::vector<matrix<__TYPE__>*>& tmp_data = *(static_cast<std::vector<matrix<__TYPE__>*>*>(data));\
+    std::vector<matrix<__TYPE__>> in_tmp_data;\
     for (int i = 0; i< tmp_data.size(); i++)\
     {\
-        matrix<ELEMENT>& mat = *tmp_data[i];\
+        matrix<__TYPE__>& mat = *tmp_data[i];\
         in_tmp_data.push_back(mat);\
     }\
 \
@@ -111,7 +94,7 @@ DLLEXPORT int loss_metric_new(const int type, void** net)
 DLLEXPORT int loss_metric_operator_matrixs(void* obj,
                                            const int type,
                                            matrix_element_type element_type,
-                                           void* matrix,
+                                           void* matrix_vector,
                                            int templateRows,
                                            int templateColumns,
                                            size_t batch_size,
@@ -128,9 +111,7 @@ DLLEXPORT int loss_metric_operator_matrixs(void* obj,
                 switch(element_type)
                 {
                     case matrix_element_type::RgbPixel:
-                        #define ELEMENT rgb_pixel
-                        operator_template(net, matrix, batch_size, ret);
-                        #undef ELEMENT
+                        operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
                         break;
                     case matrix_element_type::UInt8:
                     case matrix_element_type::UInt16:
@@ -339,9 +320,7 @@ DLLEXPORT void* dnn_trainer_loss_metric_new(void* net, const int type)
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_new_template(net);
-            #undef NET_TYPE
+            dnn_trainer_new_template(anet_type, net);
             break;
     }
 
@@ -354,9 +333,7 @@ DLLEXPORT void dnn_trainer_loss_metric_delete(void* trainer, const int type)
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_delete_template(trainer);
-            #undef NET_TYPE
+            dnn_trainer_delete_template(anet_type, trainer);
             break;
     }
 }
@@ -367,9 +344,7 @@ DLLEXPORT void dnn_trainer_loss_metric_set_learning_rate(void* trainer, const in
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_set_learning_rate_template(trainer, lr);
-            #undef NET_TYPE
+            dnn_trainer_set_learning_rate_template(anet_type, trainer, lr);
             break;
     }
 }
@@ -380,9 +355,7 @@ DLLEXPORT void dnn_trainer_loss_metric_set_min_learning_rate(void* trainer, cons
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_set_min_learning_rate_template(trainer, lr);
-            #undef NET_TYPE
+            dnn_trainer_set_min_learning_rate_template(anet_type, trainer, lr);
             break;
     }
 }
@@ -393,9 +366,7 @@ DLLEXPORT void dnn_trainer_loss_metric_set_mini_batch_size(void* trainer, const 
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_set_mini_batch_size_template(trainer, size);
-            #undef NET_TYPE
+            dnn_trainer_set_mini_batch_size_template(anet_type, trainer, size);
             break;
     }
 }
@@ -406,9 +377,7 @@ DLLEXPORT void dnn_trainer_loss_metric_be_verbose(void* trainer, const int type)
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_be_verbose_template(trainer);
-            #undef NET_TYPE
+            dnn_trainer_be_verbose_template(anet_type, trainer);
             break;
     }
 }
@@ -421,9 +390,7 @@ DLLEXPORT int dnn_trainer_loss_metric_set_synchronization_file(void* trainer, co
     switch(type)
     {
         case 0:
-            #define NET_TYPE anet_type
-            dnn_trainer_set_synchronization_file_template(trainer, filename, std::chrono::seconds(second));
-            #undef NET_TYPE
+            dnn_trainer_set_synchronization_file_template(anet_type, trainer, filename, std::chrono::seconds(second));
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;

@@ -24,10 +24,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.UInt8, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.UInt8} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -42,10 +40,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.UInt16, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.UInt16} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -60,10 +56,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.Int32, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.Int32} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -78,10 +72,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.UInt8, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.UInt8} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -96,10 +88,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.Int16, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.UInt16} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -114,10 +104,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.Int32, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.Int32} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -132,10 +120,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.Float, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.Float} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -150,10 +136,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.Double, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.Double} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -168,10 +152,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.RgbPixel, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.RgbPixel} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -186,10 +168,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.RgbAlphaPixel, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.RgbAlphaPixel} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -204,10 +184,8 @@ namespace DlibDotNet
             var ret = Native.assign_all_pixels(outType, dest.NativePtr, Native.Array2DType.HsiPixel, ref pixel);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {Native.Array2DType.HsiPixel} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -228,10 +206,8 @@ namespace DlibDotNet
             var ret = Native.assign_image(outType, dest.NativePtr, inType, src.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 

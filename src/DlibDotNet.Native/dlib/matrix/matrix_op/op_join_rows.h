@@ -184,7 +184,7 @@ DLLEXPORT int matrix_op_op_join_rows_nc(matrix_element_type type, void* obj, con
             #undef ELEMENT_IN
 			break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -252,7 +252,7 @@ DLLEXPORT int matrix_op_op_join_rows_nr(matrix_element_type type, void* obj, con
             #undef ELEMENT_IN
 			break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

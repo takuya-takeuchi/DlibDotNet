@@ -344,7 +344,7 @@ DLLEXPORT int array_pixel_pushback_uint8(const array2d_type type, void* array, u
             ((dlib::array<uint8_t>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -361,7 +361,7 @@ DLLEXPORT int array_pixel_pushback_uint16(const array2d_type type, void* array, 
             ((dlib::array<uint16_t>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -378,7 +378,7 @@ DLLEXPORT int array_pixel_pushback_uint32(const array2d_type type, void* array, 
             ((dlib::array<uint32_t>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -395,7 +395,7 @@ DLLEXPORT int array_pixel_pushback_int8(const array2d_type type, void* array, in
             ((dlib::array<int8_t>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -412,7 +412,7 @@ DLLEXPORT int array_pixel_pushback_int16(const array2d_type type, void* array, i
             ((dlib::array<int16_t>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -429,7 +429,7 @@ DLLEXPORT int array_pixel_pushback_int32(const array2d_type type, void* array, i
             ((dlib::array<int32_t>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -446,7 +446,7 @@ DLLEXPORT int array_pixel_pushback_float(const array2d_type type, void* array, f
             ((dlib::array<float>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -463,7 +463,7 @@ DLLEXPORT int array_pixel_pushback_double(const array2d_type type, void* array, 
             ((dlib::array<double>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -480,7 +480,7 @@ DLLEXPORT int array_pixel_pushback_rgb_pixel(const array2d_type type, void* arra
             ((dlib::array<rgb_pixel>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -497,7 +497,7 @@ DLLEXPORT int array_pixel_pushback_hsi_pixel(const array2d_type type, void* arra
             ((dlib::array<hsi_pixel>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -514,7 +514,7 @@ DLLEXPORT int array_pixel_pushback_rgb_alpha_pixel(const array2d_type type, void
             ((dlib::array<rgb_alpha_pixel>*)array)->push_back(item);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -561,7 +561,7 @@ DLLEXPORT int array_array2d_pushback(const array2d_type type, void* array, void*
             array_array2d_pushback_template(rgb_alpha_pixel);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -608,7 +608,7 @@ DLLEXPORT int array_matrix_pushback(const matrix_element_type type, void* array,
             array_matrix_pushback_template(rgb_alpha_pixel);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -659,7 +659,7 @@ DLLEXPORT int array_pixel_size(const array2d_type type, void* array, unsigned lo
 			*size = ((dlib::array<rgb_alpha_pixel>*)array)->size();
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -706,7 +706,7 @@ DLLEXPORT int array_array2d_size(const array2d_type type, void* array, unsigned 
 			*size = ((dlib::array<array2d<rgb_alpha_pixel>>*)array)->size();
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -774,7 +774,7 @@ DLLEXPORT int array_pixel_getitem_uint8(const array2d_type type, void* array, co
 			*item = *(((dlib::array<uint8_t>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -791,7 +791,7 @@ DLLEXPORT int array_pixel_getitem_uint16(const array2d_type type, void* array, c
 			*item = *(((dlib::array<uint16_t>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -808,7 +808,7 @@ DLLEXPORT int array_pixel_getitem_uint32(const array2d_type type, void* array, c
 			*item = *(((dlib::array<uint32_t>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -825,7 +825,7 @@ DLLEXPORT int array_pixel_getitem_int8(const array2d_type type, void* array, con
 			*item = *(((dlib::array<int8_t>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -842,7 +842,7 @@ DLLEXPORT int array_pixel_getitem_int16(const array2d_type type, void* array, co
 			*item = *(((dlib::array<int16_t>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -859,7 +859,7 @@ DLLEXPORT int array_pixel_getitem_int32(const array2d_type type, void* array, co
 			*item = *(((dlib::array<int32_t>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -876,7 +876,7 @@ DLLEXPORT int array_pixel_getitem_float(const array2d_type type, void* array, co
 			*item = *(((dlib::array<float>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -893,7 +893,7 @@ DLLEXPORT int array_pixel_getitem_double(const array2d_type type, void* array, c
 			*item = *(((dlib::array<double>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -910,7 +910,7 @@ DLLEXPORT int array_pixel_getitem_rgb_pixel(const array2d_type type, void* array
 			*item = *(((dlib::array<rgb_pixel>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -927,7 +927,7 @@ DLLEXPORT int array_pixel_getitem_hsi_pixel(const array2d_type type, void* array
 			*item = *(((dlib::array<hsi_pixel>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -944,7 +944,7 @@ DLLEXPORT int array_pixel_getitem_rgb_alpha_pixel(const array2d_type type, void*
 			*item = *(((dlib::array<rgb_alpha_pixel>*)array)->begin() + index);
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 
@@ -991,7 +991,7 @@ DLLEXPORT int array_array2d_getitem(const array2d_type type, void* array, const 
 			*item = ((dlib::array<array2d<rgb_alpha_pixel>>*)array)->begin() + index;
 			break;
 		default:
-			err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+			err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 			break;
     }
 

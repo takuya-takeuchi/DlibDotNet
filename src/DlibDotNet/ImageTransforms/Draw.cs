@@ -41,7 +41,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -69,7 +69,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -97,7 +97,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -125,7 +125,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -153,7 +153,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -181,7 +181,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -209,7 +209,7 @@ namespace DlibDotNet
                     ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -236,7 +236,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -259,7 +259,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -282,7 +282,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -305,7 +305,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -328,7 +328,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -351,7 +351,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -374,7 +374,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -397,7 +397,7 @@ namespace DlibDotNet
                     thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.ArrayTypeNotSupport:
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -417,7 +417,7 @@ namespace DlibDotNet
             var ret = Native.tile_images(imageType.ToNativeArray2DType(), array.NativePtr, out var ret_image);
             switch (ret)
             {
-                case Native.ErrorType.ArrayTypeNotSupport:
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{imageType} is not supported.");
             }
 
@@ -438,7 +438,7 @@ namespace DlibDotNet
                 var ret = Native.tile_images_matrix(elementType.ToNativeMatrixElementType(), vector.NativePtr, out var retImage);
                 switch (ret)
                 {
-                    case Native.ErrorType.ElementTypeNotSupport:
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{elementType} is not supported.");
                 }
 

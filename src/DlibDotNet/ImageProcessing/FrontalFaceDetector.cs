@@ -39,7 +39,7 @@ namespace DlibDotNet
                 var ret = Native.frontal_face_detector_operator(this.NativePtr, inType, image.NativePtr, threshold, dets.NativePtr);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -62,7 +62,7 @@ namespace DlibDotNet
                 var ret = Native.frontal_face_detector_matrix_operator(this.NativePtr, inType, image.NativePtr, threshold, dets.NativePtr);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -89,7 +89,7 @@ namespace DlibDotNet
                                                                         dets.NativePtr);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
