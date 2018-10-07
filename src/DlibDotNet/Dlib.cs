@@ -804,7 +804,15 @@ namespace DlibDotNet
 
                 DnnError =                                            0x7F000000,
                                                            
-                DnnNotSupportNetworkType =               -(DnnError | 0x00000001)
+                DnnNotSupportNetworkType =               -(DnnError | 0x00000001),
+
+                #endregion
+
+                #region Dnn
+
+                CudaError =                                           0x77000000,
+
+                CudaOutOfMemory =                       -(CudaError | 0x00000001)
 
                 #endregion
 
