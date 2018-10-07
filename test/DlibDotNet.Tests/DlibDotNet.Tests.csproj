@@ -82,7 +82,7 @@
   <ItemGroup>
     <Compile Include="Array2D\Array2DTest.cs" />
     <Compile Include="Array\ArrayTest.cs" />
-    <Compile Include="CUDATest.cs" />
+    <Compile Include="CudaTest.cs" />
     <Compile Include="DlibTest.cs" />
     <Compile Include="Geometry\DPointTest.cs" />
     <Compile Include="Geometry\PointTest.cs" />
