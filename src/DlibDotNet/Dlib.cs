@@ -730,13 +730,13 @@ namespace DlibDotNet
             internal enum ErrorType
             {
 
-                OK = 0,
+                OK =                                                  0x00000000,
 
                 #region Array2D
 
-                Array2DError = 0x7B000000,
+                Array2DError =                                        0x7B000000,
 
-                Array2DTypeTypeNotSupport = Array2DError | 0x00000001,
+                Array2DTypeTypeNotSupport =          -(Array2DError | 0x00000001),
 
                 #endregion
 
@@ -746,11 +746,11 @@ namespace DlibDotNet
 
                 #region Matrix
 
-                MatrixError = 0x7C000000,
+                MatrixError =                                         0x7C000000,
 
-                MatrixElementTypeNotSupport = MatrixError | 0x00000001,
+                MatrixElementTypeNotSupport =         -(MatrixError | 0x00000001),
 
-                MatrixElementTemplateSizeNotSupport = MatrixError | 0x00000002,
+                MatrixElementTemplateSizeNotSupport = -(MatrixError | 0x00000002),
 
                 #endregion
 
@@ -760,51 +760,51 @@ namespace DlibDotNet
 
                 #region Mlp
 
-                MlpError = 0x7A000000,
+                MlpError =                                            0x7A000000,
 
-                MlpKernelNotSupport = MlpError | 0x00000001,
+                MlpKernelNotSupport =                    -(MlpError | 0x00000001),
 
                 #endregion
 
                 #region RunningStats
 
-                RunningStatsError = 0x78000000,
+                RunningStatsError =                                   0x78000000,
 
-                RunningStatsTypeNotSupport = RunningStatsError | 0x00000001,
+                RunningStatsTypeNotSupport =    -(RunningStatsError | 0x00000001),
 
                 #endregion
 
                 #region Vector
 
-                VectorError = 0x79000000,
+                VectorError =                                         0x79000000,
 
-                VectorTypeNotSupport = VectorError | 0x00000001,
+                VectorTypeNotSupport =                -(VectorError | 0x00000001),
 
                 #endregion
 
                 #region FHog
 
-                FHogError = 0x7D000000,
+                FHogError =                                           0x7D000000,
 
-                FHogNotSupportExtractor = FHogError | 0x00000001,
+                FHogNotSupportExtractor =               -(FHogError | 0x00000001),
 
                 #endregion
 
                 #region Pyramid
 
-                PyramidError = 0x7E000000,
+                PyramidError =                                        0x7E000000,
+                                                       
+                PyramidNotSupportRate =              -(PyramidError | 0x00000001),
 
-                PyramidNotSupportRate = PyramidError | 0x00000001,
-
-                PyramidNotSupportType = PyramidError | 0x00000002,
+                PyramidNotSupportType =              -(PyramidError | 0x00000002),
 
                 #endregion
 
                 #region Dnn
 
-                DnnError = 0x7F000000,
-
-                DnnNotSupportNetworkType = DnnError | 0x00000001
+                DnnError =                                            0x7F000000,
+                                                           
+                DnnNotSupportNetworkType =               -(DnnError | 0x00000001)
 
                 #endregion
 
