@@ -1015,23 +1015,13 @@ do { \
     *out_img = new dlib::matrix<ELEMENT_IN>(ret);\
 } while (0)
 
-#define resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale) \
+#define resize_image_matrix_scale_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, scale) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
+dlib::resize_image(scale, m);\
+
+#define resize_image_matrix_scale_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, scale) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        dlib::matrix<ELEMENT_IN, 0, 0>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 0>*>(matrix);\
-        dlib::resize_image(scale, m);\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT_IN, 0, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
-        dlib::resize_image(scale, m);\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT_IN, 31, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
-        dlib::resize_image(scale, m);\
-    }\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, resize_image_matrix_scale_template_sub, error, matrix, scale);\
 } while (0)
 
 #define upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects) \
@@ -1680,59 +1670,37 @@ DLLEXPORT int resize_image_matrix_scale(matrix_element_type type, void* matrix, 
     switch(type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT_IN uint8_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(uint8_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT_IN uint16_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(uint16_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT_IN uint32_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(uint32_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT_IN int8_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(int8_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT_IN int16_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(int16_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT_IN int32_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(int32_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT_IN float
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(float, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT_IN double
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(double, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT_IN rgb_pixel
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(rgb_pixel, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::HsiPixel:
-            #define ELEMENT_IN hsi_pixel
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(hsi_pixel, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::RgbAlphaPixel:
-            #define ELEMENT_IN rgb_alpha_pixel
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, scale);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;

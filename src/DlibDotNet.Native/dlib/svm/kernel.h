@@ -9,49 +9,25 @@ using namespace dlib;
 
 #pragma region template
 
-#define linear_kernel_new_template(__TYPE__, templateRows, templateColumns) \
+#define linear_kernel_new_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, ret) \
+ret = new dlib::linear_kernel<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>();\
+
+#define linear_kernel_new_template(__TYPE__, __ROWS__, __COLUMNS__) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        return new dlib::linear_kernel<dlib::matrix<__TYPE__>>();\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        return new dlib::linear_kernel<dlib::matrix<__TYPE__, 0, 1>>();\
-    }\
-    else if (templateRows == 5 && templateColumns == 1)\
-    {\
-        return new dlib::linear_kernel<dlib::matrix<__TYPE__, 5, 1>>();\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        return new dlib::linear_kernel<dlib::matrix<__TYPE__, 31, 1>>();\
-    }\
-    return nullptr;\
+    int error = ERR_OK;\
+    void* ret = nullptr;\
+    matrix_template_size_one_column_vector_arg1_template(__TYPE__, __ROWS__, __COLUMNS__, linear_kernel_new_template_sub, error, ret);\
+    return ret;\
 } while (0)
 
-#define linear_kernel_delete_template(__TYPE__, kernel, templateRows, templateColumns) \
+#define linear_kernel_delete_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, kernel) \
+auto k = static_cast<dlib::linear_kernel<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>*>(kernel);\
+delete k;\
+
+#define linear_kernel_delete_template(__TYPE__, __ROWS__, __COLUMNS__, kernel) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        dlib::linear_kernel<dlib::matrix<__TYPE__>>* k = static_cast<dlib::linear_kernel<dlib::matrix<__TYPE__>>*>(kernel);\
-        delete k;\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        dlib::linear_kernel<dlib::matrix<__TYPE__, 0, 1>>* k = static_cast<dlib::linear_kernel<dlib::matrix<__TYPE__, 0, 1>>*>(kernel);\
-        delete k;\
-    }\
-    else if (templateRows == 5 && templateColumns == 1)\
-    {\
-        dlib::linear_kernel<dlib::matrix<__TYPE__, 5, 1>>* k = static_cast<dlib::linear_kernel<dlib::matrix<__TYPE__, 5, 1>>*>(kernel);\
-        delete k;\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        dlib::linear_kernel<dlib::matrix<__TYPE__, 31, 1>>* k = static_cast<dlib::linear_kernel<dlib::matrix<__TYPE__, 31, 1>>*>(kernel);\
-        delete k;\
-    }\
+    int error = ERR_OK;\
+    matrix_template_size_one_column_vector_arg1_template(__TYPE__, __ROWS__, __COLUMNS__, linear_kernel_delete_template_sub, error, kernel);\
 } while (0)
 
 #pragma endregion
@@ -110,37 +86,37 @@ DLLEXPORT void linear_kernel_delete(matrix_element_type type,
     switch(type)
     {
         case matrix_element_type::UInt8:
-            linear_kernel_delete_template(uint8_t, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(uint8_t, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::UInt16:
-            linear_kernel_delete_template(uint16_t, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(uint16_t, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::UInt32:
-            linear_kernel_delete_template(uint32_t, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(uint32_t, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::Int8:
-            linear_kernel_delete_template(int8_t, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(int8_t, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::Int16:
-            linear_kernel_delete_template(int16_t, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(int16_t, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::Int32:
-            linear_kernel_delete_template(int32_t, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(int32_t, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::Float:
-            linear_kernel_delete_template(float, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(float, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::Double:
-            linear_kernel_delete_template(double, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(double, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::RgbPixel:
-            linear_kernel_delete_template(rgb_pixel, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(rgb_pixel, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::HsiPixel:
-            linear_kernel_delete_template(hsi_pixel, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(hsi_pixel, templateRows, templateColumns, kernel);
             break;
         case matrix_element_type::RgbAlphaPixel:
-            linear_kernel_delete_template(rgb_alpha_pixel, kernel, templateRows, templateColumns);
+            linear_kernel_delete_template(rgb_alpha_pixel, templateRows, templateColumns, kernel);
             break;
     }
 }

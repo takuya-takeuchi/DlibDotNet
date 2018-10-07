@@ -413,6 +413,8 @@ namespace DlibDotNet
                                                        scale);
             switch (ret)
             {
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
                 case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
             }

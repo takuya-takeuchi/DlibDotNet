@@ -11,23 +11,13 @@ using namespace dlib;
 
 #pragma region template
 
-#define rectangle_get_rect_matrix_template(__TYPE__, img, templateRows, templateColumns, ret) \
+#define rectangle_get_rect_matrix_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, img, ret) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(img);\
+*ret = new rectangle(dlib::get_rect(m));\
+
+#define rectangle_get_rect_matrix_template(__TYPE__, __ROWS__, __COLUMNS__, error, img, ret) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        dlib::matrix<__TYPE__, 0, 0>& m = *static_cast<dlib::matrix<__TYPE__, 0, 0>*>(img);\
-        *ret = new rectangle(dlib::get_rect(m));\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        dlib::matrix<__TYPE__, 0, 1>& m = *static_cast<dlib::matrix<__TYPE__, 0, 1>*>(img);\
-        *ret = new rectangle(dlib::get_rect(m));\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        dlib::matrix<__TYPE__, 31, 1>& m = *static_cast<dlib::matrix<__TYPE__, 31, 1>*>(img);\
-        *ret = new rectangle(dlib::get_rect(m));\
-    }\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, rectangle_get_rect_matrix_template_sub, error, img, ret);\
 } while (0)
 
 #pragma endregion template
@@ -242,37 +232,37 @@ DLLEXPORT int rectangle_get_rect_matrix(matrix_element_type type, void* img, con
     switch(type)
     {
 		case matrix_element_type::UInt8:
-            rectangle_get_rect_matrix_template(uint8_t, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(uint8_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::UInt16:
-            rectangle_get_rect_matrix_template(uint16_t, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(uint16_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::UInt32:
-            rectangle_get_rect_matrix_template(uint32_t, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(uint32_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Int8:
-            rectangle_get_rect_matrix_template(int8_t, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(int8_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Int16:
-            rectangle_get_rect_matrix_template(int16_t, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(int16_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Int32:
-            rectangle_get_rect_matrix_template(int32_t, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(int32_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Float:
-            rectangle_get_rect_matrix_template(float, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(float, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Double:
-            rectangle_get_rect_matrix_template(double, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(double, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::RgbPixel:
-            rectangle_get_rect_matrix_template(rgb_pixel, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(rgb_pixel, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::HsiPixel:
-            rectangle_get_rect_matrix_template(hsi_pixel, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(hsi_pixel, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::RgbAlphaPixel:
-            rectangle_get_rect_matrix_template(rgb_alpha_pixel, img, templateRows, templateColumns, ret);
+            rectangle_get_rect_matrix_template(rgb_alpha_pixel, templateRows, templateColumns, err, img, ret);
 			break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
