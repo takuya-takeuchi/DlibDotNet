@@ -96,58 +96,65 @@ DLLEXPORT int loss_mmod_operator_matrixs(void* obj,
     int err = ERR_OK;
     
     // Check type argument and cast to the proper type
-    switch(type)
+    try
     {
-        case 0:
-            {       
-                net_type& net = *(static_cast<net_type*>(obj));         
-                switch(element_type)
-                {
-                    case matrix_element_type::RgbPixel:
-                        operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
-                        break;
-                    case matrix_element_type::UInt8:
-                    case matrix_element_type::UInt16:
-                    case matrix_element_type::UInt32:
-                    case matrix_element_type::Int8:
-                    case matrix_element_type::Int16:
-                    case matrix_element_type::Int32:
-                    case matrix_element_type::Float:
-                    case matrix_element_type::Double:
-                    case matrix_element_type::HsiPixel:
-                    case matrix_element_type::RgbAlphaPixel:
-                    default:
-                        err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                        break;
+        switch(type)
+        {
+            case 0:
+                {       
+                    net_type& net = *(static_cast<net_type*>(obj));         
+                    switch(element_type)
+                    {
+                        case matrix_element_type::RgbPixel:
+                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
+                            break;
+                        case matrix_element_type::UInt8:
+                        case matrix_element_type::UInt16:
+                        case matrix_element_type::UInt32:
+                        case matrix_element_type::Int8:
+                        case matrix_element_type::Int16:
+                        case matrix_element_type::Int32:
+                        case matrix_element_type::Float:
+                        case matrix_element_type::Double:
+                        case matrix_element_type::HsiPixel:
+                        case matrix_element_type::RgbAlphaPixel:
+                        default:
+                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                            break;
+                    }
                 }
-            }
-            break;
-        case 1:
-            {       
-                net_type_1& net = *(static_cast<net_type_1*>(obj));         
-                switch(element_type)
-                {
-                    case matrix_element_type::RgbPixel:
-                        operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
-                        break;
-                    case matrix_element_type::UInt8:
-                    case matrix_element_type::UInt16:
-                    case matrix_element_type::UInt32:
-                    case matrix_element_type::Int8:
-                    case matrix_element_type::Int16:
-                    case matrix_element_type::Int32:
-                    case matrix_element_type::Float:
-                    case matrix_element_type::Double:
-                    case matrix_element_type::HsiPixel:
-                    case matrix_element_type::RgbAlphaPixel:
-                    default:
-                        err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                        break;
+                break;
+            case 1:
+                {       
+                    net_type_1& net = *(static_cast<net_type_1*>(obj));         
+                    switch(element_type)
+                    {
+                        case matrix_element_type::RgbPixel:
+                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
+                            break;
+                        case matrix_element_type::UInt8:
+                        case matrix_element_type::UInt16:
+                        case matrix_element_type::UInt32:
+                        case matrix_element_type::Int8:
+                        case matrix_element_type::Int16:
+                        case matrix_element_type::Int32:
+                        case matrix_element_type::Float:
+                        case matrix_element_type::Double:
+                        case matrix_element_type::HsiPixel:
+                        case matrix_element_type::RgbAlphaPixel:
+                        default:
+                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                            break;
+                    }
                 }
-            }
-            break;
+                break;
+        }
     }
-    
+    catch(dlib::cuda_error ce)
+    {
+        cuda_errot_to_error_code(ce, err);
+    }
+
     return err;
 }
 
@@ -165,54 +172,78 @@ DLLEXPORT void loss_mmod_delete(void* obj, const int type)
     }
 }
 
-DLLEXPORT void* loss_mmod_deserialize(const char* file_name, const int type)
+DLLEXPORT int loss_mmod_deserialize(const char* file_name, const int type, void** ret)
 {
-    // Check type argument and cast to the proper type    
-    switch(type)
+    int error = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    try
     {
-        case 0:
-            {
-                net_type* net = new net_type();
-                dlib::deserialize(file_name) >> (*net);
-                return net;
-            }
-            break;
-        case 1:
-            {
-                net_type_1* net = new net_type_1();
-                dlib::deserialize(file_name) >> (*net);
-                return net;
-            }
-            break;
-        default:
-            return nullptr;
+        switch(type)
+        {
+            case 0:
+                {
+                    net_type* net = new net_type();
+                    dlib::deserialize(file_name) >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 1:
+                {
+                    net_type_1* net = new net_type_1();
+                    dlib::deserialize(file_name) >> (*net);
+                    *ret = net;
+                }
+                break;
+            default:
+                error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
     }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_errot_to_error_code(ce, error);
+    }
+
+    return error;
 }
 
-DLLEXPORT void* loss_mmod_deserialize_proxy(proxy_deserialize* proxy, const int type)
+DLLEXPORT int loss_mmod_deserialize_proxy(proxy_deserialize* proxy, const int type, void** ret)
 {
-    // Check type argument and cast to the proper type    
-    switch(type)
+    int error = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    try
     {
-        case 0:
-            {
-                proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
-                net_type* net = new net_type();
-                p >> (*net);
-                return net;
-            }
-            break;
-        case 1:
-            {
-                proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
-                net_type_1* net = new net_type_1();
-                p >> (*net);
-                return net;
-            }
-            break;
-        default:
-            return nullptr;
+        switch(type)
+        {
+            case 0:
+                {
+                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                    net_type* net = new net_type();
+                    p >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 1:
+                {
+                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                    net_type_1* net = new net_type_1();
+                    p >> (*net);
+                    *ret = net;
+                }
+                break;
+            default:
+                error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
     }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_errot_to_error_code(ce, error);
+    }
+
+    return error;
 }
 
 DLLEXPORT void loss_mmod_serialize(void* obj, const int type, const char* file_name)
