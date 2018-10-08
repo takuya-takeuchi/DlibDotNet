@@ -892,6 +892,11 @@ DLLEXPORT image_window::overlay_line* image_window_overlay_line_new()
 	return new image_window::overlay_line();
 }
 
+DLLEXPORT image_window::overlay_line* image_window_overlay_line_new_rgb(dlib::point* p1, dlib::point* p2, dlib::rgb_pixel pixel)
+{
+	return new image_window::overlay_line(*p1, *p2, pixel);
+}
+
 DLLEXPORT bool image_window_overlay_line_p1(image_window::overlay_line* line, dlib::point** point)
 {
     *point = new dlib::point(line->p1);
