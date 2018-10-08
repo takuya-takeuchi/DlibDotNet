@@ -826,6 +826,17 @@ do {\
     matrix_template_size_arg2_local_template(__TYPE__, __ROWS__, __COLUMNS__, matrix_operator_left_shift_template_sub, error, matrix, stream);\
 } while (0)
 
+#define matrix_deserialize_matrix_proxy_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, proxy, ret) \
+proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);\
+auto* matrix = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();\
+p >> (*matrix);\
+*ret = matrix;\
+
+#define matrix_deserialize_matrix_proxy_template(__TYPE__, __ROWS__, __COLUMNS__, error, proxy, ret) \
+do {\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, matrix_deserialize_matrix_proxy_template_sub, error, proxy, ret);\
+} while (0)
+
 #pragma endregion template
 
 #pragma region matrix
@@ -1615,6 +1626,59 @@ DLLEXPORT int matrix_operator_set_row_column(matrix_element_type type, void* mat
             break;
         case matrix_element_type::RgbAlphaPixel:
             matrix_operator_set_row_column_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, row, column, value);
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int matrix_deserialize_matrix_proxy(void* proxy, matrix_element_type type, int templateRows, int templateColumns, void** ret)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_deserialize_matrix_proxy_template(uint8_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_deserialize_matrix_proxy_template(uint16_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_deserialize_matrix_proxy_template(uint32_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::UInt64:
+            matrix_deserialize_matrix_proxy_template(uint64_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::Int8:
+            matrix_deserialize_matrix_proxy_template(int8_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::Int16:
+            matrix_deserialize_matrix_proxy_template(int16_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::Int32:
+            matrix_deserialize_matrix_proxy_template(int32_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::Int64:
+            matrix_deserialize_matrix_proxy_template(int64_t, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::Float:
+            matrix_deserialize_matrix_proxy_template(float, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::Double:
+            matrix_deserialize_matrix_proxy_template(double, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::RgbPixel:
+            matrix_deserialize_matrix_proxy_template(rgb_pixel, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::HsiPixel:
+            matrix_deserialize_matrix_proxy_template(hsi_pixel, templateRows, templateColumns, err, proxy, ret);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            matrix_deserialize_matrix_proxy_template(rgb_alpha_pixel, templateRows, templateColumns, err, proxy, ret);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;

@@ -371,6 +371,32 @@ namespace DlibDotNet
             var ptr = Dlib.Native.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
             return new Matrix<TElement>(ptr, (int)templateRows, (int)templateColumns);
         }
+        
+        public static Matrix<TElement> Deserialize(ProxyDeserialize deserialize, uint templateRows = 0, uint templateColumns = 0)
+        {
+            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            if (deserialize == null)
+                throw new ArgumentNullException(nameof(deserialize));
+
+            deserialize.ThrowIfDisposed();
+
+            var ret = Dlib.Native.matrix_deserialize_matrix_proxy(deserialize.NativePtr,
+                                                                  type.ToNativeMatrixElementType(), 
+                                                                  (int)templateRows,
+                                                                  (int)templateColumns,
+                                                                  out var matrix);
+            switch (ret)
+            {
+                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+            }
+
+            return new Matrix<TElement>(matrix, (int)templateRows, (int)templateColumns);
+        }
 
         public TElement[] ToArray()
         {

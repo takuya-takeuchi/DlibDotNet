@@ -29,6 +29,13 @@ namespace DlibDotNet
             public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType matrix_deserialize_matrix_proxy(IntPtr deserializeProxy,
+                                                                           MatrixElementType matrixElementType,
+                                                                           int templateRows,
+                                                                           int templateColumns,
+                                                                           out IntPtr matrix);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType matrix_begin(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out IntPtr begin);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
