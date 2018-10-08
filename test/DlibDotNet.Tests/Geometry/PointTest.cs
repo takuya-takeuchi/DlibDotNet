@@ -141,17 +141,45 @@ namespace DlibDotNet.Tests.Geometry
         }
 
         [TestMethod]
-        public void OperatorMul()
+        public void OperatorMul_Point_Int32()
         {
             var lx = this.NextRandom(10, 100);
             var ly = this.NextRandom(10, 100);
 
-            var r = new Point(lx, ly);
-            var l = 2;
-            var rl = r * l;
+            var l = new Point(lx, ly);
+            var r = 2;
+            var lr = l * r;
 
-            Assert.AreEqual(rl.X, lx * l);
-            Assert.AreEqual(rl.Y, ly * l);
+            Assert.AreEqual(lr.X, lx * r);
+            Assert.AreEqual(lr.Y, ly * r);
+        }
+
+        [TestMethod]
+        public void OperatorMul_Int32_Point()
+        {
+            var rx = this.NextRandom(10, 100);
+            var ry = this.NextRandom(10, 100);
+
+            var r = new Point(rx, ry);
+            var l = 2;
+            var lr = l * r;
+
+            Assert.AreEqual(lr.X, l * rx);
+            Assert.AreEqual(lr.Y, l * ry);
+        }
+
+        [TestMethod]
+        public void OperatorMul_Double_Point()
+        {
+            var rx = this.NextRandom(10, 100);
+            var ry = this.NextRandom(10, 100);
+
+            var r = new Point(rx, ry);
+            var l = 2.5d;
+            var lr = l * r;
+
+            Assert.AreEqual(lr.X, (int)Math.Floor(l * rx + 0.5), $"rx: {rx}");
+            Assert.AreEqual(lr.Y, (int)Math.Floor(l * ry + 0.5), $"ry: {ry}");
         }
 
         [TestMethod]

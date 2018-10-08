@@ -3,6 +3,7 @@
 
 #include "../export.h"
 #include <dlib/geometry/vector.h>
+#include "common.h"
 
 using namespace dlib;
 
@@ -55,17 +56,9 @@ DLLEXPORT void* dpoint_operator_sub(dpoint* point, dpoint* rhs)
     return new dlib::dpoint(result);
 }
 
-DLLEXPORT void* dpoint_operator_mul(dlib::dpoint* point, double rhs)
-{
-    const dlib::dpoint result = (*point) * (rhs);
-    return new dlib::dpoint(result);
-}
-
-DLLEXPORT void* dpoint_operator_mul2(double lhs, dlib::dpoint* point)
-{
-    const dlib::dpoint result = (lhs) * (*point);
-    return new dlib::dpoint(result);
-}
+MAKE_LEFT_FUNC(dlib::dpoint, double, *, dpoint, mul, dpoint, double)
+MAKE_RIGHT_FUNC(int, dlib::dpoint, *, dpoint, mul, int32, dpoint)
+MAKE_RIGHT_FUNC(double, dlib::dpoint, *, dpoint, mul, double, dpoint)
 
 DLLEXPORT void* dpoint_operator_div(dlib::dpoint* point, double rhs)
 {
