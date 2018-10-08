@@ -176,7 +176,9 @@ namespace DlibDotNet.Tests
             var exts = new[]
             {
                 "png",
+#if false
                 "gif",
+#endif
                 "dng",
                 "bmp",
                 "jpg"
@@ -237,6 +239,103 @@ namespace DlibDotNet.Tests
                             break;
                         case ImageTypes.Double:
                             image = Dlib.LoadImage<double>(path.FullName);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type} for {ext}.");
+                    Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type} for {ext}.");
+
+                    this.DisposeAndCheckDisposedState(image);
+                }
+            }
+        }
+
+        #endregion
+
+        #region LoadImage
+
+        [TestMethod]
+        public void LoadImageAsMatrix()
+        {
+            const int cols = LoadTargetWidth;
+            const int rows = LoadTargetHeight;
+
+            var exts = new[]
+            {
+                "png",
+#if false
+                "gif",
+#endif
+                "dng",
+                "bmp",
+                "jpg"
+            };
+
+            foreach (var ext in exts)
+            {
+                var path = this.GetDataFile($"{LoadTarget}.{ext}");
+                var tests = new[]
+                {
+                    new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt64,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int64,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+                };
+
+                foreach (var test in tests)
+                {
+                    MatrixBase image;
+                    switch (test.Type)
+                    {
+                        case MatrixElementTypes.RgbPixel:
+                            image = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName);
+                            break;
+                        case MatrixElementTypes.RgbAlphaPixel:
+                            image = Dlib.LoadImageAsMatrix<RgbAlphaPixel>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt8:
+                            image = Dlib.LoadImageAsMatrix<byte>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt16:
+                            image = Dlib.LoadImageAsMatrix<ushort>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt32:
+                            image = Dlib.LoadImageAsMatrix<uint>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt64:
+                            image = Dlib.LoadImageAsMatrix<ulong>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int8:
+                            image = Dlib.LoadImageAsMatrix<sbyte>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int16:
+                            image = Dlib.LoadImageAsMatrix<short>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int32:
+                            image = Dlib.LoadImageAsMatrix<int>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int64:
+                            image = Dlib.LoadImageAsMatrix<long>(path.FullName);
+                            break;
+                        case MatrixElementTypes.HsiPixel:
+                            image = Dlib.LoadImageAsMatrix<HsiPixel>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Float:
+                            image = Dlib.LoadImageAsMatrix<float>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Double:
+                            image = Dlib.LoadImageAsMatrix<double>(path.FullName);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

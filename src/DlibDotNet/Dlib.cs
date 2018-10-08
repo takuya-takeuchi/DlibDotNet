@@ -139,6 +139,27 @@ namespace DlibDotNet
             return image;
         }
 
+        public static Matrix<T> LoadImageAsMatrix<T>(string path)
+            where T : struct
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (!File.Exists(path))
+                throw new FileNotFoundException($"{path} is not found", path);
+
+            if (!MatrixBase.TryParse(typeof(T), out var type))
+                throw new NotSupportedException($"{typeof(T).Name} does not support");
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = type.ToNativeMatrixElementType();
+            var ret = Native.load_image_matrix(matrixElementType, str, out var matrix);
+            if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                throw new ArgumentException($"{type} is not supported.");
+
+            return new Matrix<T>(matrix);
+        }
+
         public static Array2D<T> LoadJpeg<T>(string path)
             where T : struct
         {
@@ -1199,6 +1220,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType load_image(Array2DType type, IntPtr array, byte[] path);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType load_image_matrix(MatrixElementType type, byte[] path, out IntPtr matrix);
 
             #endregion
 
