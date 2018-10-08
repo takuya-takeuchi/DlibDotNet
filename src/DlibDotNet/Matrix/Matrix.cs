@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -19,35 +18,15 @@ namespace DlibDotNet
 
         private readonly Dlib.Native.MatrixElementType _ElementType;
 
-        private static readonly IDictionary<Dlib.Native.MatrixElementType, int> ElementSizeDictionary;
-
         private readonly Indexer<TElement> _Indexer;
 
         #endregion
 
         #region Constructors
 
-        static Matrix()
-        {
-            ElementSizeDictionary = new Dictionary<Dlib.Native.MatrixElementType, int>();
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt8, sizeof(byte));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt16, sizeof(ushort));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt32, sizeof(uint));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt64, sizeof(ulong));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int8, sizeof(sbyte));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int16, sizeof(short));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int32, sizeof(int));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int64, sizeof(long));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Float, sizeof(float));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Double, sizeof(double));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbPixel, Marshal.SizeOf<RgbPixel>());
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbAlphaPixel, Marshal.SizeOf<RgbAlphaPixel>());
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.HsiPixel, Marshal.SizeOf<HsiPixel>());
-        }
-
         public Matrix()
         {
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -64,7 +43,7 @@ namespace DlibDotNet
 
             array.ThrowIfDisposed();
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -87,7 +66,7 @@ namespace DlibDotNet
 
         public Matrix(int row, int column)
         {
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
             if (row < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
@@ -112,7 +91,7 @@ namespace DlibDotNet
             if (array.Length != row * column)
                 throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}.");
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -218,7 +197,7 @@ namespace DlibDotNet
             if (array.Length != row * column * elementSize)
                 throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}*{nameof(elementSize)}.");
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -243,7 +222,7 @@ namespace DlibDotNet
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this.NativePtr = ptr;
@@ -365,7 +344,7 @@ namespace DlibDotNet
 
         public static Matrix<TElement> CreateTemplateParameterizeMatrix(uint templateRows, uint templateColumns)
         {
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             var ptr = Dlib.Native.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
@@ -374,7 +353,7 @@ namespace DlibDotNet
         
         public static Matrix<TElement> Deserialize(ProxyDeserialize deserialize, uint templateRows = 0, uint templateColumns = 0)
         {
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             if (deserialize == null)
@@ -626,7 +605,7 @@ namespace DlibDotNet
         internal static bool TryParse<T>(out MatrixElementTypes result)
             where T : struct
         {
-            return MatrixBase.TryParse(typeof(T), out result);
+            return TryParse(typeof(T), out result);
         }
 
         #region Overrides
@@ -645,7 +624,7 @@ namespace DlibDotNet
         {
             var ofstream = IntPtr.Zero;
             var stdstr = IntPtr.Zero;
-            string str = null;
+            var str = "";
 
             try
             {
@@ -655,7 +634,7 @@ namespace DlibDotNet
                 {
                     case Dlib.Native.ErrorType.OK:
                         stdstr = Dlib.Native.ostringstream_str(ofstream);
-                        str = StringHelper.FromStdString(stdstr);
+                        str = StringHelper.FromStdString(stdstr) ?? "";
                         break;
                     case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
