@@ -45,9 +45,7 @@ namespace DnnMmodDogHipsterizer
                         // Now process each image, find dogs, and hipsterize them by drawing glasses and a
                         // mustache on each dog :)
                         for (var i = 1; i < args.Length; ++i)
-                        {
-                            using (var tmp = Dlib.LoadImage<RgbPixel>(args[i]))
-                            using (var img = new Matrix<RgbPixel>(tmp))
+                            using (var img = Dlib.LoadImageAsMatrix<RgbPixel>(args[i]))
                             {
 
                                 // Upsampling the image will allow us to find smaller dog faces but will use more
@@ -78,37 +76,49 @@ namespace DnnMmodDogHipsterizer
                                     var rightMustache = 1.3 * (rightEye - leftEye) / 2 + nose;
 
                                     // Draw the glasses onto the image.
-                                    var from = new[] { 2 * new Point(176, 36), 2 * new Point(59, 35) };
-                                    var to = new[] { leftEye, rightEye };
+                                    var from = new[]
+                                    {
+                                        2 * new Point(176, 36), 2 * new Point(59, 35)
+                                    };
+                                    var to = new[]
+                                    {
+                                        leftEye, rightEye
+                                    };
                                     using (var transform = Dlib.FindSimilarityTransform(from, to))
-                                        for (uint r = 0, nr = (uint)glasses.Rows; r < nr; ++r)
-                                            for (uint c = 0, nc = (uint)glasses.Columns; c < nc; ++c)
+                                        for (uint r = 0, nr = (uint) glasses.Rows; r < nr; ++r)
+                                        for (uint c = 0, nc = (uint) glasses.Columns; c < nc; ++c)
+                                        {
+                                            var p = (Point) transform.Operator(new DPoint(c, r));
+                                            if (Dlib.GetRect(img).Contains(p))
                                             {
-                                                var p = (Point)transform.Operator(new DPoint(c, r));
-                                                if (Dlib.GetRect(img).Contains(p))
-                                                {
-                                                    var rgb = img[p.Y, p.X];
-                                                    Dlib.AssignPixel(ref rgb, glasses[(int)r, (int)c]);
-                                                    img[p.Y, p.X] = rgb;
-                                                }
+                                                var rgb = img[p.Y, p.X];
+                                                Dlib.AssignPixel(ref rgb, glasses[(int) r, (int) c]);
+                                                img[p.Y, p.X] = rgb;
                                             }
+                                        }
 
                                     // Draw the mustache onto the image right under the dog's nose.
                                     var mustacheRect = Dlib.GetRect(mustache);
-                                    from = new[] { mustacheRect.TopLeft, mustacheRect.TopRight };
-                                    to = new[] { rightMustache, leftMustache };
+                                    from = new[]
+                                    {
+                                        mustacheRect.TopLeft, mustacheRect.TopRight
+                                    };
+                                    to = new[]
+                                    {
+                                        rightMustache, leftMustache
+                                    };
                                     using (var transform = Dlib.FindSimilarityTransform(from, to))
-                                        for (uint r = 0, nr = (uint)mustache.Rows; r < nr; ++r)
-                                        for (uint c = 0, nc = (uint)mustache.Columns; c < nc; ++c)
+                                        for (uint r = 0, nr = (uint) mustache.Rows; r < nr; ++r)
+                                        for (uint c = 0, nc = (uint) mustache.Columns; c < nc; ++c)
+                                        {
+                                            var p = (Point) transform.Operator(new DPoint(c, r));
+                                            if (Dlib.GetRect(img).Contains(p))
                                             {
-                                                var p = (Point)transform.Operator(new DPoint(c, r));
-                                                if (Dlib.GetRect(img).Contains(p))
-                                                {
-                                                    var rgb = img[p.Y, p.X];
-                                                    Dlib.AssignPixel(ref rgb, mustache[(int)r, (int)c]);
-                                                    img[p.Y, p.X] = rgb;
-                                                }
+                                                var rgb = img[p.Y, p.X];
+                                                Dlib.AssignPixel(ref rgb, mustache[(int) r, (int) c]);
+                                                img[p.Y, p.X] = rgb;
                                             }
+                                        }
 
                                     // Record the lines needed for the face wire frame.
                                     lines.Add(new ImageWindow.OverlayLine(leftEye, nose, color));
@@ -126,7 +136,6 @@ namespace DnnMmodDogHipsterizer
                                 Console.WriteLine("Hit enter to process the next image.");
                                 Console.ReadKey();
                             }
-                        }
                     }
                 }
             }

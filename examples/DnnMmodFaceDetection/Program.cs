@@ -27,8 +27,7 @@ namespace DnnMmodFaceDetection
                 //image_window win;
                 using (var win = new ImageWindow())
                     for (var index = 1; index < args.Length; index++)
-                        using (var tmp = Dlib.LoadImage<RgbPixel>(args[index]))
-                        using (var img = new Matrix<RgbPixel>(tmp))
+                        using (var img = Dlib.LoadImageAsMatrix<RgbPixel>(args[index]))
                         {
                             // Upsampling the image will allow us to detect smaller faces but will cause the
                             // program to use more RAM and run longer.
