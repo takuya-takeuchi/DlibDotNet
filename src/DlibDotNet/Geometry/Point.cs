@@ -148,6 +148,20 @@ namespace DlibDotNet
                 return ret.ToManaged();
         }
 
+        public static Point operator *(int lhs, Point point)
+        {
+            using (var right = point.ToNative())
+            using (var ret = lhs * right)
+                return ret.ToManaged();
+        }
+
+        public static Point operator *(double lhs, Point point)
+        {
+            using (var right = point.ToNative())
+            using (var ret = lhs * right)
+                return ret.ToManaged();
+        }
+
         public static Point operator /(Point point, int rhs)
         {
             using (var left = point.ToNative())
@@ -317,7 +331,29 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                var ptr = Native.point_operator_mul(point.NativePtr, rhs);
+                var ptr = Native.point_operator_mul_point_int32(point.NativePtr, rhs);
+                return new NativePoint(ptr);
+            }
+
+            public static NativePoint operator *(int lhs, NativePoint point)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ptr = Native.point_operator_mul_int32_point(lhs, point.NativePtr);
+                return new NativePoint(ptr);
+            }
+
+            public static NativePoint operator *(double lhs, NativePoint point)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ptr = Native.point_operator_mul_double_point(lhs, point.NativePtr);
                 return new NativePoint(ptr);
             }
 
@@ -437,7 +473,13 @@ namespace DlibDotNet
                 public static extern IntPtr point_operator_sub(IntPtr point, IntPtr rhs);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_operator_mul(IntPtr point, int rhs);
+                public static extern IntPtr point_operator_mul_point_int32(IntPtr point, int rhs);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr point_operator_mul_int32_point(int lhs, IntPtr point);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr point_operator_mul_double_point(double lhs, IntPtr point);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr point_operator_div(IntPtr point, int rhs);
