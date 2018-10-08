@@ -70,6 +70,15 @@ namespace DlibDotNet
                 return tmp.ToArray();
         }
 
+        public static PointTransformAffine NormalizingTForm(Rectangle rectangle)
+        {
+            using (var native = rectangle.ToNative())
+            {
+                var ptr = Native.normalizing_tform(native.NativePtr);
+                return new PointTransformAffine(ptr);
+            }
+        }
+
         public static uint NumSeparableFilters<T, U>(ObjectDetector<ScanFHogPyramid<T, U>> detector, uint weightIndex = 0)
             where T : class
             where U : class

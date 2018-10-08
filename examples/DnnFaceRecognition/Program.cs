@@ -34,8 +34,7 @@ namespace DnnFaceRecognition
             // And finally we load the DNN responsible for face recognition.
             using (var net = DlibDotNet.Dnn.LossMetric.Deserialize("dlib_face_recognition_resnet_model_v1.dat"))
 
-            using (var img = Dlib.LoadImage<RgbPixel>(args[0]))
-            using (var mat = new Matrix<RgbPixel>(img))
+            using (var img = Dlib.LoadImageAsMatrix<RgbPixel>(args[0]))
 
             // Display the raw image on the screen
             using (var win = new ImageWindow(img))
@@ -48,7 +47,7 @@ namespace DnnFaceRecognition
                 {
                     var shape = sp.Detect(img, face);
                     var faceChipDetail = Dlib.GetFaceChipDetails(shape, 150, 0.25);
-                    var faceChip = Dlib.ExtractImageChip<RgbPixel>(mat, faceChipDetail);
+                    var faceChip = Dlib.ExtractImageChip<RgbPixel>(img, faceChipDetail);
 
                     //faces.Add(move(face_chip));
                     faces.Add(faceChip);

@@ -12,6 +12,7 @@ using int32_t = System.Int32;
 namespace DlibDotNet
 {
 
+    [Obsolete]
     public sealed class MatrixRangeExp<T> : MatrixBase
         where T : struct
     {
@@ -123,6 +124,9 @@ namespace DlibDotNet
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();

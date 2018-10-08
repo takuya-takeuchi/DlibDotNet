@@ -173,6 +173,9 @@ namespace DlibDotNet
             return vector._Imp.OperatorDiv(vector, div);
         }
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -199,7 +202,7 @@ namespace DlibDotNet
                         stdstr = Dlib.Native.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case Dlib.Native.ErrorType.InputVectorTypeNotSupport:
+                    case Dlib.Native.ErrorType.VectorTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
                     default:
                         throw new ArgumentException();

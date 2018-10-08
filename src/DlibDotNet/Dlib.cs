@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Dnn;
@@ -14,6 +15,9 @@ using int32_t = System.Int32;
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// Provides the methods of dlib.
+    /// </summary>
     public static partial class Dlib
     {
 
@@ -33,6 +37,140 @@ namespace DlibDotNet
 
         #endregion
 
+        #region ExtractImage4Points
+
+        /// <summary>
+        /// This function extracts an arbitrary quadrilateral patch from an image.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="image">The image.</param>
+        /// <param name="points">The 4 points on the image.</param>
+        /// <param name="width">The width of return image.</param>
+        /// <param name="height">The height of return image.</param>
+        /// <returns><see cref="Array2D{T}"/>.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="points"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="Array.Length"/> of <paramref name="points"/> must be 4.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        public static Array2D<T> ExtractImage4Points<T>(Array2D<T> image,
+                                                        DPoint[] points,
+                                                        int width,
+                                                        int height)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+            if (points.Length != 4)
+                throw new ArgumentOutOfRangeException($"{nameof(points.Length)} of {nameof(points)} must be 4.");
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(width)} or {nameof(height)} are less than or equal to zero.");
+
+            image.ThrowIfDisposed();
+
+            if (!Array2D<T>.TryParse<T>(out _))
+                throw new NotSupportedException();
+
+            var natives = points.Select(point => point.ToNative()).ToArray();
+
+            try
+            {
+                var ps = natives.Select(point => point.NativePtr).ToArray();
+                var elementType = image.ImageType.ToNativeArray2DType();
+                var ret = Native.extract_image_4points(elementType,
+                                                       image.NativePtr,
+                                                       ps,
+                                                       width,
+                                                       height,
+                                                       out var output);
+                switch (ret)
+                {
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{elementType} is not supported.");
+                }
+
+                return new Array2D<T>(output, image.ImageType);
+            }
+            finally
+            {
+                foreach (var n in natives)
+                    n.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// This function extracts an arbitrary quadrilateral patch from an matrix.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="points">The 4 points on the matrix.</param>
+        /// <param name="width">The width of return matrix.</param>
+        /// <param name="height">The height of return matrix.</param>
+        /// <returns><see cref="Matrix{T}"/>.</returns>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="points"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="Array.Length"/> of <paramref name="points"/> must be 4.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        public static Matrix<T> ExtractImage4Points<T>(Matrix<T> matrix,
+                                                       DPoint[] points,
+                                                       int width,
+                                                       int height)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+            if (points.Length != 4)
+                throw new ArgumentOutOfRangeException($"{nameof(points.Length)} of {nameof(points)} must be 4.");
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(width)} or {nameof(height)} are less than or equal to zero.");
+
+            matrix.ThrowIfDisposed();
+
+            var natives = points.Select(point => point.ToNative()).ToArray();
+
+            try
+            {
+                var ps = natives.Select(point => point.NativePtr).ToArray();
+                var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.extract_image_4points_matrix(matrixElementType,
+                                                              matrix.NativePtr,
+                                                              matrix.TemplateRows,
+                                                              matrix.TemplateColumns,
+                                                              ps,
+                                                              width,
+                                                              height,
+                                                              out var output);
+                switch (ret)
+                {
+                    case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(matrix.TemplateRows)} or {nameof(matrix.TemplateColumns)} is not supported.");
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
+                }
+
+                return new Matrix<T>(output, matrix.TemplateRows, matrix.TemplateColumns);
+            }
+            finally
+            {
+                foreach (var n in natives)
+                    n.Dispose();
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// This function returns an object detector that is configured to find human faces that are looking towards the camera.
+        /// </summary>
+        /// <returns><see cref="FrontalFaceDetector"/>.</returns>
         public static FrontalFaceDetector GetFrontalFaceDetector()
         {
             var ret = FrontalFaceDetector.Native.get_frontal_face_detector();
@@ -79,13 +217,22 @@ namespace DlibDotNet
             return new Matrix<float>(ret);
         }
 
+        /// <summary>
+        /// This function loads Microsoft Windows Bitmap file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadBmp<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException("", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -93,19 +240,28 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_bmp(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
         }
 
+        /// <summary>
+        /// This function loads DNG (Digital Negative) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadDng<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -113,19 +269,28 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_dng(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
         }
 
+        /// <summary>
+        /// This function loads image file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadImage<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -133,19 +298,58 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_image(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
         }
 
+        /// <summary>
+        /// This function loads image file into an <see cref="Matrix{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Matrix{T}"/>.</param>
+        /// <returns>The <see cref="Matrix{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        public static Matrix<T> LoadImageAsMatrix<T>(string path)
+            where T : struct
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (!File.Exists(path))
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
+
+            if (!MatrixBase.TryParse(typeof(T), out var type))
+                throw new NotSupportedException($"{typeof(T).Name} does not support");
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = type.ToNativeMatrixElementType();
+            var ret = Native.load_image_matrix(matrixElementType, str, out var matrix);
+            if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                throw new ArgumentException($"{type} is not supported.");
+
+            return new Matrix<T>(matrix);
+        }
+
+        /// <summary>
+        /// This function loads JPEG (Joint Photographic Experts Group) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadJpeg<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -153,19 +357,28 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_jpeg(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
         }
 
+        /// <summary>
+        /// This function loads PNG (Portable Network Graphics) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadPng<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -173,7 +386,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.load_png(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
 
             return image;
@@ -193,6 +406,25 @@ namespace DlibDotNet
             var srcType = ImageTypes.UInt8.ToNativeArray2DType();
             var dstType = type.ToNativeArray2DType();
             var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.UInt8} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(ImagePixelFormat format, byte[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.UInt8.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var pixelType = format.ToImagePixelType();
+            var ret = Native.extensions_load_image_data2(dstType, srcType, pixelType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.UInt8} to {dstType}.");
 
@@ -345,11 +577,25 @@ namespace DlibDotNet
 
         #endregion
 
+        /// <summary>
+        /// This function saves image to disk as Microsoft Windows Bitmap file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveBmp(Array2DBase image, string path)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
-            // NOTE: save_bmp does not throw excpetion but it does NOT output any file.
+            // NOTE: save_bmp does not throw exception but it does NOT output any file.
             //       So it should throw exception in this timing!!
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
@@ -358,15 +604,68 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_bmp(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
-        public static void SaveDng(Array2DBase image, string path)
+        /// <summary>
+        /// This function saves matrix to disk as Microsoft Windows Bitmap file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        public static void SaveBmp<T>(Matrix<T> matrix, string path)
+            where T : struct
         {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
-            // NOTE: save_dng does not throw excpetion but it does NOT output any file.
+            // NOTE: save_bmp does not throw exception but it does NOT output any file.
+            //       So it should throw exception in this timing!!
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_bmp_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
+        }
+
+        /// <summary>
+        /// This function saves image to disk as DNG (Digital Negative) file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        public static void SaveDng(Array2DBase image, string path)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            // NOTE: save_dng does not throw exception but it does NOT output any file.
             //       So it should throw exception in this timing!!
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
@@ -375,12 +674,67 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_dng(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        /// <summary>
+        /// This function saves matrix to disk as DNG (Digital Negative) file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        public static void SaveDng<T>(Matrix<T> matrix, string path)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            // NOTE: save_dng does not throw exception but it does NOT output any file.
+            //       So it should throw exception in this timing!!
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_dng_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
+        }
+
+        /// <summary>
+        /// This function saves image to disk as JPEG (Joint Photographic Experts Group) file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveJpeg(Array2DBase image, string path, int quality = 75)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (image.Rows <= 0 || image.Columns <= 0)
@@ -394,12 +748,69 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_jpeg(array2DType, image.NativePtr, str, quality);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        /// <summary>
+        /// This function saves matrix to disk as JPEG (Joint Photographic Experts Group) file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        public static void SaveJpeg<T>(Matrix<T> matrix, string path, int quality = 75)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+            if (quality < 0)
+                throw new ArgumentOutOfRangeException(nameof(quality), $"{nameof(quality)} is less than zero.");
+            if (quality > 100)
+                throw new ArgumentOutOfRangeException(nameof(quality), $"{nameof(quality)} is greater than 100.");
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_jpeg_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, quality);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
+        }
+
+        /// <summary>
+        /// This function saves image to disk as PNG (Portable Network Graphics) file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SavePng(Array2DBase image, string path)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (image.Rows <= 0 || image.Columns <= 0)
@@ -409,8 +820,45 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.save_png(array2DType, image.NativePtr, str);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
+        }
+
+        /// <summary>
+        /// This function saves matrix to disk as PNG (Portable Network Graphics) file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        public static void SavePng<T>(Matrix<T> matrix, string path)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (matrix.Rows <= 0 || matrix.Columns <= 0)
+                throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
+
+            var str = Encoding.UTF8.GetBytes(path);
+
+            var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+            var ret = Native.save_png_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+            switch (ret)
+            {
+                case Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+            }
         }
 
         #endregion
@@ -473,11 +921,15 @@ namespace DlibDotNet
 
                 UInt32,
 
+                UInt64,
+
                 Int8,
 
                 Int16,
 
                 Int32,
+
+                Int64,
 
                 Float,
 
@@ -505,6 +957,31 @@ namespace DlibDotNet
                 Int16,
 
                 Int32,
+
+                Float,
+
+                Double
+
+            }
+
+            internal enum NumericType
+            {
+
+                UInt8 = 0,
+
+                UInt16,
+
+                UInt32,
+
+                UInt64,
+
+                Int8,
+
+                Int16,
+
+                Int32,
+
+                Int64,
 
                 Float,
 
@@ -566,42 +1043,79 @@ namespace DlibDotNet
 
             }
 
+            internal enum ImagePixelType
+            {
+                
+                Bgr = 0,
+
+                Bgra,
+
+                Rgb,
+
+                Rgba
+
+            }
+
             internal enum ErrorType
             {
 
-                OK = 0,
+                OK = 0x00000000,
 
-                ArrayTypeNotSupport = -1,
+                #region Array2D
 
-                InputArrayTypeNotSupport = -2,
+                Array2DError = 0x7B000000,
 
-                OutputArrayTypeNotSupport = -3,
+                Array2DTypeTypeNotSupport = -(Array2DError | 0x00000001),
+
+                #endregion
 
                 ElementTypeNotSupport = -4,
 
                 InputElementTypeNotSupport = -5,
 
-                OutputElementTypeNotSupport = -6,
+                #region Matrix
 
-                MatrixElementTypeNotSupport = -7,
+                MatrixError = 0x7C000000,
 
-                MatrixElementTemplateSizeNotSupport = -8,
+                MatrixElementTypeNotSupport = -(MatrixError | 0x00000001),
+
+                MatrixElementTemplateSizeNotSupport = -(MatrixError | 0x00000002),
+
+                #endregion
 
                 //InputOutputArrayNotSameSize = -8,
 
                 //InputOutputMatrixNotSameSize = -9
 
-                MlpKernelNotSupport = -8,
+                #region Mlp
 
-                RunningStatsTypeNotSupport = -9,
+                MlpError = 0x7A000000,
 
-                InputVectorTypeNotSupport = -10,
+                MlpKernelNotSupport = -(MlpError | 0x00000001),
+
+                #endregion
+
+                #region RunningStats
+
+                RunningStatsError = 0x78000000,
+
+                RunningStatsTypeNotSupport = -(RunningStatsError | 0x00000001),
+
+                #endregion
+
+                #region Vector
+
+                VectorError = 0x79000000,
+
+                VectorTypeNotSupport = -(VectorError | 0x00000001),
+
+                #endregion
 
                 #region FHog
 
                 FHogError = 0x7D000000,
 
-                FHogNotSupportExtractor = FHogError | 0x00000001,
+                FHogNotSupportExtractor = -(FHogError | 0x00000001),
 
                 #endregion
 
@@ -609,9 +1123,9 @@ namespace DlibDotNet
 
                 PyramidError = 0x7E000000,
 
-                PyramidNotSupportRate = PyramidError | 0x00000001,
+                PyramidNotSupportRate = -(PyramidError | 0x00000001),
 
-                PyramidNotSupportType = PyramidError | 0x00000002,
+                PyramidNotSupportType = -(PyramidError | 0x00000002),
 
                 #endregion
 
@@ -619,7 +1133,15 @@ namespace DlibDotNet
 
                 DnnError = 0x7F000000,
 
-                DnnNotSupportNetworkType = DnnError | 0x00000001
+                DnnNotSupportNetworkType = -(DnnError | 0x00000001),
+
+                #endregion
+
+                #region Dnn
+
+                CudaError = 0x77000000,
+
+                CudaOutOfMemory = -(CudaError | 0x00000001)
 
                 #endregion
 
@@ -638,6 +1160,8 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_pixel_size(Array2DType type, IntPtr array, out uint size);
+
+            #region getitem
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_pixel_getitem_uint8(Array2DType type, IntPtr array, uint index, out uint8_t item);
@@ -672,6 +1196,45 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_pixel_getitem_rgb_alpha_pixel(Array2DType type, IntPtr array, uint index, out RgbAlphaPixel item);
 
+            #endregion
+
+            #region pushback
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_uint8(Array2DType type, IntPtr array, uint8_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_uint16(Array2DType type, IntPtr array, uint16_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_uint32(Array2DType type, IntPtr array, uint32_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_int8(Array2DType type, IntPtr array, int8_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_int16(Array2DType type, IntPtr array, int16_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_int32(Array2DType type, IntPtr array, int32_t item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_float(Array2DType type, IntPtr array, float item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_double(Array2DType type, IntPtr array, double item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_rgb_pixel(Array2DType type, IntPtr array, RgbPixel item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_hsi_pixel(Array2DType type, IntPtr array, HsiPixel item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_pixel_pushback_rgb_alpha_pixel(Array2DType type, IntPtr array, RgbAlphaPixel item);
+
+            #endregion
+
             #region array2d
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -688,6 +1251,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_array2d_getitem(Array2DType type, IntPtr array, uint index, out IntPtr item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_array2d_pushback(Array2DType type, IntPtr array, IntPtr item);
 
             #endregion
 
@@ -707,6 +1273,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType array_matrix_getitem(MatrixElementType type, IntPtr array, uint index, out IntPtr item);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array_matrix_pushback(MatrixElementType type, IntPtr array, IntPtr item);
 
             #endregion
 
@@ -824,68 +1393,68 @@ namespace DlibDotNet
             #region array2d_matrix
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_matrix_new(MatrixElementType type, int templateRows, int temlateColumns);
+            public static extern IntPtr array2d_matrix_new(MatrixElementType type, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols, int templateRows, int temlateColumns);
+            public static extern IntPtr array2d_matrix_new1(MatrixElementType type, int rows, int cols, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_nc(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+            public static extern void array2d_matrix_delete(MatrixElementType type, IntPtr array, int templateRows, int templateColumns);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_nr(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+            public static extern bool array2d_matrix_nc(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out int ret);
+            public static extern bool array2d_matrix_nr(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType array2d_matrix_get_rect(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, out IntPtr rect);
+            [return: MarshalAs(UnmanagedType.U1)]
+            public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType array2d_matrix_get_rect(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out IntPtr rect);
 
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int templateRows, int temlateColumns, int row, out IntPtr ret);
+            public static extern ErrorType array2d_matrix_row(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, int row, out IntPtr ret);
 
             #region array2d_matrix_get_row_column
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint8_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint16_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_uint32_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int8_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int16_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_int32_t(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_double(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_float(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int templateRows, int temlateColumns, int column, out IntPtr value);
+            public static extern void array2d_matrix_get_row_column_hsi_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
             #endregion
 
@@ -927,7 +1496,7 @@ namespace DlibDotNet
             #endregion
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row, int templateRows, int temlateColumns);
+            public static extern void array2d_matrix_row_delete(MatrixElementType type, IntPtr row, int templateRows, int templateColumns);
 
             #endregion
 
@@ -960,6 +1529,9 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType load_image(Array2DType type, IntPtr array, byte[] path);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType load_image_matrix(MatrixElementType type, byte[] path, out IntPtr matrix);
+
             #endregion
 
             #region load_jpeg
@@ -981,12 +1553,18 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_bmp(Array2DType type, IntPtr array, byte[] path);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_bmp_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path);
+
             #endregion
 
             #region save_dng
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_dng(Array2DType type, IntPtr array, byte[] path);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_dng_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path);
 
             #endregion
 
@@ -995,12 +1573,18 @@ namespace DlibDotNet
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_jpeg(Array2DType type, IntPtr array, byte[] path, int quality);
 
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_jpeg_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path, int quality);
+
             #endregion
 
             #region save_png
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType save_png(Array2DType type, IntPtr array, byte[] path);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType save_png_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path);
 
             #endregion
 
@@ -1060,6 +1644,13 @@ namespace DlibDotNet
                                                                                               double thresh,
                                                                                               uint weight_index,
                                                                                               out IntPtr ret);
+
+            #endregion
+
+            #region shape_predictor
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr normalizing_tform(IntPtr rect);
 
             #endregion
 
@@ -1164,258 +1755,13 @@ namespace DlibDotNet
 
             #endregion
 
-            #region matrix
+            #region linear_kernel
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr matrix_new(MatrixElementType matrixElementType);
+            public static extern IntPtr linear_kernel_new(MatrixElementType matrixElementType, int templateRow, int templateColumn);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr matrix_new1(MatrixElementType matrixElementType, int row, int column);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr matrix_new2(MatrixElementType matrixElementType, int row, int column, IntPtr src);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public unsafe static extern IntPtr matrix_new3(MatrixElementType matrixElementType, int row, int column, byte* src);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool matrix_nc(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool matrix_nr(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, byte[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, ushort[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, uint[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, sbyte[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, short[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, float[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, double[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbPixel[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbAlphaPixel[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_operator_left_shift(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, IntPtr ofstream);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool matrix_size(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            #region matrix_operator_get_one_row_column
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_uint8_t(IntPtr matrix, int index, int templateRows, int templateColumns, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_uint16_t(IntPtr matrix, int index, int templateRows, int templateColumns, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_uint32_t(IntPtr matrix, int index, int templateRows, int templateColumns, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_int8_t(IntPtr matrix, int index, int templateRows, int templateColumns, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_int16_t(IntPtr matrix, int index, int templateRows, int templateColumns, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_int32_t(IntPtr matrix, int index, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_double(IntPtr matrix, int index, int templateRows, int templateColumns, out double ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_float(IntPtr matrix, int index, int templateRows, int templateColumns, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_rgb_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out RgbPixel ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out RgbAlphaPixel ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_one_row_column_hsi_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, out HsiPixel ret);
-
-            #endregion
-
-            #region matrix_operator_set_one_row_column
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_uint8_t(IntPtr matrix, int index, int templateRows, int templateColumns, byte value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_uint16_t(IntPtr matrix, int index, int templateRows, int templateColumns, ushort value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_uint32_t(IntPtr matrix, int index, int templateRows, int templateColumns, uint value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_int8_t(IntPtr matrix, int index, int templateRows, int templateColumns, sbyte value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_int16_t(IntPtr matrix, int index, int templateRows, int templateColumns, short value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_int32_t(IntPtr matrix, int index, int templateRows, int templateColumns, int value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_double(IntPtr matrix, int index, int templateRows, int templateColumns, double value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_float(IntPtr matrix, int index, int templateRows, int templateColumns, float value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_rgb_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, RgbPixel value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_rgb_alpha_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, RgbAlphaPixel value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_one_row_column_hsi_pixel(IntPtr matrix, int index, int templateRows, int templateColumns, HsiPixel value);
-
-            #endregion
-
-            #region matrix_operator_get_row_column
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_uint8_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_uint16_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_uint32_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_int8_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_int16_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_int32_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_double(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out double ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_float(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_rgb_pixel(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out RgbPixel ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_rgb_alpha_pixel(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out RgbAlphaPixel ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_get_row_column_hsi_pixel(IntPtr matrix, int row, int column, int templateRows, int templateColumns, out HsiPixel ret);
-
-            #endregion
-
-            #region matrix_operator_set_row_column
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_uint8_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, byte value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_uint16_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, ushort value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_uint32_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, uint value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_int8_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, sbyte value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_int16_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, short value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_int32_t(IntPtr matrix, int row, int column, int templateRows, int templateColumns, int value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_double(IntPtr matrix, int row, int column, int templateRows, int templateColumns, double value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_float(IntPtr matrix, int row, int column, int templateRows, int templateColumns, float value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_rgb_pixel(IntPtr matrix, int row, int column, int templateRows, int templateColumns, RgbPixel value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_rgb_alpha_pixel(IntPtr matrix, int row, int column, int templateRows, int templateColumns, RgbAlphaPixel value);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_operator_set_row_column_hsi_pixel(IntPtr matrix, int row, int column, int templateRows, int templateColumns, HsiPixel value);
-
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_operator_add(MatrixElementType matrixElementType,
-                                                               IntPtr lhs,
-                                                               IntPtr rhs,
-                                                               int leftTemplateRows,
-                                                               int leftTemplateColumns,
-                                                               int rightTemplateRows,
-                                                               int rightTemplateColumns,
-                                                               out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_operator_subtract(MatrixElementType matrixElementType,
-                                                                    IntPtr lhs,
-                                                                    IntPtr rhs,
-                                                                    int leftTemplateRows,
-                                                                    int leftTemplateColumns,
-                                                                    int rightTemplateRows,
-                                                                    int rightTemplateColumns,
-                                                                    out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_operator_multiply(MatrixElementType matrixElementType,
-                                                                    IntPtr lhs,
-                                                                    IntPtr rhs,
-                                                                    int leftTemplateRows,
-                                                                    int leftTemplateColumns,
-                                                                    int rightTemplateRows,
-                                                                    int rightTemplateColumns,
-                                                                    out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_operator_divide(MatrixElementType matrixElementType,
-                                                                  IntPtr lhs,
-                                                                  IntPtr rhs,
-                                                                  int leftTemplateRows,
-                                                                  int leftTemplateColumns,
-                                                                  int rightTemplateRows,
-                                                                  int rightTemplateColumns,
-                                                                  out IntPtr ret);
+            public static extern void linear_kernel_delete(MatrixElementType matrixElementType, IntPtr linerKernel, int templateRow, int templateColumn);
 
             #endregion
 
@@ -1492,7 +1838,10 @@ namespace DlibDotNet
             public static extern IntPtr mlp_kernel_new(MlpKernelType kernel_type, int nodes_in_input_layer, int nodes_in_first_hidden_layer, int nodes_in_second_hidden_layer, int nodes_in_output_layer, double alpha, double momentum);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType mlp_kernel_train(MlpKernelType kernel_type, IntPtr kernel, MatrixElementType matrixElementType, IntPtr example_in, double example_out);
+            public static extern ErrorType mlp_kernel_train(MlpKernelType kernel_type, IntPtr kernel, IntPtr example_in, double example_out);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType mlp_kernel_train_matrix(MlpKernelType kernel_type, IntPtr kernel, IntPtr example_in, IntPtr example_out);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType mlp_kernel_operator(MlpKernelType kernel_type, IntPtr kernel, MatrixElementType type, IntPtr data, out IntPtr ret_mat);
@@ -1501,6 +1850,37 @@ namespace DlibDotNet
             public static extern void mlp_kernel_delete(MlpKernelType kernel_type, IntPtr kernel);
 
             #endregion
+
+            #region extract_image_4points
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_4points(Array2DType type,
+                                                                 IntPtr array,
+                                                                 IntPtr[] points,
+                                                                 int width,
+                                                                 int height,
+                                                                 out IntPtr output);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_4points_matrix(MatrixElementType element_type,
+                                                                        IntPtr matrix,
+                                                                        int templateRows,
+                                                                        int templateColumns,
+                                                                        IntPtr[] points,
+                                                                        int width,
+                                                                        int height,
+                                                                        out IntPtr output);
+
+            #endregion
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr find_similarity_transform_dpoint(IntPtr from_points, IntPtr to_points);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr find_similarity_transform_point(IntPtr from_points, IntPtr to_points);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr rotation_matrix(double angle);
 
             #region running_stats
 
@@ -1871,6 +2251,9 @@ namespace DlibDotNet
             public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, byte[] data, uint rows, uint columns, uint steps);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data2(Array2DType dst_type, Array2DType src_type, ImagePixelType pixel_type, byte[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, ushort[] data, uint rows, uint columns, uint steps);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -1904,7 +2287,7 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern Dlib.Native.ErrorType extensions_matrix_to_array(IntPtr src, MatrixElementType type, int templateRows, int templateColumns, IntPtr dst);
-            
+
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType extensions_convert_array_to_bytes(Array2DType src_type, IntPtr src, byte[] dst, uint rows, uint columns);
 

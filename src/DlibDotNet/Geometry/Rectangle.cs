@@ -259,6 +259,16 @@ namespace DlibDotNet
                 return result.ToManaged();
         }
 
+        public static Rectangle SetAspectRatio(Rectangle rect, double ratio)
+        {
+            if (!(ratio > 0))
+                throw new ArgumentOutOfRangeException(nameof(ratio));
+
+            using (var nr = rect.ToNative())
+            using (var result = nr.SetAspectRatio(ratio))
+                return result.ToManaged();
+        }
+
         public Rectangle Translate(int x, int y)
         {
             using (var nr = this.ToNative())
@@ -606,6 +616,12 @@ namespace DlibDotNet
                 return new NativeRectangle(result);
             }
 
+            public NativeRectangle SetAspectRatio(double ratio)
+            {
+                var result = Native.rectangle_set_aspect_ratio(this.NativePtr, ratio);
+                return new NativeRectangle(result);
+            }
+
             public NativeRectangle Translate(int x, int y)
             {
                 return Translate(this, x, y);
@@ -811,6 +827,9 @@ namespace DlibDotNet
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr rectangle_dcenter(IntPtr rect);
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr rectangle_set_aspect_ratio(IntPtr rect, double ratio);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr rectangle_translate_rect(IntPtr rect, IntPtr p);

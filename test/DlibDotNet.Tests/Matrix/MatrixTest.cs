@@ -80,7 +80,7 @@ namespace DlibDotNet.Tests.Matrix
             foreach (var r in rules)
                 foreach (var test in tests)
                 {
-                    TwoDimentionObjectBase matrix = null;
+                    TwoDimensionObjectBase matrix = null;
 
                     try
                     {
@@ -824,7 +824,7 @@ namespace DlibDotNet.Tests.Matrix
 
             foreach (var test in tests)
             {
-                TwoDimentionObjectBase matrix = null;
+                TwoDimensionObjectBase matrix = null;
 
                 try
                 {
@@ -1047,6 +1047,189 @@ namespace DlibDotNet.Tests.Matrix
         }
 
         [TestMethod]
+        public void Enumerator()
+        {
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            const int row = 10;
+            const int column = 10;
+
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.UInt8:
+                        {
+                            using (var matrix = FillMatrixByNonZero<byte>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt16:
+                        {
+                            using (var matrix = FillMatrixByNonZero<ushort>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.UInt32:
+                        {
+                            using (var matrix = FillMatrixByNonZero<uint>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int8:
+                        {
+                            using (var matrix = FillMatrixByNonZero<sbyte>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int16:
+                        {
+                            using (var matrix = FillMatrixByNonZero<short>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Int32:
+                        {
+                            using (var matrix = FillMatrixByNonZero<int>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Float:
+                        {
+                            using (var matrix = FillMatrixByNonZero<float>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.Double:
+                        {
+                            using (var matrix = FillMatrixByNonZero<double>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<RgbPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.RgbAlphaPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<RgbAlphaPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.HsiPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<HsiPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.AreEqual(matrix.Size, index);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        [TestMethod]
         public void Indexer()
         {
             try
@@ -1122,6 +1305,24 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
+                using (var matrix = new Matrix<ulong>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                    for (var c = 0; c < 3; c++)
+                    {
+                        var v = (ulong)(r + c);
+                        matrix[r, c] = v;
+                        Assert.AreEqual(v, matrix[r, c]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+            }
+
+            try
+            {
                 using (var matrix = new Matrix<short>(3, 3))
                 {
                     for (var r = 0; r < 3; r++)
@@ -1154,6 +1355,24 @@ namespace DlibDotNet.Tests.Matrix
             catch (Exception)
             {
                 Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<long>(3, 3))
+                {
+                    for (var r = 0; r < 3; r++)
+                    for (var c = 0; c < 3; c++)
+                    {
+                        var v = (long)(r + c);
+                        matrix[r, c] = v;
+                        Assert.AreEqual(v, matrix[r, c]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1305,6 +1524,23 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
+                using (var matrix = new Matrix<ulong>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (ulong)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+            }
+
+            try
+            {
                 using (var matrix = new Matrix<sbyte>(3, 1))
                 {
                     for (var index = 0; index < 3; index++)
@@ -1352,6 +1588,23 @@ namespace DlibDotNet.Tests.Matrix
             catch (Exception)
             {
                 Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<long>(3, 1))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (long)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1498,6 +1751,23 @@ namespace DlibDotNet.Tests.Matrix
 
             try
             {
+                using (var matrix = new Matrix<ulong>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (ulong)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+            }
+
+            try
+            {
                 using (var matrix = new Matrix<sbyte>(1, 3))
                 {
                     for (var index = 0; index < 3; index++)
@@ -1545,6 +1815,23 @@ namespace DlibDotNet.Tests.Matrix
             catch (Exception)
             {
                 Assert.Fail($"Failed to access for Type: {typeof(int)}");
+            }
+
+            try
+            {
+                using (var matrix = new Matrix<long>(1, 3))
+                {
+                    for (var index = 0; index < 3; index++)
+                    {
+                        var v = (long)(index);
+                        matrix[index] = v;
+                        Assert.AreEqual(v, matrix[index]);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail($"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1690,6 +1977,135 @@ namespace DlibDotNet.Tests.Matrix
             this.AdditionSub<HsiPixel>(false);
         }
 
+        [TestMethod]
+        public void Addition2()
+        {
+            const int rows = 3;
+            const int columns = 4;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                for (var c = 0; c < columns; c++)
+                {
+                    var v1 = this.NextInt32Random();
+                    lhs[r, c] = v1;
+                    tmpLeft[index] = v1;
+
+                    var v2 = this.NextInt32Random();
+                    rhs[r, c] = v2;
+                    tmpRight[index] = v2;
+
+                    index++;
+                }
+
+                using (var ret = lhs + rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var mv = ret[r, c];
+                        var av = tmpLeft[index] + tmpRight[index];
+                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                        index++;
+                    }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Addition3()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                for (var c = 0; c < columns; c++)
+                {
+                    var v1 = this.NextInt32Random();
+                    lhs[r, c] = v1;
+                    tmpLeft[index] = v1;
+
+                    var v2 = this.NextInt32Random();
+                    rhs[r, c] = v2;
+                    tmpRight[index] = v2;
+
+                    index++;
+                }
+
+                using (var ret = lhs + rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var mv = ret[r, c];
+                        var av = tmpLeft[index] + tmpRight[index];
+                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                        index++;
+                    }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Addition4()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                for (var c = 0; c < columns; c++)
+                {
+                    var v1 = this.NextInt32Random();
+                    lhs[r, c] = v1;
+                    tmpLeft[index] = v1;
+
+                    var v2 = this.NextInt32Random();
+                    rhs[r, c] = v2;
+                    tmpRight[index] = v2;
+
+                    index++;
+                }
+
+                using (var ret = lhs + rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var mv = ret[r, c];
+                        var av = tmpLeft[index] + tmpRight[index];
+                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                        index++;
+                    }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
         private void AdditionSub<T>(bool expectResult = true)
             where T : struct
         {
@@ -1764,6 +2180,134 @@ namespace DlibDotNet.Tests.Matrix
             this.SubtractionSub<RgbPixel>(false);
             this.SubtractionSub<RgbAlphaPixel>(false);
             this.SubtractionSub<HsiPixel>(false);
+        }
+        [TestMethod]
+        public void Subtraction2()
+        {
+            const int rows = 3;
+            const int columns = 4;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
+
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
+
+                        index++;
+                    }
+
+                using (var ret = lhs - rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] - tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction3()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = new Matrix<double>(rows, columns))
+            using (var rhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
+
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
+
+                        index++;
+                    }
+
+                using (var ret = lhs - rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] - tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
+        }
+
+        [TestMethod]
+        public void Subtraction4()
+        {
+            const int rows = 31;
+            const int columns = 1;
+            using (var lhs = Matrix<double>.CreateTemplateParameterizeMatrix(rows, columns))
+            using (var rhs = new Matrix<double>(rows, columns))
+            {
+                var tmpLeft = new double[rows * columns];
+                var tmpRight = new double[rows * columns];
+
+                var index = 0;
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
+
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
+
+                        index++;
+                    }
+
+                using (var ret = lhs - rhs)
+                {
+                    index = 0;
+                    for (var r = 0; r < rows; r++)
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] - tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
+                }
+
+                Assert.IsTrue(index == rows * columns);
+            }
         }
 
         private void SubtractionSub<T>(bool expectResult = true)
@@ -2295,7 +2839,7 @@ namespace DlibDotNet.Tests.Matrix
             return null;
         }
 
-        private void Assign(TwoDimentionObjectBase obj, int[] array)
+        private void Assign(TwoDimensionObjectBase obj, int[] array)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
@@ -2348,7 +2892,7 @@ namespace DlibDotNet.Tests.Matrix
             throw new NotSupportedException();
         }
 
-        private void CheckRowsColumnsSize(TwoDimentionObjectBase obj, int row, int column)
+        private void CheckRowsColumnsSize(TwoDimensionObjectBase obj, int row, int column)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
@@ -2441,7 +2985,7 @@ namespace DlibDotNet.Tests.Matrix
             throw new NotSupportedException();
         }
 
-        internal static TwoDimentionObjectBase CreateMatrix(MatrixElementTypes elementTypes)
+        internal static TwoDimensionObjectBase CreateMatrix(MatrixElementTypes elementTypes)
         {
             switch (elementTypes)
             {
@@ -2472,7 +3016,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        internal static TwoDimentionObjectBase CreateMatrix(MatrixElementTypes elementTypes, int rows = 0, int columns = 0)
+        internal static TwoDimensionObjectBase CreateMatrix(MatrixElementTypes elementTypes, int rows = 0, int columns = 0)
         {
             switch (elementTypes)
             {
@@ -2502,24 +3046,7 @@ namespace DlibDotNet.Tests.Matrix
                     throw new ArgumentOutOfRangeException(nameof(elementTypes), elementTypes, null);
             }
         }
-
-        internal sealed class TestData : TestDataBase
-        {
-
-            public TwoDimentionObjectBase Data
-            {
-                get;
-                set;
-            }
-
-            public MatrixElementTypes MatrixElementType
-            {
-                get;
-                set;
-            }
-
-        }
-
+        
     }
 
 }

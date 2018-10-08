@@ -49,12 +49,16 @@ namespace DlibDotNet.Extensions
                     return Dlib.Native.MatrixElementType.UInt16;
                 case MatrixElementTypes.UInt32:
                     return Dlib.Native.MatrixElementType.UInt32;
+                case MatrixElementTypes.UInt64:
+                    return Dlib.Native.MatrixElementType.UInt64;
                 case MatrixElementTypes.Int8:
                     return Dlib.Native.MatrixElementType.Int8;
                 case MatrixElementTypes.Int16:
                     return Dlib.Native.MatrixElementType.Int16;
                 case MatrixElementTypes.Int32:
                     return Dlib.Native.MatrixElementType.Int32;
+                case MatrixElementTypes.Int64:
+                    return Dlib.Native.MatrixElementType.Int64;
                 case MatrixElementTypes.Float:
                     return Dlib.Native.MatrixElementType.Float;
                 case MatrixElementTypes.Double:
@@ -155,27 +159,44 @@ namespace DlibDotNet.Extensions
             throw new ArgumentOutOfRangeException(nameof(pointTransform));
         }
 
-        internal static Dlib.Native.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelTypes types)
+        internal static Dlib.Native.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelType type)
         {
-            switch (types)
+            switch (type)
             {
-                case MultilayerPerceptronKernelTypes.Kernel1:
+                case MultilayerPerceptronKernelType.Kernel1:
                     return Dlib.Native.MlpKernelType.Kernel1;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
-        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsTypes types)
+        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsType type)
         {
-            switch (types)
+            switch (type)
             {
-                case RunningStatsTypes.Float:
+                case RunningStatsType.Float:
                     return Dlib.Native.RunningStatsType.Float;
-                case RunningStatsTypes.Double:
+                case RunningStatsType.Double:
                     return Dlib.Native.RunningStatsType.Double;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }
+
+        internal static Dlib.Native.ImagePixelType ToImagePixelType(this ImagePixelFormat type)
+        {
+            switch (type)
+            {
+                case ImagePixelFormat.Bgr:
+                    return Dlib.Native.ImagePixelType.Bgr;
+                case ImagePixelFormat.Bgra:
+                    return Dlib.Native.ImagePixelType.Bgra;
+                case ImagePixelFormat.Rgb:
+                    return Dlib.Native.ImagePixelType.Rgb;
+                case ImagePixelFormat.Rgba:
+                    return Dlib.Native.ImagePixelType.Rgba;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 

@@ -27,6 +27,13 @@ namespace DlibDotNet
             {
             }
 
+            public OverlayLine(Point p1, Point p2, RgbPixel pixel)
+            {
+                using(var native1 = p1.ToNative())
+                using (var native2 = p2.ToNative())
+                    this.NativePtr = Native.image_window_overlay_line_new_rgb(native1.NativePtr, native2.NativePtr, pixel);
+            }
+
             //public OverlayLine(Point p1, Point p2, RgbAlphaPixel color)
             //{
             //    if (p1 == null)
@@ -83,6 +90,9 @@ namespace DlibDotNet
 
             #region Overrides
 
+            /// <summary>
+            /// Releases all unmanaged resources.
+            /// </summary>
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
@@ -102,6 +112,9 @@ namespace DlibDotNet
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 public static extern IntPtr image_window_overlay_line_new();
+
+                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+                public static extern IntPtr image_window_overlay_line_new_rgb(IntPtr p1, IntPtr p2, RgbPixel pixel);
 
                 [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
                 [return: MarshalAs(UnmanagedType.U1)]

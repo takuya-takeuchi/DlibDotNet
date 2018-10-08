@@ -4,6 +4,7 @@
 #include "../export.h"
 #include <dlib/geometry/point_transforms.h>
 #include <dlib/image_transforms.h>
+#include "../shared.h"
  
 using namespace dlib;
 using namespace std;
@@ -198,6 +199,28 @@ DLLEXPORT void point_transform_projective_delete(dlib::point_transform_projectiv
 
 #pragma endregion point_transform_projective
 
+DLLEXPORT dlib::point_transform_affine* find_similarity_transform_dpoint(std::vector<dlib::dpoint*>* from_points,
+                                                                         std::vector<dlib::dpoint*>* to_points)
+{
+    std::vector<dlib::dpoint> in_from, in_to;
+    new_instance_vector_to_instance(dlib::dpoint, from_points, in_from);
+    new_instance_vector_to_instance(dlib::dpoint, to_points, in_to);
+
+    auto result = dlib::find_similarity_transform(in_from, in_to);
+    return new dlib::point_transform_affine(result);
+}
+
+DLLEXPORT dlib::point_transform_affine* find_similarity_transform_point(std::vector<dlib::point*>* from_points,
+                                                                        std::vector<dlib::point*>* to_points)
+{
+    std::vector<dlib::point> in_from, in_to;
+    new_instance_vector_to_instance(dlib::point, from_points, in_from);
+    new_instance_vector_to_instance(dlib::point, to_points, in_to);
+
+    auto result = dlib::find_similarity_transform(in_from, in_to);
+    return new dlib::point_transform_affine(result);
+}
+
 DLLEXPORT dlib::point* rotate_point(dlib::point* center, dlib::point* p, const double angle)
 {
     dlib::point ret = dlib::rotate_point(*center, *p, angle);
@@ -208,6 +231,12 @@ DLLEXPORT dlib::dpoint* rotate_dpoint(dlib::dpoint* center, dlib::dpoint* p, con
 {
     dlib::dpoint ret = dlib::rotate_point(*center, *p, angle);
     return new dlib::dpoint(ret);
+}
+
+DLLEXPORT void* rotation_matrix(const double angle)
+{
+    auto ret = dlib::rotation_matrix(angle);
+    return new dlib::matrix<double, 2, 2>(ret);
 }
 
 #endif

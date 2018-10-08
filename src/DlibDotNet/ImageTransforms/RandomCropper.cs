@@ -205,15 +205,14 @@ namespace DlibDotNet.ImageTransforms
                 using (var outCropRects = new StdVector<StdVector<MModRect>>())
                 {
                     var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                    var ret = Native.random_cropper_operator(
-                        this.NativePtr,
-                        numCrops,
-                        type,
-                        inImages.NativePtr,
-                        inRects.NativePtr,
-                        outCrops.NativePtr,
-                        outCropRects.NativePtr);
-                    if (ret == Dlib.Native.ErrorType.ElementTypeNotSupport)
+                    var ret = Native.random_cropper_operator(this.NativePtr,
+                                                             numCrops,
+                                                             type,
+                                                             inImages.NativePtr,
+                                                             inRects.NativePtr,
+                                                             outCrops.NativePtr,
+                                                             outCropRects.NativePtr);
+                    if (ret == Dlib.Native.ErrorType.MatrixElementTypeNotSupport)
                         throw new ArgumentException($"{type} is not supported.");
 
                     crops = outCrops.ToArray();
@@ -230,6 +229,9 @@ namespace DlibDotNet.ImageTransforms
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();

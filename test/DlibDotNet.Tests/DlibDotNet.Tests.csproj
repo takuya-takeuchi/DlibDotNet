@@ -81,6 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Array2D\Array2DTest.cs" />
+    <Compile Include="Array\ArrayTest.cs" />
+    <Compile Include="CudaTest.cs" />
     <Compile Include="DlibTest.cs" />
     <Compile Include="Geometry\DPointTest.cs" />
     <Compile Include="Geometry\PointTest.cs" />
@@ -129,6 +131,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\1024px-Mars_&amp;_Apollo_in_Perspective.JPG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\2008_001322.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

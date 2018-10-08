@@ -24,8 +24,7 @@ namespace DnnMmodFindCars
                 using (var deserialize = new ProxyDeserialize("mmod_rear_end_vehicle_detector.dat"))
                 using (var net = LossMmod.Deserialize(deserialize, 1))
                 using (var sp = ShapePredictor.Deserialize(deserialize))
-                using (var array2D = Dlib.LoadImage<RgbPixel>("mmod_cars_test_image.jpg"))
-                using (var img = new Matrix<RgbPixel>(array2D))
+                using (var img = Dlib.LoadImageAsMatrix<RgbPixel>("mmod_cars_test_image.jpg"))
                 using (var win = new ImageWindow())
                 {
                     win.SetImage(img);

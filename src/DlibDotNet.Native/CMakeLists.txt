@@ -3,14 +3,25 @@ set(PROJ_NAME DlibDotNet.Native)
 
 project(${PROJ_NAME} VERSION 0.0.0)
 
+# OS info
+message("")
+message("-- CMAKE_SYSTEM_INFO_FILE: ${CMAKE_SYSTEM_INFO_FILE}")
+message("-- CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
+message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
+string (REGEX MATCH "\\.el[1-9]" os_version_suffix ${CMAKE_SYSTEM})
+message("-- os_version_suffix:      ${os_version_suffix}")
+message("")
+
 # Version info
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 15)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20180916)
+set(VERSION_DATE 20181008)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_C_FLAGS "-fPIC")
 	set(CMAKE_CXX_FLAGS "-fPIC")
 endif()
 
@@ -35,6 +46,20 @@ if (${DLIB_USE_CUDA})
         ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc
         @ONLY)
+
+    # include CUDA Runtime Library
+    if (MSVC OR MSYS OR MINGW)
+        include_directories("$ENV{CUDA_PATH}/include")
+        link_libraries("$ENV{CUDA_PATH}/lib/x64/cudart_static.lib")
+    elseif(APPLE)
+        include_directories("$ENV{CUDA_PATH}/include")
+        link_libraries("$ENV{CUDA_PATH}/lib/libcudart_static.a")
+    elseif(UNIX AND NOT APPLE)
+        include_directories("$ENV{CUDA_PATH}/include")
+        link_libraries("$ENV{CUDA_PATH}/lib64/libcudart_static.a")
+    else()
+        message(FATAL_ERROR "Failed to link CUDA Runtime Library")
+    endif()
 
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}

@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
-    public class Matrix<TElement> : MatrixBase
+    public partial class Matrix<TElement> : MatrixBase, IEnumerable<TElement>
         where TElement : struct
     {
 
@@ -18,33 +18,15 @@ namespace DlibDotNet
 
         private readonly Dlib.Native.MatrixElementType _ElementType;
 
-        private static readonly IDictionary<Dlib.Native.MatrixElementType, int> ElementSizeDictionary;
-
         private readonly Indexer<TElement> _Indexer;
 
         #endregion
 
         #region Constructors
 
-        static Matrix()
-        {
-            ElementSizeDictionary = new Dictionary<Dlib.Native.MatrixElementType, int>();
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt8, sizeof(byte));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt16, sizeof(ushort));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.UInt32, sizeof(uint));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int8, sizeof(sbyte));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int16, sizeof(short));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Int32, sizeof(int));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Float, sizeof(float));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.Double, sizeof(double));
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbPixel, Marshal.SizeOf<RgbPixel>());
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.RgbAlphaPixel, Marshal.SizeOf<RgbAlphaPixel>());
-            ElementSizeDictionary.Add(Dlib.Native.MatrixElementType.HsiPixel, Marshal.SizeOf<HsiPixel>());
-        }
-
         public Matrix()
         {
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -61,7 +43,7 @@ namespace DlibDotNet
 
             array.ThrowIfDisposed();
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -84,7 +66,7 @@ namespace DlibDotNet
 
         public Matrix(int row, int column)
         {
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
             if (row < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
@@ -109,7 +91,7 @@ namespace DlibDotNet
             if (array.Length != row * column)
                 throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}.");
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -215,7 +197,7 @@ namespace DlibDotNet
             if (array.Length != row * column * elementSize)
                 throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}*{nameof(elementSize)}.");
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementTypes = type;
@@ -234,13 +216,13 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        internal Matrix(IntPtr ptr, int templateRows = 0, int temlateColumns = 0, bool isEnabledDispose = true)
-            : base(templateRows, temlateColumns, isEnabledDispose)
+        internal Matrix(IntPtr ptr, int templateRows = 0, int templateColumns = 0, bool isEnabledDispose = true)
+            : base(templateRows, templateColumns, isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
-            if (!MatrixBase.TryParse(typeof(TElement), out var type))
+            if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this.NativePtr = ptr;
@@ -358,6 +340,41 @@ namespace DlibDotNet
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static Matrix<TElement> CreateTemplateParameterizeMatrix(uint templateRows, uint templateColumns)
+        {
+            if (!TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            var ptr = Dlib.Native.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
+            return new Matrix<TElement>(ptr, (int)templateRows, (int)templateColumns);
+        }
+        
+        public static Matrix<TElement> Deserialize(ProxyDeserialize deserialize, uint templateRows = 0, uint templateColumns = 0)
+        {
+            if (!TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            if (deserialize == null)
+                throw new ArgumentNullException(nameof(deserialize));
+
+            deserialize.ThrowIfDisposed();
+
+            var ret = Dlib.Native.matrix_deserialize_matrix_proxy(deserialize.NativePtr,
+                                                                  type.ToNativeMatrixElementType(), 
+                                                                  (int)templateRows,
+                                                                  (int)templateColumns,
+                                                                  out var matrix);
+            switch (ret)
+            {
+                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+            }
+
+            return new Matrix<TElement>(matrix, (int)templateRows, (int)templateColumns);
         }
 
         public TElement[] ToArray()
@@ -588,11 +605,14 @@ namespace DlibDotNet
         internal static bool TryParse<T>(out MatrixElementTypes result)
             where T : struct
         {
-            return MatrixBase.TryParse(typeof(T), out result);
+            return TryParse(typeof(T), out result);
         }
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -607,7 +627,7 @@ namespace DlibDotNet
         {
             var ofstream = IntPtr.Zero;
             var stdstr = IntPtr.Zero;
-            string str = null;
+            var str = "";
 
             try
             {
@@ -617,10 +637,12 @@ namespace DlibDotNet
                 {
                     case Dlib.Native.ErrorType.OK:
                         stdstr = Dlib.Native.ostringstream_str(ofstream);
-                        str = StringHelper.FromStdString(stdstr);
+                        str = StringHelper.FromStdString(stdstr) ?? "";
                         break;
-                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
+                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                     default:
                         throw new ArgumentException();
                 }
@@ -640,163 +662,6 @@ namespace DlibDotNet
             return str;
         }
 
-        public static Matrix<TElement> operator +(Matrix<TElement> lhs, Matrix<TElement> rhs)
-        {
-            if (lhs == null)
-                throw new ArgumentNullException(nameof(lhs));
-            if (rhs == null)
-                throw new ArgumentNullException(nameof(rhs));
-
-            lhs.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            if (!(lhs.Rows == rhs.Rows && lhs.Columns == rhs.Columns))
-                throw new ArgumentException();
-
-            // Need not to check whether both TemplateColumns and TemplateRows are same
-            var leftTemplateRows = lhs.TemplateRows;
-            var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
-
-            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_add(type,
-                                                      lhs.NativePtr,
-                                                      rhs.NativePtr,
-                                                      leftTemplateRows,
-                                                      leftTemplateColumns,
-                                                      rihgtTemplateRows,
-                                                      rihgtTemplateColumns,
-                                                      out var matrix);
-            switch (ret)
-            {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                    throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
-            }
-
-            return new Matrix<TElement>(matrix);
-        }
-
-        public static Matrix<TElement> operator -(Matrix<TElement> lhs, Matrix<TElement> rhs)
-        {
-            if (lhs == null)
-                throw new ArgumentNullException(nameof(lhs));
-            if (rhs == null)
-                throw new ArgumentNullException(nameof(rhs));
-
-            lhs.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            if (!(lhs.Rows == rhs.Rows && lhs.Columns == rhs.Columns))
-                throw new ArgumentException();
-
-            // Need not to check whether both TemplateColumns and TemplateRows are same
-            var leftTemplateRows = lhs.TemplateRows;
-            var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
-
-            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_subtract(type,
-                                                           lhs.NativePtr,
-                                                           rhs.NativePtr,
-                                                           leftTemplateRows,
-                                                           leftTemplateColumns,
-                                                           rihgtTemplateRows,
-                                                           rihgtTemplateColumns,
-                                                           out var matrix);
-            switch (ret)
-            {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                    throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
-            }
-
-            return new Matrix<TElement>(matrix);
-        }
-
-        public static Matrix<TElement> operator *(Matrix<TElement> lhs, Matrix<TElement> rhs)
-        {
-            if (lhs == null)
-                throw new ArgumentNullException(nameof(lhs));
-            if (rhs == null)
-                throw new ArgumentNullException(nameof(rhs));
-
-            lhs.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            if (!(lhs.Columns == rhs.Rows && lhs.Size > 0 && rhs.Size > 0))
-                throw new ArgumentException();
-
-            // Need not to check whether both TemplateColumns and TemplateRows are same
-            var leftTemplateRows = lhs.TemplateRows;
-            var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
-
-            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            var ret = Dlib.Native.matrix_operator_multiply(type,
-                                                           lhs.NativePtr,
-                                                           rhs.NativePtr,
-                                                           leftTemplateRows,
-                                                           leftTemplateColumns,
-                                                           rihgtTemplateRows,
-                                                           rihgtTemplateColumns,
-                                                           out var matrix);
-            switch (ret)
-            {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                    throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
-            }
-
-            return new Matrix<TElement>(matrix);
-        }
-
-        public static Matrix<TElement> operator /(Matrix<TElement> lhs, Matrix<TElement> rhs)
-        {
-            if (lhs == null)
-                throw new ArgumentNullException(nameof(lhs));
-            if (rhs == null)
-                throw new ArgumentNullException(nameof(rhs));
-
-            lhs.ThrowIfDisposed();
-            rhs.ThrowIfDisposed();
-
-            if (!(rhs.Columns == 1 && rhs.Rows == 1))
-                throw new ArgumentException();
-
-            // Need not to check whether both TemplateColumns and TemplateRows are same
-            var leftTemplateRows = lhs.TemplateRows;
-            var leftTemplateColumns = lhs.TemplateColumns;
-            var rihgtTemplateRows = rhs.TemplateRows;
-            var rihgtTemplateColumns = rhs.TemplateColumns;
-
-            var type = lhs._MatrixElementTypes.ToNativeMatrixElementType();
-            try
-            {
-                var ret = Dlib.Native.matrix_operator_divide(type,
-                                                             lhs.NativePtr,
-                                                             rhs.NativePtr,
-                                                             leftTemplateRows,
-                                                             leftTemplateColumns,
-                                                             rihgtTemplateRows,
-                                                             rihgtTemplateColumns,
-                                                             out var matrix);
-                switch (ret)
-                {
-                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
-                        throw new ArgumentException($"Input {lhs._MatrixElementTypes} is not supported.");
-                }
-
-                return new Matrix<TElement>(matrix);
-            }
-            catch (DivideByZeroException)
-            {
-                // NOTE
-                // Hide the source which throw exception
-                throw new DivideByZeroException("Right operand may be zero matrix.");
-            }
-        }
-
         #endregion
 
         #region Helpers
@@ -811,12 +676,16 @@ namespace DlibDotNet
                     return new IndexerUInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.UInt32:
                     return new IndexerUInt32(this) as Indexer<TElement>;
+                case MatrixElementTypes.UInt64:
+                    return new IndexerUInt64(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int8:
                     return new IndexerInt8(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int16:
                     return new IndexerInt16(this) as Indexer<TElement>;
                 case MatrixElementTypes.Int32:
                     return new IndexerInt32(this) as Indexer<TElement>;
+                case MatrixElementTypes.Int64:
+                    return new IndexerInt64(this) as Indexer<TElement>;
                 case MatrixElementTypes.Float:
                     return new IndexerFloat(this) as Indexer<TElement>;
                 case MatrixElementTypes.Double:
@@ -836,949 +705,18 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Indexer
-
-        internal abstract class Indexer<T>
-            where T : struct
+        #region IEnumerable<TElement> Implementations
+        
+        public IEnumerator<TElement> GetEnumerator()
         {
+            this.ThrowIfDisposed();
 
-            #region Fields 
-
-            protected readonly Dlib.Native.MatrixElementType _Type;
-
-            protected readonly MatrixBase _Parent;
-
-            #endregion
-
-            #region Constructors 
-
-            internal Indexer(MatrixBase parent)
-            {
-                this._Parent = parent ?? throw new ArgumentNullException(nameof(parent));
-                this._Type = this._Parent.MatrixElementType.ToNativeMatrixElementType();
-            }
-
-            #endregion
-
-            #region Properties
-
-            public abstract T this[int index]
-            {
-                get;
-                set;
-            }
-
-            public abstract T this[int row, int column]
-            {
-                get;
-                set;
-            }
-
-            #endregion
-
+            return this._Indexer.GetEnumerator();
         }
 
-        internal sealed class IndexerUInt8 : Indexer<byte>
+        IEnumerator IEnumerable.GetEnumerator()
         {
-
-            #region Constructors
-
-            public IndexerUInt8(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override byte this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    byte value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_uint8_t(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override byte this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    byte value;
-                    Dlib.Native.matrix_operator_get_row_column_uint8_t(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_uint8_t(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerUInt16 : Indexer<ushort>
-        {
-
-            #region Constructors
-
-            public IndexerUInt16(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override ushort this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    ushort value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_uint16_t(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override ushort this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    ushort value;
-                    Dlib.Native.matrix_operator_get_row_column_uint16_t(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_uint16_t(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerUInt32 : Indexer<uint>
-        {
-
-            #region Constructors
-
-            public IndexerUInt32(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override uint this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    uint value;
-                    Dlib.Native.matrix_operator_get_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_uint32_t(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override uint this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    uint value;
-                    Dlib.Native.matrix_operator_get_row_column_uint32_t(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_uint32_t(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerInt8 : Indexer<sbyte>
-        {
-
-            #region Constructors
-
-            public IndexerInt8(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override sbyte this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    sbyte value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_int8_t(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override sbyte this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    sbyte value;
-                    Dlib.Native.matrix_operator_get_row_column_int8_t(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_int8_t(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerInt16 : Indexer<short>
-        {
-
-            #region Constructors
-
-            public IndexerInt16(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override short this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    short value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_int16_t(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override short this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    short value;
-                    Dlib.Native.matrix_operator_get_row_column_int16_t(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_int16_t(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerInt32 : Indexer<int>
-        {
-
-            #region Constructors
-
-            public IndexerInt32(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override int this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    int value;
-                    Dlib.Native.matrix_operator_get_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_int32_t(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override int this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    int value;
-                    Dlib.Native.matrix_operator_get_row_column_int32_t(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_int32_t(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerFloat : Indexer<float>
-        {
-
-            #region Constructors
-
-            public IndexerFloat(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override float this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    float value;
-                    Dlib.Native.matrix_operator_get_one_row_column_float(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_float(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override float this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    float value;
-                    Dlib.Native.matrix_operator_get_row_column_float(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_float(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerDouble : Indexer<double>
-        {
-
-            #region Constructors
-
-            public IndexerDouble(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override double this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    double value;
-                    Dlib.Native.matrix_operator_get_one_row_column_double(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_double(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override double this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    double value;
-                    Dlib.Native.matrix_operator_get_row_column_double(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_double(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerRgbPixel : Indexer<RgbPixel>
-        {
-
-            #region Constructors
-
-            public IndexerRgbPixel(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override RgbPixel this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    RgbPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_rgb_pixel(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override RgbPixel this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    RgbPixel value;
-                    Dlib.Native.matrix_operator_get_row_column_rgb_pixel(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_rgb_pixel(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerRgbAlphaPixel : Indexer<RgbAlphaPixel>
-        {
-
-            #region Constructors
-
-            public IndexerRgbAlphaPixel(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override RgbAlphaPixel this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    RgbAlphaPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_rgb_alpha_pixel(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override RgbAlphaPixel this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    RgbAlphaPixel value;
-                    Dlib.Native.matrix_operator_get_row_column_rgb_alpha_pixel(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_rgb_alpha_pixel(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-            }
-
-            #endregion
-
-        }
-
-        internal sealed class IndexerHsiPixel : Indexer<HsiPixel>
-        {
-
-            #region Constructors
-
-            public IndexerHsiPixel(MatrixBase parent)
-                : base(parent)
-            {
-            }
-
-            #endregion
-
-            #region Properties
-
-            public override HsiPixel this[int index]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    HsiPixel value;
-                    Dlib.Native.matrix_operator_get_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-                    if (!(r == 1 || c == 1))
-                        throw new NotSupportedException();
-
-                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_one_row_column_hsi_pixel(this._Parent.NativePtr, index, tr, tc, value);
-                }
-            }
-
-            public override HsiPixel this[int row, int column]
-            {
-                get
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    HsiPixel value;
-                    Dlib.Native.matrix_operator_get_row_column_hsi_pixel(this._Parent.NativePtr, row, column, tr, tc, out value);
-                    return value;
-                }
-                set
-                {
-                    var r = this._Parent.Rows;
-                    var c = this._Parent.Columns;
-                    var tr = this._Parent.TemplateRows;
-                    var tc = this._Parent.TemplateColumns;
-
-                    if (!(0 <= column && column < c) && (0 <= row && row < r))
-                        throw new IndexOutOfRangeException();
-
-                    Dlib.Native.matrix_operator_set_row_column_hsi_pixel(this._Parent.NativePtr, row, column, tr, tc, value);
-                }
-
-            }
-
-            #endregion
-
+            return this.GetEnumerator();
         }
 
         #endregion

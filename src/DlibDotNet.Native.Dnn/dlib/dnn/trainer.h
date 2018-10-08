@@ -11,54 +11,51 @@ using namespace std;
 
 #pragma region template
 
-#define NET_TYPE nettype
-#undef NET_TYPE
-
-#define dnn_trainer_new_template(net) \
+#define dnn_trainer_new_template(__NET_TYPE__, net) \
 do {\
-    NET_TYPE& n = *static_cast<NET_TYPE*>(net);\
-    return new dnn_trainer<NET_TYPE>(n);\
+    __NET_TYPE__& n = *static_cast<__NET_TYPE__*>(net);\
+    return new dnn_trainer<__NET_TYPE__>(n);\
 } while (0)
 
-#define dnn_trainer_delete_template(trainer) \
+#define dnn_trainer_delete_template(__NET_TYPE__, trainer) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     delete t;\
 } while (0)
 
-#define dnn_trainer_set_learning_rate_template(trainer, lr) \
+#define dnn_trainer_set_learning_rate_template(__NET_TYPE__, trainer, lr) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->set_learning_rate(lr);\
 } while (0)
 
-#define dnn_trainer_set_min_learning_rate_template(trainer, lr) \
+#define dnn_trainer_set_min_learning_rate_template(__NET_TYPE__, trainer, lr) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->set_min_learning_rate(lr);\
 } while (0)
 
-#define dnn_trainer_set_mini_batch_size_template(trainer, size) \
+#define dnn_trainer_set_mini_batch_size_template(__NET_TYPE__, trainer, size) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->set_mini_batch_size(size);\
 } while (0)
 
-#define dnn_trainer_be_verbose_template(trainer) \
+#define dnn_trainer_be_verbose_template(__NET_TYPE__, trainer) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->be_verbose();\
 } while (0)
 
-#define dnn_trainer_set_synchronization_file_template(trainer, filename, sec) \
+#define dnn_trainer_set_synchronization_file_template(__NET_TYPE__, trainer, filename, sec) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->set_synchronization_file(filename, sec);\
 } while (0)
 
-#define dnn_trainer_train_template(trainer, in_tmp_data, in_tmp_label) \
+#define dnn_trainer_train_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label) \
 do {\
-    auto t = static_cast<dnn_trainer<NET_TYPE>*>(trainer);\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->train(in_tmp_data, in_tmp_label);\
 } while (0)
 

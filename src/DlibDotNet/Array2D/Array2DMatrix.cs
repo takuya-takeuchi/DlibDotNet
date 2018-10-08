@@ -55,15 +55,15 @@ namespace DlibDotNet
             this.MatrixElementType = matrixType;
         }
 
-        public Array2DMatrix(int rows, int columns, int templateRows = 0, int temlateColumns = 0) :
-            base(templateRows, temlateColumns)
+        public Array2DMatrix(int rows, int columns, int templateRows = 0, int templateColumns = 0) :
+            base(templateRows, templateColumns)
         {
             if (!SupportMatrixTypes.TryGetValue(typeof(TElement), out var matrixType))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
             this._MatrixElementType = matrixType.ToNativeMatrixElementType();
 
-            this.NativePtr = Dlib.Native.array2d_matrix_new1(this._MatrixElementType, rows, columns, templateRows, temlateColumns);
+            this.NativePtr = Dlib.Native.array2d_matrix_new1(this._MatrixElementType, rows, columns, templateRows, templateColumns);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{matrixType} is not supported.");
 
@@ -167,6 +167,9 @@ namespace DlibDotNet
 
         #region Overrides 
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -219,6 +222,9 @@ namespace DlibDotNet
 
             #region Overrides 
 
+            /// <summary>
+            /// Releases all unmanaged resources.
+            /// </summary>
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
