@@ -12,18 +12,17 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static IEnumerable<Rectangle> FindCandidateObjectLocations(
-            Array2DBase image)
+        public static IEnumerable<Rectangle> FindCandidateObjectLocations(Array2DBase image)
         {
             using (var kvals = Linspace(50, 200, 3))
                 return FindCandidateObjectLocations(image, kvals);
         }
 
-        public static IEnumerable<Rectangle> FindCandidateObjectLocations(
-            Array2DBase image,
-            MatrixRangeExp<double> kvals,
-            uint minSize = 20,
-            uint maxMergingIterations = 50)
+        public static IEnumerable<Rectangle> FindCandidateObjectLocations<T>(Array2DBase image,
+                                                                             Matrix<T> kvals,
+                                                                             uint minSize = 20,
+                                                                             uint maxMergingIterations = 50)
+        where T : struct
         {
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
@@ -33,9 +32,22 @@ namespace DlibDotNet
             var array2DType = image.ImageType.ToNativeArray2DType();
             using (var dets = new StdVector<Rectangle>())
             {
-                var ret = Native.find_candidate_object_locations(array2DType, image.NativePtr, dets.NativePtr, IntPtr.Zero, minSize, maxMergingIterations);
-                if (ret == Native.ErrorType.ArrayTypeNotSupport)
-                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                var matrixType = kvals.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.find_candidate_object_locations(array2DType,
+                                                                 image.NativePtr,
+                                                                 dets.NativePtr,
+                                                                 matrixType,
+                                                                 kvals.NativePtr,
+                                                                 minSize,
+                                                                 maxMergingIterations);
+                switch (ret)
+                {
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{image.ImageType} is not supported.");
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixType} is not supported.");
+                }
+
                 return dets.ToArray();
             }
         }
@@ -46,7 +58,13 @@ namespace DlibDotNet
         {
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType find_candidate_object_locations(Array2DType type, IntPtr img, IntPtr rect, IntPtr kvals, uint minSize, uint maxMergingIterations);
+            public static extern ErrorType find_candidate_object_locations(Array2DType type,
+                                                                           IntPtr img,
+                                                                           IntPtr rect,
+                                                                           MatrixElementType matrixElementType,
+                                                                           IntPtr kvals,
+                                                                           uint minSize,
+                                                                           uint maxMergingIterations);
 
         }
 

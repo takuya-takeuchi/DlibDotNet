@@ -7,7 +7,7 @@ project(${PROJ_NAME} VERSION 0.0.0)
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 15)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20180916)
+set(VERSION_DATE 20181008)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -35,6 +35,10 @@ if (${DLIB_USE_CUDA})
         ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc
         @ONLY)
+
+    # include CUDA Runtime Library
+    include_directories("$ENV{CUDA_PATH}/include")
+    link_libraries("$ENV{CUDA_PATH}/lib/x64/cudart_static.lib")
 
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}

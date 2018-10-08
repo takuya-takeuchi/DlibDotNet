@@ -79,7 +79,7 @@ DLLEXPORT int get_surf_points(
             #undef ARRAY2D_ELEMENT
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

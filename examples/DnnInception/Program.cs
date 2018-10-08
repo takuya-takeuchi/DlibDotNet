@@ -3,8 +3,6 @@
 */
 
 using System;
-using System.IO;
-using System.Linq;
 using DlibDotNet;
 using DlibDotNet.Dnn;
 
@@ -41,7 +39,7 @@ namespace DnnInception
                     Console.WriteLine($"The net has {net.NumLayers} layers in it.");
                     Console.WriteLine(net);
 
-                    Console.WriteLine("Traning NN...");
+                    Console.WriteLine("Training NN...");
                     using (var trainer = new DnnTrainer<LossMulticlassLog>(net))
                     {
                         trainer.SetLearningRate(0.01);

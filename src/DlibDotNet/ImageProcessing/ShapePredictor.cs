@@ -90,7 +90,7 @@ namespace DlibDotNet
                 var ret = Native.shape_predictor_operator(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var fullObjDetect);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -118,7 +118,7 @@ namespace DlibDotNet
                                                                 out var fullObjDetect);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 

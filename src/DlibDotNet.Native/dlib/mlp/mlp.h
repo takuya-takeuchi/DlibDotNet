@@ -92,7 +92,7 @@ do { \
         case matrix_element_type::HsiPixel:\
         case matrix_element_type::RgbAlphaPixel:\
         default:\
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
             break;\
     }\
 } while (0)
@@ -162,7 +162,7 @@ do { \
         case matrix_element_type::HsiPixel:\
         case matrix_element_type::RgbAlphaPixel:\
         default:\
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
             break;\
     }\
 } while (0)

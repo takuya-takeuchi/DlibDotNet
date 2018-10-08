@@ -596,7 +596,7 @@ DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r,
             window->add_overlay(*r, *((rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -651,7 +651,7 @@ DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectan
             window->add_overlay(tmpRects, *((rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -698,7 +698,7 @@ DLLEXPORT int image_window_add_overlay3(image_window* window, dlib::drectangle* 
             window->add_overlay(*r, *((rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -781,7 +781,7 @@ DLLEXPORT int image_window_set_image_array2d(image_window* window, array2d_type 
             window->set_image(*((array2d<rgb_alpha_pixel>*)image));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -828,7 +828,7 @@ DLLEXPORT int image_window_set_image_matrix(image_window* window, matrix_element
             window->set_image(*((dlib::matrix<rgb_alpha_pixel>*)image));
             break;
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -890,6 +890,11 @@ DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window, elem
 DLLEXPORT image_window::overlay_line* image_window_overlay_line_new()
 {
 	return new image_window::overlay_line();
+}
+
+DLLEXPORT image_window::overlay_line* image_window_overlay_line_new_rgb(dlib::point* p1, dlib::point* p2, dlib::rgb_pixel pixel)
+{
+	return new image_window::overlay_line(*p1, *p2, pixel);
 }
 
 DLLEXPORT bool image_window_overlay_line_p1(image_window::overlay_line* line, dlib::point** point)
@@ -1016,7 +1021,7 @@ DLLEXPORT int perspective_window_add_overlay(perspective_window* window, dlib::v
             window->add_overlay(*p1, *p2, *((dlib::rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1088,7 +1093,7 @@ DLLEXPORT int perspective_window_add_overlay3(perspective_window* window, std::v
             window->add_overlay(tmp, *((dlib::rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

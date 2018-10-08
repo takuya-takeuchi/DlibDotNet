@@ -38,9 +38,9 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 foreach (var test in tests)
                 {
-                    TwoDimentionObjectBase imageObj = null;
-                    TwoDimentionObjectBase horzObj = null;
-                    TwoDimentionObjectBase vertObj = null;
+                    TwoDimensionObjectBase imageObj = null;
+                    TwoDimensionObjectBase horzObj = null;
+                    TwoDimensionObjectBase vertObj = null;
 
                     try
                     {

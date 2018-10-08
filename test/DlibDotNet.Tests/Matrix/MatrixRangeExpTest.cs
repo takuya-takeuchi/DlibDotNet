@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DlibDotNet.Tests.Matrix
 {
 
+    [Obsolete]
     [TestClass]
     public class MatrixRangeExpTest : TestBase
     {

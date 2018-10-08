@@ -35,14 +35,13 @@ namespace DlibDotNet.Tests.ImageTransforms
             foreach (var test in tests)
             {
                 Array2DBase inImg = null;
-                IEnumerable<Rectangle> rects = null;
 
                 try
                 {
                     inImg = DlibTest.LoadImage(test.Type, path);
-                    rects = Dlib.FindCandidateObjectLocations(inImg);
+                    var rects = Dlib.FindCandidateObjectLocations(inImg)?.ToArray();
                     if (rects == null || !rects.Any())
-                        Assert.Fail($"FindCandidateObjectLocations should detect any rectangles.");
+                        Assert.Fail($"{nameof(FindCandidateObjectLocations)} should detect any rectangles.");
 
                     switch (test.Type)
                     {
@@ -64,7 +63,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                             break;
                         case ImageTypes.Int32:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, (int)(255 << 16));
+                                Dlib.DrawRectangle(inImg, r, 255 << 16);
                             break;
                         case ImageTypes.HsiPixel:
                             foreach (var r in rects)

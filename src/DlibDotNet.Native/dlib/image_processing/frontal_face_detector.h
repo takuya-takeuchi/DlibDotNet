@@ -13,27 +13,24 @@ using namespace std;
 
 #pragma region template
 
-#define ELEMENT element
-#undef ELEMENT
-
-#define frontal_face_detector_operator_template(img, adjust_threshold, dets) \
+#define frontal_face_detector_operator_template(__TYPE__, img, adjust_threshold, dets) \
 do {\
-    std::vector<rectangle> result = ((*detector)(*((array2d<ELEMENT>*)img), adjust_threshold));\
+    std::vector<rectangle> result = ((*detector)(*((array2d<__TYPE__>*)img), adjust_threshold));\
     for(int index = 0; index < result.size(); index++)\
         dets->push_back(new rectangle(result[index]));\
 } while (0)
 
-#define frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets) \
+#define frontal_face_detector_matrix_operator_template(__TYPE__, img, adjust_threshold, dets) \
 do {\
-    std::vector<rectangle> result = ((*detector)(*((matrix<ELEMENT>*)img), adjust_threshold));\
+    std::vector<rectangle> result = ((*detector)(*((matrix<__TYPE__>*)img), adjust_threshold));\
     for(int index = 0; index < result.size(); index++)\
         dets->push_back(new rectangle(result[index]));\
 } while (0)
 
-#define frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets) \
+#define frontal_face_detector_matrix_operator2_template(__TYPE__, img, adjust_threshold, dets) \
 do {\
     std::vector<rect_detection> final_dets;\
-    ((*detector)(*((matrix<ELEMENT>*)img), final_dets, adjust_threshold));\
+    ((*detector)(*((matrix<__TYPE__>*)img), final_dets, adjust_threshold));\
     for(int index = 0; index < final_dets.size(); index++)\
         dets->push_back(new rect_detection(final_dets[index]));\
 } while (0)
@@ -59,70 +56,49 @@ DLLEXPORT int frontal_face_detector_operator(
     switch(img_type)
     {
         case array2d_type::UInt8:
-            #define ELEMENT uint8_t
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(uint8_t, img, adjust_threshold, dets);
             break;
         case array2d_type::UInt16:
-            #define ELEMENT uint16_t
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(uint16_t, img, adjust_threshold, dets);
             break;
         case array2d_type::UInt32:
-            #define ELEMENT uint32_t
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(uint32_t, img, adjust_threshold, dets);
             break;
         case array2d_type::Int8:
-            #define ELEMENT int8_t
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(int8_t, img, adjust_threshold, dets);
             break;
         case array2d_type::Int16:
-            #define ELEMENT int16_t
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(int16_t, img, adjust_threshold, dets);
             break;
         case array2d_type::Int32:
-            #define ELEMENT int32_t
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(int32_t, img, adjust_threshold, dets);
             break;
         case array2d_type::Float:
-            #define ELEMENT float
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(float, img, adjust_threshold, dets);
             break;
         case array2d_type::Double:
-            #define ELEMENT double
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(double, img, adjust_threshold, dets);
             break;
         case array2d_type::RgbPixel:
-            #define ELEMENT rgb_pixel
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(rgb_pixel, img, adjust_threshold, dets);
             break;
         case array2d_type::HsiPixel:
-            #define ELEMENT hsi_pixel
-            frontal_face_detector_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_operator_template(hsi_pixel, img, adjust_threshold, dets);
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
     return err;
 }
 
-DLLEXPORT int frontal_face_detector_matrix_operator(
-    frontal_face_detector* detector,
-    matrix_element_type img_type,
-    void* img,
-    double adjust_threshold,
-    std::vector<rectangle*> *dets)
+DLLEXPORT int frontal_face_detector_matrix_operator(frontal_face_detector* detector,
+                                                    matrix_element_type img_type,
+                                                    void* img,
+                                                    double adjust_threshold,
+                                                    std::vector<rectangle*> *dets)
 {
     int err = ERR_OK;
 
@@ -130,58 +106,38 @@ DLLEXPORT int frontal_face_detector_matrix_operator(
     switch(img_type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(uint8_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(uint16_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(uint32_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(int8_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(int16_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(int32_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(float, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(double, img, adjust_threshold, dets);
             break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT rgb_pixel
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(rgb_pixel, img, adjust_threshold, dets);
             break;
         case matrix_element_type::HsiPixel:
-            #define ELEMENT hsi_pixel
-            frontal_face_detector_matrix_operator_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator_template(hsi_pixel, img, adjust_threshold, dets);
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -199,58 +155,38 @@ DLLEXPORT int frontal_face_detector_matrix_operator2(frontal_face_detector* dete
     switch(img_type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(uint8_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(uint16_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(uint32_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(int8_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(int16_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(int32_t, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(float, img, adjust_threshold, dets);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(double, img, adjust_threshold, dets);
             break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT rgb_pixel
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(rgb_pixel, img, adjust_threshold, dets);
             break;
         case matrix_element_type::HsiPixel:
-            #define ELEMENT hsi_pixel
-            frontal_face_detector_matrix_operator2_template(img, adjust_threshold, dets);
-            #undef ELEMENT
+            frontal_face_detector_matrix_operator2_template(hsi_pixel, img, adjust_threshold, dets);
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

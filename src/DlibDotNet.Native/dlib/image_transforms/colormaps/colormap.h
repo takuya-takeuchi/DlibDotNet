@@ -92,7 +92,7 @@ do { \
             }\
             break;\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -168,7 +168,7 @@ do { \
             }\
             break;\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -244,7 +244,7 @@ do { \
             }\
             break;\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -320,7 +320,7 @@ do { \
             }\
             break;\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -415,7 +415,7 @@ do { \
             }\
             break;\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -503,7 +503,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -572,7 +572,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)

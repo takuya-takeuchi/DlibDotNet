@@ -72,10 +72,8 @@ namespace DlibDotNet
                                                     array.NativePtr);
                 switch (ret)
                 {
-                    case Native.ErrorType.InputArrayTypeNotSupport:
-                        throw new ArgumentException($"{image.ImageType} is not supported.");
-                    case Native.ErrorType.OutputArrayTypeNotSupport:
-                        throw new ArgumentException($"{array.ImageType} is not supported.");
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException("Output or input type is not supported.");
                 }
 
                 return array;
@@ -113,7 +111,7 @@ namespace DlibDotNet
             }
         }
 
-        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.NearestNeighbor)
+        public static Array2D<T> ExtractImageChip<T>(Array2DBase image, ChipDetails chipLocation, InterpolationTypes type = InterpolationTypes.Bilinear)
             where T : struct
         {
             if (image == null)
@@ -138,10 +136,8 @@ namespace DlibDotNet
 
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"{image.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"{chip.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
 
             return chip;
@@ -172,10 +168,8 @@ namespace DlibDotNet
 
             switch (ret)
             {
-                case Native.ErrorType.InputElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-                case Native.ErrorType.OutputElementTypeNotSupport:
-                    throw new ArgumentException($"{chip.MatrixElementType} is not supported.");
             }
 
             return chip;
@@ -192,7 +186,7 @@ namespace DlibDotNet
             var ret = Native.flip_image_left_right(array2DType, image.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.ArrayTypeNotSupport:
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{image.ImageType} is not supported.");
             }
         }
@@ -214,10 +208,8 @@ namespace DlibDotNet
             var ret = Native.flip_image_left_right2(inType, inputImage.NativePtr, outType, outputImage.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -238,10 +230,18 @@ namespace DlibDotNet
             var ret = Native.flip_image_up_down(inType, inputImage.NativePtr, outType, outputImage.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
+            }
+        }
+
+        public static Rectangle FlipRectLeftRight(Rectangle rect, Rectangle window)
+        {
+            using(var rectNative = rect.ToNative())
+            using (var windowNative = window.ToNative())
+            {
+                var ret = Native.flip_rect_left_right(rectNative.NativePtr, windowNative.NativePtr);
+                return new Rectangle(ret);
             }
         }
 
@@ -302,10 +302,8 @@ namespace DlibDotNet
 
             switch (ret)
             {
-                case Native.ErrorType.InputElementTypeNotSupport:
+                case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-                case Native.ErrorType.OutputElementTypeNotSupport:
-                    throw new ArgumentException($"{chip.MatrixElementType} is not supported.");
             }
 
             return new Matrix<T>(retImage);
@@ -320,7 +318,7 @@ namespace DlibDotNet
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = Native.pyramid_up(array2DType, image.NativePtr);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
@@ -393,7 +391,7 @@ namespace DlibDotNet
             var ret = Native.resize_image3(inType, inputImage.NativePtr, scale);
             switch (ret)
             {
-                case Native.ErrorType.ArrayTypeNotSupport:
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{inputImage.ImageType} is not supported.");
             }
         }
@@ -415,6 +413,8 @@ namespace DlibDotNet
                                                        scale);
             switch (ret)
             {
+                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
                 case Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
             }
@@ -437,10 +437,8 @@ namespace DlibDotNet
             var ret = Native.resize_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -461,10 +459,8 @@ namespace DlibDotNet
             var ret = Native.rotate_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, angle, interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -487,10 +483,8 @@ namespace DlibDotNet
             var ret = Native.transform_image(inType, inputImage.NativePtr, outType, outputImage.NativePtr, pointTransform.GetNativePointMappingTypes(), pointTransform.NativePtr, interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -556,6 +550,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType flip_image_up_down(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr flip_rect_left_right(IntPtr rect, IntPtr window);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern ErrorType pyramid_up(Array2DType type, IntPtr img);

@@ -141,17 +141,59 @@ namespace DlibDotNet.Tests.Geometry
         }
 
         [TestMethod]
-        public void OperatorMul()
+        public void OperatorMul_DPoint_Int32()
         {
             var lx = (double)this.NextRandom(10, 100);
             var ly = (double)this.NextRandom(10, 100);
 
-            var r = new DPoint(lx, ly);
-            var l = 2;
-            var rl = r * l;
+            var l = new DPoint(lx, ly);
+            var r = 2;
+            var lr = l * r;
 
-            Assert.AreEqual(rl.X, lx * l);
-            Assert.AreEqual(rl.Y, ly * l);
+            Assert.AreEqual(lr.X, lx * r);
+            Assert.AreEqual(lr.Y, ly * r);
+        }
+
+        [TestMethod]
+        public void OperatorMul_DPoint_Double()
+        {
+            var lx = (double)this.NextRandom(10, 100);
+            var ly = (double)this.NextRandom(10, 100);
+
+            var l = new DPoint(lx, ly);
+            var r = 2.5d;
+            var lr = l * r;
+
+            Assert.AreEqual(lr.X, lx * r);
+            Assert.AreEqual(lr.Y, ly * r);
+        }
+
+        [TestMethod]
+        public void OperatorMul_Int32_DPoint()
+        {
+            var rx = (double)this.NextByteRandom();
+            var ry = (double)this.NextByteRandom();
+
+            var r = new DPoint(rx, ry);
+            var l = 2;
+            var lr = l * r;
+
+            Assert.AreEqual(lr.X, l * rx);
+            Assert.AreEqual(lr.Y, l * ry);
+        }
+
+        [TestMethod]
+        public void OperatorMul_Double_DPoint()
+        {
+            var rx = (double)this.NextByteRandom();
+            var ry = (double)this.NextByteRandom();
+
+            var r = new DPoint(rx, ry);
+            var l = 2.5d;
+            var lr = l * r;
+
+            Assert.AreEqual(lr.X, l * rx);
+            Assert.AreEqual(lr.Y, l * ry);
         }
 
         [TestMethod]

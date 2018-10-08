@@ -31,7 +31,7 @@ namespace DlibDotNet
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = Native.load_image_dataset_mmod_rect(type, retImages.NativePtr, retBoxes.NativePtr, str);
-                if (ret == Native.ErrorType.ElementTypeNotSupport)
+                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
                 images = retImages.ToArray();
@@ -55,7 +55,7 @@ namespace DlibDotNet
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = Native.load_image_dataset_rectangle(type, retImages.NativePtr, retBoxes.NativePtr, str);
-                if (ret == Native.ErrorType.ElementTypeNotSupport)
+                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
                 images = retImages.ToArray();

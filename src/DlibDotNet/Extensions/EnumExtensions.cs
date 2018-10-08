@@ -49,12 +49,16 @@ namespace DlibDotNet.Extensions
                     return Dlib.Native.MatrixElementType.UInt16;
                 case MatrixElementTypes.UInt32:
                     return Dlib.Native.MatrixElementType.UInt32;
+                case MatrixElementTypes.UInt64:
+                    return Dlib.Native.MatrixElementType.UInt64;
                 case MatrixElementTypes.Int8:
                     return Dlib.Native.MatrixElementType.Int8;
                 case MatrixElementTypes.Int16:
                     return Dlib.Native.MatrixElementType.Int16;
                 case MatrixElementTypes.Int32:
                     return Dlib.Native.MatrixElementType.Int32;
+                case MatrixElementTypes.Int64:
+                    return Dlib.Native.MatrixElementType.Int64;
                 case MatrixElementTypes.Float:
                     return Dlib.Native.MatrixElementType.Float;
                 case MatrixElementTypes.Double:

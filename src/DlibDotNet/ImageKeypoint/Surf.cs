@@ -28,7 +28,7 @@ namespace DlibDotNet
             {
                 var array2DType = image.ImageType.ToNativeArray2DType();
                 var ret = Native.get_surf_points(array2DType, image.NativePtr, maxPoints, detectionThreshold, points.NativePtr);
-                if (ret == Native.ErrorType.ArrayTypeNotSupport)
+                if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
                     throw new ArgumentException($"{image.ImageType} is not supported.");
 
                 return points.ToArray();

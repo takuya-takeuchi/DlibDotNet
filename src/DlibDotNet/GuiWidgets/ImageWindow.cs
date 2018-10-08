@@ -401,7 +401,7 @@ namespace DlibDotNet
             var ret = Native.image_window_set_image_array2d(this.NativePtr, image.ImageType.ToNativeArray2DType(), image.NativePtr);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.InputArrayTypeNotSupport:
+                case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{image.ImageType} is not supported.");
             }
         }
@@ -418,7 +418,7 @@ namespace DlibDotNet
             var ret = Native.image_window_set_image_matrix(this.NativePtr, matrix.MatrixElementType.ToNativeMatrixElementType(), matrix.NativePtr);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
             }
         }

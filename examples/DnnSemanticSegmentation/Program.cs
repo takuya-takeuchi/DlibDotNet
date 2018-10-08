@@ -113,8 +113,7 @@ namespace DnnSemanticSegmentation
                         foreach (var file in files)
                         {
                             // Load the input image.
-                            using (var array = Dlib.LoadImage<RgbPixel>(file))
-                            using (var inputImage = new Matrix<RgbPixel>(array))
+                            using (var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(file))
                             {
                                 // Create predictions for each pixel. At this point, the type of each prediction
                                 // is an index (a value between 0 and 20). Note that the net may return an image

@@ -68,8 +68,10 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Encoding.UTF8.GetBytes(path);
-            var ret = Native.loss_multiclass_log_per_pixel_deserialize(str, networkType);
-            return new LossMulticlassLogPerPixel(ret, networkType);
+            var error = Native.loss_multiclass_log_per_pixel_deserialize(str, networkType, out var net);
+            Cuda.ThrowCudaException(error);
+
+            return new LossMulticlassLogPerPixel(net, networkType);
         }
 
         public static LossMulticlassLogPerPixel Deserialize(ProxyDeserialize deserialize, int networkType = 0)
@@ -79,8 +81,10 @@ namespace DlibDotNet.Dnn
 
             deserialize.ThrowIfDisposed();
 
-            var ret = Native.loss_multiclass_log_per_pixel_deserialize_proxy(deserialize.NativePtr, networkType);
-            return new LossMulticlassLogPerPixel(ret, networkType);
+            var error = Native.loss_multiclass_log_per_pixel_deserialize_proxy(deserialize.NativePtr, networkType, out var net);
+            Cuda.ThrowCudaException(error);
+
+            return new LossMulticlassLogPerPixel(net, networkType);
         }
 
         public Subnet GetSubnet()
@@ -138,6 +142,7 @@ namespace DlibDotNet.Dnn
                                                                                 batchSize,
                                                                                 out var vecOut);
 
+                Cuda.ThrowCudaException(ret);
                 switch (ret)
                 {
                     case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
@@ -399,10 +404,10 @@ namespace DlibDotNet.Dnn
             public static extern void loss_multiclass_log_per_pixel_delete(IntPtr obj, int type);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_multiclass_log_per_pixel_deserialize(byte[] fileName, int type);
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_per_pixel_deserialize(byte[] fileName, int type, out IntPtr net);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_multiclass_log_per_pixel_deserialize_proxy(IntPtr proxy_deserialize, int type);
+            public static extern Dlib.Native.ErrorType loss_multiclass_log_per_pixel_deserialize_proxy(IntPtr proxy_deserialize, int type, out IntPtr net);
 
             [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void loss_multiclass_log_per_pixel_serialize(IntPtr obj, int type, byte[] fileName);
