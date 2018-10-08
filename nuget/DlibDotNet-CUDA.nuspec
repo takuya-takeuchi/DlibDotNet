@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet-WithCUDA</id>
-    <version>19.15.0.20180916</version>
+    <version>19.15.0.20181008</version>
     <title>DlibDotNet (with CUDA)</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -12,7 +12,7 @@
     <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
     <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
 
-Requirements: Visual C++ 2017 Redistributable Package, cublas64_91.dll, cudnn64_7.dll, curand64_91.dll and cusolver64_91.dll</description>
+Requirements: Visual C++ 2017 Redistributable Package, cublas64_92.dll, cudnn64_7.dll, curand64_92.dll and cusolver64_92.dll</description>
     <releaseNotes></releaseNotes>
     <copyright>© Takuya Takeuchi 2018</copyright>
     <tags>dlib .net machinelearning</tags>
