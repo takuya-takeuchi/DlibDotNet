@@ -38,5 +38,5 @@ Hit enter to process the next image.
 
 ![Dog](images/1.png "Dog")
 ![Dog](images/2.png "Dog")
-![Dog](images/3.png "Dog")
-![Dog](images/4.png "Dog")
+![Dog](images/3.jpg "Dog")
+![Dog](images/4.jpg "Dog")
