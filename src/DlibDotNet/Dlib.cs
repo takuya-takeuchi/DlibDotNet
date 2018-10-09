@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Dnn;
@@ -29,6 +30,93 @@ namespace DlibDotNet
         public static void AssignPixel(ref RgbAlphaPixel dest, RgbPixel src)
         {
             Native.assign_pixel_rgbalpha_rgb(ref dest, ref src);
+        }
+
+        #endregion
+
+        #region ExtractImage4Points
+
+        public static Array2D<T> ExtractImage4Points<T>(Array2D<T> image, 
+                                                        DPoint[] points, 
+                                                        int width, 
+                                                        int height)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var natives = points.Select(point => point.ToNative()).ToArray();
+
+            try
+            {
+                var ps = natives.Select(point => point.NativePtr).ToArray();
+                var elementType = image.ImageType.ToNativeArray2DType();
+                var ret = Native.extract_image_4points(elementType,
+                                                       image.NativePtr,
+                                                       ps,
+                                                       width,
+                                                       height,
+                                                       out var output);
+                switch (ret)
+                {
+                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{elementType} is not supported.");
+                }
+
+                return new Array2D<T>(output, image.ImageType);
+            }
+            finally
+            {
+                foreach (var n in natives)
+                    n.Dispose();
+            }
+        }
+
+        public static Matrix<T> ExtractImage4Points<T>(Matrix<T> matrix,
+                                                       DPoint[] points,
+                                                       int width, 
+                                                       int height)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var natives = points.Select(point => point.ToNative()).ToArray();
+
+            try
+            {
+                var ps = natives.Select(point => point.NativePtr).ToArray();
+                var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
+                var ret = Native.extract_image_4points_matrix(matrixElementType,
+                                                              matrix.NativePtr,
+                                                              matrix.TemplateRows,
+                                                              matrix.TemplateColumns,
+                                                              ps,
+                                                              width,
+                                                              height,
+                                                              out var output);
+                switch (ret)
+                {
+                    case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(matrix.TemplateRows)} or {nameof(matrix.TemplateColumns)} is not supported.");
+                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
+                }
+
+                return new Matrix<T>(output, matrix.TemplateRows, matrix.TemplateColumns);
+            }
+            finally
+            {
+                foreach (var n in natives)
+                    n.Dispose();
+            }
         }
 
         #endregion
@@ -668,7 +756,7 @@ namespace DlibDotNet
                 Double
 
             }
-            
+
             internal enum NumericType
             {
 
@@ -747,7 +835,7 @@ namespace DlibDotNet
                 Default = 0
 
             }
-
+            
             internal enum ErrorType
             {
 
@@ -757,8 +845,8 @@ namespace DlibDotNet
 
                 Array2DError =                                        0x7B000000,
 
-                Array2DTypeTypeNotSupport =          -(Array2DError | 0x00000001),
-
+                Array2DTypeTypeNotSupport =          -(Array2DError | 0x00000001), 
+ 
                 #endregion
 
                 ElementTypeNotSupport = -4,
@@ -783,28 +871,28 @@ namespace DlibDotNet
 
                 MlpError =                                            0x7A000000,
 
-                MlpKernelNotSupport =                    -(MlpError | 0x00000001),
-
+                MlpKernelNotSupport =                    -(MlpError | 0x00000001), 
+ 
                 #endregion
-
+ 
                 #region RunningStats
 
                 RunningStatsError =                                   0x78000000,
 
-                RunningStatsTypeNotSupport =    -(RunningStatsError | 0x00000001),
-
-                #endregion
-
+                RunningStatsTypeNotSupport =    -(RunningStatsError | 0x00000001), 
+ 
+                #endregion 
+ 
                 #region Vector
-
+ 
                 VectorError =                                         0x79000000,
 
                 VectorTypeNotSupport =                -(VectorError | 0x00000001),
-
+ 
                 #endregion
-
+ 
                 #region FHog
-
+ 
                 FHogError =                                           0x7D000000,
 
                 FHogNotSupportExtractor =               -(FHogError | 0x00000001),
@@ -815,8 +903,8 @@ namespace DlibDotNet
 
                 PyramidError =                                        0x7E000000,
                                                        
-                PyramidNotSupportRate =              -(PyramidError | 0x00000001),
-
+                PyramidNotSupportRate =              -(PyramidError | 0x00000001), 
+ 
                 PyramidNotSupportType =              -(PyramidError | 0x00000002),
 
                 #endregion
@@ -1537,6 +1625,28 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern void mlp_kernel_delete(MlpKernelType kernel_type, IntPtr kernel);
+
+            #endregion
+
+            #region extract_image_4points
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_4points(Array2DType type,
+                                                                 IntPtr array,
+                                                                 IntPtr[] points,
+                                                                 int width,
+                                                                 int height,
+                                                                 out IntPtr output);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern ErrorType extract_image_4points_matrix(MatrixElementType element_type,
+                                                                        IntPtr matrix,
+                                                                        int templateRows,
+                                                                        int templateColumns,
+                                                                        IntPtr[] points,
+                                                                        int width,
+                                                                        int height,
+                                                                        out IntPtr output);
 
             #endregion
 

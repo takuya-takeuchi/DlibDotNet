@@ -29,3 +29,7 @@ This file is created by converting and resizing from Lenna.jpg.
 # lena_gray
 
 This file was got from http://eeweb.poly.edu/~yao/EL5123/SampleData.html
+
+# 1024px-Mars_&_Apollo_in_Perspective.JPG
+
+This file was got from https://commons.wikimedia.org/wiki/File:Mars_%26_Apollo_in_Perspective.JPG
