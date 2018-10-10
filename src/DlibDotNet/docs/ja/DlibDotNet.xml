@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DlibDotNet</name>
+    </assembly>
+    <members>
+        <member name="T:DlibDotNet.Array`1">
+            <summary>
+            This object represents a 1-Dimensional array of objects. 
+            </summary>
+            <typeparam name="T">The type of elements in the array.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class with the specified size of array.
+            </summary>
+            <param name="size">The number of elements which have initial values for their type.</param>
+        </member>
+        <member name="M:DlibDotNet.Array`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+            <returns>コレクションの反復処理に使用できる <see cref="T:System.Collections.Generic.IEnumerator`1"/> 列挙子。</returns>
+        </member>
+        <member name="M:DlibDotNet.Array`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+            <returns>コレクションを反復処理するために使用できる <see cref="T:System.Collections.IEnumerator"/> オブジェクト。</returns>
+        </member>
+        <member name="T:DlibDotNet.DlibObject">
+            <summary>
+            ネイティブ構造体のポインタを保持するクラスです。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.#ctor(System.Boolean)">
+            <summary>
+            インスタンスが破棄可能かどうかを示す値を指定して、<see cref="T:DlibDotNet.DlibObject"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+            <param name="isEnabledDispose">インスタンスが可能である場合は true。それ以外の場合は false。</param>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsDisposed">
+            <summary>
+            インスタンスが破棄されているかどうかを示す値を取得します。
+            </summary>
+            <returns>インスタンスが破棄されている場合は true。それ以外の場合は false。</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsEnableDispose">
+            <summary>
+            インスタンスが破棄可能かどうかを示す値を取得します。
+            </summary>
+            <returns>インスタンスが可能である場合は true。それ以外の場合は false。</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.NativePtr">
+            <summary>
+            ネイティブ構造体のポインタを取得します。
+            </summary>>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.ThrowIfDisposed">
+            <summary>
+            オブジェクトが破棄されている場合、<see cref="T:System.ObjectDisposedException"/> がスローされます。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeManaged">
+            <summary>
+            マネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose">
+            <summary>
+            この <see cref="T:DlibDotNet.DlibObject"/> によって使用されている全てのリソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose(System.Boolean)">
+            <summary>
+            この <see cref="T:DlibDotNet.DlibObject"/> によって使用されている全てのリソースを解放します。
+            </summary>
+            <param name="disposing"><see cref="M:System.IDisposable.Dispose"/> メソッドが呼ばれたかどうかを示す値。</param>
+        </member>
+        <member name="T:DlibDotNet.Dnn.NotSupportNetworkTypeException">
+            <summary>
+            The exception that is thrown when an specified network type is not supported. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> class with a specified network type that is the cause of this exception.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> class with a specified network type, error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="networkType">The network type.</param>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The name of the parameter that caused the current exception.</param>
+        </member>
+        <member name="P:DlibDotNet.Dnn.NotSupportNetworkTypeException.NetworkType">
+            <summary>
+            Gets the the network type that is the cause of this exception.
+            </summary>
+        </member>
+    </members>
+</doc>

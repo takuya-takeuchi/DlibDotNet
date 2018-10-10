@@ -3,48 +3,62 @@
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// A class which has a pointer of native structure.
+    /// </summary>
     public abstract class DlibObject : IDlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DlibObject"/> class with the specified value indicating whether this instance is disposable.
+        /// </summary>
+        /// <param name="isEnabledDispose">true if this instance is disposable; otherwise, false.</param>
         protected DlibObject(bool isEnabledDispose = true)
         {
-            this._IsEnableDispose = isEnabledDispose;
+            this.IsEnableDispose = isEnabledDispose;
         }
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has been disposed.
+        /// </summary>
+        /// <returns>true if this instance has been disposed; otherwise, false.</returns>
         public bool IsDisposed
         {
             get;
             private set;
         }
 
-        private readonly bool _IsEnableDispose;
+        /// <summary>
+        /// Gets a value indicating whether this instance is disposable.
+        /// </summary>
+        /// <returns>true if this instance is disposable; otherwise, false.</returns>
+        public bool IsEnableDispose
+        {
+            get;
+        }
 
-        public bool IsEnableDispose => this._IsEnableDispose;
-
-        private IntPtr _NativePtr;
-
+        /// <summary>
+        /// Gets a pointer of native structure.
+        /// </summary>>
         public IntPtr NativePtr
         {
-            get
-            {
-                return this._NativePtr;
-            }
-            internal set
-            {
-                this._NativePtr = value;
-            }
+            get;
+            internal set;
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// If this object is disposed, then <see cref="System.ObjectDisposedException"/> is thrown.
+        /// </summary>
         public void ThrowIfDisposed()
         {
             if (this.IsDisposed)
@@ -59,11 +73,17 @@ namespace DlibDotNet
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all managed resources.
+        /// </summary>
         protected virtual void DisposeManaged()
         {
 
         }
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected virtual void DisposeUnmanaged()
         {
 
@@ -73,7 +93,7 @@ namespace DlibDotNet
 
         #endregion
 
-        #region IDisposable メンバ
+        #region IDisposable Members
 
         /// <summary>
         /// Releases all resources used by this <see cref="DlibObject"/>.
@@ -99,14 +119,14 @@ namespace DlibDotNet
 
             if (disposing)
             {
-                if (this._IsEnableDispose)
+                if (this.IsEnableDispose)
                     this.DisposeManaged();
             }
 
-            if (this._IsEnableDispose)
+            if (this.IsEnableDispose)
                 this.DisposeUnmanaged();
 
-            this._NativePtr = IntPtr.Zero;
+            this.NativePtr = IntPtr.Zero;
         }
 
         #endregion

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DlibDotNet</name>
+    </assembly>
+    <members>
+        <member name="T:DlibDotNet.Array`1">
+            <summary>
+            This object represents a 1-Dimensional array of objects. 
+            </summary>
+            <typeparam name="T">The type of elements in the array.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class with the specified size of array.
+            </summary>
+            <param name="size">The number of elements which have initial values for their type.</param>
+        </member>
+        <member name="M:DlibDotNet.Array`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:DlibDotNet.Array`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="T:DlibDotNet.DlibObject">
+            <summary>
+            A class which has a pointer of native structure.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.DlibObject"/> class with the specified value indicating whether this instance is disposable.
+            </summary>
+            <param name="isEnabledDispose">true if this instance is disposable; otherwise, false.</param>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsDisposed">
+            <summary>
+            Gets a value indicating whether this instance has been disposed.
+            </summary>
+            <returns>true if this instance has been disposed; otherwise, false.</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsEnableDispose">
+            <summary>
+            Gets a value indicating whether this instance is disposable.
+            </summary>
+            <returns>true if this instance is disposable; otherwise, false.</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.NativePtr">
+            <summary>
+            Gets a pointer of native structure.
+            </summary>>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.ThrowIfDisposed">
+            <summary>
+            If this object is disposed, then <see cref="T:System.ObjectDisposedException"/> is thrown.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeManaged">
+            <summary>
+            Releases all managed resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose">
+            <summary>
+            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose(System.Boolean)">
+            <summary>
+            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            </summary>
+            <param name="disposing">Indicate value whether <see cref="M:System.IDisposable.Dispose"/> method was called.</param>
+        </member>
+        <member name="T:DlibDotNet.Dnn.NotSupportNetworkTypeException">
+            <summary>
+            The exception that is thrown when an specified network type is not supported. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> class with a specified network type that is the cause of this exception.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> class with a specified network type, error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="networkType">The network type.</param>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The name of the parameter that caused the current exception.</param>
+        </member>
+        <member name="P:DlibDotNet.Dnn.NotSupportNetworkTypeException.NetworkType">
+            <summary>
+            Gets the the network type that is the cause of this exception.
+            </summary>
+        </member>
+    </members>
+</doc>
