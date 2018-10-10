@@ -44,6 +44,12 @@ namespace DlibDotNet
         {
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+            if (points.Length != 4)
+                throw new ArgumentOutOfRangeException($"{nameof(points.Length)} of {nameof(points)} must be 4.");
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(width)} or {nameof(height)} are less than or equal to zero.");
 
             image.ThrowIfDisposed();
 
@@ -85,6 +91,12 @@ namespace DlibDotNet
         {
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+            if (points.Length != 4)
+                throw new ArgumentOutOfRangeException($"{nameof(points.Length)} of {nameof(points)} must be 4.");
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(width)} or {nameof(height)} are less than or equal to zero.");
 
             matrix.ThrowIfDisposed();
 
