@@ -205,10 +205,7 @@ namespace DlibDotNet
                 return vector.ToArray();
             }
         }
-
-        #region Helpers
-        #endregion
-
+        
         #endregion
 
         internal sealed partial class Native

@@ -173,6 +173,9 @@ namespace DlibDotNet
             return vector._Imp.OperatorDiv(vector, div);
         }
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();

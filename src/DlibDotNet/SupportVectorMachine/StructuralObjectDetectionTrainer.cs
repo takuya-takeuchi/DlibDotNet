@@ -72,6 +72,9 @@ namespace DlibDotNet
 
         #region Overrids
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -184,6 +187,7 @@ namespace DlibDotNet
                                                                                              this._FeatureExtractorType,
                                                                                              this.NativePtr);
             }
+
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
