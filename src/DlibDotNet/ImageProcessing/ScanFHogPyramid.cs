@@ -96,6 +96,9 @@ namespace DlibDotNet
 
         #region Overrids
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();

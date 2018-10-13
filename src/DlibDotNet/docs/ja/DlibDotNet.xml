@@ -1,0 +1,797 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DlibDotNet</name>
+    </assembly>
+    <members>
+        <member name="M:DlibDotNet.Array2D`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2D`1.Row`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2DMatrix`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2DMatrix`1.Row`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.Array`1">
+            <summary>
+            This object represents a 1-Dimensional array of objects. 
+            </summary>
+            <typeparam name="T">The type of elements in the array.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class with the specified size of array.
+            </summary>
+            <param name="size">The number of elements which have initial values for their type.</param>
+        </member>
+        <member name="M:DlibDotNet.Array`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+            <returns>コレクションの反復処理に使用できる <see cref="T:System.Collections.Generic.IEnumerator`1"/> 列挙子。</returns>
+        </member>
+        <member name="M:DlibDotNet.Array`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+            <returns>コレクションを反復処理するために使用できる <see cref="T:System.Collections.IEnumerator"/> オブジェクト。</returns>
+        </member>
+        <member name="T:DlibDotNet.Dlib">
+            <summary>
+            dlib のメソッドを提供します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dlib.ExtractImage4Points``1(DlibDotNet.Array2D{``0},DlibDotNet.DPoint[],System.Int32,System.Int32)">
+            <summary>
+            画像から任意の四角形部分を抽出します。
+            </summary>
+            <typeparam name="T">画像の要素の型。</typeparam>
+            <param name="image">画像。</param>
+            <param name="points">画像上の 4 座標。</param>
+            <param name="width">戻り値の画像の幅。</param>
+            <param name="height">戻り値の画像の高さ。</param>
+            <returns><see cref="T:DlibDotNet.Array2D`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="points"/> が null 参照です。</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="points"/> の <see cref="P:System.Array.Length"/> は 4 でなくてはなりません。</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="width"/> または <paramref name="height"/>が 0 以下です。</exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.ExtractImage4Points``1(DlibDotNet.Matrix{``0},DlibDotNet.DPoint[],System.Int32,System.Int32)">
+            <summary>
+            行列から任意の四角形部分を抽出します。
+            </summary>
+            <typeparam name="T">行列の要素の型。</typeparam>
+            <param name="matrix">行列。</param>
+            <param name="points">画行列上の 4 座標。</param>
+            <param name="width">戻り値の行列の幅。</param>
+            <param name="height">戻り値の行列の高さ。</param>
+            <returns><see cref="T:DlibDotNet.Matrix`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> または <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> または <paramref name="points"/> が null 参照です。</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="points"/> の <see cref="P:System.Array.Length"/> は 4 でなくてはなりません。</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="width"/> または <paramref name="height"/>が 0 以下です。</exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.GetFrontalFaceDetector">
+            <summary>
+            カメラに向かって見える人間の顔を見つけるように構成されたオブジェクト検出器を返します。
+            </summary>
+            <returns><see cref="T:DlibDotNet.FrontalFaceDetector"/>。</returns>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadBmp``1(System.String)">
+            <summary>
+            Microsoft Windows Bitmap ファイルを <see cref="T:DlibDotNet.Array2D`1"/> に読み込みます。
+            </summary>
+            <typeparam name="T">画像の要素の型。</typeparam>
+            <param name="path"><see cref="T:DlibDotNet.Array2D`1"/> を作成するファイルの名前を含む文字列。</param>
+            <returns>このメソッドが作成する <see cref="T:DlibDotNet.Array2D`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadDng``1(System.String)">
+            <summary>
+            DNG (Digital Negative) ファイルを <see cref="T:DlibDotNet.Array2D`1"/> に読み込みます。
+            </summary>
+            <typeparam name="T">画像の要素の型。</typeparam>
+            <param name="path"><see cref="T:DlibDotNet.Array2D`1"/> を作成するファイルの名前を含む文字列。</param>
+            <returns>このメソッドが作成する <see cref="T:DlibDotNet.Array2D`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadImage``1(System.String)">
+            <summary>
+            画像ファイルを <see cref="T:DlibDotNet.Array2D`1"/> に読み込みます。
+            </summary>
+            <typeparam name="T">画像の要素の型。</typeparam>
+            <param name="path"><see cref="T:DlibDotNet.Array2D`1"/> を作成するファイルの名前を含む文字列。</param>
+            <returns>このメソッドが作成する <see cref="T:DlibDotNet.Array2D`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadImageAsMatrix``1(System.String)">
+            <summary>
+            画像ファイルを <see cref="T:DlibDotNet.Matrix`1"/> に読み込みます。
+            </summary>
+            <typeparam name="T">行列の要素の型。</typeparam>
+            <param name="path"><see cref="T:DlibDotNet.Matrix`1"/> を作成するファイルの名前を含む文字列。</param>
+            <returns>このメソッドが作成する <see cref="T:DlibDotNet.Matrix`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadJpeg``1(System.String)">
+            <summary>
+            JPEG (Joint Photographic Experts Group) ファイルを <see cref="T:DlibDotNet.Array2D`1"/> に読み込みます。
+            </summary>
+            <typeparam name="T">画像の要素の型。</typeparam>
+            <param name="path"><see cref="T:DlibDotNet.Array2D`1"/> を作成するファイルの名前を含む文字列。</param>
+            <returns>このメソッドが作成する <see cref="T:DlibDotNet.Array2D`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadPng``1(System.String)">
+            <summary>
+            PNG (Portable Network Graphics) ファイルを <see cref="T:DlibDotNet.Array2D`1"/> に読み込みます。
+            </summary>
+            <typeparam name="T">画像の要素の型。</typeparam>
+            <param name="path"><see cref="T:DlibDotNet.Array2D`1"/> を作成するファイルの名前を含む文字列。</param>
+            <returns>このメソッドが作成する <see cref="T:DlibDotNet.Array2D`1"/>。</returns>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.Array2DBase,System.String)">
+            <summary>
+            Microsoft Windows Bitmap ファイルとしてディスクに画像を保存します。
+            </summary>
+            <param name="image">画像。</param>
+            <param name="path">保存する画像へのファイル名を含む文字列。</param>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> または <see cref="!:Array2DBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveBmp``1(DlibDotNet.Matrix{``0},System.String)">
+            <summary>
+            Microsoft Windows Bitmap ファイルとしてディスクに行列を保存します。
+            </summary>
+            <typeparam name="T">行列の要素の型。</typeparam>
+            <param name="matrix">行列。</param>
+            <param name="path">保存する行列へのファイル名を含む文字列。</param>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> または <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> または <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> または <paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveDng(DlibDotNet.Array2DBase,System.String)">
+            <summary>
+            DNG (Digital Negative) ファイルとしてディスクに画像を保存します。
+            </summary>
+            <param name="image">画像。</param>
+            <param name="path">保存する画像へのファイル名を含む文字列。</param>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> または <see cref="!:Array2DBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveDng``1(DlibDotNet.Matrix{``0},System.String)">
+            <summary>
+            DNG (Digital Negative) ファイルとしてディスクに行列を保存します。
+            </summary>
+            <typeparam name="T">行列の要素の型。</typeparam>
+            <param name="matrix">行列。</param>
+            <param name="path">保存する行列へのファイル名を含む文字列。</param>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> または <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> または <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> または <paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveJpeg(DlibDotNet.Array2DBase,System.String,System.Int32)">
+            <summary>
+            JPEG (Joint Photographic Experts Group) ファイルとしてディスクに画像を保存します。
+            </summary>
+            <param name="image">画像。</param>
+            <param name="path">保存する画像へのファイル名を含む文字列。</param>
+            <param name="quality">ファイルの品質。0 以上 100 以下です。規定値は 75です。</param>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> または <see cref="!:Array2DBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> が 0 未満または 100 より大きいです。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveJpeg``1(DlibDotNet.Matrix{``0},System.String,System.Int32)">
+            <summary>
+            JPEG (Joint Photographic Experts Group) ファイルとしてディスクに行列を保存します。
+            </summary>
+            <typeparam name="T">行列の要素の型。</typeparam>
+            <param name="matrix">行列。</param>
+            <param name="path">保存する行列へのファイル名を含む文字列。</param>
+            <param name="quality">ファイルの品質。0 以上 100 以下です。規定値は 75です。</param>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> または <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> または <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> または <paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> が 0 未満または 100 より大きいです。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SavePng(DlibDotNet.Array2DBase,System.String)">
+            <summary>
+            PNG (Portable Network Graphics) ファイルとしてディスクに画像を保存します。
+            </summary>
+            <param name="image">画像。</param>
+            <param name="path">保存する画像へのファイル名を含む文字列。</param>
+            <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> または <see cref="!:Array2DBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SavePng``1(DlibDotNet.Matrix{``0},System.String)">
+            <summary>
+            PNG (Portable Network Graphics) ファイルとしてディスクに行列を保存します。
+            </summary>
+            <typeparam name="T">行列の要素の型。</typeparam>
+            <param name="matrix">行列。</param>
+            <param name="path">保存する行列へのファイル名を含む文字列。</param>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> または <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> または <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> が 0 以下です。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> または <paramref name="path"/> が null 参照です。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> は破棄されています。</exception>
+        </member>
+        <member name="T:DlibDotNet.Cuda">
+            <summary>
+            CUDA (Compute Unified Device Architecture) のメソッドを提供します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Cuda.TryGetDriverVersion(System.Int32@)">
+            <summary>
+            CUDA のドライバー バージョンを取得します。
+            </summary>
+            <param name="version">メソッドから戻るとき、CUDA のドライバー バージョンを返します。</param>
+            <returns>CUDA のドライバーがインストールされており、かつ CUDA のシステムが正しい値を返した場合は <code>true</code>、それ以外の場合は <code>false</code>。</returns>
+        </member>
+        <member name="M:DlibDotNet.Cuda.TryGetRuntimeVersion(System.Int32@)">
+            <summary>
+            CUDA のランタイム バージョンを取得します。
+            </summary>
+            <param name="version">メソッドから戻るとき、CUDA のランタイム バージョンを返します。</param>
+            <returns>CUDA のランタイムがインストールされており、かつ CUDA のシステムが正しい値を返した場合は <code>true</code>、それ以外の場合は <code>false</code>。</returns>
+        </member>
+        <member name="T:DlibDotNet.CudaException">
+            <summary>
+            この例外は、CUDA (Compute Unified Device Architecture) の汎用的な例外です。このクラスは継承できません
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.DllName">
+            <summary>
+            <see cref="T:DlibDotNet.CudaException"/> をスローしたライブラリの名前を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.DriverVersion">
+            <summary>
+            CUDA ドライバのバージョンを取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.ErrorCode">
+            <summary>
+            CUDA のエラー コードを取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.RuntimeVersion">
+            <summary>
+            CUDA ランタイムのバージョンを取得します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Box.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Dataset.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Image.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.DlibObject">
+            <summary>
+            ネイティブ構造体のポインタを保持するクラスです。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.#ctor(System.Boolean)">
+            <summary>
+            インスタンスが破棄可能かどうかを示す値を指定して、<see cref="T:DlibDotNet.DlibObject"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+            <param name="isEnabledDispose">インスタンスが可能である場合は true。それ以外の場合は false。</param>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsDisposed">
+            <summary>
+            インスタンスが破棄されているかどうかを示す値を取得します。
+            </summary>
+            <returns>インスタンスが破棄されている場合は true。それ以外の場合は false。</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsEnableDispose">
+            <summary>
+            インスタンスが破棄可能かどうかを示す値を取得します。
+            </summary>
+            <returns>インスタンスが可能である場合は true。それ以外の場合は false。</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.NativePtr">
+            <summary>
+            ネイティブ構造体のポインタを取得します。
+            </summary>>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.ThrowIfDisposed">
+            <summary>
+            オブジェクトが破棄されている場合、<see cref="T:System.ObjectDisposedException"/> がスローされます。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeManaged">
+            <summary>
+            マネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose">
+            <summary>
+            この <see cref="T:DlibDotNet.DlibObject"/> によって使用されている全てのリソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose(System.Boolean)">
+            <summary>
+            この <see cref="T:DlibDotNet.DlibObject"/> によって使用されている全てのリソースを解放します。
+            </summary>
+            <param name="disposing"><see cref="M:System.IDisposable.Dispose"/> メソッドが呼ばれたかどうかを示す値。</param>
+        </member>
+        <member name="T:DlibDotNet.Dnn.Cuda">
+            <summary>
+            CUDA (Compute Unified Device Architecture) のメソッドを提供します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Cuda.TryGetDriverVersion(System.Int32@)">
+            <summary>
+            CUDA のドライバー バージョンを取得します。
+            </summary>
+            <param name="version">メソッドから戻るとき、CUDA のドライバー バージョンを返します。</param>
+            <returns>CUDA のドライバーがインストールされており、かつ CUDA のシステムが正しい値を返した場合は <code>true</code>、それ以外の場合は <code>false</code>。</returns>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Cuda.TryGetRuntimeVersion(System.Int32@)">
+            <summary>
+            CUDA のランタイム バージョンを取得します。
+            </summary>
+            <param name="version">メソッドから戻るとき、CUDA のランタイム バージョンを返します。</param>
+            <returns>CUDA のランタイムがインストールされており、かつ CUDA のシステムが正しい値を返した場合は <code>true</code>、それ以外の場合は <code>false</code>。</returns>
+        </member>
+        <member name="M:DlibDotNet.Dnn.DnnTrainer`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.InputRgbImagePyramid`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMmod.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLog.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLogPerPixel.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NetResult`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.Dnn.NotSupportNetworkTypeException">
+            <summary>
+            この例外は、サポートされていないネットワーク タイプが指定されたときにスローされます。このクラスは継承できません
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32)">
+            <summary>
+            この例外の原因であるネットワーク タイプを指定して、<see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+            <param name="networkType">ネットワーク タイプ。</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            この例外の原因であるネットワーク タイプ、エラー メッセージ、内部例外への参照を指定して、<see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+            <param name="networkType">ネットワーク タイプ。</param>
+            <param name="message">例外の原因を説明するエラー メッセージ。</param>
+            <param name="innerException">現在の例外の原因である例外。内部例外が指定されていない場合は、null 参照。</param>
+        </member>
+        <member name="P:DlibDotNet.Dnn.NotSupportNetworkTypeException.NetworkType">
+            <summary>
+            この例外の原因であるネットワーク タイプを取得します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.ResizableTensor.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Point.NativePoint.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointRotator.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointTransform.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointTransformAffine.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointTransformProjective.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RectangleTransform.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Vector`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SamplePair.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.OverlayLine.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PerspectiveWindow.OverlayDot.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PerspectiveWindow.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.IDlibObject">
+            <summary>
+            dlib のオブジェクトを表現するためのメソッドやプロパティを定義します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.IDlibObject.NativePtr">
+            <summary>
+            ネイティブ構造体のポインタを取得します。
+            </summary>>
+        </member>
+        <member name="M:DlibDotNet.IDlibObject.ThrowIfDisposed">
+            <summary>
+            オブジェクトが破棄されている場合、<see cref="T:System.ObjectDisposedException"/> がスローされます。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.InterestPoint.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SurfPoint.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.CorrelationTracker.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.FrontalFaceDetector.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.FullDetection.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.FullObjectDetection.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MModRect.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ObjectDetector`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RectDetection.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ScanFHogPyramid`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ShapePredictor.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ChipDetails.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ChipDims.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.HoughTransform.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PyramidDown.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageTransforms.RandomCropper.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Matrix`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MatrixOp.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MatrixRangeExp`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.MultilayerPerceptron`1">
+            <summary>
+            誤差逆伝播法アルゴリズムによって学習される多層パーセプトロンを表現します。
+            </summary>
+            <typeparam name="T">カーネルの型。</typeparam>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>
+            入力層のノード数、第 1 隠れ層のノード数、第 2 隠れ層のノード数、出力層のノード数、学習率、モメンタムを指定して、<see cref="T:DlibDotNet.MultilayerPerceptron`1"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+            <param name="nodesInInputLayer">入力層のノード数。</param>
+            <param name="nodesInFirstHiddenLayer">第 1 隠れ層のノード数。</param>
+            <param name="nodesInSecondHiddenLayer">第 2 隠れ層のノード数。</param>
+            <param name="nodesInOutputLayer">出力層のノード数。</param>
+            <param name="alpha">学習率。規定値は 0.1。</param>
+            <param name="momentum">モメンタム。規定値は 0.8。</param>
+            <exception cref="T:System.NotSupportedException">指定されたカーネルの型はサポートしていません。</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Operator(DlibDotNet.MatrixBase)">
+            <summary>
+            入力として <paramref name="data"/> が与えられたときのネットワークの出力を返します。出力要素は常に 0.0 から 1.0 の範囲にあります。
+            </summary>
+            <param name="data">入力データ。</param>
+            <returns>ネットワークの出力。</returns>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="data"/> が null 参照。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="data"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.MatrixBase,System.Double)">
+            <summary>
+            与えられた <paramref name="exampleIn"/> が <paramref name="exampleOut"/> になるときの出力が正しくなるようネットワークを訓練します。
+            </summary>
+            <param name="exampleIn">教師データの入力。</param>
+            <param name="exampleOut">教師データの出力。</param>
+            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentException">指定されたカーネルの型はサポートされていません。</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="exampleIn"/> が null 参照。</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="exampleIn"/> は破棄されています。</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ProxyDeserialize">
+            <summary>
+            ファイルから連続したオブジェクトを逆シリアル化します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ProxyDeserialize.#ctor(System.String)">
+            <summary>
+            シリアル化されたデータを含むファイルパスを指定して、<see cref="T:DlibDotNet.ProxyDeserialize"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+            <param name="path">シリアル化されたデータを含むファイルパス。</param>
+            <exception cref="T:System.IO.FileNotFoundException"><paramref name="path"/> が見つかりません。</exception>
+        </member>
+        <member name="M:DlibDotNet.ProxyDeserialize.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Rand.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.RunningStats`1">
+            <summary>
+            このクラスは連続する実数から平均、分散、歪度、過剰尖度を計算するメソッドとプロパティを提供します。
+            </summary>
+            <typeparam name="TKernel">The type of real numbers.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.RunningStats`1.#ctor">
+            <summary>
+            <see cref="T:DlibDotNet.RunningStats`1"/> クラスの新しいインスタンスを初期化します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.RunningStatsType">
+            <summary>
+            実数の型を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.CurrentN">
+            <summary>
+            これまでこのオブジェクトに与えられた点の数を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.ExcessKurtosis">
+            <summary>
+            これまでこのオブジェクトに与えられた全ての値の不偏標本尖度を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Max">
+            <summary>
+            これまでこのオブジェクトに与えられた最大の値を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Mean">
+            <summary>
+            これまでこのオブジェクトに与えられた全ての値の平均を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Min">
+            <summary>
+            これまでこのオブジェクトに与えられた最小の値を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Skewness">
+            <summary>
+            これまでこのオブジェクトに与えられた全ての値の不偏標本歪度を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.StdDev">
+            <summary>
+            これまでこのオブジェクトに与えられた全ての値の不偏標本標準偏差を取得します。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Variance">
+            <summary>
+            これまでこのオブジェクトに与えられた全ての値の不偏標本分散を取得します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RunningStats`1.Clear">
+            <summary>
+            これまでこのオブジェクトに与えられた全ての点を削除します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RunningStats`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.RunningStatsType">
+            <summary>
+            RunningStatsType 列挙型は実数の型を指定します。
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RunningStatsType.Float">
+            <summary>
+            32 ビット浮動小数点値。
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RunningStatsType.Double">
+            <summary>
+            64 ビット浮動小数点値。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.StdString.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.LinearKernel`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.StructuralObjectDetectionTrainer`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -7,6 +7,10 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// This object represents a 1-Dimensional array of objects. 
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the array.</typeparam>
     public sealed class Array<T> : DlibObject, IEnumerable<T>
     {
 
@@ -22,9 +26,9 @@ namespace DlibDotNet
 
         private readonly ItemTypes _ItemType;
 
-        private ImageTypes _ArrayElementType;
+        private readonly ImageTypes _ArrayElementType;
 
-        private MatrixElementTypes _MatrixElementType;
+        private readonly MatrixElementTypes _MatrixElementType;
 
         #endregion
 
@@ -111,11 +115,18 @@ namespace DlibDotNet
                 SupportMatrixElementTypes.Add(type.Type, type.ElementType);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Array{T}"/> class.
+        /// </summary>
         public Array()
             : this(false, 0)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Array{T}"/> class with the specified size of array.
+        /// </summary>
+        /// <param name="size">The number of elements which have initial values for their type.</param>
         public Array(uint size)
             : this(true, size)
         {
@@ -248,6 +259,9 @@ namespace DlibDotNet
 
         #region Overrides 
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -458,6 +472,10 @@ namespace DlibDotNet
 
         #region IEnumerable<T> Members
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>A <see cref="System.Collections.Generic.IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
             this.ThrowIfDisposed();
@@ -479,6 +497,10 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

@@ -2,7 +2,7 @@
 namespace DlibDotNet
 {
 
-    public enum MultilayerPerceptronKernelTypes
+    public enum MultilayerPerceptronKernelType
     {
 
         Kernel1

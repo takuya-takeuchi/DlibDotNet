@@ -20,6 +20,9 @@ namespace DlibDotNet.Dnn
 
         #region Overrids
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();

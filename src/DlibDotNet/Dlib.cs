@@ -15,6 +15,9 @@ using int32_t = System.Int32;
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// Provides the methods of dlib.
+    /// </summary>
     public static partial class Dlib
     {
 
@@ -36,6 +39,21 @@ namespace DlibDotNet
 
         #region ExtractImage4Points
 
+        /// <summary>
+        /// This function extracts an arbitrary quadrilateral patch from an image.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="image">The image.</param>
+        /// <param name="points">The 4 points on the image.</param>
+        /// <param name="width">The width of return image.</param>
+        /// <param name="height">The height of return image.</param>
+        /// <returns><see cref="Array2D{T}"/>.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="points"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="Array.Length"/> of <paramref name="points"/> must be 4.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static Array2D<T> ExtractImage4Points<T>(Array2D<T> image, 
                                                         DPoint[] points, 
                                                         int width, 
@@ -44,10 +62,16 @@ namespace DlibDotNet
         {
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+            if (points.Length != 4)
+                throw new ArgumentOutOfRangeException($"{nameof(points.Length)} of {nameof(points)} must be 4.");
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(width)} or {nameof(height)} are less than or equal to zero.");
 
             image.ThrowIfDisposed();
 
-            if (!Array2D<T>.TryParse<T>(out var type))
+            if (!Array2D<T>.TryParse<T>(out _))
                 throw new NotSupportedException();
 
             var natives = points.Select(point => point.ToNative()).ToArray();
@@ -77,6 +101,22 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// This function extracts an arbitrary quadrilateral patch from an matrix.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="points">The 4 points on the matrix.</param>
+        /// <param name="width">The width of return matrix.</param>
+        /// <param name="height">The height of return matrix.</param>
+        /// <returns><see cref="Matrix{T}"/>.</returns>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="points"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="Array.Length"/> of <paramref name="points"/> must be 4.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
         public static Matrix<T> ExtractImage4Points<T>(Matrix<T> matrix,
                                                        DPoint[] points,
                                                        int width, 
@@ -85,6 +125,12 @@ namespace DlibDotNet
         {
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+            if (points.Length != 4)
+                throw new ArgumentOutOfRangeException($"{nameof(points.Length)} of {nameof(points)} must be 4.");
+            if (width <= 0 || height <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(width)} or {nameof(height)} are less than or equal to zero.");
 
             matrix.ThrowIfDisposed();
 
@@ -121,6 +167,10 @@ namespace DlibDotNet
 
         #endregion
 
+        /// <summary>
+        /// This function returns an object detector that is configured to find human faces that are looking towards the camera.
+        /// </summary>
+        /// <returns><see cref="FrontalFaceDetector"/>.</returns>
         public static FrontalFaceDetector GetFrontalFaceDetector()
         {
             var ret = FrontalFaceDetector.Native.get_frontal_face_detector();
@@ -167,13 +217,22 @@ namespace DlibDotNet
             return new Matrix<float>(ret);
         }
 
+        /// <summary>
+        /// This function loads Microsoft Windows Bitmap file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadBmp<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException("", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -187,13 +246,22 @@ namespace DlibDotNet
             return image;
         }
 
+        /// <summary>
+        /// This function loads DNG (Digital Negative) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadDng<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -207,13 +275,22 @@ namespace DlibDotNet
             return image;
         }
 
+        /// <summary>
+        /// This function loads image file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadImage<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -227,13 +304,22 @@ namespace DlibDotNet
             return image;
         }
 
+        /// <summary>
+        /// This function loads image file into an <see cref="Matrix{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Matrix{T}"/>.</param>
+        /// <returns>The <see cref="Matrix{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Matrix<T> LoadImageAsMatrix<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             if (!MatrixBase.TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
@@ -248,13 +334,22 @@ namespace DlibDotNet
             return new Matrix<T>(matrix);
         }
 
+        /// <summary>
+        /// This function loads JPEG (Joint Photographic Experts Group) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadJpeg<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -268,13 +363,22 @@ namespace DlibDotNet
             return image;
         }
 
+        /// <summary>
+        /// This function loads PNG (Portable Network Graphics) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="path">A string that contains the name of the file from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
+        /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
         public static Array2D<T> LoadPng<T>(string path)
             where T : struct
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
-                throw new FileNotFoundException($"{path} is not found", path);
+                throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
             var str = Encoding.UTF8.GetBytes(path);
 
@@ -454,6 +558,15 @@ namespace DlibDotNet
 
         #endregion
 
+        /// <summary>
+        /// This function saves image to disk as Microsoft Windows Bitmap file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveBmp(Array2DBase image, string path)
         {
             if (image == null)
@@ -476,6 +589,17 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        /// <summary>
+        /// This function saves matrix to disk as Microsoft Windows Bitmap file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
         public static void SaveBmp<T>(Matrix<T> matrix, string path)
             where T : struct
         {
@@ -504,6 +628,15 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// This function saves image to disk as DNG (Digital Negative) file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveDng(Array2DBase image, string path)
         {
             if (image == null)
@@ -526,6 +659,17 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        /// <summary>
+        /// This function saves matrix to disk as DNG (Digital Negative) file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
         public static void SaveDng<T>(Matrix<T> matrix, string path)
             where T : struct
         {
@@ -554,6 +698,17 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// This function saves image to disk as JPEG (Joint Photographic Experts Group) file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveJpeg(Array2DBase image, string path, int quality = 75)
         {
             if (image == null)
@@ -578,6 +733,19 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        /// <summary>
+        /// This function saves matrix to disk as JPEG (Joint Photographic Experts Group) file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
         public static void SaveJpeg<T>(Matrix<T> matrix, string path, int quality = 75)
             where T : struct
         {
@@ -608,6 +776,15 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// This function saves image to disk as PNG (Portable Network Graphics) file.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="path">A string that contains the name of the file to which to save image.</param>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SavePng(Array2DBase image, string path)
         {
             if (image == null)
@@ -628,6 +805,17 @@ namespace DlibDotNet
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
+        /// <summary>
+        /// This function saves matrix to disk as PNG (Portable Network Graphics) file.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="path">A string that contains the name of the file to which to save matrix.</param>
+        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The <see cref="MatrixBase.TemplateRows"/> or <see cref="MatrixBase.TemplateColumns"/> is not supported.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
         public static void SavePng<T>(Matrix<T> matrix, string path)
             where T : struct
         {
