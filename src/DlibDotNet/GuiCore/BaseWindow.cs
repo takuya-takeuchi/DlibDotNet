@@ -40,16 +40,6 @@ namespace DlibDotNet
             Native.base_window_wait_until_closed(this.NativePtr);
         }
 
-        #region Overrides
-
-        protected override void DisposeUnmanaged()
-        {
-            base.DisposeUnmanaged();
-            // Do not delete here!!
-        }
-
-        #endregion
-
         #region Event Handlers
         #endregion
 

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using uint8_t = System.Byte;
 using uint16_t = System.UInt16;
@@ -11,10 +10,10 @@ using int32_t = System.Int32;
 namespace DlibDotNet.Extensions
 {
 
-    public static partial class Dlib
+    public static class Dlib
     {
 
-        internal sealed unsafe partial class Native
+        internal sealed class Native
         {
 
             internal enum Array2DType

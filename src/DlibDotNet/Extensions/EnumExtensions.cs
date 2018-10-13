@@ -159,27 +159,27 @@ namespace DlibDotNet.Extensions
             throw new ArgumentOutOfRangeException(nameof(pointTransform));
         }
 
-        internal static Dlib.Native.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelTypes types)
+        internal static Dlib.Native.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelType type)
         {
-            switch (types)
+            switch (type)
             {
-                case MultilayerPerceptronKernelTypes.Kernel1:
+                case MultilayerPerceptronKernelType.Kernel1:
                     return Dlib.Native.MlpKernelType.Kernel1;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
-        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsTypes types)
+        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsType type)
         {
-            switch (types)
+            switch (type)
             {
-                case RunningStatsTypes.Float:
+                case RunningStatsType.Float:
                     return Dlib.Native.RunningStatsType.Float;
-                case RunningStatsTypes.Double:
+                case RunningStatsType.Double:
                     return Dlib.Native.RunningStatsType.Double;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
