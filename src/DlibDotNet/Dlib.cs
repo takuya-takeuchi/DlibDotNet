@@ -54,9 +54,9 @@ namespace DlibDotNet
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
-        public static Array2D<T> ExtractImage4Points<T>(Array2D<T> image, 
-                                                        DPoint[] points, 
-                                                        int width, 
+        public static Array2D<T> ExtractImage4Points<T>(Array2D<T> image,
+                                                        DPoint[] points,
+                                                        int width,
                                                         int height)
             where T : struct
         {
@@ -119,7 +119,7 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
         public static Matrix<T> ExtractImage4Points<T>(Matrix<T> matrix,
                                                        DPoint[] points,
-                                                       int width, 
+                                                       int width,
                                                        int height)
             where T : struct
         {
@@ -406,6 +406,25 @@ namespace DlibDotNet
             var srcType = ImageTypes.UInt8.ToNativeArray2DType();
             var dstType = type.ToNativeArray2DType();
             var ret = Native.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.UInt8} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(ImagePixelFormat format, byte[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.UInt8.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var pixelType = format.ToImagePixelType();
+            var ret = Native.extensions_load_image_data2(dstType, srcType, pixelType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.UInt8} to {dstType}.");
 
@@ -1023,18 +1042,31 @@ namespace DlibDotNet
                 Default = 0
 
             }
-            
+
+            internal enum ImagePixelType
+            {
+                
+                Bgr = 0,
+
+                Bgra,
+
+                Rgb,
+
+                Rgba
+
+            }
+
             internal enum ErrorType
             {
 
-                OK =                                                  0x00000000,
+                OK = 0x00000000,
 
                 #region Array2D
 
-                Array2DError =                                        0x7B000000,
+                Array2DError = 0x7B000000,
 
-                Array2DTypeTypeNotSupport =          -(Array2DError | 0x00000001), 
- 
+                Array2DTypeTypeNotSupport = -(Array2DError | 0x00000001),
+
                 #endregion
 
                 ElementTypeNotSupport = -4,
@@ -1043,9 +1075,9 @@ namespace DlibDotNet
 
                 #region Matrix
 
-                MatrixError =                                         0x7C000000,
+                MatrixError = 0x7C000000,
 
-                MatrixElementTypeNotSupport =         -(MatrixError | 0x00000001),
+                MatrixElementTypeNotSupport = -(MatrixError | 0x00000001),
 
                 MatrixElementTemplateSizeNotSupport = -(MatrixError | 0x00000002),
 
@@ -1057,59 +1089,59 @@ namespace DlibDotNet
 
                 #region Mlp
 
-                MlpError =                                            0x7A000000,
+                MlpError = 0x7A000000,
 
-                MlpKernelNotSupport =                    -(MlpError | 0x00000001), 
- 
+                MlpKernelNotSupport = -(MlpError | 0x00000001),
+
                 #endregion
- 
+
                 #region RunningStats
 
-                RunningStatsError =                                   0x78000000,
+                RunningStatsError = 0x78000000,
 
-                RunningStatsTypeNotSupport =    -(RunningStatsError | 0x00000001), 
- 
-                #endregion 
- 
-                #region Vector
- 
-                VectorError =                                         0x79000000,
+                RunningStatsTypeNotSupport = -(RunningStatsError | 0x00000001),
 
-                VectorTypeNotSupport =                -(VectorError | 0x00000001),
- 
                 #endregion
- 
-                #region FHog
- 
-                FHogError =                                           0x7D000000,
 
-                FHogNotSupportExtractor =               -(FHogError | 0x00000001),
+                #region Vector
+
+                VectorError = 0x79000000,
+
+                VectorTypeNotSupport = -(VectorError | 0x00000001),
+
+                #endregion
+
+                #region FHog
+
+                FHogError = 0x7D000000,
+
+                FHogNotSupportExtractor = -(FHogError | 0x00000001),
 
                 #endregion
 
                 #region Pyramid
 
-                PyramidError =                                        0x7E000000,
-                                                       
-                PyramidNotSupportRate =              -(PyramidError | 0x00000001), 
- 
-                PyramidNotSupportType =              -(PyramidError | 0x00000002),
+                PyramidError = 0x7E000000,
+
+                PyramidNotSupportRate = -(PyramidError | 0x00000001),
+
+                PyramidNotSupportType = -(PyramidError | 0x00000002),
 
                 #endregion
 
                 #region Dnn
 
-                DnnError =                                            0x7F000000,
-                                                           
-                DnnNotSupportNetworkType =               -(DnnError | 0x00000001),
+                DnnError = 0x7F000000,
+
+                DnnNotSupportNetworkType = -(DnnError | 0x00000001),
 
                 #endregion
 
                 #region Dnn
 
-                CudaError =                                           0x77000000,
+                CudaError = 0x77000000,
 
-                CudaOutOfMemory =                       -(CudaError | 0x00000001)
+                CudaOutOfMemory = -(CudaError | 0x00000001)
 
                 #endregion
 
@@ -2217,6 +2249,9 @@ namespace DlibDotNet
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, byte[] data, uint rows, uint columns, uint steps);
+
+            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+            public static extern IntPtr extensions_load_image_data2(Array2DType dst_type, Array2DType src_type, ImagePixelType pixel_type, byte[] data, uint rows, uint columns, uint steps);
 
             [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
             public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, ushort[] data, uint rows, uint columns, uint steps);
