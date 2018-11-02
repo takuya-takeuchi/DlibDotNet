@@ -350,7 +350,7 @@
             <summary>
             インスタンスが破棄可能かどうかを示す値を取得します。
             </summary>
-            <returns>インスタンスが可能である場合は true。それ以外の場合は false。</returns>
+            <returns>インスタンスが破棄可能である場合は true。それ以外の場合は false。</returns>
         </member>
         <member name="P:DlibDotNet.DlibObject.NativePtr">
             <summary>
@@ -434,7 +434,7 @@
         </member>
         <member name="T:DlibDotNet.Dnn.NotSupportNetworkTypeException">
             <summary>
-            この例外は、サポートされていないネットワーク タイプが指定されたときにスローされます。このクラスは継承できません
+            この例外は、サポートされていないネットワーク タイプが指定されたときにスローされます。このクラスは継承できません。
             </summary>
         </member>
         <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32)">
@@ -659,15 +659,15 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="data"/> が null 参照。</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="data"/> は破棄されています。</exception>
         </member>
-        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.MatrixBase,System.Double)">
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.Matrix{System.Double},System.Double)">
             <summary>
             与えられた <paramref name="exampleIn"/> が <paramref name="exampleOut"/> になるときの出力が正しくなるようネットワークを訓練します。
             </summary>
             <param name="exampleIn">教師データの入力。</param>
             <param name="exampleOut">教師データの出力。</param>
-            <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentException">指定されたカーネルの型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="exampleIn"/> が null 参照。</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="exampleOut"/> は 0.0 から 1.0 でなければなりません。</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="exampleIn"/> は破棄されています。</exception>
         </member>
         <member name="M:DlibDotNet.MultilayerPerceptron`1.DisposeUnmanaged">
