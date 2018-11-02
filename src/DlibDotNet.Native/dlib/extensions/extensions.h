@@ -187,7 +187,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                                     drow[c].red   = src[src_row + dst_column + 2];
                                     drow[c].green = src[src_row + dst_column + 1];
                                     drow[c].blue  = src[src_row + dst_column + 0];
-                                }   
+                                }
                             }
                             return ret;
                         }
@@ -237,6 +237,179 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
                     case array2d_type::RgbAlphaPixel:
+                    default:
+                        return nullptr;
+                }
+            }
+        default:
+			return nullptr;
+    }
+}
+
+DLLEXPORT void* extensions_load_image_data2(array2d_type dst_type, array2d_type src_type, image_pixel_format_type pixel_type, void* data, uint32_t rows, uint32_t columns, uint32_t steps)
+{
+    switch(src_type)
+    {
+        case array2d_type::UInt8:
+            {
+                switch(dst_type)
+                {
+                    case array2d_type::RgbPixel:
+                        {
+                            switch(pixel_type)
+                            {
+                                case image_pixel_format_type::Bgr:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Bgra:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgb:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgba:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                default:
+                                    return nullptr;
+                            }
+                        }
+                        break;
+                    case array2d_type::RgbAlphaPixel:
+                        {
+                            switch(pixel_type)
+                            {
+                                case image_pixel_format_type::Bgr:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, 255);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Bgra:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            auto alpha = src[steps * r + c * channels + 3];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, alpha);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgb:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, 255);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgba:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            auto alpha = src[steps * r + c * channels + 3];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, alpha);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                default:
+                                    return nullptr;
+                            }
+                        }
+                        break;
                     default:
                         return nullptr;
                 }
@@ -376,7 +549,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
                 }
             }
             break;
-        case array2d_type::RgbAlphaPixel:        
+        case array2d_type::RgbAlphaPixel:
             {
                 dlib::array2d<dlib::rgb_alpha_pixel>& d = *(static_cast<dlib::array2d<dlib::rgb_alpha_pixel>*>(dst));
                 uint8_t* s = static_cast<uint8_t*>(src);
@@ -617,7 +790,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
                 }
             }
             break;
-        case matrix_element_type::RgbAlphaPixel:        
+        case matrix_element_type::RgbAlphaPixel:
             {
                 dlib::matrix<dlib::rgb_alpha_pixel>& d = *(static_cast<dlib::matrix<dlib::rgb_alpha_pixel>*>(dst));
                 uint8_t* s = static_cast<uint8_t*>(src);
@@ -701,47 +874,47 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_palette(void* src, 
 
 DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, const int templateRows, const int templateColumns, void* dst)
 {
-    int err = ERR_OK; 
-    switch(type) 
-    { 
+    int err = ERR_OK;
+    switch(type)
+    {
         case matrix_element_type::UInt8:
             extensions_matrix_to_array_template(uint8_t, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::UInt16:
             extensions_matrix_to_array_template(uint16_t, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::UInt32:
             extensions_matrix_to_array_template(uint32_t, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::Int8:
             extensions_matrix_to_array_template(int8_t, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::Int16:
             extensions_matrix_to_array_template(int16_t, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::Int32:
             extensions_matrix_to_array_template(int32_t, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::Float:
             extensions_matrix_to_array_template(float, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::Double:
             extensions_matrix_to_array_template(double, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::RgbPixel:
             extensions_matrix_to_array_template(rgb_pixel, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::HsiPixel:
             extensions_matrix_to_array_template(hsi_pixel, templateRows, templateColumns, err, src, dst);
-            break; 
+            break;
         case matrix_element_type::RgbAlphaPixel:
             extensions_matrix_to_array_template(rgb_alpha_pixel, templateRows, templateColumns, err, src, dst);
-            break; 
-        default: 
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
-            break; 
-    } 
- 
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
     return err;
 }
 
