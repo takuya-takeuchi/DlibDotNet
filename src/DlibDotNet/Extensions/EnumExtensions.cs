@@ -183,6 +183,23 @@ namespace DlibDotNet.Extensions
             }
         }
 
+        internal static Dlib.Native.ImagePixelType ToImagePixelType(this ImagePixelFormat type)
+        {
+            switch (type)
+            {
+                case ImagePixelFormat.Bgr:
+                    return Dlib.Native.ImagePixelType.Bgr;
+                case ImagePixelFormat.Bgra:
+                    return Dlib.Native.ImagePixelType.Bgra;
+                case ImagePixelFormat.Rgb:
+                    return Dlib.Native.ImagePixelType.Rgb;
+                case ImagePixelFormat.Rgba:
+                    return Dlib.Native.ImagePixelType.Rgba;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }
+
     }
 
 }

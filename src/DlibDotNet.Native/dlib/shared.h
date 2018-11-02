@@ -133,6 +133,19 @@ enum struct fhog_feature_extractor_type : int
 
 };
 
+enum struct image_pixel_format_type : int
+{
+    
+    Bgr = 0,
+    
+    Bgra,
+    
+    Rgb,
+    
+    Rgba,
+
+};
+
 typedef struct
 {
     // uint8_t
