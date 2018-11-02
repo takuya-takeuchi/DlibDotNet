@@ -659,15 +659,26 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="data"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="data"/> is disposed.</exception>
         </member>
-        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.MatrixBase,System.Double)">
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.Matrix{System.Double},DlibDotNet.Matrix{System.Double})">
             <summary>
             This function trains the network that the correct output when given <paramref name="exampleIn"/> should be <paramref name="exampleOut"/>.
             </summary>
             <param name="exampleIn">The input of example.</param>
             <param name="exampleOut">The output of example.</param>
-            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentException">The specified type of kernel is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="exampleIn"/> or <paramref name="exampleOut"/>is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="exampleOut"/> must be 0.0 - 1.0.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="exampleIn"/> or <paramref name="exampleOut"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.Matrix{System.Double},System.Double)">
+            <summary>
+            This function trains the network that the correct output when given <paramref name="exampleIn"/> should be <paramref name="exampleOut"/>.
+            </summary>
+            <param name="exampleIn">The input of example.</param>
+            <param name="exampleOut">The output of example.</param>
             <exception cref="T:System.ArgumentException">The specified type of kernel is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="exampleIn"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="exampleOut"/> must be 0.0 - 1.0.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="exampleIn"/> is disposed.</exception>
         </member>
         <member name="M:DlibDotNet.MultilayerPerceptron`1.DisposeUnmanaged">

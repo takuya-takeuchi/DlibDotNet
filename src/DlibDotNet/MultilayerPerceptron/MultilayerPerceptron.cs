@@ -105,24 +105,57 @@ namespace DlibDotNet
         /// </summary>
         /// <param name="exampleIn">The input of example.</param>
         /// <param name="exampleOut">The output of example.</param>
-        /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
+        /// <exception cref="ArgumentException">The specified type of kernel is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="exampleIn"/> or <paramref name="exampleOut"/>is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="exampleOut"/> must be 0.0 - 1.0.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="exampleIn"/> or <paramref name="exampleOut"/> is disposed.</exception>
+        public void Train(Matrix<double> exampleIn, Matrix<double> exampleOut)
+        {
+            if (exampleIn == null)
+                throw new ArgumentNullException(nameof(exampleIn));
+            if (exampleOut == null)
+                throw new ArgumentNullException(nameof(exampleOut));
+
+            exampleIn.ThrowIfDisposed();
+            exampleOut.ThrowIfDisposed();
+
+            var max = Dlib.Max(exampleOut);
+            var min = Dlib.Min(exampleOut);
+            if (!(0 <= min && max <= 1.0))
+                throw new ArgumentOutOfRangeException(nameof(exampleOut), $"{nameof(exampleOut)} must be 0.0 - 1.0.");
+
+            var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
+            var ret = Dlib.Native.mlp_kernel_train_matrix(kernelType, this.NativePtr, exampleIn.NativePtr, exampleOut.NativePtr);
+            switch (ret)
+            {
+                case Dlib.Native.ErrorType.MlpKernelNotSupport:
+                    throw new ArgumentException($"{kernelType} is not supported.");
+            }
+        }
+
+        /// <summary>
+        /// This function trains the network that the correct output when given <paramref name="exampleIn"/> should be <paramref name="exampleOut"/>.
+        /// </summary>
+        /// <param name="exampleIn">The input of example.</param>
+        /// <param name="exampleOut">The output of example.</param>
         /// <exception cref="ArgumentException">The specified type of kernel is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="exampleIn"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="exampleOut"/> must be 0.0 - 1.0.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="exampleIn"/> is disposed.</exception>
-        public void Train(MatrixBase exampleIn, double exampleOut)
+        public void Train(Matrix<double> exampleIn, double exampleOut)
         {
             if (exampleIn == null)
                 throw new ArgumentNullException(nameof(exampleIn));
 
             exampleIn.ThrowIfDisposed();
+            
+            if(!(0<= exampleOut && exampleOut <= 1.0))
+                throw new ArgumentOutOfRangeException(nameof(exampleOut), $"{nameof(exampleOut)} must be 0.0 - 1.0.");
 
             var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
-            var type = exampleIn.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Dlib.Native.mlp_kernel_train(kernelType, this.NativePtr, type, exampleIn.NativePtr, exampleOut);
+            var ret = Dlib.Native.mlp_kernel_train(kernelType, this.NativePtr, exampleIn.NativePtr, exampleOut);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
-                    throw new ArgumentException($"{type} is not supported.");
                 case Dlib.Native.ErrorType.MlpKernelNotSupport:
                     throw new ArgumentException($"{kernelType} is not supported.");
             }
