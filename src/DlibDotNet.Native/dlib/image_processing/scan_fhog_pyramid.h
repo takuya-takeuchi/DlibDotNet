@@ -248,7 +248,7 @@ DLLEXPORT int scan_fhog_pyramid_new(const pyramid_type pyramid_type,
     // Too complex....
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -280,7 +280,7 @@ DLLEXPORT void scan_fhog_pyramid_delete(const pyramid_type pyramid_type,
 {
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -309,7 +309,7 @@ DLLEXPORT int scan_fhog_pyramid_set_detection_window_size(const pyramid_type pyr
     // Too complex....
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -345,7 +345,7 @@ DLLEXPORT int scan_fhog_pyramid_set_nuclear_norm_regularization_strength(const p
     // Too complex....
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -385,7 +385,7 @@ DLLEXPORT int scan_fhog_pyramid_evaluate_detectors(const pyramid_type pyramid_ty
     // Too complex....
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -478,7 +478,7 @@ DLLEXPORT int scan_fhog_pyramid_num_separable_filters(const pyramid_type pyramid
     // Too complex....
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -516,7 +516,7 @@ DLLEXPORT int scan_fhog_pyramid_threshold_filter_singular_values(const pyramid_t
     // Too complex....
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)

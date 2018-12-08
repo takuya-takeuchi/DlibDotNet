@@ -105,7 +105,7 @@ DLLEXPORT int cross_validate_object_detection_trainer_scan_fhog_pyramid_test_obj
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)

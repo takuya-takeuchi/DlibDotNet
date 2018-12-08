@@ -1415,7 +1415,7 @@ DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(element_type)
