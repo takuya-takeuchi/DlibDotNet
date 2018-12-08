@@ -67,7 +67,7 @@ DLLEXPORT int input_rgb_image_pyramid_new(const pyramid_type pyramid_type,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(pyramid_rate)
@@ -108,7 +108,7 @@ DLLEXPORT void input_rgb_image_pyramid_delete(void* input,
 {
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(pyramid_rate)
@@ -149,7 +149,7 @@ DLLEXPORT int input_rgb_image_pyramid_to_tensor(void* input,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(element_type)
@@ -197,7 +197,7 @@ DLLEXPORT int input_rgb_image_pyramid_get_pyramid_padding(void* input,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(pyramid_rate)
@@ -256,7 +256,7 @@ DLLEXPORT int input_rgb_image_pyramid_get_pyramid_outer_padding(void* input,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(pyramid_rate)
@@ -318,7 +318,7 @@ DLLEXPORT int input_rgb_image_pyramid_image_space_to_tensor_space(void* input,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 drectangle& inr = *static_cast<drectangle*>(r);

@@ -11,6 +11,7 @@ set(VERSION_DATE 20181008)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_C_FLAGS "-fPIC")
 	set(CMAKE_CXX_FLAGS "-fPIC")
 endif()
 
