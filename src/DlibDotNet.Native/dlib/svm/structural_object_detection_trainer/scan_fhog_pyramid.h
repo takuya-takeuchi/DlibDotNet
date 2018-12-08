@@ -256,7 +256,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_new(const py
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -288,7 +288,7 @@ DLLEXPORT void structural_object_detection_trainer_scan_fhog_pyramid_delete(cons
 {
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -314,7 +314,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(c
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -349,7 +349,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_c(const 
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -384,7 +384,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -419,7 +419,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_num_thre
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -459,7 +459,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_train_rectan
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
