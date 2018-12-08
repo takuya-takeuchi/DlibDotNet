@@ -344,7 +344,7 @@ DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyr
     
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
