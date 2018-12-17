@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>DlibDotNet.Native</id>
+    <version>19.15.0.20181008</version>
+    <title>DlibDotNet.Native</title>
+    <authors>Takuya Takeuchi</authors>
+    <owners>Takuya Takeuchi</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
+    <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux</description>
+    <releaseNotes></releaseNotes>
+    <copyright>© Takuya Takeuchi 2018</copyright>
+    <tags>dlib .net machinelearning library dependencies</tags>
+    <serviceable>true</serviceable>
+  </metadata>
+  <files>
+    <file src="ref\**\*" target="ref"/>
+    <file src="runtimes\**\*" target="runtimes" />
+    <file src="runtimes\win-x64\native\DlibDotNet.Native.dll" target="runtimes\win-x64\native\DlibDotNet.Native.dll" />
+    <file src="build\DlibDotNet.Native.targets" target="build\DlibDotNet.Native.targets"/>
+    <!--
+    <file src="runtimes\linux-x64\native\DlibDotNet.Native.so" target="runtimes\linux-x64\native\DlibDotNet.Native.so" />
+    <file src="runtimes\osx-x64\native\DlibDotNet.Native.dylib" target="runtimes\osx-x64\native\DlibDotNet.Native.dylib" />
+    -->
+  </files>
+</package>
