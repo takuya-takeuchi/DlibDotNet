@@ -314,6 +314,9 @@ src/DlibDotNet.Native.Dnn/build*
 
 # native nuget package
 !nuget/*
+!nuget/ref/native/*/**
+
+!nuget/ref/.keepfolder
 !nuget/lib/.keepfolder
 !nuget/runtimes/linux-x64/native/*/**
 !nuget/runtimes/osx-x64/native/*/**

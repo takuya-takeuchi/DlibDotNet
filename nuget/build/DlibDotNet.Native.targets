@@ -25,6 +25,6 @@
         <Link>DlibDotNet.Native.dylib</Link>
     	<DeploymentContent>True</DeploymentContent>
     </Content>
- 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\DlibDotNet.Native.dylib" />
+ 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNet.Native.dylib" />
    </ItemGroup>
 </Project>
