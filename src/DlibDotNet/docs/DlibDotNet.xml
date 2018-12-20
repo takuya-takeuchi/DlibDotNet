@@ -546,6 +546,31 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="T:DlibDotNet.ImagePixelFormat">
+            <summary>
+            The ImagePixelFormat enumeration specifies the format of the color data for each pixel in the image.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Bgr">
+            <summary>
+            The pixel format is B8G8R8 unsigned integer.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Bgra">
+            <summary>
+            The pixel format is B8G8R8A8 unsigned integer.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Rgb">
+            <summary>
+            The pixel format is R8G8B8 unsigned integer.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Rgba">
+            <summary>
+            The pixel format is R8G8B8A8 unsigned integer.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.CorrelationTracker.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
