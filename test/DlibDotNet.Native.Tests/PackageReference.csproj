@@ -2,13 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <ConfigurationType> </ConfigurationType>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PlatformTarget>x64</PlatformTarget>
     <TargetFrameworks>netcoreapp3.0;net472</TargetFrameworks>
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DlibDotNet" Version="19.15.0.20181008" />
+    <PackageReference Include="DlibDotNet" Version="19.15.0.20181008-rc1" />
+    <PackageReference Include="DlibDotNet.Native" Version="19.15.0.20181008-rc1">
+      <PrivateAssets>
+        All
+      </PrivateAssets>
+    </PackageReference>
+
   </ItemGroup>
 
 </Project>
