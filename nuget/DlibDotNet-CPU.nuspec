@@ -17,22 +17,45 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
 		<copyright>© Takuya Takeuchi 2018</copyright>
 		<tags>dlib .net machinelearning</tags>
 		<serviceable>true</serviceable>
-		<dependencies>
 
-			<group targetFramework="native0.0">
-				<dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
-			</group>
+	<dependencies>
 
-  		<group targetFramework="NETStandard2.0">
+		<group targetFramework="native">
+		  <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+		</group>
+
+  		<group targetFramework="netstandard2.0">
 	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
-			</group>
+		</group>
 
-		</dependencies>
-	 </metadata>
+		<group targetFramework="net461">
+		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
+	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+		</group>
+
+		<group targetFramework="net47">
+		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
+	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+		</group>
+
+		<group targetFramework="net471">
+		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
+	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+		</group>
+
+		<group targetFramework="net472">
+		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
+	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+		</group>
+
+	</dependencies>
+
+	</metadata>
 
 	 <files>
+	 	 <file src="build\DlibDotNet.props" target="build\DlibDotNet.props" />
 		 <file src="lib\*\**" target="lib" />
-     <file src="runtimes\win-x64\lib\*" target="runtimes" /> 
+     	 <file src="runtimes\win-x64\lib\*" target="runtimes" />
 	</files>
 
 </package>

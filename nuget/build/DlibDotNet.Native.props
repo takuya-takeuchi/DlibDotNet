@@ -3,6 +3,11 @@
     <PropertyGroup>
         <Platform Condition="'$(Platform)'==''">x64</Platform>
     </PropertyGroup>
+
+    <PropertyGroup Condition="$(OS)==''">
+        <OS>Windows_NT</OS>
+    </PropertyGroup>
+
    <ItemGroup Condition="'$(Platform)|$(OS)' == 'x64|Windows_NT'">
     <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
