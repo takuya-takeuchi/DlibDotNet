@@ -54,11 +54,15 @@ namespace DlibDotNet.Extensions
 
                 UInt32,
 
+                UInt64,
+
                 Int8,
 
                 Int16,
 
                 Int32,
+
+                Int64,
 
                 Float,
 
