@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>DlibDotNet.Native</id>
-    <version>19.15.0.20181008</version>
+    <version>19.16.99.20190105-rc1</version>
     <title>DlibDotNet.Native</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -12,18 +12,31 @@
     <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
     <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux</description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2018</copyright>
+    <copyright>© Takuya Takeuchi 2018, 2019</copyright>
     <tags>dlib .net machinelearning library dependencies</tags>
     <serviceable>true</serviceable>
   </metadata>
   <files>
-    <file src="ref\**\*" target="ref"/>
+      <file src="build\**\*" target="build"/>
+
+      <file src="build\DlibDotNet.Native.targets" target="build\DlibDotNet.Native.targets"/>
+      <file src="build\DlibDotNet.Native.props" target="build\DlibDotNet.Native.props"/>
+
+      <!-- allows the 'DlibDotNet' package to read runtimes\** folder -->
+      <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets"/>
+      <!-- cross-targetting via compile-time references -->
+      <file src="ref\**\*" target="ref"/>
+
     <file src="runtimes\**\*" target="runtimes" />
+
     <file src="runtimes\win-x64\native\DlibDotNet.Native.dll" target="runtimes\win-x64\native\DlibDotNet.Native.dll" />
-    <file src="build\DlibDotNet.Native.targets" target="build\DlibDotNet.Native.targets"/>
-    <!--
-    <file src="runtimes\linux-x64\native\DlibDotNet.Native.so" target="runtimes\linux-x64\native\DlibDotNet.Native.so" />
+    <file src="runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll" target="runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll" />
+
+    <file src="runtimes\linux-x64\native\libDlibDotNet.Native.dll.so" target="runtimes\linux-x64\native\libDlibDotNet.Native.dll.so" />
+    <file src="runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so" target="runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so" />
+  <!--
     <file src="runtimes\osx-x64\native\DlibDotNet.Native.dylib" target="runtimes\osx-x64\native\DlibDotNet.Native.dylib" />
-    -->
+    <file src="runtimes\osx-x64\native\DlibDotNet.Native.Dnn.dylib" target="runtimes\osx-x64\native\DlibDotNet.Native.Dnn.dylib" />
+  -->
   </files>
 </package>
