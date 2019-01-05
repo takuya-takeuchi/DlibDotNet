@@ -7,7 +7,7 @@
    </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'==''">
-    <TargetFrameworks Condition="$(OS.EndsWith('NT'))">net461;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks Condition="$(OS.EndsWith('NT'))">net461;netcoreapp2.1</TargetFrameworks>
     <TargetFramework Condition="$(OS.EndsWith('NT'))">net461</TargetFramework>
     <TargetFramework Condition="$(OS.EndsWith('Unix'))">netcoreapp2.0</TargetFramework>
   </PropertyGroup>
