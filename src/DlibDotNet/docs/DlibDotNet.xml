@@ -4,26 +4,6 @@
         <name>DlibDotNet</name>
     </assembly>
     <members>
-        <member name="M:DlibDotNet.Array2D`1.DisposeUnmanaged">
-            <summary>
-            Releases all unmanaged resources.
-            </summary>
-        </member>
-        <member name="M:DlibDotNet.Array2D`1.Row`1.DisposeUnmanaged">
-            <summary>
-            Releases all unmanaged resources.
-            </summary>
-        </member>
-        <member name="M:DlibDotNet.Array2DMatrix`1.DisposeUnmanaged">
-            <summary>
-            Releases all unmanaged resources.
-            </summary>
-        </member>
-        <member name="M:DlibDotNet.Array2DMatrix`1.Row`1.DisposeUnmanaged">
-            <summary>
-            Releases all unmanaged resources.
-            </summary>
-        </member>
         <member name="T:DlibDotNet.Array`1">
             <summary>
             This object represents a 1-Dimensional array of objects. 
@@ -57,6 +37,26 @@
             Returns an enumerator that iterates through a collection.
             </summary>
             <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:DlibDotNet.Array2D`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2D`1.Row`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2DMatrix`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2DMatrix`1.Row`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
         </member>
         <member name="T:DlibDotNet.Dlib">
             <summary>

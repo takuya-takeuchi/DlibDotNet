@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Configurations>ReleaseMac;ReleaseLinux;ReleaseWin</Configurations>
     <OutputType>Exe</OutputType>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PlatformTarget>x64</PlatformTarget>
+   </PropertyGroup>
 
-    <TargetFrameworks>net461;netcoreapp2.2</TargetFrameworks>
+  <PropertyGroup Condition="'$(TargetFramework)'==''">
+    <TargetFrameworks Condition="$(OS.EndsWith('NT'))">net461;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <TargetFramework Condition="$(OS.EndsWith('NT'))">net461</TargetFramework>
-    <TargetFramework Condition="$(OS.EndsWith('Unix'))">netcoreapp2.2</TargetFramework>
+    <TargetFramework Condition="$(OS.EndsWith('Unix'))">netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

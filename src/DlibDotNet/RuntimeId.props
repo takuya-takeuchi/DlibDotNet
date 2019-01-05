@@ -6,7 +6,7 @@
     <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Unix' AND $([MSBuild]::IsOSPlatform('NETBSD'))">linux</DefaultOSGroup>
     <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Windows_NT' AND $([MSBuild]::IsOSPlatform('Windows'))">windows</DefaultOSGroup>
     <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Unix'">linux</DefaultOSGroup>
-    <DefaultOSGroup Condition="'$(DefaultOSGroup)'==''">windows</DefaultOSGroup>
+    <DefaultOSGroup Condition="'$(DefaultOSGroup)'==''">win</DefaultOSGroup>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -23,7 +23,7 @@
       <DefineConstants>$(DefineConstants);OSX;MAC</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(RuntimeId)'=='windows-x64'">
+  <PropertyGroup Condition="'$(RuntimeId)'=='win-x64'">
       <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 

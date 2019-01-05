@@ -25,27 +25,27 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
 		</group>
 
   		<group targetFramework="netstandard2.0">
-	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
+	        <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
+		<group targetFramework="netcoreapp2.0">
+              <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
+            </group>
+
 		<group targetFramework="net461">
-		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
+ 	        <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net47">
-		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
+	        <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net471">
-		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
+	        <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net472">
-		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
+	        <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 	</dependencies>
@@ -55,7 +55,7 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
 	 <files>
 	 	 <file src="build\DlibDotNet.props" target="build\DlibDotNet.props" />
 		 <file src="lib\*\**" target="lib" />
-     	 <file src="runtimes\win-x64\lib\*" target="runtimes" />
+     	 	 <file src="runtimes\win-x64\lib\*" target="runtimes" />
 	</files>
 
 </package>

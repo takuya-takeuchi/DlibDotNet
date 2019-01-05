@@ -32,8 +32,8 @@
     <file src="runtimes\win-x64\native\DlibDotNet.Native.dll" target="runtimes\win-x64\native\DlibDotNet.Native.dll" />
     <file src="runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll" target="runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll" />
 
-    <file src="runtimes\linux-x64\native\libDlibDotNet.Native.so" target="runtimes\linux-x64\native\libDlibDotNet.Native.so" />
-    <file src="runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.so" target="runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.so" />
+    <file src="runtimes\linux-x64\native\libDlibDotNet.Native.dll.so" target="runtimes\linux-x64\native\libDlibDotNet.Native.dll.so" />
+    <file src="runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so" target="runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so" />
   <!--
     <file src="runtimes\osx-x64\native\DlibDotNet.Native.dylib" target="runtimes\osx-x64\native\DlibDotNet.Native.dylib" />
     <file src="runtimes\osx-x64\native\DlibDotNet.Native.Dnn.dylib" target="runtimes\osx-x64\native\DlibDotNet.Native.Dnn.dylib" />

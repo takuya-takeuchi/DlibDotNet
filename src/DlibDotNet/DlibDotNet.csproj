@@ -6,16 +6,17 @@
     <Description>.NET wrapper for DLib written in C#</Description>
     <Company />
     <Copyright>© Takuya Takeuchi 2018</Copyright>
-    <Configurations>Debug;Release;ReleaseLinux;DebugLinux;DebugMac;ReleaseMac</Configurations>
-    <Version>19.15.0</Version>
+    <Configurations>Debug;Release</Configurations>
+    <Version>19.16.99</Version>
     <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
     <PackageTags>dlib .net machinelearning</PackageTags>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+  
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 
-  <!-- define platform and compile-time constants for NativeMethods.cs  -->
+  <!-- define $(PlatformId) and compile-time constants for NativeMethods.cs  -->
   <Import Project="RuntimeId.props" />
 
   <PropertyGroup>
@@ -28,6 +29,7 @@
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <DocumentationFile>docs\DlibDotNet.xml</DocumentationFile>
   </PropertyGroup>
 
