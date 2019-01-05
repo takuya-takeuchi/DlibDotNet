@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>DlibDotNet</id>
-		<version>19.15.0.20181008-rc1</version>
+		<version>19.16.99.20190105-rc1</version>
 		<title>DlibDotNet</title>
 		<authors>Takuya Takeuchi</authors>
 		<owners>Takuya Takeuchi</owners>
@@ -21,31 +21,31 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
 	<dependencies>
 
 		<group targetFramework="native">
-		  <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+		  <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
   		<group targetFramework="netstandard2.0">
-	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net461">
 		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net47">
 		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net471">
 		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 		<group targetFramework="net472">
 		  <dependency id="NETStandard.Library.NETFramework" version="2.0.0-preview2-25405-01"/>
-	      <dependency id="DlibDotNet.Native" version="19.15.0.20181008-rc1" />
+	      <dependency id="DlibDotNet.Native" version="19.16.99.20190105-rc1" />
 		</group>
 
 	</dependencies>
