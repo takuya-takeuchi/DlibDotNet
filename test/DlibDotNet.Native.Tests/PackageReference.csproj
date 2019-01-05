@@ -1,14 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Configurations>ReleaseMac;ReleaseLinux;ReleaseWin</Configurations>
     <OutputType>Exe</OutputType>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PlatformTarget>x64</PlatformTarget>
-    <TargetFramework>net461</TargetFramework>
+
+    <TargetFrameworks>net461;netcoreapp2.2</TargetFrameworks>
+    <TargetFramework Condition="$(OS.EndsWith('NT'))">net461</TargetFramework>
+    <TargetFramework Condition="$(OS.EndsWith('Unix'))">netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DlibDotNet" Version="19.15.0.20181008-rc1" />
+    <PackageReference Include="DlibDotNet" Version="19.16.99.20190105-rc1" />
   </ItemGroup>
 
 </Project>
