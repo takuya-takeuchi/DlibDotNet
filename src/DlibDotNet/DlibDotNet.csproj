@@ -29,7 +29,6 @@
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <DocumentationFile>docs\DlibDotNet.xml</DocumentationFile>
   </PropertyGroup>
 
