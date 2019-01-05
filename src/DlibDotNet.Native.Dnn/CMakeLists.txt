@@ -35,7 +35,11 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-add_subdirectory(${DLIB_PATH}/dlib dlib_build)
+
+# dlib project submodule 
+set(DLIB_IN_PROJECT_BUILD False)
+add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
+
 
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h
                           ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.h)
