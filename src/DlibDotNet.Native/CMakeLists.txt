@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 cmake_policy(SET CMP0053 NEW)
 cmake_policy(SET CMP0054 NEW)
 
-set(PROJ_NAME DlibDotNet.Native)
+set(PROJ_NAME DlibDotNetNative)
 
 project(${PROJ_NAME} VERSION 19.15.0)
 
@@ -89,9 +89,6 @@ else()
                                     ${SOURCES}
                                     ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 endif()
-
-
-include (${CMAKE_CURRENT_BINARY_DIR}/dlib_build/config/dlibConfig.cmake)
 
 target_link_libraries(${PROJ_NAME} dlib::dlib )
 
