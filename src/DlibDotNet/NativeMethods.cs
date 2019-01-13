@@ -46,7 +46,7 @@ namespace DlibDotNet
         /// </summary>
         public const string NativeLibrary = "DlibDotNetNative.dll";
 
-        public const string NativeDnnLibrary = "DlibDotNetNative.Dnn.dll";
+        public const string NativeDnnLibrary = "DlibDotNetNativeDnn.dll";
 
         public const CallingConvention CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl;
 #endif
