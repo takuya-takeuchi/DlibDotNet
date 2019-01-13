@@ -11,7 +11,7 @@ namespace DlibDotNet
         #region Constructors
 
         public ChipDetails()
-            : this(Native.chip_details_new())
+            : this(NativeMethods.chip_details_new())
         {
         }
 
@@ -23,7 +23,7 @@ namespace DlibDotNet
             dims.ThrowIfDisposed();
 
             using (var tmp = rect.ToNative())
-                this.NativePtr = Native.chip_details_new2(tmp.NativePtr, dims.NativePtr);
+                this.NativePtr = NativeMethods.chip_details_new2(tmp.NativePtr, dims.NativePtr);
         }
 
         public ChipDetails(Rectangle rect, ChipDims dims)
@@ -34,19 +34,19 @@ namespace DlibDotNet
             dims.ThrowIfDisposed();
 
             using (var tmp = rect.ToNative())
-                this.NativePtr = Native.chip_details_new3(tmp.NativePtr, dims.NativePtr);
+                this.NativePtr = NativeMethods.chip_details_new3(tmp.NativePtr, dims.NativePtr);
         }
 
         public ChipDetails(DRectangle rect, uint size)
         {
             using (var tmp = rect.ToNative())
-                this.NativePtr = Native.chip_details_new4(tmp.NativePtr, size);
+                this.NativePtr = NativeMethods.chip_details_new4(tmp.NativePtr, size);
         }
 
         public ChipDetails(DRectangle rect, uint size, double angle)
         {
             using (var tmp = rect.ToNative())
-                this.NativePtr = Native.chip_details_new5(tmp.NativePtr, size, angle);
+                this.NativePtr = NativeMethods.chip_details_new5(tmp.NativePtr, size, angle);
         }
 
         internal ChipDetails(IntPtr ptr)
@@ -66,7 +66,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.chip_details_angle(this.NativePtr, out var angle);
+                NativeMethods.chip_details_angle(this.NativePtr, out var angle);
                 return angle;
             }
         }
@@ -76,7 +76,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.chip_details_cols(this.NativePtr, out var columns);
+                NativeMethods.chip_details_cols(this.NativePtr, out var columns);
                 return columns;
             }
         }
@@ -86,7 +86,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.chip_details_rect(this.NativePtr, out var rect);
+                NativeMethods.chip_details_rect(this.NativePtr, out var rect);
                 return new DRectangle(rect);
             }
         }
@@ -96,7 +96,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.chip_details_rows(this.NativePtr, out var rows);
+                NativeMethods.chip_details_rows(this.NativePtr, out var rows);
                 return rows;
             }
         }
@@ -129,51 +129,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.chip_details_delete(this.NativePtr);
+            NativeMethods.chip_details_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr chip_details_new();
-            
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr chip_details_new2(IntPtr drect, IntPtr dims);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr chip_details_new3(IntPtr rect, IntPtr dims);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr chip_details_new4(IntPtr rect, uint size);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr chip_details_new5(IntPtr rect, uint size, double angle);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool chip_details_angle(IntPtr chip, out double angle);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool chip_details_cols(IntPtr chip, out uint cols);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool chip_details_rect(IntPtr chip, out IntPtr rect);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool chip_details_rows(IntPtr chip, out uint rows);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void chip_details_delete(IntPtr obj);
-
-        }
 
     }
 

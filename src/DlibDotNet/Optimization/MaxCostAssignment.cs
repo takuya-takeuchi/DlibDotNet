@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -24,11 +23,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out byte result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out byte result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -45,11 +44,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out ushort result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out ushort result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -66,11 +65,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out uint result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out uint result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -87,11 +86,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out sbyte result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out sbyte result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -108,11 +107,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out short result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out short result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -129,11 +128,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out int result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out int result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -150,11 +149,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out double result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out double result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -171,11 +170,11 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>(assignment))
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.assignment_cost(type,
-                                                 cost.NativePtr,
-                                                 vector.NativePtr,
-                                                 out float result);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.assignment_cost(type,
+                                                        cost.NativePtr,
+                                                        vector.NativePtr,
+                                                        out float result);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return result;
@@ -195,11 +194,10 @@ namespace DlibDotNet
             using (var vector = new StdVector<long>())
             {
                 var type = cost.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.max_cost_assignment(
-                    type,
-                    cost.NativePtr,
-                    vector.NativePtr);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.max_cost_assignment(type,
+                                                            cost.NativePtr,
+                                                            vector.NativePtr);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{cost.MatrixElementType} is not supported.");
 
                 return vector.ToArray();
@@ -207,38 +205,6 @@ namespace DlibDotNet
         }
         
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out double ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType assignment_cost(MatrixElementType elementType, IntPtr cost, IntPtr assignments, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType max_cost_assignment(MatrixElementType elementType, IntPtr cost, IntPtr assignments);
-
-        }
 
     }
 

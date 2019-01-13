@@ -12,7 +12,7 @@ namespace DlibDotNet
 
         public RectangleTransform()
         {
-            this.NativePtr = Native.rectangle_transform_new();
+            this.NativePtr = NativeMethods.rectangle_transform_new();
         }
 
         public RectangleTransform(PointTransformAffine transform)
@@ -22,7 +22,7 @@ namespace DlibDotNet
 
             transform.ThrowIfDisposed();
 
-            this.NativePtr = Native.rectangle_transform_new1(transform.NativePtr);
+            this.NativePtr = NativeMethods.rectangle_transform_new1(transform.NativePtr);
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace DlibDotNet
         {
             get
             {
-                var matrix = Native.rectangle_transform_get_tform(this.NativePtr);
+                var matrix = NativeMethods.rectangle_transform_get_tform(this.NativePtr);
                 return new PointTransformAffine(matrix);
             }
         }
@@ -46,7 +46,7 @@ namespace DlibDotNet
         {
             using (var native = rectangle.ToNative())
             {
-                var ptr = Native.rectangle_transform_operator(this.NativePtr, native.NativePtr);
+                var ptr = NativeMethods.rectangle_transform_operator(this.NativePtr, native.NativePtr);
                 return new Rectangle(ptr);
             }
         }
@@ -55,7 +55,7 @@ namespace DlibDotNet
         {
             using (var native = drectangle.ToNative())
             {
-                var ptr = Native.rectangle_transform_operator_d(this.NativePtr, native.NativePtr);
+                var ptr = NativeMethods.rectangle_transform_operator_d(this.NativePtr, native.NativePtr);
                 return new DRectangle(ptr);
             }
         }
@@ -72,35 +72,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.rectangle_transform_delete(this.NativePtr);
+            NativeMethods.rectangle_transform_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr rectangle_transform_new();
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr rectangle_transform_new1(IntPtr tform);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr rectangle_transform_get_tform(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr rectangle_transform_operator(IntPtr obj, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr rectangle_transform_operator_d(IntPtr obj, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void rectangle_transform_delete(IntPtr obj);
-
-        }
 
     }
 

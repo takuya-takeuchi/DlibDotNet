@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Extensions;
 
@@ -30,8 +29,8 @@ namespace DlibDotNet
             using (var retBoxes = new StdVector<StdVector<MModRect>>())
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.load_image_dataset_mmod_rect(type, retImages.NativePtr, retBoxes.NativePtr, str);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.load_image_dataset_mmod_rect(type, retImages.NativePtr, retBoxes.NativePtr, str);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
                 images = retImages.ToArray();
@@ -54,8 +53,8 @@ namespace DlibDotNet
             using (var retBoxes = new StdVector<StdVector<Rectangle>>())
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.load_image_dataset_rectangle(type, retImages.NativePtr, retBoxes.NativePtr, str);
-                if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+                var ret = NativeMethods.load_image_dataset_rectangle(type, retImages.NativePtr, retBoxes.NativePtr, str);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
                 images = retImages.ToArray();
@@ -64,17 +63,6 @@ namespace DlibDotNet
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType load_image_dataset_mmod_rect(MatrixElementType type, IntPtr images, IntPtr boxes, byte[] path);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType load_image_dataset_rectangle(MatrixElementType type, IntPtr images, IntPtr boxes, byte[] path);
-
-        }
 
     }
 

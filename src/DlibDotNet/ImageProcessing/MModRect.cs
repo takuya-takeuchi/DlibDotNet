@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -12,7 +11,7 @@ namespace DlibDotNet
 
         public MModRect()
         {
-            this.NativePtr = Native.mmod_rect_new();
+            this.NativePtr = NativeMethods.mmod_rect_new();
         }
 
         internal MModRect(IntPtr ptr, bool isEnabledDispose = true) :
@@ -33,13 +32,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.mmod_rect_get_detection_confidence(this.NativePtr, out var confidence);
+                NativeMethods.mmod_rect_get_detection_confidence(this.NativePtr, out var confidence);
                 return confidence;
             }
             set
             {
                 this.ThrowIfDisposed();
-                Native.mmod_rect_set_detection_confidence(this.NativePtr, value);
+                NativeMethods.mmod_rect_set_detection_confidence(this.NativePtr, value);
             }
         }
 
@@ -48,13 +47,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.mmod_rect_get_ignore(this.NativePtr, out var ignore);
+                NativeMethods.mmod_rect_get_ignore(this.NativePtr, out var ignore);
                 return ignore;
             }
             set
             {
                 this.ThrowIfDisposed();
-                Native.mmod_rect_set_ignore(this.NativePtr, value);
+                NativeMethods.mmod_rect_set_ignore(this.NativePtr, value);
             }
         }
 
@@ -63,7 +62,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.mmod_rect_get_label(this.NativePtr, out var label);
+                NativeMethods.mmod_rect_get_label(this.NativePtr, out var label);
 
                 // ToDo
                 //return new StdString(label);
@@ -76,7 +75,7 @@ namespace DlibDotNet
                     throw new ArgumentNullException();
 
                 //value.ThrowIfDisposed();
-                //Native.mmod_rect_set_label(this.NativePtr, value.NativePtr);
+                //NativeMethods.mmod_rect_set_label(this.NativePtr, value.NativePtr);
             }
         }
 
@@ -85,7 +84,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.mmod_rect_get_rect(this.NativePtr, out var rect);
+                NativeMethods.mmod_rect_get_rect(this.NativePtr, out var rect);
                 return new Rectangle(rect);
             }
             set
@@ -93,7 +92,7 @@ namespace DlibDotNet
                 this.ThrowIfDisposed();
 
                 using (var native = value.ToNative())
-                    Native.mmod_rect_set_rect(this.NativePtr, native.NativePtr);
+                    NativeMethods.mmod_rect_set_rect(this.NativePtr, native.NativePtr);
             }
         }
 
@@ -113,7 +112,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.mmod_rect_delete(this.NativePtr);
+            NativeMethods.mmod_rect_delete(this.NativePtr);
         }
 
         #endregion
@@ -128,45 +127,6 @@ namespace DlibDotNet
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr mmod_rect_new();
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool mmod_rect_get_ignore(IntPtr mmod, out bool ignore);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void mmod_rect_set_ignore(IntPtr mmod, bool ignore);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool mmod_rect_get_detection_confidence(IntPtr mmod, out double confidence);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void mmod_rect_set_detection_confidence(IntPtr mmod, double confidence);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool mmod_rect_get_rect(IntPtr mmod, out IntPtr rect);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void mmod_rect_set_rect(IntPtr mmod, IntPtr rect);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool mmod_rect_get_label(IntPtr mmod, out IntPtr label);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void mmod_rect_set_label(IntPtr mmod, IntPtr label);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void mmod_rect_delete(IntPtr mmod);
-
-        }
 
     }
 

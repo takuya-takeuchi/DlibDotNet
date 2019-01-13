@@ -33,7 +33,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var ret = Native.interest_point_get_center(this.NativePtr);
+                var ret = NativeMethods.interest_point_get_center(this.NativePtr);
 
                 // Can not dispose because this unmanged data is in interest_point object
                 return new Vector<double>(ret, false);
@@ -45,7 +45,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.interest_point_get_laplacian(this.NativePtr);
+                return NativeMethods.interest_point_get_laplacian(this.NativePtr);
             }
         }
 
@@ -54,7 +54,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.interest_point_get_scale(this.NativePtr);
+                return NativeMethods.interest_point_get_scale(this.NativePtr);
             }
         }
 
@@ -63,7 +63,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.interest_point_get_score(this.NativePtr);
+                return NativeMethods.interest_point_get_score(this.NativePtr);
             }
         }
 
@@ -83,32 +83,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.interest_point_delete(this.NativePtr);
+            NativeMethods.interest_point_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr interest_point_get_center(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double interest_point_get_laplacian(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double interest_point_get_scale(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double interest_point_get_score(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void interest_point_delete(IntPtr surfpoint);
-
-        }
 
     }
 

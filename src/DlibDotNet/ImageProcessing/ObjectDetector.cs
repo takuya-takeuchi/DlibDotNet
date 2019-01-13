@@ -181,9 +181,9 @@ namespace DlibDotNet
 
             #region Fields
 
-            private readonly Dlib.Native.FHogFeatureExtractorType _FeatureExtractorType;
+            private readonly NativeMethods.FHogFeatureExtractorType _FeatureExtractorType;
 
-            private readonly Dlib.Native.PyramidType _PyramidType;
+            private readonly NativeMethods.PyramidType _PyramidType;
 
             private readonly uint _PyramidRate;
 
@@ -198,16 +198,16 @@ namespace DlibDotNet
                 this._PyramidRate = parameter.PyramidRate;
                 this._PyramidType = parameter.PyramidType;
 
-                var ret = Dlib.Native.object_detector_scan_fhog_pyramid_new(this._PyramidType,
+                var ret = NativeMethods.object_detector_scan_fhog_pyramid_new(this._PyramidType,
                                                                             this._PyramidRate,
                                                                             this._FeatureExtractorType,
                                                                             out var detector);
 
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                    case Dlib.Native.ErrorType.PyramidNotSupportType:
+                    case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                    case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
                 }
 
@@ -230,7 +230,7 @@ namespace DlibDotNet
 
             public override void Deserialize(byte[] filepath)
             {
-                var ret = Dlib.Native.object_detector_scan_fhog_pyramid_deserialize(filepath,
+                var ret = NativeMethods.object_detector_scan_fhog_pyramid_deserialize(filepath,
                                                                                     this._PyramidType,
                                                                                     this._PyramidRate,
                                                                                     this._FeatureExtractorType,
@@ -238,28 +238,28 @@ namespace DlibDotNet
 
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                    case Dlib.Native.ErrorType.PyramidNotSupportType:
+                    case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                    case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
                 }
             }
 
             public override Matrix<byte> DrawFHog(uint weightIndex = 0, int cellDrawSize = 15)
             {
-                var ret = Dlib.Native.draw_fhog_object_detector_scan_fhog_pyramid(this._PyramidType,
-                                                                                  this._PyramidRate,
-                                                                                  this._FeatureExtractorType,
-                                                                                  this.NativePtr,
-                                                                                  weightIndex,
-                                                                                  cellDrawSize,
-                                                                                  out var matrix);
+                var ret = NativeMethods.draw_fhog_object_detector_scan_fhog_pyramid(this._PyramidType,
+                                                                                    this._PyramidRate,
+                                                                                    this._FeatureExtractorType,
+                                                                                    this.NativePtr,
+                                                                                    weightIndex,
+                                                                                    cellDrawSize,
+                                                                                    out var matrix);
 
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                    case Dlib.Native.ErrorType.PyramidNotSupportType:
+                    case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                    case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
                 }
 
@@ -274,16 +274,16 @@ namespace DlibDotNet
                 image.ThrowIfDisposed();
 
                 var type = image.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Dlib.Native.object_detector_scan_fhog_pyramid_operator(this._PyramidType,
-                                                                                 this._PyramidRate,
-                                                                                 this._FeatureExtractorType,
-                                                                                 this.NativePtr,
-                                                                                 type,
-                                                                                 image.NativePtr,
-                                                                                 out var matrix);
+                var ret = NativeMethods.object_detector_scan_fhog_pyramid_operator(this._PyramidType,
+                                                                                   this._PyramidRate,
+                                                                                   this._FeatureExtractorType,
+                                                                                   this.NativePtr,
+                                                                                   type,
+                                                                                   image.NativePtr,
+                                                                                   out var matrix);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{type} is not supported.");
                 }
 
@@ -293,17 +293,17 @@ namespace DlibDotNet
 
             public override void Serialize(byte[] filepath)
             {
-                var ret = Dlib.Native.object_detector_scan_fhog_pyramid_serialize(filepath,
-                                                                                  this._PyramidType,
-                                                                                  this._PyramidRate,
-                                                                                  this._FeatureExtractorType,
-                                                                                  this.NativePtr);
+                var ret = NativeMethods.object_detector_scan_fhog_pyramid_serialize(filepath,
+                                                                                    this._PyramidType,
+                                                                                    this._PyramidRate,
+                                                                                    this._FeatureExtractorType,
+                                                                                    this.NativePtr);
 
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                    case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                    case Dlib.Native.ErrorType.PyramidNotSupportType:
+                    case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                    case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
                 }
             }
@@ -316,17 +316,17 @@ namespace DlibDotNet
                     using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
                     {
                         Matrix<U>.TryParse<U>(out var matrixElementType);
-                        var ret = Dlib.Native.cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_rectangle(this._PyramidType,
-                                                                                                                                                 this._PyramidRate,
-                                                                                                                                                 this._FeatureExtractorType,
-                                                                                                                                                 this.NativePtr,
-                                                                                                                                                 matrixElementType.ToNativeMatrixElementType(),
-                                                                                                                                                 vecImage.NativePtr,
-                                                                                                                                                 vecObject.NativePtr,
-                                                                                                                                                 out var matrix);
+                        var ret = NativeMethods.cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_rectangle(this._PyramidType,
+                                                                                                                                                   this._PyramidRate,
+                                                                                                                                                   this._FeatureExtractorType,
+                                                                                                                                                   this.NativePtr,
+                                                                                                                                                   matrixElementType.ToNativeMatrixElementType(),
+                                                                                                                                                   vecImage.NativePtr,
+                                                                                                                                                   vecObject.NativePtr,
+                                                                                                                                                   out var matrix);
                         switch (ret)
                         {
-                            case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                            case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                                 throw new ArgumentException($"{matrixElementType} is not supported.");
                         }
 
@@ -342,10 +342,10 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.object_detector_scan_fhog_pyramid_delete(this._PyramidType,
-                                                                     this._PyramidRate,
-                                                                     this._FeatureExtractorType,
-                                                                     this.NativePtr);
+                NativeMethods.object_detector_scan_fhog_pyramid_delete(this._PyramidType,
+                                                                       this._PyramidRate,
+                                                                       this._FeatureExtractorType,
+                                                                       this.NativePtr);
             }
 
             #endregion

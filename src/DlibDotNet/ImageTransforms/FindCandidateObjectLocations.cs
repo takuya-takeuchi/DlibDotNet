@@ -33,18 +33,18 @@ namespace DlibDotNet
             using (var dets = new StdVector<Rectangle>())
             {
                 var matrixType = kvals.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.find_candidate_object_locations(array2DType,
-                                                                 image.NativePtr,
-                                                                 dets.NativePtr,
-                                                                 matrixType,
-                                                                 kvals.NativePtr,
-                                                                 minSize,
-                                                                 maxMergingIterations);
+                var ret = NativeMethods.find_candidate_object_locations(array2DType,
+                                                                        image.NativePtr,
+                                                                        dets.NativePtr,
+                                                                        matrixType,
+                                                                        kvals.NativePtr,
+                                                                        minSize,
+                                                                        maxMergingIterations);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{image.ImageType} is not supported.");
-                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{matrixType} is not supported.");
                 }
 
@@ -53,20 +53,6 @@ namespace DlibDotNet
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType find_candidate_object_locations(Array2DType type,
-                                                                           IntPtr img,
-                                                                           IntPtr rect,
-                                                                           MatrixElementType matrixElementType,
-                                                                           IntPtr kvals,
-                                                                           uint minSize,
-                                                                           uint maxMergingIterations);
-
-        }
 
     }
 

@@ -33,15 +33,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.UInt8,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.UInt8,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -61,15 +60,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.UInt16,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.UInt16,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -89,15 +87,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.Float,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.Float,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -117,15 +114,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.Double,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.Double,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -145,15 +141,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.RgbPixel,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.RgbPixel,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -173,15 +168,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.RgbAlphaPixel,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.RgbAlphaPixel,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -201,15 +195,14 @@ namespace DlibDotNet
             using (var np1 = p1.ToNative())
             using (var np2 = p2.ToNative())
             {
-                var ret = Native.draw_line(
-                    Native.Array2DType.HsiPixel,
-                    image.NativePtr,
-                    np1.NativePtr,
-                    np2.NativePtr,
-                    ref color);
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.HsiPixel,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -228,15 +221,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.UInt8,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.UInt8,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -251,15 +243,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.UInt16,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.UInt16,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -274,15 +265,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.Int32,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.Int32,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -297,15 +287,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.Float,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.Float,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -320,15 +309,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.Double,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.Double,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -343,15 +331,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.RgbPixel,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.RgbPixel,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -366,15 +353,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.RgbAlphaPixel,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.RgbAlphaPixel,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -389,15 +375,14 @@ namespace DlibDotNet
 
             using (var native = rect.ToNative())
             {
-                var ret = Native.draw_rectangle(
-                    Native.Array2DType.HsiPixel,
-                    image.NativePtr,
-                    native.NativePtr,
-                    ref color,
-                    thickness);
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.HsiPixel,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"{color} is not supported.");
                 }
             }
@@ -414,10 +399,10 @@ namespace DlibDotNet
             array.ThrowIfDisposed();
 
             var imageType = array.ImageType;
-            var ret = Native.tile_images(imageType.ToNativeArray2DType(), array.NativePtr, out var ret_image);
+            var ret = NativeMethods.tile_images(imageType.ToNativeArray2DType(), array.NativePtr, out var ret_image);
             switch (ret)
             {
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{imageType} is not supported.");
             }
 
@@ -435,10 +420,10 @@ namespace DlibDotNet
             Matrix<T>.TryParse<T>(out var elementType);
             using (var vector = new StdVector<Matrix<T>>(images))
             {
-                var ret = Native.tile_images_matrix(elementType.ToNativeMatrixElementType(), vector.NativePtr, out var retImage);
+                var ret = NativeMethods.tile_images_matrix(elementType.ToNativeMatrixElementType(), vector.NativePtr, out var retImage);
                 switch (ret)
                 {
-                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{elementType} is not supported.");
                 }
 
@@ -447,74 +432,6 @@ namespace DlibDotNet
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            #region draw_line
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref byte color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref ushort color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref float color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref double color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref RgbPixel color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref RgbAlphaPixel color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref HsiPixel color);
-
-            #endregion
-
-            #region draw_rectangle
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref byte color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref ushort color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref int color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref float color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref double color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref RgbPixel color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref RgbAlphaPixel color, uint thickness);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref HsiPixel color, uint thickness);
-
-            #endregion
-
-            #region tile_images
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType tile_images(Array2DType inType, IntPtr array, out IntPtr ret_image);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType tile_images_matrix(MatrixElementType in_type, IntPtr images, out IntPtr ret_image);
-
-            #endregion
-
-        }
 
     }
 

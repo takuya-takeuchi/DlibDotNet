@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -30,10 +29,10 @@ namespace DlibDotNet
             if (horzType != vertType)
                 throw new ArgumentException($"{nameof(horizontalGradient)}.ImageType == {nameof(verticalGradient)}.ImageType");
 
-            var ret = Native.sobel_edge_detector(inType, image.NativePtr, horzType, horizontalGradient.NativePtr, verticalGradient.NativePtr);
+            var ret = NativeMethods.sobel_edge_detector(inType, image.NativePtr, horzType, horizontalGradient.NativePtr, verticalGradient.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{nameof(horizontalGradient)}, {nameof(verticalGradient)} should be signed grayscale image. Or input {image.ImageType} is not supported.");
             }
         }
@@ -57,26 +56,15 @@ namespace DlibDotNet
             if (horzType != vertType)
                 throw new ArgumentException($"{nameof(horizontalGradient)}.ImageType == {nameof(verticalGradient)}.ImageType");
 
-            var ret = Native.suppress_non_maximum_edges(horzType, horizontalGradient.NativePtr, verticalGradient.NativePtr, outType, outImage.NativePtr);
+            var ret = NativeMethods.suppress_non_maximum_edges(horzType, horizontalGradient.NativePtr, verticalGradient.NativePtr, outType, outImage.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{nameof(horizontalGradient)}, {nameof(verticalGradient)} should be signed grayscale image. Or output {outImage.ImageType} is not supported.");
             }
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType sobel_edge_detector(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr horz, IntPtr vert);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType suppress_non_maximum_edges(Array2DType inType, IntPtr horz, IntPtr vert, Array2DType outType, IntPtr outImg);
-
-        }
 
     }
 

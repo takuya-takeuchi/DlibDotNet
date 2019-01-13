@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet.Extensions;
 
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
+using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
+
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
@@ -16,7 +19,7 @@ namespace DlibDotNet
 
         private readonly MatrixElementTypes _MatrixElementTypes;
 
-        private readonly Dlib.Native.MatrixElementType _ElementType;
+        private readonly MatrixElementType _ElementType;
 
         private readonly Indexer<TElement> _Indexer;
 
@@ -31,7 +34,7 @@ namespace DlibDotNet
 
             this._MatrixElementTypes = type;
             this._ElementType = type.ToNativeMatrixElementType();
-            this.NativePtr = Dlib.Native.matrix_new(this._ElementType);
+            this.NativePtr = NativeMethods.matrix_new(this._ElementType);
 
             this._Indexer = this.CreateIndexer(type);
         }
@@ -48,15 +51,15 @@ namespace DlibDotNet
 
             this._MatrixElementTypes = type;
             this._ElementType = type.ToNativeMatrixElementType();
-            var ret = Dlib.Native.mat_matrix(array.ImageType.ToNativeArray2DType(),
-                                             array.NativePtr,
-                                             0,
-                                             0,
-                                             this._ElementType,
-                                             out var ptr);
+            var ret = NativeMethods.mat_matrix(array.ImageType.ToNativeArray2DType(),
+                                               array.NativePtr,
+                                               0,
+                                               0,
+                                               this._ElementType,
+                                               out var ptr);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                case ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{array.ImageType} can not convert to {type}.");
             }
 
@@ -75,7 +78,7 @@ namespace DlibDotNet
 
             this._MatrixElementTypes = type;
             this._ElementType = type.ToNativeMatrixElementType();
-            this.NativePtr = Dlib.Native.matrix_new1(this._ElementType, row, column);
+            this.NativePtr = NativeMethods.matrix_new1(this._ElementType, row, column);
 
             this._Indexer = this.CreateIndexer(type);
         }
@@ -101,81 +104,81 @@ namespace DlibDotNet
             {
                 switch (this._ElementType)
                 {
-                    case Dlib.Native.MatrixElementType.UInt8:
+                    case NativeMethods.MatrixElementType.UInt8:
                         {
                             var tmp = array as byte[];
                             fixed (byte* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.UInt16:
+                    case NativeMethods.MatrixElementType.UInt16:
                         {
                             var tmp = array as ushort[];
                             fixed (ushort* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.UInt32:
+                    case NativeMethods.MatrixElementType.UInt32:
                         {
                             var tmp = array as uint[];
                             fixed (uint* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.Int8:
+                    case NativeMethods.MatrixElementType.Int8:
                         {
                             var tmp = array as sbyte[];
                             fixed (sbyte* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.Int16:
+                    case NativeMethods.MatrixElementType.Int16:
                         {
                             var tmp = array as short[];
                             fixed (short* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.Int32:
+                    case NativeMethods.MatrixElementType.Int32:
                         {
                             var tmp = array as int[];
                             fixed (int* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.Float:
+                    case NativeMethods.MatrixElementType.Float:
                         {
                             var tmp = array as float[];
                             fixed (float* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.Double:
+                    case NativeMethods.MatrixElementType.Double:
                         {
                             var tmp = array as double[];
                             fixed (double* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.RgbPixel:
+                    case NativeMethods.MatrixElementType.RgbPixel:
                         {
                             var tmp = array as RgbPixel[];
                             fixed (RgbPixel* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.RgbAlphaPixel:
+                    case NativeMethods.MatrixElementType.RgbAlphaPixel:
                         {
                             var tmp = array as RgbAlphaPixel[];
                             fixed (RgbAlphaPixel* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
-                    case Dlib.Native.MatrixElementType.HsiPixel:
+                    case NativeMethods.MatrixElementType.HsiPixel:
                         {
                             var tmp = array as HsiPixel[];
                             fixed (HsiPixel* src = &tmp[0])
-                                this.NativePtr = Dlib.Native.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
                 }
@@ -210,7 +213,7 @@ namespace DlibDotNet
             unsafe
             {
                 fixed (byte* src = &array[0])
-                    this.NativePtr = Dlib.Native.matrix_new3(this._ElementType, row, column, src);
+                    this.NativePtr = NativeMethods.matrix_new3(this._ElementType, row, column, src);
             }
 
             this._Indexer = this.CreateIndexer(type);
@@ -241,7 +244,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.matrix_nc(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
+                NativeMethods.matrix_nc(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return ret;
             }
         }
@@ -253,7 +256,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.matrix_nr(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
+                NativeMethods.matrix_nr(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return ret;
             }
         }
@@ -263,7 +266,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.matrix_size(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
+                NativeMethods.matrix_size(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out var ret);
                 return ret;
             }
         }
@@ -305,37 +308,37 @@ namespace DlibDotNet
             switch (this._MatrixElementTypes)
             {
                 case MatrixElementTypes.UInt8:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<byte>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<byte>().ToArray());
                     break;
                 case MatrixElementTypes.UInt16:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<ushort>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<ushort>().ToArray());
                     break;
                 case MatrixElementTypes.UInt32:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<uint>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<uint>().ToArray());
                     break;
                 case MatrixElementTypes.Int8:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<sbyte>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<sbyte>().ToArray());
                     break;
                 case MatrixElementTypes.Int16:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<short>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<short>().ToArray());
                     break;
                 case MatrixElementTypes.Int32:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<int>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<int>().ToArray());
                     break;
                 case MatrixElementTypes.Float:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<float>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<float>().ToArray());
                     break;
                 case MatrixElementTypes.Double:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<double>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<double>().ToArray());
                     break;
                 case MatrixElementTypes.RgbPixel:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<RgbPixel>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<RgbPixel>().ToArray());
                     break;
                 case MatrixElementTypes.RgbAlphaPixel:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<RgbAlphaPixel>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<RgbAlphaPixel>().ToArray());
                     break;
                 case MatrixElementTypes.HsiPixel:
-                    Dlib.Native.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<HsiPixel>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<HsiPixel>().ToArray());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -347,7 +350,7 @@ namespace DlibDotNet
             if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
 
-            var ptr = Dlib.Native.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
+            var ptr = NativeMethods.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
             return new Matrix<TElement>(ptr, (int)templateRows, (int)templateColumns);
         }
         
@@ -361,16 +364,16 @@ namespace DlibDotNet
 
             deserialize.ThrowIfDisposed();
 
-            var ret = Dlib.Native.matrix_deserialize_matrix_proxy(deserialize.NativePtr,
-                                                                  type.ToNativeMatrixElementType(), 
-                                                                  (int)templateRows,
-                                                                  (int)templateColumns,
-                                                                  out var matrix);
+            var ret = NativeMethods.matrix_deserialize_matrix_proxy(deserialize.NativePtr,
+                                                                    type.ToNativeMatrixElementType(), 
+                                                                    (int)templateRows,
+                                                                    (int)templateColumns,
+                                                                    out var matrix);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                case ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
             }
 
@@ -382,7 +385,7 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             TElement[] result;
-            Dlib.Native.ErrorType err;
+            NativeMethods.ErrorType err;
 
             var templateRows = this.TemplateRows;
             var templateColumns = this.TemplateColumns;
@@ -400,7 +403,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -418,7 +421,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -436,7 +439,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -454,7 +457,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -472,7 +475,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -490,7 +493,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -508,7 +511,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -526,7 +529,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -544,7 +547,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -562,7 +565,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -580,7 +583,7 @@ namespace DlibDotNet
                         {
                             var src = this.NativePtr;
                             var type = this._ElementType;
-                            err = Dlib.Native.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
                         }
 
                         result = array as TElement[];
@@ -593,9 +596,9 @@ namespace DlibDotNet
 
             switch (err)
             {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                case ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{this._ElementType} is not supported.");
-                case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateRows)} is not supported.");
             }
 
@@ -620,7 +623,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.matrix_delete(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+            NativeMethods.matrix_delete(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
         }
 
         public override string ToString()
@@ -631,17 +634,17 @@ namespace DlibDotNet
 
             try
             {
-                ofstream = Dlib.Native.ostringstream_new();
-                var ret = Dlib.Native.matrix_operator_left_shift(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, ofstream);
+                ofstream = NativeMethods.ostringstream_new();
+                var ret = NativeMethods.matrix_operator_left_shift(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, ofstream);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.OK:
-                        stdstr = Dlib.Native.ostringstream_str(ofstream);
+                    case ErrorType.OK:
+                        stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr) ?? "";
                         break;
-                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    case ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
-                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                     default:
                         throw new ArgumentException();
@@ -654,9 +657,9 @@ namespace DlibDotNet
             finally
             {
                 if (stdstr != IntPtr.Zero)
-                    Dlib.Native.string_delete(stdstr);
+                    NativeMethods.string_delete(stdstr);
                 if (ofstream != IntPtr.Zero)
-                    Dlib.Native.ostringstream_delete(ofstream);
+                    NativeMethods.ostringstream_delete(ofstream);
             }
 
             return str;

@@ -28,7 +28,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            public FHogPyramidParameter(Dlib.Native.PyramidType pyramidType, uint pyramidRate, Dlib.Native.FHogFeatureExtractorType featureExtractorType)
+            public FHogPyramidParameter(NativeMethods.PyramidType pyramidType, uint pyramidRate, NativeMethods.FHogFeatureExtractorType featureExtractorType)
             {
                 this.PyramidType = pyramidType;
                 this.PyramidRate = pyramidRate;
@@ -39,12 +39,12 @@ namespace DlibDotNet
 
             #region Properties
 
-            public Dlib.Native.FHogFeatureExtractorType FeatureExtractorType
+            public NativeMethods.FHogFeatureExtractorType FeatureExtractorType
             {
                 get;
             }
 
-            public Dlib.Native.PyramidType PyramidType
+            public NativeMethods.PyramidType PyramidType
             {
                 get;
             }

@@ -145,7 +145,7 @@ namespace DlibDotNet.Dnn
             public LossMetricTrainer(IntPtr net, int type)
             {
                 this.NetworkType = type;
-                this.NativePtr = Dlib.Native.dnn_trainer_loss_metric_new(net, type);
+                this.NativePtr = NativeMethods.dnn_trainer_loss_metric_new(net, type);
             }
 
             #endregion
@@ -161,7 +161,7 @@ namespace DlibDotNet.Dnn
 
             public override void BeVerbose()
             {
-                Dlib.Native.dnn_trainer_loss_metric_be_verbose(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_metric_be_verbose(this.NativePtr, this.NetworkType);
             }
 
             protected override void DisposeUnmanaged()
@@ -171,29 +171,29 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.dnn_trainer_loss_metric_delete(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_metric_delete(this.NativePtr, this.NetworkType);
             }
 
             public override void SetLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_metric_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_metric_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_metric_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_metric_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinBatchSize(uint size)
             {
-                Dlib.Native.dnn_trainer_loss_metric_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
+                NativeMethods.dnn_trainer_loss_metric_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
             }
 
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Encoding.UTF8.GetBytes(filename);
-                var ret = Dlib.Native.dnn_trainer_loss_metric_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
-                if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
+                var ret = NativeMethods.dnn_trainer_loss_metric_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
@@ -211,7 +211,7 @@ namespace DlibDotNet.Dnn
             public LossMmodTrainer(IntPtr net, int type)
             {
                 this.NetworkType = type;
-                this.NativePtr = Dlib.Native.dnn_trainer_loss_mmod_new(net, type);
+                this.NativePtr = NativeMethods.dnn_trainer_loss_mmod_new(net, type);
             }
 
             #endregion
@@ -227,7 +227,7 @@ namespace DlibDotNet.Dnn
 
             public override void BeVerbose()
             {
-                Dlib.Native.dnn_trainer_loss_mmod_be_verbose(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_mmod_be_verbose(this.NativePtr, this.NetworkType);
             }
 
             protected override void DisposeUnmanaged()
@@ -237,29 +237,29 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.dnn_trainer_loss_mmod_delete(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_mmod_delete(this.NativePtr, this.NetworkType);
             }
 
             public override void SetLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_mmod_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_mmod_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_mmod_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_mmod_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinBatchSize(uint size)
             {
-                Dlib.Native.dnn_trainer_loss_mmod_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
+                NativeMethods.dnn_trainer_loss_mmod_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
             }
 
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Encoding.UTF8.GetBytes(filename);
-                var ret = Dlib.Native.dnn_trainer_loss_mmod_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
-                if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
+                var ret = NativeMethods.dnn_trainer_loss_mmod_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
@@ -277,7 +277,7 @@ namespace DlibDotNet.Dnn
             public LossMulticlassLogTrainer(IntPtr net, int type)
             {
                 this.NetworkType = type;
-                this.NativePtr = Dlib.Native.dnn_trainer_loss_multiclass_log_new(net, type);
+                this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_new(net, type);
             }
 
             #endregion
@@ -293,7 +293,7 @@ namespace DlibDotNet.Dnn
 
             public override void BeVerbose()
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_be_verbose(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_multiclass_log_be_verbose(this.NativePtr, this.NetworkType);
             }
 
             protected override void DisposeUnmanaged()
@@ -303,29 +303,29 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.dnn_trainer_loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
             }
 
             public override void SetLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_multiclass_log_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_multiclass_log_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinBatchSize(uint size)
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
+                NativeMethods.dnn_trainer_loss_multiclass_log_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
             }
 
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Encoding.UTF8.GetBytes(filename);
-                var ret = Dlib.Native.dnn_trainer_loss_multiclass_log_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
-                if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
@@ -343,7 +343,7 @@ namespace DlibDotNet.Dnn
             public LossMulticlassLogPerPixelTrainer(IntPtr net, int type)
             {
                 this.NetworkType = type;
-                this.NativePtr = Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_new(net, type);
+                this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_new(net, type);
             }
 
             #endregion
@@ -364,34 +364,34 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_delete(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_delete(this.NativePtr, this.NetworkType);
             }
 
             public override void BeVerbose()
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(this.NativePtr, this.NetworkType);
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(this.NativePtr, this.NetworkType);
             }
 
             public override void SetLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinLearningRate(double learningRate)
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_min_learning_rate(this.NativePtr, this.NetworkType, learningRate);
             }
 
             public override void SetMinBatchSize(uint size)
             {
-                Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_mini_batch_size(this.NativePtr, this.NetworkType, size);
             }
 
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Encoding.UTF8.GetBytes(filename);
-                var ret = Dlib.Native.dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
-                if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 

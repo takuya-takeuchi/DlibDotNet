@@ -363,17 +363,17 @@ namespace DlibDotNet
 
             public NativeRectangle(int left, int top, int right, int bottom)
             {
-                this.NativePtr = Native.rectangle_new1(left, top, right, bottom);
+                this.NativePtr = NativeMethods.rectangle_new1(left, top, right, bottom);
             }
 
             public NativeRectangle(uint width, uint height)
             {
-                this.NativePtr = Native.rectangle_new2(width, height);
+                this.NativePtr = NativeMethods.rectangle_new2(width, height);
             }
 
             public NativeRectangle()
             {
-                this.NativePtr = Native.rectangle_new();
+                this.NativePtr = NativeMethods.rectangle_new();
             }
 
             public NativeRectangle(Point.NativePoint p1, Point.NativePoint p2)
@@ -386,7 +386,7 @@ namespace DlibDotNet
                 p1.ThrowIfDisposed();
                 p2.ThrowIfDisposed();
 
-                this.NativePtr = Native.rectangle_new4(p1.NativePtr, p2.NativePtr);
+                this.NativePtr = NativeMethods.rectangle_new4(p1.NativePtr, p2.NativePtr);
             }
 
             public NativeRectangle(Point.NativePoint point)
@@ -396,7 +396,7 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                this.NativePtr = Native.rectangle_new3(point.NativePtr);
+                this.NativePtr = NativeMethods.rectangle_new3(point.NativePtr);
             }
 
             internal NativeRectangle(IntPtr ptr, bool isEnabledDispose = true) :
@@ -417,7 +417,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_area(this.NativePtr);
+                    return NativeMethods.rectangle_area(this.NativePtr);
                 }
             }
 
@@ -426,12 +426,12 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_bottom(this.NativePtr);
+                    return NativeMethods.rectangle_bottom(this.NativePtr);
                 }
                 set
                 {
                     this.ThrowIfDisposed();
-                    Native.rectangle_set_bottom(this.NativePtr, value);
+                    NativeMethods.rectangle_set_bottom(this.NativePtr, value);
                 }
             }
 
@@ -440,7 +440,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new Point.NativePoint(Native.rectangle_bl_corner(this.NativePtr));
+                    return new Point.NativePoint(NativeMethods.rectangle_bl_corner(this.NativePtr));
                 }
             }
 
@@ -449,7 +449,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new Point.NativePoint(Native.rectangle_br_corner(this.NativePtr));
+                    return new Point.NativePoint(NativeMethods.rectangle_br_corner(this.NativePtr));
                 }
             }
 
@@ -458,7 +458,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new Point.NativePoint(Native.rectangle_center(this.NativePtr));
+                    return new Point.NativePoint(NativeMethods.rectangle_center(this.NativePtr));
                 }
             }
 
@@ -467,7 +467,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.rectangle_dcenter(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.rectangle_dcenter(this.NativePtr));
                 }
             }
 
@@ -476,7 +476,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_height(this.NativePtr);
+                    return NativeMethods.rectangle_height(this.NativePtr);
                 }
             }
 
@@ -485,7 +485,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_is_empty(this.NativePtr);
+                    return NativeMethods.rectangle_is_empty(this.NativePtr);
                 }
             }
 
@@ -494,12 +494,12 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_left(this.NativePtr);
+                    return NativeMethods.rectangle_left(this.NativePtr);
                 }
                 set
                 {
                     this.ThrowIfDisposed();
-                    Native.rectangle_set_left(this.NativePtr, value);
+                    NativeMethods.rectangle_set_left(this.NativePtr, value);
                 }
             }
 
@@ -508,12 +508,12 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_right(this.NativePtr);
+                    return NativeMethods.rectangle_right(this.NativePtr);
                 }
                 set
                 {
                     this.ThrowIfDisposed();
-                    Native.rectangle_set_right(this.NativePtr, value);
+                    NativeMethods.rectangle_set_right(this.NativePtr, value);
                 }
             }
 
@@ -522,12 +522,12 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_top(this.NativePtr);
+                    return NativeMethods.rectangle_top(this.NativePtr);
                 }
                 set
                 {
                     this.ThrowIfDisposed();
-                    Native.rectangle_set_top(this.NativePtr, value);
+                    NativeMethods.rectangle_set_top(this.NativePtr, value);
                 }
             }
 
@@ -536,7 +536,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new Point.NativePoint(Native.rectangle_tl_corner(this.NativePtr));
+                    return new Point.NativePoint(NativeMethods.rectangle_tl_corner(this.NativePtr));
                 }
             }
 
@@ -545,7 +545,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new Point.NativePoint(Native.rectangle_tr_corner(this.NativePtr));
+                    return new Point.NativePoint(NativeMethods.rectangle_tr_corner(this.NativePtr));
                 }
             }
 
@@ -554,7 +554,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.rectangle_width(this.NativePtr);
+                    return NativeMethods.rectangle_width(this.NativePtr);
                 }
             }
 
@@ -564,7 +564,7 @@ namespace DlibDotNet
 
             public static NativeRectangle CenteredRect(int x, int y, uint width, uint height)
             {
-                var result = Native.rectangle_centered_rect(x, y, width, height);
+                var result = NativeMethods.rectangle_centered_rect(x, y, width, height);
                 return new NativeRectangle(result);
             }
 
@@ -575,7 +575,7 @@ namespace DlibDotNet
 
                 p.ThrowIfDisposed();
 
-                var result = Native.rectangle_centered_rect1(p.NativePtr, width, height);
+                var result = NativeMethods.rectangle_centered_rect1(p.NativePtr, width, height);
                 return new NativeRectangle(result);
             }
 
@@ -586,7 +586,7 @@ namespace DlibDotNet
 
                 rect.ThrowIfDisposed();
 
-                var result = Native.rectangle_centered_rect2(rect.NativePtr, width, height);
+                var result = NativeMethods.rectangle_centered_rect2(rect.NativePtr, width, height);
                 return new NativeRectangle(result);
             }
 
@@ -597,12 +597,12 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                return Native.rectangle_contains(this.NativePtr, point.NativePtr);
+                return NativeMethods.rectangle_contains(this.NativePtr, point.NativePtr);
             }
 
             public bool Contains(int x, int y)
             {
-                return Native.rectangle_contains1(this.NativePtr, x, y);
+                return NativeMethods.rectangle_contains1(this.NativePtr, x, y);
             }
 
             public NativeRectangle Intersect(NativeRectangle rect)
@@ -612,13 +612,13 @@ namespace DlibDotNet
 
                 rect.ThrowIfDisposed();
 
-                var result = Native.rectangle_intersect(this.NativePtr, rect.NativePtr);
+                var result = NativeMethods.rectangle_intersect(this.NativePtr, rect.NativePtr);
                 return new NativeRectangle(result);
             }
 
             public NativeRectangle SetAspectRatio(double ratio)
             {
-                var result = Native.rectangle_set_aspect_ratio(this.NativePtr, ratio);
+                var result = NativeMethods.rectangle_set_aspect_ratio(this.NativePtr, ratio);
                 return new NativeRectangle(result);
             }
 
@@ -634,7 +634,7 @@ namespace DlibDotNet
 
                 rect.ThrowIfDisposed();
 
-                var result = Native.rectangle_translate_rect_xy(rect.NativePtr, x, y);
+                var result = NativeMethods.rectangle_translate_rect_xy(rect.NativePtr, x, y);
                 return new NativeRectangle(result);
             }
 
@@ -653,7 +653,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 point.ThrowIfDisposed();
 
-                var result = Native.rectangle_translate_rect(rect.NativePtr, point.NativePtr);
+                var result = NativeMethods.rectangle_translate_rect(rect.NativePtr, point.NativePtr);
                 return new NativeRectangle(result);
             }
 
@@ -674,7 +674,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                var ptr = Native.rectangle_operator_add(rect.NativePtr, rhs.NativePtr);
+                var ptr = NativeMethods.rectangle_operator_add(rect.NativePtr, rhs.NativePtr);
                 return new NativeRectangle(ptr);
             }
 
@@ -688,7 +688,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                var ptr = Native.rectangle_operator_add_point(rect.NativePtr, rhs.NativePtr);
+                var ptr = NativeMethods.rectangle_operator_add_point(rect.NativePtr, rhs.NativePtr);
                 return new NativeRectangle(ptr);
             }
 
@@ -702,7 +702,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                return Native.rectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
+                return NativeMethods.rectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
             }
 
             public static bool operator !=(NativeRectangle rect, NativeRectangle rhs)
@@ -715,7 +715,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                return !Native.rectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
+                return !NativeMethods.rectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
             }
 
             protected override void DisposeUnmanaged()
@@ -725,129 +725,12 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Native.rectangle_delete(this.NativePtr);
+                NativeMethods.rectangle_delete(this.NativePtr);
             }
 
             #endregion
 
             #endregion
-
-            internal sealed class Native
-            {
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_new();
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_new1(int left, int top, int right, int bottom);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_new2(uint width, uint height);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_new3(IntPtr p);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_new4(IntPtr p1, IntPtr p2);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void rectangle_delete(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int rectangle_bottom(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int rectangle_left(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int rectangle_right(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int rectangle_top(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void rectangle_set_bottom(IntPtr rect, int value);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void rectangle_set_left(IntPtr rect, int value);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void rectangle_set_right(IntPtr rect, int value);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void rectangle_set_top(IntPtr rect, int value);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool rectangle_is_empty(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_bl_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_br_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_tl_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_tr_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern uint rectangle_area(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern uint rectangle_height(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern uint rectangle_width(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool rectangle_contains(IntPtr rect, IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool rectangle_contains1(IntPtr rect, int x, int y);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_centered_rect(int x, int y, uint width, uint height);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_centered_rect1(IntPtr point, uint width, uint height);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_centered_rect2(IntPtr rect, uint width, uint height);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_intersect(IntPtr rect, IntPtr target);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_center(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_dcenter(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_set_aspect_ratio(IntPtr rect, double ratio);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_translate_rect(IntPtr rect, IntPtr p);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_translate_rect_xy(IntPtr rect, int x, int y);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_operator_add(IntPtr rect, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rectangle_operator_add_point(IntPtr rect, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool rectangle_operator_equal(IntPtr drect, IntPtr rhs);
-
-            }
 
         }
 #pragma warning restore CS0660, CS0661

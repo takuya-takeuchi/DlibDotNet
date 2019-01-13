@@ -382,12 +382,12 @@ namespace DlibDotNet
 
             public NativeDRectangle()
             {
-                this.NativePtr = Native.drectangle_new();
+                this.NativePtr = NativeMethods.drectangle_new();
             }
 
             public NativeDRectangle(double left, double top, double right, double bottom)
             {
-                this.NativePtr = Native.drectangle_new1(left, top, right, bottom);
+                this.NativePtr = NativeMethods.drectangle_new1(left, top, right, bottom);
             }
 
             public NativeDRectangle(DPoint.NativeDPoint point)
@@ -397,7 +397,7 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                this.NativePtr = Native.drectangle_new2(point.NativePtr);
+                this.NativePtr = NativeMethods.drectangle_new2(point.NativePtr);
             }
 
             public NativeDRectangle(DPoint.NativeDPoint p1, DPoint.NativeDPoint p2)
@@ -410,7 +410,7 @@ namespace DlibDotNet
                 p1.ThrowIfDisposed();
                 p2.ThrowIfDisposed();
 
-                this.NativePtr = Native.drectangle_new3(p1.NativePtr, p2.NativePtr);
+                this.NativePtr = NativeMethods.drectangle_new3(p1.NativePtr, p2.NativePtr);
             }
 
             public NativeDRectangle(NativeDRectangle drect)
@@ -420,7 +420,7 @@ namespace DlibDotNet
 
                 drect.ThrowIfDisposed();
 
-                this.NativePtr = Native.drectangle_new4(drect.NativePtr);
+                this.NativePtr = NativeMethods.drectangle_new4(drect.NativePtr);
             }
 
             internal NativeDRectangle(IntPtr ptr)
@@ -440,7 +440,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_area(this.NativePtr);
+                    return NativeMethods.drectangle_area(this.NativePtr);
                 }
             }
 
@@ -449,7 +449,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_bottom(this.NativePtr);
+                    return NativeMethods.drectangle_bottom(this.NativePtr);
                 }
             }
 
@@ -458,7 +458,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.drectangle_bl_corner(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.drectangle_bl_corner(this.NativePtr));
                 }
             }
 
@@ -467,7 +467,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.drectangle_br_corner(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.drectangle_br_corner(this.NativePtr));
                 }
             }
 
@@ -476,7 +476,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.drectangle_center(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.drectangle_center(this.NativePtr));
                 }
             }
 
@@ -485,7 +485,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.drectangle_dcenter(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.drectangle_dcenter(this.NativePtr));
                 }
             }
 
@@ -494,7 +494,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_height(this.NativePtr);
+                    return NativeMethods.drectangle_height(this.NativePtr);
                 }
             }
 
@@ -503,7 +503,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_is_empty(this.NativePtr);
+                    return NativeMethods.drectangle_is_empty(this.NativePtr);
                 }
             }
 
@@ -512,7 +512,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_left(this.NativePtr);
+                    return NativeMethods.drectangle_left(this.NativePtr);
                 }
             }
 
@@ -521,7 +521,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_right(this.NativePtr);
+                    return NativeMethods.drectangle_right(this.NativePtr);
                 }
             }
 
@@ -530,7 +530,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_top(this.NativePtr);
+                    return NativeMethods.drectangle_top(this.NativePtr);
                 }
             }
 
@@ -539,7 +539,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.drectangle_tl_corner(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.drectangle_tl_corner(this.NativePtr));
                 }
             }
 
@@ -548,7 +548,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return new DPoint.NativeDPoint(Native.drectangle_tr_corner(this.NativePtr));
+                    return new DPoint.NativeDPoint(NativeMethods.drectangle_tr_corner(this.NativePtr));
                 }
             }
 
@@ -557,7 +557,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.drectangle_width(this.NativePtr);
+                    return NativeMethods.drectangle_width(this.NativePtr);
                 }
             }
 
@@ -578,7 +578,7 @@ namespace DlibDotNet
 
                 p.ThrowIfDisposed();
 
-                var result = Native.drectangle_centered_rect1(p.NativePtr, width, height);
+                var result = NativeMethods.drectangle_centered_rect1(p.NativePtr, width, height);
                 return new NativeDRectangle(result);
             }
 
@@ -589,7 +589,7 @@ namespace DlibDotNet
 
                 drect.ThrowIfDisposed();
 
-                var result = Native.drectangle_centered_rect(drect.NativePtr, width, height);
+                var result = NativeMethods.drectangle_centered_rect(drect.NativePtr, width, height);
                 return new NativeDRectangle(result);
             }
 
@@ -600,12 +600,12 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                return Native.drectangle_contains(this.NativePtr, point.NativePtr);
+                return NativeMethods.drectangle_contains(this.NativePtr, point.NativePtr);
             }
 
             public bool Contains(NativeDRectangle drect)
             {
-                return Native.drectangle_contains2(this.NativePtr, drect.NativePtr);
+                return NativeMethods.drectangle_contains2(this.NativePtr, drect.NativePtr);
             }
 
             public NativeDRectangle Intersect(NativeDRectangle drect)
@@ -615,13 +615,13 @@ namespace DlibDotNet
 
                 drect.ThrowIfDisposed();
 
-                var result = Native.drectangle_intersect(this.NativePtr, drect.NativePtr);
+                var result = NativeMethods.drectangle_intersect(this.NativePtr, drect.NativePtr);
                 return new NativeDRectangle(result);
             }
 
             public NativeDRectangle SetAspectRatio(double ratio)
             {
-                var result = Native.drectangle_set_aspect_ratio(this.NativePtr, ratio);
+                var result = NativeMethods.drectangle_set_aspect_ratio(this.NativePtr, ratio);
                 return new NativeDRectangle(result);
             }
 
@@ -640,7 +640,7 @@ namespace DlibDotNet
                 drect.ThrowIfDisposed();
                 point.ThrowIfDisposed();
 
-                var result = Native.drectangle_translate_rect(drect.NativePtr, point.NativePtr);
+                var result = NativeMethods.drectangle_translate_rect(drect.NativePtr, point.NativePtr);
                 return new NativeDRectangle(result);
             }
 
@@ -659,7 +659,7 @@ namespace DlibDotNet
                 drect.ThrowIfDisposed();
                 point.ThrowIfDisposed();
 
-                var result = Native.drectangle_translate_rect_d(drect.NativePtr, point.NativePtr);
+                var result = NativeMethods.drectangle_translate_rect_d(drect.NativePtr, point.NativePtr);
                 return new NativeDRectangle(result);
             }
 
@@ -677,7 +677,7 @@ namespace DlibDotNet
 
                 drect.ThrowIfDisposed();
 
-                var ptr = Native.drectangle_operator(drect.NativePtr);
+                var ptr = NativeMethods.drectangle_operator(drect.NativePtr);
                 return new Rectangle.NativeRectangle(ptr);
             }
 
@@ -691,7 +691,7 @@ namespace DlibDotNet
                 drect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                var ptr = Native.drectangle_operator_add(drect.NativePtr, rhs.NativePtr);
+                var ptr = NativeMethods.drectangle_operator_add(drect.NativePtr, rhs.NativePtr);
                 return new NativeDRectangle(ptr);
             }
 
@@ -702,7 +702,7 @@ namespace DlibDotNet
 
                 drect.ThrowIfDisposed();
 
-                var ptr = Native.drectangle_operator_mul(drect.NativePtr, rhs);
+                var ptr = NativeMethods.drectangle_operator_mul(drect.NativePtr, rhs);
                 return new NativeDRectangle(ptr);
             }
 
@@ -716,7 +716,7 @@ namespace DlibDotNet
                 if (Math.Abs(rhs) < double.Epsilon)
                     throw new DivideByZeroException();
 
-                var ptr = Native.drectangle_operator_div(drect.NativePtr, rhs);
+                var ptr = NativeMethods.drectangle_operator_div(drect.NativePtr, rhs);
                 return new NativeDRectangle(ptr);
             }
 
@@ -730,7 +730,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                return Native.drectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
+                return NativeMethods.drectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
             }
 
             public static bool operator !=(NativeDRectangle rect, NativeDRectangle rhs)
@@ -743,7 +743,7 @@ namespace DlibDotNet
                 rect.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                return !Native.drectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
+                return !NativeMethods.drectangle_operator_equal(rect.NativePtr, rhs.NativePtr);
             }
 
             protected override void DisposeUnmanaged()
@@ -753,121 +753,13 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Native.drectangle_delete(this.NativePtr);
+                NativeMethods.drectangle_delete(this.NativePtr);
             }
 
             #endregion
 
             #endregion
-
-            internal sealed class Native
-            {
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_new();
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_new1(double left, double top, double right, double bottom);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_new2(IntPtr p);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_new3(IntPtr p1, IntPtr p2);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_new4(IntPtr drect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_operator(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void drectangle_delete(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_bottom(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_left(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_right(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_top(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool drectangle_is_empty(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_bl_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_br_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_tl_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_tr_corner(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_area(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_height(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double drectangle_width(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_intersect(IntPtr rect, IntPtr target);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool drectangle_contains(IntPtr rect, IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool drectangle_contains2(IntPtr rect, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_center(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_dcenter(IntPtr rect);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_centered_rect(IntPtr dpoint, double width, double height);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_centered_rect1(IntPtr drect, double width, double height);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_set_aspect_ratio(IntPtr rect, double ratio);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_translate_rect(IntPtr rect, IntPtr p);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_translate_rect_d(IntPtr rect, IntPtr p);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_operator_add(IntPtr drect, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_operator_mul(IntPtr drect, double rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr drectangle_operator_div(IntPtr drect, double rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool drectangle_operator_equal(IntPtr drect, IntPtr rhs);
-
-            }
-
+            
         }
 #pragma warning restore CS0660, CS0661
 

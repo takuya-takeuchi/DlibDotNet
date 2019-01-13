@@ -13,7 +13,7 @@ namespace DlibDotNet
 
         private readonly MatrixElementTypes _MatrixElementTypes;
 
-        private readonly Dlib.Native.MatrixElementType _ElementType;
+        private readonly NativeMethods.MatrixElementType _ElementType;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace DlibDotNet
                 this.TemplateRows = templateRow;
                 this.TemplateColumns = templateColumn;
 
-                this.NativePtr = Dlib.Native.linear_kernel_new(this._ElementType, templateRow, templateColumn);
+                this.NativePtr = NativeMethods.linear_kernel_new(this._ElementType, templateRow, templateColumn);
             }
         }
 
@@ -63,7 +63,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.linear_kernel_delete(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+            NativeMethods.linear_kernel_delete(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
         }
 
         #endregion

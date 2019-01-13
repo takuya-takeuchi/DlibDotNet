@@ -159,12 +159,12 @@ namespace DlibDotNet
             {
                 using (var f = first.ToNative())
                 using (var n = second.ToNative())
-                    return Dlib.Native.stdpair_point_point_new(f.NativePtr, n.NativePtr);
+                    return NativeMethods.stdpair_point_point_new(f.NativePtr, n.NativePtr);
             }
 
             public override IntPtr Create(IntPtr first, IntPtr second)
             {
-                return Dlib.Native.stdpair_point_point_new(first, second);
+                return NativeMethods.stdpair_point_point_new(first, second);
             }
 
             public override Point CreateFirst(IntPtr first)
@@ -179,26 +179,26 @@ namespace DlibDotNet
 
             public override Point GetFirst(IntPtr ptr)
             {
-                using (var native = new Point.NativePoint(Dlib.Native.stdpair_point_point_get_first(ptr)))
+                using (var native = new Point.NativePoint(NativeMethods.stdpair_point_point_get_first(ptr)))
                     return native.ToManaged();
             }
 
             public override Point GetSecond(IntPtr ptr)
             {
-                using (var native = new Point.NativePoint(Dlib.Native.stdpair_point_point_get_second(ptr)))
+                using (var native = new Point.NativePoint(NativeMethods.stdpair_point_point_get_second(ptr)))
                     return native.ToManaged();
             }
 
             public override void SetFirst(IntPtr ptr, Point value)
             {
                 using (var native = value.ToNative())
-                    Dlib.Native.stdpair_point_point_set_first(ptr, native.NativePtr);
+                    NativeMethods.stdpair_point_point_set_first(ptr, native.NativePtr);
             }
 
             public override void SetSecond(IntPtr ptr, Point value)
             {
                 using (var native = value.ToNative())
-                    Dlib.Native.stdpair_point_point_set_second(ptr, native.NativePtr);
+                    NativeMethods.stdpair_point_point_set_second(ptr, native.NativePtr);
             }
 
             #endregion

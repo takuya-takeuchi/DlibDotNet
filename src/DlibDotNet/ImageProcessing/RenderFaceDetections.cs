@@ -25,7 +25,7 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<ImageWindow.OverlayLine>())
             {
-                Native.render_face_detections(detection.NativePtr, ref color, vector.NativePtr);
+                NativeMethods.render_face_detections(detection.NativePtr, ref color, vector.NativePtr);
                 return vector.ToArray();
             }
         }
@@ -43,28 +43,12 @@ namespace DlibDotNet
             using (var vectorIn = new StdVector<FullObjectDetection>(detection))
             using (var vectorOut = new StdVector<ImageWindow.OverlayLine>())
             {
-                Native.render_face_detections(vectorIn.NativePtr, ref color, vectorOut.NativePtr);
+                NativeMethods.render_face_detections(vectorIn.NativePtr, ref color, vectorOut.NativePtr);
                 return vectorOut.ToArray();
             }
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void render_face_detections(IntPtr dets,
-                                                             ref RgbPixel color,
-                                                             IntPtr vectorOfLine);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void render_face_detections2(IntPtr dets,
-                                                              ref RgbPixel color,
-                                                              IntPtr vectorOfLine);
-
-        }
-
 
     }
 

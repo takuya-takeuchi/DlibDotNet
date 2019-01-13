@@ -15,7 +15,7 @@ namespace DlibDotNet
 
         public PerspectiveWindow()
         {
-            this.NativePtr = Native.perspective_window_new();
+            this.NativePtr = NativeMethods.perspective_window_new();
         }
 
         public PerspectiveWindow(IEnumerable<Vector<double>> points)
@@ -26,7 +26,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                this.NativePtr = Native.perspective_window_new2(vector.NativePtr);
+                this.NativePtr = NativeMethods.perspective_window_new2(vector.NativePtr);
         }
 
         public PerspectiveWindow(IEnumerable<Vector<double>> points, string title)
@@ -38,7 +38,7 @@ namespace DlibDotNet
 
             var str = Encoding.UTF8.GetBytes(title);
             using (var vector = new StdVector<Vector<double>>(points))
-                this.NativePtr = Native.perspective_window_new3(vector.NativePtr, str);
+                this.NativePtr = NativeMethods.perspective_window_new3(vector.NativePtr, str);
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, ushort color)
@@ -74,7 +74,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, short color)
@@ -89,7 +89,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.Int16, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.Int16, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, int color)
@@ -104,7 +104,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.Int32, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.Int32, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, float color)
@@ -119,7 +119,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.Float, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.Float, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, double color)
@@ -134,7 +134,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.Double, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.Double, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, RgbPixel color)
@@ -149,7 +149,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, RgbAlphaPixel color)
@@ -164,7 +164,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
         }
 
         public void AddOverlay(Vector<double> p1, Vector<double> p2, HsiPixel color)
@@ -179,7 +179,7 @@ namespace DlibDotNet
             p1.ThrowIfDisposed();
             p2.ThrowIfDisposed();
 
-            Native.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
         }
 
         #endregion
@@ -194,7 +194,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay2(this.NativePtr, vector.NativePtr);
+                NativeMethods.perspective_window_add_overlay2(this.NativePtr, vector.NativePtr);
         }
 
         #region AddOverlay(IEnumerable<Vector<double>>, pixelcolor)
@@ -209,7 +209,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.UInt8, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, ushort color)
@@ -222,7 +222,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.UInt16, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, short color)
@@ -235,7 +235,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Int16, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int16, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, int color)
@@ -248,7 +248,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Int32, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int32, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, float color)
@@ -261,7 +261,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Float, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Float, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, double color)
@@ -274,7 +274,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.Double, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Double, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, RgbPixel color)
@@ -287,7 +287,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.RgbPixel, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, RgbAlphaPixel color)
@@ -300,7 +300,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.RgbAlphaPixel, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
         }
 
         public void AddOverlay(IEnumerable<Vector<double>> points, HsiPixel color)
@@ -313,7 +313,7 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             using (var vector = new StdVector<Vector<double>>(points))
-                Native.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, Dlib.Native.Array2DType.HsiPixel, ref color);
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
         }
 
         #endregion
@@ -328,7 +328,7 @@ namespace DlibDotNet
             overlay.ThrowIfDisposed();
 
             using (var vector = new StdVector<OverlayDot>(overlay))
-                Native.perspective_window_add_overlay4(this.NativePtr, vector.NativePtr);
+                NativeMethods.perspective_window_add_overlay4(this.NativePtr, vector.NativePtr);
         }
 
         #region Overrids
@@ -343,97 +343,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.perspective_window_delete(this.NativePtr);
+            NativeMethods.perspective_window_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal new sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr perspective_window_new();
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr perspective_window_new2(IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr perspective_window_new3(IntPtr vector, byte[] title);
-
-            #region add_overlay(vector<double>, vector<double>, pixel_color)
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref byte color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref ushort color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref short color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref int color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref float color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref double color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref RgbPixel color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref RgbAlphaPixel color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Dlib.Native.Array2DType type, ref HsiPixel color);
-
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay2(IntPtr window, IntPtr vector);
-
-            #region add_overlay3(vector<double>, vector<double>, pixel_color)
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref byte color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref ushort color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref short color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref int color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref float color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref double color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref RgbPixel color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref RgbAlphaPixel color);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Dlib.Native.Array2DType type, ref HsiPixel color);
-
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType perspective_window_add_overlay4(IntPtr window, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void perspective_window_delete(IntPtr ptr);
-
-        }
 
     }
 

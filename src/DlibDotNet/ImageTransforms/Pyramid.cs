@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using PyramidType = DlibDotNet.NativeMethods.PyramidType;
+
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
@@ -10,7 +12,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private static readonly Dictionary<Type, Dlib.Native.PyramidType> SupportPyramidType = new Dictionary<Type, Dlib.Native.PyramidType>();
+        private static readonly Dictionary<Type, PyramidType> SupportPyramidType = new Dictionary<Type, PyramidType>();
 
         #endregion
 
@@ -18,7 +20,7 @@ namespace DlibDotNet
 
         static Pyramid()
         {
-            SupportPyramidType.Add(typeof(PyramidDown), Dlib.Native.PyramidType.Down);
+            SupportPyramidType.Add(typeof(PyramidDown), PyramidType.Down);
         }
 
         #endregion
@@ -41,7 +43,7 @@ namespace DlibDotNet
 
         public abstract DRectangle RectUp(DRectangle rect, uint levels);
 
-        internal static bool TryGetSupportPyramidType<T>(out Dlib.Native.PyramidType type)
+        internal static bool TryGetSupportPyramidType<T>(out PyramidType type)
         {
             return SupportPyramidType.TryGetValue(typeof(T), out type);
         }

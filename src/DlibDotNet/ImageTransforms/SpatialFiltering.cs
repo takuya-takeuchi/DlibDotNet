@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
+
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -27,10 +28,10 @@ namespace DlibDotNet
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = outImage.ImageType.ToNativeArray2DType();
-            var ret = Native.gaussian_blur(inType, inImage.NativePtr, outType, outImage.NativePtr, sigma, maxSize);
+            var ret = NativeMethods.gaussian_blur(inType, inImage.NativePtr, outType, outImage.NativePtr, sigma, maxSize);
             switch (ret)
             {
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -52,27 +53,16 @@ namespace DlibDotNet
             var outType = outImage.ImageType.ToNativeArray2DType();
             using (var native = rect.ToNative())
             {
-                var ret = Native.sum_filter(inType, inImage.NativePtr, outType, outImage.NativePtr, native.NativePtr);
+                var ret = NativeMethods.sum_filter(inType, inImage.NativePtr, outType, outImage.NativePtr, native.NativePtr);
                 switch (ret)
                 {
-                    case Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException("Output or input type is not supported.");
                 }
             }
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType gaussian_blur(Array2DType inType, IntPtr inImg, Array2DType outtype, IntPtr outImg, double sigma, int maxSize);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType sum_filter(Array2DType inType, IntPtr inImg, Array2DType outtype, IntPtr outImg, IntPtr rect);
-
-        }
 
     }
 

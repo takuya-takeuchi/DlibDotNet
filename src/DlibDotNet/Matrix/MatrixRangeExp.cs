@@ -21,7 +21,7 @@ namespace DlibDotNet
 
         private readonly MatrixElementTypes _MatrixElementType;
 
-        private readonly Dlib.Native.MatrixElementType _NativeMatrixElementType;
+        private readonly NativeMethods.MatrixElementType _NativeMatrixElementType;
 
         private static readonly Dictionary<Type, MatrixElementTypes> SupportTypes = new Dictionary<Type, MatrixElementTypes>();
 
@@ -55,7 +55,7 @@ namespace DlibDotNet
             this._MatrixElementType = type;
 
             var param = this.CreataParam(start, end, false, default(T), false, 0);
-            this.NativePtr = Dlib.Native.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
+            this.NativePtr = NativeMethods.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
         }
 
         public MatrixRangeExp(T start, T inc, T end)
@@ -67,7 +67,7 @@ namespace DlibDotNet
             this._MatrixElementType = type;
 
             var param = this.CreataParam(start, end, true, inc, false, 0);
-            this.NativePtr = Dlib.Native.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
+            this.NativePtr = NativeMethods.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
         }
 
         public MatrixRangeExp(T start, T end, uint num)
@@ -79,7 +79,7 @@ namespace DlibDotNet
             this._MatrixElementType = type;
 
             var param = this.CreataParam(start, end, false, default(T), true, num);
-            this.NativePtr = Dlib.Native.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
+            this.NativePtr = NativeMethods.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
         }
 
         internal MatrixRangeExp(IntPtr ptr)
@@ -101,7 +101,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.matrix_range_exp_nc(this._NativeMatrixElementType, this.NativePtr, out var ret);
+                NativeMethods.matrix_range_exp_nc(this._NativeMatrixElementType, this.NativePtr, out var ret);
                 return ret;
             }
         }
@@ -113,7 +113,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.matrix_range_exp_nr(this._NativeMatrixElementType, this.NativePtr, out var ret);
+                NativeMethods.matrix_range_exp_nr(this._NativeMatrixElementType, this.NativePtr, out var ret);
                 return ret;
             }
         }
@@ -134,16 +134,16 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.matrix_range_exp_delete(this.NativePtr);
+            NativeMethods.matrix_range_exp_delete(this.NativePtr);
         }
 
         #endregion
 
         #region Helpers
 
-        private Dlib.Native.matrix_range_exp_create_param CreataParam(T start, T end, bool useInc, T inc, bool useNum, uint num)
+        private NativeMethods.matrix_range_exp_create_param CreataParam(T start, T end, bool useInc, T inc, bool useNum, uint num)
         {
-            var param = new Dlib.Native.matrix_range_exp_create_param();
+            var param = new NativeMethods.matrix_range_exp_create_param();
 
             if (!SupportTypes.TryGetValue(typeof(T), out var type))
                 return param;
