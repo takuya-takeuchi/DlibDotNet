@@ -6,7 +6,7 @@ using System.Security;
 namespace DlibDotNet.Extensions
 {
 
-    internal static partial class NativeMethods
+    internal sealed partial class NativeMethods
     {
 
 #if LINUX

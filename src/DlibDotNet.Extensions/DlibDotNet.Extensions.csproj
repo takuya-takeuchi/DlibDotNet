@@ -60,11 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\BitmapExtensions.cs" />
-    <Compile Include="Dlib.cs" />
     <Compile Include="Extensions\GrayscalLumaCoefficients.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="PInvoke\Dlib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\WriteableBitmapConverter.cs" />
   </ItemGroup>
