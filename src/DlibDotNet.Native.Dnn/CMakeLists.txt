@@ -72,7 +72,7 @@ configure_file(
         link_libraries("$ENV{CUDA_PATH}/lib/libcudart_static.a")
     elseif(UNIX AND NOT APPLE)
         include_directories("$ENV{CUDA_PATH}/include")
-        link_libraries("$ENV{CUDA_PATH}/lib64/libcudart_static.a")
+        link_libraries("libcudart_static.a")
     else()
         message(FATAL_ERROR "Failed to link CUDA Runtime Library")
     endif()
