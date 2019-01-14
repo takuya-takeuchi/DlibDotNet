@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace DlibDotNet.Dnn
 {
@@ -10,7 +9,7 @@ namespace DlibDotNet.Dnn
         #region Constructors
 
         public ResizableTensor() :
-            base(ResizableTensorNative.resizable_tensor_new())
+            base(NativeMethods.resizable_tensor_new())
         {
         }
 
@@ -30,23 +29,12 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            ResizableTensorNative.resizable_tensor_delete(this.NativePtr);
+            NativeMethods.resizable_tensor_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        private static class ResizableTensorNative
-        {
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr resizable_tensor_new();
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void resizable_tensor_delete(IntPtr tensor);
-
-        }
 
     }
 

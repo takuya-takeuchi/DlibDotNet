@@ -6,94 +6,94 @@ namespace DlibDotNet.Extensions
     internal static class EnumExtensions
     {
 
-        internal static Dlib.Native.Array2DType ToNativeArray2DType(this ImageTypes imageType)
+        internal static NativeMethods.Array2DType ToNativeArray2DType(this ImageTypes imageType)
         {
             switch (imageType)
             {
                 case ImageTypes.RgbPixel:
-                    return Dlib.Native.Array2DType.RgbPixel;
+                    return NativeMethods.Array2DType.RgbPixel;
                 case ImageTypes.RgbAlphaPixel:
-                    return Dlib.Native.Array2DType.RgbAlphaPixel;
+                    return NativeMethods.Array2DType.RgbAlphaPixel;
                 case ImageTypes.UInt8:
-                    return Dlib.Native.Array2DType.UInt8;
+                    return NativeMethods.Array2DType.UInt8;
                 case ImageTypes.UInt16:
-                    return Dlib.Native.Array2DType.UInt16;
+                    return NativeMethods.Array2DType.UInt16;
                 case ImageTypes.UInt32:
-                    return Dlib.Native.Array2DType.UInt32;
+                    return NativeMethods.Array2DType.UInt32;
                 case ImageTypes.Int8:
-                    return Dlib.Native.Array2DType.Int8;
+                    return NativeMethods.Array2DType.Int8;
                 case ImageTypes.Int16:
-                    return Dlib.Native.Array2DType.Int16;
+                    return NativeMethods.Array2DType.Int16;
                 case ImageTypes.Int32:
-                    return Dlib.Native.Array2DType.Int32;
+                    return NativeMethods.Array2DType.Int32;
                 case ImageTypes.HsiPixel:
-                    return Dlib.Native.Array2DType.HsiPixel;
+                    return NativeMethods.Array2DType.HsiPixel;
                 case ImageTypes.Float:
-                    return Dlib.Native.Array2DType.Float;
+                    return NativeMethods.Array2DType.Float;
                 case ImageTypes.Double:
-                    return Dlib.Native.Array2DType.Double;
+                    return NativeMethods.Array2DType.Double;
                 case ImageTypes.Matrix:
-                    return Dlib.Native.Array2DType.Matrix;
+                    return NativeMethods.Array2DType.Matrix;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(imageType), imageType, null);
             }
         }
 
-        internal static Dlib.Native.MatrixElementType ToNativeMatrixElementType(this MatrixElementTypes matrixElementTypes)
+        internal static NativeMethods.MatrixElementType ToNativeMatrixElementType(this MatrixElementTypes matrixElementTypes)
         {
             switch (matrixElementTypes)
             {
                 case MatrixElementTypes.UInt8:
-                    return Dlib.Native.MatrixElementType.UInt8;
+                    return NativeMethods.MatrixElementType.UInt8;
                 case MatrixElementTypes.UInt16:
-                    return Dlib.Native.MatrixElementType.UInt16;
+                    return NativeMethods.MatrixElementType.UInt16;
                 case MatrixElementTypes.UInt32:
-                    return Dlib.Native.MatrixElementType.UInt32;
+                    return NativeMethods.MatrixElementType.UInt32;
                 case MatrixElementTypes.UInt64:
-                    return Dlib.Native.MatrixElementType.UInt64;
+                    return NativeMethods.MatrixElementType.UInt64;
                 case MatrixElementTypes.Int8:
-                    return Dlib.Native.MatrixElementType.Int8;
+                    return NativeMethods.MatrixElementType.Int8;
                 case MatrixElementTypes.Int16:
-                    return Dlib.Native.MatrixElementType.Int16;
+                    return NativeMethods.MatrixElementType.Int16;
                 case MatrixElementTypes.Int32:
-                    return Dlib.Native.MatrixElementType.Int32;
+                    return NativeMethods.MatrixElementType.Int32;
                 case MatrixElementTypes.Int64:
-                    return Dlib.Native.MatrixElementType.Int64;
+                    return NativeMethods.MatrixElementType.Int64;
                 case MatrixElementTypes.Float:
-                    return Dlib.Native.MatrixElementType.Float;
+                    return NativeMethods.MatrixElementType.Float;
                 case MatrixElementTypes.Double:
-                    return Dlib.Native.MatrixElementType.Double;
+                    return NativeMethods.MatrixElementType.Double;
                 case MatrixElementTypes.RgbPixel:
-                    return Dlib.Native.MatrixElementType.RgbPixel;
+                    return NativeMethods.MatrixElementType.RgbPixel;
                 case MatrixElementTypes.RgbAlphaPixel:
-                    return Dlib.Native.MatrixElementType.RgbAlphaPixel;
+                    return NativeMethods.MatrixElementType.RgbAlphaPixel;
                 case MatrixElementTypes.HsiPixel:
-                    return Dlib.Native.MatrixElementType.HsiPixel;
+                    return NativeMethods.MatrixElementType.HsiPixel;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(matrixElementTypes), matrixElementTypes, null);
             }
         }
 
-        internal static Dlib.Native.VectorElementType ToNativeVectorElementType(this VectorElementTypes types)
+        internal static NativeMethods.VectorElementType ToNativeVectorElementType(this VectorElementTypes types)
         {
             switch (types)
             {
                 case VectorElementTypes.UInt8:
-                    return Dlib.Native.VectorElementType.UInt8;
+                    return NativeMethods.VectorElementType.UInt8;
                 case VectorElementTypes.UInt16:
-                    return Dlib.Native.VectorElementType.UInt16;
+                    return NativeMethods.VectorElementType.UInt16;
                 case VectorElementTypes.UInt32:
-                    return Dlib.Native.VectorElementType.UInt32;
+                    return NativeMethods.VectorElementType.UInt32;
                 case VectorElementTypes.Int8:
-                    return Dlib.Native.VectorElementType.Int8;
+                    return NativeMethods.VectorElementType.Int8;
                 case VectorElementTypes.Int16:
-                    return Dlib.Native.VectorElementType.Int16;
+                    return NativeMethods.VectorElementType.Int16;
                 case VectorElementTypes.Int32:
-                    return Dlib.Native.VectorElementType.Int32;
+                    return NativeMethods.VectorElementType.Int32;
                 case VectorElementTypes.Float:
-                    return Dlib.Native.VectorElementType.Float;
+                    return NativeMethods.VectorElementType.Float;
                 case VectorElementTypes.Double:
-                    return Dlib.Native.VectorElementType.Double;
+                    return NativeMethods.VectorElementType.Double;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(types), types, null);
             }
@@ -130,71 +130,71 @@ namespace DlibDotNet.Extensions
             }
         }
 
-        internal static Dlib.Native.InterpolationTypes ToNativeInterpolationTypes(this InterpolationTypes interpolationTypes)
+        internal static NativeMethods.InterpolationTypes ToNativeInterpolationTypes(this InterpolationTypes interpolationTypes)
         {
             switch (interpolationTypes)
             {
                 case InterpolationTypes.NearestNeighbor:
-                    return Dlib.Native.InterpolationTypes.NearestNeighbor;
+                    return NativeMethods.InterpolationTypes.NearestNeighbor;
                 case InterpolationTypes.Bilinear:
-                    return Dlib.Native.InterpolationTypes.Bilinear;
+                    return NativeMethods.InterpolationTypes.Bilinear;
                 case InterpolationTypes.Quadratic:
-                    return Dlib.Native.InterpolationTypes.Quadratic;
+                    return NativeMethods.InterpolationTypes.Quadratic;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(interpolationTypes), interpolationTypes, null);
             }
         }
 
-        internal static Dlib.Native.PointMappingTypes GetNativePointMappingTypes(this PointTransformBase pointTransform)
+        internal static NativeMethods.PointMappingTypes GetNativePointMappingTypes(this PointTransformBase pointTransform)
         {
             if (pointTransform is PointRotator)
-                return Dlib.Native.PointMappingTypes.Rotator;
+                return NativeMethods.PointMappingTypes.Rotator;
             if (pointTransform is PointTransform)
-                return Dlib.Native.PointMappingTypes.Transform;
+                return NativeMethods.PointMappingTypes.Transform;
             if (pointTransform is PointTransformAffine)
-                return Dlib.Native.PointMappingTypes.TransformAffine;
+                return NativeMethods.PointMappingTypes.TransformAffine;
             if (pointTransform is PointTransformProjective)
-                return Dlib.Native.PointMappingTypes.TransformProjective;
+                return NativeMethods.PointMappingTypes.TransformProjective;
 
             throw new ArgumentOutOfRangeException(nameof(pointTransform));
         }
 
-        internal static Dlib.Native.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelType type)
+        internal static NativeMethods.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelType type)
         {
             switch (type)
             {
                 case MultilayerPerceptronKernelType.Kernel1:
-                    return Dlib.Native.MlpKernelType.Kernel1;
+                    return NativeMethods.MlpKernelType.Kernel1;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
-        internal static Dlib.Native.RunningStatsType ToRunningStatsType(this RunningStatsType type)
+        internal static NativeMethods.RunningStatsType ToRunningStatsType(this RunningStatsType type)
         {
             switch (type)
             {
                 case RunningStatsType.Float:
-                    return Dlib.Native.RunningStatsType.Float;
+                    return NativeMethods.RunningStatsType.Float;
                 case RunningStatsType.Double:
-                    return Dlib.Native.RunningStatsType.Double;
+                    return NativeMethods.RunningStatsType.Double;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
-        internal static Dlib.Native.ImagePixelType ToImagePixelType(this ImagePixelFormat type)
+        internal static NativeMethods.ImagePixelType ToImagePixelType(this ImagePixelFormat type)
         {
             switch (type)
             {
                 case ImagePixelFormat.Bgr:
-                    return Dlib.Native.ImagePixelType.Bgr;
+                    return NativeMethods.ImagePixelType.Bgr;
                 case ImagePixelFormat.Bgra:
-                    return Dlib.Native.ImagePixelType.Bgra;
+                    return NativeMethods.ImagePixelType.Bgra;
                 case ImagePixelFormat.Rgb:
-                    return Dlib.Native.ImagePixelType.Rgb;
+                    return NativeMethods.ImagePixelType.Rgb;
                 case ImagePixelFormat.Rgba:
-                    return Dlib.Native.ImagePixelType.Rgba;
+                    return NativeMethods.ImagePixelType.Rgba;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

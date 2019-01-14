@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -24,13 +23,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var detectionConfidence = Native.full_detection_get_detection_confidence(this.NativePtr);
+                var detectionConfidence = NativeMethods.full_detection_get_detection_confidence(this.NativePtr);
                 return detectionConfidence;
             }
             set
             {
                 this.ThrowIfDisposed();
-                Native.full_detection_set_detection_confidence(this.NativePtr, value);
+                NativeMethods.full_detection_set_detection_confidence(this.NativePtr, value);
             }
         }
 
@@ -39,7 +38,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var rect = Native.full_detection_get_rect(this.NativePtr);
+                var rect = NativeMethods.full_detection_get_rect(this.NativePtr);
                 return new FullObjectDetection(rect);
             }
             set
@@ -49,7 +48,7 @@ namespace DlibDotNet
                 if (value == null)
                     throw new ArgumentException(nameof(value));
 
-                Native.full_detection_set_rect(this.NativePtr, value.NativePtr);
+                NativeMethods.full_detection_set_rect(this.NativePtr, value.NativePtr);
             }
         }
 
@@ -58,13 +57,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var weightIndex = Native.full_detection_get_weight_index(this.NativePtr);
+                var weightIndex = NativeMethods.full_detection_get_weight_index(this.NativePtr);
                 return weightIndex;
             }
             set
             {
                 this.ThrowIfDisposed();
-                Native.full_detection_set_weight_index(this.NativePtr, value);
+                NativeMethods.full_detection_set_weight_index(this.NativePtr, value);
             }
         }
 
@@ -84,38 +83,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.full_detection_delete(this.NativePtr);
+            NativeMethods.full_detection_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double full_detection_get_detection_confidence(IntPtr detection);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void full_detection_set_detection_confidence(IntPtr detection, double detection_confidence);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr full_detection_get_rect(IntPtr detection);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void full_detection_set_rect(IntPtr detection, IntPtr rect);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ulong full_detection_get_weight_index(IntPtr detection);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void full_detection_set_weight_index(IntPtr detection, ulong weight_index);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void full_detection_delete(IntPtr detection);
-
-        }
 
     }
 }

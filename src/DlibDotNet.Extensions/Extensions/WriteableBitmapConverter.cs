@@ -266,7 +266,7 @@ namespace DlibDotNet.Extensions
             var buffer = bitmap.BackBuffer;
             var stride = bitmap.BackBufferStride;
             var srcType = type.ToNativeArray2DType();
-            Dlib.Native.extensions_convert_array_to_managed_image(srcType, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+            NativeMethods.extensions_convert_array_to_managed_image(srcType, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
         private static void ToManaged(MatrixElementTypes type, IntPtr src, WriteableBitmap bitmap, bool rgbReverse, int channels)
@@ -276,7 +276,7 @@ namespace DlibDotNet.Extensions
             var buffer = bitmap.BackBuffer;
             var stride = bitmap.BackBufferStride;
             var srcType = type.ToNativeMatrixElementType();
-            Dlib.Native.extensions_convert_matrix_to_managed_image(srcType, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+            NativeMethods.extensions_convert_matrix_to_managed_image(srcType, src, buffer, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
         private static void ToNative(WriteableBitmap bitmap, ImageTypes dstType, IntPtr dst, bool rgbReverse, int channels)
@@ -289,12 +289,12 @@ namespace DlibDotNet.Extensions
 
             if (!usePalette)
             {
-                Dlib.Native.extensions_convert_managed_image_to_array(buffer, dstType.ToNativeArray2DType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                NativeMethods.extensions_convert_managed_image_to_array(buffer, dstType.ToNativeArray2DType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
             else
             {
                 var p = bitmap.Palette.Colors.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                Dlib.Native.extensions_convert_managed_image_to_array_by_palette(buffer, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                NativeMethods.extensions_convert_managed_image_to_array_by_palette(buffer, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
         }
 
@@ -308,12 +308,12 @@ namespace DlibDotNet.Extensions
 
             if (!usePalette)
             {
-                Dlib.Native.extensions_convert_managed_image_to_matrix(buffer, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                NativeMethods.extensions_convert_managed_image_to_matrix(buffer, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
             else
             {
                 var p = bitmap.Palette.Colors.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                Dlib.Native.extensions_convert_managed_image_to_matrix_by_palette(buffer, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
+                NativeMethods.extensions_convert_managed_image_to_matrix_by_palette(buffer, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
             }
         }
 

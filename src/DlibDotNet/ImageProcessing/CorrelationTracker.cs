@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
+using Array2DType = DlibDotNet.NativeMethods.Array2DType;
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -21,15 +22,14 @@ namespace DlibDotNet
             double nuScale = 0.025,
             double scalePyramidAlpha = 1.020)
         {
-            this.NativePtr = Native.correlation_tracker_new(
-                filterSize,
-                numScaleLevels,
-                scaleWindowSize,
-                regularizerSpace,
-                nuSpace,
-                regularizerScale,
-                nuScale,
-                scalePyramidAlpha);
+            this.NativePtr = NativeMethods.correlation_tracker_new(filterSize,
+                                                                   numScaleLevels,
+                                                                   scaleWindowSize,
+                                                                   regularizerSpace,
+                                                                   nuSpace,
+                                                                   regularizerScale,
+                                                                   nuScale,
+                                                                   scalePyramidAlpha);
         }
 
         #endregion
@@ -40,7 +40,7 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
             
-            var rect = Native.correlation_tracker_get_position(this.NativePtr);
+            var rect = NativeMethods.correlation_tracker_get_position(this.NativePtr);
             return new DRectangle(rect);
         }
 
@@ -59,10 +59,10 @@ namespace DlibDotNet
             var inType = image.ImageType.ToNativeArray2DType();
             using (var native = rect.ToNative())
             {
-                var ret = Native.correlation_tracker_start_track(this.NativePtr, inType, image.NativePtr, native.NativePtr);
+                var ret = NativeMethods.correlation_tracker_start_track(this.NativePtr, inType, image.NativePtr, native.NativePtr);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
             }
@@ -83,10 +83,10 @@ namespace DlibDotNet
             var inType = image.ImageType.ToNativeArray2DType();
             using (var native = guess.ToNative())
             {
-                var ret = Native.correlation_tracker_update(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
+                var ret = NativeMethods.correlation_tracker_update(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -104,10 +104,10 @@ namespace DlibDotNet
             image.ThrowIfDisposed();
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.correlation_tracker_update2(this.NativePtr, inType, image.NativePtr, out var confident);
+            var ret = NativeMethods.correlation_tracker_update2(this.NativePtr, inType, image.NativePtr, out var confident);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
+                case ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
@@ -129,10 +129,10 @@ namespace DlibDotNet
             var inType = image.ImageType.ToNativeArray2DType();
             using (var native = guess.ToNative())
             {
-                var ret = Native.correlation_tracker_update_noscale(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
+                var ret = NativeMethods.correlation_tracker_update_noscale(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
+                    case ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -150,10 +150,10 @@ namespace DlibDotNet
             image.ThrowIfDisposed();
 
             var inType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.correlation_tracker_update_noscale2(this.NativePtr, inType, image.NativePtr, out var confident);
+            var ret = NativeMethods.correlation_tracker_update_noscale2(this.NativePtr, inType, image.NativePtr, out var confident);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.Array2DTypeTypeNotSupport:
+                case ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
@@ -172,72 +172,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.correlation_tracker_delete(this.NativePtr);
+            NativeMethods.correlation_tracker_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr correlation_tracker_new(
-                uint filterSize,
-                uint numScaleLevels,
-                uint scaleWindowSize,
-                double regularizerSpace,
-                double nuSpace,
-                double regularizerScale,
-                double nuScale,
-                double scalePyramidAlpha);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType correlation_tracker_start_track(
-                IntPtr tracker,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                IntPtr p);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr correlation_tracker_get_position(IntPtr tracker);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType correlation_tracker_update_noscale(
-                IntPtr tracker,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                IntPtr guess,
-                out double confident);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType correlation_tracker_update_noscale2(
-                IntPtr tracker,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                out double confident);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType correlation_tracker_update(
-                IntPtr tracker,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                IntPtr guess,
-                out double confident);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType correlation_tracker_update2(
-                IntPtr tracker,
-                Dlib.Native.Array2DType imgType,
-                IntPtr img,
-                out double confident);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void correlation_tracker_delete(IntPtr point);
-
-
-        }
 
     }
 

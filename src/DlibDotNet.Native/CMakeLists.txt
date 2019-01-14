@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.0.0)
 cmake_policy(SET CMP0053 NEW)
 cmake_policy(SET CMP0054 NEW)
 
-set(PROJ_NAME DlibDotNet.Native)
+set(PROJ_NAME DlibDotNetNative)
 
-project(${PROJ_NAME} VERSION 19.15.0)
+project(${PROJ_NAME} VERSION 19.16.0)
 
 # OS info
 message("-------------------------------------------------------")
@@ -21,8 +21,8 @@ message("-------------------------------------------------------")
 # Version info
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 16)
-set(VERSION_PATCH 99)
-set(VERSION_DATE 20190105)
+set(VERSION_PATCH 0)
+set(VERSION_DATE 20190114)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
@@ -71,7 +71,7 @@ if (${DLIB_USE_CUDA})
         link_libraries("$ENV{CUDA_PATH}/lib/libcudart_static.a")
     elseif(UNIX AND NOT APPLE)
         include_directories("$ENV{CUDA_PATH}/include")
-        link_libraries("$ENV{CUDA_PATH}/lib64/libcudart_static.a")
+        link_libraries("libcudart_static.a")
     else()
         message(FATAL_ERROR "Failed to link CUDA Runtime Library")
     endif()
@@ -89,9 +89,6 @@ else()
                                     ${SOURCES}
                                     ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 endif()
-
-
-include (${CMAKE_CURRENT_BINARY_DIR}/dlib_build/config/dlibConfig.cmake)
 
 target_link_libraries(${PROJ_NAME} dlib::dlib )
 

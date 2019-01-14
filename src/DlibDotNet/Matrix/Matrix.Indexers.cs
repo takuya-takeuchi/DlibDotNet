@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 using DlibDotNet.Interop;
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
+using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -19,7 +21,7 @@ namespace DlibDotNet
 
             #region Fields 
 
-            protected readonly Dlib.Native.MatrixElementType _Type;
+            protected readonly MatrixElementType _Type;
 
             protected readonly MatrixBase _Parent;
 
@@ -60,20 +62,20 @@ namespace DlibDotNet
                 var tr = this._Parent.TemplateRows;
                 var tc = this._Parent.TemplateColumns;
 
-                var ret = Dlib.Native.matrix_begin(type, matrix, tr, tc, out begin);
+                var ret = NativeMethods.matrix_begin(type, matrix, tr, tc, out begin);
                 this.ThrowIfHasError(ret);
 
-                ret = Dlib.Native.matrix_end(type, matrix, tr, tc, out end);
+                ret = NativeMethods.matrix_end(type, matrix, tr, tc, out end);
                 this.ThrowIfHasError(ret);
             }
 
-            protected void ThrowIfHasError(Dlib.Native.ErrorType error)
+            protected void ThrowIfHasError(ErrorType error)
             {
                 switch (error)
                 {
-                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    case ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._Type} is not supported.");
-                    case Dlib.Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                 }
             }
@@ -125,7 +127,7 @@ namespace DlibDotNet
                     {
                         byte value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -146,7 +148,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -168,7 +170,7 @@ namespace DlibDotNet
                     {
                         byte value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -187,7 +189,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -246,7 +248,7 @@ namespace DlibDotNet
                     {
                         ushort value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -267,7 +269,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -289,7 +291,7 @@ namespace DlibDotNet
                     {
                         ushort value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -308,7 +310,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -367,7 +369,7 @@ namespace DlibDotNet
                     {
                         uint value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -388,7 +390,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -410,7 +412,7 @@ namespace DlibDotNet
                     {
                         uint value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -429,7 +431,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -488,7 +490,7 @@ namespace DlibDotNet
                     {
                         ulong value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -509,7 +511,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -531,7 +533,7 @@ namespace DlibDotNet
                     {
                         ulong value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -550,7 +552,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -609,7 +611,7 @@ namespace DlibDotNet
                     {
                         sbyte value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -630,7 +632,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -652,7 +654,7 @@ namespace DlibDotNet
                     {
                         sbyte value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -671,7 +673,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -730,7 +732,7 @@ namespace DlibDotNet
                     {
                         short value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -751,7 +753,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -773,7 +775,7 @@ namespace DlibDotNet
                     {
                         short value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -792,7 +794,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -851,7 +853,7 @@ namespace DlibDotNet
                     {
                         int value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -872,7 +874,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -894,7 +896,7 @@ namespace DlibDotNet
                     {
                         int value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -913,7 +915,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -972,7 +974,7 @@ namespace DlibDotNet
                     {
                         long value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -993,7 +995,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1015,7 +1017,7 @@ namespace DlibDotNet
                     {
                         long value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1034,7 +1036,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1093,7 +1095,7 @@ namespace DlibDotNet
                     {
                         float value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1114,7 +1116,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1136,7 +1138,7 @@ namespace DlibDotNet
                     {
                         float value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1155,7 +1157,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1214,7 +1216,7 @@ namespace DlibDotNet
                     {
                         double value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1235,7 +1237,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1257,7 +1259,7 @@ namespace DlibDotNet
                     {
                         double value;
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1276,7 +1278,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1335,7 +1337,7 @@ namespace DlibDotNet
                     {
                         var value = new RgbPixel();
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1356,7 +1358,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1378,7 +1380,7 @@ namespace DlibDotNet
                     {
                         var value = new RgbPixel();
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1397,7 +1399,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1456,7 +1458,7 @@ namespace DlibDotNet
                     {
                         var value = new RgbAlphaPixel();
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1477,7 +1479,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1499,7 +1501,7 @@ namespace DlibDotNet
                     {
                         var value = new RgbAlphaPixel();
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1518,7 +1520,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1577,7 +1579,7 @@ namespace DlibDotNet
                     {
                         var value = new HsiPixel();
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1598,7 +1600,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }
@@ -1620,7 +1622,7 @@ namespace DlibDotNet
                     {
                         var value = new HsiPixel();
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
 
                         return value;
@@ -1639,7 +1641,7 @@ namespace DlibDotNet
                     unsafe
                     {
                         var p = (IntPtr)(&value);
-                        var ret = Dlib.Native.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
                         this.ThrowIfHasError(ret);
                     }
                 }

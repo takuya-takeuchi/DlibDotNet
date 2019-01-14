@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -13,17 +12,17 @@ namespace DlibDotNet
 
         private readonly ImageTypes _ImageType;
 
-        private readonly Dlib.Native.Array2DType _Array2DType;
+        private readonly NativeMethods.Array2DType _Array2DType;
 
-        private readonly Dlib.Native.ElementType _ElementType;
+        private readonly NativeMethods.ElementType _ElementType;
 
-        private readonly Dlib.Native.MatrixElementType _MatrixElementType;
+        private readonly NativeMethods.MatrixElementType _MatrixElementType;
 
         #endregion
 
         #region Constructors
 
-        internal MatrixOp(Dlib.Native.ElementType elementType, ImageTypes type, IntPtr ptr)
+        internal MatrixOp(NativeMethods.ElementType elementType, ImageTypes type, IntPtr ptr)
         {
             this._ElementType = elementType;
             this._Array2DType = type.ToNativeArray2DType();
@@ -34,7 +33,7 @@ namespace DlibDotNet
             this.TemplateColumns = -1;
         }
 
-        internal MatrixOp(Dlib.Native.ElementType elementType, MatrixElementTypes type, IntPtr ptr, int templateRows = 0, int templateColumns = 0)
+        internal MatrixOp(NativeMethods.ElementType elementType, MatrixElementTypes type, IntPtr ptr, int templateRows = 0, int templateColumns = 0)
         {
             this._ElementType = elementType;
             this._MatrixElementType = type.ToNativeMatrixElementType();
@@ -48,7 +47,7 @@ namespace DlibDotNet
 
         #region Properties
 
-        internal Dlib.Native.Array2DType Array2DType => this._Array2DType;
+        internal NativeMethods.Array2DType Array2DType => this._Array2DType;
 
         public override int Columns
         {
@@ -59,29 +58,29 @@ namespace DlibDotNet
                 var ret = 0;
                 switch (this._ElementType)
                 {
-                    case Dlib.Native.ElementType.OpHeatmap:
+                    case NativeMethods.ElementType.OpHeatmap:
                         if (this.TemplateRows == -1 && this.TemplateColumns == -1)
-                            Native.matrix_op_op_heatmap_nc(this._Array2DType, this.NativePtr, out ret);
+                            NativeMethods.matrix_op_op_heatmap_nc(this._Array2DType, this.NativePtr, out ret);
                         else
-                            Native.matrix_op_op_heatmap_nc_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                            NativeMethods.matrix_op_op_heatmap_nc_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpJet:
+                    case NativeMethods.ElementType.OpJet:
                         if (this.TemplateRows == -1 && this.TemplateColumns == -1)
-                            Native.matrix_op_op_jet_nc(this._Array2DType, this.NativePtr, out ret);
+                            NativeMethods.matrix_op_op_jet_nc(this._Array2DType, this.NativePtr, out ret);
                         else
-                            Native.matrix_op_op_jet_nc_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                            NativeMethods.matrix_op_op_jet_nc_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpArray2DToMat:
-                        Native.matrix_op_op_array2d_to_mat_nc(this._Array2DType, this.NativePtr, out ret);
+                    case NativeMethods.ElementType.OpArray2DToMat:
+                        NativeMethods.matrix_op_op_array2d_to_mat_nc(this._Array2DType, this.NativePtr, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpTrans:
-                        Native.matrix_op_op_trans_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                    case NativeMethods.ElementType.OpTrans:
+                        NativeMethods.matrix_op_op_trans_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpStdVectToMat:
-                        Native.matrix_op_op_std_vect_to_mat_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                    case NativeMethods.ElementType.OpStdVectToMat:
+                        NativeMethods.matrix_op_op_std_vect_to_mat_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpJoinRows:
-                        Native.matrix_op_op_join_rows_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                    case NativeMethods.ElementType.OpJoinRows:
+                        NativeMethods.matrix_op_op_join_rows_nc(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                 }
 
@@ -89,9 +88,9 @@ namespace DlibDotNet
             }
         }
 
-        internal Dlib.Native.ElementType ElementType => this._ElementType;
+        internal NativeMethods.ElementType ElementType => this._ElementType;
 
-        internal Dlib.Native.MatrixElementType MatrixElementType => this._MatrixElementType;
+        internal NativeMethods.MatrixElementType MatrixElementType => this._MatrixElementType;
 
         public override int Rows
         {
@@ -102,29 +101,29 @@ namespace DlibDotNet
                 var ret = 0;
                 switch (this._ElementType)
                 {
-                    case Dlib.Native.ElementType.OpHeatmap:
+                    case NativeMethods.ElementType.OpHeatmap:
                         if (this.TemplateRows == -1 && this.TemplateColumns == -1)
-                            Native.matrix_op_op_heatmap_nr(this._Array2DType, this.NativePtr, out ret);
+                            NativeMethods.matrix_op_op_heatmap_nr(this._Array2DType, this.NativePtr, out ret);
                         else
-                            Native.matrix_op_op_heatmap_nr_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                            NativeMethods.matrix_op_op_heatmap_nr_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpJet:
+                    case NativeMethods.ElementType.OpJet:
                         if (this.TemplateRows == -1 && this.TemplateColumns == -1)
-                            Native.matrix_op_op_jet_nr(this._Array2DType, this.NativePtr, out ret);
+                            NativeMethods.matrix_op_op_jet_nr(this._Array2DType, this.NativePtr, out ret);
                         else
-                            Native.matrix_op_op_jet_nr_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                            NativeMethods.matrix_op_op_jet_nr_matrix(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpArray2DToMat:
-                        Native.matrix_op_op_array2d_to_mat_nr(this._Array2DType, this.NativePtr, out ret);
+                    case NativeMethods.ElementType.OpArray2DToMat:
+                        NativeMethods.matrix_op_op_array2d_to_mat_nr(this._Array2DType, this.NativePtr, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpTrans:
-                        Native.matrix_op_op_trans_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                    case NativeMethods.ElementType.OpTrans:
+                        NativeMethods.matrix_op_op_trans_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpStdVectToMat:
-                        Native.matrix_op_op_std_vect_to_mat_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                    case NativeMethods.ElementType.OpStdVectToMat:
+                        NativeMethods.matrix_op_op_std_vect_to_mat_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
-                    case Dlib.Native.ElementType.OpJoinRows:
-                        Native.matrix_op_op_join_rows_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
+                    case NativeMethods.ElementType.OpJoinRows:
+                        NativeMethods.matrix_op_op_join_rows_nr(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, out ret);
                         break;
                 }
 
@@ -160,23 +159,23 @@ namespace DlibDotNet
 
             switch (this._ElementType)
             {
-                case Dlib.Native.ElementType.OpHeatmap:
-                    Native.matrix_op_op_heatmap_delete(this._Array2DType, this.NativePtr);
+                case NativeMethods.ElementType.OpHeatmap:
+                    NativeMethods.matrix_op_op_heatmap_delete(this._Array2DType, this.NativePtr);
                     break;
-                case Dlib.Native.ElementType.OpJet:
-                    Native.matrix_op_op_jet_delete(this._Array2DType, this.NativePtr);
+                case NativeMethods.ElementType.OpJet:
+                    NativeMethods.matrix_op_op_jet_delete(this._Array2DType, this.NativePtr);
                     break;
-                case Dlib.Native.ElementType.OpArray2DToMat:
-                    Native.matrix_op_op_array2d_to_mat_delete(this._Array2DType, this.NativePtr);
+                case NativeMethods.ElementType.OpArray2DToMat:
+                    NativeMethods.matrix_op_op_array2d_to_mat_delete(this._Array2DType, this.NativePtr);
                     break;
-                case Dlib.Native.ElementType.OpTrans:
-                    Native.matrix_op_op_trans_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+                case NativeMethods.ElementType.OpTrans:
+                    NativeMethods.matrix_op_op_trans_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
                     break;
-                case Dlib.Native.ElementType.OpStdVectToMat:
-                    Native.matrix_op_op_std_vect_to_mat_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+                case NativeMethods.ElementType.OpStdVectToMat:
+                    NativeMethods.matrix_op_op_std_vect_to_mat_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
                     break;
-                case Dlib.Native.ElementType.OpJoinRows:
-                    Native.matrix_op_op_join_rows_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
+                case NativeMethods.ElementType.OpJoinRows:
+                    NativeMethods.matrix_op_op_join_rows_delete(this._MatrixElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns);
                     break;
             }
         }
@@ -189,24 +188,24 @@ namespace DlibDotNet
 
             try
             {
-                ofstream = Dlib.Native.ostringstream_new();
+                ofstream = NativeMethods.ostringstream_new();
 
-                Dlib.Native.ErrorType ret;
+                NativeMethods.ErrorType ret;
                 switch (this._ElementType)
                 {
-                    case Dlib.Native.ElementType.OpTrans:
-                        ret = Native.matrix_op_op_trans_operator_left_shift(this._MatrixElementType,
-                                                                            this.NativePtr,
-                                                                            this.TemplateRows,
-                                                                            this.TemplateColumns,
-                                                                            ofstream);
+                    case NativeMethods.ElementType.OpTrans:
+                        ret = NativeMethods.matrix_op_op_trans_operator_left_shift(this._MatrixElementType,
+                                                                                   this.NativePtr,
+                                                                                   this.TemplateRows,
+                                                                                   this.TemplateColumns,
+                                                                                   ofstream);
                         break;
-                    case Dlib.Native.ElementType.OpStdVectToMat:
-                        ret = Native.matrix_op_op_std_vect_to_mat_operator_left_shift(this._MatrixElementType,
-                                                                                      this.NativePtr,
-                                                                                      this.TemplateRows,
-                                                                                      this.TemplateColumns,
-                                                                                      ofstream);
+                    case NativeMethods.ElementType.OpStdVectToMat:
+                        ret = NativeMethods.matrix_op_op_std_vect_to_mat_operator_left_shift(this._MatrixElementType,
+                                                                                             this.NativePtr,
+                                                                                             this.TemplateRows,
+                                                                                             this.TemplateColumns,
+                                                                                             ofstream);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -214,11 +213,11 @@ namespace DlibDotNet
 
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.OK:
-                        stdstr = Dlib.Native.ostringstream_str(ofstream);
+                    case NativeMethods.ErrorType.OK:
+                        stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case Dlib.Native.ErrorType.InputElementTypeNotSupport:
+                    case NativeMethods.ErrorType.InputElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
                     default:
                         throw new ArgumentException();
@@ -231,9 +230,9 @@ namespace DlibDotNet
             finally
             {
                 if (stdstr != IntPtr.Zero)
-                    Dlib.Native.string_delete(stdstr);
+                    NativeMethods.string_delete(stdstr);
                 if (ofstream != IntPtr.Zero)
-                    Dlib.Native.ostringstream_delete(ofstream);
+                    NativeMethods.ostringstream_delete(ofstream);
             }
 
             return str;
@@ -242,109 +241,6 @@ namespace DlibDotNet
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            #region delete
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_op_op_array2d_to_mat_delete(Dlib.Native.Array2DType type, IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_op_op_heatmap_delete(Dlib.Native.Array2DType type, IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_op_op_jet_delete(Dlib.Native.Array2DType type, IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_op_op_std_vect_to_mat_delete(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_op_op_trans_delete(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_op_op_join_rows_delete(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
-
-            #endregion
-
-            #region nc
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_array2d_to_mat_nc(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nc(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nc_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_jet_nc(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_jet_nc_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_std_vect_to_mat_nc(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_trans_nc(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_join_rows_nc(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
-
-            #endregion
-
-            #region nr
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_array2d_to_mat_nr(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nr(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_nr_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_jet_nr(Dlib.Native.Array2DType type, IntPtr obj, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_jet_nr_matrix(Dlib.Native.MatrixElementType type, IntPtr img, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_std_vect_to_mat_nr(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_trans_nr(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_join_rows_nr(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
-
-            #endregion
-
-            #region operator
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_jet_operator(Dlib.Native.Array2DType type, IntPtr matrix, int r, int c, IntPtr rgbPixel);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_heatmap_operator(Dlib.Native.Array2DType type, IntPtr matrix, int r, int c, IntPtr rgbPixel);
-
-            #endregion
-
-            #region operator_left_shift
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_std_vect_to_mat_operator_left_shift(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, IntPtr stream);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType matrix_op_op_trans_operator_left_shift(Dlib.Native.MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, IntPtr stream);
-
-            #endregion
-
-        }
 
     }
 

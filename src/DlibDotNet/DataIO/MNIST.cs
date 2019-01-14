@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -33,11 +29,11 @@ namespace DlibDotNet
 
             var str = Encoding.UTF8.GetBytes(folderPath);
 
-            Native.load_mnist_dataset(str, 
-                                      out var retTrainingImages,
-                                      out var retTrainingLabels, 
-                                      out var retTestingImages,
-                                      out var retTestingLabels);
+            NativeMethods.load_mnist_dataset(str, 
+                                             out var retTrainingImages,
+                                             out var retTrainingLabels, 
+                                             out var retTestingImages,
+                                             out var retTestingLabels);
 
             using (var tmp = new StdVector<Matrix<byte>>(retTrainingImages))
                 trainingImages = tmp.ToArray();
@@ -50,18 +46,6 @@ namespace DlibDotNet
         }
         
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void load_mnist_dataset(byte[] folderPath, 
-                                                         out IntPtr training_images,
-                                                         out IntPtr training_labels,
-                                                         out IntPtr testing_images,
-                                                         out IntPtr testing_labels);
-
-        }
 
     }
 

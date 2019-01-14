@@ -57,13 +57,13 @@ namespace DlibDotNet
 
             this._MultilayerPerceptronKernelType = type;
             var native = type.ToNativeMlpKernelType();
-            this.NativePtr = Dlib.Native.mlp_kernel_new(native,
-                                                        nodesInInputLayer,
-                                                        nodesInFirstHiddenLayer,
-                                                        nodesInSecondHiddenLayer,
-                                                        nodesInOutputLayer,
-                                                        alpha,
-                                                        momentum);
+            this.NativePtr = NativeMethods.mlp_kernel_new(native,
+                                                          nodesInInputLayer,
+                                                          nodesInFirstHiddenLayer,
+                                                          nodesInSecondHiddenLayer,
+                                                          nodesInOutputLayer,
+                                                          alpha,
+                                                          momentum);
         }
 
         #endregion
@@ -88,12 +88,12 @@ namespace DlibDotNet
             var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
             var type = data.MatrixElementType.ToNativeMatrixElementType();
 
-            var ret = Dlib.Native.mlp_kernel_operator(kernelType, this.NativePtr, type, data.NativePtr, out var retMat);
+            var ret = NativeMethods.mlp_kernel_operator(kernelType, this.NativePtr, type, data.NativePtr, out var retMat);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Dlib.Native.ErrorType.MlpKernelNotSupport:
+                case NativeMethods.ErrorType.MlpKernelNotSupport:
                     throw new ArgumentException($"{kernelType} is not supported.");
             }
 
@@ -125,10 +125,10 @@ namespace DlibDotNet
                 throw new ArgumentOutOfRangeException(nameof(exampleOut), $"{nameof(exampleOut)} must be 0.0 - 1.0.");
 
             var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
-            var ret = Dlib.Native.mlp_kernel_train_matrix(kernelType, this.NativePtr, exampleIn.NativePtr, exampleOut.NativePtr);
+            var ret = NativeMethods.mlp_kernel_train_matrix(kernelType, this.NativePtr, exampleIn.NativePtr, exampleOut.NativePtr);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MlpKernelNotSupport:
+                case NativeMethods.ErrorType.MlpKernelNotSupport:
                     throw new ArgumentException($"{kernelType} is not supported.");
             }
         }
@@ -153,10 +153,10 @@ namespace DlibDotNet
                 throw new ArgumentOutOfRangeException(nameof(exampleOut), $"{nameof(exampleOut)} must be 0.0 - 1.0.");
 
             var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
-            var ret = Dlib.Native.mlp_kernel_train(kernelType, this.NativePtr, exampleIn.NativePtr, exampleOut);
+            var ret = NativeMethods.mlp_kernel_train(kernelType, this.NativePtr, exampleIn.NativePtr, exampleOut);
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MlpKernelNotSupport:
+                case NativeMethods.ErrorType.MlpKernelNotSupport:
                     throw new ArgumentException($"{kernelType} is not supported.");
             }
         }
@@ -174,7 +174,7 @@ namespace DlibDotNet
                 return;
 
             var kernelType = this._MultilayerPerceptronKernelType.ToNativeMlpKernelType();
-            Dlib.Native.mlp_kernel_delete(kernelType, this.NativePtr);
+            NativeMethods.mlp_kernel_delete(kernelType, this.NativePtr);
         }
 
         #endregion

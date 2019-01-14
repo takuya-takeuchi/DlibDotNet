@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace DlibDotNet.Dnn
 {
@@ -25,22 +24,11 @@ namespace DlibDotNet.Dnn
         {
             get
             {
-                return TensorNative.tensor_k(this.NativePtr);
+                return NativeMethods.tensor_k(this.NativePtr);
             }
         }
 
         #endregion
-
-        internal static class TensorNative
-        {
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int tensor_k(IntPtr tensor);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr image_plane(IntPtr tensor, int sample, int k);
-
-        }
 
     }
 

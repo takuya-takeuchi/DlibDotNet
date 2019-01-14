@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -12,12 +11,12 @@ namespace DlibDotNet
 
         public PointRotator()
         {
-            this.NativePtr = Native.point_rotator_new();
+            this.NativePtr = NativeMethods.point_rotator_new();
         }
 
         public PointRotator(double angle)
         {
-            this.NativePtr = Native.point_rotator_new1(angle);
+            this.NativePtr = NativeMethods.point_rotator_new1(angle);
         }
 
         #endregion
@@ -28,7 +27,7 @@ namespace DlibDotNet
         {
             get
             {
-                var matrix = Native.point_rotator_get_m(this.NativePtr);
+                var matrix = NativeMethods.point_rotator_get_m(this.NativePtr);
                 return new Matrix<double>(matrix);
             }
         }
@@ -41,7 +40,7 @@ namespace DlibDotNet
         {
             using (var native = point.ToNative())
             {
-                var ptr = Native.point_rotator_operator(this.NativePtr, native.NativePtr);
+                var ptr = NativeMethods.point_rotator_operator(this.NativePtr, native.NativePtr);
                 return new DPoint(ptr);
             }
         }
@@ -58,32 +57,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.point_rotator_delete(this.NativePtr);
+            NativeMethods.point_rotator_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_rotator_new();
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_rotator_new1(double angle);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_rotator_get_m(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_rotator_operator(IntPtr obj, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void point_rotator_delete(IntPtr obj);
-
-        }
 
     }
 

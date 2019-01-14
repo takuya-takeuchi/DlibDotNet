@@ -33,7 +33,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.string_delete(this.NativePtr);
+            NativeMethods.string_delete(this.NativePtr);
             this.NativePtr = IntPtr.Zero;
         }
 

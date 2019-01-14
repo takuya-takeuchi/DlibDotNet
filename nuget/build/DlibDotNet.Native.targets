@@ -10,32 +10,32 @@
     </PropertyGroup>
 
   <ItemGroup Condition="'$(Platform)|$(OS)' == 'x64|Windows_NT'">
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.dll">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNative.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Link>DlibDotNet.Native.dll</Link>
+        <Link>DlibDotNetNative.dll</Link>
     	<DeploymentContent>True</DeploymentContent>
     </Content>
- 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.dll" />
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll">
+ 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNative.dll" />
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNativeDnn.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Link>DlibDotNet.Native.Dnn.dll</Link>
+        <Link>DlibDotNetNativeDnn.dll</Link>
     	<DeploymentContent>True</DeploymentContent>
     </Content>
- 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll" />   
+ 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />   
    </ItemGroup>
    <ItemGroup Condition=" '$(Platform)|$(OS)' == 'x64|Unix'">
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNet.Native.dll.so">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNative.so">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Link>libDlibDotNet.Native.dll.so</Link>
+        <Link>libDlibDotNetNative.so</Link>
     	<DeploymentContent>True</DeploymentContent>
     </Content>
- 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNet.Native.dll.so" />
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so">
+ 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNative.so" />
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Link>libDlibDotNet.Native.Dnn.dll.so</Link>
+        <Link>libDlibDotNetNativeDnn.so</Link>
     	<DeploymentContent>True</DeploymentContent>
     </Content>
- 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so" />
+ 	 <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
    </ItemGroup>
 
    <ItemGroup Condition=" '$(Platform)|$(OS)' == 'x64|Osx'">
@@ -56,11 +56,11 @@
 
 
   <Target Name="DlibDotNetNativeRedist" Condition="'$(TargetFramework)'!=''" AfterTargets="AfterBuild">
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNet.Native.Dnn.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNative.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
 
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNet.Native.dll.so" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNet.Native.Dnn.dll.so" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNative.so" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
 
     <!--
     <Copy SourceFiles="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNet.Native.dylib" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

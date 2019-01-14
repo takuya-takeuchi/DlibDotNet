@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -11,7 +10,7 @@ namespace DlibDotNet
         #region Constructors
 
         public ChipDims(uint rows, uint cols)
-            : this(Native.chip_dims_new(rows, cols))
+            : this(NativeMethods.chip_dims_new(rows, cols))
         {
             this.Rows = rows;
             this.Columns = cols;
@@ -34,13 +33,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.chip_dims_get_cols(this.NativePtr, out var columns);
+                NativeMethods.chip_dims_get_cols(this.NativePtr, out var columns);
                 return columns;
             }
             set
             {
                 this.ThrowIfDisposed();
-                Native.chip_dims_set_cols(this.NativePtr, value);
+                NativeMethods.chip_dims_set_cols(this.NativePtr, value);
             }
         }
 
@@ -49,13 +48,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Native.chip_dims_get_rows(this.NativePtr, out var rows);
+                NativeMethods.chip_dims_get_rows(this.NativePtr, out var rows);
                 return rows;
             }
             set
             {
                 this.ThrowIfDisposed();
-                Native.chip_dims_set_rows(this.NativePtr, value);
+                NativeMethods.chip_dims_set_rows(this.NativePtr, value);
             }
         }
 
@@ -75,37 +74,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.chip_dims_delete(this.NativePtr);
+            NativeMethods.chip_dims_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr chip_dims_new(uint rows, uint cols);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool chip_dims_get_cols(IntPtr chip, out uint cols);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void chip_dims_set_cols(IntPtr chip, uint cols);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            [return: MarshalAs(UnmanagedType.U1)]
-            public static extern bool chip_dims_get_rows(IntPtr chip, out uint rows);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void chip_dims_set_rows(IntPtr chip, uint rows);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void chip_dims_delete(IntPtr obj);
-
-        }
 
     }
 
