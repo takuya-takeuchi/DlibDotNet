@@ -22,7 +22,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException("", path);
 
-            var str = Encoding.UTF8.GetBytes(path);
+            var str = Dlib.Encoding.GetBytes(path);
 
             using (var matrix = new Matrix<T>())
             using (var retImages = new StdVector<Matrix<T>>())
@@ -46,7 +46,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException("", path);
 
-            var str = Encoding.UTF8.GetBytes(path);
+            var str = Dlib.Encoding.GetBytes(path);
 
             using (var matrix = new Matrix<T>())
             using (var retImages = new StdVector<Matrix<T>>())

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.ImageDatasetMetadata
@@ -134,7 +133,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             set
             {
                 this.ThrowIfDisposed();
-                var str = Encoding.UTF8.GetBytes(value ?? "");
+                var str = Dlib.Encoding.GetBytes(value ?? "");
                 NativeMethods.image_dataset_metadata_box_set_label(this.NativePtr, str);
             }
         }
@@ -248,7 +247,7 @@ namespace DlibDotNet.ImageDatasetMetadata
                 {
                     this._Parent.ThrowIfDisposed();
 
-                    var str = Encoding.UTF8.GetBytes(key ?? "");
+                    var str = Dlib.Encoding.GetBytes(key ?? "");
                     var native = this._Parent.NativePtr;
                     if (!NativeMethods.image_dataset_metadata_box_get_parts_get_value(native, str, out var p))
                         throw new KeyNotFoundException();
@@ -259,7 +258,7 @@ namespace DlibDotNet.ImageDatasetMetadata
                 {
                     this._Parent.ThrowIfDisposed();
 
-                    var str = Encoding.UTF8.GetBytes(key ?? "");
+                    var str = Dlib.Encoding.GetBytes(key ?? "");
                     var native = this._Parent.NativePtr;
                     using (var pp = value.ToNative())
                         NativeMethods.image_dataset_metadata_box_get_parts_set_value(native, str, pp.NativePtr);

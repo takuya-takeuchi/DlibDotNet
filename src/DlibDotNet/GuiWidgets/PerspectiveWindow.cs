@@ -35,7 +35,7 @@ namespace DlibDotNet
 
             points.ThrowIfDisposed();
 
-            var str = Encoding.UTF8.GetBytes(title);
+            var str = Dlib.Encoding.GetBytes(title);
             using (var vector = new StdVector<Vector<double>>(points))
                 this.NativePtr = NativeMethods.perspective_window_new3(vector.NativePtr, str);
         }
