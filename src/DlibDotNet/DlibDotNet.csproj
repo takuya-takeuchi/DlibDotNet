@@ -5,9 +5,9 @@
     <Authors>Takuya Takeuchi</Authors>
     <Description>.NET wrapper for DLib written in C#</Description>
     <Company />
-    <Copyright>© Takuya Takeuchi 2018</Copyright>
+    <Copyright>© Takuya Takeuchi 2018-2019</Copyright>
     <Configurations>Debug;Release</Configurations>
-    <Version>19.16.99</Version>
+    <Version>19.16.0</Version>
     <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
     <PackageTags>dlib .net machinelearning</PackageTags>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>

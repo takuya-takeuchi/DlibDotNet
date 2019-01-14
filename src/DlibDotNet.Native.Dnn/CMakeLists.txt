@@ -4,7 +4,7 @@ cmake_policy(SET CMP0054 NEW)
 
 set(PROJ_NAME DlibDotNetNativeDnn)
 
-project(${PROJ_NAME} VERSION 19.15.0)
+project(${PROJ_NAME} VERSION 19.16.0)
 
 # OS info
 message("-------------------------------------------------------")
@@ -20,9 +20,9 @@ message("-------------------------------------------------------")
 
 # Version info
 set(VERSION_MAJOR 19)
-set(VERSION_MINOR 15)
+set(VERSION_MINOR 16)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20181008)
+set(VERSION_DATE 20190114)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

@@ -4,7 +4,7 @@ cmake_policy(SET CMP0054 NEW)
 
 set(PROJ_NAME DlibDotNetNative)
 
-project(${PROJ_NAME} VERSION 19.15.0)
+project(${PROJ_NAME} VERSION 19.16.0)
 
 # OS info
 message("-------------------------------------------------------")
@@ -21,8 +21,8 @@ message("-------------------------------------------------------")
 # Version info
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 16)
-set(VERSION_PATCH 99)
-set(VERSION_DATE 20190105)
+set(VERSION_PATCH 0)
+set(VERSION_DATE 20190114)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
