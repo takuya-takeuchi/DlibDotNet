@@ -33,27 +33,19 @@ namespace DlibDotNet.Extensions
 #else
         /// <summary>
         /// Native library file name.
-        /// If Linux, it will be converted to  libOpenPoseDotNetNative.so
-        /// If MacOSX, it will be converted to  libOpenPoseDotNetNative.dylib
+        /// If Linux, it will be converted to  libDlibDotNetNative.so
+        /// If MacOSX, it will be converted to  libDlibDotNetNative.dylib
         /// If Windows, it will be available after call LoadLibrary.
         /// And this file name must not contain period. If it does,
         /// CLR does not add extension (.dll) and CLR fails to load library
         /// </summary>
         public const string NativeLibrary = "DlibDotNetNative.dll";
 
-        public const string NativeDnnLibrary = "DlibDotNetNative.Dnn.dll";
+        public const string NativeDnnLibrary = "DlibDotNetNativeDnn.dll";
 
         public const CallingConvention CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl;
 #endif
 
-        /// <summary>
-        /// Native library file name.
-        /// If Linux, it will be converted to  libOpenPoseDotNetNative.so
-        /// If MacOSX, it will be converted to  libOpenPoseDotNetNative.dylib
-        /// If Windows, it will be available after call LoadLibrary.
-        /// And this file name must not contain period. If it does,
-        /// CLR does not add extension (.dll) and CLR fails to load library
-        /// </summary>
         private static readonly IDictionary<string, IntPtr> LoadedLibraries = new Dictionary<string, IntPtr>();
 
         #endregion

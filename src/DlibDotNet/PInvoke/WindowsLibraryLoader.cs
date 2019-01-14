@@ -40,14 +40,6 @@ namespace DlibDotNet
 
         private readonly object _SyncLock = new object();
 
-        /// <summary>
-        /// Native library file name.
-        /// If Linux, it will be converted to  libDlibDotNetNative.so
-        /// If MacOSX, it will be converted to  libDlibDotNetNative.dylib
-        /// If Windows, it will be available after call LoadLibrary.
-        /// And this file name must not contain period. If it does,
-        /// CLR does not add extension (.dll) and CLR fails to load library
-        /// </summary>
         private static readonly IDictionary<string, IntPtr> LoadedLibraries = new Dictionary<string, IntPtr>();
 
         [DllImport("kernel32", CallingConvention = CallingConvention.Winapi, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
