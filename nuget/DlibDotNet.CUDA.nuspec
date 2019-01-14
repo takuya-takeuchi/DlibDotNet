@@ -1,0 +1,41 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DlibDotNet-WithCUDA</id>
+    <version>19.16.0.20190114</version>
+    <title>DlibDotNet (with CUDA)</title>
+    <authors>Takuya Takeuchi</authors>
+    <owners>Takuya Takeuchi</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
+    <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
+
+Requirements: Visual C++ 2017 Redistributable Package, cublas64_92.dll, cudnn64_7.dll, curand64_92.dll and cusolver64_92.dll</description>
+    <releaseNotes></releaseNotes>
+    <copyright>© Takuya Takeuchi 2018-2019</copyright>
+    <tags>dlib .net machinelearning</tags>
+    <serviceable>true</serviceable>
+  </metadata>
+  
+  <files>
+    <file src="build\DlibDotNet.Native.props" target="build\DlibDotNet.props" />
+    <!-- allows the 'DlibDotNet' package to read runtimes\** folder -->
+    <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets" />
+    <!-- cross-targetting via compile-time references -->
+    <file src="ref\**\*" target="ref" />
+    <file src="cuda\runtimes\**\*" target="runtimes" />
+
+    <file src="cuda\runtimes\win-x64\native\DlibDotNetNative.dll" target="runtimes\win-x64\native\DlibDotNetNative.dll" />
+    <file src="cuda\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
+    <file src="cuda\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
+    <file src="cuda\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+
+    <!--
+    <file src="cuda\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
+    <file src="cuda\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" target="runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" />
+    -->
+  </files>
+  
+</package>
