@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project version="4.0">
+  <PropertyGroup>
+    <Platform Condition="'$(Platform)'==''">x64</Platform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(OS)==''">
+    <OS>Windows_NT</OS>
+  </PropertyGroup>
+
+  <Target Name="TestMessage" AfterTargets="Build" >
+    <Message Text="DlibDotNet.Native Build Message" Importance="high"/>
+    <Message Text="Platform: $(Platform)" Importance="high"/>
+    <Message Text="OS: $(OS)" Importance="high"/>
+  </Target>
+
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNative.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>DlibDotNetNative.dll</Link>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNativeDnn.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>DlibDotNetNativeDnn.dll</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Unix'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNative.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libDlibDotNetNative.so</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libDlibDotNetNativeDnn.so</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNative.so" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Osx'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNative.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>DlibDotNetNative.dylib</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNativeDnn.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>DlibDotNetNativeDnn.dylib</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNative.dylib" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNativeDnn.dylib" />
+  </ItemGroup>
+
+</Project>

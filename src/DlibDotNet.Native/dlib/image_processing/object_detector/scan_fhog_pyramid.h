@@ -206,7 +206,7 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_new(const pyramid_type pyramid_t
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -238,7 +238,7 @@ DLLEXPORT void object_detector_scan_fhog_pyramid_delete(const pyramid_type pyram
 {
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -265,7 +265,7 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_deserialize(const char* file_nam
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -300,7 +300,7 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_serialize(const char* file_name,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -341,7 +341,7 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_operator(const pyramid_type pyra
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)

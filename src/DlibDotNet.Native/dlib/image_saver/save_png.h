@@ -86,6 +86,9 @@ DLLEXPORT int save_png_matrix(matrix_element_type type, void* matrix, const int 
         case matrix_element_type::UInt32:
             save_png_matrix_template(uint32_t, templateRows, templateColumns, err, matrix, file_name);
             break;
+        case matrix_element_type::UInt64:
+            save_png_matrix_template(uint64_t, templateRows, templateColumns, err, matrix, file_name);
+            break;
         case matrix_element_type::Int8:
             save_png_matrix_template(int8_t, templateRows, templateColumns, err, matrix, file_name);
             break;
@@ -94,6 +97,9 @@ DLLEXPORT int save_png_matrix(matrix_element_type type, void* matrix, const int 
             break;
         case matrix_element_type::Int32:
             save_png_matrix_template(int32_t, templateRows, templateColumns, err, matrix, file_name);
+            break;
+        case matrix_element_type::Int64:
+            save_png_matrix_template(int64_t, templateRows, templateColumns, err, matrix, file_name);
             break;
         case matrix_element_type::Float:
             save_png_matrix_template(float, templateRows, templateColumns, err, matrix, file_name);

@@ -3,6 +3,9 @@
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// The exception is general exception for CUDA (Compute Unified Device Architecture). This class cannot be inherited.
+    /// </summary>
     public sealed class CudaException : Exception
     {
 
@@ -20,21 +23,33 @@ namespace DlibDotNet
 
         #region Properties
 
+        /// <summary>
+        /// Gets the library name which throw <see cref="CudaException"/>.
+        /// </summary>
         public string DllName
         {
             get;
         }
 
+        /// <summary>
+        /// Gets the CUDA driver version.
+        /// </summary>
         public int DriverVersion
         {
             get;
         }
 
+        /// <summary>
+        /// Gets the CUDA error code.
+        /// </summary>
         public int ErrorCode
         {
             get;
         }
 
+        /// <summary>
+        /// Gets the CUDA runtime version.
+        /// </summary>
         public int RuntimeVersion
         {
             get;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -27,8 +26,8 @@ namespace DlibDotNet
             using (var points = new StdVector<SurfPoint>())
             {
                 var array2DType = image.ImageType.ToNativeArray2DType();
-                var ret = Native.get_surf_points(array2DType, image.NativePtr, maxPoints, detectionThreshold, points.NativePtr);
-                if (ret == Native.ErrorType.Array2DTypeTypeNotSupport)
+                var ret = NativeMethods.get_surf_points(array2DType, image.NativePtr, maxPoints, detectionThreshold, points.NativePtr);
+                if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                     throw new ArgumentException($"{image.ImageType} is not supported.");
 
                 return points.ToArray();
@@ -36,14 +35,6 @@ namespace DlibDotNet
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType get_surf_points(Array2DType type, IntPtr img, long max_points, double detection_threshold, IntPtr points);
-            
-        }
 
     }
 

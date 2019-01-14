@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -21,10 +19,10 @@ namespace DlibDotNet
 
             hogImage.ThrowIfDisposed(nameof(hogImage));
             var inType = hogImage.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.draw_fhog(inType, hogImage.NativePtr, cellDrawSize, minResponseThreshold, out var outMatrix);
+            var ret = NativeMethods.draw_fhog(inType, hogImage.NativePtr, cellDrawSize, minResponseThreshold, out var outMatrix);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
@@ -76,12 +74,12 @@ namespace DlibDotNet
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = hogImage.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.extract_fhog_features(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+            var ret = NativeMethods.extract_fhog_features(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
             }
 
@@ -107,12 +105,12 @@ namespace DlibDotNet
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = hogImage.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.extract_fhog_features2(inType, inImage.NativePtr, outType, cellSize, filterRowsPadding, filterColsPadding, out var hog);
+            var ret = NativeMethods.extract_fhog_features2(inType, inImage.NativePtr, outType, cellSize, filterRowsPadding, filterColsPadding, out var hog);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Output {outType} is not supported.");
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inImage.ImageType} is not supported.");
             }
 
@@ -139,10 +137,10 @@ namespace DlibDotNet
 
             var inType = inImage.ImageType.ToNativeArray2DType();
             var outType = type.ToNativeArray2DType();
-            var ret = Native.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+            var ret = NativeMethods.extract_fhog_features_array(inType, inImage.NativePtr, outType, hogImage.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
             switch (ret)
             {
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Input or output element type is not supported.");
             }
 
@@ -162,66 +160,12 @@ namespace DlibDotNet
 
             using (var native = point.ToNative())
             {
-                var ret = Native.image_to_fhog(native.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
+                var ret = NativeMethods.image_to_fhog(native.NativePtr, cellSize, filterRowsPadding, filterColsPadding);
                 return new Point(ret);
             }
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_fhog(MatrixElementType img_type,
-                                                     IntPtr hog,
-                                                     int cell_draw_size,
-                                                     float min_response_threshold,
-                                                     out IntPtr out_matrix);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType draw_fhog_object_detector_scan_fhog_pyramid(PyramidType pyramid_type,
-                                                                                       uint pyramid_rate,
-                                                                                       FHogFeatureExtractorType extractor_type,
-                                                                                       IntPtr obj,
-                                                                                       uint weightIndex,
-                                                                                       int cellDrawSize,
-                                                                                       out IntPtr out_matrix);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_fhog_features(Array2DType img_type,
-                                                                 IntPtr img,
-                                                                 MatrixElementType hog_type,
-                                                                 IntPtr hog,
-                                                                 int cell_size,
-                                                                 int filter_rows_padding,
-                                                                 int filter_cols_padding);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_fhog_features_array(Array2DType img_type,
-                                                                       IntPtr img,
-                                                                       Array2DType hog_type,
-                                                                       IntPtr hog,
-                                                                       int cell_size,
-                                                                       int filter_rows_padding,
-                                                                       int filter_cols_padding);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_fhog_features2(Array2DType img_type,
-                                                                  IntPtr img,
-                                                                  MatrixElementType hog_type,
-                                                                  int cell_size,
-                                                                  int filter_rows_padding,
-                                                                  int filter_cols_padding,
-                                                                  out IntPtr hog);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr image_to_fhog(IntPtr p,
-                                                      int cell_size,
-                                                      int filter_rows_padding,
-                                                      int filter_cols_padding);
-
-        }
         
     }
 

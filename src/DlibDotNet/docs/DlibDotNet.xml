@@ -1,0 +1,833 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DlibDotNet</name>
+    </assembly>
+    <members>
+        <member name="M:DlibDotNet.Array2D`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2D`1.Row`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2DMatrix`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array2DMatrix`1.Row`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.Array`1">
+            <summary>
+            This object represents a 1-Dimensional array of objects. 
+            </summary>
+            <typeparam name="T">The type of elements in the array.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Array`1"/> class with the specified size of array.
+            </summary>
+            <param name="size">The number of elements which have initial values for their type.</param>
+        </member>
+        <member name="M:DlibDotNet.Array`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Array`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:DlibDotNet.Array`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="T:DlibDotNet.Dlib">
+            <summary>
+            Provides the methods of dlib.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dlib.ExtractImage4Points``1(DlibDotNet.Array2D{``0},DlibDotNet.DPoint[],System.Int32,System.Int32)">
+            <summary>
+            This function extracts an arbitrary quadrilateral patch from an image.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="image">The image.</param>
+            <param name="points">The 4 points on the image.</param>
+            <param name="width">The width of return image.</param>
+            <param name="height">The height of return image.</param>
+            <returns><see cref="T:DlibDotNet.Array2D`1"/>.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="points"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><see cref="P:System.Array.Length"/> of <paramref name="points"/> must be 4.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.ExtractImage4Points``1(DlibDotNet.Matrix{``0},DlibDotNet.DPoint[],System.Int32,System.Int32)">
+            <summary>
+            This function extracts an arbitrary quadrilateral patch from an matrix.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="points">The 4 points on the matrix.</param>
+            <param name="width">The width of return matrix.</param>
+            <param name="height">The height of return matrix.</param>
+            <returns><see cref="T:DlibDotNet.Matrix`1"/>.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentException">The <see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> or <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> or <paramref name="points"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><see cref="P:System.Array.Length"/> of <paramref name="points"/> must be 4.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="width"/> or <paramref name="height"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.GetFrontalFaceDetector">
+            <summary>
+            This function returns an object detector that is configured to find human faces that are looking towards the camera.
+            </summary>
+            <returns><see cref="T:DlibDotNet.FrontalFaceDetector"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadBmp``1(System.String)">
+            <summary>
+            This function loads Microsoft Windows Bitmap file into an <see cref="T:DlibDotNet.Array2D`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="path">A string that contains the name of the file from which to create the <see cref="T:DlibDotNet.Array2D`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Array2D`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadDng``1(System.String)">
+            <summary>
+            This function loads DNG (Digital Negative) file into an <see cref="T:DlibDotNet.Array2D`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="path">A string that contains the name of the file from which to create the <see cref="T:DlibDotNet.Array2D`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Array2D`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadImage``1(System.String)">
+            <summary>
+            This function loads image file into an <see cref="T:DlibDotNet.Array2D`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="path">A string that contains the name of the file from which to create the <see cref="T:DlibDotNet.Array2D`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Array2D`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadImageAsMatrix``1(System.String)">
+            <summary>
+            This function loads image file into an <see cref="T:DlibDotNet.Matrix`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="path">A string that contains the name of the file from which to create the <see cref="T:DlibDotNet.Matrix`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Matrix`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadJpeg``1(System.String)">
+            <summary>
+            This function loads JPEG (Joint Photographic Experts Group) file into an <see cref="T:DlibDotNet.Array2D`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="path">A string that contains the name of the file from which to create the <see cref="T:DlibDotNet.Array2D`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Array2D`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadPng``1(System.String)">
+            <summary>
+            This function loads PNG (Portable Network Graphics) file into an <see cref="T:DlibDotNet.Array2D`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="path">A string that contains the name of the file from which to create the <see cref="T:DlibDotNet.Array2D`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Array2D`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.Array2DBase,System.String)">
+            <summary>
+            This function saves image to disk as Microsoft Windows Bitmap file.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="path">A string that contains the name of the file to which to save image.</param>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveBmp``1(DlibDotNet.Matrix{``0},System.String)">
+            <summary>
+            This function saves matrix to disk as Microsoft Windows Bitmap file.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="path">A string that contains the name of the file to which to save matrix.</param>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentException">The <see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> or <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveDng(DlibDotNet.Array2DBase,System.String)">
+            <summary>
+            This function saves image to disk as DNG (Digital Negative) file.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="path">A string that contains the name of the file to which to save image.</param>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveDng``1(DlibDotNet.Matrix{``0},System.String)">
+            <summary>
+            This function saves matrix to disk as DNG (Digital Negative) file.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="path">A string that contains the name of the file to which to save matrix.</param>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentException">The <see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> or <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveJpeg(DlibDotNet.Array2DBase,System.String,System.Int32)">
+            <summary>
+            This function saves image to disk as JPEG (Joint Photographic Experts Group) file.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="path">A string that contains the name of the file to which to save image.</param>
+            <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SaveJpeg``1(DlibDotNet.Matrix{``0},System.String,System.Int32)">
+            <summary>
+            This function saves matrix to disk as JPEG (Joint Photographic Experts Group) file.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="path">A string that contains the name of the file to which to save matrix.</param>
+            <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentException">The <see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> or <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SavePng(DlibDotNet.Array2DBase,System.String)">
+            <summary>
+            This function saves image to disk as PNG (Portable Network Graphics) file.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="path">A string that contains the name of the file to which to save image.</param>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.SavePng``1(DlibDotNet.Matrix{``0},System.String)">
+            <summary>
+            This function saves matrix to disk as PNG (Portable Network Graphics) file.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="path">A string that contains the name of the file to which to save matrix.</param>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentException">The <see cref="P:DlibDotNet.MatrixBase.TemplateRows"/> or <see cref="P:DlibDotNet.MatrixBase.TemplateColumns"/> is not supported.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
+        </member>
+        <member name="T:DlibDotNet.Cuda">
+            <summary>
+            Provides the methods of CUDA (Compute Unified Device Architecture).
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Cuda.TryGetDriverVersion(System.Int32@)">
+            <summary>
+            Gets the value of driver version of CUDA.
+            </summary>
+            <param name="version">When this method returns, contains the value of driver version of CUDA.</param>
+            <returns><code>true</code> if CUDA driver is installed and CUDA system returns valid value; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Cuda.TryGetRuntimeVersion(System.Int32@)">
+            <summary>
+            Gets the value of runtime version of CUDA.
+            </summary>
+            <param name="version">When this method returns, contains the value of runtime version of CUDA.</param>
+            <returns><code>true</code> if CUDA runtime is installed and CUDA system returns valid value; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.CudaException">
+            <summary>
+            The exception is general exception for CUDA (Compute Unified Device Architecture). This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.DllName">
+            <summary>
+            Gets the library name which throw <see cref="T:DlibDotNet.CudaException"/>.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.DriverVersion">
+            <summary>
+            Gets the CUDA driver version.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.ErrorCode">
+            <summary>
+            Gets the CUDA error code.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.RuntimeVersion">
+            <summary>
+            Gets the CUDA runtime version.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Box.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Dataset.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Image.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.DlibObject">
+            <summary>
+            A class which has a pointer of native structure.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.DlibObject"/> class with the specified value indicating whether this instance is disposable.
+            </summary>
+            <param name="isEnabledDispose">true if this instance is disposable; otherwise, false.</param>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsDisposed">
+            <summary>
+            Gets a value indicating whether this instance has been disposed.
+            </summary>
+            <returns>true if this instance has been disposed; otherwise, false.</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.IsEnableDispose">
+            <summary>
+            Gets a value indicating whether this instance is disposable.
+            </summary>
+            <returns>true if this instance is disposable; otherwise, false.</returns>
+        </member>
+        <member name="P:DlibDotNet.DlibObject.NativePtr">
+            <summary>
+            Gets a pointer of native structure.
+            </summary>>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.ThrowIfDisposed">
+            <summary>
+            If this object is disposed, then <see cref="T:System.ObjectDisposedException"/> is thrown.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeManaged">
+            <summary>
+            Releases all managed resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose">
+            <summary>
+            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Dispose(System.Boolean)">
+            <summary>
+            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            </summary>
+            <param name="disposing">Indicate value whether <see cref="M:System.IDisposable.Dispose"/> method was called.</param>
+        </member>
+        <member name="T:DlibDotNet.Dnn.Cuda">
+            <summary>
+            Provides the methods of CUDA (Compute Unified Device Architecture).
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Cuda.TryGetDriverVersion(System.Int32@)">
+            <summary>
+            Gets the value of driver version of CUDA.
+            </summary>
+            <param name="version">When this method returns, contains the value of driver version of CUDA.</param>
+            <returns><code>true</code> if CUDA driver is installed and CUDA system returns valid value; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Cuda.TryGetRuntimeVersion(System.Int32@)">
+            <summary>
+            Gets the value of runtime version of CUDA.
+            </summary>
+            <param name="version">When this method returns, contains the value of runtime version of CUDA.</param>
+            <returns><code>true</code> if CUDA runtime is installed and CUDA system returns valid value; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Dnn.DnnTrainer`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.InputRgbImagePyramid`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMmod.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLog.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLogPerPixel.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NetResult`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.Dnn.NotSupportNetworkTypeException">
+            <summary>
+            The exception that is thrown when an specified network type is not supported. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> class with a specified network type that is the cause of this exception.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.NotSupportNetworkTypeException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.NotSupportNetworkTypeException"/> class with a specified network type, error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="networkType">The network type.</param>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The name of the parameter that caused the current exception.</param>
+        </member>
+        <member name="P:DlibDotNet.Dnn.NotSupportNetworkTypeException.NetworkType">
+            <summary>
+            Gets the the network type that is the cause of this exception.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.ResizableTensor.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Point.NativePoint.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointRotator.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointTransform.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointTransformAffine.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PointTransformProjective.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RectangleTransform.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Vector`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SamplePair.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.OverlayLine.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PerspectiveWindow.OverlayDot.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PerspectiveWindow.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.IDlibObject">
+            <summary>
+            Defines methods and properties to represent the dlib objects.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.IDlibObject.NativePtr">
+            <summary>
+            Gets a pointer of native structure.
+            </summary>>
+        </member>
+        <member name="M:DlibDotNet.IDlibObject.ThrowIfDisposed">
+            <summary>
+            If this object is disposed, then <see cref="T:System.ObjectDisposedException"/> is thrown.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.InterestPoint.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SurfPoint.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ImagePixelFormat">
+            <summary>
+            The ImagePixelFormat enumeration specifies the format of the color data for each pixel in the image.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Bgr">
+            <summary>
+            The pixel format is B8G8R8 unsigned integer.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Bgra">
+            <summary>
+            The pixel format is B8G8R8A8 unsigned integer.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Rgb">
+            <summary>
+            The pixel format is R8G8B8 unsigned integer.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImagePixelFormat.Rgba">
+            <summary>
+            The pixel format is R8G8B8A8 unsigned integer.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.CorrelationTracker.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.FrontalFaceDetector.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.FullDetection.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.FullObjectDetection.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MModRect.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ObjectDetector`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RectDetection.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ScanFHogPyramid`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ShapePredictor.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ChipDetails.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ChipDims.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.HoughTransform.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PyramidDown.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageTransforms.RandomCropper.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Matrix`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MatrixOp.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MatrixRangeExp`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.MultilayerPerceptron`1">
+            <summary>
+            This class represents a multi layer perceptron network that is trained using the back propagation algorithm.
+            </summary>
+            <typeparam name="T">The type of kernel.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.MultilayerPerceptron`1"/> class with the specified nodes of input layer, nodes of first hidden layer, nodes of second hidden layer, nodes of output layer, alpha and momentum.
+            </summary>
+            <param name="nodesInInputLayer">The number of nodes for input layer.</param>
+            <param name="nodesInFirstHiddenLayer">The number of nodes for first hidden layer.</param>
+            <param name="nodesInSecondHiddenLayer">The number of nodes for second hidden layer.</param>
+            <param name="nodesInOutputLayer">The number of nodes for output layer.</param>
+            <param name="alpha">The learning rate. The default value is 0.1.</param>
+            <param name="momentum">The momentum. The default value is 0.8.</param>
+            <exception cref="T:System.NotSupportedException">The specified type of kernel does not supported.</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Operator(DlibDotNet.MatrixBase)">
+            <summary>
+            Returns the output of the network when it is given the input <paramref name="data"/>. The output's elements are always in the range of 0.0 to 1.0.
+            </summary>
+            <param name="data">The input data.</param>
+            <returns>The output of the network.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="data"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="data"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.Matrix{System.Double},DlibDotNet.Matrix{System.Double})">
+            <summary>
+            This function trains the network that the correct output when given <paramref name="exampleIn"/> should be <paramref name="exampleOut"/>.
+            </summary>
+            <param name="exampleIn">The input of example.</param>
+            <param name="exampleOut">The output of example.</param>
+            <exception cref="T:System.ArgumentException">The specified type of kernel is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="exampleIn"/> or <paramref name="exampleOut"/>is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="exampleOut"/> must be 0.0 - 1.0.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="exampleIn"/> or <paramref name="exampleOut"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.Train(DlibDotNet.Matrix{System.Double},System.Double)">
+            <summary>
+            This function trains the network that the correct output when given <paramref name="exampleIn"/> should be <paramref name="exampleOut"/>.
+            </summary>
+            <param name="exampleIn">The input of example.</param>
+            <param name="exampleOut">The output of example.</param>
+            <exception cref="T:System.ArgumentException">The specified type of kernel is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="exampleIn"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="exampleOut"/> must be 0.0 - 1.0.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="exampleIn"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.MultilayerPerceptron`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ProxyDeserialize">
+            <summary>
+            Deserialize continuous objects from file.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ProxyDeserialize.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.ProxyDeserialize"/> class with the specified file path contains serialized data.
+            </summary>
+            <param name="path">The file path contains serialized data.</param>
+            <exception cref="T:System.IO.FileNotFoundException"><paramref name="path"/> is not found.</exception>
+        </member>
+        <member name="M:DlibDotNet.ProxyDeserialize.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Rand.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.RunningStats`1">
+            <summary>
+            This class provides methods and properties to compute the running mean, variance, skewness, and excess kurtosis of a stream of real numbers.
+            </summary>
+            <typeparam name="TKernel">The type of real numbers.</typeparam>
+        </member>
+        <member name="M:DlibDotNet.RunningStats`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.RunningStats`1"/> class.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.RunningStatsType">
+            <summary>
+            Gets the type of real numbers.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.CurrentN">
+            <summary>
+            Gets the number of points given to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.ExcessKurtosis">
+            <summary>
+            Gets the unbiased sample kurtosis of all the values presented to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Max">
+            <summary>
+            Gets the largest value presented to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Mean">
+            <summary>
+            Gets the mean of all the values presented to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Min">
+            <summary>
+            Gets the smallest value presented to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Skewness">
+            <summary>
+            Gets the unbiased sample skewness of all the values presented to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.StdDev">
+            <summary>
+            Gets the unbiased sampled standard deviation of all the values presented to this object so far.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.RunningStats`1.Variance">
+            <summary>
+            Gets the unbiased sample variance of all the values presented to this object so far.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RunningStats`1.Clear">
+            <summary>
+            Clears all points given to this object so far.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RunningStats`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.RunningStatsType">
+            <summary>
+            The RunningStatsType enumeration specifies the type of real numbers.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RunningStatsType.Float">
+            <summary>
+            32-bit floating-point values.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RunningStatsType.Double">
+            <summary>
+            64-bit floating-point values.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.StdString.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.LinearKernel`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.StructuralObjectDetectionTrainer`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+    </members>
+</doc>

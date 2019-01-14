@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -23,14 +22,14 @@ namespace DlibDotNet
             var templateColumns = matrix.TemplateColumns;
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_round(type,
-                                          matrix.NativePtr,
-                                          templateRows,
-                                          templateColumns,
-                                          out var result);
+            var ret = NativeMethods.matrix_round(type,
+                                                 matrix.NativePtr,
+                                                 templateRows,
+                                                 templateColumns,
+                                                 out var result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -38,14 +37,6 @@ namespace DlibDotNet
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_round(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out IntPtr ret);
-
-        }
 
     }
 

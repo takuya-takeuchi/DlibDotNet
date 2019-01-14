@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -13,7 +12,7 @@ namespace DlibDotNet
         internal FullObjectDetection(IntPtr ptr)
         {
             this.NativePtr = ptr;
-            this._Parts = Native.full_object_detection_num_parts(this.NativePtr);
+            this._Parts = NativeMethods.full_object_detection_num_parts(this.NativePtr);
         }
 
         #endregion
@@ -36,7 +35,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var rect = Native.full_object_detection_get_rect(this.NativePtr);
+                var rect = NativeMethods.full_object_detection_get_rect(this.NativePtr);
                 return new Rectangle(rect);
             }
         }
@@ -51,12 +50,15 @@ namespace DlibDotNet
             if (!(index < this._Parts))
                 throw new ArgumentOutOfRangeException(nameof(index));
 
-            var p = Native.full_object_detection_part(this.NativePtr, index);
+            var p = NativeMethods.full_object_detection_part(this.NativePtr, index);
             return new Point(p);
         }
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -64,32 +66,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.full_object_detection_delete(this.NativePtr);
+            NativeMethods.full_object_detection_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr full_object_detection_new();
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern uint full_object_detection_num_parts(IntPtr predictor);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr full_object_detection_get_rect(IntPtr predictor);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr full_object_detection_part(IntPtr predictor, uint idx);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void full_object_detection_delete(IntPtr point);
-
-        }
 
     }
 }

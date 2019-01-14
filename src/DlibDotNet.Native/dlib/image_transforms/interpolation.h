@@ -1415,7 +1415,7 @@ DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(element_type)
@@ -2620,5 +2620,144 @@ DLLEXPORT int upsample_image_dataset_pyramid_down(const unsigned int pyramid_rat
 }
 
 #pragma endregion upsample_image_dataset
+
+#pragma region extract_image_4points
+
+#define extract_image_4points_template(__TYPE__, error, image, points, width, height, output)\
+do {\
+    auto& m = *(static_cast<dlib::array2d<__TYPE__>*>(image));\
+    std::array<dlib::dpoint, 4> ps;\
+    for (auto index = 0; index < 4; index++)\
+        ps[index] = *points[index];\
+    auto tmpout = new dlib::array2d<__TYPE__>(height, width);\
+    auto& o = *(static_cast<dlib::array2d<__TYPE__>*>(tmpout));\
+    dlib::extract_image_4points(m, o, ps);\
+    *output = tmpout;\
+} while (0)
+
+#define extract_image_4points_matrix_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, points, width, height, output)\
+auto& m = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix));\
+std::array<dlib::dpoint, 4> ps;\
+for (auto index = 0; index < 4; index++)\
+    ps[index] = *points[index];\
+auto tmpout = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(height, width);\
+auto& o = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(tmpout));\
+dlib::extract_image_4points(m, o, ps);\
+*output = tmpout;\
+
+#define extract_image_4points_matrix_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, points, width, height, output)\
+do {\
+    matrix_template_size_arg5_template(__TYPE__, __ROWS__, __COLUMNS__, extract_image_4points_matrix_template_sub, error, matrix, points, width, height, output);\
+} while (0)
+
+DLLEXPORT int extract_image_4points(array2d_type type,
+                                    void* image,
+                                    dlib::dpoint** points,
+                                    int width,
+                                    int height,
+                                    void** output)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+            extract_image_4points_template(uint8_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::UInt16:
+            extract_image_4points_template(uint16_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::UInt32:
+            extract_image_4points_template(uint32_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Int8:
+            extract_image_4points_template(int8_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Int16:
+            extract_image_4points_template(int16_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Int32:
+            extract_image_4points_template(int32_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Float:
+            extract_image_4points_template(float, err, image, points, width, height, output);
+            break;
+        case array2d_type::Double:
+            extract_image_4points_template(double, err, image, points, width, height, output);
+            break;
+        case array2d_type::RgbPixel:
+            extract_image_4points_template(rgb_pixel, err, image, points, width, height, output);
+            break;
+        case array2d_type::HsiPixel:
+            extract_image_4points_template(hsi_pixel, err, image, points, width, height, output);
+            break;
+        case array2d_type::RgbAlphaPixel:
+        default:
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_image_4points_matrix(matrix_element_type element_type,
+                                           void* matrix,
+                                           int templateRows,
+                                           int templateColumns,
+                                           dlib::dpoint** points,
+                                           int width,
+                                           int height,
+                                           void** output)
+{
+    int err = ERR_OK;
+
+    switch(element_type)
+    {
+        case matrix_element_type::UInt8:
+            extract_image_4points_matrix_template(uint8_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::UInt16:
+            extract_image_4points_matrix_template(uint16_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::UInt32:
+            extract_image_4points_matrix_template(uint32_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::UInt64:
+            extract_image_4points_matrix_template(uint64_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int8:
+            extract_image_4points_matrix_template(int8_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int16:
+            extract_image_4points_matrix_template(int16_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int32:
+            extract_image_4points_matrix_template(int32_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int64:
+            extract_image_4points_matrix_template(int64_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Float:
+            extract_image_4points_matrix_template(float, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Double:
+            extract_image_4points_matrix_template(double, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::RgbPixel:
+            extract_image_4points_matrix_template(rgb_pixel, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::HsiPixel:
+            extract_image_4points_matrix_template(hsi_pixel, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+#pragma endregion extract_image_4points
 
 #endif

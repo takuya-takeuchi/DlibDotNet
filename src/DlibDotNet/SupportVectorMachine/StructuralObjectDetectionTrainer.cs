@@ -72,6 +72,9 @@ namespace DlibDotNet
 
         #region Overrids
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -144,9 +147,9 @@ namespace DlibDotNet
 
             #region Fields
 
-            private readonly Dlib.Native.FHogFeatureExtractorType _FeatureExtractorType;
+            private readonly NativeMethods.FHogFeatureExtractorType _FeatureExtractorType;
 
-            private readonly Dlib.Native.PyramidType _PyramidType;
+            private readonly NativeMethods.PyramidType _PyramidType;
 
             private readonly uint _PyramidRate;
 
@@ -162,11 +165,11 @@ namespace DlibDotNet
                 this._PyramidRate = param.PyramidRate;
                 this._PyramidType = param.PyramidType;
 
-                var ret = Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_new(this._PyramidType,
-                                                                                                this._PyramidRate,
-                                                                                                this._FeatureExtractorType,
-                                                                                                this.Scanner.NativePtr,
-                                                                                                out var trainr);
+                var ret = NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_new(this._PyramidType,
+                                                                                                  this._PyramidRate,
+                                                                                                  this._FeatureExtractorType,
+                                                                                                  this.Scanner.NativePtr,
+                                                                                                  out var trainr);
 
                 this.NativePtr = trainr;
             }
@@ -179,11 +182,12 @@ namespace DlibDotNet
 
             public override void BeVerbose()
             {
-                Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(this._PyramidType,
-                                                                                             this._PyramidRate,
-                                                                                             this._FeatureExtractorType,
-                                                                                             this.NativePtr);
+                NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(this._PyramidType,
+                                                                                               this._PyramidRate,
+                                                                                               this._FeatureExtractorType,
+                                                                                               this.NativePtr);
             }
+
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
@@ -191,7 +195,7 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_delete(this._PyramidType,
+                NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_delete(this._PyramidType,
                                                                                          this._PyramidRate,
                                                                                          this._FeatureExtractorType,
                                                                                          this.NativePtr);
@@ -199,7 +203,7 @@ namespace DlibDotNet
 
             public override void SetC(double c)
             {
-                Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_set_c(this._PyramidType,
+                NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_set_c(this._PyramidType,
                                                                                         this._PyramidRate,
                                                                                         this._FeatureExtractorType,
                                                                                         this.NativePtr,
@@ -208,7 +212,7 @@ namespace DlibDotNet
 
             public override void SetEpsilon(double epsilon)
             {
-                Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(this._PyramidType,
+                NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(this._PyramidType,
                                                                                               this._PyramidRate,
                                                                                               this._FeatureExtractorType,
                                                                                               this.NativePtr,
@@ -217,7 +221,7 @@ namespace DlibDotNet
 
             public override void SetNumThreads(uint threads)
             {
-                Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_set_num_threads(this._PyramidType,
+                NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_set_num_threads(this._PyramidType,
                                                                                                   this._PyramidRate,
                                                                                                   this._FeatureExtractorType,
                                                                                                   this.NativePtr,
@@ -232,7 +236,7 @@ namespace DlibDotNet
                     using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
                     {
                         Matrix<U>.TryParse<U>(out var matrixElementType);
-                        var ret = Dlib.Native.structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(this._PyramidType,
+                        var ret = NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(this._PyramidType,
                                                                                                                     this._PyramidRate,
                                                                                                                     this._FeatureExtractorType,
                                                                                                                     this.NativePtr,
@@ -242,7 +246,7 @@ namespace DlibDotNet
                                                                                                                     out var detector);
                         switch (ret)
                         {
-                            case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                            case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                                 throw new ArgumentException($"{matrixElementType} is not supported.");
                         }
 

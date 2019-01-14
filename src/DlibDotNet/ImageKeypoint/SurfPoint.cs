@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
+using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -35,7 +36,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.surf_point_get_angle(this.NativePtr);
+                return NativeMethods.surf_point_get_angle(this.NativePtr);
             }
         }
 
@@ -44,7 +45,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var ret = Native.surf_point_get_p(this.NativePtr);
+                var ret = NativeMethods.surf_point_get_p(this.NativePtr);
 
                 // Can not dispose because this unmanged data is in surf_point object
                 return new InterestPoint(ret, false);
@@ -56,7 +57,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var ret = Native.surf_point_get_des(this.NativePtr);
+                var ret = NativeMethods.surf_point_get_des(this.NativePtr);
                 // matrix < double,64,1 > des;
                 return new SurfPointMatrix<double>(ret, false);
             }
@@ -68,6 +69,9 @@ namespace DlibDotNet
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -75,39 +79,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.surf_point_delete(this.NativePtr);
+            NativeMethods.surf_point_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double surf_point_get_angle(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr surf_point_get_p(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr surf_point_get_des(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void surf_point_delete(IntPtr surfpoint);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType surf_point_des_matrix_operator_left_shift(IntPtr matrix, IntPtr ofstream);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType surf_point_des_matrix_nc(IntPtr matrix, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType surf_point_des_matrix_nr(IntPtr matrix, out int ret);
-
-
-        }
 
         private sealed class SurfPointMatrix<T> : Matrix<T>
             where T : struct
@@ -115,7 +92,7 @@ namespace DlibDotNet
 
             #region Fields
 
-            private readonly Dlib.Native.MatrixElementType _MatrixElementType;
+            private readonly MatrixElementType _MatrixElementType;
 
             private static readonly Dictionary<Type, MatrixElementTypes> SupportMatrixTypes = new Dictionary<Type, MatrixElementTypes>();
 
@@ -155,7 +132,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    Native.surf_point_des_matrix_nc(this.NativePtr, out var ret);
+                    NativeMethods.surf_point_des_matrix_nc(this.NativePtr, out var ret);
                     return ret;
                 }
             }
@@ -170,7 +147,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    Native.surf_point_des_matrix_nr(this.NativePtr, out var ret);
+                    NativeMethods.surf_point_des_matrix_nr(this.NativePtr, out var ret);
                     return ret;
                 }
             }
@@ -189,9 +166,9 @@ namespace DlibDotNet
 
                 try
                 {
-                    ofstream = Dlib.Native.ostringstream_new();
-                    Native.surf_point_des_matrix_operator_left_shift(this.NativePtr, ofstream);
-                    stdstr = Dlib.Native.ostringstream_str(ofstream);
+                    ofstream = NativeMethods.ostringstream_new();
+                    NativeMethods.surf_point_des_matrix_operator_left_shift(this.NativePtr, ofstream);
+                    stdstr = NativeMethods.ostringstream_str(ofstream);
                     str = StringHelper.FromStdString(stdstr);
                 }
                 catch (Exception e)
@@ -201,9 +178,9 @@ namespace DlibDotNet
                 finally
                 {
                     if (stdstr != IntPtr.Zero)
-                        Dlib.Native.string_delete(stdstr);
+                        NativeMethods.string_delete(stdstr);
                     if (ofstream != IntPtr.Zero)
-                        Dlib.Native.ostringstream_delete(ofstream);
+                        NativeMethods.ostringstream_delete(ofstream);
                 }
 
                 return str;
@@ -217,7 +194,7 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.matrix_delete(this._MatrixElementType, this.NativePtr, 64, 1);
+                NativeMethods.matrix_delete(this._MatrixElementType, this.NativePtr, 64, 1);
             }
 
             #endregion

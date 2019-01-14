@@ -29,33 +29,33 @@ do {\
 do {\
     switch(matrix_element_type)\
     {\
-        case matrix_element_type::UInt8:\
+        case ::matrix_element_type::UInt8:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, uint8_t, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::UInt16:\
+        case ::matrix_element_type::UInt16:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, uint16_t, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::UInt32:\
+        case ::matrix_element_type::UInt32:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, uint32_t, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::Int8:\
+        case ::matrix_element_type::Int8:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, int8_t, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::Int16:\
+        case ::matrix_element_type::Int16:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, int16_t, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::Int32:\
+        case ::matrix_element_type::Int32:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, int32_t, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::Float:\
+        case ::matrix_element_type::Float:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, float, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::Double:\
+        case ::matrix_element_type::Double:\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, double, kvals, min_size, max_merging_iterations);\
             break;\
-        case matrix_element_type::RgbPixel:\
-        case matrix_element_type::RgbAlphaPixel:\
-        case matrix_element_type::HsiPixel:\
+        case ::matrix_element_type::RgbPixel:\
+        case ::matrix_element_type::RgbAlphaPixel:\
+        case ::matrix_element_type::HsiPixel:\
         default:\
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
             break;\
@@ -72,7 +72,7 @@ do {\
 DLLEXPORT int find_candidate_object_locations(array2d_type type,
                                               void* in_img,
                                               std::vector<rectangle*> *rects,
-                                              matrix_element_type matrix_element_type,
+                                              ::matrix_element_type matrix_element_type,
                                               void* kvals,
                                               const unsigned int min_size,
                                               const unsigned int max_merging_iterations)

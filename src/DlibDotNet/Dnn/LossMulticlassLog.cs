@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Extensions;
-
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
+using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 using OutputLabelType = System.UInt32;
 
 namespace DlibDotNet.Dnn
@@ -19,8 +19,8 @@ namespace DlibDotNet.Dnn
         public LossMulticlassLog(int networkType = 0)
         : base(networkType)
         {
-            var ret = Native.loss_multiclass_log_new(networkType, out var net);
-            if (ret == Dlib.Native.ErrorType.DnnNotSupportNetworkType)
+            var ret = NativeMethods.loss_multiclass_log_new(networkType, out var net);
+            if (ret == ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
             this.NativePtr = net;
@@ -45,7 +45,7 @@ namespace DlibDotNet.Dnn
             {
                 this.ThrowIfDisposed();
 
-                return Native.loss_multiclass_log_num_layers(this.NetworkType);
+                return NativeMethods.loss_multiclass_log_num_layers(this.NetworkType);
             }
         }
 
@@ -57,7 +57,7 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            Native.loss_multiclass_log_clean(this.NetworkType);
+            NativeMethods.loss_multiclass_log_clean(this.NetworkType);
         }
 
         public static LossMulticlassLog Deserialize(string path, int networkType = 0)
@@ -68,7 +68,7 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Encoding.UTF8.GetBytes(path);
-            var error = Native.loss_multiclass_log_deserialize(str, networkType, out var net);
+            var error = NativeMethods.loss_multiclass_log_deserialize(str, networkType, out var net);
             Cuda.ThrowCudaException(error);
 
             return new LossMulticlassLog(net, networkType);
@@ -81,7 +81,7 @@ namespace DlibDotNet.Dnn
 
             deserialize.ThrowIfDisposed();
 
-            var error = Native.loss_multiclass_log_deserialize_proxy(deserialize.NativePtr, networkType, out var net);
+            var error = NativeMethods.loss_multiclass_log_deserialize_proxy(deserialize.NativePtr, networkType, out var net);
             Cuda.ThrowCudaException(error);
 
             return new LossMulticlassLog(net, networkType);
@@ -98,7 +98,7 @@ namespace DlibDotNet.Dnn
         {
             using (var np = p.ToNative())
             {
-                Native.loss_multiclass_log_input_tensor_to_output_tensor(this.NativePtr, this.NetworkType, np.NativePtr, out var ret);
+                NativeMethods.loss_multiclass_log_input_tensor_to_output_tensor(this.NativePtr, this.NetworkType, np.NativePtr, out var ret);
                 return new DPoint(ret);
             }
         }
@@ -132,7 +132,7 @@ namespace DlibDotNet.Dnn
                 var templateRows = images.First().TemplateRows;
                 var templateColumns = images.First().TemplateColumns;
 
-                var ret = Native.loss_multiclass_log_operator_matrixs(this.NativePtr,
+                var ret = NativeMethods.loss_multiclass_log_operator_matrixs(this.NativePtr,
                                                               this.NetworkType,
                                                               imageType.ToNativeMatrixElementType(),
                                                               vecIn.NativePtr,
@@ -144,7 +144,7 @@ namespace DlibDotNet.Dnn
                 Cuda.ThrowCudaException(ret);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    case ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{imageType} is not supported.");
                 }
 
@@ -162,7 +162,7 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Encoding.UTF8.GetBytes(path);
-            Native.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str);
+            NativeMethods.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str);
         }
 
         public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
@@ -180,15 +180,15 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = Native.dnn_trainer_loss_multiclass_log_train(trainer.NativePtr,
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train(trainer.NativePtr,
                                                                        trainer.Type,
                                                                        dataElementTypes.ToNativeMatrixElementType(),
                                                                        dataVec.NativePtr,
-                                                                       Dlib.Native.MatrixElementType.UInt32,
+                                                                       MatrixElementType.UInt32,
                                                                        labelVec.NativePtr);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                    case ErrorType.MatrixElementTypeNotSupport:
                         throw new NotSupportedException($"{dataElementTypes} does not support");
                 }
             }
@@ -201,6 +201,9 @@ namespace DlibDotNet.Dnn
 
         #region Overrides 
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -208,7 +211,7 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
+            NativeMethods.loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
         }
 
         public override string ToString()
@@ -219,15 +222,15 @@ namespace DlibDotNet.Dnn
 
             try
             {
-                ofstream = Dlib.Native.ostringstream_new();
-                var ret = Native.loss_multiclass_log_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
+                ofstream = NativeMethods.ostringstream_new();
+                var ret = NativeMethods.loss_multiclass_log_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
                 switch (ret)
                 {
-                    case Dlib.Native.ErrorType.OK:
-                        stdstr = Dlib.Native.ostringstream_str(ofstream);
+                    case ErrorType.OK:
+                        stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case Dlib.Native.ErrorType.DnnNotSupportNetworkType:
+                    case ErrorType.DnnNotSupportNetworkType:
                         throw new NotSupportNetworkTypeException(this.NetworkType);
                 }
             }
@@ -238,9 +241,9 @@ namespace DlibDotNet.Dnn
             finally
             {
                 if (stdstr != IntPtr.Zero)
-                    Dlib.Native.string_delete(stdstr);
+                    NativeMethods.string_delete(stdstr);
                 if (ofstream != IntPtr.Zero)
-                    Dlib.Native.ostringstream_delete(ofstream);
+                    NativeMethods.ostringstream_delete(ofstream);
             }
 
             return str;
@@ -270,7 +273,7 @@ namespace DlibDotNet.Dnn
 
                 this._Parent = parent;
 
-                var err = Native.loss_multiclass_log_subnet(parent.NativePtr, parent.NetworkType, out var ret);
+                var err = NativeMethods.loss_multiclass_log_subnet(parent.NativePtr, parent.NetworkType, out var ret);
                 this.NativePtr = ret;
             }
 
@@ -283,7 +286,7 @@ namespace DlibDotNet.Dnn
                 get
                 {
                     this._Parent.ThrowIfDisposed();
-                    var tensor = Native.loss_multiclass_log_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
+                    var tensor = NativeMethods.loss_multiclass_log_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
                     return new Tensor(tensor);
                 }
             }
@@ -301,7 +304,7 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Native.loss_multiclass_log_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+                NativeMethods.loss_multiclass_log_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion
@@ -324,7 +327,7 @@ namespace DlibDotNet.Dnn
             internal Output(IntPtr output) :
                 base(output)
             {
-                this._Size = Native.dnn_output_uint32_t_getSize(output);
+                this._Size = NativeMethods.dnn_output_uint32_t_getSize(output);
             }
 
             #endregion
@@ -349,7 +352,7 @@ namespace DlibDotNet.Dnn
                     if (!(0 <= index && index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    return Native.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
+                    return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
                 }
             }
 
@@ -362,7 +365,7 @@ namespace DlibDotNet.Dnn
                     if (!(index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    return Native.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
+                    return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
                 }
             }
 
@@ -379,7 +382,7 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Native.dnn_output_uint32_t_delete(this.NativePtr);
+                NativeMethods.dnn_output_uint32_t_delete(this.NativePtr);
             }
 
             #endregion
@@ -393,83 +396,10 @@ namespace DlibDotNet.Dnn
                 this.ThrowIfDisposed();
 
                 for (var index = 0; index < this._Size; index++)
-                    yield return Native.dnn_output_uint32_t_getItem(this.NativePtr, index);
+                    yield return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, index);
             }
 
             #endregion
-
-            private sealed class Native
-            {
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void dnn_output_uint32_t_delete(IntPtr vector);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern OutputLabelType dnn_output_uint32_t_getItem(IntPtr vector, int index);
-
-                [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int dnn_output_uint32_t_getSize(IntPtr vector);
-
-            }
-
-        }
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_multiclass_log_new(int type, out IntPtr net);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_multiclass_log_delete(IntPtr obj, int type);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_multiclass_log_deserialize(byte[] fileName, int type, out IntPtr net);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_multiclass_log_deserialize_proxy(IntPtr proxy_deserialize, int type, out IntPtr net);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_multiclass_log_serialize(IntPtr obj, int type, byte[] fileName);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_multiclass_log_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern int loss_multiclass_log_num_layers(int type);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_multiclass_log_clean(int type);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_multiclass_log_subnet(IntPtr net, int type, out IntPtr subnet);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void loss_multiclass_log_subnet_delete(int type, IntPtr subnet);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr loss_multiclass_log_subnet_get_output(IntPtr subnet, int type, out Dlib.Native.ErrorType ret);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_multiclass_log_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType loss_multiclass_log_operator_matrixs(IntPtr obj,
-                                                                                            int type,
-                                                                                            Dlib.Native.MatrixElementType element_type,
-                                                                                            IntPtr matrixs,
-                                                                                            int templateRows,
-                                                                                            int templateColumns,
-                                                                                            ulong batchSize,
-                                                                                            out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern Dlib.Native.ErrorType dnn_trainer_loss_multiclass_log_train(IntPtr trainer,
-                                                                                             int type,
-                                                                                             Dlib.Native.MatrixElementType dataElementType,
-                                                                                             IntPtr data,
-                                                                                             Dlib.Native.MatrixElementType labelElementType,
-                                                                                             IntPtr label);
 
         }
 

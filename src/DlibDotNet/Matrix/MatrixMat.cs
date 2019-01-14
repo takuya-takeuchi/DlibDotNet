@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
+using Array2DType = DlibDotNet.NativeMethods.Array2DType;
+using ErrorType = DlibDotNet.NativeMethods.ErrorType;
+using ElementType = DlibDotNet.NativeMethods.ElementType;
+using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -22,14 +24,14 @@ namespace DlibDotNet
             array.ThrowIfDisposed();
 
             var imageType = array.ImageType.ToNativeArray2DType();
-            var ret = Native.mat_array2d(imageType, array.NativePtr, out var matrix);
+            var ret = NativeMethods.mat_array2d(imageType, array.NativePtr, out var matrix);
             switch (ret)
             {
-                case Native.ErrorType.Array2DTypeTypeNotSupport:
+                case ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{imageType} is not supported.");
             }
 
-            return new MatrixOp(Native.ElementType.OpArray2DToMat, array.ImageType, matrix);
+            return new MatrixOp(ElementType.OpArray2DToMat, array.ImageType, matrix);
         }
 
         public static MatrixOp Mat<T>(IUndisposableElementCollection<Matrix<T>> collection)
@@ -50,18 +52,18 @@ namespace DlibDotNet
             var templateRows = first.TemplateRows;
             var templateColumns = first.TemplateColumns;
 
-            var ret = Native.mat_mat_OpStdVectToMat(elementType.ToNativeMatrixElementType(),
-                                                    collection.NativePtr,
-                                                    templateRows,
-                                                    templateColumns,
-                                                    out var matrix);
+            var ret = NativeMethods.mat_mat_OpStdVectToMat(elementType.ToNativeMatrixElementType(),
+                                                           collection.NativePtr,
+                                                           templateRows,
+                                                           templateColumns,
+                                                           out var matrix);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case ErrorType.ElementTypeNotSupport:
                     throw new ArgumentException($"{elementType} is not supported.");
             }
 
-            return new MatrixOp(Native.ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
+            return new MatrixOp(ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
         }
 
         public static MatrixOp Mat<T>(NetResult<Matrix<T>> results)
@@ -91,41 +93,27 @@ namespace DlibDotNet
             //                                            out var matrix);
             //    switch (ret)
             //    {
-            //        case Native.ErrorType.ElementTypeNotSupport:
+            //        case ErrorType.ElementTypeNotSupport:
             //            throw new ArgumentException($"{elementType} is not supported.");
             //    }
 
-            //    return new MatrixOp(Native.ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
+            //    return new MatrixOp(ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
             //}
-            var ret = Native.mat_mat_OpStdVectToMat(elementType.ToNativeMatrixElementType(),
-                                                    results.NativePtr,
-                                                    templateRows,
-                                                    templateColumns,
-                                                    out var matrix);
+            var ret = NativeMethods.mat_mat_OpStdVectToMat(elementType.ToNativeMatrixElementType(),
+                                                           results.NativePtr,
+                                                           templateRows,
+                                                           templateColumns,
+                                                           out var matrix);
             switch (ret)
             {
-                case Native.ErrorType.ElementTypeNotSupport:
+                case ErrorType.ElementTypeNotSupport:
                     throw new ArgumentException($"{elementType} is not supported.");
             }
 
-            return new MatrixOp(Native.ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
+            return new MatrixOp(ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType mat_array2d(Array2DType type, IntPtr array, out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType mat_mat_OpStdVectToMat(MatrixElementType type, IntPtr vector, int templateRows, int templateColumns, out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType mat_matrix(Array2DType srcType, IntPtr src, int templateRows, int templateColumns, MatrixElementType dstType, out IntPtr ret);
-
-        }
 
     }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -22,7 +21,7 @@ namespace DlibDotNet
 
         public SamplePair(uint index1, uint index2, double distance)
         {
-            this.NativePtr = Native.sample_pair_new(index1, index2, distance);
+            this.NativePtr = NativeMethods.sample_pair_new(index1, index2, distance);
         }
 
         internal SamplePair(IntPtr ptr)
@@ -42,7 +41,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.sample_pair_get_index1(this.NativePtr);
+                return NativeMethods.sample_pair_get_index1(this.NativePtr);
             }
         }
 
@@ -51,7 +50,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.sample_pair_get_index2(this.NativePtr);
+                return NativeMethods.sample_pair_get_index2(this.NativePtr);
             }
         }
 
@@ -60,7 +59,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                return Native.sample_pair_get_distance(this.NativePtr);
+                return NativeMethods.sample_pair_get_distance(this.NativePtr);
             }
         }
 
@@ -70,6 +69,9 @@ namespace DlibDotNet
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -77,32 +79,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.sample_pair_delete(this.NativePtr);
+            NativeMethods.sample_pair_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr sample_pair_new(uint idx1, uint idx2, double distance);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern uint sample_pair_get_index1(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern uint sample_pair_get_index2(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern double sample_pair_get_distance(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void sample_pair_delete(IntPtr obj);
-
-        }
 
     }
 
