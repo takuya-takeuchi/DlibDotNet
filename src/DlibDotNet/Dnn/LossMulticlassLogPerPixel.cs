@@ -67,7 +67,7 @@ namespace DlibDotNet.Dnn
             if (!File.Exists(path))
                 throw new FileNotFoundException($"{path} is not found", path);
 
-            var str = Encoding.UTF8.GetBytes(path);
+            var str = Dlib.Encoding.GetBytes(path);
             var error = NativeMethods.loss_multiclass_log_per_pixel_deserialize(str, networkType, out var net);
             Cuda.ThrowCudaException(error);
 
@@ -162,7 +162,7 @@ namespace DlibDotNet.Dnn
 
             net.ThrowIfDisposed();
 
-            var str = Encoding.UTF8.GetBytes(path);
+            var str = Dlib.Encoding.GetBytes(path);
             NativeMethods.loss_multiclass_log_per_pixel_serialize(net.NativePtr, net.NetworkType, str);
         }
 

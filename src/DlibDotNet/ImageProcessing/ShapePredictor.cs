@@ -58,7 +58,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException($"{path} is not found", path);
 
-            var str = Encoding.UTF8.GetBytes(path);
+            var str = Dlib.Encoding.GetBytes(path);
             var ptr = NativeMethods.deserialize_shape_predictor(str);
             return new ShapePredictor(ptr);
         }

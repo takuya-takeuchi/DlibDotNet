@@ -27,7 +27,7 @@ namespace DlibDotNet
             testingImages = null;
             testingLabels = null;
 
-            var str = Encoding.UTF8.GetBytes(folderPath);
+            var str = Dlib.Encoding.GetBytes(folderPath);
 
             NativeMethods.load_mnist_dataset(str, 
                                              out var retTrainingImages,
