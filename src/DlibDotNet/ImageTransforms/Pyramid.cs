@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using PyramidType = DlibDotNet.NativeMethods.PyramidType;
 
 // ReSharper disable once CheckNamespace

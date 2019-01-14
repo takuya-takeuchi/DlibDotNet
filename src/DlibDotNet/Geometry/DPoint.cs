@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Util;
 
 // ReSharper disable once CheckNamespace

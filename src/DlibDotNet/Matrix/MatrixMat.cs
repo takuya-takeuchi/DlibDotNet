@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
-
 using Array2DType = DlibDotNet.NativeMethods.Array2DType;
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using ElementType = DlibDotNet.NativeMethods.ElementType;

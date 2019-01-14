@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 using DlibDotNet.Interop;
-
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 

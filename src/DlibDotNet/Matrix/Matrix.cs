@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet.Extensions;
-
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 

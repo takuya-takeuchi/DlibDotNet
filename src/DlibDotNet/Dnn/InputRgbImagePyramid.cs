@@ -1,6 +1,5 @@
 ﻿using System;
 using DlibDotNet.Extensions;
-
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using PyramidType = DlibDotNet.NativeMethods.PyramidType;
 

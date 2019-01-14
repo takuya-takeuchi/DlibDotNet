@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using DlibDotNet.Extensions;
-
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 

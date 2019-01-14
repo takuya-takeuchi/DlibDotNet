@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
-
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 

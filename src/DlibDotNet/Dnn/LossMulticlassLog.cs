@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using DlibDotNet.Extensions;
-
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 using OutputLabelType = System.UInt32;

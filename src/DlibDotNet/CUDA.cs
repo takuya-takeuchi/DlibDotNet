@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace DlibDotNet
+﻿namespace DlibDotNet
 {
 
     /// <summary>

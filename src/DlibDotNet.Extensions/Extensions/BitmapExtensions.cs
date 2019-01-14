@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.Extensions

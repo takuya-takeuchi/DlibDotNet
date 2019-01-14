@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DlibDotNet.Extensions;
-
 using Array2DType = DlibDotNet.NativeMethods.Array2DType;
 using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
