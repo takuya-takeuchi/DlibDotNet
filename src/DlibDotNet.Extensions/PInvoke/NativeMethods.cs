@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
-namespace DlibDotNet
+namespace DlibDotNet.Extensions
 {
 
     internal sealed partial class NativeMethods
