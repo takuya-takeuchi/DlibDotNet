@@ -318,12 +318,11 @@ src/DlibDotNet.Native.Dnn/build*
 
 !nuget/ref/.keepfolder
 !nuget/lib/.keepfolder
-!nuget/runtimes/linux-x64/native/*/**
-!nuget/runtimes/osx-x64/native/*/**
-!nuget/runtimes/win-x64/native/*/**
 
-
-
-
-
-
+nuget/*.nupkg
+nuget/cpu/runtimes/linux-x64/native/*.so
+nuget/cpu/runtimes/osx-x64/native/*.dylib
+nuget/cpu/runtimes/win-x64/native/*.dll
+nuget/cuda/runtimes/linux-x64/native/*.so
+nuget/cuda/runtimes/osx-x64/native/*.dylib
+nuget/cuda/runtimes/win-x64/native/*.dll
