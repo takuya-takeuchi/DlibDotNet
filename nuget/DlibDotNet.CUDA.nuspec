@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet-WithCUDA</id>
-    <version>19.16.0.20190115</version>
+    <version>19.16.0.20190119</version>
     <title>DlibDotNet (with CUDA)</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -26,6 +26,8 @@ Requirements: Visual C++ 2017 Redistributable Package, cublas64_92.dll, cudnn64_
     <!-- cross-targetting via compile-time references -->
     <file src="ref\**\*" target="ref" />
     <file src="cuda\runtimes\**\*" target="runtimes" />
+
+    <file src="..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
 
     <file src="cuda\runtimes\win-x64\native\DlibDotNetNative.dll" target="runtimes\win-x64\native\DlibDotNetNative.dll" />
     <file src="cuda\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
