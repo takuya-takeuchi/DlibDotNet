@@ -17,14 +17,20 @@ if "%2"=="" (
 if "%2"=="cpu" (
   set CURDIR=%cd%
   set OUTPUT=build_%2
-  mkdir %OUTPUT% && cd %OUTPUT%
+  if not exist %OUTPUT% (
+     mkdir %OUTPUT%
+  )
+  cd %OUTPUT%
   cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ^
         -D DLIB_USE_CUDA=OFF ^
         ..
 ) else if "%2"=="cuda"  (
   set CURDIR=%cd%
   set OUTPUT=build_%2
-  mkdir %OUTPUT% && cd %OUTPUT%
+  if not exist %OUTPUT% (
+     mkdir %OUTPUT%
+  )
+  cd %OUTPUT%
   cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ^
         -D DLIB_USE_CUDA=ON ^
         ..
