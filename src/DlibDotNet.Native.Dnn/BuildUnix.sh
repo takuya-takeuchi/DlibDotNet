@@ -11,7 +11,17 @@ if [ $# -ne 2 ]; then
 fi
 
 CUDDIR=`pwd`
-OUTPUT=build_$2
+
+if [ "$(uname)" == 'Darwin' ]; then
+  OS='osx'
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='linux'
+else
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+fi
+
+OUTPUT=build_${OS}_$2
 
 if [ $2 = "cpu" ]; then
    mkdir -p ${OUTPUT}
