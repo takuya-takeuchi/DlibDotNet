@@ -22,7 +22,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 16)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20190122)
+set(VERSION_DATE 20190223)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
@@ -62,16 +62,16 @@ if (${DLIB_USE_CUDA})
         ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc
         @ONLY)
 
+    # disable cuda static link
+    set(CUDA_USE_STATIC_CUDA_RUNTIME OFF)
+
     # include CUDA Runtime Library
     if (MSVC OR MSYS OR MINGW)
         include_directories("$ENV{CUDA_PATH}/include")
-        link_libraries("$ENV{CUDA_PATH}/lib/x64/cudart_static.lib")
     elseif(APPLE)
         include_directories("$ENV{CUDA_PATH}/include")
-        link_libraries("$ENV{CUDA_PATH}/lib/libcudart_static.a")
     elseif(UNIX AND NOT APPLE)
         include_directories("$ENV{CUDA_PATH}/include")
-        link_libraries("libcudart_static.a")
     else()
         message(FATAL_ERROR "Failed to link CUDA Runtime Library")
     endif()

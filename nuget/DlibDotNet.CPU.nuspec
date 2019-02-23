@@ -2,19 +2,19 @@
 <package>
   <metadata>
     <id>DlibDotNet</id>
-    <version>19.16.0.20190122</version>
+    <version>19.16.0.20190223</version>
     <title>DlibDotNet</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <license type="file">LICENSE.txt</license>
     <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
     <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
     <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
 
 Requirements: Visual C++ 2017 Redistributable Package</description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2018-2019</copyright>
+    <copyright>© Takuya Takeuchi 2017-2019</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>
@@ -35,6 +35,14 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
     <file src="cpu\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
     <file src="cpu\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
     <file src="cpu\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" target="runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" />
+
+    <!-- license -->
+    <file src="..\LICENSE.txt" target="" />
+    <file src="..\Licenses\dlib.txt" target="licenses" />
+    <file src="..\Licenses\giflib.txt" target="licenses" />
+    <file src="..\Licenses\libjpeg.txt" target="licenses" />
+    <file src="..\Licenses\libpng.txt" target="licenses" />
+    <file src="..\Licenses\zlib.txt" target="licenses" />
   </files>
 
 </package>

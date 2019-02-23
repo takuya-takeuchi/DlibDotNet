@@ -48,37 +48,37 @@ namespace DlibDotNet
         public static extern bool matrix_nr(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out int ret);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, byte[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, byte[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, ushort[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, ushort[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, uint[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, uint[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, sbyte[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, sbyte[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, short[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, short[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, int[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, float[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, float[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, double[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, double[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbPixel[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, RgbPixel[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, RgbAlphaPixel[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, RgbAlphaPixel[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, HsiPixel[] array);
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, HsiPixel[] array);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType matrix_operator_left_shift(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, IntPtr ofstream);
@@ -86,6 +86,9 @@ namespace DlibDotNet
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool matrix_size(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out int ret);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType matrix_set_size(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, int length);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType matrix_operator_get_one_row_column(MatrixElementType matrixElementType, IntPtr matrix, int index, int templateRows, int templateColumns, IntPtr ret);
