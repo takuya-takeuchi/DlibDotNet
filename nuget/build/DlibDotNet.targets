@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <NativeDependenciesVersion>19.16.0.20190122</NativeDependenciesVersion>
+    <NativeDependenciesVersion>19.16.0.20190223</NativeDependenciesVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(NugetPackageRoot)==''">

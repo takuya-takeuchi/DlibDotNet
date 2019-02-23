@@ -17,7 +17,7 @@ if "%2"=="" (
 )
 
 set CURDIR=%cd%
-set OUTPUT=build_%2
+set OUTPUT=build_win_%2
 
 if "%2"=="cpu" (
   set OUTPUT=build_%2
