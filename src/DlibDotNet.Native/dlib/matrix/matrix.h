@@ -768,6 +768,22 @@ do {\
     matrix_template_size_arg2_local_template(__TYPE__, __ROWS__, __COLUMNS__, matrix_size_template_sub, error, matrix, ret);\
 } while (0)
 
+#define matrix_set_size_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, value) \
+do {\
+    if (__ROWS__ == 0 && __COLUMNS__ == 1)\
+    {\
+        ((dlib::matrix<__TYPE__, 0, 1>*)matrix)->set_size(value);\
+    }\
+    else if (__ROWS__ == 1 && __COLUMNS__ == 0)\
+    {\
+        ((dlib::matrix<__TYPE__, 1, 0>*)matrix)->set_size(value);\
+    }\
+    else\
+    {\
+        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
+    }\
+} while (0)
+
 #define matrix_delete_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix) \
 delete ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix);\
 
@@ -1257,6 +1273,58 @@ DLLEXPORT int matrix_nr(matrix_element_type type, void* matrix, const int templa
             break;
         case matrix_element_type::RgbAlphaPixel:
             matrix_nr_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, ret);
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int matrix_set_size(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, int length)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            matrix_set_size_template(uint8_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::UInt16:
+            matrix_set_size_template(uint16_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::UInt32:
+            matrix_set_size_template(uint32_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::UInt64:
+            matrix_set_size_template(uint64_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::Int8:
+            matrix_set_size_template(int8_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::Int16:
+            matrix_set_size_template(int16_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::Int32:
+            matrix_set_size_template(int32_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::Int64:
+            matrix_set_size_template(int64_t, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::Float:
+            matrix_set_size_template(float, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::Double:
+            matrix_set_size_template(double, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::RgbPixel:
+            matrix_set_size_template(rgb_pixel, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::HsiPixel:
+            matrix_set_size_template(hsi_pixel, templateRows, templateColumns, err, matrix, length);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            matrix_set_size_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, length);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;

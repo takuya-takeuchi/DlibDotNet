@@ -379,6 +379,23 @@ namespace DlibDotNet
             return new Matrix<TElement>(matrix, (int)templateRows, (int)templateColumns);
         }
 
+        public void SetSize(int length)
+        {
+            this.ThrowIfDisposed();
+
+            if (!(this.TemplateColumns == 1 || this.TemplateColumns == 1))
+                throw new InvalidOperationException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateColumns)} must be 1.");
+
+            var templateRows = this.TemplateRows;
+            var templateColumns = this.TemplateColumns;
+            var ret = NativeMethods.matrix_set_size(this._ElementType, this.NativePtr, templateRows, templateColumns, length);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"Input {this._MatrixElementTypes} is not supported.");
+            }
+        }
+
         public TElement[] ToArray()
         {
             this.ThrowIfDisposed();
