@@ -181,15 +181,20 @@ do { \
     return m;\
 } while (0)
 
-#define matrix_operator_array_template(__TYPE__, matrix, array) \
-do { \
-    dlib::matrix<__TYPE__>& mat = *(static_cast<dlib::matrix<__TYPE__>*>(matrix));\
+#define matrix_operator_array_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, array) \
+do {\
+    dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& mat = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix));\
     __TYPE__* src = static_cast<__TYPE__*>(array);\
     const long row = mat.nr();\
     const long column = mat.nc();\
     for (long r = 0; r < row; ++r)\
         for (long c = 0; c < column; ++c)\
             mat(r, c) = src[r * column + c];\
+} while (0)
+
+#define matrix_operator_array_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, array) \
+do {\
+    matrix_template_size_arg2_local_template(__TYPE__, __ROWS__, __COLUMNS__, matrix_operator_array_template_sub, error, matrix, array);\
 } while (0)
 
 #define matrix_operator_add_template(__TYPE__, lhs, leftTemplateRows, leftTemplateColumns, rhs, rightTemplateRows, rightTemplateColumns, ret)\
@@ -1439,49 +1444,49 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix, const int t
     }
 }
 
-DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, void* array)
+DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, void* array)
 {
     int err = ERR_OK;
     switch(type)
     {
         case matrix_element_type::UInt8:
-            matrix_operator_array_template(uint8_t, matrix, array);
+            matrix_operator_array_template(uint8_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::UInt16:
-            matrix_operator_array_template(uint16_t, matrix, array);
+            matrix_operator_array_template(uint16_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::UInt32:
-            matrix_operator_array_template(uint32_t, matrix, array);
+            matrix_operator_array_template(uint32_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::UInt64:
-            matrix_operator_array_template(uint64_t, matrix, array);
+            matrix_operator_array_template(uint64_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::Int8:
-            matrix_operator_array_template(int8_t, matrix, array);
+            matrix_operator_array_template(int8_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::Int16:
-            matrix_operator_array_template(int16_t, matrix, array);
+            matrix_operator_array_template(int16_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::Int32:
-            matrix_operator_array_template(int32_t, matrix, array);
+            matrix_operator_array_template(int32_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::Int64:
-            matrix_operator_array_template(int64_t, matrix, array);
+            matrix_operator_array_template(int64_t, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::Float:
-            matrix_operator_array_template(float, matrix, array);
+            matrix_operator_array_template(float, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::Double:
-            matrix_operator_array_template(double, matrix, array);
+            matrix_operator_array_template(double, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::RgbPixel:
-            matrix_operator_array_template(rgb_pixel, matrix, array);
+            matrix_operator_array_template(rgb_pixel, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::HsiPixel:
-            matrix_operator_array_template(hsi_pixel, matrix, array);
+            matrix_operator_array_template(hsi_pixel, templateRows, templateColumns, err, matrix, array);
             break;
         case matrix_element_type::RgbAlphaPixel:
-            matrix_operator_array_template(rgb_alpha_pixel, matrix, array);
+            matrix_operator_array_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, array);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;

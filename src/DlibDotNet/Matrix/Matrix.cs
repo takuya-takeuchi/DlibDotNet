@@ -304,40 +304,43 @@ namespace DlibDotNet
 
         public void Assign(TElement[] array)
         {
+            var templateRows = this.TemplateRows;
+            var templateColumns = this.TemplateColumns;
+
             switch (this._MatrixElementTypes)
             {
                 case MatrixElementTypes.UInt8:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<byte>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<byte>().ToArray());
                     break;
                 case MatrixElementTypes.UInt16:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<ushort>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<ushort>().ToArray());
                     break;
                 case MatrixElementTypes.UInt32:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<uint>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<uint>().ToArray());
                     break;
                 case MatrixElementTypes.Int8:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<sbyte>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<sbyte>().ToArray());
                     break;
                 case MatrixElementTypes.Int16:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<short>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<short>().ToArray());
                     break;
                 case MatrixElementTypes.Int32:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<int>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<int>().ToArray());
                     break;
                 case MatrixElementTypes.Float:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<float>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<float>().ToArray());
                     break;
                 case MatrixElementTypes.Double:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<double>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<double>().ToArray());
                     break;
                 case MatrixElementTypes.RgbPixel:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<RgbPixel>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<RgbPixel>().ToArray());
                     break;
                 case MatrixElementTypes.RgbAlphaPixel:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<RgbAlphaPixel>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<RgbAlphaPixel>().ToArray());
                     break;
                 case MatrixElementTypes.HsiPixel:
-                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, array.Cast<HsiPixel>().ToArray());
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<HsiPixel>().ToArray());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
