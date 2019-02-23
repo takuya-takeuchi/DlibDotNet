@@ -9,6 +9,10 @@ RUN apt-get update && apt-get install -y \
     libx11-dev \
     cmake
 
+# set compiler
+ENV CMAKE_C_COMPILER=/usr/bin/gcc
+ENV CMAKE_CXX_COMPILER=/usr/bin/g++
+
 # set env to build by using CUDA
 ENV CUDA_PATH /usr/local/cuda
 ENV PATH $CUDA_PATH/bin:$PATH
