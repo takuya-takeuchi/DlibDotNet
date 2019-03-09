@@ -31,6 +31,22 @@ template <typename SUBNET> using rcon5_1  = relu<affine<con5_1<55,SUBNET>>>;
 using net_type_1 = loss_mmod<con<1,9,9,1,1,rcon5_1<rcon5_1<rcon5_1<downsampler_1<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
 #pragma endregion 1
 
+#pragma region 2
+template <long num_filters, typename SUBNET> using con5d_2 = con<num_filters,5,5,2,2,SUBNET>;
+template <long num_filters, typename SUBNET> using con3_2  = con<num_filters,3,3,1,1,SUBNET>;
+template <typename SUBNET> using downsampler_2  = relu<bn_con<con5d_2<32, relu<bn_con<con5d_2<32, relu<bn_con<con5d_2<32,SUBNET>>>>>>>>>;
+template <typename SUBNET> using rcon3_2  = relu<bn_con<con3_2<32,SUBNET>>>;
+using net_type_2  = loss_mmod<con<1,6,6,1,1,rcon3_2<rcon3_2<rcon3_2<downsampler_2<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
+#pragma endregion 2
+
+#pragma region 3
+template <long num_filters, typename SUBNET> using con5d_3 = con<num_filters,5,5,2,2,SUBNET>;
+template <long num_filters, typename SUBNET> using con5_3  = con<num_filters,5,5,1,1,SUBNET>;
+template <typename SUBNET> using downsampler_3  = relu<bn_con<con5d_3<32, relu<bn_con<con5d_3<32, relu<bn_con<con5d_3<16,SUBNET>>>>>>>>>;
+template <typename SUBNET> using rcon5_3  = relu<bn_con<con5_3<55,SUBNET>>>;
+using net_type_3 = loss_mmod<con<1,9,9,1,1,rcon5_3<rcon5_3<rcon5_3<downsampler<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
+#pragma endregion 3
+
 #pragma endregion type definitions
 
 typedef std::vector<mmod_rect> out_type;
@@ -73,6 +89,12 @@ DLLEXPORT int loss_mmod_new(const int type, void** net)
             break;
         case 1:
             *net = new net_type_1();
+            break;
+        case 2:
+            *net = new net_type_2();
+            break;
+        case 3:
+            *net = new net_type_3();
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
@@ -148,6 +170,54 @@ DLLEXPORT int loss_mmod_operator_matrixs(void* obj,
                     }
                 }
                 break;
+            case 2:
+                {       
+                    net_type_2& net = *(static_cast<net_type_2*>(obj));         
+                    switch(element_type)
+                    {
+                        case matrix_element_type::RgbPixel:
+                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
+                            break;
+                        case matrix_element_type::UInt8:
+                        case matrix_element_type::UInt16:
+                        case matrix_element_type::UInt32:
+                        case matrix_element_type::Int8:
+                        case matrix_element_type::Int16:
+                        case matrix_element_type::Int32:
+                        case matrix_element_type::Float:
+                        case matrix_element_type::Double:
+                        case matrix_element_type::HsiPixel:
+                        case matrix_element_type::RgbAlphaPixel:
+                        default:
+                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                            break;
+                    }
+                }
+                break;
+            case 3:
+                {       
+                    net_type_3& net = *(static_cast<net_type_3*>(obj));         
+                    switch(element_type)
+                    {
+                        case matrix_element_type::RgbPixel:
+                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
+                            break;
+                        case matrix_element_type::UInt8:
+                        case matrix_element_type::UInt16:
+                        case matrix_element_type::UInt32:
+                        case matrix_element_type::Int8:
+                        case matrix_element_type::Int16:
+                        case matrix_element_type::Int32:
+                        case matrix_element_type::Float:
+                        case matrix_element_type::Double:
+                        case matrix_element_type::HsiPixel:
+                        case matrix_element_type::RgbAlphaPixel:
+                        default:
+                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                            break;
+                    }
+                }
+                break;
         }
     }
     catch(dlib::cuda_error ce)
@@ -168,6 +238,12 @@ DLLEXPORT void loss_mmod_delete(void* obj, const int type)
             break;
         case 1:
             delete (net_type_1*)obj;
+            break;
+        case 2:
+            delete (net_type_2*)obj;
+            break;
+        case 3:
+            delete (net_type_3*)obj;
             break;
     }
 }
@@ -191,6 +267,20 @@ DLLEXPORT int loss_mmod_deserialize(const char* file_name, const int type, void*
             case 1:
                 {
                     net_type_1* net = new net_type_1();
+                    dlib::deserialize(file_name) >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 2:
+                {
+                    net_type_2* net = new net_type_2();
+                    dlib::deserialize(file_name) >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 3:
+                {
+                    net_type_3* net = new net_type_3();
                     dlib::deserialize(file_name) >> (*net);
                     *ret = net;
                 }
@@ -233,6 +323,22 @@ DLLEXPORT int loss_mmod_deserialize_proxy(proxy_deserialize* proxy, const int ty
                     *ret = net;
                 }
                 break;
+            case 2:
+                {
+                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                    net_type_2* net = new net_type_2();
+                    p >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 3:
+                {
+                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                    net_type_3* net = new net_type_3();
+                    p >> (*net);
+                    *ret = net;
+                }
+                break;
             default:
                 error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
                 break;
@@ -263,6 +369,18 @@ DLLEXPORT void loss_mmod_serialize(void* obj, const int type, const char* file_n
                 dlib::serialize(file_name) << (*net);
             }
             break;
+        case 2:
+            {
+                auto net = static_cast<net_type_2*>(obj);
+                dlib::serialize(file_name) << (*net);
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<net_type_3*>(obj);
+                dlib::serialize(file_name) << (*net);
+            }
+            break;
     }
 }
 
@@ -275,6 +393,10 @@ DLLEXPORT int loss_mmod_num_layers(const int type)
             return net_type::num_layers;
         case 1:
             return net_type_1::num_layers;
+        case 2:
+            return net_type_2::num_layers;
+        case 3:
+            return net_type_3::num_layers;
     }
 
     return 0;
@@ -299,6 +421,20 @@ DLLEXPORT int loss_mmod_subnet(void* obj, const int type, void** subnet)
                 *subnet = new net_type_1::subnet_type(sn);
             }
             break;
+        case 2:
+            {
+                auto net = static_cast<net_type_2*>(obj);
+                auto sn = net->subnet();
+                *subnet = new net_type_2::subnet_type(sn);
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<net_type_3*>(obj);
+                auto sn = net->subnet();
+                *subnet = new net_type_3::subnet_type(sn);
+            }
+            break;
     }
 
     return 0;
@@ -314,6 +450,12 @@ DLLEXPORT void loss_mmod_clean(void* obj, const int type)
             break;
         case 1:
             ((net_type_1*)obj)->clean();
+            break;
+        case 2:
+            ((net_type_2*)obj)->clean();
+            break;
+        case 3:
+            ((net_type_3*)obj)->clean();
             break;
     }
 }
@@ -333,6 +475,20 @@ DLLEXPORT void loss_mmod_input_tensor_to_output_tensor(void* obj, const int type
         case 1:
             {
                 net_type_1& net = *static_cast<net_type_1*>(obj);
+                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+                *ret = new dlib::dpoint(rp);
+            }
+            break;
+        case 2:
+            {
+                net_type_2& net = *static_cast<net_type_2*>(obj);
+                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+                *ret = new dlib::dpoint(rp);
+            }
+            break;
+        case 3:
+            {
+                net_type_3& net = *static_cast<net_type_3*>(obj);
                 auto rp = dlib::input_tensor_to_output_tensor(net, *p);
                 *ret = new dlib::dpoint(rp);
             }
@@ -359,6 +515,20 @@ DLLEXPORT void loss_mmod_input_layer(void* obj, const int type, void** ret)
                 *ret = new input_rgb_image_pyramid<pyramid_down<6>>(inputLayer);
             }
             break;
+        case 2:
+            {
+                net_type_2& net = *static_cast<net_type_2*>(obj);
+                auto inputLayer = dlib::input_layer(net);
+                *ret = new input_rgb_image_pyramid<pyramid_down<6>>(inputLayer);
+            }
+            break;
+        case 3:
+            {
+                net_type_3& net = *static_cast<net_type_3*>(obj);
+                auto inputLayer = dlib::input_layer(net);
+                *ret = new input_rgb_image_pyramid<pyramid_down<6>>(inputLayer);
+            }
+            break;
     }
 }
 
@@ -378,6 +548,18 @@ DLLEXPORT void loss_mmod_subnet_delete(const int type, void* subnet)
         case 1:
             {
                 auto sb = static_cast<net_type_1::subnet_type*>(subnet);
+                delete sb;
+            }
+            break;
+        case 2:
+            {
+                auto sb = static_cast<net_type_2::subnet_type*>(subnet);
+                delete sb;
+            }
+            break;
+        case 3:
+            {
+                auto sb = static_cast<net_type_3::subnet_type*>(subnet);
                 delete sb;
             }
             break;
@@ -401,6 +583,20 @@ DLLEXPORT const dlib::tensor* loss_mmod_subnet_get_output(void* subnet, const in
         case 1:
             {
                 auto net = static_cast<net_type_1::subnet_type*>(subnet);
+                const dlib::tensor& tensor = net->get_output();
+                return &tensor;
+            }
+            break;
+        case 2:
+            {
+                auto net = static_cast<net_type_2::subnet_type*>(subnet);
+                const dlib::tensor& tensor = net->get_output();
+                return &tensor;
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<net_type_3::subnet_type*>(subnet);
                 const dlib::tensor& tensor = net->get_output();
                 return &tensor;
             }
@@ -434,6 +630,18 @@ DLLEXPORT int loss_mmod_operator_left_shift(void* obj, const int type, std::ostr
                 *stream << net;
             }
             break;
+        case 2:
+            {
+                net_type_2& net = *(static_cast<net_type_2*>(obj));
+                *stream << net;
+            }
+            break;
+        case 3:
+            {
+                net_type_3& net = *(static_cast<net_type_3*>(obj));
+                *stream << net;
+            }
+            break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
@@ -457,6 +665,12 @@ DLLEXPORT void* dnn_trainer_loss_mmod_new(void* net, const int type)
         case 1:
             dnn_trainer_new_template(net_type_1, net);
             break;
+        case 2:
+            dnn_trainer_new_template(net_type_2, net);
+            break;
+        case 3:
+            dnn_trainer_new_template(net_type_3, net);
+            break;
     }
 
     return nullptr;
@@ -473,6 +687,12 @@ DLLEXPORT void dnn_trainer_loss_mmod_delete(void* trainer, const int type)
         case 1:
             dnn_trainer_delete_template(net_type_1, trainer);
             break;
+        case 2:
+            dnn_trainer_delete_template(net_type_2, trainer);
+            break;
+        case 3:
+            dnn_trainer_delete_template(net_type_3, trainer);
+            break;
     }
 }
 
@@ -486,6 +706,12 @@ DLLEXPORT void dnn_trainer_loss_mmod_set_learning_rate(void* trainer, const int 
             break;
         case 1:
             dnn_trainer_set_learning_rate_template(net_type_1, trainer, lr);
+            break;
+        case 2:
+            dnn_trainer_set_learning_rate_template(net_type_2, trainer, lr);
+            break;
+        case 3:
+            dnn_trainer_set_learning_rate_template(net_type_3, trainer, lr);
             break;
     }
 }
@@ -501,6 +727,12 @@ DLLEXPORT void dnn_trainer_loss_mmod_set_min_learning_rate(void* trainer, const 
         case 1:
             dnn_trainer_set_min_learning_rate_template(net_type_1, trainer, lr);
             break;
+        case 2:
+            dnn_trainer_set_min_learning_rate_template(net_type_2, trainer, lr);
+            break;
+        case 3:
+            dnn_trainer_set_min_learning_rate_template(net_type_3, trainer, lr);
+            break;
     }
 }
 
@@ -515,6 +747,12 @@ DLLEXPORT void dnn_trainer_loss_mmod_set_mini_batch_size(void* trainer, const in
         case 1:
             dnn_trainer_set_mini_batch_size_template(net_type_1, trainer, size);
             break;
+        case 2:
+            dnn_trainer_set_mini_batch_size_template(net_type_2, trainer, size);
+            break;
+        case 3:
+            dnn_trainer_set_mini_batch_size_template(net_type_3, trainer, size);
+            break;
     }
 }
 
@@ -528,6 +766,12 @@ DLLEXPORT void dnn_trainer_loss_mmod_be_verbose(void* trainer, const int type)
             break;
         case 1:
             dnn_trainer_be_verbose_template(net_type_1, trainer);
+            break;
+        case 2:
+            dnn_trainer_be_verbose_template(net_type_2, trainer);
+            break;
+        case 3:
+            dnn_trainer_be_verbose_template(net_type_3, trainer);
             break;
     }
 }
@@ -544,6 +788,12 @@ DLLEXPORT int dnn_trainer_loss_mmod_set_synchronization_file(void* trainer, cons
             break;
         case 1:
             dnn_trainer_set_synchronization_file_template(net_type_1, trainer, filename, std::chrono::seconds(second));
+            break;
+        case 2:
+            dnn_trainer_set_synchronization_file_template(net_type_2, trainer, filename, std::chrono::seconds(second));
+            break;
+        case 3:
+            dnn_trainer_set_synchronization_file_template(net_type_3, trainer, filename, std::chrono::seconds(second));
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
