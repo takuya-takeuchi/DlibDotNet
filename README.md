@@ -23,6 +23,10 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 - [FaceRecognition.Net](https://github.com/takuya-takeuchi/FaceRecognitionDotNet)
   - Face recognition .NET library uses Dlib.Net
 
+## Usage
+ 
+Please refer [wiki](https://github.com/takuya-takeuchi/DlibDotNet/wiki)
+ 
 ## Dependencies Libraries and Products
 
 #### [dlib](http://dlib.net/)
@@ -65,11 +69,3 @@ the Independent JPEG Group.
 > **Author:** Jean-loup Gailly and Mark Adler
 > 
 > **Principal Use:** To use libpng and DlibDotNet.Native links this library.
-
-#### [Prism](https://zlib.net/)
-
-> **License:** The MIT License
->
-> **Author:** .NET Foundation
-> 
-> **Principal Use:** Using MVVM for WPF sample application
