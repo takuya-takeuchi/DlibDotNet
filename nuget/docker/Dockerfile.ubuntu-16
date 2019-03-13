@@ -9,6 +9,16 @@ RUN apt-get update && apt-get install -y \
     libx11-dev \
     cmake
 
+# install arm and arm64 compiler
+RUN apt-get update && apt-get install -y \
+    libc6-armel-cross \
+    libc6-dev-armel-cross \
+    binutils-arm-linux-gnueabi \
+    gcc-arm-linux-gnueabihf \
+    g++-arm-linux-gnueabihf \
+    g++-aarch64-linux-gnu \
+    gcc-aarch64-linux-gnu
+
 # set compiler
 ENV CMAKE_C_COMPILER=/usr/bin/gcc
 ENV CMAKE_CXX_COMPILER=/usr/bin/g++
@@ -26,4 +36,4 @@ ENV LIBRARY_PATH $NCCL_ROOT/lib/:$LIBRARY_PATH
 # copy build script and run
 COPY runBuild.sh /runBuild.sh
 RUN chmod 744 /runBuild.sh
-CMD ["./runBuild.sh"]
+ENTRYPOINT ["./runBuild.sh"]

@@ -56,6 +56,14 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINAR
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
 
+OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
+if (${ENABLE_NEON})
+        # ARM64 ignore mfpu option
+        # https://developer.arm.com/docs/dui0774/i/compiler-command-line-options/-mfpu
+	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
+endif()
+
 if (${DLIB_USE_CUDA})
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in

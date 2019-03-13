@@ -57,6 +57,13 @@ FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER1 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/shared.h)
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER2 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/export.h)
 
+if (${ENABLE_NEON})
+        # ARM64 ignore mfpu option
+        # https://developer.arm.com/docs/dui0774/i/compiler-command-line-options/-mfpu
+	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
+endif()
+
 if (${DLIB_USE_CUDA})
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in

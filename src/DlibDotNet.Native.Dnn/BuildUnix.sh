@@ -6,7 +6,7 @@
 # $2: Target (cpu/cuda)
 # ***************************************
 if [ $# -ne 2 ]; then
-  echo "Error: Specify build configuration [Release/Debug] and Target [cpu/cuda]"
+  echo "Error: Specify build configuration [Release/Debug] and Target [cpu/cuda/arm]"
   exit 1
 fi
 
@@ -31,8 +31,24 @@ elif [ $2 = "cuda" ]; then
    mkdir -p ${OUTPUT}
    cd ${OUTPUT}
    cmake -D DLIB_USE_CUDA=ON ..
+elif [ $2 = "arm" ]; then
+   mkdir -p ${OUTPUT}
+   cd ${OUTPUT}
+   cmake -D DLIB_USE_CUDA=OFF \
+         -D ENABLE_NEON=ON \
+         -D CMAKE_C_COMPILER=/usr/bin/arm-linux-gnueabihf-gcc \
+         -D CMAKE_CXX_COMPILER=/usr/bin/arm-linux-gnueabihf-g++ \
+         ..
+elif [ $2 = "arm64" ]; then
+   mkdir -p ${OUTPUT}
+   cd ${OUTPUT}
+   cmake -D DLIB_USE_CUDA=OFF \
+         -D ENABLE_NEON=ON \
+         -D CMAKE_C_COMPILER=/usr/bin/aarch64-linux-gnu-gcc \
+         -D CMAKE_CXX_COMPILER=/usr/bin/aarch64-linux-gnu-g++ \
+         ..
 else
-   echo "Error: Target should be [cpu/cuda]"
+   echo "Error: Target should be [cpu/cuda/arm]"
    exit 1
 fi
 
