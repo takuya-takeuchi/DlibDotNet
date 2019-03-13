@@ -22,7 +22,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 16)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20190223)
+set(VERSION_DATE 20190313)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
@@ -55,6 +55,14 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINAR
 
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
+
+OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
+if (${ENABLE_NEON})
+        # ARM64 ignore mfpu option
+        # https://developer.arm.com/docs/dui0774/i/compiler-command-line-options/-mfpu
+	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
+endif()
 
 if (${DLIB_USE_CUDA})
     configure_file(

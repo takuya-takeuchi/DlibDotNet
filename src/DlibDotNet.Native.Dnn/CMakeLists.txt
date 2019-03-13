@@ -22,7 +22,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 16)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20190223)
+set(VERSION_DATE 20190313)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -56,6 +56,13 @@ FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp
                           ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.cpp)
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER1 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/shared.h)
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER2 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/export.h)
+
+if (${ENABLE_NEON})
+        # ARM64 ignore mfpu option
+        # https://developer.arm.com/docs/dui0774/i/compiler-command-line-options/-mfpu
+	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
+endif()
 
 if (${DLIB_USE_CUDA})
 configure_file(

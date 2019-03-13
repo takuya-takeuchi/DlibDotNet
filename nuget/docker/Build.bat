@@ -3,6 +3,7 @@
 @rem ***************************************
 @rem Arguments
 @rem %1: Distribution Configuration (ubuntu-16/centos-6)
+@rem %2: Architecture Configuration (cpu/cuda/arm/arm64)
 @rem ***************************************
 
 if "%1"=="" (
@@ -36,4 +37,4 @@ if "%1"=="" (
 @rem run
 @docker run --name dlibdotnet-%DISTRIBUTION% --rm^
             -v "%VOLUMEPATH%:/opt/data/DlibDotNet" ^
-            dlibdotnet-%DISTRIBUTION%
+            -t dlibdotnet-%DISTRIBUTION% %2
