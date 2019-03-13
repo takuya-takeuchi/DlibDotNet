@@ -72,7 +72,7 @@ BEGIN
 			VALUE "FileDescription",  "Dlib wrapper library (kernel)"
 			VALUE "FileVersion",      VER_FILEVERSION_STR
 			VALUE "InternalName",     "DlibDotNet.Native"
-			VALUE "LegalCopyright",   "Copyright (c) 2018-2019 Takuya Takeuchi."
+			VALUE "LegalCopyright",   "Copyright (c) 2017-2019 Takuya Takeuchi."
 			VALUE "OriginalFilename", "DlibDotNet.Native.dll"
 			VALUE "ProductName",      "Dlib.Net"
 			VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
