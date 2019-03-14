@@ -320,6 +320,8 @@ src/DlibDotNet.Native.Dnn/build*
 !nuget/lib/.keepfolder
 
 nuget/*.nupkg
+nuget/arm/runtimes/linux-arm/native/*.so
+nuget/arm/runtimes/linux-arm64/native/*.so
 nuget/cpu/runtimes/linux-x64/native/*.so
 nuget/cpu/runtimes/osx-x64/native/*.dylib
 nuget/cpu/runtimes/win-x64/native/*.dll
