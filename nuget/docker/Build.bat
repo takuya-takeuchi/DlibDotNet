@@ -3,7 +3,23 @@
 @rem ***************************************
 @rem Arguments
 @rem %1: Distribution Configuration (ubuntu-16/centos-6)
+@rem %2: Target Configuration (cpu/cuda/arm)
+@rem %3: Architecture Configuration (32/64)
 @rem ***************************************
+if "%1"=="" ( 
+  @echo Error: Speficy build configuration [Release/Debug]
+  @exit /B
+)
+
+if "%2"=="" ( 
+  @echo Error: Speficy Target [cpu/cuda]
+  @exit /B
+)
+
+if "%3"=="" ( 
+  @echo Error: Speficy Architecture [32/64]
+  @exit /B
+)
 
 if "%1"=="" (
   @echo Error: Speficy build configuration [ubuntu-16/centos-6]
@@ -36,4 +52,4 @@ if "%1"=="" (
 @rem run
 @docker run --name dlibdotnet-%DISTRIBUTION% --rm^
             -v "%VOLUMEPATH%:/opt/data/DlibDotNet" ^
-            dlibdotnet-%DISTRIBUTION%
+            -t dlibdotnet-%DISTRIBUTION% %2 %3

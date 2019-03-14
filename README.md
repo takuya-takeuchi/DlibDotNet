@@ -6,6 +6,9 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 |---|---|---|---|
 |DlibDotNet|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|
 |DlibDotNet With CUDA|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-WithCUDA.svg)](https://www.nuget.org/packages/DlibDotNet-WithCUDA)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-WithCUDA.svg)](https://www.nuget.org/packages/DlibDotNet-WithCUDA)|N/A|
+|DlibDotNet for ARM|N/A|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-ARM.svg)](https://www.nuget.org/packages/DlibDotNet-ARM)|N/A|
+
+##### :warning: DlibDotNet for ARM  is not tested yet
 
 ## Demo
 

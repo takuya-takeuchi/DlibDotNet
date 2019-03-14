@@ -3,7 +3,8 @@
 @rem ***************************************
 @rem Arguments
 @rem %1: Build Configuration (Release/Debug)
-@rem %: Target (cpu/cuda)
+@rem %2: Target (cpu/cuda)
+@rem %3: Architecture (32/64)
 @rem ***************************************
 
 if "%1"=="" ( 
@@ -16,21 +17,57 @@ if "%2"=="" (
   @exit /B
 )
 
-set CURDIR=%cd%
-set OUTPUT=build_win_%2
+if "%3"=="" ( 
+  @echo Error: Speficy Architecture [32/64]
+  @exit /B
+)
 
+set CURDIR=%cd%
+
+if "%3"=="32" (
+   set OUTPUT=build_win_%2_x86
+) else if "%3"=="64" (
+   set OUTPUT=build_win_%2_x64
+)
+  
 if "%2"=="cpu" (
-  if not exist %OUTPUT% mkdir %OUTPUT%
-  cd %OUTPUT%
-  cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ^
-        -D DLIB_USE_CUDA=OFF ^
-        ..
+
+  if "%3"=="32" (
+    if not exist %OUTPUT% mkdir %OUTPUT%
+    cd %OUTPUT%
+    cmake -G "Visual Studio 15 2017" -T host=x64 ^
+          -D DLIB_USE_CUDA=OFF ^
+          ..
+  ) else if "%3"=="64" (
+    if not exist %OUTPUT% mkdir %OUTPUT%
+    cd %OUTPUT%
+    cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ^
+          -D DLIB_USE_CUDA=OFF ^
+          ..
+  ) else (
+    @echo Error: Architecture should be [32/64]
+    @exit /B
+  )
+
 ) else if "%2"=="cuda" (
-  if not exist %OUTPUT% mkdir %OUTPUT%
-  cd %OUTPUT%
-  cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ^
-        -D DLIB_USE_CUDA=ON ^
-        ..
+
+  if "%3"=="32" (
+    if not exist %OUTPUT% mkdir %OUTPUT%
+    cd %OUTPUT%
+    cmake -G "Visual Studio 15 2017" -T host=x64 ^
+          -D DLIB_USE_CUDA=ON ^
+          ..
+  ) else if "%3"=="64" (
+    if not exist %OUTPUT% mkdir %OUTPUT%
+    cd %OUTPUT%
+    cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ^
+          -D DLIB_USE_CUDA=ON ^
+          ..
+  ) else (
+    @echo Error: Architecture should be [32/64]
+    @exit /B
+  )
+
 ) else (
   @echo Error: Target should be [cpu/cuda]
   @exit /B
