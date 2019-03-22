@@ -46,18 +46,18 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsOSX)' == 'true'">
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNative.dylib" Condition="'$(IsOSX)' == 'true'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNetNative.dylib" Condition="'$(IsOSX)' == 'true'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>DlibDotNetNative.dylib</Link>
+      <Link>libDlibDotNetNative.dylib</Link>
       <DeploymentContent>True</DeploymentContent>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNativeDnn.dylib" Condition="'$(IsOSX)' == 'true'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" Condition="'$(IsOSX)' == 'true'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>DlibDotNetNativeDnn.dylib</Link>
+      <Link>libDlibDotNetNativeDnn.dylib</Link>
       <DeploymentContent>True</DeploymentContent>
     </Content>
-    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNative.dylib" />
-    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\DlibDotNetNativeDnn.dylib" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" />
   </ItemGroup>
 
 </Project>
