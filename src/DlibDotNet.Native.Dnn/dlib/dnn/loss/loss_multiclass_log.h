@@ -38,13 +38,54 @@ template <typename SUBNET> using incept_b = inception3<block_b1,block_b2,block_b
 
 // Now we can define a simple network for classifying MNIST digits.  We will
 // train and test this network in the code below.
-using net_type = loss_multiclass_log<
-        fc<10,
-        relu<fc<32,
-        max_pool<2,2,2,2,incept_b<
-        max_pool<2,2,2,2,incept_a<
-        input<matrix<unsigned char>>
-        >>>>>>>>;
+using net_type = loss_multiclass_log<fc<10,
+                                     relu<fc<32,
+                                     max_pool<2,2,2,2,incept_b<
+                                     max_pool<2,2,2,2,incept_a<
+                                     input<matrix<unsigned char>>
+                                     >>>>>>>>;
+
+using layer_details = add_layer<fc_<10, FC_HAS_BIAS>,
+                      add_layer<relu_,
+                      add_layer<fc_<32, FC_HAS_BIAS>,
+                      add_layer<max_pool_<2, 2, 2, 2, 0, 0>,
+                      add_layer<concat_<itag1, itag2, itag3>,
+                      add_tag_layer<1001,
+                      add_layer<relu_,
+                      add_layer<con_<4, 1, 1, 1, 1, 0, 0>,
+                      add_skip_layer<itag0,
+                      add_tag_layer<1002,
+                      add_layer<relu_,
+                      add_layer<con_<4, 3, 3, 1, 1, 1, 1>,
+                      add_skip_layer<itag0,
+                      add_tag_layer<1003,
+                      add_layer<relu_,
+                      add_layer<con_<4, 1, 1, 1, 1, 0, 0>,
+                      add_layer<max_pool_<3, 3, 1, 1, 1, 1>,
+                      add_tag_layer<1000,
+                      add_layer<max_pool_<2, 2, 2, 2, 0, 0>,
+                      add_layer<concat_<itag1, itag2, itag3, itag4>,
+                      add_tag_layer<1001,
+                      add_layer<relu_,
+                      add_layer<con_<10, 1, 1, 1, 1, 0, 0>,
+                      add_skip_layer<itag0,
+                      add_tag_layer<1002,
+                      add_layer<relu_,
+                      add_layer<con_<10, 3, 3, 1, 1, 1, 1>,
+                      add_layer<relu_,
+                      add_layer<con_<16, 1, 1, 1, 1, 0, 0>,
+                      add_skip_layer<itag0,
+                      add_tag_layer<1003,
+                      add_layer<relu_,
+                      add_layer<con_<10, 5, 5, 1, 1, 2, 2>,
+                      add_layer<relu_,
+                      add_layer<con_<16, 1, 1, 1, 1, 0, 0>,
+                      add_skip_layer<itag0,
+                      add_tag_layer<1004,
+                      add_layer<relu_,
+                      add_layer<con_<10, 1, 1, 1, 1, 0, 0>,
+                      add_layer<max_pool_<3, 3, 1, 1, 1, 1>,
+                      add_tag_layer<1000, input<matrix<unsigned char, 0, 0>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>;
 #pragma endregion type definitions
 
 typedef unsigned long out_type;
@@ -69,6 +110,24 @@ do {\
         in_tmp_label.push_back(tmp_label[i]);\
 \
     dnn_trainer_train_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
+} while (0)
+
+#define train_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
+do {\
+    std::vector<matrix<__TYPE__>*>& tmp_data = *(static_cast<std::vector<matrix<__TYPE__>*>*>(data));\
+    std::vector<matrix<__TYPE__>> in_tmp_data;\
+    for (int i = 0; i< tmp_data.size(); i++)\
+    {\
+        matrix<__TYPE__>& mat = *tmp_data[i];\
+        in_tmp_data.push_back(mat);\
+    }\
+\
+    std::vector<train_label_type>& tmp_label = *(static_cast<std::vector<train_label_type>*>(labels));\
+    std::vector<train_label_type> in_tmp_label;\
+    for (int i = 0; i< tmp_label.size(); i++)\
+        in_tmp_label.push_back(tmp_label[i]);\
+\
+    dnn_trainer_train_one_step_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
 } while (0)
 
 #pragma endregion template
@@ -338,7 +397,45 @@ DLLEXPORT const dlib::tensor* loss_multiclass_log_subnet_get_output(void* subnet
     return nullptr;
 }
 
+DLLEXPORT const void* loss_multiclass_log_subnet_get_layer_details(void* subnet, const int type, int* ret)
+{
+    // Check type argument and cast to the proper type
+    *ret = ERR_OK;
+
+    switch(type)
+    {
+        case 0:
+            {
+                auto net = static_cast<net_type::subnet_type*>(subnet);
+                const layer_details& layer_details = net->layer_details();
+                return &layer_details;
+            }
+            break;
+    }
+
+    *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+    return nullptr;
+}
+
 #pragma endregion subnet
+
+#pragma region layer_details
+
+DLLEXPORT void loss_multiclass_log_layer_details_set_num_filters(void* layer, const int type, long num)
+{
+    // Check type argument and cast to the proper type
+    // switch(type)
+    // {
+    //     case 0:
+    //         {
+    //             auto ld = static_cast<layer_details::layer_details_type*>(layer);
+    //             ld->set_num_filters(num);
+    //         }
+    //         break;
+    // }
+}
+
+#pragma endregion layer_details
 
 #pragma region operator
 
@@ -402,6 +499,24 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_set_learning_rate(void* trainer, 
     }
 }
 
+DLLEXPORT int dnn_trainer_loss_multiclass_log_get_learning_rate(void* trainer, const int type, double* lr)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_get_learning_rate_template(net_type, trainer, lr);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
+}
+
 DLLEXPORT void dnn_trainer_loss_multiclass_log_set_min_learning_rate(void* trainer, const int type, const double lr)
 {
     // Check type argument and cast to the proper type
@@ -453,6 +568,24 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_set_synchronization_file(void* tra
     return err;
 }
 
+DLLEXPORT int dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold(void* trainer, const int type, const unsigned long thresh)
+{
+    int err = ERR_OK;
+    
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0: 
+            dnn_trainer_set_iterations_without_progress_threshold(net_type, trainer, thresh);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
+}
+
 DLLEXPORT int dnn_trainer_loss_multiclass_log_train(void* trainer,
                                                     const int type,
                                                     matrix_element_type data_element_type,
@@ -473,6 +606,47 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_train(void* trainer,
             {
                 case 0:
                     train_template(net_type, trainer, uint8_t, data, labels);
+                    break;
+            }
+            break;
+        case matrix_element_type::UInt16:
+        case matrix_element_type::UInt32:
+        case matrix_element_type::Int8:
+        case matrix_element_type::Int16:
+        case matrix_element_type::Int32:
+        case matrix_element_type::Float:
+        case matrix_element_type::Double:
+        case matrix_element_type::RgbPixel:
+        case matrix_element_type::HsiPixel:
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_train_one_step(void* trainer,
+                                                             const int type,
+                                                             matrix_element_type data_element_type,
+                                                             void* data,
+                                                             matrix_element_type label_element_type,
+                                                             void* labels)
+{
+    // Check type argument and cast to the proper type
+    int err = ERR_OK;
+    
+    if (label_element_type != matrix_element_type::UInt32)
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+        
+    switch(data_element_type)
+    {
+        case matrix_element_type::UInt8:
+            switch(type)
+            {
+                case 0:
+                    train_one_step_template(net_type, trainer, uint8_t, data, labels);
                     break;
             }
             break;

@@ -30,6 +30,9 @@ namespace DlibDotNet
         public static extern ErrorType loss_mmod_new(int type, out IntPtr net);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType loss_mmod_new2(int type, IntPtr option, out IntPtr net);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void loss_mmod_delete(IntPtr obj, int type);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -57,23 +60,37 @@ namespace DlibDotNet
         public static extern ErrorType loss_mmod_subnet(IntPtr net, int type, out IntPtr subnet);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType loss_mmod_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType loss_mmod_operator_matrixs(IntPtr obj,
+                                                                  int type,
+                                                                  MatrixElementType element_type,
+                                                                  IntPtr matrixs,
+                                                                  int templateRows,
+                                                                  int templateColumns,
+                                                                  ulong batchSize,
+                                                                  out IntPtr ret);
+
+        #region subnet
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr loss_mmod_subnet_get_layer_details(IntPtr subnet, int type, out ErrorType ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void loss_mmod_subnet_delete(int type, IntPtr subnet);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern IntPtr loss_mmod_subnet_get_output(IntPtr subnet, int type, out ErrorType ret);
 
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType loss_mmod_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+        #endregion
+
+        #region layer_details
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType loss_mmod_operator_matrixs(IntPtr obj,
-                                                                              int type,
-                                                                              MatrixElementType element_type,
-                                                                              IntPtr matrixs,
-                                                                              int templateRows,
-                                                                              int templateColumns,
-                                                                              ulong batchSize,
-                                                                              out IntPtr ret);
+        public static extern void loss_mmod_layer_details_set_num_filters(IntPtr layer, int type, int num);
+
+        #endregion
 
     }
 

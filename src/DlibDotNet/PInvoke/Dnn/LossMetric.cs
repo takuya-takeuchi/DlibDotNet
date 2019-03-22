@@ -45,23 +45,34 @@ namespace DlibDotNet
         public static extern ErrorType loss_metric_subnet(IntPtr net, int type, out IntPtr subnet);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType loss_metric_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType loss_metric_operator_matrixs(IntPtr obj,
+                                                                    int type,
+                                                                    MatrixElementType element_type,
+                                                                    IntPtr matrixs,
+                                                                    int templateRows,
+                                                                    int templateColumns,
+                                                                    ulong batchSize,
+                                                                    out IntPtr ret);
+
+        #region subnet
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void loss_metric_subnet_delete(int type, IntPtr subnet);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern IntPtr loss_metric_subnet_get_output(IntPtr subnet, int type, out ErrorType ret);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType loss_metric_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+        public static extern IntPtr loss_metric_subnet_get_layer_details(IntPtr subnet, int type, out ErrorType ret);
 
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType loss_metric_operator_matrixs(IntPtr obj,
-                                                                                int type,
-                                                                                MatrixElementType element_type,
-                                                                                IntPtr matrixs,
-                                                                                int templateRows,
-                                                                                int templateColumns,
-                                                                                ulong batchSize,
-                                                                                out IntPtr ret);
+        #endregion
+
+        #region layer_details
+
+        #endregion
 
     }
 

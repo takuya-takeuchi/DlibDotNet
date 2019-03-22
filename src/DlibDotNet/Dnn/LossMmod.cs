@@ -9,7 +9,7 @@ using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class LossMmod : Net
+    public sealed class LossMmod : Net<int>
     {
 
         #region Constructors
@@ -18,6 +18,21 @@ namespace DlibDotNet.Dnn
             : base(networkType)
         {
             var ret = NativeMethods.loss_mmod_new(networkType, out var net);
+            if (ret == ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(networkType);
+
+            this.NativePtr = net;
+        }
+
+        public LossMmod(MModOptions options, int networkType = 0)
+            : base(networkType)
+        {
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
+            options.ThrowIfDisposed();
+
+            var ret = NativeMethods.loss_mmod_new2(networkType, options.NativePtr, out var net);
             if (ret == ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
@@ -91,7 +106,7 @@ namespace DlibDotNet.Dnn
 
             return new Subnet(this);
         }
-        
+
         internal override DPoint InputTensorToOutputTensor(DPoint p)
         {
             using (var np = p.ToNative())
@@ -163,7 +178,7 @@ namespace DlibDotNet.Dnn
             var str = Dlib.Encoding.GetBytes(path);
             NativeMethods.loss_mmod_serialize(net.NativePtr, net.NetworkType, str);
         }
-
+        
         public override bool TryGetInputLayer<T>(T layer)
         {
             this.ThrowIfDisposed();
@@ -270,6 +285,13 @@ namespace DlibDotNet.Dnn
 
             #region Methods
 
+            public LayerDetails GetLayerDetails()
+            {
+                this._Parent.ThrowIfDisposed();
+                var ret = NativeMethods.loss_mmod_subnet_get_layer_details(this.NativePtr, this._Parent.NetworkType, out _);
+                return new LayerDetails(this._Parent, ret);
+            }
+
             #region Overrids
 
             protected override void DisposeUnmanaged()
@@ -280,6 +302,56 @@ namespace DlibDotNet.Dnn
                     return;
 
                 NativeMethods.loss_mmod_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+            }
+
+            #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LayerDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMmod _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LayerDetails(LossMmod parent, IntPtr ptr)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public void SetNumFilters(int num)
+            {
+                this._Parent.ThrowIfDisposed();
+                NativeMethods.loss_mmod_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+            }
+
+            #region Overrids
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                //NativeMethods.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion

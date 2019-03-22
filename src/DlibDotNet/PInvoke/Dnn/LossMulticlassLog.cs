@@ -47,12 +47,6 @@ namespace DlibDotNet
         public static extern ErrorType loss_multiclass_log_subnet(IntPtr net, int type, out IntPtr subnet);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void loss_multiclass_log_subnet_delete(int type, IntPtr subnet);
-
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr loss_multiclass_log_subnet_get_output(IntPtr subnet, int type, out ErrorType ret);
-
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType loss_multiclass_log_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -64,6 +58,23 @@ namespace DlibDotNet
                                                                             int templateColumns,
                                                                             ulong batchSize,
                                                                             out IntPtr ret);
+
+        #region subnet
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr loss_multiclass_log_subnet_get_layer_details(IntPtr subnet, int type, out ErrorType ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void loss_multiclass_log_subnet_delete(int type, IntPtr subnet);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr loss_multiclass_log_subnet_get_output(IntPtr subnet, int type, out ErrorType ret);
+
+        #endregion
+
+        #region layer_details
+
+        #endregion
 
     }
 

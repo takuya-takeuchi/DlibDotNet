@@ -88,7 +88,7 @@ namespace DlibDotNet.ImageTransforms
                 NativeMethods.random_cropper_set_max_rotation_degrees(this.NativePtr, value);
             }
         }
-        
+
         public long MinObjectLengthLongDim
         {
             get
@@ -107,7 +107,7 @@ namespace DlibDotNet.ImageTransforms
                 var s = this.MinObjectLengthShortDim;
                 if (!(0 < s && s <= value))
                     throw new ArgumentException($"{nameof(this.MinObjectLengthShortDim)} should be more than 0 and {nameof(this.MinObjectLengthShortDim)} should be less than {nameof(MinObjectLengthLongDim)}.");
-                
+
                 NativeMethods.random_cropper_set_min_object_size(this.NativePtr, value, s);
             }
         }
@@ -220,10 +220,20 @@ namespace DlibDotNet.ImageTransforms
             }
             finally
             {
-                if(listOfVectorOfMModRect!=null)
+                if (listOfVectorOfMModRect != null)
                     foreach (var stdVector in listOfVectorOfMModRect)
                         stdVector?.Dispose();
             }
+        }
+
+        public void SetMinObjectSize(int longDim, int shortDim)
+        {
+            this.ThrowIfDisposed();
+
+            if (!(0 < shortDim && shortDim <= longDim))
+                throw new ArgumentOutOfRangeException();
+
+            NativeMethods.random_cropper_set_min_object_size(this.NativePtr, longDim, shortDim);
         }
 
         #region Overrides

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using DlibDotNet.Util;
 
@@ -47,6 +48,7 @@ namespace DlibDotNet
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
+                new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  }
             };
 
             foreach (var type in types)
@@ -167,6 +169,8 @@ namespace DlibDotNet
                         return new StdVectorStdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdVectorMModRect:
                         return new StdVectorStdVectorMModRectImp() as StdVectorImp<TItem>;
+                    case ElementTypes.DetectorWindowDetails:
+                        return new StdVectorMModOptionsDetectorWindowDetailsImp() as StdVectorImp<TItem>;
                 }
             }
             else
@@ -265,7 +269,9 @@ namespace DlibDotNet
 
             ImageDatasetMetadataImage,
 
-            ImageDatasetMetadataBox
+            ImageDatasetMetadataBox,
+
+            DetectorWindowDetails
 
         }
 
@@ -1530,6 +1536,63 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_stdvector_mmod_rect_copy(ptr, dst);
                 return dst.Select(p => new StdVector<MModRect>(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+        
+        private sealed class StdVectorMModOptionsDetectorWindowDetailsImp : StdVectorImp<MModOptions.DetectorWindowDetails>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<MModOptions.DetectorWindowDetails> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_mmod_options_detector_window_details_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_getSize(ptr).ToInt32();
+            }
+
+            public override MModOptions.DetectorWindowDetails[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new MModOptions.DetectorWindowDetails[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_mmod_options_detector_window_details_copy(ptr, dst);
+                return dst.Select(p => new MModOptions.DetectorWindowDetails(p)).ToArray();
             }
 
             #endregion

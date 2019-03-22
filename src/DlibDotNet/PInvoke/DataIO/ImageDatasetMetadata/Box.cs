@@ -31,6 +31,7 @@ namespace DlibDotNet
         public static extern void image_dataset_metadata_box_set_detection_score(IntPtr dataset, double detectionScore);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_dataset_metadata_box_get_difficult(IntPtr dataset);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -43,9 +44,11 @@ namespace DlibDotNet
         public static extern void image_dataset_metadata_box_set_gender(IntPtr dataset, Gender gender);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_dataset_metadata_box_has_label(IntPtr dataset);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_dataset_metadata_box_get_ignore(IntPtr dataset);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -58,6 +61,7 @@ namespace DlibDotNet
         public static extern void image_dataset_metadata_box_set_label(IntPtr dataset, byte[] label);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_dataset_metadata_box_get_occluded(IntPtr dataset);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -67,6 +71,7 @@ namespace DlibDotNet
         public static extern void image_dataset_metadata_box_get_parts_get_all(IntPtr box, IntPtr strings, IntPtr points);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_dataset_metadata_box_get_parts_get_value(IntPtr box, byte[] key, out IntPtr result);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -88,6 +93,7 @@ namespace DlibDotNet
         public static extern void image_dataset_metadata_box_set_pose(IntPtr dataset, double pose);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_dataset_metadata_box_get_truncated(IntPtr dataset);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

@@ -10,6 +10,7 @@
 #endif
 
 #include <dlib/data_io/image_dataset_metadata.h>
+#include <dlib/dnn.h>
 #include <dlib/image_processing/full_object_detection.h>
 #include <dlib/image_processing/object_detector.h>
 #include <dlib/image_transforms/interpolation.h>
@@ -224,6 +225,7 @@ MAKE_FUNC_POINTER(dlib::sample_pair, sample_pair)
 MAKE_FUNC_POINTER(dlib::mmod_rect, mmod_rect)
 MAKE_FUNC_POINTER(dlib::image_dataset_metadata::image, image_dataset_metadata_image)
 MAKE_FUNC_POINTER(dlib::image_dataset_metadata::box, image_dataset_metadata_box)
+MAKE_FUNC_POINTER(dlib::mmod_options::detector_window_details, mmod_options_detector_window_details)
 
 MAKE_FUNC_VECTOR(double, double)
 

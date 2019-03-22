@@ -165,35 +165,6 @@ namespace DlibDotNet.Dnn
             NativeMethods.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str);
         }
 
-        public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
-            where T : struct
-        {
-            if (trainer == null)
-                throw new ArgumentNullException(nameof(trainer));
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (label == null)
-                throw new ArgumentNullException(nameof(label));
-
-            Matrix<T>.TryParse<T>(out var dataElementTypes);
-
-            using (var dataVec = new StdVector<Matrix<T>>(data))
-            using (var labelVec = new StdVector<uint>(label))
-            {
-                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train(trainer.NativePtr,
-                                                                       trainer.Type,
-                                                                       dataElementTypes.ToNativeMatrixElementType(),
-                                                                       dataVec.NativePtr,
-                                                                       MatrixElementType.UInt32,
-                                                                       labelVec.NativePtr);
-                switch (ret)
-                {
-                    case ErrorType.MatrixElementTypeNotSupport:
-                        throw new NotSupportedException($"{dataElementTypes} does not support");
-                }
-            }
-        }
-
         public override bool TryGetInputLayer<T>(T layer)
         {
             throw new NotSupportedException();
@@ -295,6 +266,13 @@ namespace DlibDotNet.Dnn
 
             #region Methods
 
+            public LayerDetails GetLayerDetails()
+            {
+                this._Parent.ThrowIfDisposed();
+                var ret = NativeMethods.loss_multiclass_log_subnet_get_layer_details(this.NativePtr, this._Parent.NetworkType, out _);
+                return new LayerDetails(this._Parent, ret);
+            }
+
             #region Overrids
 
             protected override void DisposeUnmanaged()
@@ -308,6 +286,32 @@ namespace DlibDotNet.Dnn
             }
 
             #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LayerDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMulticlassLog _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LayerDetails(LossMulticlassLog parent, IntPtr ptr)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
 
             #endregion
 

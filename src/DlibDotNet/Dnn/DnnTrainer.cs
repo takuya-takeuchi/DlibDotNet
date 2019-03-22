@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using DlibDotNet.Extensions;
 
 namespace DlibDotNet.Dnn
 {
@@ -48,6 +50,13 @@ namespace DlibDotNet.Dnn
             this._Imp.BeVerbose();
         }
 
+        public double GetLearningRate()
+        {
+            this.ThrowIfDisposed();
+
+            return this._Imp.GetLearningRate();
+        }
+
         public void SetLearningRate(double learningRate)
         {
             this.ThrowIfDisposed();
@@ -77,6 +86,29 @@ namespace DlibDotNet.Dnn
             this.ThrowIfDisposed();
 
             this._Imp.SetSynchronizationFile(filename, second);
+        }
+
+        public void SetIterationsWithoutProgressThreshold(uint threshold)
+        {
+            this.ThrowIfDisposed();
+
+            this._Imp.SetIterationsWithoutProgressThreshold(threshold);
+        }
+
+        public void Train<U>(IEnumerable<Matrix<U>> data, IEnumerable<uint> label)
+            where U : struct
+        {
+            this.ThrowIfDisposed();
+
+            this._Imp.Train(data, label);
+        }
+
+        public void TrainOneStep<U>(IEnumerable<Matrix<U>> data, IEnumerable<uint> label)
+            where U : struct
+        {
+            this.ThrowIfDisposed();
+
+            this._Imp.TrainOneStep(data, label);
         }
 
         #region Overrides 
@@ -127,6 +159,8 @@ namespace DlibDotNet.Dnn
 
             public abstract void BeVerbose();
 
+            public abstract double GetLearningRate();
+
             public abstract void SetLearningRate(double learningRate);
 
             public abstract void SetMinLearningRate(double learningRate);
@@ -135,8 +169,16 @@ namespace DlibDotNet.Dnn
 
             public abstract void SetSynchronizationFile(string filename, uint second = 15 * 60);
 
-        }
+            public abstract void SetIterationsWithoutProgressThreshold(uint thresh);
 
+            public abstract void Train<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+                where T : struct;
+
+            public abstract void TrainOneStep<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+                where T : struct;
+
+        }
+        // set_iterations_without_progress_threshold
         private sealed class LossMetricTrainer : TrainerImp
         {
 
@@ -174,6 +216,12 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_metric_delete(this.NativePtr, this.NetworkType);
             }
 
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_metric_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_metric_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -195,6 +243,65 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.dnn_trainer_loss_metric_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_metric_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void Train<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_metric_train(this.NativePtr,
+                                                                          this.NetworkType,
+                                                                          dataElementTypes.ToNativeMatrixElementType(),
+                                                                          dataVec.NativePtr,
+                                                                          NativeMethods.MatrixElementType.UInt32,
+                                                                          labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+
+            public override void TrainOneStep<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_metric_train_one_step(this.NativePtr,
+                                                                                   this.NetworkType,
+                                                                                   dataElementTypes.ToNativeMatrixElementType(),
+                                                                                   dataVec.NativePtr,
+                                                                                   NativeMethods.MatrixElementType.UInt32,
+                                                                                   labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
             }
 
             #endregion
@@ -240,6 +347,12 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_mmod_delete(this.NativePtr, this.NetworkType);
             }
 
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_mmod_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_mmod_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -261,6 +374,65 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.dnn_trainer_loss_mmod_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_mmod_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void Train<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_mmod_train(this.NativePtr,
+                                                                        this.NetworkType,
+                                                                        dataElementTypes.ToNativeMatrixElementType(),
+                                                                        dataVec.NativePtr,
+                                                                        NativeMethods.MatrixElementType.UInt32,
+                                                                        labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+
+            public override void TrainOneStep<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_mmod_train_one_step(this.NativePtr,
+                                                                                 this.NetworkType,
+                                                                                 dataElementTypes.ToNativeMatrixElementType(),
+                                                                                 dataVec.NativePtr,
+                                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                                 labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
             }
 
             #endregion
@@ -306,6 +478,12 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
             }
 
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_multiclass_log_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_multiclass_log_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -327,6 +505,65 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.dnn_trainer_loss_multiclass_log_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+            
+            public override void Train<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train(this.NativePtr,
+                                                                                  this.NetworkType,
+                                                                                  dataElementTypes.ToNativeMatrixElementType(),
+                                                                                  dataVec.NativePtr,
+                                                                                  NativeMethods.MatrixElementType.UInt32,
+                                                                                  labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+
+            public override void TrainOneStep<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train_one_step(this.NativePtr,
+                                                                                           this.NetworkType,
+                                                                                           dataElementTypes.ToNativeMatrixElementType(),
+                                                                                           dataVec.NativePtr,
+                                                                                           NativeMethods.MatrixElementType.UInt32,
+                                                                                           labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
             }
 
             #endregion
@@ -372,6 +609,12 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(this.NativePtr, this.NetworkType);
             }
 
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -393,6 +636,65 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void Train<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_train(this.NativePtr,
+                                                                                            this.NetworkType,
+                                                                                            dataElementTypes.ToNativeMatrixElementType(),
+                                                                                            dataVec.NativePtr,
+                                                                                            NativeMethods.MatrixElementType.UInt32,
+                                                                                            labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+
+            public override void TrainOneStep<T>(IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+                if (label == null)
+                    throw new ArgumentNullException(nameof(label));
+
+                Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<uint>(label))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(this.NativePtr,
+                                                                                                     this.NetworkType,
+                                                                                                     dataElementTypes.ToNativeMatrixElementType(),
+                                                                                                     dataVec.NativePtr,
+                                                                                                     NativeMethods.MatrixElementType.UInt32,
+                                                                                                     labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
             }
 
             #endregion

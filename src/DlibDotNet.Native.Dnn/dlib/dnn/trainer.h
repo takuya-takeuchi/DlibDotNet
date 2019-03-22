@@ -29,6 +29,12 @@ do {\
     t->set_learning_rate(lr);\
 } while (0)
 
+#define dnn_trainer_get_learning_rate_template(__NET_TYPE__, trainer, lr) \
+do {\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    *lr = t->get_learning_rate();\
+} while (0)
+
 #define dnn_trainer_set_min_learning_rate_template(__NET_TYPE__, trainer, lr) \
 do {\
     auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
@@ -53,10 +59,22 @@ do {\
     t->set_synchronization_file(filename, sec);\
 } while (0)
 
+#define dnn_trainer_set_iterations_without_progress_threshold(__NET_TYPE__, trainer, thresh) \
+do {\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    t->set_iterations_without_progress_threshold(thresh);\
+} while (0)
+
 #define dnn_trainer_train_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label) \
 do {\
     auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
     t->train(in_tmp_data, in_tmp_label);\
+} while (0)
+
+#define dnn_trainer_train_one_step_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label) \
+do {\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    t->train_one_step(in_tmp_data, in_tmp_label);\
 } while (0)
 
 #pragma endregion template

@@ -263,6 +263,13 @@ namespace DlibDotNet.Dnn
 
             #region Methods
 
+            public LayerDetails GetLayerDetails()
+            {
+                this._Parent.ThrowIfDisposed();
+                var ret = NativeMethods.loss_mmod_subnet_get_layer_details(this.NativePtr, this._Parent.NetworkType, out _);
+                return new LayerDetails(this._Parent, ret);
+            }
+
             #region Overrids
 
             protected override void DisposeUnmanaged()
@@ -273,6 +280,50 @@ namespace DlibDotNet.Dnn
                     return;
 
                 NativeMethods.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+            }
+
+            #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LayerDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMetric _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LayerDetails(LossMetric parent, IntPtr ptr)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
+
+            #endregion
+
+            #region Methods
+
+            #region Overrids
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                //NativeMethods.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion

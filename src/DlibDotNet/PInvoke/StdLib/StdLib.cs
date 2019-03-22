@@ -629,6 +629,34 @@ namespace DlibDotNet
 
         #endregion
 
+        #region mmod_options::detector_window_details
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_mmod_options_detector_window_details_new1();
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_mmod_options_detector_window_details_new2(IntPtr size);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_mmod_options_detector_window_details_new3([In] IntPtr[] data, IntPtr dataLength);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_mmod_options_detector_window_details_getSize(IntPtr vector);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_mmod_options_detector_window_details_getPointer(IntPtr vector);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_mmod_options_detector_window_details_at(IntPtr vector, int index);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void stdvector_mmod_options_detector_window_details_delete(IntPtr vector);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void stdvector_mmod_options_detector_window_details_copy(IntPtr vector, IntPtr[] dst);
+
+        #endregion
+
         #endregion
 
         #region pair
