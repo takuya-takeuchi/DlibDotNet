@@ -6,7 +6,8 @@
 
         #region Constructors
 
-        protected Net(int networkType = 0)
+        protected Net(int networkType = 0, bool isEnabledDispose = true)
+            : base(isEnabledDispose)
         {
             this.NetworkType = networkType;
         }
@@ -27,7 +28,7 @@
         }
 
         #endregion
-        
+
         #region Methods
 
         public abstract void Clean();

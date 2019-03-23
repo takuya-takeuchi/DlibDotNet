@@ -7,132 +7,11 @@
 #include <vector>
 
 #include "../../common.h"
-
 #include "../trainer.h"
+#include "loss_mmod_defines.h"
 
 using namespace dlib;
 using namespace std;
-
-// Developer can customize these as you want to do!!!
-#pragma region type definitions
-template <long num_filters, typename SUBNET> using con5d = con<num_filters,5,5,2,2,SUBNET>;
-template <long num_filters, typename SUBNET> using con5  = con<num_filters,5,5,1,1,SUBNET>;
-template <typename SUBNET> using downsampler  = relu<affine<con5d<32, relu<affine<con5d<32, relu<affine<con5d<16,SUBNET>>>>>>>>>;
-template <typename SUBNET> using rcon5  = relu<affine<con5<45,SUBNET>>>;
-using net_type = loss_mmod<con<1,9,9,1,1,rcon5<rcon5<rcon5<downsampler<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
-using layer_details = add_layer<con_<1, 9, 9, 1, 1, 4, 4>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<45, 5, 5, 1, 1, 2, 2>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<45, 5, 5, 1, 1, 2, 2>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<45, 5, 5, 1, 1, 2, 2>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<16, 5, 5, 2, 2, 0, 0>,
-                      input_rgb_image_pyramid
-                      <pyramid_down<6>>>>>>>>>>>>>>>>>>>>>;
-
-#pragma region 1
-template <long num_filters, typename SUBNET> using con5d_1 = con<num_filters,5,5,2,2,SUBNET>;
-template <long num_filters, typename SUBNET> using con5_1  = con<num_filters,5,5,1,1,SUBNET>;
-template <typename SUBNET> using downsampler_1  = relu<affine<con5d_1<32, relu<affine<con5d_1<32, relu<affine<con5d_1<16,SUBNET>>>>>>>>>;
-template <typename SUBNET> using rcon5_1  = relu<affine<con5_1<55,SUBNET>>>;
-using net_type_1 = loss_mmod<con<1,9,9,1,1,rcon5_1<rcon5_1<rcon5_1<downsampler_1<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
-using layer_details1 = add_layer<con_<1, 9, 9, 1, 1, 4, 4>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<55, 5, 5, 1, 1, 2, 2>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<55, 5, 5, 1, 1, 2, 2>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<55, 5, 5, 1, 1, 2, 2>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<16, 5, 5, 2, 2, 0, 0>,
-                       input_rgb_image_pyramid
-                       <pyramid_down<6>>>>>>>>>>>>>>>>>>>>>;
-#pragma endregion 1
-
-#pragma region 2
-template <long num_filters, typename SUBNET> using con5d_2 = con<num_filters,5,5,2,2,SUBNET>;
-template <long num_filters, typename SUBNET> using con3_2  = con<num_filters,3,3,1,1,SUBNET>;
-template <typename SUBNET> using downsampler_2  = relu<bn_con<con5d_2<32, relu<bn_con<con5d_2<32, relu<bn_con<con5d_2<32,SUBNET>>>>>>>>>;
-template <typename SUBNET> using rcon3_2  = relu<bn_con<con3_2<32,SUBNET>>>;
-using net_type_2  = loss_mmod<con<1,6,6,1,1,rcon3_2<rcon3_2<rcon3_2<downsampler_2<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
-using layer_details2 = add_layer<con_<1, 6, 6, 1, 1, 3, 3>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       input_rgb_image_pyramid
-                       <pyramid_down<6>>>>>>>>>>>>>>>>>>>>>;
-#pragma endregion 2
-
-#pragma region 3
-template <long num_filters, typename SUBNET> using con5d_3 = con<num_filters,5,5,2,2,SUBNET>;
-template <long num_filters, typename SUBNET> using con5_3  = con<num_filters,5,5,1,1,SUBNET>;
-template <typename SUBNET> using downsampler_3  = relu<bn_con<con5d_3<32, relu<bn_con<con5d_3<32, relu<bn_con<con5d_3<16,SUBNET>>>>>>>>>;
-template <typename SUBNET> using rcon5_3  = relu<bn_con<con5_3<55,SUBNET>>>;
-using net_type_3 = loss_mmod<con<1,9,9,1,1,rcon5_3<rcon5_3<rcon5_3<downsampler_3<input_rgb_image_pyramid<pyramid_down<6>>>>>>>>;
-using layer_details3 = add_layer<con_<1, 9, 9, 1, 1, 4, 4>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<55, 5, 5, 1, 1, 2, 2>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<55, 5, 5, 1, 1, 2, 2>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<55, 5, 5, 1, 1, 2, 2>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<32, 5, 5, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<bn_<CONV_MODE>,
-                       add_layer<con_<16, 5, 5, 2, 2, 0, 0>,
-                       input_rgb_image_pyramid
-                       <pyramid_down<6>>>>>>>>>>>>>>>>>>>>>;
-#pragma endregion 3
-
-#pragma endregion type definitions
-
-typedef std::vector<mmod_rect> out_type;
-typedef std::vector<mmod_rect> train_label_type;
 
 #pragma region template
 
@@ -146,12 +25,18 @@ do {\
         in_tmp_data.push_back(mat);\
     }\
 \
-    std::vector<train_label_type*>& tmp_label = *(static_cast<std::vector<train_label_type*>*>(labels));\
+    std::vector<train_label_type_pointer*>& tmp_label = *(static_cast<std::vector<train_label_type_pointer*>*>(labels));\
     std::vector<train_label_type> in_tmp_label;\
     for (int i = 0; i< tmp_label.size(); i++)\
     {\
-        train_label_type& mat = *static_cast<train_label_type*>(tmp_label[i]);\
-        in_tmp_label.push_back(mat);\
+        train_label_type_pointer& v = *(tmp_label[i]);\
+        train_label_type tmp_v;\
+        for (int j = 0; j < v.size(); j++)\
+        {\
+            mmod_rect& r = *(v[j]);\
+            tmp_v.push_back(r);\
+        }\
+        in_tmp_label.push_back(tmp_v);\
     }\
 \
     dnn_trainer_train_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
@@ -167,12 +52,18 @@ do {\
         in_tmp_data.push_back(mat);\
     }\
 \
-    std::vector<train_label_type*>& tmp_label = *(static_cast<std::vector<train_label_type*>*>(labels));\
+    std::vector<train_label_type_pointer*>& tmp_label = *(static_cast<std::vector<train_label_type_pointer*>*>(labels));\
     std::vector<train_label_type> in_tmp_label;\
     for (int i = 0; i< tmp_label.size(); i++)\
     {\
-        train_label_type& mat = *static_cast<train_label_type*>(tmp_label[i]);\
-        in_tmp_label.push_back(mat);\
+        train_label_type_pointer& v = *(tmp_label[i]);\
+        train_label_type tmp_v;\
+        for (int j = 0; j < v.size(); j++)\
+        {\
+            mmod_rect& r = *(v[j]);\
+            tmp_v.push_back(r);\
+        }\
+        in_tmp_label.push_back(tmp_v);\
     }\
 \
     dnn_trainer_train_one_step_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
@@ -542,29 +433,29 @@ DLLEXPORT int loss_mmod_subnet(void* obj, const int type, void** subnet)
         case 0:
             {
                 auto net = static_cast<net_type*>(obj);
-                auto sn = net->subnet();
-                *subnet = new net_type::subnet_type(sn);
+                net_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
         case 1:
             {
                 auto net = static_cast<net_type_1*>(obj);
-                auto sn = net->subnet();
-                *subnet = new net_type_1::subnet_type(sn);
+                net_type_1::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
         case 2:
             {
                 auto net = static_cast<net_type_2*>(obj);
-                auto sn = net->subnet();
-                *subnet = new net_type_2::subnet_type(sn);
+                net_type_2::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
         case 3:
             {
                 auto net = static_cast<net_type_3*>(obj);
-                auto sn = net->subnet();
-                *subnet = new net_type_3::subnet_type(sn);
+                net_type_3::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
     }
@@ -739,7 +630,7 @@ DLLEXPORT const dlib::tensor* loss_mmod_subnet_get_output(void* subnet, const in
     return nullptr;
 }
 
-DLLEXPORT const void* loss_mmod_subnet_get_layer_details(void* subnet, const int type, int* ret)
+DLLEXPORT void* loss_mmod_subnet_get_layer_details(void* subnet, const int type, int* ret)
 {
     // Check type argument and cast to the proper type
     *ret = ERR_OK;
@@ -749,28 +640,28 @@ DLLEXPORT const void* loss_mmod_subnet_get_layer_details(void* subnet, const int
         case 0:
             {
                 auto net = static_cast<net_type::subnet_type*>(subnet);
-                const layer_details& layer_details = net->layer_details();
+                net_type::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
         case 1:
             {
                 auto net = static_cast<net_type_1::subnet_type*>(subnet);
-                const layer_details1& layer_details = net->layer_details();
+                net_type_1::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
         case 2:
             {
                 auto net = static_cast<net_type_2::subnet_type*>(subnet);
-                const layer_details2& layer_details = net->layer_details();
+                net_type_2::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
         case 3:
             {
                 auto net = static_cast<net_type_3::subnet_type*>(subnet);
-                const layer_details3& layer_details = net->layer_details();
+                net_type_3::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
@@ -791,25 +682,25 @@ DLLEXPORT void loss_mmod_layer_details_set_num_filters(void* layer, const int ty
     {
         case 0:
             {
-                auto ld = static_cast<layer_details::layer_details_type*>(layer);
+                auto ld = static_cast<net_type::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
         case 1:
             {
-                auto ld = static_cast<layer_details1::layer_details_type*>(layer);
+                auto ld = static_cast<net_type_1::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
         case 2:
             {
-                auto ld = static_cast<layer_details2::layer_details_type*>(layer);
+                auto ld = static_cast<net_type_2::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
         case 3:
             {
-                auto ld = static_cast<layer_details3::layer_details_type*>(layer);
+                auto ld = static_cast<net_type_3::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
@@ -1160,6 +1051,69 @@ DLLEXPORT int dnn_trainer_loss_mmod_train_one_step(void* trainer,
         case matrix_element_type::RgbAlphaPixel:
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_mmod_get_net(void* trainer,
+                                            const int type,
+                                            void** ret)
+{
+    // Check type argument and cast to the proper type
+    int err = ERR_OK;
+    
+    try
+    {
+        switch(type)
+        {
+            case 0:
+                dnn_trainer_get_net_template(net_type, trainer, ret);
+                break;
+            case 1:
+                dnn_trainer_get_net_template(net_type_1, trainer, ret);
+                break;
+            case 2:
+                dnn_trainer_get_net_template(net_type_2, trainer, ret);
+                break;
+            case 3:
+                dnn_trainer_get_net_template(net_type_3, trainer, ret);
+                break;
+            default:
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
+    }
+    catch(std::exception& e)
+    {
+        err = ERR_DNN_PROPAGATE_EXCEPTION;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_mmod_operator_left_shift(void* trainer, const int type, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_operator_left_shift_template(net_type, trainer, stream);
+            break;
+        case 1:
+            dnn_trainer_operator_left_shift_template(net_type_1, trainer, stream);
+            break;
+        case 2:
+            dnn_trainer_operator_left_shift_template(net_type_2, trainer, stream);
+            break;
+        case 3:
+            dnn_trainer_operator_left_shift_template(net_type_3, trainer, stream);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
     }
 

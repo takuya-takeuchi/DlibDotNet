@@ -77,6 +77,18 @@ do {\
     t->train_one_step(in_tmp_data, in_tmp_label);\
 } while (0)
 
+#define dnn_trainer_get_net_template(__NET_TYPE__, trainer, ret) \
+do {\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    *ret = &(t->get_net());\
+} while (0)
+
+#define dnn_trainer_operator_left_shift_template(__NET_TYPE__, trainer, stream) \
+do {\
+    dnn_trainer<__NET_TYPE__>& t = *static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    *stream << t;\
+} while (0)
+
 #pragma endregion template
 
 #endif

@@ -6,177 +6,11 @@
 #include <vector>
 
 #include "../../common.h"
-
 #include "../trainer.h"
+#include "loss_metric_defines.h"
 
 using namespace dlib;
 using namespace std;
-
-// Developer can customize these as you want to do!!!
-#pragma region type definitions
-template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
-using residual = add_prev1<block<N,BN,1,tag1<SUBNET>>>;
-
-template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
-using residual_down = add_prev2<avg_pool<2,2,2,2,skip1<tag2<block<N,BN,2,tag1<SUBNET>>>>>>;
-
-template <int N, template <typename> class BN, int stride, typename SUBNET> 
-using block  = BN<con<N,3,3,1,1,relu<BN<con<N,3,3,stride,stride,SUBNET>>>>>;
-
-template <int N, typename SUBNET> using ares      = relu<residual<block,N,affine,SUBNET>>;
-template <int N, typename SUBNET> using ares_down = relu<residual_down<block,N,affine,SUBNET>>;
-
-template <typename SUBNET> using alevel0 = ares_down<256,SUBNET>;
-template <typename SUBNET> using alevel1 = ares<256,ares<256,ares_down<256,SUBNET>>>;
-template <typename SUBNET> using alevel2 = ares<128,ares<128,ares_down<128,SUBNET>>>;
-template <typename SUBNET> using alevel3 = ares<64,ares<64,ares<64,ares_down<64,SUBNET>>>>;
-template <typename SUBNET> using alevel4 = ares<32,ares<32,ares<32,SUBNET>>>;
-
-using anet_type = loss_metric<fc_no_bias<128,avg_pool_everything<
-                            alevel0<
-                            alevel1<
-                            alevel2<
-                            alevel3<
-                            alevel4<
-                            max_pool<3,3,2,2,relu<affine<con<32,7,7,2,2,
-                            input_rgb_image_sized<150>
-                            >>>>>>>>>>>>;
-using layer_details = add_layer<fc_<128, FC_NO_BIAS>,
-                      add_layer<avg_pool_<0, 0, 1, 1, 0, 0>,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<256, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<affine_,
-                      add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<128, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<64, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<affine_,
-                      add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_<32, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<max_pool_<3, 3, 2, 2, 0, 0>,
-                      add_layer<relu_,
-                      add_layer<affine_,
-                      add_layer<con_
-                      <32, 7, 7, 2, 2, 0, 0>, input_rgb_image_sized
-                      <150>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>;
-#pragma endregion type definitions
-
-typedef matrix<float,0,1> out_type;
-typedef unsigned long train_label_type;
 
 #pragma region template
 
@@ -398,8 +232,8 @@ DLLEXPORT int loss_metric_subnet(void* obj, const int type, void** subnet)
         case 0:
             {
                 auto net = static_cast<anet_type*>(obj);
-                auto sn = net->subnet();
-                *subnet = new anet_type::subnet_type(sn);
+                anet_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
     }
@@ -469,7 +303,7 @@ DLLEXPORT const dlib::tensor* loss_metric_subnet_get_output(void* subnet, const 
     return nullptr;
 }
 
-DLLEXPORT const void* loss_metric_subnet_get_layer_details(void* subnet, const int type, int* ret)
+DLLEXPORT void* loss_metric_subnet_get_layer_details(void* subnet, const int type, int* ret)
 {
     // Check type argument and cast to the proper type
     *ret = ERR_OK;
@@ -479,7 +313,7 @@ DLLEXPORT const void* loss_metric_subnet_get_layer_details(void* subnet, const i
         case 0:
             {
                 auto net = static_cast<anet_type::subnet_type*>(subnet);
-                const layer_details& layer_details = net->layer_details();
+                anet_type::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
@@ -734,6 +568,51 @@ DLLEXPORT int dnn_trainer_loss_metric_train_one_step(void* trainer,
         case matrix_element_type::RgbAlphaPixel:
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_metric_get_net(void* trainer,
+                                              const int type,
+                                              void** ret)
+{
+    // Check type argument and cast to the proper type
+    int err = ERR_OK;
+    
+    try
+    {
+        switch(type)
+        {
+            case 0:
+                dnn_trainer_get_net_template(anet_type, trainer, ret);
+                break;
+            default:
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
+    }
+    catch(std::exception& e)
+    {
+        err = ERR_DNN_PROPAGATE_EXCEPTION;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_metric_operator_left_shift(void* trainer, const int type, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_operator_left_shift_template(anet_type, trainer, stream);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
     }
 

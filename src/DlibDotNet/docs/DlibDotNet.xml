@@ -62,6 +62,9 @@
             <summary>
             Provides the methods of dlib.
             </summary>
+            <summary>
+            Provides the methods of dlib.
+            </summary>
         </member>
         <member name="M:DlibDotNet.Dlib.ExtractImage4Points``1(DlibDotNet.Array2D{``0},DlibDotNet.DPoint[],System.Int32,System.Int32)">
             <summary>
@@ -456,6 +459,11 @@
             Gets the the network type that is the cause of this exception.
             </summary>
         </member>
+        <member name="M:DlibDotNet.Dnn.PropagateException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.PropagateException"/> class.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.Dnn.ResizableTensor.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
@@ -612,6 +620,11 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.ShapePredictor.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.TestBoxOverlap.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

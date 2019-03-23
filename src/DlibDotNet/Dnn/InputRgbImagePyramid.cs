@@ -1,7 +1,5 @@
 ﻿using System;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using PyramidType = DlibDotNet.NativeMethods.PyramidType;
 
 namespace DlibDotNet.Dnn
 {
@@ -14,7 +12,7 @@ namespace DlibDotNet.Dnn
 
         private readonly uint _PyramidRate;
 
-        private readonly PyramidType _PyramidType;
+        private readonly NativeMethods.PyramidType _PyramidType;
 
         #endregion
 
@@ -96,10 +94,10 @@ namespace DlibDotNet.Dnn
 
             switch (ret)
             {
-                case ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case ErrorType.PyramidNotSupportRate:
-                case ErrorType.PyramidNotSupportType:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportType:
                     throw new NotSupportedException();
             }
         }

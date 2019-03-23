@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 using OutputLabelType = System.UInt32;
 
 namespace DlibDotNet.Dnn
@@ -20,14 +17,14 @@ namespace DlibDotNet.Dnn
         : base(networkType)
         {
             var ret = NativeMethods.loss_multiclass_log_new(networkType, out var net);
-            if (ret == ErrorType.DnnNotSupportNetworkType)
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
             this.NativePtr = net;
         }
 
-        internal LossMulticlassLog(IntPtr ptr, int networkType = 0)
-            : base(networkType)
+        internal LossMulticlassLog(IntPtr ptr, int networkType = 0, bool isEnabledDispose = true)
+            : base(networkType, isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -144,7 +141,7 @@ namespace DlibDotNet.Dnn
                 Cuda.ThrowCudaException(ret);
                 switch (ret)
                 {
-                    case ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{imageType} is not supported.");
                 }
 
@@ -168,6 +165,64 @@ namespace DlibDotNet.Dnn
         public override bool TryGetInputLayer<T>(T layer)
         {
             throw new NotSupportedException();
+        }
+        
+        public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var labelVec = new StdVector<uint>(label))
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train(trainer.NativePtr,
+                                                                              trainer.Type,
+                                                                              dataElementTypes.ToNativeMatrixElementType(),
+                                                                              dataVec.NativePtr,
+                                                                              NativeMethods.MatrixElementType.UInt32,
+                                                                              labelVec.NativePtr);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
+                }
+            }
+        }
+        
+        public static void TrainOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var labelVec = new StdVector<uint>(label))
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train_one_step(trainer.NativePtr,
+                                                                                       trainer.Type,
+                                                                                       dataElementTypes.ToNativeMatrixElementType(),
+                                                                                       dataVec.NativePtr,
+                                                                                       NativeMethods.MatrixElementType.UInt32,
+                                                                                       labelVec.NativePtr);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
+                }
+            }
         }
 
         #region Overrides 
@@ -197,11 +252,11 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.loss_multiclass_log_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
                 switch (ret)
                 {
-                    case ErrorType.OK:
+                    case NativeMethods.ErrorType.OK:
                         stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case ErrorType.DnnNotSupportNetworkType:
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
                         throw new NotSupportNetworkTypeException(this.NetworkType);
                 }
             }
@@ -236,6 +291,7 @@ namespace DlibDotNet.Dnn
             #region Constructors
 
             internal Subnet(LossMulticlassLog parent)
+                : base(false)
             {
                 if (parent == null)
                     throw new ArgumentNullException(nameof(parent));
@@ -303,6 +359,7 @@ namespace DlibDotNet.Dnn
             #region Constructors
 
             internal LayerDetails(LossMulticlassLog parent, IntPtr ptr)
+                : base(false)
             {
                 if (parent == null)
                     throw new ArgumentNullException(nameof(parent));

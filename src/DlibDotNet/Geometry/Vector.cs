@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DlibDotNet.Extensions;
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using ElementType = DlibDotNet.NativeMethods.ElementType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
-using NumericType = DlibDotNet.NativeMethods.NumericType;
-using VectorElementType = DlibDotNet.NativeMethods.VectorElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -20,7 +14,7 @@ namespace DlibDotNet
 
         private readonly VectorElementTypes _VectorElementTypes;
 
-        private readonly VectorElementType _ElementType;
+        private readonly NativeMethods.VectorElementType _ElementType;
 
         private static readonly Dictionary<Type, VectorElementTypes> SupportTypes = new Dictionary<Type, VectorElementTypes>();
 
@@ -204,11 +198,11 @@ namespace DlibDotNet
                 var ret = NativeMethods.vector_operator_left_shift(this._ElementType, this.NativePtr, ofstream);
                 switch (ret)
                 {
-                    case ErrorType.OK:
+                    case NativeMethods.ErrorType.OK:
                         stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case ErrorType.VectorTypeNotSupport:
+                    case NativeMethods.ErrorType.VectorTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
                     default:
                         throw new ArgumentException();
@@ -233,25 +227,25 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private VectorImp<TType> CreateVectorImp(VectorElementType types)
+        private VectorImp<TType> CreateVectorImp(NativeMethods.VectorElementType types)
         {
             switch (types)
             {
-                case VectorElementType.UInt8:
+                case NativeMethods.VectorElementType.UInt8:
                     return new VectorUInt8Imp(this, types) as VectorImp<TType>;
-                case VectorElementType.UInt16:
+                case NativeMethods.VectorElementType.UInt16:
                     return new VectorUInt16Imp(this, types) as VectorImp<TType>;
-                case VectorElementType.UInt32:
+                case NativeMethods.VectorElementType.UInt32:
                     return new VectorUInt32Imp(this, types) as VectorImp<TType>;
-                case VectorElementType.Int8:
+                case NativeMethods.VectorElementType.Int8:
                     return new VectorInt8Imp(this, types) as VectorImp<TType>;
-                case VectorElementType.Int16:
+                case NativeMethods.VectorElementType.Int16:
                     return new VectorInt16Imp(this, types) as VectorImp<TType>;
-                case VectorElementType.Int32:
+                case NativeMethods.VectorElementType.Int32:
                     return new VectorInt32Imp(this, types) as VectorImp<TType>;
-                case VectorElementType.Float:
+                case NativeMethods.VectorElementType.Float:
                     return new VectorFloatImp(this, types) as VectorImp<TType>;
-                case VectorElementType.Double:
+                case NativeMethods.VectorElementType.Double:
                     return new VectorDoubleImp(this, types) as VectorImp<TType>;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(types), types, null);
@@ -268,7 +262,7 @@ namespace DlibDotNet
 
             #region Fields 
 
-            protected readonly VectorElementType _Type;
+            protected readonly NativeMethods.VectorElementType _Type;
 
             protected readonly DlibObject _Parent;
 
@@ -276,7 +270,7 @@ namespace DlibDotNet
 
             #region Constructors 
 
-            internal VectorImp(DlibObject parent, VectorElementType type)
+            internal VectorImp(DlibObject parent, NativeMethods.VectorElementType type)
             {
                 this._Parent = parent ?? throw new ArgumentNullException(nameof(parent));
                 this._Type = type;
@@ -321,7 +315,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorUInt8Imp(DlibObject parent, VectorElementType type)
+            internal VectorUInt8Imp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -397,7 +391,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorUInt16Imp(DlibObject parent, VectorElementType type)
+            internal VectorUInt16Imp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -473,7 +467,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorUInt32Imp(DlibObject parent, VectorElementType type)
+            internal VectorUInt32Imp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -549,7 +543,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorInt8Imp(DlibObject parent, VectorElementType type)
+            internal VectorInt8Imp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -625,7 +619,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorInt16Imp(DlibObject parent, VectorElementType type)
+            internal VectorInt16Imp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -701,7 +695,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorInt32Imp(DlibObject parent, VectorElementType type)
+            internal VectorInt32Imp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -777,7 +771,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorFloatImp(DlibObject parent, VectorElementType type)
+            internal VectorFloatImp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }
@@ -853,7 +847,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal VectorDoubleImp(DlibObject parent, VectorElementType type)
+            internal VectorDoubleImp(DlibObject parent, NativeMethods.VectorElementType type)
                 : base(parent, type)
             {
             }

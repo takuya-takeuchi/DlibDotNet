@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using ElementType = DlibDotNet.NativeMethods.ElementType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
-using NumericType = DlibDotNet.NativeMethods.NumericType;
-using PyramidType = DlibDotNet.NativeMethods.PyramidType;
-using VectorElementType = DlibDotNet.NativeMethods.VectorElementType;
-
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {

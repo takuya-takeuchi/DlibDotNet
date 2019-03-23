@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class LossMmod : Net<int>
+    public sealed class LossMmod : Net
     {
 
         #region Constructors
@@ -18,14 +16,14 @@ namespace DlibDotNet.Dnn
             : base(networkType)
         {
             var ret = NativeMethods.loss_mmod_new(networkType, out var net);
-            if (ret == ErrorType.DnnNotSupportNetworkType)
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
             this.NativePtr = net;
         }
 
-        public LossMmod(MModOptions options, int networkType = 0)
-            : base(networkType)
+        public LossMmod(MModOptions options, int networkType = 0, bool isEnabledDispose = true)
+            : base(networkType, isEnabledDispose)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
@@ -33,14 +31,14 @@ namespace DlibDotNet.Dnn
             options.ThrowIfDisposed();
 
             var ret = NativeMethods.loss_mmod_new2(networkType, options.NativePtr, out var net);
-            if (ret == ErrorType.DnnNotSupportNetworkType)
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
             this.NativePtr = net;
         }
 
-        internal LossMmod(IntPtr ptr, int networkType = 0)
-            : base(networkType)
+        internal LossMmod(IntPtr ptr, int networkType = 0, bool isEnabledDispose = true)
+            : base(networkType, isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -158,7 +156,7 @@ namespace DlibDotNet.Dnn
                 Cuda.ThrowCudaException(ret);
                 switch (ret)
                 {
-                    case ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{imageType} is not supported.");
                 }
 
@@ -178,7 +176,91 @@ namespace DlibDotNet.Dnn
             var str = Dlib.Encoding.GetBytes(path);
             NativeMethods.loss_mmod_serialize(net.NativePtr, net.NetworkType, str);
         }
-        
+
+        public static void Train<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
+
+            try
+            {
+                listOfVectorOfMModRect = label.Select(r => new StdVector<MModRect>(r)).ToList();
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_mmod_train(trainer.NativePtr,
+                                                                        trainer.Type,
+                                                                        dataElementTypes.ToNativeMatrixElementType(),
+                                                                        dataVec.NativePtr,
+                                                                        NativeMethods.MatrixElementType.UInt32,
+                                                                        labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+            finally
+            {
+                if (listOfVectorOfMModRect != null)
+                    foreach (var stdVector in listOfVectorOfMModRect)
+                        stdVector?.Dispose();
+            }
+        }
+
+        public static void TrainOneStep<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
+
+            try
+            {
+                listOfVectorOfMModRect = label.Select(r => new StdVector<MModRect>(r)).ToList();
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_mmod_train_one_step(trainer.NativePtr,
+                                                                                 trainer.Type,
+                                                                                 dataElementTypes.ToNativeMatrixElementType(),
+                                                                                 dataVec.NativePtr,
+                                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                                 labelVec.NativePtr);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+            finally
+            {
+                if (listOfVectorOfMModRect != null)
+                    foreach (var stdVector in listOfVectorOfMModRect)
+                        stdVector?.Dispose();
+            }
+        }
+
         public override bool TryGetInputLayer<T>(T layer)
         {
             this.ThrowIfDisposed();
@@ -216,11 +298,11 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.loss_mmod_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
                 switch (ret)
                 {
-                    case ErrorType.OK:
+                    case NativeMethods.ErrorType.OK:
                         stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case ErrorType.DnnNotSupportNetworkType:
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
                         throw new NotSupportNetworkTypeException(this.NetworkType);
                 }
             }
@@ -255,6 +337,7 @@ namespace DlibDotNet.Dnn
             #region Constructors
 
             internal Subnet(LossMmod parent)
+                : base(false)
             {
                 if (parent == null)
                     throw new ArgumentNullException(nameof(parent));
@@ -322,6 +405,7 @@ namespace DlibDotNet.Dnn
             #region Constructors
 
             internal LayerDetails(LossMmod parent, IntPtr ptr)
+                : base(false)
             {
                 if (parent == null)
                     throw new ArgumentNullException(nameof(parent));

@@ -7,274 +7,11 @@
 #include <vector>
 
 #include "../../common.h"
-
 #include "../trainer.h"
+#include "loss_multiclass_log_per_pixel_defines.h"
 
 using namespace dlib;
 using namespace std;
-
-// Developer can customize these as you want to do!!!
-constexpr int class_count = 21; // background + 20 classes
-
-#pragma region type definitions
-template <int N, template <typename> class BN, int stride, typename SUBNET> 
-using block = BN<dlib::con<N,3,3,1,1, dlib::relu<BN<dlib::con<N,3,3,stride,stride,SUBNET>>>>>;
-
-template <int N, template <typename> class BN, int stride, typename SUBNET> 
-using blockt = BN<dlib::cont<N,3,3,1,1,dlib::relu<BN<dlib::cont<N,3,3,stride,stride,SUBNET>>>>>;
-
-template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
-using residual = dlib::add_prev1<block<N,BN,1,dlib::tag1<SUBNET>>>;
-
-template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
-using residual_down = dlib::add_prev2<dlib::avg_pool<2,2,2,2,dlib::skip1<dlib::tag2<block<N,BN,2,dlib::tag1<SUBNET>>>>>>;
-
-template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
-using residual_up = dlib::add_prev2<dlib::cont<N,2,2,2,2,dlib::skip1<dlib::tag2<blockt<N,BN,2,dlib::tag1<SUBNET>>>>>>;
-
-template <int N, typename SUBNET> using res       = dlib::relu<residual<block,N,dlib::bn_con,SUBNET>>;
-template <int N, typename SUBNET> using ares      = dlib::relu<residual<block,N,dlib::affine,SUBNET>>;
-template <int N, typename SUBNET> using res_down  = dlib::relu<residual_down<block,N,dlib::bn_con,SUBNET>>;
-template <int N, typename SUBNET> using ares_down = dlib::relu<residual_down<block,N,dlib::affine,SUBNET>>;
-template <int N, typename SUBNET> using res_up    = dlib::relu<residual_up<block,N,dlib::bn_con,SUBNET>>;
-template <int N, typename SUBNET> using ares_up   = dlib::relu<residual_up<block,N,dlib::affine,SUBNET>>;
-
-// ----------------------------------------------------------------------------------------
-
-template <typename SUBNET> using res512 = res<512, SUBNET>;
-template <typename SUBNET> using res256 = res<256, SUBNET>;
-template <typename SUBNET> using res128 = res<128, SUBNET>;
-template <typename SUBNET> using res64  = res<64, SUBNET>;
-template <typename SUBNET> using ares512 = ares<512, SUBNET>;
-template <typename SUBNET> using ares256 = ares<256, SUBNET>;
-template <typename SUBNET> using ares128 = ares<128, SUBNET>;
-template <typename SUBNET> using ares64  = ares<64, SUBNET>;
-
-
-template <typename SUBNET> using level1 = dlib::repeat<2,res512,res_down<512,SUBNET>>;
-template <typename SUBNET> using level2 = dlib::repeat<2,res256,res_down<256,SUBNET>>;
-template <typename SUBNET> using level3 = dlib::repeat<2,res128,res_down<128,SUBNET>>;
-template <typename SUBNET> using level4 = dlib::repeat<2,res64,res<64,SUBNET>>;
-
-template <typename SUBNET> using alevel1 = dlib::repeat<2,ares512,ares_down<512,SUBNET>>;
-template <typename SUBNET> using alevel2 = dlib::repeat<2,ares256,ares_down<256,SUBNET>>;
-template <typename SUBNET> using alevel3 = dlib::repeat<2,ares128,ares_down<128,SUBNET>>;
-template <typename SUBNET> using alevel4 = dlib::repeat<2,ares64,ares<64,SUBNET>>;
-
-template <typename SUBNET> using level1t = dlib::repeat<2,res512,res_up<512,SUBNET>>;
-template <typename SUBNET> using level2t = dlib::repeat<2,res256,res_up<256,SUBNET>>;
-template <typename SUBNET> using level3t = dlib::repeat<2,res128,res_up<128,SUBNET>>;
-template <typename SUBNET> using level4t = dlib::repeat<2,res64,res_up<64,SUBNET>>;
-
-template <typename SUBNET> using alevel1t = dlib::repeat<2,ares512,ares_up<512,SUBNET>>;
-template <typename SUBNET> using alevel2t = dlib::repeat<2,ares256,ares_up<256,SUBNET>>;
-template <typename SUBNET> using alevel3t = dlib::repeat<2,ares128,ares_up<128,SUBNET>>;
-template <typename SUBNET> using alevel4t = dlib::repeat<2,ares64,ares_up<64,SUBNET>>;
-
-// ----------------------------------------------------------------------------------------
-
-// training network type
-using net_type = dlib::loss_multiclass_log_per_pixel<
-                            dlib::cont<class_count,7,7,2,2,
-                            level4t<level3t<level2t<level1t<
-                            level1<level2<level3<level4<
-                            dlib::max_pool<3,3,2,2,dlib::relu<dlib::bn_con<dlib::con<64,7,7,2,2,
-                            dlib::input<dlib::matrix<dlib::rgb_pixel>>
-                            >>>>>>>>>>>>>>;
-
-using layer_details = add_layer<cont_<class_count, 7, 7, 2, 2, 0, 0>, repeat<2, res64,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<cont_<64, 2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<64, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<64, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res128,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<cont_<128, 2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<128, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<128, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res256,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<cont_<256, 2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<256, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<256, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res512,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<cont_<512, 2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<512, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,add_layer<bn_<CONV_MODE>,
-                      add_layer<cont_<512, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res512,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<512, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<512, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res256,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<256, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res128,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag2>,
-                      add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                      add_skip_layer<tag1,
-                      add_tag_layer<2,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<128, 3, 3, 2, 2, 0, 0>,
-                      add_tag_layer<1, repeat<2, res64,
-                      add_layer<relu_,
-                      add_layer<add_prev_<tag1>,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1,
-                      add_layer<max_pool_<3, 3, 2, 2, 0, 0>,
-                      add_layer<relu_,
-                      add_layer<bn_<CONV_MODE>,
-                      add_layer<con_<64, 7, 7, 2, 2, 0, 0>, input<matrix<rgb_pixel, 0, 0>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>;
-
-// testing network type (replaced batch normalization with fixed affine transforms)
-using anet_type = dlib::loss_multiclass_log_per_pixel<
-                            dlib::cont<class_count,7,7,2,2,
-                            alevel4t<alevel3t<alevel2t<alevel1t<
-                            alevel1<alevel2<alevel3<alevel4<
-                            dlib::max_pool<3,3,2,2,dlib::relu<dlib::affine<dlib::con<64,7,7,2,2,
-                            dlib::input<dlib::matrix<dlib::rgb_pixel>>
-                            >>>>>>>>>>>>>>;
-                      
-using layer_details2 = add_layer<cont_<class_count, 7, 7, 2, 2, 0, 0>, repeat<2, ares64,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<cont_<64, 2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<cont_<64, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<cont_<64, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares128,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<cont_<128, 2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<cont_<128, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<cont_<128, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares256,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<cont_<256, 2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<cont_<256, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<cont_<256, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares512,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<cont_<512, 2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<cont_<512, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<cont_<512, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares512,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<con_<512, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<512, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares256,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<con_<256, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<256, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares128,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag2>,
-                       add_layer<avg_pool_<2, 2, 2, 2, 0, 0>,
-                       add_skip_layer<tag1,
-                       add_tag_layer<2,
-                       add_layer<affine_,
-                       add_layer<con_<128, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<128, 3, 3, 2, 2, 0, 0>,
-                       add_tag_layer<1, repeat<2, ares64,
-                       add_layer<relu_,
-                       add_layer<add_prev_<tag1>,
-                       add_layer<affine_,
-                       add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<64, 3, 3, 1, 1, 1, 1>,
-                       add_tag_layer<1,
-                       add_layer<max_pool_<3, 3, 2, 2, 0, 0>,
-                       add_layer<relu_,
-                       add_layer<affine_,
-                       add_layer<con_<64, 7, 7, 2, 2, 0, 0>,input<matrix<rgb_pixel, 0, 0>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>;
-#pragma endregion type definitions
-
-typedef dlib::matrix<uint16_t> out_type;
-typedef dlib::matrix<uint16_t> train_label_type;
 
 #pragma region template
 
@@ -593,15 +330,15 @@ DLLEXPORT int loss_multiclass_log_per_pixel_subnet(void* obj, const int type, vo
         case 0:
             {
                 auto net = static_cast<anet_type*>(obj);
-                auto sn = net->subnet();
-                *subnet = new anet_type::subnet_type(sn);
+                anet_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
         case 1:
             {
                 auto net = static_cast<net_type*>(obj);
-                auto sn = net->subnet();
-                *subnet = new net_type::subnet_type(sn);
+                net_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
     }
@@ -694,7 +431,7 @@ DLLEXPORT const dlib::tensor* loss_multiclass_log_per_pixel_subnet_get_output(vo
     return nullptr;
 }
 
-DLLEXPORT const void* loss_multiclass_log_per_pixel_subnet_get_layer_details(void* subnet, const int type, int* ret)
+DLLEXPORT void* loss_multiclass_log_per_pixel_subnet_get_layer_details(void* subnet, const int type, int* ret)
 {
     // Check type argument and cast to the proper type
     *ret = ERR_OK;
@@ -704,14 +441,14 @@ DLLEXPORT const void* loss_multiclass_log_per_pixel_subnet_get_layer_details(voi
         case 0:
             {
                 auto net = static_cast<anet_type::subnet_type*>(subnet);
-                const layer_details2& layer_details = net->layer_details();
+                anet_type::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
         case 1:
             {
                 auto net = static_cast<net_type::subnet_type*>(subnet);
-                const layer_details& layer_details = net->layer_details();
+                net_type::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
@@ -732,13 +469,13 @@ DLLEXPORT void loss_multiclass_log_per_pixel_layer_details_set_num_filters(void*
     {
         case 0:
             {
-                auto ld = static_cast<layer_details2::layer_details_type*>(layer);
+                auto ld = static_cast<anet_type::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
         case 1:
             {
-                auto ld = static_cast<layer_details::layer_details_type*>(layer);
+                auto ld = static_cast<net_type::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
@@ -1011,6 +748,57 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(void* tra
         case matrix_element_type::RgbAlphaPixel:
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_get_net(void* trainer,
+                                                                const int type,
+                                                                void** ret)
+{
+    // Check type argument and cast to the proper type
+    int err = ERR_OK;
+    
+    try
+    {
+        switch(type)
+        {
+            case 0:
+                dnn_trainer_get_net_template(anet_type, trainer, ret);
+                break;
+            case 1:
+                dnn_trainer_get_net_template(net_type, trainer, ret);
+                break;
+            default:
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
+    }
+    catch(std::exception& e)
+    {
+        err = ERR_DNN_PROPAGATE_EXCEPTION;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_operator_left_shift(void* trainer, const int type, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_operator_left_shift_template(anet_type, trainer, stream);
+            break;
+        case 1:
+            dnn_trainer_operator_left_shift_template(net_type, trainer, stream);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
     }
 
