@@ -193,7 +193,13 @@ DLLEXPORT int random_cropper_operator(random_cropper* cropper,
     return err;
 }
 
-DLLEXPORT void random_cropper_predictor_delete(random_cropper* obj)
+DLLEXPORT void random_cropper_operator_left_shift(random_cropper* cropper, std::ostringstream* stream)
+{
+    random_cropper& c = *cropper;
+    *stream << c;
+}
+
+DLLEXPORT void random_cropper_delete(random_cropper* obj)
 {
 	delete obj;
 }

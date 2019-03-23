@@ -15,7 +15,7 @@ namespace DlibDotNet
             this.NativePtr = ptr;
         }
 
-        public TestBoxOverlap(double iouThresh, double percentCoveredThresh = 1.0)
+        public TestBoxOverlap(double iouThresh = 0.5, double percentCoveredThresh = 1.0)
         {
             this.NativePtr = NativeMethods.test_box_overlap_new(iouThresh, percentCoveredThresh);
         }

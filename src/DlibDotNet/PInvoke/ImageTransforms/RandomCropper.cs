@@ -29,11 +29,11 @@ namespace DlibDotNet
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool random_cropper_get_min_object_length_long_dim(IntPtr cropper, out long ret);
+        public static extern bool random_cropper_get_min_object_length_long_dim(IntPtr cropper, out int ret);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool random_cropper_get_min_object_length_short_dim(IntPtr cropper, out long ret);
+        public static extern bool random_cropper_get_min_object_length_short_dim(IntPtr cropper, out int ret);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -50,7 +50,7 @@ namespace DlibDotNet
         public static extern void random_cropper_set_max_object_size(IntPtr cropper, double value);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void random_cropper_set_min_object_size(IntPtr cropper, double longDim, double shortDim);
+        public static extern void random_cropper_set_min_object_size(IntPtr cropper, int longDim, int shortDim);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void random_cropper_set_randomly_flip(IntPtr cropper, bool value);
@@ -72,6 +72,9 @@ namespace DlibDotNet
                                                                IntPtr rects,
                                                                IntPtr crops,
                                                                IntPtr cropRects);
+        
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void random_cropper_operator_left_shift(IntPtr obj, IntPtr ofstream);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void random_cropper_delete(IntPtr point);

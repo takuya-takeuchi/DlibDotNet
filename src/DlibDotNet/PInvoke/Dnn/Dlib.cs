@@ -8,6 +8,8 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
+        #region input
+
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType input_rgb_image_pyramid_new(PyramidType pyramidType,
                                                                    uint pyramidRate,
@@ -50,6 +52,25 @@ namespace DlibDotNet
                                                                                            double scale,
                                                                                            IntPtr r,
                                                                                            out IntPtr rect);
+
+        #endregion
+
+        #region validation
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType test_object_detection_function_net(int type,
+                                                                          IntPtr detector,
+                                                                          MatrixElementType elementType,
+                                                                          IntPtr matrixVector,
+                                                                          int templateRows,
+                                                                          int templateColumns,
+                                                                          IntPtr truthDets,
+                                                                          IntPtr overlapTester,
+                                                                          double adjustThreshold,
+                                                                          IntPtr overlapsIgnoreTester,
+                                                                          out IntPtr ret);
+
+        #endregion
 
     }
 

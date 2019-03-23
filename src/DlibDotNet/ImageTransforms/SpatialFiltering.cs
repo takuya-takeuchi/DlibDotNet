@@ -1,6 +1,5 @@
 ﻿using System;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -30,7 +29,7 @@ namespace DlibDotNet
             var ret = NativeMethods.gaussian_blur(inType, inImage.NativePtr, outType, outImage.NativePtr, sigma, maxSize);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -55,7 +54,7 @@ namespace DlibDotNet
                 var ret = NativeMethods.sum_filter(inType, inImage.NativePtr, outType, outImage.NativePtr, native.NativePtr);
                 switch (ret)
                 {
-                    case ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException("Output or input type is not supported.");
                 }
             }

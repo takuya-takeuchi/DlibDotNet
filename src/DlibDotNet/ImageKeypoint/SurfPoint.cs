@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -92,7 +90,7 @@ namespace DlibDotNet
 
             #region Fields
 
-            private readonly MatrixElementType _MatrixElementType;
+            private readonly NativeMethods.MatrixElementType _MatrixElementType;
 
             private static readonly Dictionary<Type, MatrixElementTypes> SupportMatrixTypes = new Dictionary<Type, MatrixElementTypes>();
 

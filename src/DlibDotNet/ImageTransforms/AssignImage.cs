@@ -1,8 +1,5 @@
 ﻿using System;
 using DlibDotNet.Extensions;
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -23,10 +20,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.UInt8, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.UInt8, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -39,10 +36,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.UInt16, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.UInt16, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -55,10 +52,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.Int32, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.Int32, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -71,10 +68,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.UInt8, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.UInt8, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -87,10 +84,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.Int16, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.Int16, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -103,10 +100,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.Int32, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.Int32, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -119,10 +116,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.Float, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.Float, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -135,10 +132,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.Double, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.Double, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -151,10 +148,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.RgbPixel, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.RgbPixel, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -167,10 +164,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.RgbAlphaPixel, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -183,10 +180,10 @@ namespace DlibDotNet
             dest.ThrowIfDisposed(nameof(dest));
 
             var outType = dest.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, Array2DType.HsiPixel, ref pixel);
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.HsiPixel, ref pixel);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -208,7 +205,7 @@ namespace DlibDotNet
             var ret = NativeMethods.assign_image(outType, dest.NativePtr, inType, src.NativePtr);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
             }
         }
@@ -228,7 +225,7 @@ namespace DlibDotNet
             var ret = NativeMethods.assign_image_matrix(outType, dest.NativePtr, inType, src.NativePtr);
             switch (ret)
             {
-                case ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{outType} is not supported.");
             }
         }

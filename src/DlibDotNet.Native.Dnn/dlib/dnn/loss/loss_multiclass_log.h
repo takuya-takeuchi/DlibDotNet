@@ -7,90 +7,11 @@
 #include <vector>
 
 #include "../../common.h"
-
 #include "../trainer.h"
+#include "loss_multiclass_log_defines.h"
 
 using namespace dlib;
 using namespace std;
-
-// Developer can customize these as you want to do!!!
-#pragma region type definitions
-// Inception layer has some different convolutions inside.  Here we define
-// blocks as convolutions with different kernel size that we will use in
-// inception layer block.
-template <typename SUBNET> using block_a1 = relu<con<10,1,1,1,1,SUBNET>>;
-template <typename SUBNET> using block_a2 = relu<con<10,3,3,1,1,relu<con<16,1,1,1,1,SUBNET>>>>;
-template <typename SUBNET> using block_a3 = relu<con<10,5,5,1,1,relu<con<16,1,1,1,1,SUBNET>>>>;
-template <typename SUBNET> using block_a4 = relu<con<10,1,1,1,1,max_pool<3,3,1,1,SUBNET>>>;
-
-// Here is inception layer definition. It uses different blocks to process input
-// and returns combined output.  Dlib includes a number of these inceptionN
-// layer types which are themselves created using concat layers.  
-template <typename SUBNET> using incept_a = inception4<block_a1,block_a2,block_a3,block_a4, SUBNET>;
-
-// Network can have inception layers of different structure.  It will work
-// properly so long as all the sub-blocks inside a particular inception block
-// output tensors with the same number of rows and columns.
-template <typename SUBNET> using block_b1 = relu<con<4,1,1,1,1,SUBNET>>;
-template <typename SUBNET> using block_b2 = relu<con<4,3,3,1,1,SUBNET>>;
-template <typename SUBNET> using block_b3 = relu<con<4,1,1,1,1,max_pool<3,3,1,1,SUBNET>>>;
-template <typename SUBNET> using incept_b = inception3<block_b1,block_b2,block_b3,SUBNET>;
-
-// Now we can define a simple network for classifying MNIST digits.  We will
-// train and test this network in the code below.
-using net_type = loss_multiclass_log<fc<10,
-                                     relu<fc<32,
-                                     max_pool<2,2,2,2,incept_b<
-                                     max_pool<2,2,2,2,incept_a<
-                                     input<matrix<unsigned char>>
-                                     >>>>>>>>;
-
-using layer_details = add_layer<fc_<10, FC_HAS_BIAS>,
-                      add_layer<relu_,
-                      add_layer<fc_<32, FC_HAS_BIAS>,
-                      add_layer<max_pool_<2, 2, 2, 2, 0, 0>,
-                      add_layer<concat_<itag1, itag2, itag3>,
-                      add_tag_layer<1001,
-                      add_layer<relu_,
-                      add_layer<con_<4, 1, 1, 1, 1, 0, 0>,
-                      add_skip_layer<itag0,
-                      add_tag_layer<1002,
-                      add_layer<relu_,
-                      add_layer<con_<4, 3, 3, 1, 1, 1, 1>,
-                      add_skip_layer<itag0,
-                      add_tag_layer<1003,
-                      add_layer<relu_,
-                      add_layer<con_<4, 1, 1, 1, 1, 0, 0>,
-                      add_layer<max_pool_<3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1000,
-                      add_layer<max_pool_<2, 2, 2, 2, 0, 0>,
-                      add_layer<concat_<itag1, itag2, itag3, itag4>,
-                      add_tag_layer<1001,
-                      add_layer<relu_,
-                      add_layer<con_<10, 1, 1, 1, 1, 0, 0>,
-                      add_skip_layer<itag0,
-                      add_tag_layer<1002,
-                      add_layer<relu_,
-                      add_layer<con_<10, 3, 3, 1, 1, 1, 1>,
-                      add_layer<relu_,
-                      add_layer<con_<16, 1, 1, 1, 1, 0, 0>,
-                      add_skip_layer<itag0,
-                      add_tag_layer<1003,
-                      add_layer<relu_,
-                      add_layer<con_<10, 5, 5, 1, 1, 2, 2>,
-                      add_layer<relu_,
-                      add_layer<con_<16, 1, 1, 1, 1, 0, 0>,
-                      add_skip_layer<itag0,
-                      add_tag_layer<1004,
-                      add_layer<relu_,
-                      add_layer<con_<10, 1, 1, 1, 1, 0, 0>,
-                      add_layer<max_pool_<3, 3, 1, 1, 1, 1>,
-                      add_tag_layer<1000, input<matrix<unsigned char, 0, 0>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>;
-#pragma endregion type definitions
-
-typedef unsigned long out_type;
-// typedef dlib::matrix<dlib::rgb_pixel> in_type;
-typedef unsigned long  train_label_type;
 
 #pragma region template
 
@@ -326,8 +247,8 @@ DLLEXPORT int loss_multiclass_log_subnet(void* obj, const int type, void** subne
         case 0:
             {
                 auto net = static_cast<net_type*>(obj);
-                auto sn = net->subnet();
-                *subnet = new net_type::subnet_type(sn);
+                net_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
             }
             break;
     }
@@ -397,7 +318,7 @@ DLLEXPORT const dlib::tensor* loss_multiclass_log_subnet_get_output(void* subnet
     return nullptr;
 }
 
-DLLEXPORT const void* loss_multiclass_log_subnet_get_layer_details(void* subnet, const int type, int* ret)
+DLLEXPORT void* loss_multiclass_log_subnet_get_layer_details(void* subnet, const int type, int* ret)
 {
     // Check type argument and cast to the proper type
     *ret = ERR_OK;
@@ -407,7 +328,7 @@ DLLEXPORT const void* loss_multiclass_log_subnet_get_layer_details(void* subnet,
         case 0:
             {
                 auto net = static_cast<net_type::subnet_type*>(subnet);
-                const layer_details& layer_details = net->layer_details();
+                net_type::subnet_type::layer_details_type& layer_details = net->layer_details();
                 return &layer_details;
             }
             break;
@@ -662,6 +583,51 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_train_one_step(void* trainer,
         case matrix_element_type::RgbAlphaPixel:
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_get_net(void* trainer,
+                                                      const int type,
+                                                      void** ret)
+{
+    // Check type argument and cast to the proper type
+    int err = ERR_OK;
+    
+    try
+    {
+        switch(type)
+        {
+            case 0:
+                dnn_trainer_get_net_template(net_type, trainer, ret);
+                break;
+            default:
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
+    }
+    catch(std::exception& e)
+    {
+        err = ERR_DNN_PROPAGATE_EXCEPTION;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_operator_left_shift(void* trainer, const int type, std::ostringstream* stream)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_operator_left_shift_template(net_type, trainer, stream);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
     }
 

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 
 namespace DlibDotNet.Dnn
 {
@@ -18,14 +16,14 @@ namespace DlibDotNet.Dnn
             : base(networkType)
         {
             var ret = NativeMethods.loss_multiclass_log_per_pixel_new(networkType, out var net);
-            if (ret == ErrorType.DnnNotSupportNetworkType)
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
             this.NativePtr = net;
         }
 
-        internal LossMulticlassLogPerPixel(IntPtr ptr, int networkType = 0)
-            : base(networkType)
+        internal LossMulticlassLogPerPixel(IntPtr ptr, int networkType = 0, bool isEnabledDispose = true)
+            : base(networkType, isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -145,7 +143,7 @@ namespace DlibDotNet.Dnn
                 Cuda.ThrowCudaException(ret);
                 switch (ret)
                 {
-                    case ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{imageType} is not supported.");
                 }
 
@@ -166,6 +164,64 @@ namespace DlibDotNet.Dnn
             NativeMethods.loss_multiclass_log_per_pixel_serialize(net.NativePtr, net.NetworkType, str);
         }
 
+        public static void Train<T>(DnnTrainer<LossMulticlassLogPerPixel> trainer, IEnumerable<Matrix<T>> data, IEnumerable<Matrix<ushort>> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var labelVec = new StdVector<Matrix<ushort>>(label))
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_train(trainer.NativePtr,
+                                                                                        trainer.Type,
+                                                                                        dataElementTypes.ToNativeMatrixElementType(),
+                                                                                        dataVec.NativePtr,
+                                                                                        NativeMethods.MatrixElementType.UInt32,
+                                                                                        labelVec.NativePtr);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
+                }
+            }
+        }
+
+        public static void TrainOneStep<T>(DnnTrainer<LossMulticlassLogPerPixel> trainer, IEnumerable<Matrix<T>> data, IEnumerable<Matrix<ushort>> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var labelVec = new StdVector<Matrix<ushort>>(label))
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(trainer.NativePtr,
+                                                                                                 trainer.Type,
+                                                                                                 dataElementTypes.ToNativeMatrixElementType(),
+                                                                                                 dataVec.NativePtr,
+                                                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                                                 labelVec.NativePtr);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
+                }
+            }
+        }
+        
         public override bool TryGetInputLayer<T>(T layer)
         {
             throw new NotSupportedException();
@@ -200,11 +256,11 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.loss_multiclass_log_per_pixel_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
                 switch (ret)
                 {
-                    case ErrorType.OK:
+                    case NativeMethods.ErrorType.OK:
                         stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case ErrorType.DnnNotSupportNetworkType:
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
                         throw new NotSupportNetworkTypeException(this.NetworkType);
                 }
             }
@@ -237,6 +293,7 @@ namespace DlibDotNet.Dnn
             #region Constructors
 
             internal Subnet(LossMulticlassLogPerPixel parent)
+                : base(false)
             {
                 if (parent == null)
                     throw new ArgumentNullException(nameof(parent));
@@ -304,6 +361,7 @@ namespace DlibDotNet.Dnn
             #region Constructors
 
             internal LayerDetails(LossMulticlassLogPerPixel parent, IntPtr ptr)
+                : base(false)
             {
                 if (parent == null)
                     throw new ArgumentNullException(nameof(parent));

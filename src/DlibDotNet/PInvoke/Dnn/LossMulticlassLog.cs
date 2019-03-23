@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-
 using OutputLabelType = System.UInt32;
 
 // ReSharper disable once CheckNamespace

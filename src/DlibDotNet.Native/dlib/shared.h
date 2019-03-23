@@ -232,6 +232,7 @@ typedef struct
 // Dnn
 #define ERR_DNN_ERROR                                                     0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE                 -(ERR_DNN_ERROR | 0x00000001)
+#define ERR_DNN_PROPAGATE_EXCEPTION                     -(ERR_DNN_ERROR | 0x00000002)
 
 // CUDA
 #define ERR_CUDA_ERROR                                                    0x77000000

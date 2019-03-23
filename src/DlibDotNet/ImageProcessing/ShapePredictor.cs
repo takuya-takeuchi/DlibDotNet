@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace

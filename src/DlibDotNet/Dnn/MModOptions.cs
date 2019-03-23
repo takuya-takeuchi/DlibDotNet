@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace DlibDotNet.Dnn
@@ -24,12 +23,9 @@ namespace DlibDotNet.Dnn
                                                                 minTargetSize,
                                                                 minDetectorWindowOverlapIou);
 
+                // Not dispose MModRect elements because they are passed from caller
                 foreach (var v in vector)
-                {
-                    foreach (var r in v)
-                        r.Dispose();
                     v.Dispose();
-                }
             }
         }
 

@@ -283,6 +283,8 @@ namespace DlibDotNet
 
             DnnNotSupportNetworkType = -(DnnError | 0x00000001),
 
+            DnnPropagateException    = -(DnnError | 0x00000002),
+
             #endregion
 
             #region Dnn
@@ -1304,6 +1306,12 @@ namespace DlibDotNet
                                                                                                          int type,
                                                                                                          uint thresh);
 
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_metric_get_net(IntPtr trainer, int type, out IntPtr ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_metric_operator_left_shift(IntPtr trainer, int type, IntPtr stream);
+
         #endregion
 
         #region loss_mmod
@@ -1352,6 +1360,12 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_mmod_set_iterations_without_progress_threshold(IntPtr trainer,
                                                                                                        int type,
                                                                                                        uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_get_net(IntPtr trainer, int type, out IntPtr ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_operator_left_shift(IntPtr trainer, int type, IntPtr stream);
 
         #endregion
 
@@ -1402,6 +1416,12 @@ namespace DlibDotNet
                                                                                                                  int type,
                                                                                                                  uint thresh);
 
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_get_net(IntPtr trainer, int type, out IntPtr ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_operator_left_shift(IntPtr trainer, int type, IntPtr stream);
+
         #endregion
 
         #region loss_multiclass_log_per_pixel
@@ -1450,6 +1470,12 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(IntPtr trainer,
                                                                                                                            int type,
                                                                                                                            uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_get_net(IntPtr trainer, int type, out IntPtr ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_operator_left_shift(IntPtr trainer, int type, IntPtr stream);
 
         #endregion
 

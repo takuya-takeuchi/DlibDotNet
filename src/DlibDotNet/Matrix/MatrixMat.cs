@@ -2,10 +2,6 @@
 using System.Linq;
 using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using ElementType = DlibDotNet.NativeMethods.ElementType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -27,11 +23,11 @@ namespace DlibDotNet
             var ret = NativeMethods.mat_array2d(imageType, array.NativePtr, out var matrix);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{imageType} is not supported.");
             }
 
-            return new MatrixOp(ElementType.OpArray2DToMat, array.ImageType, matrix);
+            return new MatrixOp(NativeMethods.ElementType.OpArray2DToMat, array.ImageType, matrix);
         }
 
         public static MatrixOp Mat<T>(IUndisposableElementCollection<Matrix<T>> collection)
@@ -59,11 +55,11 @@ namespace DlibDotNet
                                                            out var matrix);
             switch (ret)
             {
-                case ErrorType.ElementTypeNotSupport:
+                case NativeMethods.ErrorType.ElementTypeNotSupport:
                     throw new ArgumentException($"{elementType} is not supported.");
             }
 
-            return new MatrixOp(ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
+            return new MatrixOp(NativeMethods.ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
         }
 
         public static MatrixOp Mat<T>(NetResult<Matrix<T>> results)
@@ -106,11 +102,11 @@ namespace DlibDotNet
                                                            out var matrix);
             switch (ret)
             {
-                case ErrorType.ElementTypeNotSupport:
+                case NativeMethods.ErrorType.ElementTypeNotSupport:
                     throw new ArgumentException($"{elementType} is not supported.");
             }
 
-            return new MatrixOp(ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
+            return new MatrixOp(NativeMethods.ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
         }
 
         #endregion

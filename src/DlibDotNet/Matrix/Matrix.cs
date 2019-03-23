@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet.Extensions;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -18,7 +16,7 @@ namespace DlibDotNet
 
         private readonly MatrixElementTypes _MatrixElementTypes;
 
-        private readonly MatrixElementType _ElementType;
+        private readonly NativeMethods.MatrixElementType _ElementType;
 
         private readonly Indexer<TElement> _Indexer;
 
@@ -58,7 +56,7 @@ namespace DlibDotNet
                                                out var ptr);
             switch (ret)
             {
-                case ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{array.ImageType} can not convert to {type}.");
             }
 
@@ -373,9 +371,9 @@ namespace DlibDotNet
                                                                     out var matrix);
             switch (ret)
             {
-                case ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
             }
 
@@ -615,9 +613,9 @@ namespace DlibDotNet
 
             switch (err)
             {
-                case ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{this._ElementType} is not supported.");
-                case ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateRows)} is not supported.");
             }
 
@@ -657,13 +655,13 @@ namespace DlibDotNet
                 var ret = NativeMethods.matrix_operator_left_shift(this._ElementType, this.NativePtr, this.TemplateRows, this.TemplateColumns, ofstream);
                 switch (ret)
                 {
-                    case ErrorType.OK:
+                    case NativeMethods.ErrorType.OK:
                         stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr) ?? "";
                         break;
-                    case ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
-                    case ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                     default:
                         throw new ArgumentException();

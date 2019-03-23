@@ -89,7 +89,7 @@ namespace DlibDotNet.ImageTransforms
             }
         }
 
-        public long MinObjectLengthLongDim
+        public int MinObjectLengthLongDim
         {
             get
             {
@@ -112,7 +112,7 @@ namespace DlibDotNet.ImageTransforms
             }
         }
 
-        public long MinObjectLengthShortDim
+        public int MinObjectLengthShortDim
         {
             get
             {
@@ -191,6 +191,9 @@ namespace DlibDotNet.ImageTransforms
             if (count != numRect)
                 throw new ArgumentException();
 
+            images.ThrowIfDisposed();
+            rects.ThrowIfDisposed();
+
             List<StdVector<MModRect>> listOfVectorOfMModRect = null;
 
             try
@@ -216,6 +219,9 @@ namespace DlibDotNet.ImageTransforms
 
                     crops = outCrops.ToArray();
                     cropRects = outCropRects.ToArray().Select(box => box.ToArray()).ToList();
+
+                    foreach (var tmp in outCropRects)
+                        tmp?.Dispose();
                 }
             }
             finally
@@ -249,6 +255,34 @@ namespace DlibDotNet.ImageTransforms
                 return;
 
             NativeMethods.random_cropper_delete(this.NativePtr);
+        }
+
+        public override string ToString()
+        {
+            var ofstream = IntPtr.Zero;
+            var stdstr = IntPtr.Zero;
+            var str = "";
+
+            try
+            {
+                ofstream = NativeMethods.ostringstream_new();
+                NativeMethods.random_cropper_operator_left_shift(this.NativePtr, ofstream);
+                stdstr = NativeMethods.ostringstream_str(ofstream);
+                str = StringHelper.FromStdString(stdstr);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (stdstr != IntPtr.Zero)
+                    NativeMethods.string_delete(stdstr);
+                if (ofstream != IntPtr.Zero)
+                    NativeMethods.ostringstream_delete(ofstream);
+            }
+
+            return str;
         }
 
         #endregion
