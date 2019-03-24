@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using DlibDotNet.ImageDatasetMetadata;
 
 // ReSharper disable once CheckNamespace
@@ -24,10 +22,10 @@ namespace DlibDotNet
                 if (!File.Exists(filename))
                     throw new FileNotFoundException($"{filename} is not found", filename);
 
-                var str = Encoding.UTF8.GetBytes(filename);
+                var str = Dlib.Encoding.GetBytes(filename);
 
                 var dataset = new Dataset();
-                Native.load_image_dataset_metadata(dataset.NativePtr, str);
+                NativeMethods.load_image_dataset_metadata(dataset.NativePtr, str);
 
                 return dataset;
             }
@@ -41,23 +39,12 @@ namespace DlibDotNet
 
                 dataset.ThrowIfDisposed();
 
-                var str = Encoding.UTF8.GetBytes(filename);
+                var str = Dlib.Encoding.GetBytes(filename);
 
-                Native.save_image_dataset_metadata(dataset.NativePtr, str);
+                NativeMethods.save_image_dataset_metadata(dataset.NativePtr, str);
             }
 
             #endregion
-
-            internal sealed class Native
-            {
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void load_image_dataset_metadata(IntPtr dataset, byte[] filename);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void save_image_dataset_metadata(IntPtr dataset, byte[] filename);
-
-            }
 
         }
 

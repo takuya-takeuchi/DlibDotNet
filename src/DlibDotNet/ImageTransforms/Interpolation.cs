@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -14,7 +12,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static void AddImageLeftRightFlips<T>(IList<Matrix<T>> images, IList<IEnumerable<Rectangle>> objects)
+        public static void AddImageLeftRightFlips<T>(IList<Matrix<T>> images, IList<IList<Rectangle>> objects)
             where T : struct
         {
             if (images == null)
@@ -25,27 +23,26 @@ namespace DlibDotNet
             images.ThrowIfDisposed();
 
             using (var vecImage = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<Rectangle>>(objects.Select(r => new StdVector<Rectangle>(r))))
+            using (var vecObject = new StdVector<StdVector<Rectangle>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<Rectangle>>(vecObject))
             {
-                var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
-                using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                Matrix<T>.TryParse<T>(out var matrixElementType);
+                var ret = NativeMethods.add_image_left_right_flips_rectangle(matrixElementType.ToNativeMatrixElementType(),
+                                                                             vecImage.NativePtr,
+                                                                             vecObject.NativePtr);
+                switch (ret)
                 {
-                    Matrix<T>.TryParse<T>(out var matrixElementType);
-                    var ret = Native.add_image_left_right_flips_rectangle(matrixElementType.ToNativeMatrixElementType(),
-                                                                          vecImage.NativePtr,
-                                                                          vecObject.NativePtr);
-                    switch (ret)
-                    {
-                        case Native.ErrorType.MatrixElementTypeNotSupport:
-                            throw new ArgumentException($"{matrixElementType} is not supported.");
-                    }
-
-                    images.Clear();
-                    foreach (var matrix in vecImage.ToArray())
-                        images.Add(matrix);
-                    objects.Clear();
-                    foreach (var list in vecObject.ToArray())
-                        objects.Add(list);
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
                 }
+
+                images.Clear();
+                foreach (var matrix in vecImage.ToArray())
+                    images.Add(matrix);
+                objects.Clear();
+                foreach (var list in vecObject.ToArray())
+                    objects.Add(list);
             }
         }
 
@@ -65,17 +62,15 @@ namespace DlibDotNet
             {
                 var array = new Array<Array2D<T>>();
                 var array2DType = image.ImageType.ToNativeArray2DType();
-                var ret = Native.extract_image_chips(array2DType,
-                                                    image.NativePtr,
-                                                    vectorOfChips.NativePtr,
-                                                    array.ImageType.ToNativeArray2DType(),
-                                                    array.NativePtr);
+                var ret = NativeMethods.extract_image_chips(array2DType,
+                                                            image.NativePtr,
+                                                            vectorOfChips.NativePtr,
+                                                            array.ImageType.ToNativeArray2DType(),
+                                                            array.NativePtr);
                 switch (ret)
                 {
-                    case Native.ErrorType.InputArrayTypeNotSupport:
-                        throw new ArgumentException($"{image.ImageType} is not supported.");
-                    case Native.ErrorType.OutputArrayTypeNotSupport:
-                        throw new ArgumentException($"{array.ImageType} is not supported.");
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException("Output or input type is not supported.");
                 }
 
                 return array;
@@ -98,14 +93,14 @@ namespace DlibDotNet
             {
                 var array = new Array<Matrix<T>>();
                 var matrixElementType = image.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.extract_image_chips_matrix(matrixElementType,
-                                                            image.NativePtr,
-                                                            vectorOfChips.NativePtr,
-                                                            array.MatrixElementTypes.ToNativeMatrixElementType(),
-                                                            array.NativePtr);
+                var ret = NativeMethods.extract_image_chips_matrix(matrixElementType,
+                                                                   image.NativePtr,
+                                                                   vectorOfChips.NativePtr,
+                                                                   array.MatrixElementTypes.ToNativeMatrixElementType(),
+                                                                   array.NativePtr);
                 switch (ret)
                 {
-                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{image.MatrixElementType} is not supported.");
                 }
 
@@ -129,19 +124,17 @@ namespace DlibDotNet
 
             var chip = new Array2D<T>();
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.extract_image_chip2(array2DType,
-                                                 image.NativePtr,
-                                                 chipLocation.NativePtr,
-                                                 chip.ImageType.ToNativeArray2DType(),
-                                                 type.ToNativeInterpolationTypes(),
-                                                 chip.NativePtr);
+            var ret = NativeMethods.extract_image_chip2(array2DType,
+                                                        image.NativePtr,
+                                                        chipLocation.NativePtr,
+                                                        chip.ImageType.ToNativeArray2DType(),
+                                                        type.ToNativeInterpolationTypes(),
+                                                        chip.NativePtr);
 
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"{image.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"{chip.ImageType} is not supported.");
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
 
             return chip;
@@ -163,19 +156,17 @@ namespace DlibDotNet
 
             var chip = new Matrix<T>();
             var elementType = image.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.extract_image_chip_matrix2(elementType,
-                                                        image.NativePtr,
-                                                        chipLocation.NativePtr,
-                                                        chip.MatrixElementType.ToNativeMatrixElementType(),
-                                                        type.ToNativeInterpolationTypes(),
-                                                        chip.NativePtr);
+            var ret = NativeMethods.extract_image_chip_matrix2(elementType,
+                                                               image.NativePtr,
+                                                               chipLocation.NativePtr,
+                                                               chip.MatrixElementType.ToNativeMatrixElementType(),
+                                                               type.ToNativeInterpolationTypes(),
+                                                               chip.NativePtr);
 
             switch (ret)
             {
-                case Native.ErrorType.InputElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-                case Native.ErrorType.OutputElementTypeNotSupport:
-                    throw new ArgumentException($"{chip.MatrixElementType} is not supported.");
             }
 
             return chip;
@@ -189,10 +180,10 @@ namespace DlibDotNet
             image.ThrowIfDisposed(nameof(image));
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.flip_image_left_right(array2DType, image.NativePtr);
+            var ret = NativeMethods.flip_image_left_right(array2DType, image.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.ArrayTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{image.ImageType} is not supported.");
             }
         }
@@ -211,13 +202,11 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = Native.flip_image_left_right2(inType, inputImage.NativePtr, outType, outputImage.NativePtr);
+            var ret = NativeMethods.flip_image_left_right2(inType, inputImage.NativePtr, outType, outputImage.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -235,13 +224,11 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = Native.flip_image_up_down(inType, inputImage.NativePtr, outType, outputImage.NativePtr);
+            var ret = NativeMethods.flip_image_up_down(inType, inputImage.NativePtr, outType, outputImage.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -250,7 +237,7 @@ namespace DlibDotNet
             using(var rectNative = rect.ToNative())
             using (var windowNative = window.ToNative())
             {
-                var ret = Native.flip_rect_left_right(rectNative.NativePtr, windowNative.NativePtr);
+                var ret = NativeMethods.flip_rect_left_right(rectNative.NativePtr, windowNative.NativePtr);
                 return new Rectangle(ret);
             }
         }
@@ -269,7 +256,7 @@ namespace DlibDotNet
             using (var vector = new StdVector<FullObjectDetection>(dets))
             using (var vectorOfChips = new StdVector<ChipDetails>())
             {
-                Native.get_face_chip_details(vector.NativePtr, size, padding, vectorOfChips.NativePtr);
+                NativeMethods.get_face_chip_details(vector.NativePtr, size, padding, vectorOfChips.NativePtr);
                 return vectorOfChips.ToArray();
             }
         }
@@ -288,7 +275,7 @@ namespace DlibDotNet
             if (det.Parts != 68 && det.Parts != 5)
                 throw new ArgumentException($"{nameof(det)} is invalid item.");
 
-            Native.get_face_chip_details2(det.NativePtr, size, padding, out var ret);
+            NativeMethods.get_face_chip_details2(det.NativePtr, size, padding, out var ret);
             return new ChipDetails(ret);
         }
 
@@ -305,17 +292,15 @@ namespace DlibDotNet
 
             var chip = new Matrix<T>();
             var elementType = image.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.jitter_image(elementType,
-                                          image.NativePtr,
-                                          random.NativePtr,
-                                          out var retImage);
+            var ret = NativeMethods.jitter_image(elementType,
+                                                 image.NativePtr,
+                                                 random.NativePtr,
+                                                 out var retImage);
 
             switch (ret)
             {
-                case Native.ErrorType.InputElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-                case Native.ErrorType.OutputElementTypeNotSupport:
-                    throw new ArgumentException($"{chip.MatrixElementType} is not supported.");
             }
 
             return new Matrix<T>(retImage);
@@ -329,8 +314,8 @@ namespace DlibDotNet
             image.ThrowIfDisposed(nameof(image));
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = Native.pyramid_up(array2DType, image.NativePtr);
-            if (ret == Native.ErrorType.ArrayTypeNotSupport)
+            var ret = NativeMethods.pyramid_up(array2DType, image.NativePtr);
+            if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
 
@@ -342,8 +327,8 @@ namespace DlibDotNet
             image.ThrowIfDisposed(nameof(image));
 
             var type = image.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.pyramid_up_matrix(type, image.NativePtr);
-            if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+            var ret = NativeMethods.pyramid_up_matrix(type, image.NativePtr);
+            if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                 throw new ArgumentException($"{image.MatrixElementType} is not supported.");
         }
 
@@ -359,8 +344,8 @@ namespace DlibDotNet
             pyramid.ThrowIfDisposed(nameof(pyramid));
 
             var type = image.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.pyramid_up_matrix2(type, image.NativePtr, pyramid.NativePtr, pyramid.PyramidRate, out var ptr);
-            if (ret == Native.ErrorType.MatrixElementTypeNotSupport)
+            var ret = NativeMethods.pyramid_up_matrix2(type, image.NativePtr, pyramid.NativePtr, pyramid.PyramidRate, out var ptr);
+            if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                 throw new ArgumentException($"{image.MatrixElementType} is not supported.");
 
             matrix = new Matrix<T>(ptr);
@@ -376,16 +361,16 @@ namespace DlibDotNet
 
             var type = image.MatrixElementType.ToNativeMatrixElementType();
             Pyramid.TryGetSupportPyramidType<T>(out var pyramidType);
-            var ret = Native.pyramid_up_pyramid_matrix(pyramidType,
+            var ret = NativeMethods.pyramid_up_pyramid_matrix(pyramidType,
                                                        pyramidRate,
                                                        type,
                                                        image.NativePtr);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{image.MatrixElementType} is not supported.");
-                case Native.ErrorType.PyramidNotSupportType:
-                case Native.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportType:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
                     throw new NotSupportedException();
             }
         }
@@ -400,10 +385,10 @@ namespace DlibDotNet
             inputImage.ThrowIfDisposed(nameof(inputImage));
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
-            var ret = Native.resize_image3(inType, inputImage.NativePtr, scale);
+            var ret = NativeMethods.resize_image3(inType, inputImage.NativePtr, scale);
             switch (ret)
             {
-                case Native.ErrorType.ArrayTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{inputImage.ImageType} is not supported.");
             }
         }
@@ -418,14 +403,16 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed(nameof(matrix));
 
             var inType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.resize_image_matrix_scale(inType,
-                                                       matrix.NativePtr,
-                                                       matrix.TemplateRows,
-                                                       matrix.TemplateColumns,
-                                                       scale);
+            var ret = NativeMethods.resize_image_matrix_scale(inType,
+                                                              matrix.NativePtr,
+                                                              matrix.TemplateRows,
+                                                              matrix.TemplateColumns,
+                                                              scale);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
             }
         }
@@ -444,13 +431,11 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = Native.resize_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, interpolationTypes.ToNativeInterpolationTypes());
+            var ret = NativeMethods.resize_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -468,13 +453,11 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = Native.rotate_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, angle, interpolationTypes.ToNativeInterpolationTypes());
+            var ret = NativeMethods.rotate_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, angle, interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
@@ -494,19 +477,24 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = Native.transform_image(inType, inputImage.NativePtr, outType, outputImage.NativePtr, pointTransform.GetNativePointMappingTypes(), pointTransform.NativePtr, interpolationTypes.ToNativeInterpolationTypes());
+            var ret = NativeMethods.transform_image(inType, 
+                                                    inputImage.NativePtr,
+                                                    outType, 
+                                                    outputImage.NativePtr,
+                                                    pointTransform.GetNativePointMappingTypes(),
+                                                    pointTransform.NativePtr, 
+                                                    interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
-                case Native.ErrorType.InputArrayTypeNotSupport:
-                    throw new ArgumentException($"Input {inputImage.ImageType} is not supported.");
-                case Native.ErrorType.OutputArrayTypeNotSupport:
-                    throw new ArgumentException($"Output {outputImage.ImageType} is not supported.");
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
             }
         }
 
         public static void UpsampleImageDataset<T>(uint pyramidRate,
                                                    IList<Matrix<T>> images,
-                                                   IList<IEnumerable<Rectangle>> objects)
+                                                   IList<IList<Rectangle>> objects,
+                                                   uint maxImageSize = uint.MaxValue)
             where T : struct
         {
             if (images == null)
@@ -523,120 +511,82 @@ namespace DlibDotNet
                 throw new ArgumentException();
 
             using (var vecImage = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<Rectangle>>(objects.Select(r => new StdVector<Rectangle>(r))))
+            using (var vecObject = new StdVector<StdVector<Rectangle>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<Rectangle>>(vecObject))
             {
-                var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
-                using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                Matrix<T>.TryParse<T>(out var matrixElementType);
+                var ret = NativeMethods.upsample_image_dataset_pyramid_down_rect(pyramidRate,
+                                                                                 matrixElementType.ToNativeMatrixElementType(),
+                                                                                 vecImage.NativePtr,
+                                                                                 vecObject.NativePtr,
+                                                                                 maxImageSize);
+                switch (ret)
                 {
-                    Matrix<T>.TryParse<T>(out var matrixElementType);
-                    var ret = Native.upsample_image_dataset_pyramid_down(pyramidRate,
-                                                                         matrixElementType.ToNativeMatrixElementType(),
-                                                                         vecImage.NativePtr,
-                                                                         vecObject.NativePtr);
-                    switch (ret)
-                    {
-                        case Native.ErrorType.PyramidNotSupportRate:
-                            throw new ArgumentException($"{pyramidRate} is not supported.");
-                        case Native.ErrorType.MatrixElementTypeNotSupport:
-                            throw new ArgumentException($"{matrixElementType} is not supported.");
-                    }
-
-                    images.Clear();
-                    foreach (var matrix in vecImage.ToArray())
-                        images.Add(matrix);
-                    objects.Clear();
-                    foreach (var list in vecObject.ToArray())
-                        objects.Add(list);
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                        throw new ArgumentException($"{pyramidRate} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
                 }
+
+                images.Clear();
+                foreach (var matrix in vecImage.ToArray())
+                    images.Add(matrix);
+                objects.Clear();
+                foreach (var list in vecObject.ToArray())
+                    objects.Add(list);
+            }
+        }
+
+
+        public static void UpsampleImageDataset<T>(uint pyramidRate,
+                                                   IList<Matrix<T>> images,
+                                                   IList<IList<MModRect>> objects,
+                                                   uint maxImageSize = uint.MaxValue)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (objects == null)
+                throw new ArgumentNullException(nameof(objects));
+
+            images.ThrowIfDisposed();
+
+            var imageCount = images.Count();
+            var objectCount = objects.Count();
+
+            if (imageCount != objectCount)
+                throw new ArgumentException();
+
+            using (var vecImage = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(objects.Select(r => new StdVector<MModRect>(r))))
+            using (var vecObject = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(vecObject))
+            {
+                Matrix<T>.TryParse<T>(out var matrixElementType);
+                var ret = NativeMethods.upsample_image_dataset_pyramid_down_mmod_rect(pyramidRate,
+                                                                                      matrixElementType.ToNativeMatrixElementType(),
+                                                                                      vecImage.NativePtr,
+                                                                                      vecObject.NativePtr,
+                                                                                      maxImageSize);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                        throw new ArgumentException($"{pyramidRate} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
+                }
+
+                images.Clear();
+                foreach (var matrix in vecImage.ToArray())
+                    images.Add(matrix);
+                objects.Clear();
+                foreach (var list in vecObject.ToArray())
+                    objects.Add(list);
             }
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType add_image_left_right_flips_rectangle(MatrixElementType elementType, IntPtr images, IntPtr objects);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType flip_image_left_right(Array2DType type, IntPtr img);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType flip_image_left_right2(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType flip_image_up_down(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr flip_rect_left_right(IntPtr rect, IntPtr window);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType pyramid_up(Array2DType type, IntPtr img);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType pyramid_up_matrix(MatrixElementType type, IntPtr img);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType pyramid_up_matrix2(MatrixElementType type, IntPtr img, IntPtr pyramid_down, uint pyramid_rate, out IntPtr matrix);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType pyramid_up_pyramid_matrix(PyramidType pyramid_type,
-                                                                     uint pyramid_rate,
-                                                                     MatrixElementType elementType,
-                                                                     IntPtr image);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType resize_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType resize_image2(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg, InterpolationTypes interpolationTypes);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType resize_image3(Array2DType inType, IntPtr inImg, double scaleSize);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType resize_image_matrix_scale(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, double scaleSize);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType rotate_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg, double angle);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType rotate_image2(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg, double angle, InterpolationTypes interpolationTypes);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType transform_image(Array2DType inType, IntPtr inImg, Array2DType outType, IntPtr outImg, PointMappingTypes pointMappingTypes, IntPtr mappingObj, InterpolationTypes interpolationTypes);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType get_face_chip_details(IntPtr dets, uint size, double padding, IntPtr vectoChips);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType get_face_chip_details2(IntPtr det, uint size, double padding, out IntPtr chips);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_image_chip(Array2DType img_type, IntPtr in_img, IntPtr chip_location, Array2DType array_type, IntPtr out_chip);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_image_chip2(Array2DType img_type, IntPtr in_img, IntPtr chip_location, Array2DType array_type, InterpolationTypes type, IntPtr out_chip);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_image_chips(Array2DType img_type, IntPtr in_img, IntPtr chip_locations, Array2DType array_type, IntPtr array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_image_chips_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_locations, MatrixElementType array_type, IntPtr array);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_image_chip_matrix(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, IntPtr out_chip);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType extract_image_chip_matrix2(MatrixElementType img_type, IntPtr in_img, IntPtr chip_location, MatrixElementType array_type, InterpolationTypes type, IntPtr out_chip);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType jitter_image(MatrixElementType in_type, IntPtr in_img, IntPtr rand, out IntPtr out_img);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType upsample_image_dataset_pyramid_down(uint pyramid_rate, MatrixElementType elementType, IntPtr images, IntPtr objects);
-
-        }
 
     }
 

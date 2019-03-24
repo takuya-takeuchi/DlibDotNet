@@ -10,7 +10,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private static readonly Dictionary<Type, Dlib.Native.PyramidType> SupportPyramidType = new Dictionary<Type, Dlib.Native.PyramidType>();
+        private static readonly Dictionary<Type, NativeMethods.PyramidType> SupportPyramidType = new Dictionary<Type, NativeMethods.PyramidType>();
 
         #endregion
 
@@ -18,7 +18,7 @@ namespace DlibDotNet
 
         static Pyramid()
         {
-            SupportPyramidType.Add(typeof(PyramidDown), Dlib.Native.PyramidType.Down);
+            SupportPyramidType.Add(typeof(PyramidDown), NativeMethods.PyramidType.Down);
         }
 
         #endregion
@@ -41,7 +41,7 @@ namespace DlibDotNet
 
         public abstract DRectangle RectUp(DRectangle rect, uint levels);
 
-        internal static bool TryGetSupportPyramidType<T>(out Dlib.Native.PyramidType type)
+        internal static bool TryGetSupportPyramidType<T>(out NativeMethods.PyramidType type)
         {
             return SupportPyramidType.TryGetValue(typeof(T), out type);
         }

@@ -54,7 +54,7 @@ do { \
             dlib::assign_all_pixels(*((array2d<rgb_alpha_pixel>*)out_img), *((ELEMENT_IN*)in_pixel));\
             break;\
         default:\
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -89,7 +89,7 @@ do { \
             dlib::assign_image(*((array2d<rgb_alpha_pixel>*)out_img), *((array2d<ELEMENT_IN>*)in_img));\
             break;\
         default:\
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -200,13 +200,13 @@ DLLEXPORT int assign_all_pixels(array2d_type out_type, void* out_img, array2d_ty
            #undef ELEMENT_IN
            break;
        default:
-           err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+           err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
            break;
    }
 
    return err;
 }
- 
+
 DLLEXPORT int assign_image(array2d_type out_type, void* out_img, array2d_type in_type, void* in_img)
 {
     int err = ERR_OK;
@@ -223,11 +223,11 @@ DLLEXPORT int assign_image(array2d_type out_type, void* out_img, array2d_type in
             assign_image_template(err, out_type, out_img, in_img);
             #undef ELEMENT_IN
             break;
-        case array2d_type::Int32: 
-            #define ELEMENT_IN int32_t 
-            assign_image_template(err, out_type, out_img, in_img); 
-            #undef ELEMENT_IN 
-            break; 
+        case array2d_type::Int32:
+            #define ELEMENT_IN int32_t
+            assign_image_template(err, out_type, out_img, in_img);
+            #undef ELEMENT_IN
+            break;
         case array2d_type::Float:
             #define ELEMENT_IN float
             assign_image_template(err, out_type, out_img, in_img);
@@ -254,13 +254,13 @@ DLLEXPORT int assign_image(array2d_type out_type, void* out_img, array2d_type in
             #undef ELEMENT_IN
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
     return err;
 }
- 
+
 DLLEXPORT int assign_image_matrix(matrix_element_type out_type, void* out_img, matrix_element_type in_type, void* in_img)
 {
     int err = ERR_OK;
@@ -282,21 +282,21 @@ DLLEXPORT int assign_image_matrix(matrix_element_type out_type, void* out_img, m
             assign_image_matrix_template(err, out_type, out_img, in_img);
             #undef ELEMENT_IN
             break;
-        case matrix_element_type::Int8: 
-            #define ELEMENT_IN int8_t 
-            assign_image_matrix_template(err, out_type, out_img, in_img); 
-            #undef ELEMENT_IN 
-            break; 
-        case matrix_element_type::Int16: 
-            #define ELEMENT_IN int16_t 
-            assign_image_matrix_template(err, out_type, out_img, in_img); 
-            #undef ELEMENT_IN 
-            break; 
-        case matrix_element_type::Int32: 
-            #define ELEMENT_IN int32_t 
-            assign_image_matrix_template(err, out_type, out_img, in_img); 
-            #undef ELEMENT_IN 
-            break; 
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            assign_image_matrix_template(err, out_type, out_img, in_img);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            assign_image_matrix_template(err, out_type, out_img, in_img);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            assign_image_matrix_template(err, out_type, out_img, in_img);
+            #undef ELEMENT_IN
+            break;
         case matrix_element_type::Float:
             #define ELEMENT_IN float
             assign_image_matrix_template(err, out_type, out_img, in_img);

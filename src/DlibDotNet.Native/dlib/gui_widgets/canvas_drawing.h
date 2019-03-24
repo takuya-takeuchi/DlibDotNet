@@ -11,9 +11,9 @@
 #include <dlib/matrix.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
- 
+
 DLLEXPORT int draw_line_canvas(
-    void* canvas, 
+    void* canvas,
     dlib::point* p1,
     dlib::point* p2,
     array2d_type type,
@@ -48,7 +48,7 @@ DLLEXPORT int draw_line_canvas(
             dlib::draw_line(*c, *p1, *p2, *((dlib::rgb_alpha_pixel*)p), *area);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -56,7 +56,7 @@ DLLEXPORT int draw_line_canvas(
 }
 
 DLLEXPORT int draw_line_canvas_infinity(
-   void* canvas, 
+   void* canvas,
    dlib::point* p1,
    dlib::point* p2,
    array2d_type type,
@@ -90,7 +90,7 @@ DLLEXPORT int draw_line_canvas_infinity(
             dlib::draw_line(*c, *p1, *p2, *((dlib::rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -98,7 +98,7 @@ DLLEXPORT int draw_line_canvas_infinity(
 }
 
 DLLEXPORT int draw_rectangle_canvas(
-    void* canvas, 
+    void* canvas,
     dlib::rectangle* rect,
     dlib::rectangle* area,
     array2d_type type,
@@ -135,7 +135,7 @@ DLLEXPORT int draw_rectangle_canvas(
             dlib::draw_rectangle(*c, *rect, *((dlib::rgb_alpha_pixel*)p), *area);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -143,7 +143,7 @@ DLLEXPORT int draw_rectangle_canvas(
 }
 
 DLLEXPORT int draw_rectangle_canvas_infinity(
-   void* canvas, 
+   void* canvas,
    dlib::rectangle* rect,
    array2d_type type,
    void* p)
@@ -179,7 +179,7 @@ DLLEXPORT int draw_rectangle_canvas_infinity(
             dlib::draw_rectangle(*c, *rect, *((dlib::rgb_alpha_pixel*)p));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

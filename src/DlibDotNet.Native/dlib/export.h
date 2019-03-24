@@ -1,6 +1,6 @@
-#ifdef _WINDOWS 
+#ifdef _WINDOWS
 #define DLLEXPORT extern "C" __declspec(dllexport)
-#else 
+#else
 #define DLLEXPORT extern "C"
 // size_t is missing for non windows system
 #include <sys/types.h>

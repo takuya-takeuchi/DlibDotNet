@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using DlibDotNet.Util;
 
@@ -10,7 +11,7 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public sealed class StdVector<TItem> : DlibObject, IEnumerable<TItem>
+    public sealed class StdVector<TItem> : DlibObject, IList<TItem>
     {
 
         #region Fields
@@ -47,34 +48,42 @@ namespace DlibDotNet
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
+                new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  }
             };
 
             foreach (var type in types)
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
-        public StdVector(params object[] param)
+        public StdVector()
+        {
+            this.Param = null;
+            this._Imp = CreateImp();
+            this.NativePtr = this._Imp.Create();
+        }
+
+        public StdVector(IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create();
         }
 
-        public StdVector(int size, params object[] param)
+        public StdVector(int size, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create(size);
         }
 
-        public StdVector(IEnumerable<TItem> data, params object[] param)
+        public StdVector(IEnumerable<TItem> data, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create(data);
         }
 
-        internal StdVector(IntPtr ptr, params object[] param)
+        internal StdVector(IntPtr ptr, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
@@ -94,7 +103,7 @@ namespace DlibDotNet
             }
         }
 
-        internal object[] Param
+        internal IParameter Param
         {
             get;
             private set;
@@ -121,7 +130,7 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private static StdVectorImp<TItem> CreateImp(object[] param = null)
+        private static StdVectorImp<TItem> CreateImp(IParameter param = null)
         {
             if (SupportTypes.TryGetValue(typeof(TItem), out var type))
             {
@@ -167,6 +176,8 @@ namespace DlibDotNet
                         return new StdVectorStdVectorRectangleImp() as StdVectorImp<TItem>;
                     case ElementTypes.StdVectorMModRect:
                         return new StdVectorStdVectorMModRectImp() as StdVectorImp<TItem>;
+                    case ElementTypes.DetectorWindowDetails:
+                        return new StdVectorMModOptionsDetectorWindowDetailsImp() as StdVectorImp<TItem>;
                 }
             }
             else
@@ -176,41 +187,39 @@ namespace DlibDotNet
                 if (matrix.IsAssignableFrom(t))
                 {
                     var arg = GenericHelper.GetTypeParameter(t);
-                    if (MatrixBase.TryParse(arg, out var r))
-                    {
-                        var templateRows = 0;
-                        var templateColumns = 0;
-                        if (param != null && param.Length == 1 && param[0] is int[] array)
-                        {
-                            templateRows = array[0];
-                            templateColumns = array[1];
-                        }
+                    if (!MatrixBase.TryParse(arg, out var r))
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
 
-                        switch (r)
-                        {
-                            case MatrixElementTypes.UInt8:
-                                return new StdVectorMatrixImp<byte>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.UInt16:
-                                return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.UInt32:
-                                return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int8:
-                                return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int16:
-                                return new StdVectorMatrixImp<short>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int32:
-                                return new StdVectorMatrixImp<int>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Float:
-                                return new StdVectorMatrixImp<float>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Double:
-                                return new StdVectorMatrixImp<double>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.RgbPixel:
-                                return new StdVectorMatrixImp<RgbPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.RgbAlphaPixel:
-                                return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.HsiPixel:
-                                return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                        }
+                    if (!(param is MatrixTemplateSizeParameter sizeParameter))
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+
+                    var templateRows = sizeParameter.TemplateRows;
+                    var templateColumns = sizeParameter.TemplateColumns;
+
+                    switch (r)
+                    {
+                        case MatrixElementTypes.UInt8:
+                            return new StdVectorMatrixImp<byte>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt16:
+                            return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt32:
+                            return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int8:
+                            return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int16:
+                            return new StdVectorMatrixImp<short>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int32:
+                            return new StdVectorMatrixImp<int>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Float:
+                            return new StdVectorMatrixImp<float>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Double:
+                            return new StdVectorMatrixImp<double>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.RgbPixel:
+                            return new StdVectorMatrixImp<RgbPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.RgbAlphaPixel:
+                            return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.HsiPixel:
+                            return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
                     }
                 }
             }
@@ -265,7 +274,9 @@ namespace DlibDotNet
 
             ImageDatasetMetadataImage,
 
-            ImageDatasetMetadataBox
+            ImageDatasetMetadataBox,
+
+            DetectorWindowDetails
 
         }
 
@@ -301,7 +312,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_int32_new1();
+                return NativeMethods.stdvector_int32_new1();
             }
 
             public override IntPtr Create(int size)
@@ -309,7 +320,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_int32_new2(new IntPtr(size));
+                return NativeMethods.stdvector_int32_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<int> data)
@@ -318,22 +329,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.ToArray();
-                return Dlib.Native.stdvector_int32_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_int32_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_int32_delete(ptr);
+                NativeMethods.stdvector_int32_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_int32_getPointer(ptr);
+                return NativeMethods.stdvector_int32_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_int32_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_int32_getSize(ptr).ToInt32();
             }
 
             public override int[] ToArray(IntPtr ptr)
@@ -359,7 +370,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_uint32_new1();
+                return NativeMethods.stdvector_uint32_new1();
             }
 
             public override IntPtr Create(int size)
@@ -367,7 +378,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_uint32_new2(new IntPtr(size));
+                return NativeMethods.stdvector_uint32_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<uint> data)
@@ -376,22 +387,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.ToArray();
-                return Dlib.Native.stdvector_uint32_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_uint32_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_uint32_delete(ptr);
+                NativeMethods.stdvector_uint32_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_uint32_getPointer(ptr);
+                return NativeMethods.stdvector_uint32_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_uint32_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_uint32_getSize(ptr).ToInt32();
             }
 
             public override uint[] ToArray(IntPtr ptr)
@@ -417,7 +428,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_long_new1();
+                return NativeMethods.stdvector_long_new1();
             }
 
             public override IntPtr Create(int size)
@@ -425,7 +436,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_long_new2(new IntPtr(size));
+                return NativeMethods.stdvector_long_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<long> data)
@@ -434,22 +445,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.ToArray();
-                return Dlib.Native.stdvector_long_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_long_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_long_delete(ptr);
+                NativeMethods.stdvector_long_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_long_getPointer(ptr);
+                return NativeMethods.stdvector_long_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_long_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_long_getSize(ptr).ToInt32();
             }
 
             public override long[] ToArray(IntPtr ptr)
@@ -475,7 +486,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_chip_details_new1();
+                return NativeMethods.stdvector_chip_details_new1();
             }
 
             public override IntPtr Create(int size)
@@ -483,7 +494,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_chip_details_new2(new IntPtr(size));
+                return NativeMethods.stdvector_chip_details_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<ChipDetails> data)
@@ -492,22 +503,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_chip_details_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_chip_details_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_chip_details_delete(ptr);
+                NativeMethods.stdvector_chip_details_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_chip_details_getPointer(ptr);
+                return NativeMethods.stdvector_chip_details_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_chip_details_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_chip_details_getSize(ptr).ToInt32();
             }
 
             public override ChipDetails[] ToArray(IntPtr ptr)
@@ -517,7 +528,7 @@ namespace DlibDotNet
                     return new ChipDetails[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_chip_details_copy(ptr, dst);
+                NativeMethods.stdvector_chip_details_copy(ptr, dst);
                 return dst.Select(p => new ChipDetails(p)).ToArray();
             }
 
@@ -532,7 +543,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_string_new1();
+                return NativeMethods.stdvector_string_new1();
             }
 
             public override IntPtr Create(int size)
@@ -540,7 +551,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_string_new2(new IntPtr(size));
+                return NativeMethods.stdvector_string_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<StdString> data)
@@ -549,22 +560,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_string_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_string_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_string_delete(ptr);
+                NativeMethods.stdvector_string_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_string_getPointer(ptr);
+                return NativeMethods.stdvector_string_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_string_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_string_getSize(ptr).ToInt32();
             }
 
             public override StdString[] ToArray(IntPtr ptr)
@@ -574,7 +585,7 @@ namespace DlibDotNet
                     return new StdString[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_string_copy(ptr, dst);
+                NativeMethods.stdvector_string_copy(ptr, dst);
                 return dst.Select(p => new StdString(p)).ToArray();
             }
 
@@ -589,7 +600,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_full_object_detection_new1();
+                return NativeMethods.stdvector_full_object_detection_new1();
             }
 
             public override IntPtr Create(int size)
@@ -597,7 +608,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_full_object_detection_new2(new IntPtr(size));
+                return NativeMethods.stdvector_full_object_detection_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<FullObjectDetection> data)
@@ -606,22 +617,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_full_object_detection_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_full_object_detection_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_full_object_detection_delete(ptr);
+                NativeMethods.stdvector_full_object_detection_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_full_object_detection_getPointer(ptr);
+                return NativeMethods.stdvector_full_object_detection_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_full_object_detection_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_full_object_detection_getSize(ptr).ToInt32();
             }
 
             public override FullObjectDetection[] ToArray(IntPtr ptr)
@@ -631,7 +642,7 @@ namespace DlibDotNet
                     return new FullObjectDetection[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_full_object_detection_copy(ptr, dst);
+                NativeMethods.stdvector_full_object_detection_copy(ptr, dst);
                 return dst.Select(p => new FullObjectDetection(p)).ToArray();
             }
 
@@ -646,7 +657,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_rect_detection_new1();
+                return NativeMethods.stdvector_rect_detection_new1();
             }
 
             public override IntPtr Create(int size)
@@ -654,7 +665,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_rect_detection_new2(new IntPtr(size));
+                return NativeMethods.stdvector_rect_detection_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<RectDetection> data)
@@ -663,22 +674,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_rect_detection_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_rect_detection_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_rect_detection_delete(ptr);
+                NativeMethods.stdvector_rect_detection_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_rect_detection_getPointer(ptr);
+                return NativeMethods.stdvector_rect_detection_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_rect_detection_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_rect_detection_getSize(ptr).ToInt32();
             }
 
             public override RectDetection[] ToArray(IntPtr ptr)
@@ -688,7 +699,7 @@ namespace DlibDotNet
                     return new RectDetection[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_rect_detection_copy(ptr, dst);
+                NativeMethods.stdvector_rect_detection_copy(ptr, dst);
                 return dst.Select(p => new RectDetection(p)).ToArray();
             }
 
@@ -703,7 +714,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_image_window_overlay_line_new1();
+                return NativeMethods.stdvector_image_window_overlay_line_new1();
             }
 
             public override IntPtr Create(int size)
@@ -711,7 +722,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_image_window_overlay_line_new2(new IntPtr(size));
+                return NativeMethods.stdvector_image_window_overlay_line_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<ImageWindow.OverlayLine> data)
@@ -720,22 +731,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_image_window_overlay_line_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_image_window_overlay_line_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_image_window_overlay_line_delete(ptr);
+                NativeMethods.stdvector_image_window_overlay_line_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_image_window_overlay_line_getPointer(ptr);
+                return NativeMethods.stdvector_image_window_overlay_line_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_image_window_overlay_line_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_image_window_overlay_line_getSize(ptr).ToInt32();
             }
 
             public override ImageWindow.OverlayLine[] ToArray(IntPtr ptr)
@@ -745,7 +756,7 @@ namespace DlibDotNet
                     return new ImageWindow.OverlayLine[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_image_window_overlay_line_copy(ptr, dst);
+                NativeMethods.stdvector_image_window_overlay_line_copy(ptr, dst);
                 return dst.Select(p => new ImageWindow.OverlayLine(p)).ToArray();
             }
 
@@ -760,7 +771,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_image_dataset_metadata_image_new1();
+                return NativeMethods.stdvector_image_dataset_metadata_image_new1();
             }
 
             public override IntPtr Create(int size)
@@ -768,7 +779,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_image_dataset_metadata_image_new2(new IntPtr(size));
+                return NativeMethods.stdvector_image_dataset_metadata_image_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<ImageDatasetMetadata.Image> data)
@@ -777,22 +788,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_image_dataset_metadata_image_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_image_dataset_metadata_image_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_image_dataset_metadata_image_delete(ptr);
+                NativeMethods.stdvector_image_dataset_metadata_image_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_image_dataset_metadata_image_getPointer(ptr);
+                return NativeMethods.stdvector_image_dataset_metadata_image_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_image_dataset_metadata_image_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_image_dataset_metadata_image_getSize(ptr).ToInt32();
             }
 
             public override ImageDatasetMetadata.Image[] ToArray(IntPtr ptr)
@@ -802,7 +813,7 @@ namespace DlibDotNet
                     return new ImageDatasetMetadata.Image[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_image_dataset_metadata_image_copy(ptr, dst);
+                NativeMethods.stdvector_image_dataset_metadata_image_copy(ptr, dst);
                 return dst.Select(p => new ImageDatasetMetadata.Image(p)).ToArray();
             }
 
@@ -817,7 +828,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_image_dataset_metadata_box_new1();
+                return NativeMethods.stdvector_image_dataset_metadata_box_new1();
             }
 
             public override IntPtr Create(int size)
@@ -825,7 +836,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_image_dataset_metadata_box_new2(new IntPtr(size));
+                return NativeMethods.stdvector_image_dataset_metadata_box_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<ImageDatasetMetadata.Box> data)
@@ -834,22 +845,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_image_dataset_metadata_box_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_image_dataset_metadata_box_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_image_dataset_metadata_box_delete(ptr);
+                NativeMethods.stdvector_image_dataset_metadata_box_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_image_dataset_metadata_box_getPointer(ptr);
+                return NativeMethods.stdvector_image_dataset_metadata_box_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_image_dataset_metadata_box_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_image_dataset_metadata_box_getSize(ptr).ToInt32();
             }
 
             public override ImageDatasetMetadata.Box[] ToArray(IntPtr ptr)
@@ -859,7 +870,7 @@ namespace DlibDotNet
                     return new ImageDatasetMetadata.Box[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_image_dataset_metadata_box_copy(ptr, dst);
+                NativeMethods.stdvector_image_dataset_metadata_box_copy(ptr, dst);
                 return dst.Select(p => new ImageDatasetMetadata.Box(p)).ToArray();
             }
 
@@ -874,7 +885,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_mmod_rect_new1();
+                return NativeMethods.stdvector_mmod_rect_new1();
             }
 
             public override IntPtr Create(int size)
@@ -882,7 +893,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_mmod_rect_new2(new IntPtr(size));
+                return NativeMethods.stdvector_mmod_rect_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<MModRect> data)
@@ -891,22 +902,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_mmod_rect_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_mmod_rect_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_mmod_rect_delete(ptr);
+                NativeMethods.stdvector_mmod_rect_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_mmod_rect_getPointer(ptr);
+                return NativeMethods.stdvector_mmod_rect_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_mmod_rect_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_mmod_rect_getSize(ptr).ToInt32();
             }
 
             public override MModRect[] ToArray(IntPtr ptr)
@@ -916,7 +927,7 @@ namespace DlibDotNet
                     return new MModRect[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_mmod_rect_copy(ptr, dst);
+                NativeMethods.stdvector_mmod_rect_copy(ptr, dst);
                 return dst.Select(p => new MModRect(p)).ToArray();
             }
 
@@ -931,7 +942,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_surf_point_new1();
+                return NativeMethods.stdvector_surf_point_new1();
             }
 
             public override IntPtr Create(int size)
@@ -939,7 +950,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_surf_point_new2(new IntPtr(size));
+                return NativeMethods.stdvector_surf_point_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<SurfPoint> data)
@@ -948,22 +959,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_surf_point_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_surf_point_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_surf_point_delete(ptr);
+                NativeMethods.stdvector_surf_point_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_surf_point_getPointer(ptr);
+                return NativeMethods.stdvector_surf_point_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_surf_point_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_surf_point_getSize(ptr).ToInt32();
             }
 
             public override SurfPoint[] ToArray(IntPtr ptr)
@@ -973,7 +984,7 @@ namespace DlibDotNet
                     return new SurfPoint[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_surf_point_copy(ptr, dst);
+                NativeMethods.stdvector_surf_point_copy(ptr, dst);
                 return dst.Select(p => new SurfPoint(p)).ToArray();
             }
 
@@ -988,7 +999,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_sample_pair_new1();
+                return NativeMethods.stdvector_sample_pair_new1();
             }
 
             public override IntPtr Create(int size)
@@ -996,7 +1007,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_sample_pair_new2(new IntPtr(size));
+                return NativeMethods.stdvector_sample_pair_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<SamplePair> data)
@@ -1005,22 +1016,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_sample_pair_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_sample_pair_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_sample_pair_delete(ptr);
+                NativeMethods.stdvector_sample_pair_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_sample_pair_getPointer(ptr);
+                return NativeMethods.stdvector_sample_pair_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_sample_pair_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_sample_pair_getSize(ptr).ToInt32();
             }
 
             public override SamplePair[] ToArray(IntPtr ptr)
@@ -1030,7 +1041,7 @@ namespace DlibDotNet
                     return new SamplePair[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_sample_pair_copy(ptr, dst);
+                NativeMethods.stdvector_sample_pair_copy(ptr, dst);
                 return dst.Select(p => new SamplePair(p)).ToArray();
             }
 
@@ -1046,7 +1057,7 @@ namespace DlibDotNet
 
             private readonly MatrixElementTypes _Type;
 
-            private readonly Dlib.Native.MatrixElementType _NativeType;
+            private readonly NativeMethods.MatrixElementType _NativeType;
 
             private readonly int _TemplateColumns;
 
@@ -1072,7 +1083,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_matrix_new1(this._NativeType, this._TemplateRows, this._TemplateColumns);
+                return NativeMethods.stdvector_matrix_new1(this._NativeType, this._TemplateRows, this._TemplateColumns);
             }
 
             public override IntPtr Create(int size)
@@ -1080,7 +1091,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_matrix_new2(this._NativeType, new IntPtr(size), this._TemplateRows, this._TemplateColumns);
+                return NativeMethods.stdvector_matrix_new2(this._NativeType, new IntPtr(size), this._TemplateRows, this._TemplateColumns);
             }
 
             public override IntPtr Create(IEnumerable<Matrix<TElement>> data)
@@ -1089,22 +1100,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_matrix_new3(this._NativeType, array, new IntPtr(array.Length), this._TemplateRows, this._TemplateColumns);
+                return NativeMethods.stdvector_matrix_new3(this._NativeType, array, new IntPtr(array.Length), this._TemplateRows, this._TemplateColumns);
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_matrix_delete(this._NativeType, ptr, this._TemplateRows, this._TemplateColumns);
+                NativeMethods.stdvector_matrix_delete(this._NativeType, ptr, this._TemplateRows, this._TemplateColumns);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_matrix_getPointer(this._NativeType, ptr, this._TemplateRows, this._TemplateColumns);
+                return NativeMethods.stdvector_matrix_getPointer(this._NativeType, ptr, this._TemplateRows, this._TemplateColumns);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_matrix_getSize(this._NativeType, ptr, this._TemplateRows, this._TemplateColumns).ToInt32();
+                return NativeMethods.stdvector_matrix_getSize(this._NativeType, ptr, this._TemplateRows, this._TemplateColumns).ToInt32();
             }
 
             public override Matrix<TElement>[] ToArray(IntPtr ptr)
@@ -1114,7 +1125,7 @@ namespace DlibDotNet
                     return new Matrix<TElement>[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_matrix_copy(ptr, dst);
+                NativeMethods.stdvector_matrix_copy(ptr, dst);
                 return dst.Select(p => p != IntPtr.Zero ? new Matrix<TElement>(p, this._TemplateRows, this._TemplateColumns) : null).ToArray();
             }
 
@@ -1129,7 +1140,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_perspective_window_overlay_dot_new1();
+                return NativeMethods.stdvector_perspective_window_overlay_dot_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1137,7 +1148,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_perspective_window_overlay_dot_new2(new IntPtr(size));
+                return NativeMethods.stdvector_perspective_window_overlay_dot_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<PerspectiveWindow.OverlayDot> data)
@@ -1146,22 +1157,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_perspective_window_overlay_dot_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_perspective_window_overlay_dot_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_perspective_window_overlay_dot_delete(ptr);
+                NativeMethods.stdvector_perspective_window_overlay_dot_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_perspective_window_overlay_dot_getPointer(ptr);
+                return NativeMethods.stdvector_perspective_window_overlay_dot_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_perspective_window_overlay_dot_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_perspective_window_overlay_dot_getSize(ptr).ToInt32();
             }
 
             public override PerspectiveWindow.OverlayDot[] ToArray(IntPtr ptr)
@@ -1171,7 +1182,7 @@ namespace DlibDotNet
                     return new PerspectiveWindow.OverlayDot[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_perspective_window_overlay_dot_copy(ptr, dst);
+                NativeMethods.stdvector_perspective_window_overlay_dot_copy(ptr, dst);
                 return dst.Select(p => new PerspectiveWindow.OverlayDot(p)).ToArray();
             }
 
@@ -1186,7 +1197,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_rectangle_new1();
+                return NativeMethods.stdvector_rectangle_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1194,7 +1205,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_rectangle_new2(new IntPtr(size));
+                return NativeMethods.stdvector_rectangle_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<Rectangle> data)
@@ -1207,23 +1218,23 @@ namespace DlibDotNet
 
                 // Rectangle is struct and it will be cloned in native domain.
                 // So all cloned elemtent must be deleted!!
-                return Dlib.Native.stdvector_rectangle_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_rectangle_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
                 // This function delete all element
-                Dlib.Native.stdvector_rectangle_delete(ptr);
+                NativeMethods.stdvector_rectangle_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_rectangle_getPointer(ptr);
+                return NativeMethods.stdvector_rectangle_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_rectangle_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_rectangle_getSize(ptr).ToInt32();
             }
 
             public override Rectangle[] ToArray(IntPtr ptr)
@@ -1233,7 +1244,7 @@ namespace DlibDotNet
                     return new Rectangle[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_rectangle_copy(ptr, dst);
+                NativeMethods.stdvector_rectangle_copy(ptr, dst);
                 return dst.Select(p => new Rectangle(p, false)).ToArray();
             }
 
@@ -1248,7 +1259,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_point_new1();
+                return NativeMethods.stdvector_point_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1256,7 +1267,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_point_new2(new IntPtr(size));
+                return NativeMethods.stdvector_point_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<Point> data)
@@ -1269,23 +1280,23 @@ namespace DlibDotNet
 
                 // Point is struct and it will be cloned in native domain.
                 // So all cloned elemtent must be deleted!!
-                return Dlib.Native.stdvector_point_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_point_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
                 // This function delete all element
-                Dlib.Native.stdvector_point_delete(ptr);
+                NativeMethods.stdvector_point_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_point_getPointer(ptr);
+                return NativeMethods.stdvector_point_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_point_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_point_getSize(ptr).ToInt32();
             }
 
             public override Point[] ToArray(IntPtr ptr)
@@ -1295,7 +1306,7 @@ namespace DlibDotNet
                     return new Point[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_point_copy(ptr, dst);
+                NativeMethods.stdvector_point_copy(ptr, dst);
                 return dst.Select(p => new Point(p, false)).ToArray();
             }
 
@@ -1310,7 +1321,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_dpoint_new1();
+                return NativeMethods.stdvector_dpoint_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1318,7 +1329,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_dpoint_new2(new IntPtr(size));
+                return NativeMethods.stdvector_dpoint_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<DPoint> data)
@@ -1331,23 +1342,23 @@ namespace DlibDotNet
 
                 // DPoint is struct and it will be cloned in native domain.
                 // So all cloned elemtent must be deleted!!
-                return Dlib.Native.stdvector_dpoint_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_dpoint_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
                 // This function delete all element
-                Dlib.Native.stdvector_dpoint_delete(ptr);
+                NativeMethods.stdvector_dpoint_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_dpoint_getPointer(ptr);
+                return NativeMethods.stdvector_dpoint_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_dpoint_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_dpoint_getSize(ptr).ToInt32();
             }
 
             public override DPoint[] ToArray(IntPtr ptr)
@@ -1357,7 +1368,7 @@ namespace DlibDotNet
                     return new DPoint[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_dpoint_copy(ptr, dst);
+                NativeMethods.stdvector_dpoint_copy(ptr, dst);
                 return dst.Select(p => new DPoint(p, false)).ToArray();
             }
 
@@ -1372,7 +1383,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_vector_double_new1();
+                return NativeMethods.stdvector_vector_double_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1380,7 +1391,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_vector_double_new2(new IntPtr(size));
+                return NativeMethods.stdvector_vector_double_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<Vector<double>> data)
@@ -1389,22 +1400,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_vector_double_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_vector_double_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_vector_double_delete(ptr);
+                NativeMethods.stdvector_vector_double_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_vector_double_getPointer(ptr);
+                return NativeMethods.stdvector_vector_double_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_vector_double_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_vector_double_getSize(ptr).ToInt32();
             }
 
             public override Vector<double>[] ToArray(IntPtr ptr)
@@ -1414,7 +1425,7 @@ namespace DlibDotNet
                     return new Vector<double>[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_vector_double_copy(ptr, dst);
+                NativeMethods.stdvector_vector_double_copy(ptr, dst);
                 return dst.Select(p => new Vector<double>(p)).ToArray();
             }
 
@@ -1429,7 +1440,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_stdvector_rectangle_new1();
+                return NativeMethods.stdvector_stdvector_rectangle_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1437,7 +1448,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_stdvector_rectangle_new2(new IntPtr(size));
+                return NativeMethods.stdvector_stdvector_rectangle_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<StdVector<Rectangle>> data)
@@ -1446,22 +1457,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_stdvector_rectangle_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_stdvector_rectangle_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_stdvector_rectangle_delete(ptr);
+                NativeMethods.stdvector_stdvector_rectangle_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_stdvector_rectangle_getPointer(ptr);
+                return NativeMethods.stdvector_stdvector_rectangle_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_stdvector_rectangle_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_stdvector_rectangle_getSize(ptr).ToInt32();
             }
 
             public override StdVector<Rectangle>[] ToArray(IntPtr ptr)
@@ -1471,7 +1482,7 @@ namespace DlibDotNet
                     return new StdVector<Rectangle>[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_stdvector_rectangle_copy(ptr, dst);
+                NativeMethods.stdvector_stdvector_rectangle_copy(ptr, dst);
                 return dst.Select(p => new StdVector<Rectangle>(p)).ToArray();
             }
 
@@ -1486,7 +1497,7 @@ namespace DlibDotNet
 
             public override IntPtr Create()
             {
-                return Dlib.Native.stdvector_stdvector_mmod_rect_new1();
+                return NativeMethods.stdvector_stdvector_mmod_rect_new1();
             }
 
             public override IntPtr Create(int size)
@@ -1494,7 +1505,7 @@ namespace DlibDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return Dlib.Native.stdvector_stdvector_mmod_rect_new2(new IntPtr(size));
+                return NativeMethods.stdvector_stdvector_mmod_rect_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<StdVector<MModRect>> data)
@@ -1503,22 +1514,22 @@ namespace DlibDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
-                return Dlib.Native.stdvector_stdvector_mmod_rect_new3(array, new IntPtr(array.Length));
+                return NativeMethods.stdvector_stdvector_mmod_rect_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                Dlib.Native.stdvector_stdvector_mmod_rect_delete(ptr);
+                NativeMethods.stdvector_stdvector_mmod_rect_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_stdvector_mmod_rect_getPointer(ptr);
+                return NativeMethods.stdvector_stdvector_mmod_rect_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return Dlib.Native.stdvector_stdvector_mmod_rect_getSize(ptr).ToInt32();
+                return NativeMethods.stdvector_stdvector_mmod_rect_getSize(ptr).ToInt32();
             }
 
             public override StdVector<MModRect>[] ToArray(IntPtr ptr)
@@ -1528,8 +1539,65 @@ namespace DlibDotNet
                     return new StdVector<MModRect>[0];
 
                 var dst = new IntPtr[size];
-                Dlib.Native.stdvector_stdvector_mmod_rect_copy(ptr, dst);
+                NativeMethods.stdvector_stdvector_mmod_rect_copy(ptr, dst);
                 return dst.Select(p => new StdVector<MModRect>(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+        
+        private sealed class StdVectorMModOptionsDetectorWindowDetailsImp : StdVectorImp<MModOptions.DetectorWindowDetails>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<MModOptions.DetectorWindowDetails> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_mmod_options_detector_window_details_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_getSize(ptr).ToInt32();
+            }
+
+            public override MModOptions.DetectorWindowDetails[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new MModOptions.DetectorWindowDetails[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_mmod_options_detector_window_details_copy(ptr, dst);
+                return dst.Select(p => new MModOptions.DetectorWindowDetails(p)).ToArray();
             }
 
             #endregion
@@ -1551,6 +1619,96 @@ namespace DlibDotNet
         }
 
         #endregion
+
+        #region IList<TItem> Members
+
+        public void Add(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(TItem[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count => this.Size;
+
+        public bool IsReadOnly
+        {
+            get;
+        }
+
+        public int IndexOf(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TItem this[int index]
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+
+        #endregion
+
+        public interface IParameter
+        {
+        }
+
+        public sealed class MatrixTemplateSizeParameter : IParameter
+        {
+
+            #region Constructors
+
+            public MatrixTemplateSizeParameter(int templateRows, int templateColumns)
+            {
+                this.TemplateRows = templateRows;
+                this.TemplateColumns = templateColumns;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public int TemplateRows
+            {
+                get;
+            }
+
+            public int TemplateColumns
+            {
+                get;
+            }
+
+            #endregion
+
+        }
 
     }
 

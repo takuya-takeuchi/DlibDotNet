@@ -11,26 +11,13 @@ using namespace dlib;
 
 #pragma region template
 
-#define ELEMENT_IN element
-#undef ELEMENT_IN
+#define rectangle_get_rect_matrix_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, img, ret) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(img);\
+*ret = new rectangle(dlib::get_rect(m));\
 
-#define rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret) \
+#define rectangle_get_rect_matrix_template(__TYPE__, __ROWS__, __COLUMNS__, error, img, ret) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        dlib::matrix<ELEMENT_IN, 0, 0>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 0>*>(img);\
-        *ret = new rectangle(dlib::get_rect(m));\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT_IN, 0, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(img);\
-        *ret = new rectangle(dlib::get_rect(m));\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT_IN, 31, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(img);\
-        *ret = new rectangle(dlib::get_rect(m));\
-    }\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, rectangle_get_rect_matrix_template_sub, error, img, ret);\
 } while (0)
 
 #pragma endregion template
@@ -39,7 +26,7 @@ DLLEXPORT rectangle* rectangle_new()
 {
     return new rectangle();
 }
- 
+
 DLLEXPORT rectangle* rectangle_new1(const int left, const int top, const int right, const int bottom)
 {
      return new rectangle(left, top, right, bottom);
@@ -54,7 +41,7 @@ DLLEXPORT rectangle* rectangle_new3(const point* p)
 {
     return new dlib::rectangle(*p);
 }
-    
+
 DLLEXPORT rectangle* rectangle_new4(const point* p1, const point* p2)
 {
     return new rectangle(*p1, *p2);
@@ -218,7 +205,7 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
         case array2d_type::Float:
             *rect = new dlib::rectangle(get_rect(*((array2d<float>*)img)));
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             *rect = new dlib::rectangle(get_rect(*((array2d<double>*)img)));
             break;
         case array2d_type::RgbPixel:
@@ -231,7 +218,7 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
             *rect = new dlib::rectangle(get_rect(*((array2d<rgb_alpha_pixel>*)img)));
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -245,59 +232,37 @@ DLLEXPORT int rectangle_get_rect_matrix(matrix_element_type type, void* img, con
     switch(type)
     {
 		case matrix_element_type::UInt8:
-            #define ELEMENT_IN uint8_t
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(uint8_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::UInt16:
-            #define ELEMENT_IN uint16_t
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(uint16_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::UInt32:
-            #define ELEMENT_IN uint32_t
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(uint32_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Int8:
-            #define ELEMENT_IN int8_t
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(int8_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Int16:
-            #define ELEMENT_IN int16_t
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(int16_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Int32:
-            #define ELEMENT_IN int32_t
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(int32_t, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Float:
-            #define ELEMENT_IN float
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(float, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::Double:
-            #define ELEMENT_IN double
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(double, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::RgbPixel:
-            #define ELEMENT_IN rgb_pixel
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(rgb_pixel, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::HsiPixel:
-            #define ELEMENT_IN hsi_pixel
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(hsi_pixel, templateRows, templateColumns, err, img, ret);
 			break;
 		case matrix_element_type::RgbAlphaPixel:
-            #define ELEMENT_IN rgb_alpha_pixel
-            rectangle_get_rect_matrix_template(img, templateRows, templateColumns, ret);
-            #undef ELEMENT_IN
+            rectangle_get_rect_matrix_template(rgb_alpha_pixel, templateRows, templateColumns, err, img, ret);
 			break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
@@ -336,7 +301,7 @@ DLLEXPORT void* rectangle_operator_add_point(rectangle* rect, point* rhs)
 {
     // rectangle r(*rect);
     // point p(*rhs);
-    // r += p;    
+    // r += p;
     *rect = *rect + rectangle(*rhs);
     return new rectangle(*rect);
 }

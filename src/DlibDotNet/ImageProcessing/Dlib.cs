@@ -1,16 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using DlibDotNet.Extensions;
-using uint8_t = System.Byte;
-using uint16_t = System.UInt16;
-using uint32_t = System.UInt32;
-using int8_t = System.SByte;
-using int16_t = System.Int16;
-using int32_t = System.Int32;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -48,21 +39,21 @@ namespace DlibDotNet
 
             var detectorArray = detectors.Select(det => det.NativePtr).ToArray();
             var elementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Dlib.Native.scan_fhog_pyramid_evaluate_detectors(param.PyramidType,
-                                                                       param.PyramidRate,
-                                                                       param.FeatureExtractorType,
-                                                                       detectorArray,
-                                                                       count,
-                                                                       elementType,
-                                                                       matrix.NativePtr,
-                                                                       adjustThreshold,
-                                                                       out var vector);
+            var ret = NativeMethods.scan_fhog_pyramid_evaluate_detectors(param.PyramidType,
+                                                                         param.PyramidRate,
+                                                                         param.FeatureExtractorType,
+                                                                         detectorArray,
+                                                                         count,
+                                                                         elementType,
+                                                                         matrix.NativePtr,
+                                                                         adjustThreshold,
+                                                                         out var vector);
 
             switch (ret)
             {
-                case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                case Dlib.Native.ErrorType.PyramidNotSupportType:
+                case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportType:
                     throw new NotSupportedException();
             }
 
@@ -74,7 +65,7 @@ namespace DlibDotNet
         {
             using (var native = rectangle.ToNative())
             {
-                var ptr = Native.normalizing_tform(native.NativePtr);
+                var ptr = NativeMethods.normalizing_tform(native.NativePtr);
                 return new PointTransformAffine(ptr);
             }
         }
@@ -89,18 +80,18 @@ namespace DlibDotNet
             detector.ThrowIfDisposed();
 
             var param = detector.GetFHogPyramidParameter();
-            var ret = Dlib.Native.scan_fhog_pyramid_num_separable_filters(param.PyramidType,
-                                                                          param.PyramidRate,
-                                                                          param.FeatureExtractorType,
-                                                                          detector.NativePtr,
-                                                                          weightIndex,
-                                                                          out var num);
+            var ret = NativeMethods.scan_fhog_pyramid_num_separable_filters(param.PyramidType,
+                                                                            param.PyramidRate,
+                                                                            param.FeatureExtractorType,
+                                                                            detector.NativePtr,
+                                                                            weightIndex,
+                                                                            out var num);
 
             switch (ret)
             {
-                case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                case Dlib.Native.ErrorType.PyramidNotSupportType:
+                case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportType:
                     throw new NotSupportedException();
             }
 
@@ -121,19 +112,19 @@ namespace DlibDotNet
             detector.ThrowIfDisposed();
 
             var param = detector.GetFHogPyramidParameter();
-            var ret = Dlib.Native.scan_fhog_pyramid_threshold_filter_singular_values(param.PyramidType,
-                                                                                     param.PyramidRate,
-                                                                                     param.FeatureExtractorType,
-                                                                                     detector.NativePtr,
-                                                                                     threshold,
-                                                                                     weightIndex,
-                                                                                     out var newDetector);
+            var ret = NativeMethods.scan_fhog_pyramid_threshold_filter_singular_values(param.PyramidType,
+                                                                                       param.PyramidRate,
+                                                                                       param.FeatureExtractorType,
+                                                                                       detector.NativePtr,
+                                                                                       threshold,
+                                                                                       weightIndex,
+                                                                                       out var newDetector);
 
             switch (ret)
             {
-                case Dlib.Native.ErrorType.FHogNotSupportExtractor:
-                case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                case Dlib.Native.ErrorType.PyramidNotSupportType:
+                case NativeMethods.ErrorType.FHogNotSupportExtractor:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportType:
                     throw new NotSupportedException();
             }
 

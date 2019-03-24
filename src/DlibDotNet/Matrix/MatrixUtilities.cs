@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -36,20 +35,20 @@ namespace DlibDotNet
             if (type1 != type2)
                 throw new ArgumentException();
 
-            var ret = Native.matrix_join_rows(type1,
-                                              matrix1.NativePtr,
-                                              matrix2.NativePtr,
-                                              templateRows,
-                                              templateColumns,
-                                              out var matrixOp);
+            var ret = NativeMethods.matrix_join_rows(type1,
+                                                     matrix1.NativePtr,
+                                                     matrix2.NativePtr,
+                                                     templateRows,
+                                                     templateColumns,
+                                                     out var matrixOp);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type1} is not supported.");
             }
 
             var imageType = matrix1.MatrixElementType;
-            return new MatrixOp(Native.ElementType.OpJoinRows, imageType, matrixOp, templateRows, templateColumns);
+            return new MatrixOp(NativeMethods.ElementType.OpJoinRows, imageType, matrixOp, templateRows, templateColumns);
         }
         
         #region Length
@@ -62,12 +61,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out byte length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out byte length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -82,12 +81,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out ushort length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out ushort length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -102,12 +101,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out uint length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out uint length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -122,12 +121,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out sbyte length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out sbyte length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -142,12 +141,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out short length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out short length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -162,12 +161,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out int length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out int length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -182,12 +181,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out float length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out float length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -202,12 +201,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out double length);
+            var ret = NativeMethods.matrix_length(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out double length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -218,7 +217,7 @@ namespace DlibDotNet
         {
             using (var native = point.ToNative())
             {
-                Native.matrix_length_dpoint(native.NativePtr, out var length);
+                NativeMethods.matrix_length_dpoint(native.NativePtr, out var length);
                 return length;
             }
         }
@@ -227,7 +226,7 @@ namespace DlibDotNet
         {
             using (var native = point.ToNative())
             {
-                Native.matrix_length_point(native.NativePtr, out var length);
+                NativeMethods.matrix_length_point(native.NativePtr, out var length);
                 return length;
             }
         }
@@ -244,12 +243,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out byte length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out byte length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -264,12 +263,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out ushort length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out ushort length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -284,12 +283,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out uint length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out uint length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -304,12 +303,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out sbyte length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out sbyte length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -324,12 +323,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out short length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out short length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -344,12 +343,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out int length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out int length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -364,12 +363,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out float length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out float length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -384,12 +383,12 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out double length);
+            var ret = NativeMethods.matrix_length_squared(type, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, out double length);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(matrix.TemplateColumns)} or {nameof(matrix.TemplateRows)} is not supported.");
             }
 
@@ -400,7 +399,7 @@ namespace DlibDotNet
 
         public static Matrix<double> Linspace(double start, double end, int num)
         {
-            var matrix = Native.linspace(start, end, num);
+            var matrix = NativeMethods.linspace(start, end, num);
             return new Matrix<double>(matrix);
         }
 
@@ -414,15 +413,15 @@ namespace DlibDotNet
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
             Matrix<T>.TryParse<T>(out var destElementType);
-            var ret = Native.matrix_cast(type,
-                                         matrix.NativePtr,
-                                         matrix.TemplateRows,
-                                         matrix.TemplateColumns,
-                                         destElementType.ToNativeMatrixElementType(),
-                                         out var mat);
+            var ret = NativeMethods.matrix_cast(type,
+                                                matrix.NativePtr,
+                                                matrix.TemplateRows,
+                                                matrix.TemplateColumns,
+                                                destElementType.ToNativeMatrixElementType(),
+                                                out var mat);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -439,14 +438,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out byte result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out byte result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -461,14 +460,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out ushort result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out ushort result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -483,14 +482,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out uint result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out uint result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -505,14 +504,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out sbyte result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out sbyte result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -527,14 +526,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out short result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out short result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -549,14 +548,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out int result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out int result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -571,14 +570,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out float result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out float result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -593,14 +592,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_max(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out double result);
+            var ret = NativeMethods.matrix_max(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out double result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -619,14 +618,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out byte result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out byte result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -641,14 +640,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out ushort result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out ushort result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -663,14 +662,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out uint result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out uint result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -685,14 +684,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out sbyte result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out sbyte result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -707,14 +706,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out short result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out short result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -729,14 +728,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out int result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out int result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -751,14 +750,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out float result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out float result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -773,14 +772,14 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_min(type,
-                                        matrix.NativePtr,
-                                        matrix.TemplateRows,
-                                        matrix.TemplateColumns,
-                                        out double result);
+            var ret = NativeMethods.matrix_min(type,
+                                               matrix.NativePtr,
+                                               matrix.TemplateRows,
+                                               matrix.TemplateColumns,
+                                               out double result);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -797,10 +796,10 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             var type = matrix.Array2DType;
-            var ret = Native.matrix_max_point(type, matrix.NativePtr, out var point);
+            var ret = NativeMethods.matrix_max_point(type, matrix.NativePtr, out var point);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -819,13 +818,15 @@ namespace DlibDotNet
             matrix2.ThrowIfDisposed();
 
             Matrix<T>.TryParse<T>(out var type);
-            var ret = Native.matrix_max_pointwise_matrix(type.ToNativeMatrixElementType(),
-                                                         matrix1.NativePtr,
-                                                         matrix2.NativePtr,
-                                                         out var value);
+            var ret = NativeMethods.matrix_max_pointwise_matrix(type.ToNativeMatrixElementType(),
+                                                                matrix1.NativePtr,
+                                                                matrix2.NativePtr,
+                                                                matrix1.TemplateRows,
+                                                                matrix1.TemplateColumns,
+                                                                out var value);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -841,15 +842,15 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed();
 
             Matrix<T>.TryParse<T>(out var type);
-            var ret = Native.matrix_mean(type.ToNativeMatrixElementType(),
-                                         matrix.NativePtr,
-                                         matrix.TemplateRows,
-                                         matrix.TemplateColumns,
-                                         matrix.ElementType,
-                                         out var value);
+            var ret = NativeMethods.matrix_mean(type.ToNativeMatrixElementType(),
+                                                matrix.NativePtr,
+                                                matrix.TemplateRows,
+                                                matrix.TemplateColumns,
+                                                matrix.ElementType,
+                                                out var value);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
@@ -867,161 +868,18 @@ namespace DlibDotNet
             var templateColumns = matrix.TemplateColumns;
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.matrix_trans(type, matrix.NativePtr, templateRows, templateColumns, out var matrixOp);
+            var ret = NativeMethods.matrix_trans(type, matrix.NativePtr, templateRows, templateColumns, out var matrixOp);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
             }
 
             var imageType = matrix.MatrixElementType;
-            return new MatrixOp(Native.ElementType.OpTrans, imageType, matrixOp, templateRows, templateColumns);
+            return new MatrixOp(NativeMethods.ElementType.OpTrans, imageType, matrixOp, templateRows, templateColumns);
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr linspace(double start, double end, int num);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_join_rows(MatrixElementType type, IntPtr matrix1, IntPtr matrix2, int templateRows, int templateColumns, out IntPtr ret);
-            
-            #region matrix_length
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_length_point(IntPtr point, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void matrix_length_dpoint(IntPtr point, out double ret);
-
-            #endregion
-
-            #region matrix_length_squared
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_length_squared(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
-
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_cast(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, MatrixElementType desttype, out IntPtr ret);
-
-            #region matrix_max
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
-
-            #endregion
-
-            #region matrix_min
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out byte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out ushort ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out sbyte ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out short ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out int ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out float ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_min(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, out double ret);
-
-            #endregion
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_mean(MatrixElementType array2DType, IntPtr matrix_op, int templateRows, int templateColumns, ElementType type, out IntPtr point);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max_point(Array2DType array2DType, IntPtr matrix_op, out IntPtr point);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_max_pointwise_matrix(MatrixElementType type, IntPtr matrix1, IntPtr matrix2, out IntPtr ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType matrix_trans(MatrixElementType elementType, IntPtr matrix, int templateRows, int templateColumns, out IntPtr matrix_op);
-        }
 
     }
 

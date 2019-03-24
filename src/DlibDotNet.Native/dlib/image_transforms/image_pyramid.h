@@ -107,7 +107,7 @@ DLLEXPORT int create_tiled_pyramid(const matrix_element_type element_type,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(element_type)

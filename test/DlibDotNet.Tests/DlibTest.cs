@@ -11,9 +11,243 @@ namespace DlibDotNet.Tests
 
         private const string LoadTarget = "Lenna_mini";
 
+        private const string LoadTarget2 = "1024px-Mars_&_Apollo_in_Perspective";
+
         private const int LoadTargetWidth = 256;
 
         private const int LoadTargetHeight = 256;
+
+        #region LoadImage
+
+        [TestMethod]
+        public void ExtractImage4Points()
+        {
+            const string testName = nameof(this.ExtractImage4Points);
+            var path = this.GetDataFile($"{LoadTarget2}.JPG");
+            var tests = new[]
+            {
+                    new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                    new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
+                    new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                    new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                    new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                    new { Type = ImageTypes.Int8,          ExpectResult = true},
+                    new { Type = ImageTypes.Int16,         ExpectResult = true},
+                    new { Type = ImageTypes.Int32,         ExpectResult = true},
+                    new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                    new { Type = ImageTypes.Float,         ExpectResult = true},
+                    new { Type = ImageTypes.Double,        ExpectResult = true}
+                };
+
+            var points = new[]
+            {
+                new DPoint(54, 24),
+                new DPoint(474, 188),
+                new DPoint(474, 244),
+                new DPoint(54, 148)
+            };
+
+            const int width = 300;
+            const int height = 100;
+
+            var type = this.GetType().Name;
+            foreach (var test in tests)
+            {
+                try
+                {
+                    switch (test.Type)
+                    {
+                        case ImageTypes.RgbPixel:
+                            using (var image = Dlib.LoadImage<RgbPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.RgbAlphaPixel:
+                            using (var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.UInt8:
+                            using (var image = Dlib.LoadImage<byte>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.UInt16:
+                            using (var image = Dlib.LoadImage<ushort>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.UInt32:
+                            using (var image = Dlib.LoadImage<uint>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.Int8:
+                            using (var image = Dlib.LoadImage<sbyte>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.Int16:
+                            using (var image = Dlib.LoadImage<short>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.Int32:
+                            using (var image = Dlib.LoadImage<int>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.HsiPixel:
+                            using (var image = Dlib.LoadImage<HsiPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.Float:
+                            using (var image = Dlib.LoadImage<float>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case ImageTypes.Double:
+                            using (var image = Dlib.LoadImage<double>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    if (!test.ExpectResult)
+                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                }
+                catch (Exception e)
+                {
+                    if (test.ExpectResult)
+                        Assert.Fail($"{testName} should NOT throw exception for InputType: {test.Type}. Exception is {e}");
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ExtractImage4Points2()
+        {
+            const string testName = nameof(this.ExtractImage4Points2);
+            var path = this.GetDataFile($"{LoadTarget2}.JPG");
+            var tests = new[]
+            {
+                    new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
+                    new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt64,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int64,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+                };
+
+            var points = new[]
+            {
+                new DPoint(54, 24),
+                new DPoint(474, 188),
+                new DPoint(474, 244),
+                new DPoint(54, 148)
+            };
+
+            const int width = 300;
+            const int height = 100;
+
+            var type = this.GetType().Name;
+            foreach (var test in tests)
+            {
+                try
+                {
+                    switch (test.Type)
+                    {
+                        case MatrixElementTypes.RgbPixel:
+                            using (var image = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.RgbAlphaPixel:
+                            using (var image = Dlib.LoadImageAsMatrix<RgbAlphaPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.UInt8:
+                            using (var image = Dlib.LoadImageAsMatrix<byte>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.UInt16:
+                            using (var image = Dlib.LoadImageAsMatrix<ushort>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.UInt32:
+                            using (var image = Dlib.LoadImageAsMatrix<uint>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.UInt64:
+                            using (var image = Dlib.LoadImageAsMatrix<ulong>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.Int8:
+                            using (var image = Dlib.LoadImageAsMatrix<sbyte>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.Int16:
+                            using (var image = Dlib.LoadImageAsMatrix<short>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.Int32:
+                            using (var image = Dlib.LoadImageAsMatrix<int>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.Int64:
+                            using (var image = Dlib.LoadImageAsMatrix<long>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.HsiPixel:
+                            using (var image = Dlib.LoadImageAsMatrix<HsiPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.Float:
+                            using (var image = Dlib.LoadImageAsMatrix<float>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        case MatrixElementTypes.Double:
+                            using (var image = Dlib.LoadImageAsMatrix<double>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    if (!test.ExpectResult)
+                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                }
+                catch (Exception e)
+                {
+                    if (test.ExpectResult)
+                        Assert.Fail($"{testName} should NOT throw exception for InputType: {test.Type}. Exception is {e}");
+                }
+            }
+        }
+
+        #endregion
 
         #region LoadBmp
 
@@ -176,7 +410,9 @@ namespace DlibDotNet.Tests
             var exts = new[]
             {
                 "png",
+#if false
                 "gif",
+#endif
                 "dng",
                 "bmp",
                 "jpg"
@@ -237,6 +473,103 @@ namespace DlibDotNet.Tests
                             break;
                         case ImageTypes.Double:
                             image = Dlib.LoadImage<double>(path.FullName);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type} for {ext}.");
+                    Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type} for {ext}.");
+
+                    this.DisposeAndCheckDisposedState(image);
+                }
+            }
+        }
+
+        #endregion
+
+        #region LoadImage
+
+        [TestMethod]
+        public void LoadImageAsMatrix()
+        {
+            const int cols = LoadTargetWidth;
+            const int rows = LoadTargetHeight;
+
+            var exts = new[]
+            {
+                "png",
+#if false
+                "gif",
+#endif
+                "dng",
+                "bmp",
+                "jpg"
+            };
+
+            foreach (var ext in exts)
+            {
+                var path = this.GetDataFile($"{LoadTarget}.{ext}");
+                var tests = new[]
+                {
+                    new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.UInt64,        ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Int64,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                    new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+                };
+
+                foreach (var test in tests)
+                {
+                    MatrixBase image;
+                    switch (test.Type)
+                    {
+                        case MatrixElementTypes.RgbPixel:
+                            image = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName);
+                            break;
+                        case MatrixElementTypes.RgbAlphaPixel:
+                            image = Dlib.LoadImageAsMatrix<RgbAlphaPixel>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt8:
+                            image = Dlib.LoadImageAsMatrix<byte>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt16:
+                            image = Dlib.LoadImageAsMatrix<ushort>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt32:
+                            image = Dlib.LoadImageAsMatrix<uint>(path.FullName);
+                            break;
+                        case MatrixElementTypes.UInt64:
+                            image = Dlib.LoadImageAsMatrix<ulong>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int8:
+                            image = Dlib.LoadImageAsMatrix<sbyte>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int16:
+                            image = Dlib.LoadImageAsMatrix<short>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int32:
+                            image = Dlib.LoadImageAsMatrix<int>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Int64:
+                            image = Dlib.LoadImageAsMatrix<long>(path.FullName);
+                            break;
+                        case MatrixElementTypes.HsiPixel:
+                            image = Dlib.LoadImageAsMatrix<HsiPixel>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Float:
+                            image = Dlib.LoadImageAsMatrix<float>(path.FullName);
+                            break;
+                        case MatrixElementTypes.Double:
+                            image = Dlib.LoadImageAsMatrix<double>(path.FullName);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

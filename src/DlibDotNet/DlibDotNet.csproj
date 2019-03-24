@@ -1,49 +1,35 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Takuya Takeuchi</Authors>
     <Description>.NET wrapper for DLib written in C#</Description>
     <Company />
-    <Copyright>© Takuya Takeuchi 2018</Copyright>
-    <Configurations>Debug;Release;ReleaseLinux;DebugLinux;DebugMac;ReleaseMac</Configurations>
-    <Version>19.15.0</Version>
+    <Copyright>© Takuya Takeuchi 2018-2019</Copyright>
+    <Configurations>Debug;Release</Configurations>
+    <Version>19.16.0</Version>
     <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
     <PackageTags>dlib .net machinelearning</PackageTags>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+  
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+  <!-- define $(PlatformId) and compile-time constants for NativeMethods.cs  -->
+  <Import Project="RuntimeId.props" />
+
+  <PropertyGroup>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLinux|AnyCPU'">
-    <DefineConstants>TRACE;LINUX;DEBUG;NETSTANDARD2_0</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugMac|AnyCPU'">
-    <DefineConstants>TRACE;MAC;NETSTANDARD2_0;DEBUG</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLinux|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE;LINUX;RELEASE;NETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseMac|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE;MAC;RELEASE;NETSTANDARD2_0</DefineConstants>
+    <DocumentationFile>docs\DlibDotNet.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -51,5 +37,10 @@
     <EmbeddedResource Remove="StdLib\Pair\**" />
     <None Remove="StdLib\Pair\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="docs\" />
+  </ItemGroup>
+
 
 </Project>

@@ -51,10 +51,10 @@ namespace FHogObjectDetector
                 // holds the locations of the faces in the training images.  So for
                 // example, the image images_train[0] has the faces given by the
                 // rectangles in face_boxes_train[0].
-                IEnumerable<Matrix<byte>> tmpImagesTrain;
-                IEnumerable<Matrix<byte>> tmpImagesTest;
-                IEnumerable<IEnumerable<Rectangle>> tmpFaceBoxesTrain;
-                IEnumerable<IEnumerable<Rectangle>> tmpFaceBoxesTest;
+                IList<Matrix<byte>> tmpImagesTrain;
+                IList<Matrix<byte>> tmpImagesTest;
+                IList<IList<Rectangle>> tmpFaceBoxesTrain;
+                IList<IList<Rectangle>> tmpFaceBoxesTest;
 
                 // Now we load the data.  These XML files list the images in each
                 // dataset and also contain the positions of the face boxes.  Obviously
@@ -78,10 +78,10 @@ namespace FHogObjectDetector
                 // appropriate adjustments to the face boxes so that they still fall on
                 // top of the faces after the images are resized.
                 var imageTrain = new List<Matrix<byte>>(tmpImagesTrain);
-                var faceBoxesTrain = new List<IEnumerable<Rectangle>>(tmpFaceBoxesTrain);
+                var faceBoxesTrain = new List<IList<Rectangle>>(tmpFaceBoxesTrain);
                 Dlib.UpsampleImageDataset(2, imageTrain, faceBoxesTrain);
                 var imageTest = new List<Matrix<byte>>(tmpImagesTest);
-                var faceBoxesTest = new List<IEnumerable<Rectangle>>(tmpFaceBoxesTest);
+                var faceBoxesTest = new List<IList<Rectangle>>(tmpFaceBoxesTest);
                 Dlib.UpsampleImageDataset(2, imageTest, faceBoxesTest);
 
                 // Since human faces are generally left-right symmetric we can increase

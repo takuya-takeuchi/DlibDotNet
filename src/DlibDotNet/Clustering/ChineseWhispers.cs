@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -21,20 +20,12 @@ namespace DlibDotNet
             using (var e = new StdVector<SamplePair>(edges))
             using (var l = new StdVector<uint>())
             {
-                clusters = Native.clustering_chinese_whispers(e.NativePtr, l.NativePtr, iterations);
+                clusters = NativeMethods.clustering_chinese_whispers(e.NativePtr, l.NativePtr, iterations);
                 labels = l.ToArray();
             }
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern uint clustering_chinese_whispers(IntPtr edges, IntPtr labels, uint num_iterations);
-
-        }
 
     }
 

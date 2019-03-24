@@ -4,7 +4,7 @@
 #include "../export.h"
 #include <dlib/image_io.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -47,7 +47,7 @@ DLLEXPORT int load_jpeg(array2d_type type, void* image, const char* file_name)
             dlib::load_jpeg(*((array2d<rgb_alpha_pixel>*)image), file_name);
             break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

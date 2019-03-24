@@ -25,7 +25,7 @@ Download test data from the following urls.
 - http://dlib.net/files/mmod_human_face_detector.dat.bz2
 - &lt;dlib&gt;\examples\faces\*.jpg
 
-And extract them and copy to extracted fiels to &lt;DnnMModFaceRecognition_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnMModFaceRecognition_dir&gt;.
 
 ## 3. Run
 

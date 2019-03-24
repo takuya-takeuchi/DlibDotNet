@@ -4,13 +4,13 @@
 #include "../export.h"
 #include <dlib/image_processing.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
 DLLEXPORT correlation_tracker* correlation_tracker_new(
-    unsigned int filter_size, 
-    unsigned int num_scale_levels, 
+    unsigned int filter_size,
+    unsigned int num_scale_levels,
     unsigned int scale_window_size,
     double regularizer_space,
     double nu_space,
@@ -67,7 +67,7 @@ DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, arra
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -123,7 +123,7 @@ DLLEXPORT int correlation_tracker_update_noscale(
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -172,7 +172,7 @@ DLLEXPORT int correlation_tracker_update_noscale2(
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -222,7 +222,7 @@ DLLEXPORT int correlation_tracker_update(
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -271,7 +271,7 @@ DLLEXPORT int correlation_tracker_update2(
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

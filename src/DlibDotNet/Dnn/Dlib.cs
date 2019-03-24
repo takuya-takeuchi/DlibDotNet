@@ -1,62 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.Linq;
+using DlibDotNet.Dnn;
+using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// Provides the methods of dlib.
+    /// </summary>
     public static partial class Dlib
     {
 
-        internal sealed partial class Native
+        #region Methods
+
+        #region AssignPixel
+
+        public static Matrix<double> TestObjectDetectionFunction<T>(LossMmod detector,
+                                                                    IEnumerable<Matrix<T>> images,
+                                                                    IEnumerable<IEnumerable<MModRect>> truthDets,
+                                                                    TestBoxOverlap overlapTester = null,
+                                                                    double adjustThreshold = 0,
+                                                                    TestBoxOverlap overlapIgnoreTester = null)
+           where T : struct
         {
+            if (detector == null)
+                throw new ArgumentNullException(nameof(detector));
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (truthDets == null)
+                throw new ArgumentNullException(nameof(truthDets));
 
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType input_rgb_image_pyramid_new(PyramidType pyramidType,
-                                                                       uint pyramidRate,
-                                                                       out IntPtr ret);
+            detector.ThrowIfDisposed();
+            images.ThrowIfDisposed();
+            truthDets.ThrowIfDisposed();
 
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void input_rgb_image_pyramid_delete(IntPtr input,
-                                                                     PyramidType pyramidType,
-                                                                     uint pyramidRate);
+            var disposeOverlapTester = overlapTester == null;
+            var disposeOverlapIgnoreTester = overlapIgnoreTester == null;
 
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType input_rgb_image_pyramid_to_tensor(IntPtr input,
-                                                                             PyramidType pyramidType,
-                                                                             uint pyramidRate,
-                                                                             MatrixElementType elementType,
-                                                                             IntPtr matrix,
-                                                                             int templateRows,
-                                                                             int templateColumns,
-                                                                             uint iteratorCount,
-                                                                             IntPtr tensor);
+            try
+            {
+                if (disposeOverlapTester)
+                    overlapTester = new TestBoxOverlap();
+                if (disposeOverlapIgnoreTester)
+                    overlapIgnoreTester = new TestBoxOverlap();
 
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType input_rgb_image_pyramid_get_pyramid_padding(IntPtr input,
-                                                                                       PyramidType pyramidType,
-                                                                                       uint pyramidRate,
-                                                                                       out uint pyramidPadding);
+                using (var matrixVector = new StdVector<Matrix<T>>(images))
+                using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(truthDets.Select(r => new StdVector<MModRect>(r))))
+                using (var detsVector = new StdVector<StdVector<MModRect>>(disposer.Collection))
+                using (new EnumerableDisposer<StdVector<MModRect>>(detsVector))
+                {
+                    var type = detector.NetworkType;
+                    Matrix<T>.TryParse<T>(out var elementTypes);
+                    var matrix = images.FirstOrDefault();
+                    var ret = NativeMethods.test_object_detection_function_net(type,
+                                                                               detector.NativePtr,
+                                                                               elementTypes.ToNativeMatrixElementType(),
+                                                                               matrixVector.NativePtr,
+                                                                               matrix.TemplateRows,
+                                                                               matrix.TemplateColumns,
+                                                                               detsVector.NativePtr,
+                                                                               overlapTester.NativePtr,
+                                                                               adjustThreshold,
+                                                                               overlapIgnoreTester.NativePtr,
+                                                                               out var result);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{elementTypes} is not supported.");
+                        case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                            throw new NotSupportNetworkTypeException(type);
+                    }
 
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType input_rgb_image_pyramid_get_pyramid_outer_padding(IntPtr input,
-                                                                                             PyramidType pyramidType,
-                                                                                             uint pyramidRate,
-                                                                                             out uint pyramidOuterPadding);
-
-            [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType input_rgb_image_pyramid_image_space_to_tensor_space(IntPtr input,
-                                                                                               PyramidType pyramidType,
-                                                                                               uint pyramidRate,
-                                                                                               IntPtr data,
-                                                                                               double scale,
-                                                                                               IntPtr r,
-                                                                                               out IntPtr rect);
-
+                    return new Matrix<double>(result, 1, 3);
+                }
+            }
+            finally
+            {
+                if (disposeOverlapTester)
+                    overlapTester?.Dispose();
+                if (disposeOverlapIgnoreTester)
+                    overlapIgnoreTester?.Dispose();
+            }
         }
+
+        #endregion
+
+        #endregion
 
     }
 

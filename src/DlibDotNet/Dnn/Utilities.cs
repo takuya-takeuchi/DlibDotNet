@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using DlibDotNet.Dnn;
-using DlibDotNet.Extensions;
 using uint8_t = System.Byte;
 using uint16_t = System.UInt16;
 using uint32_t = System.UInt32;

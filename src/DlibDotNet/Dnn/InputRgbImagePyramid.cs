@@ -12,7 +12,7 @@ namespace DlibDotNet.Dnn
 
         private readonly uint _PyramidRate;
 
-        private readonly Dlib.Native.PyramidType _PyramidType;
+        private readonly NativeMethods.PyramidType _PyramidType;
 
         #endregion
 
@@ -35,10 +35,10 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            Dlib.Native.input_rgb_image_pyramid_get_pyramid_padding(this.NativePtr,
-                                                                    this._PyramidType,
-                                                                    this._PyramidRate,
-                                                                    out var padding);
+            NativeMethods.input_rgb_image_pyramid_get_pyramid_padding(this.NativePtr,
+                                                                      this._PyramidType,
+                                                                      this._PyramidRate,
+                                                                      out var padding);
             return padding;
         }
 
@@ -46,10 +46,10 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            Dlib.Native.input_rgb_image_pyramid_get_pyramid_outer_padding(this.NativePtr,
-                                                                          this._PyramidType,
-                                                                          this._PyramidRate,
-                                                                          out var padding);
+            NativeMethods.input_rgb_image_pyramid_get_pyramid_outer_padding(this.NativePtr,
+                                                                            this._PyramidType,
+                                                                            this._PyramidRate,
+                                                                            out var padding);
             return padding;
         }
 
@@ -59,7 +59,7 @@ namespace DlibDotNet.Dnn
 
             using (var r = rectangle.ToNative())
             {
-                Dlib.Native.input_rgb_image_pyramid_image_space_to_tensor_space(this.NativePtr,
+                NativeMethods.input_rgb_image_pyramid_image_space_to_tensor_space(this.NativePtr,
                                                                                 this._PyramidType,
                                                                                 this._PyramidRate,
                                                                                 data.NativePtr,
@@ -82,28 +82,31 @@ namespace DlibDotNet.Dnn
             matrix.ThrowIfDisposed();
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Dlib.Native.input_rgb_image_pyramid_to_tensor(this.NativePtr,
-                                                                    this._PyramidType,
-                                                                    this._PyramidRate,
-                                                                    type,
-                                                                    matrix.NativePtr,
-                                                                    matrix.TemplateRows,
-                                                                    matrix.TemplateRows,
-                                                                    count,
-                                                                    tensor.NativePtr);
+            var ret = NativeMethods.input_rgb_image_pyramid_to_tensor(this.NativePtr,
+                                                                      this._PyramidType,
+                                                                      this._PyramidRate,
+                                                                      type,
+                                                                      matrix.NativePtr,
+                                                                      matrix.TemplateRows,
+                                                                      matrix.TemplateRows,
+                                                                      count,
+                                                                      tensor.NativePtr);
 
             switch (ret)
             {
-                case Dlib.Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
-                case Dlib.Native.ErrorType.PyramidNotSupportRate:
-                case Dlib.Native.ErrorType.PyramidNotSupportType:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportType:
                     throw new NotSupportedException();
             }
         }
-        
+
         #region Overrids
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -111,7 +114,7 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.input_rgb_image_pyramid_delete(this.NativePtr, this._PyramidType, this._PyramidRate);
+            NativeMethods.input_rgb_image_pyramid_delete(this.NativePtr, this._PyramidType, this._PyramidRate);
         }
 
         #endregion

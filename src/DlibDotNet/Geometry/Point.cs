@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using DlibDotNet.Util;
 
 // ReSharper disable once CheckNamespace
@@ -148,6 +147,20 @@ namespace DlibDotNet
                 return ret.ToManaged();
         }
 
+        public static Point operator *(int lhs, Point point)
+        {
+            using (var right = point.ToNative())
+            using (var ret = lhs * right)
+                return ret.ToManaged();
+        }
+
+        public static Point operator *(double lhs, Point point)
+        {
+            using (var right = point.ToNative())
+            using (var ret = lhs * right)
+                return ret.ToManaged();
+        }
+
         public static Point operator /(Point point, int rhs)
         {
             using (var left = point.ToNative())
@@ -187,12 +200,12 @@ namespace DlibDotNet
 
             public NativePoint(int x, int y)
             {
-                this.NativePtr = Native.point_new1(x, y);
+                this.NativePtr = NativeMethods.point_new1(x, y);
             }
 
             public NativePoint()
             {
-                this.NativePtr = Native.point_new();
+                this.NativePtr = NativeMethods.point_new();
             }
 
             internal NativePoint(IntPtr ptr, bool isEnabledDispose = true) :
@@ -213,7 +226,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.point_length(this.NativePtr);
+                    return NativeMethods.point_length(this.NativePtr);
                 }
             }
 
@@ -222,7 +235,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.point_length_squared(this.NativePtr);
+                    return NativeMethods.point_length_squared(this.NativePtr);
                 }
             }
 
@@ -231,7 +244,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.point_x(this.NativePtr);
+                    return NativeMethods.point_x(this.NativePtr);
                 }
             }
 
@@ -240,7 +253,7 @@ namespace DlibDotNet
                 get
                 {
                     this.ThrowIfDisposed();
-                    return Native.point_y(this.NativePtr);
+                    return NativeMethods.point_y(this.NativePtr);
                 }
             }
 
@@ -266,7 +279,7 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                var ret = Native.rotate_point(this.NativePtr, point.NativePtr, MathHelper.ConvertToRadian(angle));
+                var ret = NativeMethods.rotate_point(this.NativePtr, point.NativePtr, MathHelper.ConvertToRadian(angle));
                 return new NativePoint(ret);
             }
 
@@ -292,7 +305,7 @@ namespace DlibDotNet
                 point.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                var ptr = Native.point_operator_add(point.NativePtr, rhs.NativePtr);
+                var ptr = NativeMethods.point_operator_add(point.NativePtr, rhs.NativePtr);
                 return new NativePoint(ptr);
             }
 
@@ -306,7 +319,7 @@ namespace DlibDotNet
                 point.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                var ptr = Native.point_operator_sub(point.NativePtr, rhs.NativePtr);
+                var ptr = NativeMethods.point_operator_sub(point.NativePtr, rhs.NativePtr);
                 return new NativePoint(ptr);
             }
 
@@ -317,7 +330,29 @@ namespace DlibDotNet
 
                 point.ThrowIfDisposed();
 
-                var ptr = Native.point_operator_mul(point.NativePtr, rhs);
+                var ptr = NativeMethods.point_operator_mul_point_int32(point.NativePtr, rhs);
+                return new NativePoint(ptr);
+            }
+
+            public static NativePoint operator *(int lhs, NativePoint point)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ptr = NativeMethods.point_operator_mul_int32_point(lhs, point.NativePtr);
+                return new NativePoint(ptr);
+            }
+
+            public static NativePoint operator *(double lhs, NativePoint point)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+
+                point.ThrowIfDisposed();
+
+                var ptr = NativeMethods.point_operator_mul_double_point(lhs, point.NativePtr);
                 return new NativePoint(ptr);
             }
 
@@ -331,7 +366,7 @@ namespace DlibDotNet
                 if (rhs == 0)
                     throw new DivideByZeroException();
 
-                var ptr = Native.point_operator_div(point.NativePtr, rhs);
+                var ptr = NativeMethods.point_operator_div(point.NativePtr, rhs);
                 return new NativePoint(ptr);
             }
 
@@ -345,7 +380,7 @@ namespace DlibDotNet
                 point.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                return Native.point_operator_equal(point.NativePtr, rhs.NativePtr);
+                return NativeMethods.point_operator_equal(point.NativePtr, rhs.NativePtr);
             }
 
             public static bool operator !=(NativePoint point, NativePoint rhs)
@@ -358,7 +393,7 @@ namespace DlibDotNet
                 point.ThrowIfDisposed();
                 rhs.ThrowIfDisposed();
 
-                return !Native.point_operator_equal(point.NativePtr, rhs.NativePtr);
+                return !NativeMethods.point_operator_equal(point.NativePtr, rhs.NativePtr);
             }
 
             public override string ToString()
@@ -369,9 +404,9 @@ namespace DlibDotNet
 
                 try
                 {
-                    ofstream = Dlib.Native.ostringstream_new();
-                    Native.point_operator_left_shift(this.NativePtr, ofstream);
-                    stdstr = Dlib.Native.ostringstream_str(ofstream);
+                    ofstream = NativeMethods.ostringstream_new();
+                    NativeMethods.point_operator_left_shift(this.NativePtr, ofstream);
+                    stdstr = NativeMethods.ostringstream_str(ofstream);
                     str = StringHelper.FromStdString(stdstr);
                 }
                 catch (Exception e)
@@ -381,14 +416,17 @@ namespace DlibDotNet
                 finally
                 {
                     if (stdstr != IntPtr.Zero)
-                        Dlib.Native.string_delete(stdstr);
+                        NativeMethods.string_delete(stdstr);
                     if (ofstream != IntPtr.Zero)
-                        Dlib.Native.ostringstream_delete(ofstream);
+                        NativeMethods.ostringstream_delete(ofstream);
                 }
 
                 return str;
             }
 
+            /// <summary>
+            /// Releases all unmanaged resources.
+            /// </summary>
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
@@ -396,60 +434,12 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Native.point_delete(this.NativePtr);
+                NativeMethods.point_delete(this.NativePtr);
             }
 
             #endregion
 
             #endregion
-
-            private sealed class Native
-            {
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_new();
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_new1(int x, int y);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void point_delete(IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern void point_operator_left_shift(IntPtr point, IntPtr ofstream);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double point_length(IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern double point_length_squared(IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int point_x(IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern int point_y(IntPtr point);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_operator_add(IntPtr point, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_operator_sub(IntPtr point, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_operator_mul(IntPtr point, int rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr point_operator_div(IntPtr point, int rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                [return: MarshalAs(UnmanagedType.U1)]
-                public static extern bool point_operator_equal(IntPtr point, IntPtr rhs);
-
-                [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-                public static extern IntPtr rotate_point(IntPtr center, IntPtr p, double rhs);
-
-            }
 
         }
 #pragma warning restore CS0660, CS0661

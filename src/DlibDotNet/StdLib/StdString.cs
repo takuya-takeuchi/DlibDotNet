@@ -20,6 +20,9 @@ namespace DlibDotNet
 
         #region Overrides 
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             if (this.IsDisposed)
@@ -30,7 +33,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.string_delete(this.NativePtr);
+            NativeMethods.string_delete(this.NativePtr);
             this.NativePtr = IntPtr.Zero;
         }
 

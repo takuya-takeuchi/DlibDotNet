@@ -201,7 +201,7 @@ DLLEXPORT int matrix_op_op_heatmap_nc(array2d_type type, void* obj, int* ret)
             #undef ELEMENT_IN
 			break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -337,7 +337,7 @@ DLLEXPORT int matrix_op_op_heatmap_nr(array2d_type type, void* obj, int* ret)
             #undef ELEMENT_IN
 			break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -475,7 +475,7 @@ DLLEXPORT int matrix_op_op_heatmap_operator(array2d_type type, void* obj, int r,
             #undef ELEMENT_IN
 			break;
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

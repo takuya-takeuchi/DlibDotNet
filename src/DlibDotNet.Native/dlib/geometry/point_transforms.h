@@ -5,7 +5,7 @@
 #include <dlib/geometry/point_transforms.h>
 #include <dlib/image_transforms.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 

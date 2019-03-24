@@ -116,7 +116,7 @@ do { \
             dlib::FUNCTION(*((array2d<rgb_alpha_pixel>*)img));\
             break;\
         default:\
-            ret = ERR_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -204,7 +204,7 @@ do { \
             dlib::FUNCTION(*((array2d<rgb_alpha_pixel>*)in_img), *((array2d<ELEMENT_OUT>*)out_img));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -343,7 +343,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -482,7 +482,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -648,7 +648,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -806,7 +806,7 @@ do { \
         case array2d_type::HsiPixel:\
         case array2d_type::RgbAlphaPixel:\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -847,7 +847,7 @@ do { \
             dlib::extract_image_chips(*((array2d<hsi_pixel>*)in_img), chips, *((dlib::array<ELEMENT_OUT>*)array));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -888,7 +888,7 @@ do { \
             dlib::extract_image_chip(*((array2d<hsi_pixel>*)in_img), *chip, *((array2d<ELEMENT_OUT>*)out_chip));\
             break;\
         default:\
-            ret = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -986,7 +986,7 @@ do { \
             dlib::extract_image_chip(*((matrix<hsi_pixel>*)in_img), *chip, *((matrix<ELEMENT_OUT>*)out_chip));\
             break;\
         default:\
-            ret = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
 			break;\
     }\
 } while (0)
@@ -1015,26 +1015,16 @@ do { \
     *out_img = new dlib::matrix<ELEMENT_IN>(ret);\
 } while (0)
 
-#define resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale) \
+#define resize_image_matrix_scale_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, scale) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
+dlib::resize_image(scale, m);\
+
+#define resize_image_matrix_scale_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, scale) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        dlib::matrix<ELEMENT_IN, 0, 0>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 0>*>(matrix);\
-        dlib::resize_image(scale, m);\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT_IN, 0, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 0, 1>*>(matrix);\
-        dlib::resize_image(scale, m);\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT_IN, 31, 1>& m = *static_cast<dlib::matrix<ELEMENT_IN, 31, 1>*>(matrix);\
-        dlib::resize_image(scale, m);\
-    }\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, resize_image_matrix_scale_template_sub, error, matrix, scale);\
 } while (0)
 
-#define upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects) \
+#define upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size) \
 do { \
     std::vector<dlib::matrix<ELEMENT_IN>*>& in_images = *(static_cast<std::vector<dlib::matrix<ELEMENT_IN>*>*>(images));\
     std::vector<matrix<ELEMENT_IN>> tmp_images;\
@@ -1060,19 +1050,19 @@ do { \
     switch(pyramid_rate)\
     {\
         case 1:\
-            upsample_image_dataset<pyramid_down<1>>(tmp_images, tmp_objects);\
+            upsample_image_dataset<pyramid_down<1>>(tmp_images, tmp_objects, max_image_size);\
             break;\
         case 2:\
-            upsample_image_dataset<pyramid_down<2>>(tmp_images, tmp_objects);\
+            upsample_image_dataset<pyramid_down<2>>(tmp_images, tmp_objects, max_image_size);\
             break;\
         case 3:\
-            upsample_image_dataset<pyramid_down<3>>(tmp_images, tmp_objects);\
+            upsample_image_dataset<pyramid_down<3>>(tmp_images, tmp_objects, max_image_size);\
             break;\
         case 4:\
-            upsample_image_dataset<pyramid_down<4>>(tmp_images, tmp_objects);\
+            upsample_image_dataset<pyramid_down<4>>(tmp_images, tmp_objects, max_image_size);\
             break;\
         case 6:\
-            upsample_image_dataset<pyramid_down<6>>(tmp_images, tmp_objects);\
+            upsample_image_dataset<pyramid_down<6>>(tmp_images, tmp_objects, max_image_size);\
             break;\
         default:\
             ret = ERR_PYRAMID_NOT_SUPPORT_RATE;\
@@ -1285,7 +1275,7 @@ DLLEXPORT int flip_image_left_right2(array2d_type in_type, void* in_img, array2d
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
@@ -1306,7 +1296,7 @@ DLLEXPORT int flip_image_left_right2(array2d_type in_type, void* in_img, array2d
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1358,7 +1348,7 @@ DLLEXPORT int flip_image_up_down(array2d_type in_type, void* in_img, array2d_typ
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
@@ -1379,7 +1369,7 @@ DLLEXPORT int flip_image_up_down(array2d_type in_type, void* in_img, array2d_typ
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1416,7 +1406,7 @@ DLLEXPORT int pyramid_up_matrix2(matrix_element_type type, void* img, void* pyra
     return err;
 }
 
-DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type, 
+DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type,
                                         const unsigned int pyramid_rate,
                                         matrix_element_type element_type,
                                         void* image)
@@ -1425,64 +1415,64 @@ DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type,
 
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(element_type)
                 {
                     case matrix_element_type::UInt8:
                         #define ELEMENT_IN uint8_t
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);                                
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::UInt16:
                         #define ELEMENT_IN uint16_t
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::UInt32:
                         #define ELEMENT_IN uint32_t
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::Int8:
                         #define ELEMENT_IN int8_t
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::Int16:
                         #define ELEMENT_IN int16_t
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::Int32:
                         #define ELEMENT_IN int32_t
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::Float:
                         #define ELEMENT_IN float
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::Double:
                         #define ELEMENT_IN double
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::RgbPixel:
                         #define ELEMENT_IN rgb_pixel
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::HsiPixel:
                         #define ELEMENT_IN hsi_pixel
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     case matrix_element_type::RgbAlphaPixel:
                         #define ELEMENT_IN rgb_alpha_pixel
-                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);   
+                        pyramid_up_pyramid_matrix_template(pyramid_rate, image);
                         #undef ELEMENT_IN
                         break;
                     default:
@@ -1494,7 +1484,7 @@ DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type,
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
@@ -1507,7 +1497,7 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
     int err = ERR_OK;
 
     if (in_type == array2d_type::HsiPixel || in_type == array2d_type::RgbAlphaPixel)
-        return ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+        return ERR_ARRAY2D_TYPE_NOT_SUPPORT;
 
     #define FUNCTION resize_image
     switch(out_type)
@@ -1547,7 +1537,7 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             interpolation_inout_template(err, in_type, in_img, out_img);
             #undef ELEMENT_OUT
@@ -1560,7 +1550,7 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1610,7 +1600,7 @@ DLLEXPORT int resize_image2(array2d_type in_type, void* in_img, array2d_type out
             interpolation_inout3_template(err, in_type, in_img, out_img, type);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             interpolation_inout3_template(err, in_type, in_img, out_img, type);
             #undef ELEMENT_OUT
@@ -1623,7 +1613,7 @@ DLLEXPORT int resize_image2(array2d_type in_type, void* in_img, array2d_type out
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1666,7 +1656,7 @@ DLLEXPORT int resize_image3(array2d_type type, void* img, double size_scale)
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1680,59 +1670,37 @@ DLLEXPORT int resize_image_matrix_scale(matrix_element_type type, void* matrix, 
     switch(type)
     {
         case matrix_element_type::UInt8:
-            #define ELEMENT_IN uint8_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(uint8_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::UInt16:
-            #define ELEMENT_IN uint16_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(uint16_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::UInt32:
-            #define ELEMENT_IN uint32_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(uint32_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Int8:
-            #define ELEMENT_IN int8_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(int8_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Int16:
-            #define ELEMENT_IN int16_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(int16_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Int32:
-            #define ELEMENT_IN int32_t
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(int32_t, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Float:
-            #define ELEMENT_IN float
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(float, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::Double:
-            #define ELEMENT_IN double
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(double, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT_IN rgb_pixel
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(rgb_pixel, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::HsiPixel:
-            #define ELEMENT_IN hsi_pixel
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(hsi_pixel, templateRows, templateColumns, err, matrix, scale);
             break;
         case matrix_element_type::RgbAlphaPixel:
-            #define ELEMENT_IN rgb_alpha_pixel
-            resize_image_matrix_scale_template(matrix, templateRows, templateColumns, scale);
-            #undef ELEMENT_IN
+            resize_image_matrix_scale_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, scale);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
@@ -1788,7 +1756,7 @@ DLLEXPORT int rotate_image(array2d_type in_type, void* in_img, array2d_type out_
             rotate_image_template(err, in_type, in_img, out_img, angle);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             rotate_image_template(err, in_type, in_img, out_img, angle);
             #undef ELEMENT_OUT
@@ -1801,7 +1769,7 @@ DLLEXPORT int rotate_image(array2d_type in_type, void* in_img, array2d_type out_
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1851,7 +1819,7 @@ DLLEXPORT int rotate_image2(array2d_type in_type, void* in_img, array2d_type out
             interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             interpolation_inout2_template(err, in_type, in_img, out_img, angle, type);
             #undef ELEMENT_OUT
@@ -1864,7 +1832,7 @@ DLLEXPORT int rotate_image2(array2d_type in_type, void* in_img, array2d_type out
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
     #undef FUNCTION
@@ -1915,7 +1883,7 @@ DLLEXPORT int transform_image(array2d_type in_type, void* in_img, array2d_type o
             transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             transform_image_template(err, in_type, in_img, out_img, mapping_type, mapping_obj, type);
             #undef ELEMENT_OUT
@@ -1928,7 +1896,7 @@ DLLEXPORT int transform_image(array2d_type in_type, void* in_img, array2d_type o
         case array2d_type::HsiPixel:
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -1970,25 +1938,25 @@ DLLEXPORT chip_details* chip_details_new5(drectangle* rect, const unsigned long 
 
 DLLEXPORT bool chip_details_angle(chip_details* chip, double* angle)
 {
-    *angle = chip->angle;   
+    *angle = chip->angle;
     return true;
 }
 
 DLLEXPORT bool chip_details_cols(chip_details* chip, uint32_t* cols)
 {
-    *cols = chip->cols;   
+    *cols = chip->cols;
     return true;
 }
 
 DLLEXPORT bool chip_details_rect(chip_details* chip, dlib::drectangle** rect)
 {
-    *rect = new dlib::drectangle(chip->rect);   
+    *rect = new dlib::drectangle(chip->rect);
     return true;
 }
 
 DLLEXPORT bool chip_details_rows(chip_details* chip, uint32_t* rows)
 {
-    *rows = chip->rows;   
+    *rows = chip->rows;
     return true;
 }
 
@@ -2008,7 +1976,7 @@ DLLEXPORT chip_dims* chip_dims_new(unsigned int rows, unsigned int cols)
 
 DLLEXPORT bool chip_dims_get_cols(chip_dims* chip, uint32_t* cols)
 {
-    *cols = chip->cols;   
+    *cols = chip->cols;
     return true;
 }
 
@@ -2019,7 +1987,7 @@ DLLEXPORT void chip_dims_set_cols(chip_dims* chip, uint32_t cols)
 
 DLLEXPORT bool chip_dims_get_rows(chip_dims* chip, uint32_t* rows)
 {
-    *rows = chip->rows;   
+    *rows = chip->rows;
     return true;
 }
 
@@ -2053,7 +2021,7 @@ DLLEXPORT dlib::rectangle* flip_rect_left_right(dlib::rectangle* rect, dlib::rec
 DLLEXPORT int get_face_chip_details(std::vector<full_object_detection*>* dets, const unsigned int size, const double padding, std::vector<chip_details*>* rets)
 {
     int err = ERR_OK;
-    
+
     std::vector<full_object_detection> tmpDets;
     for (int index = 0 ; index < dets->size(); index++)
         tmpDets.push_back(*(*dets)[index]);
@@ -2086,7 +2054,7 @@ DLLEXPORT int get_face_chip_details2(full_object_detection* det, const unsigned 
 DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vector<chip_details*>* chip_locations, array2d_type array_type, void* array)
 {
     int err = ERR_OK;
-    
+
     std::vector<chip_details> chips;
     for (int index = 0 ; index < chip_locations->size(); index++)
         chips.push_back(*(*chip_locations)[index]);
@@ -2128,7 +2096,7 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
             extract_image_chips_template(err, img_type, in_img, chips, array);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT array2d<double>
             extract_image_chips_template(err, img_type, in_img, chips, array);
             #undef ELEMENT_OUT
@@ -2149,7 +2117,7 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2159,7 +2127,7 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
 DLLEXPORT int extract_image_chips_matrix(matrix_element_type img_type, void* in_img, std::vector<chip_details*>* chip_locations, matrix_element_type array_type, void* array)
 {
     int err = ERR_OK;
-    
+
     std::vector<chip_details> chips;
     for (int index = 0 ; index < chip_locations->size(); index++)
         chips.push_back(*(*chip_locations)[index]);
@@ -2201,7 +2169,7 @@ DLLEXPORT int extract_image_chips_matrix(matrix_element_type img_type, void* in_
             extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
             #undef ELEMENT_OUT
             break;
-        case matrix_element_type::Double:        
+        case matrix_element_type::Double:
             #define ELEMENT_OUT dlib::matrix<double>
             extract_image_chips_matrix_template(err, img_type, in_img, chips, array);
             #undef ELEMENT_OUT
@@ -2270,7 +2238,7 @@ DLLEXPORT int extract_image_chip(array2d_type img_type, void* in_img, chip_detai
             extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             extract_image_chip_template(err, img_type, in_img, chip_location, out_chip);
             #undef ELEMENT_OUT
@@ -2287,7 +2255,7 @@ DLLEXPORT int extract_image_chip(array2d_type img_type, void* in_img, chip_detai
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2303,7 +2271,7 @@ DLLEXPORT int extract_image_chip2(array2d_type img_type, void* in_img, chip_deta
         case array2d_type::UInt8:
             #define ELEMENT_OUT uint8_t
             extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
-            #undef ELEMENT_OUT            
+            #undef ELEMENT_OUT
             break;
         case array2d_type::UInt16:
             #define ELEMENT_OUT uint16_t
@@ -2335,7 +2303,7 @@ DLLEXPORT int extract_image_chip2(array2d_type img_type, void* in_img, chip_deta
             extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
             #undef ELEMENT_OUT
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             #define ELEMENT_OUT double
             extract_image_chip2_template(err, in_img, chip_location, type, out_chip);
             #undef ELEMENT_OUT
@@ -2358,7 +2326,7 @@ DLLEXPORT int extract_image_chip2(array2d_type img_type, void* in_img, chip_deta
             break;
         case array2d_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2427,7 +2395,7 @@ DLLEXPORT int extract_image_chip_matrix(matrix_element_type img_type, void* in_i
             #undef ELEMENT_OUT
             break;
         default:
-            err = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2498,7 +2466,7 @@ DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_
             break;
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2550,7 +2518,7 @@ DLLEXPORT int jitter_image(matrix_element_type in_type, void* in_img, dlib::rand
             jitter_image_template(in_img, r, out_img);
             #undef ELEMENT_IN
             break;
-        case matrix_element_type::Double:        
+        case matrix_element_type::Double:
             #define ELEMENT_IN double
             jitter_image_template(in_img, r, out_img);
             #undef ELEMENT_IN
@@ -2565,9 +2533,9 @@ DLLEXPORT int jitter_image(matrix_element_type in_type, void* in_img, dlib::rand
             jitter_image_template(in_img, r, out_img);
             #undef ELEMENT_IN
             break;
-        case matrix_element_type::RgbAlphaPixel:     
+        case matrix_element_type::RgbAlphaPixel:
         default:
-            err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -2578,7 +2546,11 @@ DLLEXPORT int jitter_image(matrix_element_type in_type, void* in_img, dlib::rand
 
 #pragma region upsample_image_dataset
 
-DLLEXPORT int upsample_image_dataset_pyramid_down(const unsigned int pyramid_rate, matrix_element_type element_type, void* images, void* objects)
+DLLEXPORT int upsample_image_dataset_pyramid_down_rect(const unsigned int pyramid_rate,
+                                                       const matrix_element_type element_type,
+                                                       void* images,
+                                                       void* objects,
+                                                       const unsigned long max_image_size)
 {
     int ret = ERR_OK;
 
@@ -2588,57 +2560,134 @@ DLLEXPORT int upsample_image_dataset_pyramid_down(const unsigned int pyramid_rat
     {
         case matrix_element_type::UInt8:
             #define ELEMENT_IN uint8_t
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::UInt16:
             #define ELEMENT_IN uint16_t
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::UInt32:
             #define ELEMENT_IN uint32_t
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::Int8:
             #define ELEMENT_IN int8_t
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::Int16:
             #define ELEMENT_IN int16_t
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::Int32:
             #define ELEMENT_IN int32_t
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::Float:
             #define ELEMENT_IN float
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::Double:
             #define ELEMENT_IN double
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::RgbPixel:
             #define ELEMENT_IN rgb_pixel
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::HsiPixel:
             #define ELEMENT_IN hsi_pixel
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         case matrix_element_type::RgbAlphaPixel:
             #define ELEMENT_IN rgb_alpha_pixel
-            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects);
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        default:
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    #undef ELEMENT_OUT
+
+    return ret;
+}
+
+DLLEXPORT int upsample_image_dataset_pyramid_down_mmod_rect(const unsigned int pyramid_rate,
+                                                            const matrix_element_type element_type,
+                                                            void* images,
+                                                            void* objects,
+                                                            const unsigned long max_image_size)
+{
+    int ret = ERR_OK;
+
+    #define ELEMENT_OUT dlib::mmod_rect
+
+    switch(element_type)
+    {
+        case matrix_element_type::UInt8:
+            #define ELEMENT_IN uint8_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt16:
+            #define ELEMENT_IN uint16_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::UInt32:
+            #define ELEMENT_IN uint32_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int8:
+            #define ELEMENT_IN int8_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int16:
+            #define ELEMENT_IN int16_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Int32:
+            #define ELEMENT_IN int32_t
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Float:
+            #define ELEMENT_IN float
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::Double:
+            #define ELEMENT_IN double
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbPixel:
+            #define ELEMENT_IN rgb_pixel
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::HsiPixel:
+            #define ELEMENT_IN hsi_pixel
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
+            #undef ELEMENT_IN
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            #define ELEMENT_IN rgb_alpha_pixel
+            upsample_image_dataset_pyramid_down_template(ret, pyramid_rate, images, objects, max_image_size);
             #undef ELEMENT_IN
             break;
         default:
@@ -2652,5 +2701,144 @@ DLLEXPORT int upsample_image_dataset_pyramid_down(const unsigned int pyramid_rat
 }
 
 #pragma endregion upsample_image_dataset
+
+#pragma region extract_image_4points
+
+#define extract_image_4points_template(__TYPE__, error, image, points, width, height, output)\
+do {\
+    auto& m = *(static_cast<dlib::array2d<__TYPE__>*>(image));\
+    std::array<dlib::dpoint, 4> ps;\
+    for (auto index = 0; index < 4; index++)\
+        ps[index] = *points[index];\
+    auto tmpout = new dlib::array2d<__TYPE__>(height, width);\
+    auto& o = *(static_cast<dlib::array2d<__TYPE__>*>(tmpout));\
+    dlib::extract_image_4points(m, o, ps);\
+    *output = tmpout;\
+} while (0)
+
+#define extract_image_4points_matrix_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, points, width, height, output)\
+auto& m = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix));\
+std::array<dlib::dpoint, 4> ps;\
+for (auto index = 0; index < 4; index++)\
+    ps[index] = *points[index];\
+auto tmpout = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(height, width);\
+auto& o = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(tmpout));\
+dlib::extract_image_4points(m, o, ps);\
+*output = tmpout;\
+
+#define extract_image_4points_matrix_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, points, width, height, output)\
+do {\
+    matrix_template_size_arg5_template(__TYPE__, __ROWS__, __COLUMNS__, extract_image_4points_matrix_template_sub, error, matrix, points, width, height, output);\
+} while (0)
+
+DLLEXPORT int extract_image_4points(array2d_type type,
+                                    void* image,
+                                    dlib::dpoint** points,
+                                    int width,
+                                    int height,
+                                    void** output)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case array2d_type::UInt8:
+            extract_image_4points_template(uint8_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::UInt16:
+            extract_image_4points_template(uint16_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::UInt32:
+            extract_image_4points_template(uint32_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Int8:
+            extract_image_4points_template(int8_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Int16:
+            extract_image_4points_template(int16_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Int32:
+            extract_image_4points_template(int32_t, err, image, points, width, height, output);
+            break;
+        case array2d_type::Float:
+            extract_image_4points_template(float, err, image, points, width, height, output);
+            break;
+        case array2d_type::Double:
+            extract_image_4points_template(double, err, image, points, width, height, output);
+            break;
+        case array2d_type::RgbPixel:
+            extract_image_4points_template(rgb_pixel, err, image, points, width, height, output);
+            break;
+        case array2d_type::HsiPixel:
+            extract_image_4points_template(hsi_pixel, err, image, points, width, height, output);
+            break;
+        case array2d_type::RgbAlphaPixel:
+        default:
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int extract_image_4points_matrix(matrix_element_type element_type,
+                                           void* matrix,
+                                           int templateRows,
+                                           int templateColumns,
+                                           dlib::dpoint** points,
+                                           int width,
+                                           int height,
+                                           void** output)
+{
+    int err = ERR_OK;
+
+    switch(element_type)
+    {
+        case matrix_element_type::UInt8:
+            extract_image_4points_matrix_template(uint8_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::UInt16:
+            extract_image_4points_matrix_template(uint16_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::UInt32:
+            extract_image_4points_matrix_template(uint32_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::UInt64:
+            extract_image_4points_matrix_template(uint64_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int8:
+            extract_image_4points_matrix_template(int8_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int16:
+            extract_image_4points_matrix_template(int16_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int32:
+            extract_image_4points_matrix_template(int32_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Int64:
+            extract_image_4points_matrix_template(int64_t, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Float:
+            extract_image_4points_matrix_template(float, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::Double:
+            extract_image_4points_matrix_template(double, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::RgbPixel:
+            extract_image_4points_matrix_template(rgb_pixel, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::HsiPixel:
+            extract_image_4points_matrix_template(hsi_pixel, templateRows, templateColumns, err, matrix, points, width, height, output);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+#pragma endregion extract_image_4points
 
 #endif

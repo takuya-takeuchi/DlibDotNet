@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -12,7 +11,7 @@ namespace DlibDotNet
 
         public PointTransformAffine()
         {
-            this.NativePtr = Native.point_transform_affine_new();
+            this.NativePtr = NativeMethods.point_transform_affine_new();
         }
 
         public PointTransformAffine(Matrix<double> matrix, DPoint vector)
@@ -28,7 +27,7 @@ namespace DlibDotNet
                 throw new ArgumentException($"{nameof(matrix)} should be 2x2 matrix");
 
             using (var native = vector.ToNative())
-                this.NativePtr = Native.point_transform_affine_new1(matrix.NativePtr, native.NativePtr);
+                this.NativePtr = NativeMethods.point_transform_affine_new1(matrix.NativePtr, native.NativePtr);
         }
 
         public PointTransformAffine(Matrix<double> matrix, double x, double y)
@@ -42,7 +41,7 @@ namespace DlibDotNet
                 throw new ArgumentException($"{nameof(matrix)} should be 2x2 matrix");
 
             using (var vector = new DPoint(x, y).ToNative())
-                this.NativePtr = Native.point_transform_affine_new1(matrix.NativePtr, vector.NativePtr);
+                this.NativePtr = NativeMethods.point_transform_affine_new1(matrix.NativePtr, vector.NativePtr);
         }
 
         internal PointTransformAffine(IntPtr ptr)
@@ -61,7 +60,7 @@ namespace DlibDotNet
         {
             get
             {
-                var vector = Native.point_transform_affine_get_b(this.NativePtr);
+                var vector = NativeMethods.point_transform_affine_get_b(this.NativePtr);
                 return new DPoint(vector);
             }
         }
@@ -70,7 +69,7 @@ namespace DlibDotNet
         {
             get
             {
-                var matrix = Native.point_transform_affine_get_m(this.NativePtr);
+                var matrix = NativeMethods.point_transform_affine_get_m(this.NativePtr);
                 return new Matrix<double>(matrix);
             }
         }
@@ -83,13 +82,16 @@ namespace DlibDotNet
         {
             using (var native = point.ToNative())
             {
-                var ptr = Native.point_transform_affine_operator(this.NativePtr, native.NativePtr);
+                var ptr = NativeMethods.point_transform_affine_operator(this.NativePtr, native.NativePtr);
                 return new DPoint(ptr);
             }
         }
 
         #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -97,35 +99,12 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Native.point_transform_affine_delete(this.NativePtr);
+            NativeMethods.point_transform_affine_delete(this.NativePtr);
         }
 
         #endregion
 
         #endregion
-
-        internal sealed class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_transform_affine_new();
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_transform_affine_new1(IntPtr matrix, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_transform_affine_get_b(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_transform_affine_get_m(IntPtr obj);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern IntPtr point_transform_affine_operator(IntPtr obj, IntPtr vector);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern void point_transform_affine_delete(IntPtr obj);
-
-        }
 
     }
 

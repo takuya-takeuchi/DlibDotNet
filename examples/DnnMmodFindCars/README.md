@@ -25,7 +25,7 @@ Download test data from the following urls.
 - http://dlib.net/files/mmod_rear_end_vehicle_detector.dat.bz2
 - &lt;dlib&gt;\examples\mmod_cars_test_image.jpg
 
-And extract them and copy to extracted fiels to &lt;DnnMmodFindCars_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnMmodFindCars_dir&gt;.
 
 ## 3. Run
 

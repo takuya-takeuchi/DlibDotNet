@@ -13,7 +13,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private readonly Dlib.Native.Array2DType _Array2DType;
+        private readonly NativeMethods.Array2DType _Array2DType;
 
         private static readonly IDictionary<ImageTypes, int> ElementSizeDictionary = new Dictionary<ImageTypes, int>();
 
@@ -54,7 +54,7 @@ namespace DlibDotNet
 
             this._Array2DType = type.ToNativeArray2DType();
 
-            this.NativePtr = Dlib.Native.array2d_new(this._Array2DType);
+            this.NativePtr = NativeMethods.array2d_new(this._Array2DType);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{type} is not supported.");
 
@@ -68,7 +68,7 @@ namespace DlibDotNet
 
             this._Array2DType = type.ToNativeArray2DType();
 
-            this.NativePtr = Dlib.Native.array2d_new1(this._Array2DType, rows, columns);
+            this.NativePtr = NativeMethods.array2d_new1(this._Array2DType, rows, columns);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{type} is not supported.");
 
@@ -96,7 +96,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.array2d_nc(this._Array2DType, this.NativePtr, out var ret);
+                NativeMethods.array2d_nc(this._Array2DType, this.NativePtr, out var ret);
                 return ret;
             }
         }
@@ -111,7 +111,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.rectangle_get_rect(this._Array2DType, this.NativePtr, out var ret);
+                NativeMethods.rectangle_get_rect(this._Array2DType, this.NativePtr, out var ret);
                 return new Rectangle(ret);
             }
         }
@@ -121,7 +121,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.array2d_nr(this._Array2DType, this.NativePtr, out var ret);
+                NativeMethods.array2d_nr(this._Array2DType, this.NativePtr, out var ret);
                 return ret;
             }
         }
@@ -131,7 +131,7 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                Dlib.Native.array2d_size(this._Array2DType, this.NativePtr, out var ret);
+                NativeMethods.array2d_size(this._Array2DType, this.NativePtr, out var ret);
                 return ret;
             }
         }
@@ -145,7 +145,7 @@ namespace DlibDotNet
                 if (!(0 <= row && row < this.Rows))
                     throw new IndexOutOfRangeException();
 
-                Dlib.Native.array2d_row(this._Array2DType, this.NativePtr, row, out var ret);
+                NativeMethods.array2d_row(this._Array2DType, this.NativePtr, row, out var ret);
 
                 switch (this.ImageType)
                 {
@@ -187,26 +187,26 @@ namespace DlibDotNet
         {
             switch (this._Array2DType)
             {
-                case Dlib.Native.Array2DType.UInt8:
-                case Dlib.Native.Array2DType.UInt16:
-                case Dlib.Native.Array2DType.UInt32:
-                case Dlib.Native.Array2DType.Int8:
-                case Dlib.Native.Array2DType.Int16:
-                case Dlib.Native.Array2DType.Int32:
-                case Dlib.Native.Array2DType.Float:
-                case Dlib.Native.Array2DType.Double:
-                case Dlib.Native.Array2DType.RgbPixel:
-                case Dlib.Native.Array2DType.RgbAlphaPixel:
-                case Dlib.Native.Array2DType.HsiPixel:
+                case NativeMethods.Array2DType.UInt8:
+                case NativeMethods.Array2DType.UInt16:
+                case NativeMethods.Array2DType.UInt32:
+                case NativeMethods.Array2DType.Int8:
+                case NativeMethods.Array2DType.Int16:
+                case NativeMethods.Array2DType.Int32:
+                case NativeMethods.Array2DType.Float:
+                case NativeMethods.Array2DType.Double:
+                case NativeMethods.Array2DType.RgbPixel:
+                case NativeMethods.Array2DType.RgbAlphaPixel:
+                case NativeMethods.Array2DType.HsiPixel:
                     var rows = (uint)this.Rows;
                     var columns = (uint)this.Columns;
                     var size = ElementSizeDictionary[this.ImageType];
                     var src = this.NativePtr;
                     var dst = new byte[(int)(rows * columns * size)];
-                    var ret = Dlib.Native.extensions_convert_array_to_bytes(this._Array2DType, src, dst, rows, columns);
+                    var ret = NativeMethods.extensions_convert_array_to_bytes(this._Array2DType, src, dst, rows, columns);
                     switch (ret)
                     {
-                        case Dlib.Native.ErrorType.ArrayTypeNotSupport:
+                        case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                             throw new ArgumentException($"Cannot convert Array2D<{this.ImageType}> to byte array.");
                     }
                     return dst;
@@ -223,6 +223,9 @@ namespace DlibDotNet
 
         #region Overrides 
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -230,7 +233,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.array2d_delete(this._Array2DType, this.NativePtr);
+            NativeMethods.array2d_delete(this._Array2DType, this.NativePtr);
         }
 
         #endregion
@@ -277,6 +280,9 @@ namespace DlibDotNet
 
             #region Overrides 
 
+            /// <summary>
+            /// Releases all unmanaged resources.
+            /// </summary>
             protected override void DisposeUnmanaged()
             {
                 base.DisposeUnmanaged();
@@ -284,7 +290,7 @@ namespace DlibDotNet
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                Dlib.Native.array2d_row_delete(this._Type.ToNativeArray2DType(), this.NativePtr);
+                NativeMethods.array2d_row_delete(this._Type.ToNativeArray2DType(), this.NativePtr);
             }
 
             #endregion
@@ -313,7 +319,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     byte value;
-                    Dlib.Native.array2d_get_row_column_uint8_t(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_uint8_t(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -321,7 +327,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_uint8_t(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_uint8_t(this.NativePtr, column, value);
                 }
             }
 
@@ -351,7 +357,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     ushort value;
-                    Dlib.Native.array2d_get_row_column_uint16_t(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_uint16_t(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -359,7 +365,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_uint16_t(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_uint16_t(this.NativePtr, column, value);
                 }
             }
 
@@ -389,7 +395,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     uint value;
-                    Dlib.Native.array2d_get_row_column_uint32_t(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_uint32_t(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -397,7 +403,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_uint32_t(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_uint32_t(this.NativePtr, column, value);
                 }
             }
 
@@ -427,7 +433,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     sbyte value;
-                    Dlib.Native.array2d_get_row_column_int8_t(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_int8_t(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -435,7 +441,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_int8_t(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_int8_t(this.NativePtr, column, value);
                 }
             }
 
@@ -465,7 +471,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     short value;
-                    Dlib.Native.array2d_get_row_column_int16_t(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_int16_t(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -473,7 +479,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_int16_t(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_int16_t(this.NativePtr, column, value);
                 }
             }
 
@@ -503,7 +509,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     int value;
-                    Dlib.Native.array2d_get_row_column_int32_t(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_int32_t(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -511,7 +517,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_int32_t(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_int32_t(this.NativePtr, column, value);
                 }
             }
 
@@ -541,7 +547,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     float value;
-                    Dlib.Native.array2d_get_row_column_float(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_float(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -549,7 +555,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_float(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_float(this.NativePtr, column, value);
                 }
             }
 
@@ -579,7 +585,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException(); ;
 
                     double value;
-                    Dlib.Native.array2d_get_row_column_double(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_double(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -587,7 +593,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_double(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_double(this.NativePtr, column, value);
                 }
             }
 
@@ -617,7 +623,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     RgbPixel value;
-                    Dlib.Native.array2d_get_row_column_rgb_pixel(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_rgb_pixel(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -625,7 +631,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_rgb_pixel(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_rgb_pixel(this.NativePtr, column, value);
                 }
             }
 
@@ -655,7 +661,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     RgbAlphaPixel value;
-                    Dlib.Native.array2d_get_row_column_rgb_alpha_pixel(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_rgb_alpha_pixel(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -663,7 +669,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_rgb_alpha_pixel(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_rgb_alpha_pixel(this.NativePtr, column, value);
                 }
             }
 
@@ -693,7 +699,7 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     HsiPixel value;
-                    Dlib.Native.array2d_get_row_column_hsi_pixel(this.NativePtr, column, out value);
+                    NativeMethods.array2d_get_row_column_hsi_pixel(this.NativePtr, column, out value);
                     return value;
                 }
                 set
@@ -701,7 +707,7 @@ namespace DlibDotNet
                     if (!(0 <= column && column < this._Parent.Columns))
                         throw new IndexOutOfRangeException();
 
-                    Dlib.Native.array2d_set_row_column_hsi_pixel(this.NativePtr, column, value);
+                    NativeMethods.array2d_set_row_column_hsi_pixel(this.NativePtr, column, value);
                 }
             }
 

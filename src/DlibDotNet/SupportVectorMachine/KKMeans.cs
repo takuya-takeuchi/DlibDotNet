@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -13,7 +12,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static IEnumerable<Matrix<T>> FindClustersUsingAngularKMeans<T>( IEnumerable<Matrix<T>> samples, IEnumerable<Matrix<T>> centers, uint maxIteration = 1000)
+        public static IEnumerable<Matrix<T>> FindClustersUsingAngularKMeans<T>(IEnumerable<Matrix<T>> samples, IEnumerable<Matrix<T>> centers, uint maxIteration = 1000)
             where T : struct
         {
             if (samples == null)
@@ -40,23 +39,24 @@ namespace DlibDotNet
             var templateRow = sample.TemplateRows;
             var templateColumn = sample.TemplateColumns;
 
-            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, new[] { templateRow, templateColumn }))
-            using (var inCenters = new StdVector<Matrix<T>>(centerArray, new[] { templateRow, templateColumn }))
-            using (var outResult = new StdVector<Matrix<T>>(new[] { templateRow, templateColumn }))
+            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, param))
+            using (var inCenters = new StdVector<Matrix<T>>(centerArray, param))
+            using (var outResult = new StdVector<Matrix<T>>(param))
             {
                 var type = sample.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.find_clusters_using_angular_kmeans(type,
-                                                                    templateRow,
-                                                                    templateColumn,
-                                                                    inCenters.NativePtr,
-                                                                    inSamples.NativePtr,
-                                                                    maxIteration,
-                                                                    outResult.NativePtr);
+                var ret = NativeMethods.find_clusters_using_angular_kmeans(type,
+                                                                           templateRow,
+                                                                           templateColumn,
+                                                                           inCenters.NativePtr,
+                                                                           inSamples.NativePtr,
+                                                                           maxIteration,
+                                                                           outResult.NativePtr);
                 switch (ret)
                 {
-                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{type} is not supported.");
-                    case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(sample.TemplateColumns)} or {nameof(sample.TemplateRows)} is not supported.");
                 }
 
@@ -84,20 +84,21 @@ namespace DlibDotNet
             var templateRow = sample.TemplateRows;
             var templateColumn = sample.TemplateColumns;
 
-            using (var inCenters = new StdVector<Matrix<T>>(centerArray, templateRow, templateColumn))
+            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inCenters = new StdVector<Matrix<T>>(centerArray, param))
             {
                 var type = sample.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.nearest_center(type,
-                                                templateRow,
-                                                templateColumn,
-                                                inCenters.NativePtr,
-                                                sample.NativePtr,
-                                                out var result);
+                var ret = NativeMethods.nearest_center(type,
+                                                       templateRow,
+                                                       templateColumn,
+                                                       inCenters.NativePtr,
+                                                       sample.NativePtr,
+                                                       out var result);
                 switch (ret)
                 {
-                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{type} is not supported.");
-                    case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(sample.TemplateColumns)} or {nameof(sample.TemplateRows)} is not supported.");
                 }
 
@@ -131,23 +132,24 @@ namespace DlibDotNet
                     throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateColumns)} of {typeof(Matrix<T>).Name}", nameof(samples));
             }
 
-            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, templateRow, templateColumn))
-            using (var outCenters = new StdVector<Matrix<T>>(0, new[] { templateRow, templateColumn }))
+            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, param))
+            using (var outCenters = new StdVector<Matrix<T>>(0, param))
             {
                 var type = first.MatrixElementType.ToNativeMatrixElementType();
-                var ret = Native.pick_initial_centers(type,
-                                                      templateRow,
-                                                      templateColumn,
-                                                      numberCenters,
-                                                      outCenters.NativePtr,
-                                                      inSamples.NativePtr,
-                                                      k.NativePtr,
-                                                      percentile);
+                var ret = NativeMethods.pick_initial_centers(type,
+                                                             templateRow,
+                                                             templateColumn,
+                                                             numberCenters,
+                                                             outCenters.NativePtr,
+                                                             inSamples.NativePtr,
+                                                             k.NativePtr,
+                                                             percentile);
                 switch (ret)
                 {
-                    case Native.ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{type} is not supported.");
-                    case Native.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(first.TemplateColumns)} or {nameof(first.TemplateRows)} is not supported.");
                 }
 
@@ -156,38 +158,6 @@ namespace DlibDotNet
         }
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType nearest_center(MatrixElementType type,
-                                                          int templateRows,
-                                                          int templateColumns,
-                                                          IntPtr centers,
-                                                          IntPtr sample,
-                                                          out uint ret);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType find_clusters_using_angular_kmeans(MatrixElementType type,
-                                                                              int templateRows,
-                                                                              int templateColumns,
-                                                                              IntPtr centers,
-                                                                              IntPtr samples,
-                                                                              uint max_iter,
-                                                                              IntPtr result);
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType pick_initial_centers(MatrixElementType elementType,
-                                                                int templateRows,
-                                                                int templateColumns,
-                                                                long num_centers,
-                                                                IntPtr centers,
-                                                                IntPtr samples,
-                                                                IntPtr k,
-                                                                double percentile);
-
-        }
 
     }
 

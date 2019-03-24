@@ -6,17 +6,21 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// This class provides methods and properties to compute the running mean, variance, skewness, and excess kurtosis of a stream of real numbers.
+    /// </summary>
+    /// <typeparam name="TKernel">The type of real numbers.</typeparam>
     public sealed class RunningStats<TKernel> : DlibObject
         where TKernel : struct
     {
 
         #region Fields
 
-        private readonly Dlib.Native.RunningStatsType _RunningStatsType;
+        private readonly NativeMethods.RunningStatsType _RunningStatsType;
 
-        private readonly RunningStatsTypes _Type;
+        private readonly RunningStatsType _Type;
 
-        private static readonly Dictionary<Type, RunningStatsTypes> SupportTypes = new Dictionary<Type, RunningStatsTypes>();
+        private static readonly Dictionary<Type, RunningStatsType> SupportTypes = new Dictionary<Type, RunningStatsType>();
 
         private readonly RunningStatsImp<TKernel> _Imp;
 
@@ -28,14 +32,17 @@ namespace DlibDotNet
         {
             var types = new[]
             {
-                new { Type = typeof(float),         ElementType = RunningStatsTypes.Float  },
-                new { Type = typeof(double),        ElementType = RunningStatsTypes.Double }
+                new { Type = typeof(float),         ElementType = RunningStatsType.Float  },
+                new { Type = typeof(double),        ElementType = RunningStatsType.Double }
             };
 
             foreach (var type in types)
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RunningStats{TTKernel}"/> class.
+        /// </summary>
         public RunningStats()
         {
             if (!SupportTypes.TryGetValue(typeof(TKernel), out var type))
@@ -43,7 +50,7 @@ namespace DlibDotNet
 
             this._RunningStatsType = type.ToRunningStatsType();
 
-            this.NativePtr = Dlib.Native.running_stats_new(this._RunningStatsType);
+            this.NativePtr = NativeMethods.running_stats_new(this._RunningStatsType);
             if (this.NativePtr == IntPtr.Zero)
                 throw new ArgumentException($"{type} is not supported.");
 
@@ -51,10 +58,10 @@ namespace DlibDotNet
 
             switch (this._Type)
             {
-                case RunningStatsTypes.Float:
+                case RunningStatsType.Float:
                     this._Imp = new RunningStatsFloatImp(this, this._RunningStatsType) as RunningStatsImp<TKernel>;
                     break;
-                case RunningStatsTypes.Double:
+                case RunningStatsType.Double:
                     this._Imp = new RunningStatsDoubleImp(this, this._RunningStatsType) as RunningStatsImp<TKernel>;
                     break;
             }
@@ -64,8 +71,14 @@ namespace DlibDotNet
 
         #region Properties
 
-        public RunningStatsTypes RunningStatsType => this._Type;
+        /// <summary>
+        /// Gets the type of real numbers.
+        /// </summary>
+        public RunningStatsType RunningStatsType => this._Type;
 
+        /// <summary>
+        /// Gets the number of points given to this object so far.
+        /// </summary>
         public TKernel CurrentN
         {
             get
@@ -75,6 +88,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the unbiased sample kurtosis of all the values presented to this object so far.
+        /// </summary>
         public TKernel ExcessKurtosis
         {
             get
@@ -84,6 +100,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the largest value presented to this object so far.
+        /// </summary>
         public TKernel Max
         {
             get
@@ -93,6 +112,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the mean of all the values presented to this object so far.
+        /// </summary>
         public TKernel Mean
         {
             get
@@ -102,6 +124,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the smallest value presented to this object so far.
+        /// </summary>
         public TKernel Min
         {
             get
@@ -111,6 +136,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the unbiased sample skewness of all the values presented to this object so far.
+        /// </summary>
         public TKernel Skewness
         {
             get
@@ -120,6 +148,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the unbiased sampled standard deviation of all the values presented to this object so far.
+        /// </summary>
         public TKernel StdDev
         {
             get
@@ -129,6 +160,9 @@ namespace DlibDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the unbiased sample variance of all the values presented to this object so far.
+        /// </summary>
         public TKernel Variance
         {
             get
@@ -148,10 +182,13 @@ namespace DlibDotNet
             this._Imp.Add(value);
         }
 
+        /// <summary>
+        /// Clears all points given to this object so far.
+        /// </summary>
         public void Clear()
         {
             this.ThrowIfDisposed();
-            Dlib.Native.running_stats_clear(this._RunningStatsType, this.NativePtr);
+            NativeMethods.running_stats_clear(this._RunningStatsType, this.NativePtr);
         }
 
         public TKernel Scale(TKernel scale)
@@ -161,8 +198,11 @@ namespace DlibDotNet
             return value;
         }
 
-        #region Overrides 
+        #region Overrides
 
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
         protected override void DisposeUnmanaged()
         {
             base.DisposeUnmanaged();
@@ -170,7 +210,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            Dlib.Native.running_stats_delete(this._RunningStatsType, this.NativePtr);
+            NativeMethods.running_stats_delete(this._RunningStatsType, this.NativePtr);
         }
 
         #endregion
@@ -185,13 +225,13 @@ namespace DlibDotNet
 
             protected readonly DlibObject _Parent;
 
-            protected readonly Dlib.Native.RunningStatsType _Type;
+            protected readonly NativeMethods.RunningStatsType _Type;
 
             #endregion
 
             #region Constructors
 
-            protected RunningStatsImp(DlibObject parent, Dlib.Native.RunningStatsType type)
+            protected RunningStatsImp(DlibObject parent, NativeMethods.RunningStatsType type)
             {
                 this._Parent = parent;
                 this._Type = type;
@@ -258,7 +298,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal RunningStatsFloatImp(DlibObject parent, Dlib.Native.RunningStatsType type)
+            internal RunningStatsFloatImp(DlibObject parent, NativeMethods.RunningStatsType type)
                 : base(parent, type)
             {
             }
@@ -272,7 +312,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_current_n(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_current_n(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -282,7 +322,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_ex_kurtosis(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_ex_kurtosis(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -292,7 +332,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_max(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_max(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -302,7 +342,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_mean(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_mean(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -312,7 +352,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_min(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_min(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -322,7 +362,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_skewness(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_skewness(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -332,7 +372,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_stddev(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_stddev(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -342,7 +382,7 @@ namespace DlibDotNet
                 get
                 {
                     float value;
-                    Dlib.Native.running_stats_variance(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_variance(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -353,12 +393,12 @@ namespace DlibDotNet
 
             public override void Add(float value)
             {
-                Dlib.Native.running_stats_add(this._Type, this._Parent.NativePtr, ref value);
+                NativeMethods.running_stats_add(this._Type, this._Parent.NativePtr, ref value);
             }
 
             public override void Scale(float scale, out float ret)
             {
-                Dlib.Native.running_stats_scale(this._Type, this._Parent.NativePtr, ref scale, out ret);
+                NativeMethods.running_stats_scale(this._Type, this._Parent.NativePtr, ref scale, out ret);
             }
 
             #endregion
@@ -370,7 +410,7 @@ namespace DlibDotNet
 
             #region Constructors
 
-            internal RunningStatsDoubleImp(DlibObject parent, Dlib.Native.RunningStatsType type)
+            internal RunningStatsDoubleImp(DlibObject parent, NativeMethods.RunningStatsType type)
                 : base(parent, type)
             {
             }
@@ -384,7 +424,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_current_n(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_current_n(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -394,7 +434,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_ex_kurtosis(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_ex_kurtosis(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -404,7 +444,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_max(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_max(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -414,7 +454,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_mean(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_mean(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -424,7 +464,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_min(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_min(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -434,7 +474,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_skewness(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_skewness(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -444,7 +484,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_stddev(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_stddev(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -454,7 +494,7 @@ namespace DlibDotNet
                 get
                 {
                     double value;
-                    Dlib.Native.running_stats_variance(this._Type, this._Parent.NativePtr, out value);
+                    NativeMethods.running_stats_variance(this._Type, this._Parent.NativePtr, out value);
                     return value;
                 }
             }
@@ -465,12 +505,12 @@ namespace DlibDotNet
 
             public override void Add(double value)
             {
-                Dlib.Native.running_stats_add(this._Type, this._Parent.NativePtr, ref value);
+                NativeMethods.running_stats_add(this._Type, this._Parent.NativePtr, ref value);
             }
 
             public override void Scale(double scale, out double ret)
             {
-                Dlib.Native.running_stats_scale(this._Type, this._Parent.NativePtr, ref scale, out ret);
+                NativeMethods.running_stats_scale(this._Type, this._Parent.NativePtr, ref scale, out ret);
             }
 
             #endregion

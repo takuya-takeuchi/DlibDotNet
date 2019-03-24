@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -29,19 +28,19 @@ namespace DlibDotNet
                 throw new NotSupportedException();
 
             var inType = image.MatrixElementType.ToNativeMatrixElementType();
-            var ret = Native.create_tiled_pyramid(inType,
-                                                  image.NativePtr,
-                                                  pyramidType,
-                                                  pyramidRate,
-                                                  padding,
-                                                  outerPadding,
-                                                  out var outImg,
-                                                  out var vecRects);
+            var ret = NativeMethods.create_tiled_pyramid(inType,
+                                                         image.NativePtr,
+                                                         pyramidType,
+                                                         pyramidRate,
+                                                         padding,
+                                                         outerPadding,
+                                                         out var outImg,
+                                                         out var vecRects);
             switch (ret)
             {
-                case Native.ErrorType.MatrixElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
-                case Native.ErrorType.PyramidNotSupportRate:
+                case NativeMethods.ErrorType.PyramidNotSupportRate:
                     throw new NotSupportedException();
             }
 
@@ -53,21 +52,6 @@ namespace DlibDotNet
 
 
         #endregion
-
-        internal sealed partial class Native
-        {
-
-            [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-            public static extern ErrorType create_tiled_pyramid(MatrixElementType img_type,
-                                                                IntPtr img,
-                                                                PyramidType pyramidType,
-                                                                uint pyramidRate,
-                                                                uint padding,
-                                                                uint outer_padding,
-                                                                out IntPtr out_img,
-                                                                out IntPtr rects);
-
-        }
 
     }
 

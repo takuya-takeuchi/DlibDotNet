@@ -8,7 +8,7 @@
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -31,7 +31,7 @@ DLLEXPORT void render_face_detections(const std::vector<full_object_detection*>*
 DLLEXPORT void render_face_detections2(full_object_detection* det, rgb_pixel* p, std::vector<image_window::overlay_line*>* rets)
 {
     std::vector<image_window::overlay_line> ret = dlib::render_face_detections(*det, *p);
-    
+
     for (int index = 0 ; index < ret.size(); index++)
     {
         image_window::overlay_line* line = new image_window::overlay_line();

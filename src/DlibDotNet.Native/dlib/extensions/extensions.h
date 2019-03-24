@@ -6,62 +6,42 @@
 #include <dlib/pixel.h>
 #include "../shared.h"
 
-#define ELEMENT element
-#undef ELEMENT
-
 using namespace dlib;
 
 #pragma region template
 
-#define ELEMENT element
-#undef ELEMENT
+#define extensions_matrix_to_array_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, src, dst) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& s = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(src));\
+__TYPE__* d = static_cast<__TYPE__*>(dst);\
+const uint32_t rows = s.nr();\
+const uint32_t columns = s.nc();\
+for (uint32_t r = 0; r < rows; r++)\
+for (uint32_t c = 0, step = r * columns; c < columns; c++)\
+    d[step + c] = s(r, c);\
 
-#define extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, ret) \
+#define extensions_matrix_to_array_template(__TYPE__, __ROWS__, __COLUMNS__, error, src, dst) \
 do {\
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        dlib::matrix<ELEMENT>& s = *(static_cast<dlib::matrix<ELEMENT>*>(src));\
-        ELEMENT* d = static_cast<ELEMENT*>(dst);\
-        const uint32_t rows = s.nr();\
-        const uint32_t columns = s.nc();\
-        for (uint32_t r = 0; r < rows; r++)\
-        for (uint32_t c = 0, step = r * columns; c < columns; c++)\
-            d[step + c] = s(r, c);\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        dlib::matrix<ELEMENT, 0, 1>& s = *(static_cast<dlib::matrix<ELEMENT, 0, 1>*>(src));\
-        ELEMENT* d = static_cast<ELEMENT*>(dst);\
-        const uint32_t rows = s.nr();\
-        const uint32_t columns = s.nc();\
-        for (uint32_t r = 0; r < rows; r++)\
-        for (uint32_t c = 0, step = r * columns; c < columns; c++)\
-            d[step + c] = s(r, c);\
-    }\
-    else\
-    {\
-        ret = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, extensions_matrix_to_array_template_sub, error, src, dst);\
 } while (0)
 
-#define extensions_convert_array_to_bytes_template(src, dst, rows, columns) \
+#define extensions_convert_array_to_bytes_template(__TYPE__, src, dst, rows, columns) \
 do {\
-    dlib::array2d<ELEMENT>& s = *(static_cast<dlib::array2d<ELEMENT>*>(src));\
+    dlib::array2d<__TYPE__>& s = *(static_cast<dlib::array2d<__TYPE__>*>(src));\
     auto d = static_cast<uint8_t*>(dst);\
     for (uint32_t r = 0; r < rows; r++)\
-    for (uint32_t c = 0, dst_row = (columns * sizeof(ELEMENT)) * r, dst_column = 0; c < columns; c++, dst_column += sizeof(ELEMENT))\
-        memcpy(&d[dst_row + dst_column], &(s[r][c]), sizeof(ELEMENT));\
+    for (uint32_t c = 0, dst_row = (columns * sizeof(__TYPE__)) * r, dst_column = 0; c < columns; c++, dst_column += sizeof(__TYPE__))\
+        memcpy(&d[dst_row + dst_column], &(s[r][c]), sizeof(__TYPE__));\
 } while (0)
 
 #pragma endregion template
 
 #pragma region extensions_load_image_data
 
-#define extensions_load_image_data_from_to_sametype(data, rows, columns, steps) \
+#define extensions_load_image_data_from_to_sametype(__TYPE__, data, rows, columns, steps) \
 do { \
-    dlib::array2d<ELEMENT>* ret = new dlib::array2d<ELEMENT>(rows, columns);\
-    dlib::array2d<ELEMENT>& dst = *(ret);\
-    ELEMENT* src = static_cast<ELEMENT*>(data);\
+    dlib::array2d<__TYPE__>* ret = new dlib::array2d<__TYPE__>(rows, columns);\
+    dlib::array2d<__TYPE__>& dst = *(ret);\
+    __TYPE__* src = static_cast<__TYPE__*>(data);\
     for (uint32_t r = 0; r < rows; r++)\
     for (uint32_t c = 0; c < columns; c++)\
         dst[r][c] = src[steps * r + c];\
@@ -78,9 +58,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from uint8_t to uint8_t
                     case array2d_type::UInt8:
-                        #define ELEMENT uint8_t
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(uint8_t, data, rows, columns, steps);
                     case array2d_type::UInt16:
                     case array2d_type::Int16:
                     case array2d_type::Int32:
@@ -99,9 +77,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from uint16_t to uint16_t
                     case array2d_type::UInt16:
-                        #define ELEMENT uint16_t
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(uint16_t, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::Int16:
                     case array2d_type::Int32:
@@ -120,9 +96,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from int16_t to int16_t
                     case array2d_type::Int16:
-                        #define ELEMENT int16_t
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(int16_t, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::UInt16:
                     case array2d_type::Int32:
@@ -141,9 +115,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from int32_t to int32_t
                     case array2d_type::Int32:
-                        #define ELEMENT int32_t
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(int32_t, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::UInt16:
                     case array2d_type::Int16:
@@ -162,9 +134,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from float to float
                     case array2d_type::Float:
-                        #define ELEMENT float
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(float, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::UInt16:
                     case array2d_type::Int16:
@@ -183,9 +153,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from double to double
                     case array2d_type::Double:
-                        #define ELEMENT double
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(double, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::UInt16:
                     case array2d_type::Int16:
@@ -204,9 +172,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from rgb_pixel to rgb_pixel
                     case array2d_type::RgbPixel:
-                        #define ELEMENT rgb_pixel
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(rgb_pixel, data, rows, columns, steps);
                     case array2d_type::UInt8:
                         {
                             dlib::array2d<rgb_pixel>* ret = new dlib::array2d<rgb_pixel>(rows, columns);
@@ -221,7 +187,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                                     drow[c].red   = src[src_row + dst_column + 2];
                                     drow[c].green = src[src_row + dst_column + 1];
                                     drow[c].blue  = src[src_row + dst_column + 0];
-                                }   
+                                }
                             }
                             return ret;
                         }
@@ -243,9 +209,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from rgb_alpha_pixel to rgb_alpha_pixel
                     case array2d_type::RgbAlphaPixel:
-                        #define ELEMENT rgb_alpha_pixel
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(rgb_alpha_pixel, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::UInt16:
                     case array2d_type::Int16:
@@ -264,9 +228,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                 {
                     // from hsi_pixel to hsi_pixel
                     case array2d_type::HsiPixel:
-                        #define ELEMENT hsi_pixel
-                        extensions_load_image_data_from_to_sametype(data, rows, columns, steps);
-                        #undef ELEMENT
+                        extensions_load_image_data_from_to_sametype(hsi_pixel, data, rows, columns, steps);
                     case array2d_type::UInt8:
                     case array2d_type::UInt16:
                     case array2d_type::Int16:
@@ -275,6 +237,179 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
                     case array2d_type::RgbAlphaPixel:
+                    default:
+                        return nullptr;
+                }
+            }
+        default:
+			return nullptr;
+    }
+}
+
+DLLEXPORT void* extensions_load_image_data2(array2d_type dst_type, array2d_type src_type, image_pixel_format_type pixel_type, void* data, uint32_t rows, uint32_t columns, uint32_t steps)
+{
+    switch(src_type)
+    {
+        case array2d_type::UInt8:
+            {
+                switch(dst_type)
+                {
+                    case array2d_type::RgbPixel:
+                        {
+                            switch(pixel_type)
+                            {
+                                case image_pixel_format_type::Bgr:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Bgra:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgb:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgba:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            dst[r][c] = rgb_pixel(red, green, blue);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                default:
+                                    return nullptr;
+                            }
+                        }
+                        break;
+                    case array2d_type::RgbAlphaPixel:
+                        {
+                            switch(pixel_type)
+                            {
+                                case image_pixel_format_type::Bgr:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, 255);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Bgra:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 0];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 2];
+                                            auto alpha = src[steps * r + c * channels + 3];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, alpha);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgb:
+                                    {
+                                        const int channels = 3;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, 255);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                case image_pixel_format_type::Rgba:
+                                    {
+                                        const int channels = 4;
+                                        auto ret = new dlib::array2d<rgb_alpha_pixel>(rows, columns);
+                                        auto& dst = *(ret);
+                                        auto src = static_cast<uint8_t*>(data);
+                                        for (uint32_t r = 0; r < rows; r++)
+                                        for (uint32_t c = 0; c < columns; c++)
+                                        {
+                                            auto blue  = src[steps * r + c * channels + 2];
+                                            auto green = src[steps * r + c * channels + 1];
+                                            auto red   = src[steps * r + c * channels + 0];
+                                            auto alpha = src[steps * r + c * channels + 3];
+                                            dst[r][c] = rgb_alpha_pixel(red, green, blue, alpha);
+                                        }
+                                        return ret;
+                                    }
+                                    break;
+                                default:
+                                    return nullptr;
+                            }
+                        }
+                        break;
                     default:
                         return nullptr;
                 }
@@ -414,7 +549,7 @@ DLLEXPORT void extensions_convert_managed_image_to_array(void* src, array2d_type
                 }
             }
             break;
-        case array2d_type::RgbAlphaPixel:        
+        case array2d_type::RgbAlphaPixel:
             {
                 dlib::array2d<dlib::rgb_alpha_pixel>& d = *(static_cast<dlib::array2d<dlib::rgb_alpha_pixel>*>(dst));
                 uint8_t* s = static_cast<uint8_t*>(src);
@@ -655,7 +790,7 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix(void* src, matrix_elem
                 }
             }
             break;
-        case matrix_element_type::RgbAlphaPixel:        
+        case matrix_element_type::RgbAlphaPixel:
             {
                 dlib::matrix<dlib::rgb_alpha_pixel>& d = *(static_cast<dlib::matrix<dlib::rgb_alpha_pixel>*>(dst));
                 uint8_t* s = static_cast<uint8_t*>(src);
@@ -739,69 +874,47 @@ DLLEXPORT void extensions_convert_managed_image_to_matrix_by_palette(void* src, 
 
 DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, const int templateRows, const int templateColumns, void* dst)
 {
-    int err = ERR_OK; 
-    switch(type) 
-    { 
+    int err = ERR_OK;
+    switch(type)
+    {
         case matrix_element_type::UInt8:
-            #define ELEMENT uint8_t
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(uint8_t, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::UInt16:
-            #define ELEMENT uint16_t
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(uint16_t, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::UInt32:
-            #define ELEMENT uint32_t
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(uint32_t, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::Int8:
-            #define ELEMENT int8_t
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(int8_t, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::Int16:
-            #define ELEMENT int16_t
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(int16_t, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::Int32:
-            #define ELEMENT int32_t
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(int32_t, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::Float:
-            #define ELEMENT float
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(float, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::Double:
-            #define ELEMENT double
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(double, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::RgbPixel:
-            #define ELEMENT rgb_pixel
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(rgb_pixel, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::HsiPixel:
-            #define ELEMENT hsi_pixel
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
+            extensions_matrix_to_array_template(hsi_pixel, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::RgbAlphaPixel:
-            #define ELEMENT rgb_alpha_pixel
-            extensions_matrix_to_array_template(src, dst, templateRows, templateColumns, err);
-            #undef ELEMENT
-            break; 
-        default: 
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
-            break; 
-    } 
- 
+            extensions_matrix_to_array_template(rgb_alpha_pixel, templateRows, templateColumns, err, src, dst);
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
     return err;
 }
 
@@ -816,62 +929,40 @@ DLLEXPORT int extensions_convert_array_to_bytes(array2d_type src_type, void* src
     switch(src_type)
     {
         case array2d_type::UInt8:
-            #define ELEMENT uint8_t
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(uint8_t, src, dst, rows, columns);
             break;
         case array2d_type::Int8:
-            #define ELEMENT int8_t
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(int8_t, src, dst, rows, columns);
             break;
         case array2d_type::UInt16:
-            #define ELEMENT uint16_t
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(uint16_t, src, dst, rows, columns);
             break;
         case array2d_type::Int16:
-            #define ELEMENT int16_t
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(int16_t, src, dst, rows, columns);
             break;
         case array2d_type::UInt32:
-            #define ELEMENT uint32_t
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(uint32_t, src, dst, rows, columns);
             break;
         case array2d_type::Int32:
-            #define ELEMENT int32_t
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(int32_t, src, dst, rows, columns);
             break;
         case array2d_type::Float:
-            #define ELEMENT float
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(float, src, dst, rows, columns);
             break;
         case array2d_type::Double:
-            #define ELEMENT double
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(double, src, dst, rows, columns);
             break;
         case array2d_type::RgbPixel:
-            #define ELEMENT dlib::rgb_pixel
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(dlib::rgb_pixel, src, dst, rows, columns);
             break;
         case array2d_type::RgbAlphaPixel:
-            #define ELEMENT dlib::rgb_alpha_pixel
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(dlib::rgb_alpha_pixel, src, dst, rows, columns);
             break;
         case array2d_type::HsiPixel:
-            #define ELEMENT dlib::hsi_pixel
-            extensions_convert_array_to_bytes_template(src, dst, rows, columns);
-            #undef ELEMENT
+            extensions_convert_array_to_bytes_template(dlib::hsi_pixel, src, dst, rows, columns);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 

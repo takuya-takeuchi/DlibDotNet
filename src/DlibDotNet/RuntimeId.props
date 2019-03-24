@@ -1,0 +1,31 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <DefaultOSGroup Condition="'$(OS)'=='Unix' AND Exists('/Applications')">osx</DefaultOSGroup>
+    <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Unix' AND $([MSBuild]::IsOSPlatform('FREEBSD'))">linux</DefaultOSGroup>
+    <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Unix' AND $([MSBuild]::IsOSPlatform('NETBSD'))">linux</DefaultOSGroup>
+    <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Windows_NT' AND $([MSBuild]::IsOSPlatform('Windows'))">win</DefaultOSGroup>
+    <DefaultOSGroup Condition="'$(DefaultOSGroup)'=='' AND '$(OS)'=='Unix'">linux</DefaultOSGroup>
+    <DefaultOSGroup Condition="'$(DefaultOSGroup)'==''">win</DefaultOSGroup>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OSGroup Condition="'$(OSGroup)' == ''">$(DefaultOSGroup)</OSGroup>
+    <ArchGroup Condition="'$(ArchGroup)' == ''">x64</ArchGroup>
+    <RuntimeId Condition="'$(RuntimeId)' == ''">$(OSGroup)-$(ArchGroup)</RuntimeId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeId)'=='linux-x64'">
+      <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeId)'=='osx-x64'">
+      <DefineConstants>$(DefineConstants);OSX;MAC</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeId)'=='win-x64'">
+      <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+  </PropertyGroup>
+
+
+ </Project>

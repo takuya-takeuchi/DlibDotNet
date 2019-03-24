@@ -40,7 +40,7 @@ do {\
             dlib::extract_fhog_features(*((array2d<ARRAY2D_ELEMENT>*)img), *((array2d<matrix<double, 31, 1>>*)hog), cell_size, filter_rows_padding, filter_cols_padding);\
             break;\
         default:\
-            ret = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
             break;\
     }\
 } while (0)
@@ -81,21 +81,20 @@ do {\
             }\
             break;\
         default:\
-            ret = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
             break;\
     }\
 } while (0)
 
 #pragma endregion template
 
-DLLEXPORT int extract_fhog_features(
-    array2d_type img_type,
-    void* img,
-    matrix_element_type hog_type,
-    void* hog,
-    int cell_size,
-    int filter_rows_padding,
-    int filter_cols_padding)
+DLLEXPORT int extract_fhog_features(array2d_type img_type,
+                                    void* img,
+                                    matrix_element_type hog_type,
+                                    void* hog,
+                                    int cell_size,
+                                    int filter_rows_padding,
+                                    int filter_cols_padding)
 {
     int err = ERR_OK;
     switch(img_type)
@@ -156,7 +155,7 @@ DLLEXPORT int extract_fhog_features(
             #undef ARRAY2D_ELEMENT
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -208,21 +207,20 @@ DLLEXPORT int extract_fhog_features2(array2d_type img_type,
             extract_fhog_features2_template(rgb_alpha_pixel);
             break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
     return err;
 }
 
-DLLEXPORT int extract_fhog_features_array(
-    array2d_type img_type,
-    void* img,
-    array2d_type hog_type,
-    void* hog,
-    int cell_size,
-    int filter_rows_padding,
-    int filter_cols_padding)
+DLLEXPORT int extract_fhog_features_array(array2d_type img_type,
+                                          void* img,
+                                          array2d_type hog_type,
+                                          void* hog,
+                                          int cell_size,
+                                          int filter_rows_padding,
+                                          int filter_cols_padding)
 {
     int err = ERR_OK;
     switch(img_type)
@@ -261,7 +259,7 @@ DLLEXPORT int extract_fhog_features_array(
             // #define ARRAY2D_ELEMENT rgb_pixel
             // extract_fhog_features_array_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
             // #undef ARRAY2D_ELEMENT
-            {                
+            {
                 dlib::array<array2d<float>> in_tmp;
                 dlib::extract_fhog_features(*((array2d<rgb_pixel>*)img), in_tmp, cell_size, filter_rows_padding, filter_cols_padding);
                 dlib::array<array2d<float>*>* tmp = static_cast<dlib::array<array2d<float>*>*>(hog);
@@ -274,7 +272,7 @@ DLLEXPORT int extract_fhog_features_array(
                     for (int r = 0; r < a.nr(); r++)
                         for (int c = 0; c < a.nc(); c++)
                             ref[r][c] = a[r][c];
-                    
+
                     tmp->push_back(cpy);
                 }
             }
@@ -290,18 +288,18 @@ DLLEXPORT int extract_fhog_features_array(
         //     #undef ARRAY2D_ELEMENT
         //     break;
         default:
-            err = ERR_INPUT_ARRAY_TYPE_NOT_SUPPORT;
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
 
     return err;
 }
 
-DLLEXPORT point* image_to_fhog(point* p, int cell_size, int filter_rows_padding, int filter_cols_padding) 
-{ 
-    auto ret = dlib::image_to_fhog(*p, cell_size, filter_rows_padding, filter_cols_padding); 
-    return new point(ret); 
-}  
+DLLEXPORT point* image_to_fhog(point* p, int cell_size, int filter_rows_padding, int filter_cols_padding)
+{
+    auto ret = dlib::image_to_fhog(*p, cell_size, filter_rows_padding, filter_cols_padding);
+    return new point(ret);
+}
 
 #pragma region draw_fhog
 
@@ -327,14 +325,14 @@ DLLEXPORT int draw_fhog(const matrix_element_type hog_type,
             }
             break;
         default:\
-            ret = ERR_OUTPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
     return ret;
 }
 
-DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyramid_type, 
+DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyramid_type,
                                                           const unsigned int pyramid_rate,
                                                           const fhog_feature_extractor_type extractor_type,
                                                           void* detector,
@@ -343,10 +341,10 @@ DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyr
                                                           void** out_matrix)
 {
     int err = ERR_OK;
-    
+
     switch(pyramid_type)
     {
-        case pyramid_type::Down:
+        case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
                 switch(extractor_type)
@@ -398,14 +396,14 @@ DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyr
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
