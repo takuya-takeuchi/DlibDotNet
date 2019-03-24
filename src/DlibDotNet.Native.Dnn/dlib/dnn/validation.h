@@ -45,7 +45,7 @@ do {\
                                                         adjust_threshold,\
                                                         oit);\
     *ret = new dlib::matrix<double,1,3>(r);\
-} while (0) 
+} while (0)
 
 #pragma endregion template
 
@@ -62,15 +62,15 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                                                  dlib::matrix<double,1,3>** ret)
 {
     int err = ERR_OK;
-    
+
     // Check type argument and cast to the proper type
     try
     {
         switch(type)
         {
             case 0:
-                {       
-                    net_type& net = *(static_cast<net_type*>(detector));         
+                {
+                    net_type& net = *(static_cast<net_type*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -102,8 +102,8 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                 }
                 break;
             case 1:
-                {       
-                    net_type_1& net = *(static_cast<net_type_1*>(detector));         
+                {
+                    net_type_1& net = *(static_cast<net_type_1*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -135,8 +135,8 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                 }
                 break;
             case 2:
-                {       
-                    net_type_2& net = *(static_cast<net_type_2*>(detector));         
+                {
+                    net_type_2& net = *(static_cast<net_type_2*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -168,8 +168,8 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                 }
                 break;
             case 3:
-                {       
-                    net_type_3& net = *(static_cast<net_type_3*>(detector));         
+                {
+                    net_type_3& net = *(static_cast<net_type_3*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -204,7 +204,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;

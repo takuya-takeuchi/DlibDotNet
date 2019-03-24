@@ -26,8 +26,8 @@ namespace RandomCropper
                 }
 
                 // First lets load a dataset
-                IEnumerable<Matrix<RgbPixel>> images;
-                IEnumerable<IEnumerable<MModRect>> boxes;
+                IList<Matrix<RgbPixel>> images;
+                IList<IList<MModRect>> boxes;
                 Dlib.LoadImageDataset(args[0], out images, out boxes);
 
                 // Here we make our random_cropper.  It has a number of options. 

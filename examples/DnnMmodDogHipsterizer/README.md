@@ -25,7 +25,7 @@ Download test data from the following urls.
 - http://dlib.net/files/mmod_dog_hipsterizer.dat.bz2
 - &lt;dlib&gt;\examples\faces\dogs.jpg
 
-And extract them and copy to extracted fiels to &lt;DnnMmodDogHipsterizer_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnMmodDogHipsterizer_dir&gt;.
 
 ## 3. Run
 

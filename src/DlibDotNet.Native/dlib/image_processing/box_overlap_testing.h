@@ -4,7 +4,7 @@
 #include "../export.h"
 #include <dlib/image_processing/box_overlap_testing.h>
 #include <dlib/geometry/rectangle.h>
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -30,6 +30,18 @@ DLLEXPORT double test_box_overlap_get_percent_covered_thresh(test_box_overlap* o
 {
 	return overlap->get_percent_covered_thresh();
 }
+
+#pragma region operator
+
+DLLEXPORT bool test_box_overlap_operator(test_box_overlap* overlap, dlib::rectangle* a, dlib::rectangle* b)
+{
+	const dlib::rectangle& ta = *a;
+	const dlib::rectangle& tb = *b;
+	test_box_overlap& tbo = *overlap;
+	return tbo(ta, tb);
+}
+
+#pragma endregion operator
 
 #pragma endregion test_box_overlap
 

@@ -21,7 +21,7 @@ template <typename SUBNET> using block_a4 = relu<con<10,1,1,1,1,max_pool<3,3,1,1
 
 // Here is inception layer definition. It uses different blocks to process input
 // and returns combined output.  Dlib includes a number of these inceptionN
-// layer types which are themselves created using concat layers.  
+// layer types which are themselves created using concat layers.
 template <typename SUBNET> using incept_a = inception4<block_a1,block_a2,block_a3,block_a4, SUBNET>;
 
 // Network can have inception layers of different structure.  It will work

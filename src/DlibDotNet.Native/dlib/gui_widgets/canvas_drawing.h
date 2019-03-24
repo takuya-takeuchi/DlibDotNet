@@ -11,9 +11,9 @@
 #include <dlib/matrix.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
- 
+
 DLLEXPORT int draw_line_canvas(
-    void* canvas, 
+    void* canvas,
     dlib::point* p1,
     dlib::point* p2,
     array2d_type type,
@@ -56,7 +56,7 @@ DLLEXPORT int draw_line_canvas(
 }
 
 DLLEXPORT int draw_line_canvas_infinity(
-   void* canvas, 
+   void* canvas,
    dlib::point* p1,
    dlib::point* p2,
    array2d_type type,
@@ -98,7 +98,7 @@ DLLEXPORT int draw_line_canvas_infinity(
 }
 
 DLLEXPORT int draw_rectangle_canvas(
-    void* canvas, 
+    void* canvas,
     dlib::rectangle* rect,
     dlib::rectangle* area,
     array2d_type type,
@@ -143,7 +143,7 @@ DLLEXPORT int draw_rectangle_canvas(
 }
 
 DLLEXPORT int draw_rectangle_canvas_infinity(
-   void* canvas, 
+   void* canvas,
    dlib::rectangle* rect,
    array2d_type type,
    void* p)

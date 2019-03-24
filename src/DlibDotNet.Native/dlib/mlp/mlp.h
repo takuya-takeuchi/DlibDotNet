@@ -11,14 +11,14 @@ using namespace std;
 
 /*
 typedef mlp_kernel_1 kernel_1a;
-typedef dlib::mlp_kernel_c<kernel_1a> kernel_1a_c; 
+typedef dlib::mlp_kernel_c<kernel_1a> kernel_1a_c;
 */
 
 DLLEXPORT void* mlp_kernel_new(
     mlp_kernel_type kernel_type,
     int nodes_in_input_layer,
-    int nodes_in_first_hidden_layer, 
-    int nodes_in_second_hidden_layer, 
+    int nodes_in_first_hidden_layer,
+    int nodes_in_second_hidden_layer,
     int nodes_in_output_layer,
     double alpha,
     double momentum)
@@ -28,8 +28,8 @@ DLLEXPORT void* mlp_kernel_new(
         case mlp_kernel_type::Kernel1:
             return new mlp_kernel_c<mlp_kernel_1>(
                 nodes_in_input_layer,
-                nodes_in_first_hidden_layer, 
-                nodes_in_second_hidden_layer, 
+                nodes_in_first_hidden_layer,
+                nodes_in_second_hidden_layer,
                 nodes_in_output_layer,
                 alpha,
                 momentum);

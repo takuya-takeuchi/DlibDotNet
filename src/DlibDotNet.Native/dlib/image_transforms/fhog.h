@@ -259,7 +259,7 @@ DLLEXPORT int extract_fhog_features_array(array2d_type img_type,
             // #define ARRAY2D_ELEMENT rgb_pixel
             // extract_fhog_features_array_template(err, img, hog_type, hog, cell_size, filter_rows_padding, filter_cols_padding);
             // #undef ARRAY2D_ELEMENT
-            {                
+            {
                 dlib::array<array2d<float>> in_tmp;
                 dlib::extract_fhog_features(*((array2d<rgb_pixel>*)img), in_tmp, cell_size, filter_rows_padding, filter_cols_padding);
                 dlib::array<array2d<float>*>* tmp = static_cast<dlib::array<array2d<float>*>*>(hog);
@@ -272,7 +272,7 @@ DLLEXPORT int extract_fhog_features_array(array2d_type img_type,
                     for (int r = 0; r < a.nr(); r++)
                         for (int c = 0; c < a.nc(); c++)
                             ref[r][c] = a[r][c];
-                    
+
                     tmp->push_back(cpy);
                 }
             }
@@ -295,11 +295,11 @@ DLLEXPORT int extract_fhog_features_array(array2d_type img_type,
     return err;
 }
 
-DLLEXPORT point* image_to_fhog(point* p, int cell_size, int filter_rows_padding, int filter_cols_padding) 
-{ 
-    auto ret = dlib::image_to_fhog(*p, cell_size, filter_rows_padding, filter_cols_padding); 
-    return new point(ret); 
-}  
+DLLEXPORT point* image_to_fhog(point* p, int cell_size, int filter_rows_padding, int filter_cols_padding)
+{
+    auto ret = dlib::image_to_fhog(*p, cell_size, filter_rows_padding, filter_cols_padding);
+    return new point(ret);
+}
 
 #pragma region draw_fhog
 
@@ -332,7 +332,7 @@ DLLEXPORT int draw_fhog(const matrix_element_type hog_type,
     return ret;
 }
 
-DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyramid_type, 
+DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyramid_type,
                                                           const unsigned int pyramid_rate,
                                                           const fhog_feature_extractor_type extractor_type,
                                                           void* detector,
@@ -341,7 +341,7 @@ DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyr
                                                           void** out_matrix)
 {
     int err = ERR_OK;
-    
+
     switch(pyramid_type)
     {
         case ::pyramid_type::Down:
@@ -396,14 +396,14 @@ DLLEXPORT int draw_fhog_object_detector_scan_fhog_pyramid(const pyramid_type pyr
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;

@@ -4,7 +4,7 @@
 #include "../export.h"
 #include <dlib/image_io.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 

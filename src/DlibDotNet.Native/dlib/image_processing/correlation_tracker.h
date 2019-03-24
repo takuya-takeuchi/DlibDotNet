@@ -4,13 +4,13 @@
 #include "../export.h"
 #include <dlib/image_processing.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
 DLLEXPORT correlation_tracker* correlation_tracker_new(
-    unsigned int filter_size, 
-    unsigned int num_scale_levels, 
+    unsigned int filter_size,
+    unsigned int num_scale_levels,
     unsigned int scale_window_size,
     double regularizer_space,
     double nu_space,

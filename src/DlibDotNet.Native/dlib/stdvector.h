@@ -518,7 +518,7 @@ DLLEXPORT void* stdvector_matrix_getPointer(matrix_element_type type, void* vect
 }
 
 DLLEXPORT void stdvector_matrix_delete(matrix_element_type type, std::vector<void*> *in_vector, const int templateRows, const int templateColumns)
-{    
+{
     switch(type)
     {
         case matrix_element_type::UInt8:

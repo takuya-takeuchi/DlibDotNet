@@ -38,6 +38,15 @@ namespace DlibDotNet
             return ret;
         }
 
+        public bool Operator(Rectangle a, Rectangle b)
+        {
+            this.ThrowIfDisposed();
+            using (var pa = a.ToNative())
+            using (var pb = b.ToNative())
+                return NativeMethods.test_box_overlap_operator(this.NativePtr, pa.NativePtr, pb.NativePtr);
+        }
+
+
         #region Overrides
 
         /// <summary>

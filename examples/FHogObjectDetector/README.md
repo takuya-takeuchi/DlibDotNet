@@ -24,7 +24,7 @@ Download test data from the following urls.
 
 - &lt;dlib&gt;\examples\faces\*.jpg
 
-And extract them and copy to extracted fiels to &lt;FHogObjectDetector_dir&gt;.
+And extract them and copy to extracted files to &lt;FHogObjectDetector_dir&gt;.
 
 ## 3. Run
 

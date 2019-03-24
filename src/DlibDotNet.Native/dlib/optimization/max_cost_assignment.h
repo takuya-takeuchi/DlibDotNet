@@ -68,7 +68,7 @@ DLLEXPORT int assignment_cost(matrix_element_type type, void* cost, std::vector<
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
@@ -110,7 +110,7 @@ DLLEXPORT int max_cost_assignment(matrix_element_type type, void* cost, std::vec
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 

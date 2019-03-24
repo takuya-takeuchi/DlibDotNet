@@ -177,6 +177,50 @@ namespace DlibDotNet.Dnn
             NativeMethods.loss_mmod_serialize(net.NativePtr, net.NetworkType, str);
         }
 
+        public static void TestOneStep<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
+
+            try
+            {
+                listOfVectorOfMModRect = label.Select(r => new StdVector<MModRect>(r)).ToList();
+
+                using (var dataVec = new StdVector<Matrix<T>>(data))
+                using (var labelVec = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                {
+                    var ret = NativeMethods.dnn_trainer_loss_mmod_test_one_step(trainer.NativePtr,
+                                                                                trainer.Type,
+                                                                                dataElementTypes.ToNativeMatrixElementType(),
+                                                                                dataVec.NativePtr,
+                                                                                NativeMethods.MatrixElementType.UInt32,
+                                                                                labelVec.NativePtr);
+                    Cuda.ThrowCudaException(ret);
+
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new NotSupportedException($"{dataElementTypes} does not support");
+                    }
+                }
+            }
+            finally
+            {
+                if (listOfVectorOfMModRect != null)
+                    foreach (var stdVector in listOfVectorOfMModRect)
+                        stdVector?.Dispose();
+            }
+        }
+
         public static void Train<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
             where T : struct
         {
@@ -204,6 +248,8 @@ namespace DlibDotNet.Dnn
                                                                         dataVec.NativePtr,
                                                                         NativeMethods.MatrixElementType.UInt32,
                                                                         labelVec.NativePtr);
+                    Cuda.ThrowCudaException(ret);
+
                     switch (ret)
                     {
                         case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
@@ -246,6 +292,8 @@ namespace DlibDotNet.Dnn
                                                                                  dataVec.NativePtr,
                                                                                  NativeMethods.MatrixElementType.UInt32,
                                                                                  labelVec.NativePtr);
+                    Cuda.ThrowCudaException(ret);
+
                     switch (ret)
                     {
                         case NativeMethods.ErrorType.MatrixElementTypeNotSupport:

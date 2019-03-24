@@ -1286,6 +1286,14 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_metric_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_metric_test_one_step(IntPtr trainer,
+                                                                             int type,
+                                                                             NativeMethods.MatrixElementType dataElementType,
+                                                                             IntPtr data,
+                                                                             NativeMethods.MatrixElementType labelElementType,
+                                                                             IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_metric_train(IntPtr trainer,
                                                                      int type,
                                                                      NativeMethods.MatrixElementType dataElementType,
@@ -1305,6 +1313,11 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_metric_set_iterations_without_progress_threshold(IntPtr trainer,
                                                                                                          int type,
                                                                                                          uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_metric_set_test_iterations_without_progress_threshold(IntPtr trainer,
+                                                                                                              int type,
+                                                                                                              uint thresh);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_metric_get_net(IntPtr trainer, int type, out IntPtr ret);
@@ -1341,6 +1354,14 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_mmod_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_test_one_step(IntPtr trainer,
+                                                                           int type,
+                                                                           NativeMethods.MatrixElementType dataElementType,
+                                                                           IntPtr data,
+                                                                           NativeMethods.MatrixElementType labelElementType,
+                                                                           IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_mmod_train(IntPtr trainer,
                                                                    int type,
                                                                    NativeMethods.MatrixElementType dataElementType,
@@ -1360,6 +1381,11 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_mmod_set_iterations_without_progress_threshold(IntPtr trainer,
                                                                                                        int type,
                                                                                                        uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_set_test_iterations_without_progress_threshold(IntPtr trainer,
+                                                                                                            int type,
+                                                                                                            uint thresh);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_mmod_get_net(IntPtr trainer, int type, out IntPtr ret);
@@ -1396,6 +1422,14 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_multiclass_log_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_test_one_step(IntPtr trainer,
+                                                                                     int type,
+                                                                                     NativeMethods.MatrixElementType dataElementType,
+                                                                                     IntPtr data,
+                                                                                     NativeMethods.MatrixElementType labelElementType,
+                                                                                     IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_multiclass_log_train(IntPtr trainer,
                                                                              int type,
                                                                              NativeMethods.MatrixElementType dataElementType,
@@ -1415,6 +1449,11 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold(IntPtr trainer,
                                                                                                                  int type,
                                                                                                                  uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_set_test_iterations_without_progress_threshold(IntPtr trainer,
+                                                                                                                      int type,
+                                                                                                                      uint thresh);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_multiclass_log_get_net(IntPtr trainer, int type, out IntPtr ret);
@@ -1451,6 +1490,14 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(IntPtr trainer,
+                                                                                               int type,
+                                                                                               NativeMethods.MatrixElementType dataElementType,
+                                                                                               IntPtr data,
+                                                                                               NativeMethods.MatrixElementType labelElementType,
+                                                                                               IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_train(IntPtr trainer,
                                                                                        int type,
                                                                                        NativeMethods.MatrixElementType dataElementType,
@@ -1470,6 +1517,11 @@ namespace DlibDotNet
         public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(IntPtr trainer,
                                                                                                                            int type,
                                                                                                                            uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_test_iterations_without_progress_threshold(IntPtr trainer,
+                                                                                                                                int type,
+                                                                                                                                uint thresh);
 
         [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_get_net(IntPtr trainer, int type, out IntPtr ret);

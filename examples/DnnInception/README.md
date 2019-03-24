@@ -28,7 +28,7 @@ Download test data from the following urls.
   - t10k-images-idx3-ubyte.gz 
   - t10k-labels-idx1-ubyte.gz
 
-And extract them and copy to extracted fiels to &lt;DnnInception_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnInception_dir&gt;.
 
 ## 3. Run
 

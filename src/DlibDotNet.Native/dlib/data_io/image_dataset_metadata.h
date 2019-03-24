@@ -6,7 +6,7 @@
 #include <dlib/matrix.h>
 #include <dlib/data_io/image_dataset_metadata.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 

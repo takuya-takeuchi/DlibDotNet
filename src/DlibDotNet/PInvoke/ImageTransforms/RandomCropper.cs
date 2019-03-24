@@ -65,6 +65,9 @@ namespace DlibDotNet
         public static extern void random_cropper_set_max_rotation_degrees(IntPtr cropper, double value);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void random_cropper_set_seed(IntPtr cropper, IntPtr value);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern ErrorType random_cropper_operator(IntPtr cropper,
                                                                uint numCrops,
                                                                MatrixElementType type,

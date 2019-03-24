@@ -6,16 +6,16 @@
 #include <dlib/matrix.h>
 #include <vector>
 
-#include "../../common.h"
 #include "../trainer.h"
 #include "loss_multiclass_log_per_pixel_defines.h"
+#include "../../common.h"
 
 using namespace dlib;
 using namespace std;
 
 #pragma region template
 
-#define train_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
+#define train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, sub_template) \
 do {\
     std::vector<matrix<__TYPE__>*>& tmp_data = *(static_cast<std::vector<matrix<__TYPE__>*>*>(data));\
     std::vector<matrix<__TYPE__>> in_tmp_data;\
@@ -33,36 +33,24 @@ do {\
         in_tmp_label.push_back(mat);\
     }\
 \
-    dnn_trainer_train_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
+    sub_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
 } while (0)
 
+#define test_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
+train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_test_one_step_template);\
+
+#define train_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
+train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_train_template);\
+
 #define train_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
-do {\
-    std::vector<matrix<__TYPE__>*>& tmp_data = *(static_cast<std::vector<matrix<__TYPE__>*>*>(data));\
-    std::vector<matrix<__TYPE__>> in_tmp_data;\
-    for (int i = 0; i< tmp_data.size(); i++)\
-    {\
-        matrix<__TYPE__>& mat = *tmp_data[i];\
-        in_tmp_data.push_back(mat);\
-    }\
-\
-    std::vector<train_label_type*>& tmp_label = *(static_cast<std::vector<train_label_type*>*>(labels));\
-    std::vector<train_label_type> in_tmp_label;\
-    for (int i = 0; i< tmp_label.size(); i++)\
-    {\
-        train_label_type& mat = *static_cast<train_label_type*>(tmp_label[i]);\
-        in_tmp_label.push_back(mat);\
-    }\
-\
-    dnn_trainer_train_one_step_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
-} while (0)
+train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_train_one_step_template);\
 
 #pragma endregion template
 
 DLLEXPORT int loss_multiclass_log_per_pixel_new(const int type, void** net)
 {
     int err = ERR_OK;
-    
+
     // Check type argument and cast to the proper type
     switch(type)
     {
@@ -79,17 +67,17 @@ DLLEXPORT int loss_multiclass_log_per_pixel_new(const int type, void** net)
 
 // NOTE
 // ret is not std::vector<out_type*>** but std::vector<out_type>**!! It is important!!
-DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj, 
+DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj,
                                                              const int type,
                                                              matrix_element_type element_type,
                                                              void* matrix_vector,
                                                              int templateRows,
                                                              int templateColumns,
-                                                             size_t batch_size, 
+                                                             size_t batch_size,
                                                              std::vector<out_type>** ret)
 {
     int err = ERR_OK;
-    
+
     // Check type argument and cast to the proper type
     try
     {
@@ -97,7 +85,7 @@ DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj,
         {
             case 0:
                 {
-                    anet_type& net = *(static_cast<anet_type*>(obj));                
+                    anet_type& net = *(static_cast<anet_type*>(obj));
                     switch(element_type)
                     {
                         case matrix_element_type::UInt8:
@@ -141,7 +129,7 @@ DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj,
                 break;
             case 1:
                 {
-                    net_type& net = *(static_cast<net_type*>(obj));             
+                    net_type& net = *(static_cast<net_type*>(obj));
                     switch(element_type)
                     {
                         case matrix_element_type::UInt8:
@@ -187,9 +175,9 @@ DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
-    
+
     return err;
 }
 
@@ -214,7 +202,7 @@ DLLEXPORT uint16_t loss_multiclass_log_per_pixel_get_label_to_ignore()
 
 DLLEXPORT int loss_multiclass_log_per_pixel_deserialize(const char* file_name, const int type, void** ret)
 {
-    int error = ERR_OK;
+    int err = ERR_OK;
 
     // Check type argument and cast to the proper type
     try
@@ -236,21 +224,21 @@ DLLEXPORT int loss_multiclass_log_per_pixel_deserialize(const char* file_name, c
                 }
                 break;
             default:
-                error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
                 break;
         }
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, error);
+        cuda_error_to_error_code(ce, err);
     }
 
-    return error;
+    return err;
 }
 
 DLLEXPORT int loss_multiclass_log_per_pixel_deserialize_proxy(proxy_deserialize* proxy, const int type, void** ret)
 {
-    int error = ERR_OK;
+    int err = ERR_OK;
 
     // Check type argument and cast to the proper type
     try
@@ -274,16 +262,16 @@ DLLEXPORT int loss_multiclass_log_per_pixel_deserialize_proxy(proxy_deserialize*
                 }
                 break;
             default:
-                error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
                 break;
         }
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, error);
+        cuda_error_to_error_code(ce, err);
     }
 
-    return error;
+    return err;
 }
 
 DLLEXPORT void loss_multiclass_log_per_pixel_serialize(void* obj, const int type, const char* file_name)
@@ -627,11 +615,11 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(void* traine
 DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(void* trainer, const int type, const char* filename, const unsigned long second)
 {
     int err = ERR_OK;
-    
+
     // Check type argument and cast to the proper type
     switch(type)
     {
-        case 0: 
+        case 0:
             dnn_trainer_set_synchronization_file_template(anet_type, trainer, filename, std::chrono::seconds(second));
             break;
         case 1:
@@ -648,11 +636,11 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file
 DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(void* trainer, const int type, const unsigned long thresh)
 {
     int err = ERR_OK;
-    
+
     // Check type argument and cast to the proper type
     switch(type)
     {
-        case 0: 
+        case 0:
             dnn_trainer_set_iterations_without_progress_threshold(anet_type, trainer, thresh);
             break;
         case 1:
@@ -661,6 +649,78 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_p
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_test_iterations_without_progress_threshold(void* trainer, const int type, const unsigned long thresh)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_set_test_iterations_without_progress_threshold(anet_type, trainer, thresh);
+            break;
+        case 1:
+            dnn_trainer_set_test_iterations_without_progress_threshold(net_type, trainer, thresh);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(void* trainer,
+                                                                      const int type,
+                                                                      matrix_element_type data_element_type,
+                                                                      void* data,
+                                                                      matrix_element_type label_element_type,
+                                                                      void* labels)
+{
+    // Check type argument and cast to the proper type
+    int err = ERR_OK;
+
+    if (label_element_type != matrix_element_type::UInt32)
+        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+
+    try
+    {
+        switch(data_element_type)
+        {
+            case matrix_element_type::RgbPixel:
+                switch(type)
+                {
+                    case 0:
+                        test_one_step_template(anet_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 1:
+                        test_one_step_template(net_type, trainer, rgb_pixel, data, labels);
+                        break;
+                }
+                break;
+            case matrix_element_type::UInt8:
+            case matrix_element_type::UInt16:
+            case matrix_element_type::UInt32:
+            case matrix_element_type::Int8:
+            case matrix_element_type::Int16:
+            case matrix_element_type::Int32:
+            case matrix_element_type::Float:
+            case matrix_element_type::Double:
+            case matrix_element_type::HsiPixel:
+            case matrix_element_type::RgbAlphaPixel:
+            default:
+                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                break;
+        }
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -675,36 +735,43 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train(void* trainer,
 {
     // Check type argument and cast to the proper type
     int err = ERR_OK;
-    
+
     if (label_element_type != matrix_element_type::UInt32)
         return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
 
-    switch(data_element_type)
+    try
     {
-        case matrix_element_type::RgbPixel:
-            switch(type)
-            {
-                case 0:
-                    train_template(anet_type, trainer, rgb_pixel, data, labels);
-                    break;
-                case 1:
-                    train_template(net_type, trainer, rgb_pixel, data, labels);
-                    break;
-            }
-            break;
-        case matrix_element_type::UInt8:
-        case matrix_element_type::UInt16:
-        case matrix_element_type::UInt32:
-        case matrix_element_type::Int8:
-        case matrix_element_type::Int16:
-        case matrix_element_type::Int32:
-        case matrix_element_type::Float:
-        case matrix_element_type::Double:
-        case matrix_element_type::HsiPixel:
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
+        switch(data_element_type)
+        {
+            case matrix_element_type::RgbPixel:
+                switch(type)
+                {
+                    case 0:
+                        train_template(anet_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 1:
+                        train_template(net_type, trainer, rgb_pixel, data, labels);
+                        break;
+                }
+                break;
+            case matrix_element_type::UInt8:
+            case matrix_element_type::UInt16:
+            case matrix_element_type::UInt32:
+            case matrix_element_type::Int8:
+            case matrix_element_type::Int16:
+            case matrix_element_type::Int32:
+            case matrix_element_type::Float:
+            case matrix_element_type::Double:
+            case matrix_element_type::HsiPixel:
+            case matrix_element_type::RgbAlphaPixel:
+            default:
+                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                break;
+        }
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -719,36 +786,43 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(void* tra
 {
     // Check type argument and cast to the proper type
     int err = ERR_OK;
-    
+
     if (label_element_type != matrix_element_type::UInt32)
         return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
 
-    switch(data_element_type)
+    try
     {
-        case matrix_element_type::RgbPixel:
-            switch(type)
-            {
-                case 0:
-                    train_one_step_template(anet_type, trainer, rgb_pixel, data, labels);
-                    break;
-                case 1:
-                    train_one_step_template(net_type, trainer, rgb_pixel, data, labels);
-                    break;
-            }
-            break;
-        case matrix_element_type::UInt8:
-        case matrix_element_type::UInt16:
-        case matrix_element_type::UInt32:
-        case matrix_element_type::Int8:
-        case matrix_element_type::Int16:
-        case matrix_element_type::Int32:
-        case matrix_element_type::Float:
-        case matrix_element_type::Double:
-        case matrix_element_type::HsiPixel:
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
+        switch(data_element_type)
+        {
+            case matrix_element_type::RgbPixel:
+                switch(type)
+                {
+                    case 0:
+                        train_one_step_template(anet_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 1:
+                        train_one_step_template(net_type, trainer, rgb_pixel, data, labels);
+                        break;
+                }
+                break;
+            case matrix_element_type::UInt8:
+            case matrix_element_type::UInt16:
+            case matrix_element_type::UInt32:
+            case matrix_element_type::Int8:
+            case matrix_element_type::Int16:
+            case matrix_element_type::Int32:
+            case matrix_element_type::Float:
+            case matrix_element_type::Double:
+            case matrix_element_type::HsiPixel:
+            case matrix_element_type::RgbAlphaPixel:
+            default:
+                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                break;
+        }
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -760,7 +834,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_get_net(void* trainer,
 {
     // Check type argument and cast to the proper type
     int err = ERR_OK;
-    
+
     try
     {
         switch(type)
@@ -776,7 +850,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_get_net(void* trainer,
                 break;
         }
     }
-    catch(std::exception& e)
+    catch(std::exception)
     {
         err = ERR_DNN_PROPAGATE_EXCEPTION;
     }

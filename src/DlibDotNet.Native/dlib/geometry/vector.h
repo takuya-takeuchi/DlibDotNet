@@ -355,7 +355,7 @@ DLLEXPORT int vector_operator_left_shift(vector_element_type type, void* matrix,
             err = ERR_VECTOR_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
@@ -416,7 +416,7 @@ DLLEXPORT int vector_2_operator_left_shift(vector_element_type type, void* matri
             err = ERR_VECTOR_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
@@ -477,7 +477,7 @@ DLLEXPORT int vector_3_operator_left_shift(vector_element_type type, void* matri
             err = ERR_VECTOR_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 

@@ -26,7 +26,7 @@ DLLEXPORT rectangle* rectangle_new()
 {
     return new rectangle();
 }
- 
+
 DLLEXPORT rectangle* rectangle_new1(const int left, const int top, const int right, const int bottom)
 {
      return new rectangle(left, top, right, bottom);
@@ -41,7 +41,7 @@ DLLEXPORT rectangle* rectangle_new3(const point* p)
 {
     return new dlib::rectangle(*p);
 }
-    
+
 DLLEXPORT rectangle* rectangle_new4(const point* p1, const point* p2)
 {
     return new rectangle(*p1, *p2);
@@ -205,7 +205,7 @@ DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** r
         case array2d_type::Float:
             *rect = new dlib::rectangle(get_rect(*((array2d<float>*)img)));
             break;
-        case array2d_type::Double:        
+        case array2d_type::Double:
             *rect = new dlib::rectangle(get_rect(*((array2d<double>*)img)));
             break;
         case array2d_type::RgbPixel:
@@ -301,7 +301,7 @@ DLLEXPORT void* rectangle_operator_add_point(rectangle* rect, point* rhs)
 {
     // rectangle r(*rect);
     // point p(*rhs);
-    // r += p;    
+    // r += p;
     *rect = *rect + rectangle(*rhs);
     return new rectangle(*rect);
 }

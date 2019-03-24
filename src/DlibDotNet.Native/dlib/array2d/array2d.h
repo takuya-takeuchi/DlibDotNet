@@ -760,7 +760,7 @@ DLLEXPORT bool array2d_matrix_nc(matrix_element_type type, void* array, const in
 DLLEXPORT bool array2d_matrix_nr(matrix_element_type type, void* array, const int templateRows, const int templateColumns, int* ret)
 {
     int err = ERR_OK;
-    
+
     switch(type)
     {
         case matrix_element_type::UInt8:
@@ -807,7 +807,7 @@ DLLEXPORT bool array2d_matrix_nr(matrix_element_type type, void* array, const in
 DLLEXPORT bool array2d_matrix_size(matrix_element_type type, void* array, const int templateRows, const int templateColumns, int* ret)
 {
     int err = ERR_OK;
-    
+
     switch(type)
     {
         case matrix_element_type::UInt8:
@@ -934,7 +934,7 @@ DLLEXPORT int array2d_matrix_get_rect(matrix_element_type type, void* array, con
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 

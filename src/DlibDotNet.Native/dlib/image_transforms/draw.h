@@ -28,13 +28,13 @@ do { \
 #pragma endregion template
 
 DLLEXPORT int draw_line(array2d_type type,
-                        void* image, 
+                        void* image,
                         dlib::point* p1,
                         dlib::point* p2,
                         void* p)
  {
      int err = ERR_OK;
- 
+
      switch(type)
      {
          case array2d_type::UInt8:
@@ -74,18 +74,18 @@ DLLEXPORT int draw_line(array2d_type type,
              err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
              break;
      }
- 
+
      return err;
  }
 
  DLLEXPORT int draw_rectangle(array2d_type type,
-                              void* image, 
+                              void* image,
                               dlib::rectangle* rect,
                               void* p,
                               unsigned int thickness)
  {
      int err = ERR_OK;
- 
+
      switch(type)
      {
          case array2d_type::UInt8:
@@ -125,7 +125,7 @@ DLLEXPORT int draw_line(array2d_type type,
              err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
              break;
      }
- 
+
      return err;
  }
 
