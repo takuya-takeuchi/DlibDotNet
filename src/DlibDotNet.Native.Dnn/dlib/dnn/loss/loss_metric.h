@@ -110,7 +110,7 @@ DLLEXPORT int loss_metric_operator_matrixs(void* obj,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -150,7 +150,7 @@ DLLEXPORT int loss_metric_deserialize(const char* file_name, const int type, voi
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -180,7 +180,7 @@ DLLEXPORT int loss_metric_deserialize_proxy(proxy_deserialize* proxy, const int 
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -540,7 +540,7 @@ DLLEXPORT int dnn_trainer_loss_metric_test_one_step(void* trainer,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -588,7 +588,7 @@ DLLEXPORT int dnn_trainer_loss_metric_train(void* trainer,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -636,7 +636,7 @@ DLLEXPORT int dnn_trainer_loss_metric_train_one_step(void* trainer,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;

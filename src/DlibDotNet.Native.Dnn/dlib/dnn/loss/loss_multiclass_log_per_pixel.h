@@ -175,7 +175,7 @@ DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -230,7 +230,7 @@ DLLEXPORT int loss_multiclass_log_per_pixel_deserialize(const char* file_name, c
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -268,7 +268,7 @@ DLLEXPORT int loss_multiclass_log_per_pixel_deserialize_proxy(proxy_deserialize*
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -720,7 +720,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(void* trai
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -771,7 +771,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train(void* trainer,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;
@@ -822,7 +822,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(void* tra
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;

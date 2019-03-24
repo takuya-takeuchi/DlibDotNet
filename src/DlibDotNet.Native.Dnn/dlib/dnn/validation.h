@@ -204,7 +204,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_errot_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, err);
     }
 
     return err;

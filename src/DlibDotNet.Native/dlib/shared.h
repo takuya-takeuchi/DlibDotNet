@@ -247,7 +247,7 @@ typedef struct
 
 // Ex.
 // Error while calling cudaGetDevice(&the_device_id) in file d:\works\lib\dlib\19.15\dlib\cuda\gpu_data.cpp:178. code: 35, reason: CUDA driver version is insufficient for CUDA runtime version
-#define cuda_errot_to_error_code(cuda_error, error) \
+#define cuda_error_to_error_code(cuda_error, error) \
 do {\
     error = ERR_CUDA_ERROR;\
     std::cmatch results;\
