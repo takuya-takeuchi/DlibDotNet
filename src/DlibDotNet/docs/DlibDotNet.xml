@@ -469,6 +469,23 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="P:DlibDotNet.EnumerableDisposer`1.IsDisposed">
+            <summary>
+            Gets a value indicating whether this instance has been disposed.
+            </summary>
+            <returns>true if this instance has been disposed; otherwise, false.</returns>
+        </member>
+        <member name="M:DlibDotNet.EnumerableDisposer`1.Dispose">
+            <summary>
+            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.EnumerableDisposer`1.Dispose(System.Boolean)">
+            <summary>
+            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            </summary>
+            <param name="disposing">Indicate value whether <see cref="M:System.IDisposable.Dispose"/> method was called.</param>
+        </member>
         <member name="M:DlibDotNet.Point.NativePoint.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.

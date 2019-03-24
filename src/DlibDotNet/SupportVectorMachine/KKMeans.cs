@@ -12,7 +12,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static IEnumerable<Matrix<T>> FindClustersUsingAngularKMeans<T>( IEnumerable<Matrix<T>> samples, IEnumerable<Matrix<T>> centers, uint maxIteration = 1000)
+        public static IEnumerable<Matrix<T>> FindClustersUsingAngularKMeans<T>(IEnumerable<Matrix<T>> samples, IEnumerable<Matrix<T>> centers, uint maxIteration = 1000)
             where T : struct
         {
             if (samples == null)
@@ -39,9 +39,10 @@ namespace DlibDotNet
             var templateRow = sample.TemplateRows;
             var templateColumn = sample.TemplateColumns;
 
-            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, new[] { templateRow, templateColumn }))
-            using (var inCenters = new StdVector<Matrix<T>>(centerArray, new[] { templateRow, templateColumn }))
-            using (var outResult = new StdVector<Matrix<T>>(new[] { templateRow, templateColumn }))
+            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, param))
+            using (var inCenters = new StdVector<Matrix<T>>(centerArray, param))
+            using (var outResult = new StdVector<Matrix<T>>(param))
             {
                 var type = sample.MatrixElementType.ToNativeMatrixElementType();
                 var ret = NativeMethods.find_clusters_using_angular_kmeans(type,
@@ -83,7 +84,8 @@ namespace DlibDotNet
             var templateRow = sample.TemplateRows;
             var templateColumn = sample.TemplateColumns;
 
-            using (var inCenters = new StdVector<Matrix<T>>(centerArray, templateRow, templateColumn))
+            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inCenters = new StdVector<Matrix<T>>(centerArray, param))
             {
                 var type = sample.MatrixElementType.ToNativeMatrixElementType();
                 var ret = NativeMethods.nearest_center(type,
@@ -130,8 +132,9 @@ namespace DlibDotNet
                     throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateColumns)} of {typeof(Matrix<T>).Name}", nameof(samples));
             }
 
-            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, templateRow, templateColumn))
-            using (var outCenters = new StdVector<Matrix<T>>(0, new[] { templateRow, templateColumn }))
+            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, param))
+            using (var outCenters = new StdVector<Matrix<T>>(0, param))
             {
                 var type = first.MatrixElementType.ToNativeMatrixElementType();
                 var ret = NativeMethods.pick_initial_centers(type,

@@ -55,28 +55,35 @@ namespace DlibDotNet
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
-        public StdVector(params object[] param)
+        public StdVector()
+        {
+            this.Param = null;
+            this._Imp = CreateImp();
+            this.NativePtr = this._Imp.Create();
+        }
+
+        public StdVector(IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create();
         }
 
-        public StdVector(int size, params object[] param)
+        public StdVector(int size, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create(size);
         }
 
-        public StdVector(IEnumerable<TItem> data, params object[] param)
+        public StdVector(IEnumerable<TItem> data, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create(data);
         }
 
-        internal StdVector(IntPtr ptr, params object[] param)
+        internal StdVector(IntPtr ptr, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
@@ -96,7 +103,7 @@ namespace DlibDotNet
             }
         }
 
-        internal object[] Param
+        internal IParameter Param
         {
             get;
             private set;
@@ -123,7 +130,7 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private static StdVectorImp<TItem> CreateImp(object[] param = null)
+        private static StdVectorImp<TItem> CreateImp(IParameter param = null)
         {
             if (SupportTypes.TryGetValue(typeof(TItem), out var type))
             {
@@ -180,41 +187,39 @@ namespace DlibDotNet
                 if (matrix.IsAssignableFrom(t))
                 {
                     var arg = GenericHelper.GetTypeParameter(t);
-                    if (MatrixBase.TryParse(arg, out var r))
-                    {
-                        var templateRows = 0;
-                        var templateColumns = 0;
-                        if (param != null && param.Length == 1 && param[0] is int[] array)
-                        {
-                            templateRows = array[0];
-                            templateColumns = array[1];
-                        }
+                    if (!MatrixBase.TryParse(arg, out var r))
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
 
-                        switch (r)
-                        {
-                            case MatrixElementTypes.UInt8:
-                                return new StdVectorMatrixImp<byte>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.UInt16:
-                                return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.UInt32:
-                                return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int8:
-                                return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int16:
-                                return new StdVectorMatrixImp<short>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int32:
-                                return new StdVectorMatrixImp<int>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Float:
-                                return new StdVectorMatrixImp<float>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Double:
-                                return new StdVectorMatrixImp<double>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.RgbPixel:
-                                return new StdVectorMatrixImp<RgbPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.RgbAlphaPixel:
-                                return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.HsiPixel:
-                                return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                        }
+                    if (!(param is MatrixTemplateSizeParameter sizeParameter))
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+
+                    var templateRows = sizeParameter.TemplateRows;
+                    var templateColumns = sizeParameter.TemplateColumns;
+
+                    switch (r)
+                    {
+                        case MatrixElementTypes.UInt8:
+                            return new StdVectorMatrixImp<byte>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt16:
+                            return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt32:
+                            return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int8:
+                            return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int16:
+                            return new StdVectorMatrixImp<short>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int32:
+                            return new StdVectorMatrixImp<int>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Float:
+                            return new StdVectorMatrixImp<float>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Double:
+                            return new StdVectorMatrixImp<double>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.RgbPixel:
+                            return new StdVectorMatrixImp<RgbPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.RgbAlphaPixel:
+                            return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.HsiPixel:
+                            return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
                     }
                 }
             }
@@ -1671,6 +1676,39 @@ namespace DlibDotNet
         }
 
         #endregion
+
+        public interface IParameter
+        {
+        }
+
+        public sealed class MatrixTemplateSizeParameter : IParameter
+        {
+
+            #region Constructors
+
+            public MatrixTemplateSizeParameter(int templateRows, int templateColumns)
+            {
+                this.TemplateRows = templateRows;
+                this.TemplateColumns = templateColumns;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public int TemplateRows
+            {
+                get;
+            }
+
+            public int TemplateColumns
+            {
+                get;
+            }
+
+            #endregion
+
+        }
 
     }
 

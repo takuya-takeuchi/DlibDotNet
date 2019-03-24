@@ -26,6 +26,7 @@ namespace DlibDotNet
             using (var matrix = new Matrix<T>())
             using (var retImages = new StdVector<Matrix<T>>())
             using (var retBoxes = new StdVector<StdVector<MModRect>>())
+            using (new EnumerableDisposer<StdVector<MModRect>>(retBoxes))
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = NativeMethods.load_image_dataset_mmod_rect(type, retImages.NativePtr, retBoxes.NativePtr, str);
@@ -50,6 +51,7 @@ namespace DlibDotNet
             using (var matrix = new Matrix<T>())
             using (var retImages = new StdVector<Matrix<T>>())
             using (var retBoxes = new StdVector<StdVector<Rectangle>>())
+            using (new EnumerableDisposer<StdVector<Rectangle>>(retBoxes))
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
                 var ret = NativeMethods.load_image_dataset_rectangle(type, retImages.NativePtr, retBoxes.NativePtr, str);
