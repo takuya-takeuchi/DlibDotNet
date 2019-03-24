@@ -18,7 +18,7 @@ dotnet build -c Release
 - If you want to run at Linux and MacOS, you should build the **DlibDotNet** at first.  
 Please refer the [Tutorial for Linux](https://github.com/takuya-takeuchi/DlibDotNet/wiki/Tutorial-for-Linux) or [Tutorial for MacOS](https://github.com/takuya-takeuchi/DlibDotNet/wiki/Tutorial-for-MacOS).
 
-And extract them and copy to extracted fiels to &lt;DnnMmod_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnMmod_dir&gt;.
 
 ## 2. Run
 

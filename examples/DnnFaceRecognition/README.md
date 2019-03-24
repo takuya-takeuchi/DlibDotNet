@@ -26,7 +26,7 @@ Download test data from the following urls.
 - http://dlib.net/files/dlib_face_recognition_resnet_model_v1.dat.bz2
 - &lt;dlib&gt;\examples\faces\bald_guys.jpg
 
-And extract them and copy to extracted fiels to &lt;DnnFaceRecognition_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnFaceRecognition_dir&gt;.
 
 ## 3. Run
 

@@ -28,7 +28,7 @@ Download test data from the following urls.
 
 - http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
 
-And extract them and copy to extracted fiels to &lt;WebcamFacePose_dir&gt;.
+And extract them and copy to extracted files to &lt;WebcamFacePose_dir&gt;.
 
 ## 4. Run
 
