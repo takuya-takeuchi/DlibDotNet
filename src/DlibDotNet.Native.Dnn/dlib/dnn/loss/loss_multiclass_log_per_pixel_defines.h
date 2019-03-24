@@ -13,10 +13,10 @@ using namespace std;
 constexpr int class_count = 21; // background + 20 classes
 
 #pragma region type definitions
-template <int N, template <typename> class BN, int stride, typename SUBNET> 
+template <int N, template <typename> class BN, int stride, typename SUBNET>
 using block = BN<dlib::con<N,3,3,1,1, dlib::relu<BN<dlib::con<N,3,3,stride,stride,SUBNET>>>>>;
 
-template <int N, template <typename> class BN, int stride, typename SUBNET> 
+template <int N, template <typename> class BN, int stride, typename SUBNET>
 using blockt = BN<dlib::cont<N,3,3,1,1,dlib::relu<BN<dlib::cont<N,3,3,stride,stride,SUBNET>>>>>;
 
 template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
@@ -77,7 +77,7 @@ using net_type = dlib::loss_multiclass_log_per_pixel<
                             dlib::max_pool<3,3,2,2,dlib::relu<dlib::bn_con<dlib::con<64,7,7,2,2,
                             dlib::input<dlib::matrix<dlib::rgb_pixel>>
                             >>>>>>>>>>>>>>;
-                            
+
 // testing network type (replaced batch normalization with fixed affine transforms)
 using anet_type = dlib::loss_multiclass_log_per_pixel<
                             dlib::cont<class_count,7,7,2,2,
@@ -85,7 +85,7 @@ using anet_type = dlib::loss_multiclass_log_per_pixel<
                             alevel1<alevel2<alevel3<alevel4<
                             dlib::max_pool<3,3,2,2,dlib::relu<dlib::affine<dlib::con<64,7,7,2,2,
                             dlib::input<dlib::matrix<dlib::rgb_pixel>>
-                            >>>>>>>>>>>>>>;                      
+                            >>>>>>>>>>>>>>;
 #pragma endregion type definitions
 
 typedef dlib::matrix<uint16_t> out_type;

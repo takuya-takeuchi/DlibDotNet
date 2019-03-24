@@ -65,6 +65,18 @@ do {\
     t->set_iterations_without_progress_threshold(thresh);\
 } while (0)
 
+#define dnn_trainer_set_test_iterations_without_progress_threshold(__NET_TYPE__, trainer, thresh) \
+do {\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    t->set_test_iterations_without_progress_threshold(thresh);\
+} while (0)
+
+#define dnn_trainer_test_one_step_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label) \
+do {\
+    auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\
+    t->test_one_step(in_tmp_data, in_tmp_label);\
+} while (0)
+
 #define dnn_trainer_train_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label) \
 do {\
     auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\

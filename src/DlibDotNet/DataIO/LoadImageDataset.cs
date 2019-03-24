@@ -13,7 +13,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static void LoadImageDataset<T>(string path, out IEnumerable<Matrix<T>> images, out IEnumerable<IEnumerable<MModRect>> boxes)
+        public static void LoadImageDataset<T>(string path, out IList<Matrix<T>> images, out IList<IList<MModRect>> boxes)
             where T : struct
         {
             if (path == null)
@@ -33,11 +33,11 @@ namespace DlibDotNet
                     throw new ArgumentException($"{type} is not supported.");
 
                 images = retImages.ToArray();
-                boxes = retBoxes.ToArray().Select(box => box.ToArray()).ToList();
+                boxes = retBoxes.ToArray().Select(box => box.ToArray()).ToArray();
             }
         }
 
-        public static void LoadImageDataset<T>(string path, out IEnumerable<Matrix<T>> images, out IEnumerable<IEnumerable<Rectangle>> boxes)
+        public static void LoadImageDataset<T>(string path, out IList<Matrix<T>> images, out IList<IList<Rectangle>> boxes)
             where T : struct
         {
             if (path == null)
@@ -57,7 +57,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"{type} is not supported.");
 
                 images = retImages.ToArray();
-                boxes = retBoxes.ToArray().Select(box => box.ToArray()).ToList();
+                boxes = retBoxes.ToArray().Select(box => box.ToArray()).ToArray();
             }
         }
 

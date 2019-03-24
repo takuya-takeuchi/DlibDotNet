@@ -70,11 +70,11 @@ enum element_type : int
     OpJet,
 
     OpArray2dToMat,
-    
+
     OpTrans,
-    
+
     OpStdVectToMat,
-    
+
     OpJoinRows
 
 };
@@ -96,9 +96,9 @@ enum struct point_mapping_type : int
     Rotator = 0,
 
     Transform,
-    
+
     TransformAffine,
-        
+
     TransformProjective
 
 };
@@ -135,13 +135,13 @@ enum struct fhog_feature_extractor_type : int
 
 enum struct image_pixel_format_type : int
 {
-    
+
     Bgr = 0,
-    
+
     Bgra,
-    
+
     Rgb,
-    
+
     Rgba,
 
 };

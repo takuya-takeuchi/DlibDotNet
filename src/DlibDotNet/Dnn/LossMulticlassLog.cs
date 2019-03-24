@@ -166,7 +166,38 @@ namespace DlibDotNet.Dnn
         {
             throw new NotSupportedException();
         }
-        
+
+        public static void TestOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+            where T : struct
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (label == null)
+                throw new ArgumentNullException(nameof(label));
+
+            Matrix<T>.TryParse<T>(out var dataElementTypes);
+
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var labelVec = new StdVector<uint>(label))
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_test_one_step(trainer.NativePtr,
+                                                                                      trainer.Type,
+                                                                                      dataElementTypes.ToNativeMatrixElementType(),
+                                                                                      dataVec.NativePtr,
+                                                                                      NativeMethods.MatrixElementType.UInt32,
+                                                                                      labelVec.NativePtr);
+                Cuda.ThrowCudaException(ret);
+
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
+                }
+            }
+        }
+
         public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
             where T : struct
         {
@@ -188,6 +219,8 @@ namespace DlibDotNet.Dnn
                                                                               dataVec.NativePtr,
                                                                               NativeMethods.MatrixElementType.UInt32,
                                                                               labelVec.NativePtr);
+                Cuda.ThrowCudaException(ret);
+
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
@@ -217,6 +250,8 @@ namespace DlibDotNet.Dnn
                                                                                        dataVec.NativePtr,
                                                                                        NativeMethods.MatrixElementType.UInt32,
                                                                                        labelVec.NativePtr);
+                Cuda.ThrowCudaException(ret);
+
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.MatrixElementTypeNotSupport:

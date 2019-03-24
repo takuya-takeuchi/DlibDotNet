@@ -7,7 +7,7 @@
 #include <dlib/pixel.h>
 #include <iostream>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 

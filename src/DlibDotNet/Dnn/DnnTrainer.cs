@@ -99,6 +99,13 @@ namespace DlibDotNet.Dnn
             this._Imp.SetIterationsWithoutProgressThreshold(threshold);
         }
 
+        public void SetTestIterationsWithoutProgressThreshold(uint threshold)
+        {
+            this.ThrowIfDisposed();
+
+            this._Imp.SetTestIterationsWithoutProgressThreshold(threshold);
+        }
+
         #region Overrides 
 
         /// <summary>
@@ -176,6 +183,8 @@ namespace DlibDotNet.Dnn
             public abstract void SetSynchronizationFile(string filename, uint second = 15 * 60);
 
             public abstract void SetIterationsWithoutProgressThreshold(uint thresh);
+
+            public abstract void SetTestIterationsWithoutProgressThreshold(uint thresh);
 
             public abstract string GetString();
 
@@ -309,6 +318,13 @@ namespace DlibDotNet.Dnn
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_metric_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
             public override string GetString()
             {
                 return base.ToString(NativeMethods.dnn_trainer_loss_metric_operator_left_shift);
@@ -403,6 +419,13 @@ namespace DlibDotNet.Dnn
             public override void SetIterationsWithoutProgressThreshold(uint thresh)
             {
                 var ret = NativeMethods.dnn_trainer_loss_mmod_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_mmod_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
@@ -505,6 +528,13 @@ namespace DlibDotNet.Dnn
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
             public override string GetString()
             {
                 return base.ToString(NativeMethods.dnn_trainer_loss_multiclass_log_operator_left_shift);
@@ -599,6 +629,13 @@ namespace DlibDotNet.Dnn
             public override void SetIterationsWithoutProgressThreshold(uint thresh)
             {
                 var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }

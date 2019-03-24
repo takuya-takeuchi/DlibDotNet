@@ -87,7 +87,18 @@ namespace DlibDotNet
         public static extern ErrorType jitter_image(MatrixElementType in_type, IntPtr in_img, IntPtr rand, out IntPtr out_img);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType upsample_image_dataset_pyramid_down(uint pyramid_rate, MatrixElementType elementType, IntPtr images, IntPtr objects);
+        public static extern ErrorType upsample_image_dataset_pyramid_down_rect(uint pyramid_rate,
+                                                                                MatrixElementType elementType,
+                                                                                IntPtr images,
+                                                                                IntPtr objects,
+                                                                                uint maxImageSize);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType upsample_image_dataset_pyramid_down_mmod_rect(uint pyramid_rate,
+                                                                                     MatrixElementType elementType,
+                                                                                     IntPtr images,
+                                                                                     IntPtr objects,
+                                                                                     uint maxImageSize);
 
     }
 

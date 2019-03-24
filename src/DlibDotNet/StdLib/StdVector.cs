@@ -11,7 +11,7 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public sealed class StdVector<TItem> : DlibObject, IEnumerable<TItem>
+    public sealed class StdVector<TItem> : DlibObject, IList<TItem>
     {
 
         #region Fields
@@ -1611,6 +1611,63 @@ namespace DlibDotNet
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IList<TItem> Members
+
+        public void Add(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(TItem[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count => this.Size;
+
+        public bool IsReadOnly
+        {
+            get;
+        }
+
+        public int IndexOf(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TItem this[int index]
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         #endregion

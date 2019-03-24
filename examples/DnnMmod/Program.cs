@@ -53,10 +53,10 @@ namespace DnnMmod
                 // holds the locations of the faces in the training images.  So for
                 // example, the image images_train[0] has the faces given by the
                 // rectangles in face_boxes_train[0].
-                IEnumerable<Matrix<RgbPixel>> imagesTrain;
-                IEnumerable<Matrix<RgbPixel>> imagesTest;
-                IEnumerable<IEnumerable<MModRect>> faceBoxesTrain;
-                IEnumerable<IEnumerable<MModRect>> faceBoxesTest;
+                IList<Matrix<RgbPixel>> imagesTrain;
+                IList<Matrix<RgbPixel>> imagesTest;
+                IList<IList<MModRect>> faceBoxesTrain;
+                IList<IList<MModRect>> faceBoxesTest;
 
                 // Now we load the data.  These XML files list the images in each dataset
                 // and also contain the positions of the face boxes.  Obviously you can use

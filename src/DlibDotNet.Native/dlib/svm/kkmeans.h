@@ -126,7 +126,7 @@ DLLEXPORT int find_clusters_using_angular_kmeans(const matrix_element_type type,
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
@@ -176,7 +176,7 @@ DLLEXPORT int nearest_center(const matrix_element_type type,
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
@@ -187,10 +187,10 @@ DLLEXPORT int nearest_center(const matrix_element_type type,
 DLLEXPORT int pick_initial_centers(const matrix_element_type type,
                                    const int templateRows,
                                    const int templateColumns,
-                                   const long num_centers, 
-                                   void* centers, 
-                                   void* samples, 
-                                   void* k, 
+                                   const long num_centers,
+                                   void* centers,
+                                   void* samples,
+                                   void* k,
                                    const double percentile)
 {
     int err = ERR_OK;
@@ -228,7 +228,7 @@ DLLEXPORT int pick_initial_centers(const matrix_element_type type,
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 

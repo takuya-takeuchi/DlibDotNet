@@ -20,6 +20,10 @@ namespace DlibDotNet
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern double test_box_overlap_get_percent_covered_thresh(IntPtr overlap);
 
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool test_box_overlap_operator(IntPtr overlap, IntPtr a, IntPtr b);
+
     }
 
 }

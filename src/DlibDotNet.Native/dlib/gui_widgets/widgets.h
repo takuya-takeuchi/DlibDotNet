@@ -451,7 +451,7 @@ DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void*
 }
 
 DLLEXPORT void* image_window_new_matrix_op1(element_type etype, array2d_type type, void* image)
-{    
+{
     void* ret = nullptr;
     switch(etype)
     {
@@ -473,7 +473,7 @@ DLLEXPORT void* image_window_new_matrix_op1(element_type etype, array2d_type typ
 }
 
 DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title)
-{   
+{
     void* ret = nullptr;
     switch(etype)
     {
@@ -494,12 +494,12 @@ DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type typ
     return ret;
 }
 
-DLLEXPORT void* image_window_new_matrix_op3(element_type etype, 
+DLLEXPORT void* image_window_new_matrix_op3(element_type etype,
                                             matrix_element_type type,
-                                            void* img, 
+                                            void* img,
                                             const int templateRows,
                                             const int templateColumns)
-{   
+{
     void* ret = nullptr;
     switch(etype)
     {
@@ -520,13 +520,13 @@ DLLEXPORT void* image_window_new_matrix_op3(element_type etype,
     return ret;
 }
 
-DLLEXPORT void* image_window_new_matrix_op4(element_type etype, 
+DLLEXPORT void* image_window_new_matrix_op4(element_type etype,
                                             matrix_element_type type,
-                                            void* img, 
+                                            void* img,
                                             const int templateRows,
                                             const int templateColumns,
                                             const char* title)
-{   
+{
     void* ret = nullptr;
     switch(etype)
     {
@@ -606,7 +606,7 @@ DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r,
 DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectangle*>* r, array2d_type type, void* p)
 {
     int err = ERR_OK;
-    
+
     std::vector<rectangle*>& vector = *(static_cast<std::vector<rectangle*>*>(r));
     std::vector<rectangle> tmpRects;
     for (int index = 0 ; index < vector.size(); index++)
@@ -717,7 +717,7 @@ DLLEXPORT int image_window_add_overlay4(image_window* window, image_window::over
 DLLEXPORT int image_window_add_overlay5(image_window* window, std::vector<image_window::overlay_line*>* lines)
 {
     int err = ERR_OK;
-    
+
     std::vector<image_window::overlay_line> tmpRects;
     for (int index = 0 ; index < (*lines).size(); index++)
         tmpRects.push_back(*(*lines)[index]);
@@ -922,17 +922,17 @@ DLLEXPORT void image_window_overlay_line_delete(image_window::overlay_line* line
 
 #pragma endregion image_window::overlay_line
 
-#pragma region image_window::get_next_double_click 
+#pragma region image_window::get_next_double_click
 
-DLLEXPORT bool image_window_get_next_double_click(image_window* window, dlib::point** point) 
+DLLEXPORT bool image_window_get_next_double_click(image_window* window, dlib::point** point)
 {
     dlib::point p;
     bool ret = window->get_next_double_click(p);
     *point = new dlib::point(p);
     return ret;
-} 
+}
 
-DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::point** point, unsigned long* mouse_button) 
+DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::point** point, unsigned long* mouse_button)
 {
     dlib::point p;
     unsigned long m;
@@ -940,9 +940,9 @@ DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::p
     *point = new dlib::point(p);
     *mouse_button = m;
     return ret;
-} 
+}
 
-#pragma endregion image_window::get_next_double_click 
+#pragma endregion image_window::get_next_double_click
 
 #pragma endregion image_window
 
@@ -1041,7 +1041,7 @@ DLLEXPORT int perspective_window_add_overlay2(perspective_window* window, std::v
     }
 
     window->add_overlay(tmp);
-    
+
     return err;
 }
 
@@ -1113,7 +1113,7 @@ DLLEXPORT int perspective_window_add_overlay4(perspective_window* window, std::v
     }
 
     window->add_overlay(tmp);
-    
+
     return err;
 }
 

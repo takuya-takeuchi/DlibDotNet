@@ -7,7 +7,7 @@
 #include <dlib/data_io/load_image_dataset.h>
 #include <dlib/image_processing/full_object_detection.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -84,7 +84,7 @@ DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
@@ -132,7 +132,7 @@ DLLEXPORT int load_image_dataset_rectangle(matrix_element_type type,
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 

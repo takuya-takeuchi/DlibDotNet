@@ -6,7 +6,7 @@
 #include <dlib/svm/structural_object_detection_trainer.h>
 #include <dlib/svm/svm.h>
 #include "../../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -246,7 +246,7 @@ do { \
 
 #pragma endregion template
 
-DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_new(const pyramid_type pyramid_type, 
+DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_new(const pyramid_type pyramid_type,
                                                                         const unsigned int pyramid_rate,
                                                                         const fhog_feature_extractor_type extractor_type,
                                                                         void* scanner,
@@ -268,20 +268,20 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_new(const py
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
 }
 
-DLLEXPORT void structural_object_detection_trainer_scan_fhog_pyramid_delete(const pyramid_type pyramid_type, 
+DLLEXPORT void structural_object_detection_trainer_scan_fhog_pyramid_delete(const pyramid_type pyramid_type,
                                                                             const unsigned int pyramid_rate,
                                                                             const fhog_feature_extractor_type extractor_type,
                                                                             void* obj)
@@ -297,7 +297,7 @@ DLLEXPORT void structural_object_detection_trainer_scan_fhog_pyramid_delete(cons
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
                         structural_object_detection_trainer_scan_fhog_pyramid_delete_template(pyramid_rate, obj);
                         #undef EXTRACTOR_TYPE
-                        break;                      
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
@@ -305,7 +305,7 @@ DLLEXPORT void structural_object_detection_trainer_scan_fhog_pyramid_delete(cons
     }
 }
 
-DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(const pyramid_type pyramid_type, 
+DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(const pyramid_type pyramid_type,
                                                                                const unsigned int pyramid_rate,
                                                                                const fhog_feature_extractor_type extractor_type,
                                                                                void* obj)
@@ -326,20 +326,20 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_be_verbose(c
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
 }
 
-DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_c(const pyramid_type pyramid_type, 
+DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_c(const pyramid_type pyramid_type,
                                                                           const unsigned int pyramid_rate,
                                                                           const fhog_feature_extractor_type extractor_type,
                                                                           void* obj,
@@ -361,20 +361,20 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_c(const 
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
 }
 
-DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(const pyramid_type pyramid_type, 
+DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(const pyramid_type pyramid_type,
                                                                                 const unsigned int pyramid_rate,
                                                                                 const fhog_feature_extractor_type extractor_type,
                                                                                 void* obj,
@@ -396,20 +396,20 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_epsilon(
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
 }
 
-DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_num_threads(const pyramid_type pyramid_type, 
+DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_num_threads(const pyramid_type pyramid_type,
                                                                                     const unsigned int pyramid_rate,
                                                                                     const fhog_feature_extractor_type extractor_type,
                                                                                     void* obj,
@@ -431,20 +431,20 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_set_num_thre
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     return err;
 }
 
-DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(const pyramid_type pyramid_type, 
+DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(const pyramid_type pyramid_type,
                                                                                     const unsigned int pyramid_rate,
                                                                                     const fhog_feature_extractor_type extractor_type,
                                                                                     void* obj,
@@ -470,7 +470,7 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_train_rectan
                         {
                             case matrix_element_type::UInt8:
                                 #define ELEMENT_IN uint8_t
-                                structural_object_detection_trainer_scan_fhog_pyramid_train_template(ret, pyramid_rate, images, objects);                                
+                                structural_object_detection_trainer_scan_fhog_pyramid_train_template(ret, pyramid_rate, images, objects);
                                 #undef ELEMENT_IN
                                 break;
                             case matrix_element_type::UInt16:
@@ -527,14 +527,14 @@ DLLEXPORT int structural_object_detection_trainer_scan_fhog_pyramid_train_rectan
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     #undef ELEMENT_OUT

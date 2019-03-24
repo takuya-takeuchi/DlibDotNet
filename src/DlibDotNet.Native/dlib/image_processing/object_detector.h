@@ -4,7 +4,7 @@
 #include "../export.h"
 #include <dlib/image_processing/object_detector.h>
 #include <dlib/geometry/rectangle.h>
- 
+
 using namespace dlib;
 using namespace std;
 

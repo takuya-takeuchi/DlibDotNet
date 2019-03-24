@@ -1603,7 +1603,7 @@ DLLEXPORT int matrix_operator_set_one_row_column(matrix_element_type type, void*
 }
 
 DLLEXPORT int matrix_operator_get_row_column(matrix_element_type type, void* matrix, int row, int column, int templateRows, int templateColumns, void* ret)
-{    
+{
     int err = ERR_OK;
 
     switch(type)
@@ -2151,7 +2151,7 @@ DLLEXPORT int matrix_operator_multiply_right_numeric(matrix_element_type type,
                                                      void** ret)
 {
     int err = ERR_OK;
-    
+
     switch(type)
     {
         case matrix_element_type::UInt8:
@@ -2258,7 +2258,7 @@ DLLEXPORT int matrix_operator_divide_double(matrix_element_type type,
                                             void** ret)
 {
     int err = ERR_OK;
-    
+
     switch(type)
     {
         case matrix_element_type::UInt8:

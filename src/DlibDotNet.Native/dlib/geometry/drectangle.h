@@ -12,7 +12,7 @@ DLLEXPORT void* drectangle_new()
 {
     return new drectangle();
 }
- 
+
 DLLEXPORT void* drectangle_new1(const double left, const double top, const double right, const double bottom)
 {
      return new drectangle(left, top, right, bottom);

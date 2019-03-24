@@ -48,7 +48,7 @@ namespace DnnInception
                         trainer.BeVerbose();
                         trainer.SetSynchronizationFile("inception_sync", 20);
                         // Train the network.  This might take a few minutes...
-                        trainer.Train(trainingImages, trainingLabels);
+                        LossMulticlassLog.Train(trainer, trainingImages, trainingLabels);
 
                         // At this point our net object should have learned how to classify MNIST images.  But
                         // before we try it out let's save it to disk.  Note that, since the trainer has been

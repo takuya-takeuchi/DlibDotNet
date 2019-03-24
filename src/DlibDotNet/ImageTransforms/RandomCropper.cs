@@ -232,6 +232,12 @@ namespace DlibDotNet.ImageTransforms
             }
         }
 
+        public void SetChipDims(uint rows, uint cols)
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.random_cropper_set_chip_dims(this.NativePtr, rows, cols);
+        }
+
         public void SetMinObjectSize(int longDim, int shortDim)
         {
             this.ThrowIfDisposed();
@@ -240,6 +246,15 @@ namespace DlibDotNet.ImageTransforms
                 throw new ArgumentOutOfRangeException();
 
             NativeMethods.random_cropper_set_min_object_size(this.NativePtr, longDim, shortDim);
+        }
+
+        public void SetSeed(long seed)
+        {
+            this.ThrowIfDisposed();
+
+            // random_cropper_set_seed accept time_t as IntPtr
+            // time_t is long on 32bit, other wise __int64 on 64bit
+            NativeMethods.random_cropper_set_seed(this.NativePtr, new IntPtr(seed));
         }
 
         #region Overrides
