@@ -189,35 +189,24 @@ namespace DlibDotNet.Dnn
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
-            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
-
-            try
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(label.Select(r => new StdVector<MModRect>(r))))
+            using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))
             {
-                listOfVectorOfMModRect = label.Select(r => new StdVector<MModRect>(r)).ToList();
+                var ret = NativeMethods.dnn_trainer_loss_mmod_test_one_step(trainer.NativePtr,
+                                                                            trainer.Type,
+                                                                            dataElementTypes.ToNativeMatrixElementType(),
+                                                                            dataVec.NativePtr,
+                                                                            NativeMethods.MatrixElementType.UInt32,
+                                                                            labelVec.NativePtr);
+                Cuda.ThrowCudaException(ret);
 
-                using (var dataVec = new StdVector<Matrix<T>>(data))
-                using (var labelVec = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                switch (ret)
                 {
-                    var ret = NativeMethods.dnn_trainer_loss_mmod_test_one_step(trainer.NativePtr,
-                                                                                trainer.Type,
-                                                                                dataElementTypes.ToNativeMatrixElementType(),
-                                                                                dataVec.NativePtr,
-                                                                                NativeMethods.MatrixElementType.UInt32,
-                                                                                labelVec.NativePtr);
-                    Cuda.ThrowCudaException(ret);
-
-                    switch (ret)
-                    {
-                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                            throw new NotSupportedException($"{dataElementTypes} does not support");
-                    }
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
                 }
-            }
-            finally
-            {
-                if (listOfVectorOfMModRect != null)
-                    foreach (var stdVector in listOfVectorOfMModRect)
-                        stdVector?.Dispose();
             }
         }
 
@@ -232,36 +221,25 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(label));
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
-
-            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
-
-            try
+            
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(label.Select(r => new StdVector<MModRect>(r))))
+            using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))
             {
-                listOfVectorOfMModRect = label.Select(r => new StdVector<MModRect>(r)).ToList();
+                var ret = NativeMethods.dnn_trainer_loss_mmod_train(trainer.NativePtr,
+                                                                    trainer.Type,
+                                                                    dataElementTypes.ToNativeMatrixElementType(),
+                                                                    dataVec.NativePtr,
+                                                                    NativeMethods.MatrixElementType.UInt32,
+                                                                    labelVec.NativePtr);
+                Cuda.ThrowCudaException(ret);
 
-                using (var dataVec = new StdVector<Matrix<T>>(data))
-                using (var labelVec = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                switch (ret)
                 {
-                    var ret = NativeMethods.dnn_trainer_loss_mmod_train(trainer.NativePtr,
-                                                                        trainer.Type,
-                                                                        dataElementTypes.ToNativeMatrixElementType(),
-                                                                        dataVec.NativePtr,
-                                                                        NativeMethods.MatrixElementType.UInt32,
-                                                                        labelVec.NativePtr);
-                    Cuda.ThrowCudaException(ret);
-
-                    switch (ret)
-                    {
-                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                            throw new NotSupportedException($"{dataElementTypes} does not support");
-                    }
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
                 }
-            }
-            finally
-            {
-                if (listOfVectorOfMModRect != null)
-                    foreach (var stdVector in listOfVectorOfMModRect)
-                        stdVector?.Dispose();
             }
         }
 
@@ -277,35 +255,24 @@ namespace DlibDotNet.Dnn
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
-            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
-
-            try
+            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(label.Select(r => new StdVector<MModRect>(r))))
+            using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))
             {
-                listOfVectorOfMModRect = label.Select(r => new StdVector<MModRect>(r)).ToList();
+                var ret = NativeMethods.dnn_trainer_loss_mmod_train_one_step(trainer.NativePtr,
+                                                                             trainer.Type,
+                                                                             dataElementTypes.ToNativeMatrixElementType(),
+                                                                             dataVec.NativePtr,
+                                                                             NativeMethods.MatrixElementType.UInt32,
+                                                                             labelVec.NativePtr);
+                Cuda.ThrowCudaException(ret);
 
-                using (var dataVec = new StdVector<Matrix<T>>(data))
-                using (var labelVec = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                switch (ret)
                 {
-                    var ret = NativeMethods.dnn_trainer_loss_mmod_train_one_step(trainer.NativePtr,
-                                                                                 trainer.Type,
-                                                                                 dataElementTypes.ToNativeMatrixElementType(),
-                                                                                 dataVec.NativePtr,
-                                                                                 NativeMethods.MatrixElementType.UInt32,
-                                                                                 labelVec.NativePtr);
-                    Cuda.ThrowCudaException(ret);
-
-                    switch (ret)
-                    {
-                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                            throw new NotSupportedException($"{dataElementTypes} does not support");
-                    }
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new NotSupportedException($"{dataElementTypes} does not support");
                 }
-            }
-            finally
-            {
-                if (listOfVectorOfMModRect != null)
-                    foreach (var stdVector in listOfVectorOfMModRect)
-                        stdVector?.Dispose();
             }
         }
 

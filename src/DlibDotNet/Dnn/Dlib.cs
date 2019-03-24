@@ -39,7 +39,6 @@ namespace DlibDotNet
 
             var disposeOverlapTester = overlapTester == null;
             var disposeOverlapIgnoreTester = overlapIgnoreTester == null;
-            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
 
             try
             {
@@ -48,10 +47,10 @@ namespace DlibDotNet
                 if (disposeOverlapIgnoreTester)
                     overlapIgnoreTester = new TestBoxOverlap();
 
-                listOfVectorOfMModRect = truthDets.Select(r => new StdVector<MModRect>(r)).ToList();
-
                 using (var matrixVector = new StdVector<Matrix<T>>(images))
-                using (var detsVector = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
+                using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(truthDets.Select(r => new StdVector<MModRect>(r))))
+                using (var detsVector = new StdVector<StdVector<MModRect>>(disposer.Collection))
+                using (new EnumerableDisposer<StdVector<MModRect>>(detsVector))
                 {
                     var type = detector.NetworkType;
                     Matrix<T>.TryParse<T>(out var elementTypes);
@@ -80,9 +79,6 @@ namespace DlibDotNet
             }
             finally
             {
-                if (listOfVectorOfMModRect != null)
-                    foreach (var stdVector in listOfVectorOfMModRect)
-                        stdVector?.Dispose();
                 if (disposeOverlapTester)
                     overlapTester?.Dispose();
                 if (disposeOverlapIgnoreTester)

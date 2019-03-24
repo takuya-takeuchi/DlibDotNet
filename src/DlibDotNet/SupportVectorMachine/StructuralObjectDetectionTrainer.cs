@@ -231,27 +231,26 @@ namespace DlibDotNet
             public override ObjectDetector<T> Train<U>(IEnumerable<Matrix<U>> images, IEnumerable<IEnumerable<Rectangle>> objects)
             {
                 using (var vecImage = new StdVector<Matrix<U>>(images))
+                using (var disposer = new EnumerableDisposer<StdVector<Rectangle>>(objects.Select(r => new StdVector<Rectangle>(r))))
+                using (var vecObject = new StdVector<StdVector<Rectangle>>(disposer.Collection))
+                using (new EnumerableDisposer<StdVector<Rectangle>>(vecObject))
                 {
-                    var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
-                    using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                    Matrix<U>.TryParse<U>(out var matrixElementType);
+                    var ret = NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(this._PyramidType,
+                                                                                                                  this._PyramidRate,
+                                                                                                                  this._FeatureExtractorType,
+                                                                                                                  this.NativePtr,
+                                                                                                                  matrixElementType.ToNativeMatrixElementType(),
+                                                                                                                  vecImage.NativePtr,
+                                                                                                                  vecObject.NativePtr,
+                                                                                                                  out var detector);
+                    switch (ret)
                     {
-                        Matrix<U>.TryParse<U>(out var matrixElementType);
-                        var ret = NativeMethods.structural_object_detection_trainer_scan_fhog_pyramid_train_rectangle(this._PyramidType,
-                                                                                                                    this._PyramidRate,
-                                                                                                                    this._FeatureExtractorType,
-                                                                                                                    this.NativePtr,
-                                                                                                                    matrixElementType.ToNativeMatrixElementType(),
-                                                                                                                    vecImage.NativePtr,
-                                                                                                                    vecObject.NativePtr,
-                                                                                                                    out var detector);
-                        switch (ret)
-                        {
-                            case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                                throw new ArgumentException($"{matrixElementType} is not supported.");
-                        }
-
-                        return new ObjectDetector<T>(detector, new ImageScanner.FHogPyramidParameter(this._PyramidType, this._PyramidRate, this._FeatureExtractorType));
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{matrixElementType} is not supported.");
                     }
+
+                    return new ObjectDetector<T>(detector, new ImageScanner.FHogPyramidParameter(this._PyramidType, this._PyramidRate, this._FeatureExtractorType));
                 }
             }
 

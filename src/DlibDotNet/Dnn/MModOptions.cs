@@ -15,17 +15,14 @@ namespace DlibDotNet.Dnn
                            uint minTargetSize,
                            double minDetectorWindowOverlapIou = 0.75)
         {
-            var vector = boxes.Select(box => new StdVector<MModRect>(box)).ToList();
-            using (var rects = new StdVector<StdVector<MModRect>>(vector))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(boxes.Select(b => new StdVector<MModRect>(b))))
+            using (var rects = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(rects))
             {
                 this.NativePtr = NativeMethods.mmod_options_new(rects.NativePtr,
                                                                 targetSize,
                                                                 minTargetSize,
                                                                 minDetectorWindowOverlapIou);
-
-                // Not dispose MModRect elements because they are passed from caller
-                foreach (var v in vector)
-                    v.Dispose();
             }
         }
 
