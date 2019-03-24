@@ -24,7 +24,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_dataset_get_comment(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {
@@ -56,7 +56,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_dataset_get_name(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {
