@@ -228,7 +228,7 @@ namespace DlibDotNet.Dnn
                 {
                     this.ThrowIfDisposed();
                     var ret = NativeMethods.detector_window_details_label(this.NativePtr);
-                    return StringHelper.FromStdString(ret);
+                    return StringHelper.FromStdString(ret, true);
                 }
             }
 

@@ -54,7 +54,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_image_get_filename(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {
