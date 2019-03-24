@@ -9,19 +9,25 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void base_window_close_window(IntPtr window);
+        public static extern int drawable_get_bottom(IntPtr drawable);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void base_window_get_size(IntPtr window, out uint width, out uint height);
+        public static extern int drawable_get_top(IntPtr drawable);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void base_window_set_title(IntPtr window, byte[] title);
+        public static extern int drawable_get_left(IntPtr drawable);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void base_window_wait_until_closed(IntPtr window);
+        public static extern int drawable_get_right(IntPtr drawable);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void base_window_show(IntPtr window);
+        public static extern uint drawable_get_width(IntPtr drawable);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern uint drawable_get_height(IntPtr drawable);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void drawable_set_pos(IntPtr region, int x, int y);
 
     }
 

@@ -37,6 +37,7 @@ namespace ImgLab
             var clusterOption = new CommandOption("-cluster|--cluster", CommandOptionType.SingleValue);
             var flipOption = new CommandOption("-flip|--flip", CommandOptionType.SingleValue);
             var flipBasicOption = new CommandOption("-flip-basic|--flip-basic", CommandOptionType.SingleValue);
+            var fileOption = new CommandOption("-flle|--flle", CommandOptionType.SingleValue);
 
             app.Options.Add(createOption);
             app.Options.Add(clusterOption);
@@ -60,9 +61,9 @@ namespace ImgLab
                             case "pascal-v1":
                                 ConvertPascalV1(app);
                                 break;
-                            case "idl":
-                                ConvertIdl(app);
-                                break;
+                            //case "idl":
+                            //    ConvertIdl(app);
+                            //    break;
                         }
                     }
                     else
@@ -78,6 +79,24 @@ namespace ImgLab
 
                 if (flipOption.HasValue() || flipBasicOption.HasValue())
                     FlipDataset(app);
+
+                //if (fileOption.HasValue())
+                {
+                    using (var editor = new MetadataEditor(""))
+                    //using (var editor = new MetadataEditor(fileOption.Value()))
+                    {
+                        //if (parser.option("parts"))
+                        //{
+                        //    std::vector<string> parts = split(parser.option("parts").argument());
+                        //    for (unsigned long i = 0; i < parts.size(); ++i)
+                        //    {
+                        //        editor.add_labelable_part_name(parts[i]);
+                        //    }
+                        //}
+
+                        editor.WaitUntilClosed();
+                    }
+                }
 
                 return 0;
             });

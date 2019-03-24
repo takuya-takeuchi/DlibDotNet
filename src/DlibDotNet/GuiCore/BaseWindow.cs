@@ -23,6 +23,24 @@ namespace DlibDotNet
 
         #region Methods
 
+        public void CloseWindow()
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.base_window_close_window(this.NativePtr);
+        }
+        
+        public void GetSize(out uint width, out uint height)
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.base_window_get_size(this.NativePtr, out width, out height);
+        }
+
+        public void Show()
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.base_window_show(this.NativePtr);
+        }
+
         public void WaitUntilClosed()
         {
             this.ThrowIfDisposed();

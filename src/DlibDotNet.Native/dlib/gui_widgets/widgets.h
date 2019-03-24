@@ -948,8 +948,6 @@ DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::p
 
 #pragma region perspective_window
 
-#pragma endregion perspective_window
-
 DLLEXPORT perspective_window* perspective_window_new()
 {
 	return new perspective_window();
@@ -1181,6 +1179,93 @@ DLLEXPORT void perspective_window_overlay_dot_delete(perspective_window::overlay
 }
 
 #pragma endregion perspective_window::overlay_dot
+
+#pragma endregion perspective_window
+
+#pragma region menu_bar
+
+DLLEXPORT menu_bar* menu_bar_new(drawable_window* window)
+{
+    auto& w = *window;
+    return new menu_bar(w);
+}
+
+DLLEXPORT void menu_bar_delete(menu_bar* menubar)
+{
+    delete menubar;
+}
+
+DLLEXPORT void menu_bar_set_number_of_menus(menu_bar* menubar, unsigned long num)
+{
+    menubar->set_number_of_menus(num);
+}
+
+DLLEXPORT void menu_bar_set_menu_name(menu_bar* menubar, unsigned long idx, const char* name, char underline_ch)
+{
+    menubar->set_menu_name(idx, std::string(name), underline_ch);
+}
+
+#pragma endregion menu_bar
+
+#pragma region list_box
+
+DLLEXPORT list_box* list_box_new(drawable_window* window)
+{
+    auto& w = *window;
+    return new list_box(w);
+}
+
+DLLEXPORT void list_box_delete(list_box* list_box)
+{
+    delete list_box;
+}
+
+#pragma endregion list_box
+
+#pragma region label
+
+DLLEXPORT label* label_new(drawable_window* window)
+{
+    auto& w = *window;
+    return new label(w);
+}
+
+DLLEXPORT void label_delete(label* label)
+{
+    delete label;
+}
+
+DLLEXPORT void label_set_text(label* label, const char* text)
+{
+    label->set_text(std::string(text));
+}
+
+#pragma endregion label
+
+#pragma region text_field
+
+DLLEXPORT text_field* text_field_new(drawable_window* window)
+{
+    auto& w = *window;
+    return new text_field(w);
+}
+
+DLLEXPORT void text_field_delete(text_field* text_field)
+{
+    delete text_field;
+}
+
+DLLEXPORT void text_field_set_text(text_field* text_field, const char* text)
+{
+    text_field->set_text(std::string(text));
+}
+
+DLLEXPORT void text_field_set_width(text_field* text_field, const unsigned long width)
+{
+    text_field->set_width(width);
+}
+
+#pragma endregion text_field
 
 #endif
 
