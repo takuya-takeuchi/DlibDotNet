@@ -17,6 +17,15 @@ DLLEXPORT void base_window_close_window(base_window* window)
 	window->close_window();
 }
 
+DLLEXPORT void base_window_get_display_size(base_window* window, unsigned int* width, unsigned int* height)
+{
+	unsigned long w;
+	unsigned long h;
+	window->get_display_size(w, h);
+	*width = w;
+	*height = h;
+}
+
 DLLEXPORT void base_window_get_size(base_window* window, unsigned int* width, unsigned int* height)
 {
 	unsigned long w;
@@ -24,6 +33,11 @@ DLLEXPORT void base_window_get_size(base_window* window, unsigned int* width, un
 	window->get_size(w, h);
 	*width = w;
 	*height = h;
+}
+
+DLLEXPORT void base_window_set_pos(base_window* window, const long x, const long y)
+{
+	window->set_pos(x, y);
 }
 
 DLLEXPORT void base_window_set_title(base_window* window, const char* title)

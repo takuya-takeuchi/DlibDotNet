@@ -26,6 +26,55 @@ DLLEXPORT void scrollable_region_set_size(dlib::scrollable_region* region, unsig
 
 #pragma endregion scrollable_region
 
+#pragma region popup_menu
+
+DLLEXPORT unsigned int popup_menu_add_menu_item_menu_item_text(dlib::popup_menu* popup_menu, dlib::menu_item_text* new_item)
+{
+    dlib::menu_item_text& ni = *new_item;
+    return popup_menu->add_menu_item(ni);
+}
+
+DLLEXPORT unsigned int popup_menu_add_menu_item_menu_item_separator(dlib::popup_menu* popup_menu, dlib::menu_item_separator* new_item)
+{
+    dlib::menu_item_separator& ni = *new_item;
+    return popup_menu->add_menu_item(ni);
+}
+
+#pragma endregion popup_menu
+
+#pragma region menu_item_text
+
+DLLEXPORT dlib::menu_item_text* menu_item_text_new(const char* str,
+                                                   dlib::drawable_window* window,
+                                                   void (dlib::drawable_window::*event_handler)(),
+                                                   char hk)
+{
+    const std::string s(str);
+    dlib::drawable_window& w = *window;
+    return new dlib::menu_item_text(s, w, event_handler, hk);
+}
+
+DLLEXPORT void menu_item_text_delete(dlib::menu_item_text* text)
+{
+    delete text;
+}
+
+#pragma endregion menu_item_text
+
+#pragma region menu_item_separator
+
+DLLEXPORT dlib::menu_item_separator* menu_item_separator_new()
+{
+    return new dlib::menu_item_separator();
+}
+
+DLLEXPORT void menu_item_separator_delete(dlib::menu_item_separator* separator)
+{
+    delete separator;
+}
+
+#pragma endregion menu_item_separator
+
 #endif
 
 #endif

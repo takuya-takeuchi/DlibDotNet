@@ -46,12 +46,6 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Event Handlers
-        #endregion
-
-        #region Helpers
-        #endregion
-
         #endregion
 
     }

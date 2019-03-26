@@ -22,6 +22,9 @@ namespace DlibDotNet
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void menu_bar_set_menu_name(IntPtr menubar, uint idx, byte[] name, char underline_ch);
 
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr menu_bar_menu(IntPtr menubar, uint idx);
+
         #endregion
 
         #region list_box
@@ -62,6 +65,10 @@ namespace DlibDotNet
         public static extern void text_field_set_width(IntPtr ptr, uint width);
 
         #endregion
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void message_box(byte[] title, byte[] message);
+
     }
 
 }

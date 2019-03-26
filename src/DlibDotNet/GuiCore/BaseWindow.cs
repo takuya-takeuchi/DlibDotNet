@@ -7,6 +7,15 @@ namespace DlibDotNet
     public abstract class BaseWindow : DlibObject
     {
 
+        #region Constructors
+
+        protected BaseWindow(bool isEnabledDispose = true) :
+            base(isEnabledDispose)
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         public string Title
@@ -28,11 +37,23 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
             NativeMethods.base_window_close_window(this.NativePtr);
         }
-        
+
+        public void GetDisplaySize(out uint width, out uint height)
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.base_window_get_display_size(this.NativePtr, out width, out height);
+        }
+
         public void GetSize(out uint width, out uint height)
         {
             this.ThrowIfDisposed();
             NativeMethods.base_window_get_size(this.NativePtr, out width, out height);
+        }
+
+        public void SetPos(int x, int y)
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.base_window_set_pos(this.NativePtr, x, y);
         }
 
         public void Show()

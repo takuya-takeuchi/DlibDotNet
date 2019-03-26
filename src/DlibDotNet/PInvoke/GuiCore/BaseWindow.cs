@@ -15,6 +15,12 @@ namespace DlibDotNet
         public static extern void base_window_get_size(IntPtr window, out uint width, out uint height);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void base_window_get_display_size(IntPtr window, out uint width, out uint height);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void base_window_set_pos(IntPtr window, int x, int y);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void base_window_set_title(IntPtr window, byte[] title);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]

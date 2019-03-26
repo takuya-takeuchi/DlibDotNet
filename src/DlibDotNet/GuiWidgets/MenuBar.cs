@@ -18,9 +18,17 @@ namespace DlibDotNet
         #endregion
 
         #region Properties
+
         #endregion
 
         #region Methods
+
+        public PopupMenu Menu(uint index)
+        {
+            this.ThrowIfDisposed();
+            var ret = NativeMethods.menu_bar_menu(this.NativePtr, index);
+            return new PopupMenu(ret, false);
+        }
 
         public void SetNumberOfMenus(uint num)
         {
@@ -50,12 +58,6 @@ namespace DlibDotNet
             NativeMethods.menu_bar_delete(this.NativePtr);
         }
 
-        #endregion
-
-        #region Event Handlers
-        #endregion
-
-        #region Helpers
         #endregion
 
         #endregion

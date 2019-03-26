@@ -1205,6 +1205,12 @@ DLLEXPORT void menu_bar_set_menu_name(menu_bar* menubar, unsigned long idx, cons
     menubar->set_menu_name(idx, std::string(name), underline_ch);
 }
 
+DLLEXPORT popup_menu* menu_bar_menu(menu_bar* menubar, unsigned long idx)
+{
+    popup_menu& menu = menubar->menu(idx);
+    return &menu;
+}
+
 #pragma endregion menu_bar
 
 #pragma region list_box
@@ -1266,6 +1272,11 @@ DLLEXPORT void text_field_set_width(text_field* text_field, const unsigned long 
 }
 
 #pragma endregion text_field
+
+DLLEXPORT void message_box(const char* title, const char* message)
+{
+    dlib::message_box(std::string(title), std::string(message));
+}
 
 #endif
 
