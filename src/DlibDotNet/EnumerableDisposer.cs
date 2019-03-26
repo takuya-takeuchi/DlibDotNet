@@ -24,6 +24,18 @@ namespace DlibDotNet
 
         #endregion
 
+        #region Finalizer
+
+        /// <summary>
+        /// Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
+        /// </summary>
+        ~EnumerableDisposer()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -70,8 +82,8 @@ namespace DlibDotNet
         /// </summary>
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
