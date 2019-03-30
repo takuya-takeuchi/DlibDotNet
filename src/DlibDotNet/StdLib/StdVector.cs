@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using DlibDotNet.Util;
+using ElementTypes = DlibDotNet.StdVectorElementTypesRepository.ElementTypes;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -15,47 +16,13 @@ namespace DlibDotNet
     {
 
         #region Fields
-
-        private static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
-
+        
         private readonly StdVectorImp<TItem> _Imp;
 
         #endregion
 
         #region Constructors
-
-        static StdVector()
-        {
-            var types = new[]
-            {
-                new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
-                new { Type = typeof(uint),                                 ElementType = ElementTypes.UInt32 },
-                new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
-                new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
-                new { Type = typeof(Point),                                ElementType = ElementTypes.Point },
-                new { Type = typeof(DPoint),                               ElementType = ElementTypes.DPoint },
-                new { Type = typeof(ChipDetails),                          ElementType = ElementTypes.ChipDetails  },
-                new { Type = typeof(StdString),                            ElementType = ElementTypes.StdString  },
-                new { Type = typeof(FullObjectDetection),                  ElementType = ElementTypes.FullObjectDetection  },
-                new { Type = typeof(RectDetection),                        ElementType = ElementTypes.RectDetection  },
-                new { Type = typeof(ImageWindow.OverlayLine),              ElementType = ElementTypes.ImageWindowOverlayLine  },
-                new { Type = typeof(PerspectiveWindow.OverlayDot),         ElementType = ElementTypes.PerspectiveWindowOverlayDot  },
-                new { Type = typeof(MModRect),                             ElementType = ElementTypes.MModRect  },
-                new { Type = typeof(SurfPoint),                            ElementType = ElementTypes.SurfPoint  },
-                new { Type = typeof(SamplePair),                           ElementType = ElementTypes.SamplePair  },
-                new { Type = typeof(ImageDatasetMetadata.Image),           ElementType = ElementTypes.ImageDatasetMetadataImage },
-                new { Type = typeof(ImageDatasetMetadata.Box),             ElementType = ElementTypes.ImageDatasetMetadataBox },
-                new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
-                new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
-                new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
-                new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  },
-                new { Type = typeof(ImageDisplay.OverlayRect),             ElementType = ElementTypes.OverlayRect  }
-            };
-
-            foreach (var type in types)
-                SupportTypes.Add(type.Type, type.ElementType);
-        }
-
+        
         public StdVector()
         {
             this.Param = null;
@@ -133,7 +100,7 @@ namespace DlibDotNet
 
         private static StdVectorImp<TItem> CreateImp(IParameter param = null)
         {
-            if (SupportTypes.TryGetValue(typeof(TItem), out var type))
+            if (StdVectorElementTypesRepository.SupportTypes.TryGetValue(typeof(TItem), out var type))
             {
                 switch (type)
                 {
@@ -239,57 +206,6 @@ namespace DlibDotNet
         #endregion
 
         #endregion
-
-        private enum ElementTypes
-        {
-
-            Int32,
-
-            UInt32,
-
-            Long,
-
-            Rectangle,
-
-            Point,
-
-            DPoint,
-
-            PerspectiveWindowOverlayDot,
-
-            ImageWindowOverlayLine,
-
-            FullObjectDetection,
-
-            RectDetection,
-
-            ChipDetails,
-
-            StdString,
-
-            Matrix,
-
-            MModRect,
-
-            SurfPoint,
-
-            SamplePair,
-
-            VectorDouble,
-
-            StdVectorRectangle,
-
-            StdVectorMModRect,
-
-            ImageDatasetMetadataImage,
-
-            ImageDatasetMetadataBox,
-
-            DetectorWindowDetails,
-
-            OverlayRect
-
-        }
 
         #region StdVectorImp
 
