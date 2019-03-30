@@ -67,6 +67,8 @@ namespace DlibDotNet
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void image_dataset_metadata_box_set_occluded(IntPtr dataset, bool occluded);
 
+        #region part
+
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void image_dataset_metadata_box_get_parts_get_all(IntPtr box, IntPtr strings, IntPtr points);
 
@@ -78,7 +80,12 @@ namespace DlibDotNet
         public static extern void image_dataset_metadata_box_get_parts_set_value(IntPtr box, byte[] key, IntPtr value);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern int image_dataset_metadata_box_get_parts_get_size(IntPtr overlayRect);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void image_dataset_metadata_box_parts_clear(IntPtr box);
+
+        #endregion
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern double image_dataset_metadata_box_get_pose(IntPtr dataset);

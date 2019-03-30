@@ -2,6 +2,7 @@
  * This sample program is ported by C# from tools\imglab.
 */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace ImgLab
 
         private const int ExitFailure = 1;
 
+        internal const string Version = "1.15";
+
         #endregion
 
         #region Methods
@@ -37,6 +40,8 @@ namespace ImgLab
             var clusterOption = new CommandOption("-cluster|--cluster", CommandOptionType.SingleValue);
             var flipOption = new CommandOption("-flip|--flip", CommandOptionType.SingleValue);
             var flipBasicOption = new CommandOption("-flip-basic|--flip-basic", CommandOptionType.SingleValue);
+            var fileOption = new CommandOption("-file|--file", CommandOptionType.SingleValue);
+            var partsOption = new CommandOption("-parts|--parts", CommandOptionType.SingleValue);
 
             app.Options.Add(createOption);
             app.Options.Add(clusterOption);
@@ -44,6 +49,8 @@ namespace ImgLab
             app.Options.Add(convertOption);
             app.Options.Add(flipOption);
             app.Options.Add(flipBasicOption);
+            app.Options.Add(fileOption);
+            app.Options.Add(partsOption);
 
             app.OnExecute(() =>
             {
@@ -60,9 +67,9 @@ namespace ImgLab
                             case "pascal-v1":
                                 ConvertPascalV1(app);
                                 break;
-                            case "idl":
-                                ConvertIdl(app);
-                                break;
+                            //case "idl":
+                            //    ConvertIdl(app);
+                            //    break;
                         }
                     }
                     else
@@ -78,6 +85,20 @@ namespace ImgLab
 
                 if (flipOption.HasValue() || flipBasicOption.HasValue())
                     FlipDataset(app);
+
+                if (fileOption.HasValue())
+                {
+                    using (var editor = new MetadataEditor(fileOption.Value()))
+                    {
+                        if (partsOption.HasValue())
+                        {
+                            foreach (var value in partsOption.Value().Split(' ', '\t', '\n', '\r', '\t'))
+                                editor.AddLabelablePartName(value);
+                        }
+
+                        editor.WaitUntilClosed();
+                    }
+                }
 
                 return 0;
             });
@@ -108,7 +129,7 @@ namespace ImgLab
                 meta.Name = "imglab dataset";
                 meta.Comment = "Created by imglab tool.";
 
-                var images = new List<Image>();
+                var images = meta.Images;
                 for (var i = 0; i < parser.RemainingArguments.Count; ++i)
                 {
                     var arg = parser.RemainingArguments[i];
@@ -131,8 +152,6 @@ namespace ImgLab
                         foreach (var t in files)
                             images.Add(new Image(StripPath(t, parentDir)));
                     }
-
-                    meta.Images = images.ToArray();
 
                     Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(meta, filename);
                 }

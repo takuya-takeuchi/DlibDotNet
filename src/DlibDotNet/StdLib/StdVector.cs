@@ -48,7 +48,8 @@ namespace DlibDotNet
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
-                new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  }
+                new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  },
+                new { Type = typeof(ImageDisplay.OverlayRect),             ElementType = ElementTypes.OverlayRect  }
             };
 
             foreach (var type in types)
@@ -178,6 +179,8 @@ namespace DlibDotNet
                         return new StdVectorStdVectorMModRectImp() as StdVectorImp<TItem>;
                     case ElementTypes.DetectorWindowDetails:
                         return new StdVectorMModOptionsDetectorWindowDetailsImp() as StdVectorImp<TItem>;
+                    case ElementTypes.OverlayRect:
+                        return new StdVectorOverlayRectImp() as StdVectorImp<TItem>;
                 }
             }
             else
@@ -276,7 +279,9 @@ namespace DlibDotNet
 
             ImageDatasetMetadataBox,
 
-            DetectorWindowDetails
+            DetectorWindowDetails,
+
+            OverlayRect
 
         }
 
@@ -1598,6 +1603,63 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_mmod_options_detector_window_details_copy(ptr, dst);
                 return dst.Select(p => new MModOptions.DetectorWindowDetails(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+        
+        private sealed class StdVectorOverlayRectImp : StdVectorImp<ImageDisplay.OverlayRect>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_image_display_overlay_rect_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_image_display_overlay_rect_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<ImageDisplay.OverlayRect> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return NativeMethods.stdvector_image_display_overlay_rect_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_image_display_overlay_rect_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_image_display_overlay_rect_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_image_display_overlay_rect_getSize(ptr).ToInt32();
+            }
+
+            public override ImageDisplay.OverlayRect[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new ImageDisplay.OverlayRect[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_image_display_overlay_rect_copy(ptr, dst);
+                return dst.Select(p => new ImageDisplay.OverlayRect(p)).ToArray();
             }
 
             #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -8,6 +9,17 @@ namespace DlibDotNet
     {
 
         #region Constructors
+
+        public StdString()
+        {
+            this.NativePtr = NativeMethods.string_new();
+        }
+
+        public StdString(string str)
+        {
+            var sb = new StringBuilder(str ?? "");
+            this.NativePtr = NativeMethods.string_new2(sb, sb.Length);
+        }
 
         internal StdString(IntPtr ptr)
         {

@@ -209,6 +209,14 @@ namespace DlibDotNet
 
             OK = 0x00000000,
 
+            #region General
+
+            GeneralError = 0x76000000,
+
+            GeneralFileIOError = -(GeneralError | 0x00000001),
+
+            #endregion
+
             #region Array2D
 
             Array2DError = 0x7B000000,
@@ -287,7 +295,7 @@ namespace DlibDotNet
 
             #endregion
 
-            #region Dnn
+            #region Cuda
 
             CudaError = 0x77000000,
 
@@ -657,6 +665,12 @@ namespace DlibDotNet
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void assign_pixel_rgbalpha_rgb(ref RgbAlphaPixel dest, ref RgbPixel src);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void assign_pixel_rgb_hsi(ref RgbPixel dest, ref HsiPixel src);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void assign_pixel_rgbalpha_hsi(ref RgbAlphaPixel dest, ref HsiPixel src);
 
         #endregion
 

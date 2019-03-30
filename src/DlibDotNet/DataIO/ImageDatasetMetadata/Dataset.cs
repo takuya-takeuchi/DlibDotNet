@@ -34,21 +34,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             }
         }
 
-        public Image[] Images
-        {
-            get
-            {
-                this.ThrowIfDisposed();
-                var images = NativeMethods.image_dataset_metadata_dataset_get_images(this.NativePtr);
-                using (var vector = new StdVector<Image>(images))
-                    return vector.ToArray();
-            }
-            set
-            {
-                using (var vector = value != null ? new StdVector<Image>(value, null) : new StdVector<Image>())
-                    NativeMethods.image_dataset_metadata_dataset_set_images(this.NativePtr, vector.NativePtr);
-            }
-        }
+        public ImageCollection Images => new ImageCollection(this);
 
         public string Name
         {

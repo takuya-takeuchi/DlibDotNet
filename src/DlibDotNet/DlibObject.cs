@@ -85,6 +85,24 @@ namespace DlibDotNet
 
         #region Overrides
 
+        protected bool Equals(DlibObject other)
+        {
+            return this.NativePtr.Equals(other.NativePtr);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DlibObject) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.NativePtr.GetHashCode();
+        }
+
         /// <summary>
         /// Releases all managed resources.
         /// </summary>

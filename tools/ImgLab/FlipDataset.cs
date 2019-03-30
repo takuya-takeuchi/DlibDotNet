@@ -32,8 +32,7 @@ namespace ImgLab
                 var metadataFilename = Path.Combine(parentDir, $"flipped_{Path.GetFileName(dataSource)}");
 
                 var images = metadata.Images;
-
-                for (var i = 0; i < images.Length; ++i)
+                for (int i = 0, iCount = images.Count; i < iCount; ++i)
                 {
                     var f = new FileInfo(images[i].FileName);
                     var parent = Path.GetDirectoryName(f.FullName);
@@ -56,7 +55,7 @@ namespace ImgLab
                         }
 
                         var boxes = images[i].Boxes;
-                        for (var j = 0; j < boxes.Length; ++j)
+                        for (int j = 0, bCount = boxes.Count; j < bCount; ++j)
                         {
                             boxes[j].Rect = Dlib.FlipRectLeftRight(boxes[j].Rect, img.Rect);
 
@@ -68,13 +67,10 @@ namespace ImgLab
                                 boxes[j].Parts[kvp.Key] = flipRect.TopLeft;
                             }
                         }
-                        images[i].Boxes = boxes;
 
                         images[i].FileName = filename;
                     }
                 }
-
-                metadata.Images = images.ToArray();
 
                 if (flipBasic == null || !flipBasic.HasValue())
                     MakePartLabelingMatchTargetDataset(origMetadata, metadata);
@@ -193,9 +189,7 @@ namespace ImgLab
                             pcnt[p.Key] += 1;
                     }
                 }
-                image.Boxes = boxes.ToArray();
             }
-            data.Images = images;
 
             // make into an average
             var keys = psum.Keys.ToArray();
@@ -261,10 +255,7 @@ namespace ImgLab
                     foreach (var kvp in temp)
                         box.Parts[kvp.Key] = kvp.Value;
                 }
-
-                image.Boxes = boxes.ToArray();
             }
-            data.Images = images.ToArray();
         }
 
         private static IDictionary<string, DPoint> NormalizedParts(Box b)

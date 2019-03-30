@@ -10,6 +10,11 @@ DLLEXPORT std::string* string_new()
     return new std::string;
 }
 
+DLLEXPORT std::string* string_new2(const char* c_str, int len)
+{
+    return new std::string(c_str, len);
+}
+
 DLLEXPORT void string_append(std::string* str, const char* c_str, int len)
 {
     str->append(c_str, len);

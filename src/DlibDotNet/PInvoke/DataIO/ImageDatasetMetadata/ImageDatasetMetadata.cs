@@ -9,10 +9,10 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void load_image_dataset_metadata(IntPtr dataset, byte[] filename);
+        public static extern ErrorType load_image_dataset_metadata(IntPtr dataset, byte[] filename);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void save_image_dataset_metadata(IntPtr dataset, byte[] filename);
+        public static extern ErrorType save_image_dataset_metadata(IntPtr dataset, byte[] filename);
 
     }
 

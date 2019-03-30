@@ -28,7 +28,7 @@ namespace ImgLab
                 MakeEmptyFile(filename);
                 var parentDir = Path.GetDirectoryName(Path.GetFullPath(filename));
 
-                var images = new List<Image>();
+                var images = dataset.Images;
                 for (var i = 0; i < parser.RemainingArguments.Count; ++i)
                 {
                     var arg = parser.RemainingArguments[i];
@@ -37,8 +37,8 @@ namespace ImgLab
                     {
                         using (var fs = new FileStream(arg, FileMode.Open, FileAccess.Read))
                         {
-                            var formmater = new XmlSerializer(typeof(Annotation));
-                            var annotation = formmater.Deserialize(fs) as Annotation;
+                            var formatter = new XmlSerializer(typeof(Annotation));
+                            var annotation = formatter.Deserialize(fs) as Annotation;
                             ParseAnnotationFile(arg, annotation, out var image, out var datasetName);
 
                             var root = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(arg)));
@@ -55,8 +55,6 @@ namespace ImgLab
                         throw;
                     }
                 }
-
-                dataset.Images = images.ToArray();
 
                 Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(dataset, filename);
             }
@@ -81,8 +79,6 @@ namespace ImgLab
                     FileName = annotation.FileName
                 };
 
-                var boxes = new List<Box>();
-
                 foreach (var annotationObject in annotation.Objects)
                 {
                     var box = new Box
@@ -100,10 +96,8 @@ namespace ImgLab
                         Difficult = ToBoolean(annotationObject.Difficult)
                     };
 
-                    boxes.Add(box);
+                    image.Boxes.Add(box);
                 }
-
-                image.Boxes = boxes.ToArray();
             }
             catch (Exception)
             {

@@ -25,6 +25,9 @@ namespace DlibDotNet
         public static extern IntPtr string_new();
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr string_new2(StringBuilder c_str, int len);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void string_append(IntPtr str, StringBuilder c_str, int len);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -654,6 +657,34 @@ namespace DlibDotNet
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void stdvector_mmod_options_detector_window_details_copy(IntPtr vector, IntPtr[] dst);
+
+        #endregion
+
+        #region image_display::overlay_rect
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_image_display_overlay_rect_new1();
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_image_display_overlay_rect_new2(IntPtr size);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_image_display_overlay_rect_new3([In] IntPtr[] data, IntPtr dataLength);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_image_display_overlay_rect_getSize(IntPtr vector);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_image_display_overlay_rect_getPointer(IntPtr vector);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr stdvector_image_display_overlay_rect_at(IntPtr vector, int index);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void stdvector_image_display_overlay_rect_delete(IntPtr vector);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void stdvector_image_display_overlay_rect_copy(IntPtr vector, IntPtr[] dst);
 
         #endregion
 

@@ -1,0 +1,69 @@
+﻿using System;
+using System.Runtime.InteropServices;
+
+// ReSharper disable once CheckNamespace
+namespace DlibDotNet
+{
+
+    internal sealed partial class NativeMethods
+    {
+
+        #region Delegates
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void ImageDisplayOverlayRectSelectedActionDelegate(IntPtr rect);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void SelectIndexedActionDelegate(uint index);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void ClickActionDelegate(IntPtr point, bool isDoubleClick, uint button);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void StringActionDelegate(IntPtr file);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void VoidActionDelegate();
+
+        #endregion
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void message_box(byte[] title, byte[] message);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void save_file_box(IntPtr stringActionMediator);
+
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr void_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void void_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr string_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void string_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr click_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void click_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr uint32t_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void uint32t_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr image_display_overlay_rect_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void image_display_overlay_rect_action_mediator_delete(IntPtr mediator);
+
+    }
+
+}
