@@ -1172,6 +1172,10 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_rectangle_copy(ptr, dst);
+
+                // Rectangle class does not native pointer. In other words, 
+                // native pointer should not be disposed on caller.
+                // All elements of Point, DPoint and Rectangle are only disposed in Disposed methods.
                 return dst.Select(p => new Rectangle(p, false)).ToArray();
             }
 
@@ -1234,6 +1238,10 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_point_copy(ptr, dst);
+
+                // Point class does not native pointer. In other words, 
+                // native pointer should not be disposed on caller.
+                // All elements of Point, DPoint and Rectangle are only disposed in Disposed methods.
                 return dst.Select(p => new Point(p, false)).ToArray();
             }
 
@@ -1296,6 +1304,10 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_dpoint_copy(ptr, dst);
+
+                // DPoint class does not native pointer. In other words, 
+                // native pointer should not be disposed on caller.
+                // All elements of Point, DPoint and Rectangle are only disposed in Disposed methods.
                 return dst.Select(p => new DPoint(p, false)).ToArray();
             }
 
