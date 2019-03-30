@@ -48,6 +48,12 @@ namespace DlibDotNet
             NativeMethods.string_delete(this.NativePtr);
             this.NativePtr = IntPtr.Zero;
         }
+        
+        public override string ToString()
+        {
+            this.ThrowIfDisposed();
+            return StringHelper.FromStdString(this.NativePtr);
+        }
 
         #endregion
 
