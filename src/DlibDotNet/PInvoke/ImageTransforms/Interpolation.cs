@@ -100,6 +100,28 @@ namespace DlibDotNet
                                                                                      IntPtr objects,
                                                                                      uint maxImageSize);
 
+        #region extract_image_4points
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType extract_image_4points(Array2DType type,
+                                                             IntPtr array,
+                                                             IntPtr[] points,
+                                                             int width,
+                                                             int height,
+                                                             out IntPtr output);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType extract_image_4points_matrix(MatrixElementType element_type,
+                                                                    IntPtr matrix,
+                                                                    int templateRows,
+                                                                    int templateColumns,
+                                                                    IntPtr[] points,
+                                                                    int width,
+                                                                    int height,
+                                                                    out IntPtr output);
+
+        #endregion
+
     }
 
 }

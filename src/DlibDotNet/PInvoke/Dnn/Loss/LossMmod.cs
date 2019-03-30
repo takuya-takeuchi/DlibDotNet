@@ -71,6 +71,74 @@ namespace DlibDotNet
                                                                   int templateColumns,
                                                                   ulong batchSize,
                                                                   out IntPtr ret);
+        
+        #region trainer
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr dnn_trainer_loss_mmod_new(IntPtr net, int type);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void dnn_trainer_loss_mmod_delete(IntPtr trainer, int type);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void dnn_trainer_loss_mmod_be_verbose(IntPtr trainer, int type);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void dnn_trainer_loss_mmod_set_learning_rate(IntPtr trainer, int type, double lr);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_get_learning_rate(IntPtr trainer, int type, out double lr);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void dnn_trainer_loss_mmod_set_min_learning_rate(IntPtr trainer, int type, double lr);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void dnn_trainer_loss_mmod_set_mini_batch_size(IntPtr trainer, int type, uint size);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_test_one_step(IntPtr trainer,
+                                                                           int type,
+                                                                           NativeMethods.MatrixElementType dataElementType,
+                                                                           IntPtr data,
+                                                                           NativeMethods.MatrixElementType labelElementType,
+                                                                           IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_train(IntPtr trainer,
+                                                                   int type,
+                                                                   NativeMethods.MatrixElementType dataElementType,
+                                                                   IntPtr data,
+                                                                   NativeMethods.MatrixElementType labelElementType,
+                                                                   IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_train_one_step(IntPtr trainer,
+                                                                            int type,
+                                                                            NativeMethods.MatrixElementType dataElementType,
+                                                                            IntPtr data,
+                                                                            NativeMethods.MatrixElementType labelElementType,
+                                                                            IntPtr label);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_set_iterations_without_progress_threshold(IntPtr trainer,
+                                                                                                       int type,
+                                                                                                       uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_set_test_iterations_without_progress_threshold(IntPtr trainer,
+                                                                                                            int type,
+                                                                                                            uint thresh);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_get_net(IntPtr trainer, int type, out IntPtr ret);
+
+        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern ErrorType dnn_trainer_loss_mmod_operator_left_shift(IntPtr trainer, int type, IntPtr stream);
+
+        #endregion
 
         #region subnet
 
