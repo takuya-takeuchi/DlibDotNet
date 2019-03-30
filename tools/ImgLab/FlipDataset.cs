@@ -14,11 +14,11 @@ namespace ImgLab
 
         #region Methods
 
-        private static void FlipDataset(CommandLineApplication parser)
+        private static void FlipDataset(CommandArgument fileArgs, CommandOption jpgOption, bool basic)
         {
-            var flip = parser.GetOptions().FirstOrDefault(option => option.ShortName == "flip");
-            var flipBasic = parser.GetOptions().FirstOrDefault(option => option.ShortName == "flip-basic");
-            var dataSource = flip != null ? flip.Value() : flipBasic?.Value();
+            //var flip = parser.GetOptions().FirstOrDefault(option => option.ShortName == "flip");
+            //var flipBasic = parser.GetOptions().FirstOrDefault(option => option.ShortName == "flip-basic");
+            var dataSource = fileArgs.Value;
 
             using (var metadata = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(dataSource))
             using (var origMetadata = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(dataSource))
@@ -43,8 +43,7 @@ namespace ImgLab
                     {
                         Dlib.FlipImageLeftRight(img, temp);
 
-                        var jpg = parser.GetOptions().FirstOrDefault(option => option.ShortName == "jpg");
-                        if (jpg != null)
+                        if (jpgOption.HasValue())
                         {
                             filename = ToJpgName(filename);
                             Dlib.SaveJpeg(temp, filename, JpegQuality);
@@ -72,7 +71,8 @@ namespace ImgLab
                     }
                 }
 
-                if (flipBasic == null || !flipBasic.HasValue())
+                //if (flipBasic == null || !flipBasic.HasValue())
+                if (!basic)
                     MakePartLabelingMatchTargetDataset(origMetadata, metadata);
 
                 Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(metadata, metadataFilename);

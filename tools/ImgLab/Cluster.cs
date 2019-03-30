@@ -82,19 +82,16 @@ namespace ImgLab
             return assignments;
         }
 
-        private static int ClusterDataset(CommandLineApplication commandLine)
+        private static int ClusterDataset(string filename, CommandArgument clusterNumArgs, CommandOption sizeOption)
         {
             // make sure the user entered an argument to this program
-            if (commandLine.RemainingArguments.Count != 1)
+            if (string.IsNullOrWhiteSpace(filename))
             {
                 Console.WriteLine("The --cluster option requires you to give one XML file on the command line.");
                 return ExitFailure;
             }
 
-            var clusterOption = commandLine.Option("-cluster|--cluster", "", CommandOptionType.SingleValue);
-            var sizeOption = commandLine.Option("-size|--size", "", CommandOptionType.SingleValue);
-
-            var clusterValue = clusterOption.HasValue() ? clusterOption.Value() : "2";
+            var clusterValue = clusterNumArgs.Value ?? "2";
             var sizeValue = sizeOption.HasValue() ? sizeOption.Value() : "8000";
 
             if (!uint.TryParse(clusterValue, out var numClusters))
@@ -103,10 +100,9 @@ namespace ImgLab
             if (!uint.TryParse(sizeValue, out var chipSize))
                 return ExitFailure;
 
-            var argument = commandLine.RemainingArguments[0];
-            using (var data = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(argument))
+            using (var data = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(filename))
             {
-                Environment.CurrentDirectory = Path.GetDirectoryName(argument);
+                Environment.CurrentDirectory = Path.GetDirectoryName(filename);
 
 
                 double aspectRatio = MeanAspectRatio(data);

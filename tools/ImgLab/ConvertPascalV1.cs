@@ -14,13 +14,13 @@ namespace ImgLab
 
         #region Methods
 
-        private static void ConvertPascalV1(CommandLineApplication parser)
+        private static void ConvertPascalV1(CommandArgument fileArgs, CommandOption xmlOption)
         {
             Console.WriteLine("Convert from PASCAL v1.00 annotation format...");
 
             using (var dataset = new Dataset())
             {
-                var filename = parser.GetOptions().FirstOrDefault(option => option.ShortName == "c").Value();
+                var filename = fileArgs.Value;
 
                 // make sure the file exists so we can use the get_parent_directory() command to
                 // figure out it's parent directory.
@@ -28,9 +28,9 @@ namespace ImgLab
                 var parentDir = Path.GetDirectoryName(Path.GetFullPath(filename));
 
                 var images = dataset.Images;
-                for (var i = 0; i < parser.RemainingArguments.Count; ++i)
+                for (var i = 0; i < xmlOption.Values.Count; ++i)
                 {
-                    var arg = parser.RemainingArguments[i];
+                    var arg = xmlOption.Values[i];
 
                     try
                     {
