@@ -193,11 +193,17 @@ namespace DlibDotNet
                     if (!MatrixBase.TryParse(arg, out var r))
                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
 
-                    if (!(param is MatrixTemplateSizeParameter sizeParameter))
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    var templateRows = 0;
+                    var templateColumns = 0;
 
-                    var templateRows = sizeParameter.TemplateRows;
-                    var templateColumns = sizeParameter.TemplateColumns;
+                    if (param != null)
+                    {
+                        if (!(param is MatrixTemplateSizeParameter sizeParameter))
+                            throw new ArgumentOutOfRangeException(nameof(type), type, null);
+
+                        templateRows = sizeParameter.TemplateRows;
+                        templateColumns = sizeParameter.TemplateColumns;
+                    }
 
                     switch (r)
                     {
