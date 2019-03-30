@@ -163,7 +163,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     MatrixBase matrix = Dlib.DrawFHog(outputObj);
 
-                    if (!this.CanGuiDebug)
+                    if (this.CanGuiDebug)
                     {
                         var window = new ImageWindow(matrix);
                         window.WaitUntilClosed();
