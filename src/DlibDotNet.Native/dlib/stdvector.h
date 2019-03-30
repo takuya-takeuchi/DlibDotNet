@@ -226,6 +226,7 @@ MAKE_FUNC_POINTER(dlib::mmod_rect, mmod_rect)
 MAKE_FUNC_POINTER(dlib::image_dataset_metadata::image, image_dataset_metadata_image)
 MAKE_FUNC_POINTER(dlib::image_dataset_metadata::box, image_dataset_metadata_box)
 MAKE_FUNC_POINTER(dlib::mmod_options::detector_window_details, mmod_options_detector_window_details)
+MAKE_FUNC_POINTER(dlib::image_display::overlay_rect, image_display_overlay_rect)
 
 MAKE_FUNC_VECTOR(double, double)
 

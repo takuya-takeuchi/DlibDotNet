@@ -17,9 +17,6 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Properties
-        #endregion
-
         #region Methods
 
         public void SetText(string name)

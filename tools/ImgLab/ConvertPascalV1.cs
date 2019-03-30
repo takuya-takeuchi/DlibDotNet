@@ -27,7 +27,7 @@ namespace ImgLab
                 MakeEmptyFile(filename);
                 var parentDir = Path.GetDirectoryName(Path.GetFullPath(filename));
 
-                var images = new List<Image>();
+                var images = dataset.Images;
                 for (var i = 0; i < parser.RemainingArguments.Count; ++i)
                 {
                     var arg = parser.RemainingArguments[i];
@@ -46,8 +46,6 @@ namespace ImgLab
                         throw;
                     }
                 }
-
-                dataset.Images = images.ToArray();
 
                 Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(dataset, filename);
             }

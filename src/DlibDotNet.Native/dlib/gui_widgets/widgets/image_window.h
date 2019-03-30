@@ -1,15 +1,15 @@
 #ifndef DLIB_NO_GUI_SUPPORT
 
-#ifndef _CPP_WIDGETS_H_
-#define _CPP_WIDGETS_H_
+#ifndef _CPP_WIDGETS_IMAGE_WINDOW_H_
+#define _CPP_WIDGETS_IMAGE_WINDOW_H_
 
-#include "../export.h"
+#include "../../export.h"
 #include <dlib/gui_widgets/widgets.h>
 #include <dlib/pixel.h>
 #include <dlib/matrix.h>
 #include <dlib/image_processing/generic_image.h>
 #include <dlib/image_transforms/colormaps.h>
-#include "../shared.h"
+#include "../../shared.h"
 
 using namespace dlib;
 using namespace std;
@@ -885,7 +885,7 @@ DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window, elem
 
 #pragma endregion set_image
 
-#pragma region image_window::overlay_line
+#pragma region overlay_line
 
 DLLEXPORT image_window::overlay_line* image_window_overlay_line_new()
 {
@@ -920,9 +920,9 @@ DLLEXPORT void image_window_overlay_line_delete(image_window::overlay_line* line
 	delete line;
 }
 
-#pragma endregion image_window::overlay_line
+#pragma endregion overlay_line
 
-#pragma region image_window::get_next_double_click
+#pragma region get_next_double_click
 
 DLLEXPORT bool image_window_get_next_double_click(image_window* window, dlib::point** point)
 {
@@ -942,341 +942,9 @@ DLLEXPORT bool image_window_get_next_double_click2(image_window* window, dlib::p
     return ret;
 }
 
-#pragma endregion image_window::get_next_double_click
+#pragma endregion get_next_double_click
 
 #pragma endregion image_window
-
-#pragma region perspective_window
-
-DLLEXPORT perspective_window* perspective_window_new()
-{
-	return new perspective_window();
-}
-
-DLLEXPORT perspective_window* perspective_window_new2(std::vector<dlib::vector<double>*>* point_cloud)
-{
-    std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(point_cloud));
-    std::vector<dlib::vector<double>> tmp;
-    for(int i = 0, end = point_cloud->size(); i < end; i++)
-    {
-        dlib::vector<double>& p = *(static_cast<dlib::vector<double>*>(vector[i]));
-        tmp.push_back(p);
-    }
-
-	return new perspective_window(tmp);
-}
-
-DLLEXPORT perspective_window* perspective_window_new3(std::vector<dlib::vector<double>*>* point_cloud, const char* title)
-{
-    std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(point_cloud));
-    std::vector<dlib::vector<double>> tmp;
-    for(int i = 0, end = point_cloud->size(); i < end; i++)
-    {
-        dlib::vector<double>& p = *(static_cast<dlib::vector<double>*>(vector[i]));
-        tmp.push_back(p);
-    }
-
-	return new perspective_window(tmp, title);
-}
-
-DLLEXPORT int perspective_window_add_overlay(perspective_window* window, dlib::vector<double>* p1, dlib::vector<double>* p2, array2d_type type, void* p)
-{
-    int err = ERR_OK;
-
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(*p1, *p2, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(*p1, *p2, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(*p1, *p2, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(*p1, *p2, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(*p1, *p2, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(*p1, *p2, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(*p1, *p2, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(*p1, *p2, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(*p1, *p2, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(*p1, *p2, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(*p1, *p2, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
-}
-
-DLLEXPORT int perspective_window_add_overlay2(perspective_window* window, std::vector<dlib::vector<double>*>* points)
-{
-    int err = ERR_OK;
-
-    std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(points));
-    std::vector<dlib::vector<double>> tmp;
-    for(int i = 0, end = points->size(); i < end; i++)
-    {
-        dlib::vector<double>& p = *(static_cast<dlib::vector<double>*>(vector[i]));
-        tmp.push_back(p);
-    }
-
-    window->add_overlay(tmp);
-
-    return err;
-}
-
-DLLEXPORT int perspective_window_add_overlay3(perspective_window* window, std::vector<dlib::vector<double>*>* points, array2d_type type, void* p)
-{
-    int err = ERR_OK;
-
-    std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(points));
-    std::vector<dlib::vector<double>> tmp;
-    for(int i = 0, end = points->size(); i < end; i++)
-    {
-        dlib::vector<double>& p = *(static_cast<dlib::vector<double>*>(vector[i]));
-        tmp.push_back(p);
-    }
-
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(tmp, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(tmp, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(tmp, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(tmp, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(tmp, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(tmp, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(tmp, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(tmp, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(tmp, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(tmp, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(tmp, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
-}
-
-DLLEXPORT int perspective_window_add_overlay4(perspective_window* window, std::vector<perspective_window::overlay_dot*>* overlay)
-{
-    int err = ERR_OK;
-
-    std::vector<perspective_window::overlay_dot*>& vector = *(static_cast<std::vector<perspective_window::overlay_dot*>*>(overlay));
-    std::vector<perspective_window::overlay_dot> tmp;
-    for(int i = 0, end = overlay->size(); i < end; i++)
-    {
-        perspective_window::overlay_dot& p = *(static_cast<perspective_window::overlay_dot*>(vector[i]));
-        tmp.push_back(p);
-    }
-
-    window->add_overlay(tmp);
-
-    return err;
-}
-
-DLLEXPORT void perspective_window_delete(perspective_window* window)
-{
-	delete window;
-}
-
-#pragma region perspective_window::overlay_dot
-
-DLLEXPORT perspective_window::overlay_dot* perspective_window_overlay_dot_new(dlib::vector<double>* v)
-{
-    dlib::vector<double>& tmp = *(static_cast<dlib::vector<double>*>(v));
-	return new perspective_window::overlay_dot(tmp);
-}
-
-DLLEXPORT perspective_window::overlay_dot* perspective_window_overlay_dot_new2(dlib::vector<double>* v, array2d_type type, void* p)
-{
-    dlib::vector<double>& tmp = *(static_cast<dlib::vector<double>*>(v));
-
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            return new perspective_window::overlay_dot(tmp, *((uint8_t*)p));
-        case array2d_type::UInt16:
-            return new perspective_window::overlay_dot(tmp, *((uint16_t*)p));
-        case array2d_type::UInt32:
-            return new perspective_window::overlay_dot(tmp, *((uint32_t*)p));
-        case array2d_type::Int8:
-            return new perspective_window::overlay_dot(tmp, *((int8_t*)p));
-        case array2d_type::Int16:
-            return new perspective_window::overlay_dot(tmp, *((int16_t*)p));
-        case array2d_type::Int32:
-            return new perspective_window::overlay_dot(tmp, *((int32_t*)p));
-        case array2d_type::Float:
-            return new perspective_window::overlay_dot(tmp, *((float*)p));
-        case array2d_type::Double:
-            return new perspective_window::overlay_dot(tmp, *((double*)p));
-        case array2d_type::RgbPixel:
-            return new perspective_window::overlay_dot(tmp, *((dlib::rgb_pixel*)p));
-        case array2d_type::HsiPixel:
-            return new perspective_window::overlay_dot(tmp, *((dlib::hsi_pixel*)p));
-        case array2d_type::RgbAlphaPixel:
-            return new perspective_window::overlay_dot(tmp, *((dlib::rgb_alpha_pixel*)p));
-        default:
-            return nullptr;
-    }
-}
-
-DLLEXPORT bool perspective_window_overlay_dot_color(perspective_window::overlay_dot* dot, dlib::rgb_alpha_pixel* color)
-{
-    memcpy(color, &(dot->color), sizeof(dlib::rgb_alpha_pixel));
-    return true;
-}
-
-DLLEXPORT bool perspective_window_overlay_dot_p(perspective_window::overlay_dot* dot, dlib::vector<double>** ret)
-{
-    *ret = new dlib::vector<double>(dot->p);
-    return true;
-}
-
-DLLEXPORT void perspective_window_overlay_dot_delete(perspective_window::overlay_dot* dot)
-{
-	delete dot;
-}
-
-#pragma endregion perspective_window::overlay_dot
-
-#pragma endregion perspective_window
-
-#pragma region menu_bar
-
-DLLEXPORT menu_bar* menu_bar_new(drawable_window* window)
-{
-    auto& w = *window;
-    return new menu_bar(w);
-}
-
-DLLEXPORT void menu_bar_delete(menu_bar* menubar)
-{
-    delete menubar;
-}
-
-DLLEXPORT void menu_bar_set_number_of_menus(menu_bar* menubar, unsigned long num)
-{
-    menubar->set_number_of_menus(num);
-}
-
-DLLEXPORT void menu_bar_set_menu_name(menu_bar* menubar, unsigned long idx, const char* name, char underline_ch)
-{
-    menubar->set_menu_name(idx, std::string(name), underline_ch);
-}
-
-DLLEXPORT popup_menu* menu_bar_menu(menu_bar* menubar, unsigned long idx)
-{
-    popup_menu& menu = menubar->menu(idx);
-    return &menu;
-}
-
-#pragma endregion menu_bar
-
-#pragma region list_box
-
-DLLEXPORT list_box* list_box_new(drawable_window* window)
-{
-    auto& w = *window;
-    return new list_box(w);
-}
-
-DLLEXPORT void list_box_delete(list_box* list_box)
-{
-    delete list_box;
-}
-
-#pragma endregion list_box
-
-#pragma region label
-
-DLLEXPORT label* label_new(drawable_window* window)
-{
-    auto& w = *window;
-    return new label(w);
-}
-
-DLLEXPORT void label_delete(label* label)
-{
-    delete label;
-}
-
-DLLEXPORT void label_set_text(label* label, const char* text)
-{
-    label->set_text(std::string(text));
-}
-
-#pragma endregion label
-
-#pragma region text_field
-
-DLLEXPORT text_field* text_field_new(drawable_window* window)
-{
-    auto& w = *window;
-    return new text_field(w);
-}
-
-DLLEXPORT void text_field_delete(text_field* text_field)
-{
-    delete text_field;
-}
-
-DLLEXPORT void text_field_set_text(text_field* text_field, const char* text)
-{
-    text_field->set_text(std::string(text));
-}
-
-DLLEXPORT void text_field_set_width(text_field* text_field, const unsigned long width)
-{
-    text_field->set_width(width);
-}
-
-#pragma endregion text_field
-
-DLLEXPORT void message_box(const char* title, const char* message)
-{
-    dlib::message_box(std::string(title), std::string(message));
-}
 
 #endif
 

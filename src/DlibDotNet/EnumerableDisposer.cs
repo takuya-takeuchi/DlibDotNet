@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DlibDotNet
 {
 
-    internal sealed class EnumerableDisposer<T> : IDisposable{
+    public sealed class EnumerableDisposer<T> : IDisposable{
 
         #region Fields
 

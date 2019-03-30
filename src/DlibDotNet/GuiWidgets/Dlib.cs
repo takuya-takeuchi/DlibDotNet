@@ -1,4 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System;
+
+// ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
@@ -15,6 +17,17 @@ namespace DlibDotNet
             var t = Dlib.Encoding.GetBytes(title ?? "");
             var m = Dlib.Encoding.GetBytes(message ?? "");
             NativeMethods.message_box(t, m);
+        }
+
+        public static void SaveFileBox(StringActionMediator mediator)
+        {
+            if (mediator == null)
+                throw new ArgumentNullException(nameof(mediator));
+
+            mediator.ThrowIfDisposed();
+
+            NativeMethods.save_file_box(mediator.NativePtr);
+            GC.KeepAlive(mediator);
         }
 
         #endregion

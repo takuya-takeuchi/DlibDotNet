@@ -20,7 +20,8 @@ namespace DlibDotNet.ImageDatasetMetadata
             this.NativePtr = NativeMethods.image_dataset_metadata_image_new(str);
         }
 
-        internal Image(IntPtr ptr)
+        internal Image(IntPtr ptr, bool isDisposable = true) :
+            base(isDisposable)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -32,19 +33,12 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #region Properties
 
-        public Box[] Boxes
+        public BoxCollection Boxes
         {
             get
             {
                 this.ThrowIfDisposed();
-                var boxes = NativeMethods.image_dataset_metadata_dataset_get_boxes(this.NativePtr);
-                using (var vector = new StdVector<Box>(boxes))
-                    return vector.ToArray();
-            }
-            set
-            {
-                using (var vector = value != null ? new StdVector<Box>(value, null) : new StdVector<Box>())
-                    NativeMethods.image_dataset_metadata_dataset_set_boxes(this.NativePtr, vector.NativePtr);
+                return new BoxCollection(this);
             }
         }
 

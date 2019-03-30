@@ -1,22 +1,12 @@
 #ifndef DLIB_NO_GUI_SUPPORT
 
-#ifndef _CPP_DRAWABLE_H_
-#define _CPP_DRAWABLE_H_
+#ifndef _CPP_CUSTOM_DRAWABLE_WINDOW_H_
+#define _CPP_CUSTOM_DRAWABLE_WINDOW_H_
 
 #include "../export.h"
-#include <dlib/gui_widgets/canvas_drawing.h>
 #include <dlib/gui_widgets/drawable.h>
 #include <dlib/gui_core.h>
-#include <dlib/geometry/rectangle.h>
-#include <dlib/geometry/vector.h>
-#include <dlib/matrix.h>
-#include <dlib/pixel.h>
 #include "../shared.h"
-
-// class custom_drawable_window_callback_repository
-// {
-
-// }
 
 class custom_drawable_window : dlib::drawable_window
 {

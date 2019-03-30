@@ -8,66 +8,61 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        #region menu_bar
+        #region Delegates
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr menu_bar_new(IntPtr drawable_window);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void ImageDisplayOverlayRectSelectedActionDelegate(IntPtr rect);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void menu_bar_delete(IntPtr ptr);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void SelectIndexedActionDelegate(uint index);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void menu_bar_set_number_of_menus(IntPtr menubar, uint num);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void ClickActionDelegate(IntPtr point, bool isDoubleClick, uint button);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void menu_bar_set_menu_name(IntPtr menubar, uint idx, byte[] name, char underline_ch);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void StringActionDelegate(IntPtr file);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr menu_bar_menu(IntPtr menubar, uint idx);
-
-        #endregion
-
-        #region list_box
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr list_box_new(IntPtr drawable_window);
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void list_box_delete(IntPtr ptr);
-
-        #endregion
-
-        #region label
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr label_new(IntPtr drawable_window);
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void label_delete(IntPtr ptr);
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void label_set_text(IntPtr ptr, byte[] text);
-
-        #endregion
-
-        #region text_field
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr text_field_new(IntPtr drawable_window);
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void text_field_delete(IntPtr ptr);
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void text_field_set_text(IntPtr ptr, byte[] text);
-
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern void text_field_set_width(IntPtr ptr, uint width);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void VoidActionDelegate();
 
         #endregion
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern void message_box(byte[] title, byte[] message);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void save_file_box(IntPtr stringActionMediator);
+
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr void_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void void_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr string_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void string_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr click_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void click_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr uint32t_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void uint32t_action_mediator_delete(IntPtr mediator);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern IntPtr image_display_overlay_rect_action_mediator_new(IntPtr callback);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern void image_display_overlay_rect_action_mediator_delete(IntPtr mediator);
 
     }
 

@@ -8,6 +8,13 @@ namespace DlibDotNet
     public sealed class MenuItemText : MenuItem
     {
 
+        #region Delegates
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void MenuItemTextEventDelegate();
+
+        #endregion
+
         #region Fields
 
         private readonly IntPtr _Handle;
@@ -16,11 +23,15 @@ namespace DlibDotNet
 
         #region Constructors
 
-        public MenuItemText(string str, DrawableWindow window, DrawableWindow.EventDelegate handler, char hk)
+        public MenuItemText(string str, VoidActionMediator mediator, char hk)
         {
+            if (mediator == null)
+                throw new ArgumentNullException(nameof(mediator));
+
+            mediator.ThrowIfDisposed();
+
             var s = Dlib.Encoding.GetBytes(str ?? "");
-            this._Handle = Marshal.GetFunctionPointerForDelegate(handler);
-            this.NativePtr = NativeMethods.menu_item_text_new(s, window.NativePtr, this._Handle, hk);
+            this.NativePtr = NativeMethods.menu_item_text_new(s, mediator.NativePtr, hk);
         }
 
         #endregion

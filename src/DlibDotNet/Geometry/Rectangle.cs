@@ -350,6 +350,11 @@ namespace DlibDotNet
                 return left != right;
         }
 
+        public static implicit operator DRectangle(Rectangle val)
+        {
+            return new DRectangle(val);
+        }
+
         #endregion
 
         #endregion

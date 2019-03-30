@@ -5,12 +5,6 @@ namespace DlibDotNet
     public abstract class ScrollableRegion : Drawable
     {
 
-        #region Events
-        #endregion
-
-        #region Fields
-        #endregion
-
         #region Constructors
 
         protected ScrollableRegion(DrawableWindow window) :
@@ -18,9 +12,6 @@ namespace DlibDotNet
         {
         }
 
-        #endregion
-
-        #region Properties
         #endregion
 
         #region Methods
@@ -36,15 +27,6 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
             NativeMethods.scrollable_region_set_size(this.NativePtr, width, height);
         }
-
-        #region Overrids
-        #endregion
-
-        #region Event Handlers
-        #endregion
-
-        #region Helpers
-        #endregion
 
         #endregion
 

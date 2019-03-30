@@ -40,6 +40,11 @@ DLLEXPORT void base_window_set_pos(base_window* window, const long x, const long
 	window->set_pos(x, y);
 }
 
+DLLEXPORT void base_window_set_size(base_window* window, const long width, const long height)
+{
+	window->set_size(width, height);
+}
+
 DLLEXPORT void base_window_set_title(base_window* window, const char* title)
 {
 	window->set_title(title);

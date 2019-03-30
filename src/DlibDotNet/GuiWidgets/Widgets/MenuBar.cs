@@ -17,10 +17,6 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Properties
-
-        #endregion
-
         #region Methods
 
         public PopupMenu Menu(uint index)

@@ -196,6 +196,26 @@ typedef struct
 
 #define ERR_OK                                                            0x00000000
 
+// General
+#define ERR_GENERAL_ERROR                                                 0x76000000
+#define ERR_GENERAL_FILE_IO                         -(ERR_GENERAL_ERROR | 0x00000001)
+
+// CUDA
+#define ERR_CUDA_ERROR                                                    0x77000000
+#define ERR_CUDA_OUT_OF_MEMORY                         -(ERR_CUDA_ERROR | 0x00000001)
+
+// statistics/statistics.h
+#define ERR_RUNNING_STATS_ERROR                                           0x78000000
+#define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -(ERR_RUNNING_STATS_ERROR | 0x00000001)
+
+// vector
+#define ERR_VECTOR_ERROR                                                  0x79000000
+#define ERR_VECTOR_TYPE_NOT_SUPPORT                  -(ERR_VECTOR_ERROR | 0x00000001)
+
+// mlp
+#define ERR_MLP_ERROR                                                     0x7A000000
+#define ERR_MLP_KERNEL_NOT_SUPPORT                      -(ERR_MLP_ERROR | 0x00000001)
+
 // array2d
 #define ERR_ARRAY2D_ERROR                                                 0x7B000000
 #define ERR_ARRAY2D_TYPE_NOT_SUPPORT                -(ERR_ARRAY2D_ERROR | 0x00000001)
@@ -207,18 +227,6 @@ typedef struct
 #define ERR_MATRIX_ERROR                                                  0x7C000000
 #define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT          -(ERR_MATRIX_ERROR | 0x00000001)
 #define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT -(ERR_MATRIX_ERROR | 0x00000002)
-
-// mlp
-#define ERR_MLP_ERROR                                                     0x7A000000
-#define ERR_MLP_KERNEL_NOT_SUPPORT                      -(ERR_MLP_ERROR | 0x00000001)
-
-// statistics/statistics.h
-#define ERR_RUNNING_STATS_ERROR                                           0x78000000
-#define ERR_RUNNING_STATS_TYPE_NOT_SUPPORT    -(ERR_RUNNING_STATS_ERROR | 0x00000001)
-
-// vector
-#define ERR_VECTOR_ERROR                                                  0x79000000
-#define ERR_VECTOR_TYPE_NOT_SUPPORT                  -(ERR_VECTOR_ERROR | 0x00000001)
 
 // fhog
 #define ERR_FHOG_ERROR                                                    0x7D000000
@@ -233,10 +241,6 @@ typedef struct
 #define ERR_DNN_ERROR                                                     0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE                 -(ERR_DNN_ERROR | 0x00000001)
 #define ERR_DNN_PROPAGATE_EXCEPTION                     -(ERR_DNN_ERROR | 0x00000002)
-
-// CUDA
-#define ERR_CUDA_ERROR                                                    0x77000000
-#define ERR_CUDA_OUT_OF_MEMORY                         -(ERR_CUDA_ERROR | 0x00000001)
 
 #pragma region macro
 

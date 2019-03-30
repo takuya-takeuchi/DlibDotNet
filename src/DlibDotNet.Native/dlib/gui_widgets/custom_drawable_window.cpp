@@ -24,6 +24,8 @@ custom_drawable_window::~custom_drawable_window()
 
 void custom_drawable_window::on_window_resized()
 {
+    drawable_window::on_window_resized();
+
     if (this->m_on_window_resized_function)
         this->m_on_window_resized_function();
 }
@@ -32,6 +34,8 @@ void custom_drawable_window::on_keydown(unsigned long key,
                                         bool is_printable,
                                         unsigned long state)
 {
+    drawable_window::on_keydown(key, is_printable, state);
+
     if (this->m_on_keydown_function)
         this->m_on_keydown_function(key, is_printable, state);
 }

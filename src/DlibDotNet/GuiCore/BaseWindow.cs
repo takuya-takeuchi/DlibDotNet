@@ -56,6 +56,12 @@ namespace DlibDotNet
             NativeMethods.base_window_set_pos(this.NativePtr, x, y);
         }
 
+        public void SetSize(int width, int height)
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.base_window_set_size(this.NativePtr, width, height);
+        }
+
         public void Show()
         {
             this.ThrowIfDisposed();

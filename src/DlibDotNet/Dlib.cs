@@ -28,6 +28,16 @@ namespace DlibDotNet
             NativeMethods.assign_pixel_rgbalpha_rgb(ref dest, ref src);
         }
 
+        public static void AssignPixel(ref RgbPixel dest, HsiPixel src)
+        {
+            NativeMethods.assign_pixel_rgb_hsi(ref dest, ref src);
+        }
+
+        public static void AssignPixel(ref RgbAlphaPixel dest, HsiPixel src)
+        {
+            NativeMethods.assign_pixel_rgbalpha_hsi(ref dest, ref src);
+        }
+
         #endregion
 
         #region ExtractImage4Points
