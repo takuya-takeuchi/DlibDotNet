@@ -45,6 +45,50 @@ train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_train
 #define train_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
 train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_train_one_step_template);\
 
+#define operator_matrixs_template(element_type, __NET_TYPE__, obj, matrix_vector, batch_size, ret) \
+do {\
+    __NET_TYPE__& net = *(static_cast<__NET_TYPE__*>(obj));\
+    switch(element_type)\
+    {\
+        case matrix_element_type::UInt8:\
+            operator_template(net, uint8_t, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::UInt16:\
+            operator_template(net, uint16_t, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::UInt32:\
+            operator_template(net, uint32_t, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::Int8:\
+            operator_template(net, int8_t, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::Int16:\
+            operator_template(net, int16_t, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::Int32:\
+            operator_template(net, int32_t, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::Float:\
+            operator_template(net, float, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::Double:\
+            operator_template(net, double, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::RgbPixel:\
+            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::HsiPixel:\
+            operator_template(net, hsi_pixel, matrix_vector, batch_size, ret);\
+            break;\
+        case matrix_element_type::RgbAlphaPixel:\
+            operator_template(net, rgb_alpha_pixel, matrix_vector, batch_size, ret);\
+            break;\
+        default:\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
 #pragma endregion template
 
 DLLEXPORT int loss_multiclass_log_per_pixel_new(const int type, void** net)
@@ -59,6 +103,12 @@ DLLEXPORT int loss_multiclass_log_per_pixel_new(const int type, void** net)
             break;
         case 1:
             *net =  new net_type();
+            break;
+        case 2:
+            *net =  new ubnet_type();
+            break;
+        case 3:
+            *net =  new uanet_type();
             break;
     }
 
@@ -84,92 +134,16 @@ DLLEXPORT int loss_multiclass_log_per_pixel_operator_matrixs(void* obj,
         switch(type)
         {
             case 0:
-                {
-                    anet_type& net = *(static_cast<anet_type*>(obj));
-                    switch(element_type)
-                    {
-                        case matrix_element_type::UInt8:
-                            operator_template(net, uint8_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::UInt16:
-                            operator_template(net, uint16_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::UInt32:
-                            operator_template(net, uint32_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int8:
-                            operator_template(net, int8_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int16:
-                            operator_template(net, int16_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int32:
-                            operator_template(net, int32_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Float:
-                            operator_template(net, float, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Double:
-                            operator_template(net, double, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::RgbPixel:
-                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::HsiPixel:
-                            operator_template(net, hsi_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::RgbAlphaPixel:
-                            operator_template(net, rgb_alpha_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        default:
-                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                            break;
-                    }
-                }
+                operator_matrixs_template(element_type, anet_type, obj, matrix_vector, batch_size, ret);
                 break;
             case 1:
-                {
-                    net_type& net = *(static_cast<net_type*>(obj));
-                    switch(element_type)
-                    {
-                        case matrix_element_type::UInt8:
-                            operator_template(net, uint8_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::UInt16:
-                            operator_template(net, uint16_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::UInt32:
-                            operator_template(net, uint32_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int8:
-                            operator_template(net, int8_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int16:
-                            operator_template(net, int16_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int32:
-                            operator_template(net, int32_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Float:
-                            operator_template(net, float, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Double:
-                            operator_template(net, double, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::RgbPixel:
-                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::HsiPixel:
-                            operator_template(net, hsi_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::RgbAlphaPixel:
-                            operator_template(net, rgb_alpha_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        default:
-                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                            break;
-                    }
-                }
+                operator_matrixs_template(element_type, net_type, obj, matrix_vector, batch_size, ret);
+                break;
+            case 2:
+                operator_matrixs_template(element_type, ubnet_type, obj, matrix_vector, batch_size, ret);
+                break;
+            case 3:
+                operator_matrixs_template(element_type, uanet_type, obj, matrix_vector, batch_size, ret);
                 break;
         }
     }
@@ -191,6 +165,12 @@ DLLEXPORT void loss_multiclass_log_per_pixel_delete(void* obj, const int type)
             break;
         case 1:
             delete (net_type*)obj;
+            break;
+        case 2:
+            delete (ubnet_type*)obj;
+            break;
+        case 3:
+            delete (uanet_type*)obj;
             break;
     }
 }
@@ -219,6 +199,20 @@ DLLEXPORT int loss_multiclass_log_per_pixel_deserialize(const char* file_name, c
             case 1:
                 {
                     net_type* net = new net_type();
+                    dlib::deserialize(file_name) >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 2:
+                {
+                    ubnet_type* net = new ubnet_type();
+                    dlib::deserialize(file_name) >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 3:
+                {
+                    uanet_type* net = new uanet_type();
                     dlib::deserialize(file_name) >> (*net);
                     *ret = net;
                 }
@@ -261,6 +255,22 @@ DLLEXPORT int loss_multiclass_log_per_pixel_deserialize_proxy(proxy_deserialize*
                     *ret = net;
                 }
                 break;
+            case 2:
+                {
+                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                    ubnet_type* net = new ubnet_type();
+                    p >> (*net);
+                    *ret = net;
+                }
+                break;
+            case 3:
+                {
+                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+                    uanet_type* net = new uanet_type();
+                    p >> (*net);
+                    *ret = net;
+                }
+                break;
             default:
                 err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
                 break;
@@ -291,6 +301,18 @@ DLLEXPORT void loss_multiclass_log_per_pixel_serialize(void* obj, const int type
                 dlib::serialize(file_name) << (*net);
             }
             break;
+        case 2:
+            {
+                auto net = static_cast<ubnet_type*>(obj);
+                dlib::serialize(file_name) << (*net);
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<uanet_type*>(obj);
+                dlib::serialize(file_name) << (*net);
+            }
+            break;
         default:
             break;
     }
@@ -305,6 +327,10 @@ DLLEXPORT int loss_multiclass_log_per_pixel_num_layers(const int type)
             return anet_type::num_layers;
         case 1:
             return net_type::num_layers;
+        case 2:
+            return ubnet_type::num_layers;
+        case 3:
+            return uanet_type::num_layers;
     }
 
     return 0;
@@ -329,6 +355,20 @@ DLLEXPORT int loss_multiclass_log_per_pixel_subnet(void* obj, const int type, vo
                 *subnet = &sn;
             }
             break;
+        case 2:
+            {
+                auto net = static_cast<ubnet_type*>(obj);
+                ubnet_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<uanet_type*>(obj);
+                uanet_type::subnet_type& sn = net->subnet();
+                *subnet = &sn;
+            }
+            break;
     }
 
     return 0;
@@ -344,6 +384,12 @@ DLLEXPORT void loss_multiclass_log_per_pixel_clean(void* obj, const int type)
             break;
         case 1:
             ((net_type*)obj)->clean();
+            break;
+        case 2:
+            ((ubnet_type*)obj)->clean();
+            break;
+        case 3:
+            ((uanet_type*)obj)->clean();
             break;
     }
 }
@@ -363,6 +409,20 @@ DLLEXPORT void loss_multiclass_log_per_pixel_input_tensor_to_output_tensor(void*
         case 1:
             {
                 auto net = static_cast<net_type*>(obj);
+                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+                *ret = new dlib::dpoint(rp);
+            }
+            break;
+        case 2:
+            {
+                auto net = static_cast<ubnet_type*>(obj);
+                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+                *ret = new dlib::dpoint(rp);
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<uanet_type*>(obj);
                 auto rp = dlib::input_tensor_to_output_tensor(net, *p);
                 *ret = new dlib::dpoint(rp);
             }
@@ -389,6 +449,18 @@ DLLEXPORT void loss_multiclass_log_per_pixel_subnet_delete(const int type, void*
                 delete sb;
             }
             break;
+        case 2:
+            {
+                auto sb = static_cast<ubnet_type::subnet_type*>(subnet);
+                delete sb;
+            }
+            break;
+        case 3:
+            {
+                auto sb = static_cast<uanet_type::subnet_type*>(subnet);
+                delete sb;
+            }
+            break;
     }
 }
 
@@ -409,6 +481,20 @@ DLLEXPORT const dlib::tensor* loss_multiclass_log_per_pixel_subnet_get_output(vo
         case 1:
             {
                 auto net = static_cast<net_type::subnet_type*>(subnet);
+                const dlib::tensor& tensor = net->get_output();
+                return &tensor;
+            }
+            break;
+        case 2:
+            {
+                auto net = static_cast<ubnet_type::subnet_type*>(subnet);
+                const dlib::tensor& tensor = net->get_output();
+                return &tensor;
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<uanet_type::subnet_type*>(subnet);
                 const dlib::tensor& tensor = net->get_output();
                 return &tensor;
             }
@@ -440,6 +526,20 @@ DLLEXPORT void* loss_multiclass_log_per_pixel_subnet_get_layer_details(void* sub
                 return &layer_details;
             }
             break;
+        case 2:
+            {
+                auto net = static_cast<ubnet_type::subnet_type*>(subnet);
+                ubnet_type::subnet_type::layer_details_type& layer_details = net->layer_details();
+                return &layer_details;
+            }
+            break;
+        case 3:
+            {
+                auto net = static_cast<uanet_type::subnet_type*>(subnet);
+                uanet_type::subnet_type::layer_details_type& layer_details = net->layer_details();
+                return &layer_details;
+            }
+            break;
     }
 
     *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
@@ -464,6 +564,18 @@ DLLEXPORT void loss_multiclass_log_per_pixel_layer_details_set_num_filters(void*
         case 1:
             {
                 auto ld = static_cast<net_type::subnet_type::layer_details_type*>(layer);
+                ld->set_num_filters(num);
+            }
+            break;
+        case 2:
+            {
+                auto ld = static_cast<ubnet_type::subnet_type::layer_details_type*>(layer);
+                ld->set_num_filters(num);
+            }
+            break;
+        case 3:
+            {
+                auto ld = static_cast<uanet_type::subnet_type::layer_details_type*>(layer);
                 ld->set_num_filters(num);
             }
             break;
@@ -493,6 +605,18 @@ DLLEXPORT int loss_multiclass_log_per_pixel_operator_left_shift(void* obj, const
                 *stream << anet;
             }
             break;
+        case 2:
+            {
+                ubnet_type& anet = *(static_cast<ubnet_type*>(obj));
+                *stream << anet;
+            }
+            break;
+        case 3:
+            {
+                uanet_type& anet = *(static_cast<uanet_type*>(obj));
+                *stream << anet;
+            }
+            break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
@@ -516,6 +640,12 @@ DLLEXPORT void* dnn_trainer_loss_multiclass_log_per_pixel_new(void* net, const i
         case 1:
             dnn_trainer_new_template(net_type, net);
             break;
+        case 2:
+            dnn_trainer_new_template(ubnet_type, net);
+            break;
+        case 3:
+            dnn_trainer_new_template(uanet_type, net);
+            break;
     }
 
     return nullptr;
@@ -532,6 +662,12 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_delete(void* trainer, c
         case 1:
             dnn_trainer_delete_template(net_type, trainer);
             break;
+        case 2:
+            dnn_trainer_delete_template(ubnet_type, trainer);
+            break;
+        case 3:
+            dnn_trainer_delete_template(uanet_type, trainer);
+            break;
     }
 }
 
@@ -545,6 +681,12 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(void*
             break;
         case 1:
             dnn_trainer_set_learning_rate_template(net_type, trainer, lr);
+            break;
+        case 2:
+            dnn_trainer_set_learning_rate_template(ubnet_type, trainer, lr);
+            break;
+        case 3:
+            dnn_trainer_set_learning_rate_template(uanet_type, trainer, lr);
             break;
     }
 }
@@ -561,6 +703,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_get_learning_rate(void* 
             break;
         case 1:
             dnn_trainer_get_learning_rate_template(net_type, trainer, lr);
+            break;
+        case 2:
+            dnn_trainer_get_learning_rate_template(ubnet_type, trainer, lr);
+            break;
+        case 3:
+            dnn_trainer_get_learning_rate_template(uanet_type, trainer, lr);
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
@@ -581,6 +729,12 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_set_min_learning_rate(v
         case 1:
             dnn_trainer_set_min_learning_rate_template(net_type, trainer, lr);
             break;
+        case 2:
+            dnn_trainer_set_min_learning_rate_template(ubnet_type, trainer, lr);
+            break;
+        case 3:
+            dnn_trainer_set_min_learning_rate_template(uanet_type, trainer, lr);
+            break;
     }
 }
 
@@ -595,6 +749,12 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_set_mini_batch_size(voi
         case 1:
             dnn_trainer_set_mini_batch_size_template(net_type, trainer, size);
             break;
+        case 2:
+            dnn_trainer_set_mini_batch_size_template(ubnet_type, trainer, size);
+            break;
+        case 3:
+            dnn_trainer_set_mini_batch_size_template(uanet_type, trainer, size);
+            break;
     }
 }
 
@@ -608,6 +768,12 @@ DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(void* traine
             break;
         case 1:
             dnn_trainer_be_verbose_template(net_type, trainer);
+            break;
+        case 2:
+            dnn_trainer_be_verbose_template(ubnet_type, trainer);
+            break;
+        case 3:
+            dnn_trainer_be_verbose_template(uanet_type, trainer);
             break;
     }
 }
@@ -624,6 +790,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file
             break;
         case 1:
             dnn_trainer_set_synchronization_file_template(net_type, trainer, filename, std::chrono::seconds(second));
+            break;
+        case 2:
+            dnn_trainer_set_synchronization_file_template(ubnet_type, trainer, filename, std::chrono::seconds(second));
+            break;
+        case 3:
+            dnn_trainer_set_synchronization_file_template(uanet_type, trainer, filename, std::chrono::seconds(second));
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
@@ -646,6 +818,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_p
         case 1:
             dnn_trainer_set_iterations_without_progress_threshold(net_type, trainer, thresh);
             break;
+        case 2:
+            dnn_trainer_set_iterations_without_progress_threshold(ubnet_type, trainer, thresh);
+            break;
+        case 3:
+            dnn_trainer_set_iterations_without_progress_threshold(uanet_type, trainer, thresh);
+            break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
@@ -667,6 +845,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_set_test_iterations_with
         case 1:
             dnn_trainer_set_test_iterations_without_progress_threshold(net_type, trainer, thresh);
             break;
+        case 2:
+            dnn_trainer_set_test_iterations_without_progress_threshold(ubnet_type, trainer, thresh);
+            break;
+        case 3:
+            dnn_trainer_set_test_iterations_without_progress_threshold(uanet_type, trainer, thresh);
+            break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
@@ -686,7 +870,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(void* trai
     int err = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
@@ -700,6 +884,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(void* trai
                         break;
                     case 1:
                         test_one_step_template(net_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 2:
+                        test_one_step_template(ubnet_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 3:
+                        test_one_step_template(uanet_type, trainer, rgb_pixel, data, labels);
                         break;
                 }
                 break;
@@ -737,7 +927,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train(void* trainer,
     int err = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
@@ -751,6 +941,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train(void* trainer,
                         break;
                     case 1:
                         train_template(net_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 2:
+                        train_template(ubnet_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 3:
+                        train_template(uanet_type, trainer, rgb_pixel, data, labels);
                         break;
                 }
                 break;
@@ -788,7 +984,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(void* tra
     int err = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
@@ -802,6 +998,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(void* tra
                         break;
                     case 1:
                         train_one_step_template(net_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 2:
+                        train_one_step_template(ubnet_type, trainer, rgb_pixel, data, labels);
+                        break;
+                    case 3:
+                        train_one_step_template(uanet_type, trainer, rgb_pixel, data, labels);
                         break;
                 }
                 break;
@@ -845,6 +1047,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_get_net(void* trainer,
             case 1:
                 dnn_trainer_get_net_template(net_type, trainer, ret);
                 break;
+            case 2:
+                dnn_trainer_get_net_template(ubnet_type, trainer, ret);
+                break;
+            case 3:
+                dnn_trainer_get_net_template(uanet_type, trainer, ret);
+                break;
             default:
                 err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
                 break;
@@ -870,6 +1078,12 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_operator_left_shift(void
             break;
         case 1:
             dnn_trainer_operator_left_shift_template(net_type, trainer, stream);
+            break;
+        case 2:
+            dnn_trainer_operator_left_shift_template(ubnet_type, trainer, stream);
+            break;
+        case 3:
+            dnn_trainer_operator_left_shift_template(uanet_type, trainer, stream);
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
