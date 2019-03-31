@@ -27,25 +27,27 @@ namespace DlibDotNet
         public static extern IntPtr image_window_new_matrix2(NativeMethods.MatrixElementType type, IntPtr image, byte[] title);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr image_window_new_matrix_op1(NativeMethods.ElementType matrixElementType, NativeMethods.Array2DType type, IntPtr image);
+        public static extern ErrorType image_window_new_matrix_op1(NativeMethods.ElementType matrixElementType, NativeMethods.Array2DType type, IntPtr image, out IntPtr ret);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr image_window_new_matrix_op2(NativeMethods.ElementType matrixElementType, NativeMethods.Array2DType type, IntPtr image, byte[] title);
+        public static extern ErrorType image_window_new_matrix_op2(NativeMethods.ElementType matrixElementType, NativeMethods.Array2DType type, IntPtr image, byte[] title, out IntPtr ret);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr image_window_new_matrix_op3(NativeMethods.ElementType etype,
-                                                                NativeMethods.MatrixElementType type,
-                                                                IntPtr img,
-                                                                int templateRows,
-                                                                int templateColumns);
+        public static extern ErrorType image_window_new_matrix_op3(NativeMethods.ElementType etype,
+                                                                   NativeMethods.MatrixElementType type,
+                                                                   IntPtr img,
+                                                                   int templateRows,
+                                                                   int templateColumns,
+                                                                   out IntPtr ret);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern IntPtr image_window_new_matrix_op4(NativeMethods.ElementType etype,
-                                                                NativeMethods.MatrixElementType type,
-                                                                IntPtr img,
-                                                                int templateRows,
-                                                                int templateColumns,
-                                                                byte[] title);
+        public static extern ErrorType image_window_new_matrix_op4(NativeMethods.ElementType etype,
+                                                                   NativeMethods.MatrixElementType type,
+                                                                   IntPtr img,
+                                                                   int templateRows,
+                                                                   int templateColumns,
+                                                                   byte[] title,
+                                                                   out IntPtr ret);
 
         #region image_window_add_overlay
 

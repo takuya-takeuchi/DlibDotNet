@@ -852,6 +852,8 @@ namespace DlibDotNet
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
+                case NativeMethods.ErrorType.MatrixOpTypeNotSupport:
+                    throw new ArgumentException($"{matrix.ElementType} is not supported.");
             }
 
             return new Matrix<T>(value, matrix.TemplateRows, matrix.TemplateColumns);

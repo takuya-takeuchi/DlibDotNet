@@ -217,7 +217,7 @@ namespace DlibDotNet
                         stdstr = NativeMethods.ostringstream_str(ofstream);
                         str = StringHelper.FromStdString(stdstr);
                         break;
-                    case NativeMethods.ErrorType.InputElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._ElementType} is not supported.");
                     default:
                         throw new ArgumentException();

@@ -721,7 +721,7 @@ DLLEXPORT int matrix_mean(matrix_element_type type, void* matrix, int templateRo
             matrix_mean_op_std_vect_to_mat_template(type, matrix, templateRows, templateColumns, ret, err);
             break;
         default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 

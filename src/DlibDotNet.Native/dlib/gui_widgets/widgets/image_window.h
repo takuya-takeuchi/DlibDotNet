@@ -267,7 +267,7 @@ do { \
             window->set_image(*((matrix_op<ELEMENT<array2d<rgb_alpha_pixel>>>*)image));\
             break;\
         default:\
-            ret = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;\
+            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
             break;\
     }\
 } while (0)
@@ -450,9 +450,11 @@ DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void*
     }
 }
 
-DLLEXPORT void* image_window_new_matrix_op1(element_type etype, array2d_type type, void* image)
+DLLEXPORT int image_window_new_matrix_op1(element_type etype, array2d_type type, void* image, void** result)
 {
+    int err = ERR_OK;
     void* ret = nullptr;
+
     switch(etype)
     {
         case element_type::OpHeatmap:
@@ -466,15 +468,20 @@ DLLEXPORT void* image_window_new_matrix_op1(element_type etype, array2d_type typ
             #undef ELEMENT
             break;
         default:
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 
-    return ret;
+    *result = ret;
+
+    return err;
 }
 
-DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title)
+DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title, void** result)
 {
+    int err = ERR_OK;
     void* ret = nullptr;
+    
     switch(etype)
     {
         case element_type::OpHeatmap:
@@ -488,19 +495,25 @@ DLLEXPORT void* image_window_new_matrix_op2(element_type etype, array2d_type typ
             #undef ELEMENT
             break;
         default:
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
+    
+    *result = ret;
 
-    return ret;
+    return err;
 }
 
-DLLEXPORT void* image_window_new_matrix_op3(element_type etype,
-                                            matrix_element_type type,
-                                            void* img,
-                                            const int templateRows,
-                                            const int templateColumns)
+DLLEXPORT int image_window_new_matrix_op3(element_type etype,
+                                          matrix_element_type type,
+                                          void* img,
+                                          const int templateRows,
+                                          const int templateColumns,
+                                          void** result)
 {
+    int err = ERR_OK;
     void* ret = nullptr;
+    
     switch(etype)
     {
         case element_type::OpHeatmap:
@@ -514,20 +527,26 @@ DLLEXPORT void* image_window_new_matrix_op3(element_type etype,
             #undef ELEMENT
             break;
         default:
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
+    
+    *result = ret;
 
-    return ret;
+    return err;
 }
 
-DLLEXPORT void* image_window_new_matrix_op4(element_type etype,
-                                            matrix_element_type type,
-                                            void* img,
-                                            const int templateRows,
-                                            const int templateColumns,
-                                            const char* title)
+DLLEXPORT int image_window_new_matrix_op4(element_type etype,
+                                          matrix_element_type type,
+                                          void* img,
+                                          const int templateRows,
+                                          const int templateColumns,
+                                          const char* title,
+                                          void** result)
 {
+    int err = ERR_OK;
     void* ret = nullptr;
+
     switch(etype)
     {
         case element_type::OpHeatmap:
@@ -541,10 +560,13 @@ DLLEXPORT void* image_window_new_matrix_op4(element_type etype,
             #undef ELEMENT
             break;
         default:
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
+    
+    *result = ret;
 
-    return ret;
+    return err;
 }
 
 #pragma endregion new
@@ -857,7 +879,7 @@ DLLEXPORT int image_window_set_image_matrix_op_array2d(image_window* window, ele
             #undef ELEMENT
             break;
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 
@@ -876,7 +898,7 @@ DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window, elem
             #undef ELEMENT
             break;
         default:
-            err = ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 

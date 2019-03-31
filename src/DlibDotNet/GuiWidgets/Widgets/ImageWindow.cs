@@ -71,10 +71,24 @@ namespace DlibDotNet
 
             matrix.ThrowIfDisposed(nameof(matrix));
 
-            if(matrix.TemplateRows == -1 && matrix.TemplateColumns == -1)
-                this.NativePtr = NativeMethods.image_window_new_matrix_op1(matrix.ElementType, matrix.Array2DType, matrix.NativePtr);
+            IntPtr ret;
+            NativeMethods.ErrorType err;
+            var tr = matrix.TemplateRows;
+            var tc = matrix.TemplateColumns;
+            var et = matrix.ElementType;
+            var ptr = matrix.NativePtr;
+            if (tr == -1 && tc == -1)
+                err = NativeMethods.image_window_new_matrix_op1(et, matrix.Array2DType, ptr, out ret);
             else
-                this.NativePtr = NativeMethods.image_window_new_matrix_op3(matrix.ElementType, matrix.MatrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns);
+                err = NativeMethods.image_window_new_matrix_op3(et, matrix.MatrixElementType, ptr, tr, tc, out ret);
+
+            switch (err)
+            {
+                case NativeMethods.ErrorType.MatrixOpTypeNotSupport:
+                    throw new ArgumentException($"{matrix.ElementType} is not supported.");
+            }
+
+            this.NativePtr = ret;
         }
 
         public ImageWindow(MatrixOp matrix, string title)
@@ -87,10 +101,25 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed(nameof(matrix));
 
             var str = Dlib.Encoding.GetBytes(title);
-            if (matrix.TemplateRows == -1 && matrix.TemplateColumns == -1)
-                this.NativePtr = NativeMethods.image_window_new_matrix_op2(matrix.ElementType, matrix.Array2DType, matrix.NativePtr, str);
+
+            IntPtr ret;
+            NativeMethods.ErrorType err;
+            var tr = matrix.TemplateRows;
+            var tc = matrix.TemplateColumns;
+            var et = matrix.ElementType;
+            var ptr = matrix.NativePtr;
+            if (tr == -1 && matrix.TemplateColumns == -1)
+                err = NativeMethods.image_window_new_matrix_op2(et, matrix.Array2DType, ptr, str, out ret);
             else
-                this.NativePtr = NativeMethods.image_window_new_matrix_op4(matrix.ElementType, matrix.MatrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+                err = NativeMethods.image_window_new_matrix_op4(et, matrix.MatrixElementType, ptr, tr, tc, str, out ret);
+
+            switch (err)
+            {
+                case NativeMethods.ErrorType.MatrixOpTypeNotSupport:
+                    throw new ArgumentException($"{matrix.ElementType} is not supported.");
+            }
+
+            this.NativePtr = ret;
         }
 
         #endregion
@@ -449,7 +478,11 @@ namespace DlibDotNet
 
             switch (ret)
             {
-                case NativeMethods.ErrorType.InputElementTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{matrix.Array2DType} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+                case NativeMethods.ErrorType.MatrixOpTypeNotSupport:
                     throw new ArgumentException($"{matrix.ElementType} is not supported.");
             }
         }

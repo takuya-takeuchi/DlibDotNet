@@ -220,12 +220,11 @@ typedef struct
 #define ERR_ARRAY2D_ERROR                                                 0x7B000000
 #define ERR_ARRAY2D_TYPE_NOT_SUPPORT                -(ERR_ARRAY2D_ERROR | 0x00000001)
 
-#define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT             -5
-
 // matrix
 #define ERR_MATRIX_ERROR                                                  0x7C000000
 #define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT          -(ERR_MATRIX_ERROR | 0x00000001)
 #define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT -(ERR_MATRIX_ERROR | 0x00000002)
+#define ERR_MATRIX_OP_TYPE_NOT_SUPPORT               -(ERR_MATRIX_ERROR | 0x00000003)
 
 // fhog
 #define ERR_FHOG_ERROR                                                    0x7D000000

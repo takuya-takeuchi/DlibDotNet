@@ -324,7 +324,7 @@ DLLEXPORT int matrix_op_op_std_vect_to_mat_operator_left_shift(matrix_element_ty
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err =  ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 
