@@ -96,6 +96,23 @@ namespace DlibDotNet
             return this._Imp.ToArray(this.NativePtr);
         }
 
+        #region Overrides
+
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
+        protected override void DisposeUnmanaged()
+        {
+            base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            this._Imp?.Dispose(this.NativePtr);
+        }
+
+        #endregion
+
         #region Helpers
 
         private static StdVectorImp<TItem> CreateImp(IParameter param = null)
