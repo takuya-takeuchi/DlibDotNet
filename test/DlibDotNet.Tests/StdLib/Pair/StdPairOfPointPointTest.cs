@@ -1,8 +1,7 @@
-﻿using DlibDotNet.Tests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable once CheckNamespace
-namespace DlibDotNet
+namespace DlibDotNet.Tests.StdLib.Pair
 {
 
     [TestClass]

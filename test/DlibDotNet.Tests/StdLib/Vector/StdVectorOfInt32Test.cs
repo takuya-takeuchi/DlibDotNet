@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using DlibDotNet.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable once CheckNamespace
-namespace DlibDotNet
+namespace DlibDotNet.Tests.StdLib.Vector
 {
 
     [TestClass]
