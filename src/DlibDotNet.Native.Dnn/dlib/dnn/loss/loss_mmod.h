@@ -977,7 +977,7 @@ DLLEXPORT int dnn_trainer_loss_mmod_test_one_step(void* trainer,
     int err = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
@@ -1034,7 +1034,7 @@ DLLEXPORT int dnn_trainer_loss_mmod_train(void* trainer,
     int err = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
@@ -1091,7 +1091,7 @@ DLLEXPORT int dnn_trainer_loss_mmod_train_one_step(void* trainer,
     int err = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
-        return ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT;
+        return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
