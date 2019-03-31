@@ -266,7 +266,7 @@ namespace DlibDotNet.Tests.Matrix
                                         {
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
-                                            if (a != m)
+                                            if (Math.Abs(a - m) > float.Epsilon)
                                                 Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
@@ -285,7 +285,7 @@ namespace DlibDotNet.Tests.Matrix
                                         {
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
-                                            if (a != m)
+                                            if (Math.Abs(a - m) > double.Epsilon)
                                                 Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
@@ -490,7 +490,7 @@ namespace DlibDotNet.Tests.Matrix
                                     {
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
-                                        if (a != m)
+                                        if (Math.Abs(a - m) > float.Epsilon)
                                             Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
@@ -507,7 +507,7 @@ namespace DlibDotNet.Tests.Matrix
                                     {
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
-                                        if (a != m)
+                                        if (Math.Abs(a - m) > double.Epsilon)
                                             Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
@@ -594,7 +594,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     case MatrixElementTypes.UInt8:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<byte>)
+                            using (var matrix = (Matrix<byte>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -612,7 +612,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.UInt16:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<ushort>)
+                            using (var matrix = (Matrix<ushort>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -630,7 +630,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.UInt32:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<uint>)
+                            using (var matrix = (Matrix<uint>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -648,7 +648,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int8:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<sbyte>)
+                            using (var matrix = (Matrix<sbyte>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -666,7 +666,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int16:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<short>)
+                            using (var matrix = (Matrix<short>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -684,7 +684,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Int32:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<int>)
+                            using (var matrix = (Matrix<int>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -702,7 +702,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Float:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<float>)
+                            using (var matrix = (Matrix<float>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -720,7 +720,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.Double:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<double>)
+                            using (var matrix = (Matrix<double>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -738,7 +738,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.RgbPixel:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbPixel>)
+                            using (var matrix = (Matrix<RgbPixel>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -756,7 +756,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.RgbAlphaPixel:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbAlphaPixel>)
+                            using (var matrix = (Matrix<RgbAlphaPixel>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -774,7 +774,7 @@ namespace DlibDotNet.Tests.Matrix
                         break;
                     case MatrixElementTypes.HsiPixel:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<HsiPixel>)
+                            using (var matrix = (Matrix<HsiPixel>)DlibTest.LoadImageAsMatrix(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -1308,12 +1308,12 @@ namespace DlibDotNet.Tests.Matrix
                 using (var matrix = new Matrix<ulong>(3, 3))
                 {
                     for (var r = 0; r < 3; r++)
-                    for (var c = 0; c < 3; c++)
-                    {
-                        var v = (ulong)(r + c);
-                        matrix[r, c] = v;
-                        Assert.AreEqual(v, matrix[r, c]);
-                    }
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (ulong)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
                 }
             }
             catch (Exception)
@@ -1362,12 +1362,12 @@ namespace DlibDotNet.Tests.Matrix
                 using (var matrix = new Matrix<long>(3, 3))
                 {
                     for (var r = 0; r < 3; r++)
-                    for (var c = 0; c < 3; c++)
-                    {
-                        var v = (long)(r + c);
-                        matrix[r, c] = v;
-                        Assert.AreEqual(v, matrix[r, c]);
-                    }
+                        for (var c = 0; c < 3; c++)
+                        {
+                            var v = (long)(r + c);
+                            matrix[r, c] = v;
+                            Assert.AreEqual(v, matrix[r, c]);
+                        }
                 }
             }
             catch (Exception)
@@ -1990,30 +1990,30 @@ namespace DlibDotNet.Tests.Matrix
 
                 var index = 0;
                 for (var r = 0; r < rows; r++)
-                for (var c = 0; c < columns; c++)
-                {
-                    var v1 = this.NextInt32Random();
-                    lhs[r, c] = v1;
-                    tmpLeft[index] = v1;
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
 
-                    var v2 = this.NextInt32Random();
-                    rhs[r, c] = v2;
-                    tmpRight[index] = v2;
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
 
-                    index++;
-                }
+                        index++;
+                    }
 
                 using (var ret = lhs + rhs)
                 {
                     index = 0;
                     for (var r = 0; r < rows; r++)
-                    for (var c = 0; c < columns; c++)
-                    {
-                        var mv = ret[r, c];
-                        var av = tmpLeft[index] + tmpRight[index];
-                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
-                        index++;
-                    }
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] + tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
                 }
 
                 Assert.IsTrue(index == rows * columns);
@@ -2033,30 +2033,30 @@ namespace DlibDotNet.Tests.Matrix
 
                 var index = 0;
                 for (var r = 0; r < rows; r++)
-                for (var c = 0; c < columns; c++)
-                {
-                    var v1 = this.NextInt32Random();
-                    lhs[r, c] = v1;
-                    tmpLeft[index] = v1;
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
 
-                    var v2 = this.NextInt32Random();
-                    rhs[r, c] = v2;
-                    tmpRight[index] = v2;
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
 
-                    index++;
-                }
+                        index++;
+                    }
 
                 using (var ret = lhs + rhs)
                 {
                     index = 0;
                     for (var r = 0; r < rows; r++)
-                    for (var c = 0; c < columns; c++)
-                    {
-                        var mv = ret[r, c];
-                        var av = tmpLeft[index] + tmpRight[index];
-                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
-                        index++;
-                    }
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] + tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
                 }
 
                 Assert.IsTrue(index == rows * columns);
@@ -2076,30 +2076,30 @@ namespace DlibDotNet.Tests.Matrix
 
                 var index = 0;
                 for (var r = 0; r < rows; r++)
-                for (var c = 0; c < columns; c++)
-                {
-                    var v1 = this.NextInt32Random();
-                    lhs[r, c] = v1;
-                    tmpLeft[index] = v1;
+                    for (var c = 0; c < columns; c++)
+                    {
+                        var v1 = this.NextInt32Random();
+                        lhs[r, c] = v1;
+                        tmpLeft[index] = v1;
 
-                    var v2 = this.NextInt32Random();
-                    rhs[r, c] = v2;
-                    tmpRight[index] = v2;
+                        var v2 = this.NextInt32Random();
+                        rhs[r, c] = v2;
+                        tmpRight[index] = v2;
 
-                    index++;
-                }
+                        index++;
+                    }
 
                 using (var ret = lhs + rhs)
                 {
                     index = 0;
                     for (var r = 0; r < rows; r++)
-                    for (var c = 0; c < columns; c++)
-                    {
-                        var mv = ret[r, c];
-                        var av = tmpLeft[index] + tmpRight[index];
-                        Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
-                        index++;
-                    }
+                        for (var c = 0; c < columns; c++)
+                        {
+                            var mv = ret[r, c];
+                            var av = tmpLeft[index] + tmpRight[index];
+                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            index++;
+                        }
                 }
 
                 Assert.IsTrue(index == rows * columns);
@@ -3046,7 +3046,7 @@ namespace DlibDotNet.Tests.Matrix
                     throw new ArgumentOutOfRangeException(nameof(elementTypes), elementTypes, null);
             }
         }
-        
+
     }
 
 }

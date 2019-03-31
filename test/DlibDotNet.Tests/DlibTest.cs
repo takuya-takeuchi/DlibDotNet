@@ -2395,7 +2395,7 @@ namespace DlibDotNet.Tests
 
             return image;
         }
-
+        
         internal static MatrixBase LoadImageAsMatrix(MatrixElementTypes type, FileInfo path)
         {
             MatrixBase matrix;
