@@ -449,23 +449,25 @@ namespace DlibDotNet.Tests.Geometry
         [TestMethod]
         public void OperatorEqual()
         {
-            var left = (double)this.NextRandom(0, 100);
-            var top = (double)this.NextRandom(0, 100);
-            var right = left * 2;
-            var bottom = top * 2;
+            for (var left = 1; left <= 100; left++)
+            for (var top = 1; top <= 100; top++)
+            {
+                var right = left * 2;
+                var bottom = top * 2;
 
-            var r = new DRectangle(left, top, right, bottom);
-            var l0 = new DRectangle(left, top, right, bottom);
-            var l1 = new DRectangle(left, top, right * 2, bottom);
-            var l2 = new DRectangle(left, top, right, bottom * 2);
-            var l3 = new DRectangle(left * 2, top, right, bottom);
-            var l4 = new DRectangle(left, top * 2, right, bottom);
+                var r = new DRectangle(left, top, right, bottom);
+                var l = new DRectangle(left, top, right, bottom);
+                var l1 = new DRectangle(left, top, right * 2, bottom);
+                var l2 = new DRectangle(left, top, right, bottom * 2);
+                var l3 = new DRectangle(left * 2, top, right, bottom);
+                var l4 = new DRectangle(left, top * 2, right, bottom);
 
-            Assert.IsTrue(r == l0, $"1 - RWidth: {r.Width}, RHeight: {r.Height}\nLWidth: {l0.Width}, LHeight: {l0.Height}");
-            Assert.IsTrue(r != l1, $"2 - RWidth: {r.Width}, RHeight: {r.Height}\nLWidth: {l1.Width}, LHeight: {l1.Height}");
-            Assert.IsTrue(r != l2, $"3 - RWidth: {r.Width}, RHeight: {r.Height}\nLWidth: {l2.Width}, LHeight: {l2.Height}");
-            Assert.IsTrue(r != l1, $"4 - RWidth: {r.Width}, RHeight: {r.Height}\nLWidth: {l3.Width}, LHeight: {l3.Height}");
-            Assert.IsTrue(r != l2, $"5 - RWidth: {r.Width}, RHeight: {r.Height}\nLWidth: {l4.Width}, LHeight: {l4.Height}");
+                Assert.AreEqual(r, l, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                Assert.AreNotEqual(r, l1, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                Assert.AreNotEqual(r, l2, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                Assert.AreNotEqual(r, l3, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                Assert.AreNotEqual(r, l4, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+            }
         }
 
     }
