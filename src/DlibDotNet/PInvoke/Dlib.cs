@@ -225,8 +225,6 @@ namespace DlibDotNet
 
             #endregion
 
-            ElementTypeNotSupport = -4,
-
             InputElementTypeNotSupport = -5,
 
             #region Matrix

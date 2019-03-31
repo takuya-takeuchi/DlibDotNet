@@ -55,7 +55,7 @@ namespace DlibDotNet
                                                            out var matrix);
             switch (ret)
             {
-                case NativeMethods.ErrorType.ElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{elementType} is not supported.");
             }
 
@@ -80,21 +80,6 @@ namespace DlibDotNet
             var templateRows = first.TemplateRows;
             var templateColumns = first.TemplateColumns;
 
-            //using (var vector = new StdVector<Matrix<T>>(results, new[] { templateRows, templateColumns }))
-            //{
-            //    var ret = Native.mat_mat_OpStdVectToMat(elementType.ToNativeMatrixElementType(),
-            //                                            vector.NativePtr,
-            //                                            templateRows,
-            //                                            templateColumns,
-            //                                            out var matrix);
-            //    switch (ret)
-            //    {
-            //        case ErrorType.ElementTypeNotSupport:
-            //            throw new ArgumentException($"{elementType} is not supported.");
-            //    }
-
-            //    return new MatrixOp(ElementType.OpStdVectToMat, elementType, matrix, templateRows, templateColumns);
-            //}
             var ret = NativeMethods.mat_mat_OpStdVectToMat(elementType.ToNativeMatrixElementType(),
                                                            results.NativePtr,
                                                            templateRows,
@@ -102,7 +87,7 @@ namespace DlibDotNet
                                                            out var matrix);
             switch (ret)
             {
-                case NativeMethods.ErrorType.ElementTypeNotSupport:
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{elementType} is not supported.");
             }
 
