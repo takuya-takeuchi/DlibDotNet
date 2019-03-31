@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DlibDotNet.Tests.Matrix;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -72,7 +73,22 @@ namespace DlibDotNet.Tests.Array2D
         [TestMethod]
         public void CreateArray2DMatrix()
         {
-            foreach (MatrixElementTypes test in Enum.GetValues(typeof(MatrixElementTypes)))
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true}
+            };
+
+            foreach (var test in tests.Select(arg => arg.Type))
             {
                 var cols = this.NextRandom(1, 100);
                 var rows = this.NextRandom(1, 100);
@@ -92,7 +108,22 @@ namespace DlibDotNet.Tests.Array2D
         [TestMethod]
         public void CreateArray2DMatrix2()
         {
-            foreach (MatrixElementTypes test in Enum.GetValues(typeof(MatrixElementTypes)))
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true}
+            };
+
+            foreach (var test in tests.Select(arg => arg.Type))
             {
                 var array2DMatrix = CreateArray2DMatrix(test);
                 this.DisposeAndCheckDisposedState(array2DMatrix);
@@ -774,8 +805,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<ushort>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -793,8 +824,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<uint>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -812,8 +843,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<sbyte>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -831,8 +862,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<short>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -850,8 +881,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<int>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -869,8 +900,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<float>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -888,8 +919,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<double>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -907,8 +938,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<RgbPixel>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -926,8 +957,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<RgbAlphaPixel>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
@@ -945,8 +976,8 @@ namespace DlibDotNet.Tests.Array2D
                             using (var matrix = MatrixTest.FillMatrixByNonZero<HsiPixel>(row, column, out _, out var bytes))
                             {
                                 for (var r = 0; r < row; r++)
-                                for (var c = 0; c < column; c++)
-                                    array2D[r][c] = matrix[r, c];
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
