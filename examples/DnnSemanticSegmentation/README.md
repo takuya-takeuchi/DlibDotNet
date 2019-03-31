@@ -22,7 +22,7 @@ Please refer the [Tutorial for Linux](https://github.com/takuya-takeuchi/DlibDot
 
 Download test data from the following urls.
 
-- http://dlib.net/files/semantic_segmentation_voc2012net.dnn
+- http://dlib.net/files/semantic_segmentation_voc2012net_v2.dnn
 - &lt;dlib&gt;\examples\faces\*.jpg
 
 And extract them and copy to extracted files to &lt;DnnSemanticSegmentation_dir&gt;.

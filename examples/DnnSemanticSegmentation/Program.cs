@@ -14,6 +14,8 @@ namespace DnnSemanticSegmentation
     internal class Program
     {
 
+        private const string SemanticSegmentationNetFilename = "semantic_segmentation_voc2012net_v2.dnn";
+
         public class Voc2012Class
         {
 
@@ -91,17 +93,17 @@ namespace DnnSemanticSegmentation
                 Console.WriteLine("You call this program like this: ");
                 Console.WriteLine("./dnn_semantic_segmentation_train_ex /path/to/images");
                 Console.WriteLine();
-                Console.WriteLine("You will also need a trained 'semantic_segmentation_voc2012net.dnn' file.");
+                Console.WriteLine($"You will also need a trained '{SemanticSegmentationNetFilename}' file.");
                 Console.WriteLine("You can either train it yourself (see example program");
                 Console.WriteLine("dnn_semantic_segmentation_train_ex), or download a");
-                Console.WriteLine("copy from here: http://dlib.net/files/semantic_segmentation_voc2012net.dnn");
+                Console.WriteLine($"copy from here: http://dlib.net/files/{SemanticSegmentationNetFilename}");
                 return;
             }
 
             try
             {
                 // Read the file containing the trained network from the working directory.
-                using (var net = LossMulticlassLogPerPixel.Deserialize("semantic_segmentation_voc2012net.dnn"))
+                using (var net = LossMulticlassLogPerPixel.Deserialize(SemanticSegmentationNetFilename, 3))
                 {
                     // Show inference results in a window.
                     using (var win = new ImageWindow())
