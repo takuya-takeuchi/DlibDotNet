@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9E3AD0D-91F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{44730D39-C672-4CC0-B983-26CC9D7E59C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlibDotNet.Tests", "test\DlibDotNet.Tests\DlibDotNet.Tests.csproj", "{DF8702F7-691D-4B82-BD1B-A4DB64B081F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Tests", "test\DlibDotNet.Tests\DlibDotNet.Tests.csproj", "{DF8702F7-691D-4B82-BD1B-A4DB64B081F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet", "src\DlibDotNet\DlibDotNet.csproj", "{B13A6288-7B69-4B53-9138-2E20A8D5CFC5}"
 EndProject
@@ -82,6 +82,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMmod", "examples\DnnMmod\DnnMmod.csproj", "{07DEB9CC-8FA7-44CC-9052-3AB9DDC000D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMmodTrainFindCars", "examples\DnnMmodTrainFindCars\DnnMmodTrainFindCars.csproj", "{A6D66CAE-ED19-4C11-86DD-34105D27317F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnSemanticSegmentationOld", "examples\DnnSemanticSegmentationOld\DnnSemanticSegmentationOld.csproj", "{D0AABA60-5A22-4694-8507-D5808689746A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -611,6 +613,22 @@ Global
 		{A6D66CAE-ED19-4C11-86DD-34105D27317F}.Release|x64.Build.0 = Release|Any CPU
 		{A6D66CAE-ED19-4C11-86DD-34105D27317F}.Release|x86.ActiveCfg = Release|Any CPU
 		{A6D66CAE-ED19-4C11-86DD-34105D27317F}.Release|x86.Build.0 = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|x64.Build.0 = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Debug|x86.Build.0 = Debug|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|ARM.Build.0 = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|x64.ActiveCfg = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|x64.Build.0 = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|x86.ActiveCfg = Release|Any CPU
+		{D0AABA60-5A22-4694-8507-D5808689746A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -651,6 +669,7 @@ Global
 		{183EF3A0-DBFE-4014-A7C6-D12C656F9BB7} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{07DEB9CC-8FA7-44CC-9052-3AB9DDC000D4} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{A6D66CAE-ED19-4C11-86DD-34105D27317F} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{D0AABA60-5A22-4694-8507-D5808689746A} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}
