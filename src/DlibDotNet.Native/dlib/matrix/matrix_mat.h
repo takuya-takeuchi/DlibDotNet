@@ -182,7 +182,7 @@ DLLEXPORT int mat_mat_OpStdVectToMat(matrix_element_type type, void* vec, int te
             #undef ELEMENT_IN
 			break;
         default:
-			err = ERR_ELEMENT_TYPE_NOT_SUPPORT;
+			err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 			break;
     }
 

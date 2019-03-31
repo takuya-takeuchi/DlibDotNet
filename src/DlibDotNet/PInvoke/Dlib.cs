@@ -225,17 +225,15 @@ namespace DlibDotNet
 
             #endregion
 
-            ElementTypeNotSupport = -4,
-
-            InputElementTypeNotSupport = -5,
-
             #region Matrix
 
             MatrixError = 0x7C000000,
 
-            MatrixElementTypeNotSupport = -(MatrixError | 0x00000001),
+            MatrixElementTypeNotSupport         = -(MatrixError | 0x00000001),
 
             MatrixElementTemplateSizeNotSupport = -(MatrixError | 0x00000002),
+
+            MatrixOpTypeNotSupport              = -(MatrixError | 0x00000003),
 
             #endregion
 
