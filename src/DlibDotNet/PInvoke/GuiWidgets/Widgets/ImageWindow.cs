@@ -58,6 +58,18 @@ namespace DlibDotNet
         public static extern NativeMethods.ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref ushort color);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref uint color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref sbyte color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref short color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref int color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern NativeMethods.ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref float color);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -83,6 +95,18 @@ namespace DlibDotNet
         public static extern NativeMethods.ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, NativeMethods.Array2DType type, ref ushort color);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, NativeMethods.Array2DType type, ref uint color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, NativeMethods.Array2DType type, ref sbyte color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, NativeMethods.Array2DType type, ref short color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, NativeMethods.Array2DType type, ref int color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern NativeMethods.ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, NativeMethods.Array2DType type, ref float color);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
@@ -106,6 +130,18 @@ namespace DlibDotNet
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern NativeMethods.ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref ushort color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref uint color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref sbyte color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref short color);
+
+        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        public static extern NativeMethods.ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref int color);
 
         [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
         public static extern NativeMethods.ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, NativeMethods.Array2DType type, ref float color);

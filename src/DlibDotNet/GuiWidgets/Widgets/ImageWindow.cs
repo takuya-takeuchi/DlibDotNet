@@ -155,6 +155,38 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
         }
 
+        public void AddOverlay(Rectangle rect, uint color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
+        }
+
+        public void AddOverlay(Rectangle rect, sbyte color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color);
+        }
+
+        public void AddOverlay(Rectangle rect, short color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color);
+        }
+
+        public void AddOverlay(Rectangle rect, int color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color);
+        }
+
         public void AddOverlay(Rectangle rect, float color)
         {
             this.ThrowIfDisposed();
@@ -227,6 +259,50 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
+        }
+
+        public void AddOverlay(IEnumerable<Rectangle> rects, uint color)
+        {
+            this.ThrowIfDisposed();
+
+            if (rects == null)
+                throw new ArgumentNullException(nameof(rects));
+
+            using (var vector = new StdVector<Rectangle>(rects))
+                NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
+        }
+
+        public void AddOverlay(IEnumerable<Rectangle> rects, sbyte color)
+        {
+            this.ThrowIfDisposed();
+
+            if (rects == null)
+                throw new ArgumentNullException(nameof(rects));
+
+            using (var vector = new StdVector<Rectangle>(rects))
+                NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int8, ref color);
+        }
+
+        public void AddOverlay(IEnumerable<Rectangle> rects, short color)
+        {
+            this.ThrowIfDisposed();
+
+            if (rects == null)
+                throw new ArgumentNullException(nameof(rects));
+
+            using (var vector = new StdVector<Rectangle>(rects))
+                NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int16, ref color);
+        }
+
+        public void AddOverlay(IEnumerable<Rectangle> rects, int color)
+        {
+            this.ThrowIfDisposed();
+
+            if (rects == null)
+                throw new ArgumentNullException(nameof(rects));
+
+            using (var vector = new StdVector<Rectangle>(rects))
+                NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int32, ref color);
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, float color)
@@ -312,6 +388,38 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
         }
 
+        public void AddOverlay(DRectangle rect, uint color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
+        }
+
+        public void AddOverlay(DRectangle rect, sbyte color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color);
+        }
+
+        public void AddOverlay(DRectangle rect, short color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color);
+        }
+
+        public void AddOverlay(DRectangle rect, int color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color);
+        }
+
         public void AddOverlay(DRectangle rect, float color)
         {
             this.ThrowIfDisposed();
@@ -354,7 +462,7 @@ namespace DlibDotNet
 
         #endregion
 
-        #region AddOverlay(DRectangle rect, pixel_type color)
+        #region AddOverlay(Rectangle rect, pixel_type color)
 
         public void AddOverlay(Rectangle rect, string str)
         {
