@@ -315,6 +315,92 @@ do { \
     }\
 } while (0)
 
+#define image_window_add_overlay_pixel_arg1_template(window, type, p, arg1) \
+do { \
+    switch(type)\
+    {\
+        case array2d_type::UInt8:\
+            window->add_overlay(arg1, *((uint8_t*)p));\
+            break;\
+        case array2d_type::UInt16:\
+            window->add_overlay(arg1, *((uint16_t*)p));\
+            break;\
+        case array2d_type::UInt32:\
+            window->add_overlay(arg1, *((uint32_t*)p));\
+            break;\
+        case array2d_type::Int8:\
+            window->add_overlay(arg1, *((int8_t*)p));\
+            break;\
+        case array2d_type::Int16:\
+            window->add_overlay(arg1, *((int16_t*)p));\
+            break;\
+        case array2d_type::Int32:\
+            window->add_overlay(arg1, *((int32_t*)p));\
+            break;\
+        case array2d_type::Float:\
+            window->add_overlay(arg1, *((float*)p));\
+            break;\
+        case array2d_type::Double:\
+            window->add_overlay(arg1, *((double*)p));\
+            break;\
+        case array2d_type::RgbPixel:\
+            window->add_overlay(arg1, *((rgb_pixel*)p));\
+            break;\
+        case array2d_type::HsiPixel:\
+            window->add_overlay(arg1, *((hsi_pixel*)p));\
+            break;\
+        case array2d_type::RgbAlphaPixel:\
+            window->add_overlay(arg1, *((rgb_alpha_pixel*)p));\
+            break;\
+        default:\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
+#define image_window_add_overlay_pixel_arg2_template(window, type, p, arg1, arg2) \
+do { \
+    switch(type)\
+    {\
+        case array2d_type::UInt8:\
+            window->add_overlay(arg1, *((uint8_t*)p), arg2);\
+            break;\
+        case array2d_type::UInt16:\
+            window->add_overlay(arg1, *((uint16_t*)p), arg2);\
+            break;\
+        case array2d_type::UInt32:\
+            window->add_overlay(arg1, *((uint32_t*)p), arg2);\
+            break;\
+        case array2d_type::Int8:\
+            window->add_overlay(arg1, *((int8_t*)p), arg2);\
+            break;\
+        case array2d_type::Int16:\
+            window->add_overlay(arg1, *((int16_t*)p), arg2);\
+            break;\
+        case array2d_type::Int32:\
+            window->add_overlay(arg1, *((int32_t*)p), arg2);\
+            break;\
+        case array2d_type::Float:\
+            window->add_overlay(arg1, *((float*)p), arg2);\
+            break;\
+        case array2d_type::Double:\
+            window->add_overlay(arg1, *((double*)p), arg2);\
+            break;\
+        case array2d_type::RgbPixel:\
+            window->add_overlay(arg1, *((rgb_pixel*)p), arg2);\
+            break;\
+        case array2d_type::HsiPixel:\
+            window->add_overlay(arg1, *((hsi_pixel*)p), arg2);\
+            break;\
+        case array2d_type::RgbAlphaPixel:\
+            window->add_overlay(arg1, *((rgb_alpha_pixel*)p), arg2);\
+            break;\
+        default:\
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
 #pragma endregion template
 
 #pragma region image_window
@@ -582,45 +668,7 @@ DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r,
 {
     int err = ERR_OK;
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(*r, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(*r, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(*r, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(*r, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(*r, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(*r, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(*r, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(*r, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(*r, *((rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(*r, *((hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(*r, *((rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    image_window_add_overlay_pixel_arg1_template(window, type, p, *r);
 
     return err;
 }
@@ -637,46 +685,8 @@ DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectan
         tmpRects.push_back(rect);
     }
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(tmpRects, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(tmpRects, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(tmpRects, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(tmpRects, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(tmpRects, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(tmpRects, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(tmpRects, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(tmpRects, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(tmpRects, *((rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(tmpRects, *((hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(tmpRects, *((rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
+    image_window_add_overlay_pixel_arg1_template(window, type, p, tmpRects);
+    
     return err;
 }
 
@@ -684,46 +694,8 @@ DLLEXPORT int image_window_add_overlay3(image_window* window, dlib::drectangle* 
 {
     int err = ERR_OK;
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(*r, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(*r, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(*r, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(*r, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(*r, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(*r, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(*r, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(*r, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(*r, *((rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(*r, *((hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(*r, *((rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
+    image_window_add_overlay_pixel_arg1_template(window, type, p, *r);
+    
     return err;
 }
 
@@ -746,6 +718,15 @@ DLLEXPORT int image_window_add_overlay5(image_window* window, std::vector<image_
 
     window->add_overlay(tmpRects);
 
+    return err;
+}
+
+DLLEXPORT int image_window_add_overlay6(image_window* window, dlib::rectangle* r, array2d_type type, void* p, std::string* l)
+{
+    int err = ERR_OK;
+
+    image_window_add_overlay_pixel_arg2_template(window, type, p, *r, *l);
+    
     return err;
 }
 

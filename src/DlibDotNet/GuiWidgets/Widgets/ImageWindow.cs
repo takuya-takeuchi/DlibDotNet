@@ -354,6 +354,151 @@ namespace DlibDotNet
 
         #endregion
 
+        #region AddOverlay(DRectangle rect, pixel_type color)
+
+        public void AddOverlay(Rectangle rect, string str)
+        {
+            this.AddOverlay(rect, new RgbPixel
+            {
+                Red = 255
+            },
+            str);
+        }
+
+        public void AddOverlay(Rectangle rect, sbyte color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, short color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, int color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, byte color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt8, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, ushort color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, uint color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, float color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Float, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, double color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Double, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, RgbPixel color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, RgbAlphaPixel color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, HsiPixel color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color, pStr.NativePtr);
+        }
+
+        #endregion
+
         #region AddOverlay(OverlayLine line)
 
         public void AddOverlay(OverlayLine line)
