@@ -555,7 +555,7 @@ namespace DlibDotNet.Dnn
 
                 for (var index = 0; index < this._Size; index++)
                 {
-                    var ptr = NativeMethods.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, (int)index);
+                    var ptr = NativeMethods.dnn_output_stdvector_stdvector_mmod_rect_getItem(this.NativePtr, index);
                     var size = NativeMethods.dnn_output_stdvector_mmod_rect_getSize(ptr);
 
                     var list = new List<MModRect>(size);

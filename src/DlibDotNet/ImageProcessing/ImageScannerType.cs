@@ -5,7 +5,7 @@ namespace DlibDotNet
     public enum ImageScannerType
     {
 
-        FHogPyramid,
+        FHogPyramid
 
     }
 

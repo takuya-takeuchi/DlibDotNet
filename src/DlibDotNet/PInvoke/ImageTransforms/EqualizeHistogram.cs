@@ -8,10 +8,10 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType equalize_histogram_array2d(Array2DType img_type, IntPtr img);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType equalize_histogram_array2d_2(Array2DType in_type,
                                                                     IntPtr in_img,
                                                                     Array2DType out_type, 

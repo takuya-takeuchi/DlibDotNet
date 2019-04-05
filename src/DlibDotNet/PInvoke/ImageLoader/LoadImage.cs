@@ -8,10 +8,10 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType load_image(Array2DType type, IntPtr array, byte[] path);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType load_image_matrix(MatrixElementType type, byte[] path, out IntPtr matrix);
 
     }

@@ -83,7 +83,7 @@ namespace DnnSemanticSegmentation
             new Voc2012Class(17, new RgbPixel{ Red = 128, Green =  64, Blue =   0 }, "sheep"),
             new Voc2012Class(18, new RgbPixel{ Red =   0, Green = 192, Blue =   0 }, "sofa"),
             new Voc2012Class(19, new RgbPixel{ Red = 128, Green = 192, Blue =   0 }, "train"),
-            new Voc2012Class(20, new RgbPixel{ Red =   0, Green =  64, Blue = 128 }, "tvmonitor"),
+            new Voc2012Class(20, new RgbPixel{ Red =   0, Green =  64, Blue = 128 }, "tvmonitor")
         };
 
         private static void Main(string[] args)

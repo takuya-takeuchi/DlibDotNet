@@ -8,10 +8,10 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr resizable_tensor_new();
 
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void resizable_tensor_delete(IntPtr tensor);
 
     }

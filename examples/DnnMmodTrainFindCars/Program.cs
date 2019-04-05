@@ -380,7 +380,6 @@ namespace DnnMmodTrainFindCars
                                                 testing upsampled results: 0.987879 0.651132 0.650399 
                                         */
 
-                                        return;
                                     }
                                 }
                             }

@@ -8,7 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType disturb_colors_matrix(MatrixElementType type,
                                                              IntPtr matrix,
                                                              int templateRows,

@@ -8,12 +8,12 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void render_face_detections(IntPtr dets,
                                                          ref RgbPixel color,
                                                          IntPtr vectorOfLine);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void render_face_detections2(IntPtr dets,
                                                           ref RgbPixel color,
                                                           IntPtr vectorOfLine);

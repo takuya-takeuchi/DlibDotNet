@@ -7,11 +7,11 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention, EntryPoint = nameof(cuda_cudaRuntimeGetVersion))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(cuda_cudaRuntimeGetVersion))]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_cuda_cudaRuntimeGetVersion(out int version);
 
-        [DllImport(NativeMethods.NativeDnnLibrary, CallingConvention = NativeMethods.CallingConvention, EntryPoint = nameof(cuda_cudaDriverGetVersion))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(cuda_cudaDriverGetVersion))]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_cuda_cudaDriverGetVersion(out int version);
 

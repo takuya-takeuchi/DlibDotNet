@@ -8,7 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType create_tiled_pyramid(MatrixElementType img_type,
                                                             IntPtr img,
                                                             PyramidType pyramidType,

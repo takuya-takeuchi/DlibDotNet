@@ -34,7 +34,7 @@ namespace ImgLab
             app.Name = nameof(ImgLab);
             app.HelpOption("-h|--help");
 
-            app.Command("add", (command) =>
+            app.Command("add", command =>
             {
                 command.HelpOption("-?|-h|--help");
                 var srcArgs = command.Argument("src", "");
@@ -47,7 +47,7 @@ namespace ImgLab
                 });
             });
 
-            app.Command("c", (command) =>
+            app.Command("c", command =>
             {
                 command.HelpOption("-?|-h|--help");
                 var fileArgs = command.Argument("file", "");
@@ -83,7 +83,7 @@ namespace ImgLab
                 });
             });
 
-            app.Command("cluster", (command) =>
+            app.Command("cluster", command =>
             {
                 command.HelpOption("-?|-h|--help");
                 var fileArgs = command.Argument("file", "");
@@ -97,7 +97,7 @@ namespace ImgLab
                 });
             });
 
-            app.Command("gui", (command) =>
+            app.Command("gui", command =>
             {
                 command.HelpOption("-?|-h|--help");
                 var fileArgs = command.Argument("file", "");
@@ -120,7 +120,7 @@ namespace ImgLab
                 });
             });
 
-            app.Command("flip", (command) =>
+            app.Command("flip", command =>
             {
                 command.HelpOption("-?|-h|--help");
                 var fileArgs = command.Argument("file", "");
@@ -133,7 +133,7 @@ namespace ImgLab
                 });
             });
 
-            app.Command("flip-basic", (command) =>
+            app.Command("flip-basic", command =>
             {
                 command.HelpOption("-?|-h|--help");
                 var fileArgs = command.Argument("file", "");

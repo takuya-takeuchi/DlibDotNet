@@ -14,8 +14,8 @@ namespace DlibDotNet
 
         public static void MessageBox(string title, string message)
         {
-            var t = Dlib.Encoding.GetBytes(title ?? "");
-            var m = Dlib.Encoding.GetBytes(message ?? "");
+            var t = Encoding.GetBytes(title ?? "");
+            var m = Encoding.GetBytes(message ?? "");
             NativeMethods.message_box(t, m);
         }
 
