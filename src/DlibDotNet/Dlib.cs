@@ -237,7 +237,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var image = new Array2D<T>();
 
@@ -266,7 +266,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var image = new Array2D<T>();
 
@@ -295,7 +295,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var image = new Array2D<T>();
 
@@ -327,7 +327,7 @@ namespace DlibDotNet
             if (!MatrixBase.TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var matrixElementType = type.ToNativeMatrixElementType();
             var ret = NativeMethods.load_image_matrix(matrixElementType, str, out var matrix);
@@ -354,7 +354,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var image = new Array2D<T>();
 
@@ -383,7 +383,7 @@ namespace DlibDotNet
             if (!File.Exists(path))
                 throw new FileNotFoundException($"The specified {nameof(path)} does not exist.", path);
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var image = new Array2D<T>();
 
@@ -603,7 +603,7 @@ namespace DlibDotNet
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = NativeMethods.save_bmp(array2DType, image.NativePtr, str);
@@ -637,7 +637,7 @@ namespace DlibDotNet
             if (matrix.Rows <= 0 || matrix.Columns <= 0)
                 throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
             var ret = NativeMethods.save_bmp_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
@@ -673,7 +673,7 @@ namespace DlibDotNet
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = NativeMethods.save_dng(array2DType, image.NativePtr, str);
@@ -707,7 +707,7 @@ namespace DlibDotNet
             if (matrix.Rows <= 0 || matrix.Columns <= 0)
                 throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
             var ret = NativeMethods.save_dng_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
@@ -747,7 +747,7 @@ namespace DlibDotNet
             if (quality > 100)
                 throw new ArgumentOutOfRangeException(nameof(quality), $"{nameof(quality)} is greater than 100.");
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = NativeMethods.save_jpeg(array2DType, image.NativePtr, str, quality);
@@ -785,7 +785,7 @@ namespace DlibDotNet
             if (quality > 100)
                 throw new ArgumentOutOfRangeException(nameof(quality), $"{nameof(quality)} is greater than 100.");
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
             var ret = NativeMethods.save_jpeg_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, quality);
@@ -819,7 +819,7 @@ namespace DlibDotNet
             if (image.Rows <= 0 || image.Columns <= 0)
                 throw new ArgumentException($"{nameof(image.Columns)} and {nameof(image.Rows)} is less than or equal to zero.", nameof(image));
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
             var ret = NativeMethods.save_png(array2DType, image.NativePtr, str);
@@ -851,7 +851,7 @@ namespace DlibDotNet
             if (matrix.Rows <= 0 || matrix.Columns <= 0)
                 throw new ArgumentException($"{nameof(matrix.Columns)} and {nameof(matrix.Rows)} is less than or equal to zero.", nameof(matrix));
 
-            var str = Dlib.Encoding.GetBytes(path);
+            var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
             var ret = NativeMethods.save_png_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);

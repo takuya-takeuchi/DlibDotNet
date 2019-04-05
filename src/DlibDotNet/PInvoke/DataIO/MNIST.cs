@@ -8,7 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void load_mnist_dataset(byte[] folderPath,
                                                      out IntPtr training_images,
                                                      out IntPtr training_labels,

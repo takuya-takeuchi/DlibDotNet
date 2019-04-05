@@ -12,7 +12,7 @@ namespace DlibDotNet
 
         public static string WrapString(string text, uint firstPad = 0, uint restPad = 0, uint maxPerLine = 79)
         {
-            var str = Dlib.Encoding.GetBytes(text ?? "");
+            var str = Encoding.GetBytes(text ?? "");
             var ret = NativeMethods.wrap_string_char(str, firstPad, restPad, maxPerLine);
             return StringHelper.FromStdString(ret, true);
         }

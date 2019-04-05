@@ -7,10 +7,6 @@ namespace DlibDotNet
 
         #region Constructors
 
-        protected MenuItem()
-        {
-        }
-
         #endregion
 
     }

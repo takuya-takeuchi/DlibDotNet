@@ -25,7 +25,7 @@
         /// <summary>
         /// The pixel format is R8G8B8A8 unsigned integer.
         /// </summary>
-        Rgba,
+        Rgba
 
     }
 

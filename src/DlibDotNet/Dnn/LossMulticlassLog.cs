@@ -448,7 +448,7 @@ namespace DlibDotNet.Dnn
                     if (!(0 <= index && index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
+                    return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, index);
                 }
             }
 

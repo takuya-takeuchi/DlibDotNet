@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace DlibDotNet
 {
 
-    public sealed partial class Queue<TItem>
+    public sealed class Queue<TItem>
     {
         
         public sealed class Kernel1A : DlibObject, IReadOnlyCollection<TItem>
