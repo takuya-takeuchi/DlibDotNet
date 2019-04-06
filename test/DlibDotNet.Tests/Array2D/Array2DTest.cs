@@ -993,6 +993,37 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
+        internal static Array2DBase CreateArray2D(ImageTypes elementType, string filepath)
+        {
+            switch (elementType)
+            {
+                case ImageTypes.UInt8:
+                    return Dlib.LoadImage<byte>(filepath);
+                case ImageTypes.UInt16:
+                    return Dlib.LoadImage<ushort>(filepath);
+                case ImageTypes.UInt32:
+                    return Dlib.LoadImage<uint>(filepath);
+                case ImageTypes.Int8:
+                    return Dlib.LoadImage<sbyte>(filepath);
+                case ImageTypes.Int16:
+                    return Dlib.LoadImage<short>(filepath);
+                case ImageTypes.Int32:
+                    return Dlib.LoadImage<int>(filepath);
+                case ImageTypes.Float:
+                    return Dlib.LoadImage<float>(filepath);
+                case ImageTypes.Double:
+                    return Dlib.LoadImage<double>(filepath);
+                case ImageTypes.RgbPixel:
+                    return Dlib.LoadImage<RgbPixel>(filepath);
+                case ImageTypes.RgbAlphaPixel:
+                    return Dlib.LoadImage<RgbAlphaPixel>(filepath);
+                case ImageTypes.HsiPixel:
+                    return Dlib.LoadImage<HsiPixel>(filepath);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
+            }
+        }
+
         internal static Array2DBase CreateArray2D(ImageTypes elementType)
         {
             switch (elementType)
