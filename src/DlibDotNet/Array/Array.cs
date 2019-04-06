@@ -8,7 +8,7 @@ namespace DlibDotNet
 {
 
     /// <summary>
-    /// This object represents a 1-Dimensional array of objects. 
+    /// Represents a 1-Dimensional array of objects. 
     /// </summary>
     /// <typeparam name="T">The type of elements in the array.</typeparam>
     public sealed class Array<T> : DlibObject, IEnumerable<T>

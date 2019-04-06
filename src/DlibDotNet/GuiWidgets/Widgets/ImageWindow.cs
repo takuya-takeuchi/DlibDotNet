@@ -131,6 +131,11 @@ namespace DlibDotNet
 
         #region AddOverlay(Rectangle rect, pixel_type color)
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect)
         {
             this.AddOverlay(rect, new RgbPixel
@@ -139,6 +144,12 @@ namespace DlibDotNet
             });
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="byte"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, byte color)
         {
             this.ThrowIfDisposed();
@@ -147,6 +158,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="ushort"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, ushort color)
         {
             this.ThrowIfDisposed();
@@ -155,6 +172,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="uint"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, uint color)
         {
             this.ThrowIfDisposed();
@@ -163,6 +186,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="sbyte"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, sbyte color)
         {
             this.ThrowIfDisposed();
@@ -171,6 +200,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="short"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, short color)
         {
             this.ThrowIfDisposed();
@@ -179,6 +214,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="int"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, int color)
         {
             this.ThrowIfDisposed();
@@ -187,6 +228,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="float"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, float color)
         {
             this.ThrowIfDisposed();
@@ -195,6 +242,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Float, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="double"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, double color)
         {
             this.ThrowIfDisposed();
@@ -203,6 +256,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Double, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="RgbPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, RgbPixel color)
         {
             this.ThrowIfDisposed();
@@ -211,6 +270,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="RgbAlphaPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, RgbAlphaPixel color)
         {
             this.ThrowIfDisposed();
@@ -219,6 +284,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="HsiPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, HsiPixel color)
         {
             this.ThrowIfDisposed();
@@ -364,6 +435,11 @@ namespace DlibDotNet
 
         #region AddOverlay(DRectangle rect, pixel_type color)
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect)
         {
             this.AddOverlay(rect, new RgbPixel
@@ -372,6 +448,12 @@ namespace DlibDotNet
             });
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="byte"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, byte color)
         {
             this.ThrowIfDisposed();
@@ -380,6 +462,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="ushort"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, ushort color)
         {
             this.ThrowIfDisposed();
@@ -388,6 +476,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="uint"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, uint color)
         {
             this.ThrowIfDisposed();
@@ -396,6 +490,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="sbyte"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, sbyte color)
         {
             this.ThrowIfDisposed();
@@ -404,6 +504,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="short"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, short color)
         {
             this.ThrowIfDisposed();
@@ -412,6 +518,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="int"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, int color)
         {
             this.ThrowIfDisposed();
@@ -420,6 +532,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="float"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, float color)
         {
             this.ThrowIfDisposed();
@@ -428,6 +546,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Float, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="double"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, double color)
         {
             this.ThrowIfDisposed();
@@ -436,6 +560,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Double, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="RgbPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, RgbPixel color)
         {
             this.ThrowIfDisposed();
@@ -444,6 +574,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="RgbAlphaPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, RgbAlphaPixel color)
         {
             this.ThrowIfDisposed();
@@ -452,6 +588,12 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="HsiPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, HsiPixel color)
         {
             this.ThrowIfDisposed();
@@ -462,7 +604,7 @@ namespace DlibDotNet
 
         #endregion
 
-        #region AddOverlay(Rectangle rect, pixel_type color)
+        #region AddOverlay(Rectangle rect, pixel_type color, string str)
 
         public void AddOverlay(Rectangle rect, string str)
         {

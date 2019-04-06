@@ -5,7 +5,10 @@ using System.Linq;
 namespace DlibDotNet.Dnn
 {
 
-    public class MModOptions : DlibObject
+    /// <summary>
+    /// This object contains all the parameters that control the behavior of <see cref="LossMmod"/>. This class cannot be inherited.
+    /// </summary>
+    public sealed class MModOptions : DlibObject
     {
 
         #region Constructors

@@ -5,11 +5,19 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
+    /// <summary>
+    /// Represents an ordered pair of double-precision floating-point x- and y-coordinates that defines a point in a two-dimensional plane.
+    /// </summary>
     public struct DPoint : IEquatable<DPoint>
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DPoint"/> class with the specified coordinates.
+        /// </summary>
+        /// <param name="x">The horizontal position of the point.</param>
+        /// <param name="y">The vertical position of the point.</param>
         public DPoint(double x, double y)
         {
             this._X = x;
@@ -52,6 +60,10 @@ namespace DlibDotNet
 
         private double _X;
 
+        /// <summary>
+        /// Gets or sets the x-coordinate of this <see cref="DPoint"/>.
+        /// </summary>
+        /// <value>The x-coordinate of this <see cref="DPoint"/>.</value>
         public double X
         {
             get => this._X;
@@ -60,6 +72,10 @@ namespace DlibDotNet
 
         private double _Y;
 
+        /// <summary>
+        /// Gets or sets the x-coordinate of this <see cref="DPoint"/>.
+        /// </summary>
+        /// <value>The x-coordinate of this <see cref="DPoint"/>.</value>
         public double Y
         {
             get => this._Y;
@@ -95,12 +111,21 @@ namespace DlibDotNet
 
         #region Overrids
 
+        /// <summary>
+        /// Specifies whether this <see cref="DPoint"/> contains the same coordinates as the specified <see cref="Object"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="Object"/> to test.</param>
+        /// <returns><code>true</code> if <paramref name="obj"/> is a <see cref="DPoint"/> and has the same coordinates as this <see cref="DPoint"/>.</returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is DPoint && Equals((DPoint)obj);
         }
 
+        /// <summary>
+        /// Returns a hash code for this <see cref="DPoint"/>.
+        /// </summary>
+        /// <returns>An integer value that specifies a hash value for this <see cref="DPoint"/>.</returns>
         public override int GetHashCode()
         {
             unchecked
@@ -153,32 +178,36 @@ namespace DlibDotNet
                 return ret.ToManaged();
         }
 
-        public static bool operator ==(DPoint point, DPoint rhs)
+        /// <summary>
+        /// Compares two <see cref="DPoint"/> objects. The result specifies whether the values of the <see cref="X"/> and <see cref="Y"/> properties of the two <see cref="DPoint"/> objects are equal.
+        /// </summary>
+        /// <param name="left">A <see cref="DPoint"/> to compare.</param>
+        /// <param name="right">A <see cref="DPoint"/> to compare.</param>
+        /// <returns><code>true</code> if the <see cref="X"/> and <see cref="Y"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        public static bool operator ==(DPoint left, DPoint right)
         {
-            using (var left = point.ToNative())
-            using (var right = rhs.ToNative())
-                return left == right;
+            using (var l = left.ToNative())
+            using (var r = right.ToNative())
+                return l == r;
         }
 
-        public static bool operator !=(DPoint point, DPoint rhs)
+        /// <summary>
+        /// Compares two <see cref="DPoint"/> objects. The result specifies whether the values of the <see cref="X"/> or <see cref="Y"/> properties of the two <see cref="DPoint"/> objects are unequal.
+        /// </summary>
+        /// <param name="left">A <see cref="DPoint"/> to compare.</param>
+        /// <param name="right">A <see cref="DPoint"/> to compare.</param>
+        /// <returns><code>true</code> if the values of either the <see cref="X"/> properties or the <see cref="Y"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        public static bool operator !=(DPoint left, DPoint right)
         {
-            using (var left = point.ToNative())
-            using (var right = rhs.ToNative())
-                return left != right;
+            using (var l = left.ToNative())
+            using (var r = right.ToNative())
+                return l != r;
         }
 
         public static explicit operator Point(DPoint point)
         {
             return new Point((int)point.X, (int)point.Y);
         }
-
-        #endregion
-
-        #region Event Handlers
-
-        #endregion
-
-        #region Helpers
 
         #endregion
 
@@ -199,7 +228,7 @@ namespace DlibDotNet
             {
                 this.NativePtr = NativeMethods.dpoint_new();
             }
-            
+
             internal NativeDPoint(IntPtr ptr, bool isEnabledDispose = true) :
                 base(isEnabledDispose)
             {

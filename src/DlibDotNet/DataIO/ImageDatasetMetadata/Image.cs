@@ -4,16 +4,25 @@
 namespace DlibDotNet.ImageDatasetMetadata
 {
 
+    /// <summary>
+    /// Represents an annotated image. This class cannot be inherited.
+    /// </summary>
     public sealed class Image : DlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Image"/> class.
+        /// </summary>
         public Image()
         {
             this.NativePtr = NativeMethods.image_dataset_metadata_image_new2();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Image"/> class with a specified file name of image.
+        /// </summary>
         public Image(string filename)
         {
             var str = Dlib.Encoding.GetBytes(filename);
@@ -33,6 +42,9 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #region Properties
 
+        /// <summary>
+        /// Gets a collection of annotated rectangular area of an image.
+        /// </summary>
         public BoxCollection Boxes
         {
             get
@@ -42,6 +54,9 @@ namespace DlibDotNet.ImageDatasetMetadata
             }
         }
 
+        /// <summary>
+        /// Gets or sets the file name of image.
+        /// </summary>
         public string FileName
         {
             get

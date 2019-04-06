@@ -4,11 +4,17 @@
 namespace DlibDotNet.ImageDatasetMetadata
 {
 
+    /// <summary>
+    /// Represents a labeled set of images. This class cannot be inherited.
+    /// </summary>
     public sealed class Dataset : DlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Dataset"/> class.
+        /// </summary>
         public Dataset()
         {
             this.NativePtr = NativeMethods.image_dataset_metadata_dataset_new();

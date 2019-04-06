@@ -586,7 +586,7 @@ namespace DlibDotNet
         /// <param name="image">The image.</param>
         /// <param name="path">A string that contains the name of the file to which to save image.</param>
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
-        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveBmp(Array2DBase image, string path)
@@ -656,7 +656,7 @@ namespace DlibDotNet
         /// <param name="image">The image.</param>
         /// <param name="path">A string that contains the name of the file to which to save image.</param>
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
-        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SaveDng(Array2DBase image, string path)
@@ -727,7 +727,7 @@ namespace DlibDotNet
         /// <param name="path">A string that contains the name of the file to which to save image.</param>
         /// <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
-        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
@@ -804,7 +804,7 @@ namespace DlibDotNet
         /// <param name="image">The image.</param>
         /// <param name="path">A string that contains the name of the file to which to save image.</param>
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
-        /// <exception cref="ArgumentException"><see cref="Array2DBase.Rows"/> or <see cref="Array2DBase.Columns"/> are less than or equal to zero.</exception>
+        /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         public static void SavePng(Array2DBase image, string path)

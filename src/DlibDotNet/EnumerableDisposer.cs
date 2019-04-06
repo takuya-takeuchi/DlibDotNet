@@ -78,7 +78,7 @@ namespace DlibDotNet
         #region IDisposable Members
 
         /// <summary>
-        /// Releases all resources used by this <see cref="DlibObject"/>.
+        /// Releases all resources used by this <see cref="EnumerableDisposer{T}"/>.
         /// </summary>
         public void Dispose()
         {
@@ -87,7 +87,7 @@ namespace DlibDotNet
         }
 
         /// <summary>
-        /// Releases all resources used by this <see cref="DlibObject"/>.
+        /// Releases all resources used by this <see cref="EnumerableDisposer{T}"/>.
         /// </summary>
         /// <param name="disposing">Indicate value whether <see cref="IDisposable.Dispose"/> method was called.</param>
         private void Dispose(bool disposing)

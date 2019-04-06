@@ -4,9 +4,6 @@
 namespace DlibDotNet
 {
 
-    /// <summary>
-    /// Provides the methods of dlib.
-    /// </summary>
     public static partial class Dlib
     {
 

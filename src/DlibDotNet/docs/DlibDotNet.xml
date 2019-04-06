@@ -24,9 +24,196 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="T:DlibDotNet.HsiPixel">
+            <summary>
+            Represents an HSI color space value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.HsiPixel.H">
+            <summary>
+            Gets or sets the hue component of this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <value>The hue component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.HsiPixel.S">
+            <summary>
+            Gets or sets the saturation component of this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <value>The saturation component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.HsiPixel.I">
+            <summary>
+            Gets or sets the intensity component of this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <value>The intensity component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.HsiPixel"/> class with the specified HSI color space value.
+            </summary>
+            <param name="hue">The the hue component of the color space.</param>
+            <param name="saturation">The saturation component of the color space.</param>
+            <param name="intensity">The intensity component of the color space.</param>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.HsiPixel"/> contains the same  HSI color space value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.HsiPixel"/> and has the same  HSI color space value as this <see cref="T:DlibDotNet.HsiPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.HsiPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.op_Equality(DlibDotNet.HsiPixel,DlibDotNet.HsiPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.HsiPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> and <see cref="F:DlibDotNet.HsiPixel.I"/> properties of the two <see cref="T:DlibDotNet.HsiPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> and <see cref="F:DlibDotNet.HsiPixel.I"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.op_Inequality(DlibDotNet.HsiPixel,DlibDotNet.HsiPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.HsiPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> or <see cref="F:DlibDotNet.HsiPixel.I"/> properties of the two <see cref="T:DlibDotNet.HsiPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.HsiPixel.H"/> properties or the <see cref="F:DlibDotNet.HsiPixel.S"/> properties or the <see cref="F:DlibDotNet.HsiPixel.I"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.RgbAlphaPixel">
+            <summary>
+            Represents an ARGB color value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Red">
+            <summary>
+            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The red component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Green">
+            <summary>
+            Gets or sets the green component of the color. of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The green component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Blue">
+            <summary>
+            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The blue component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Alpha">
+            <summary>
+            Gets or sets the alpha component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The alpha component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.#ctor(System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.RgbAlphaPixel"/> class with the specified ARGB color value.
+            </summary>
+            <param name="alpha">The alpha component of the color.</param>
+            <param name="red">The red component of the color.</param>
+            <param name="green">The green component of the color.</param>
+            <param name="blue">The blue component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.RgbAlphaPixel"/> contains the same ARGB color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.RgbAlphaPixel"/> and has the same ARGB color value as this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.op_Equality(DlibDotNet.RgbAlphaPixel,DlibDotNet.RgbAlphaPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> and <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> and <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.op_Inequality(DlibDotNet.RgbAlphaPixel,DlibDotNet.RgbAlphaPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> or <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.RgbPixel">
+            <summary>
+            Represents an RGB color value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RgbPixel.Red">
+            <summary>
+            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <value>The red component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbPixel.Green">
+            <summary>
+            Gets or sets the green component of the color. of this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <value>The green component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbPixel.Blue">
+            <summary>
+            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <value>The blue component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.RgbPixel"/> class with the specified RGB color value.
+            </summary>
+            <param name="red">The red component of the color.</param>
+            <param name="green">The green component of the color.</param>
+            <param name="blue">The blue component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.RgbPixel"/> contains the same RGB color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.RgbPixel"/> and has the same RGB color value as this <see cref="T:DlibDotNet.RgbPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.RgbPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.op_Equality(DlibDotNet.RgbPixel,DlibDotNet.RgbPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> and <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> and <see cref="F:DlibDotNet.RgbPixel.Blue"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.op_Inequality(DlibDotNet.RgbPixel,DlibDotNet.RgbPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> or <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.RgbPixel.Red"/> properties or the <see cref="F:DlibDotNet.RgbPixel.Green"/> properties or the <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
         <member name="T:DlibDotNet.Array`1">
             <summary>
-            This object represents a 1-Dimensional array of objects. 
+            Represents a 1-Dimensional array of objects. 
             </summary>
             <typeparam name="T">The type of elements in the array.</typeparam>
         </member>
@@ -59,9 +246,6 @@
             <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
         </member>
         <member name="T:DlibDotNet.Dlib">
-            <summary>
-            Provides the methods of dlib.
-            </summary>
             <summary>
             Provides the methods of dlib.
             </summary>
@@ -180,7 +364,7 @@
             <param name="image">The image.</param>
             <param name="path">A string that contains the name of the file to which to save image.</param>
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
-            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
@@ -204,7 +388,7 @@
             <param name="image">The image.</param>
             <param name="path">A string that contains the name of the file to which to save image.</param>
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
-            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
@@ -229,7 +413,7 @@
             <param name="path">A string that contains the name of the file to which to save image.</param>
             <param name="quality">The quality of file. It must be 0 - 100. The default value is 75.</param>
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
-            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
@@ -256,7 +440,7 @@
             <param name="image">The image.</param>
             <param name="path">A string that contains the name of the file to which to save image.</param>
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
-            <exception cref="T:System.ArgumentException"><see cref="!:Array2DBase.Rows"/> or <see cref="!:Array2DBase.Columns"/> are less than or equal to zero.</exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:DlibDotNet.TwoDimensionObjectBase.Rows"/> or <see cref="P:DlibDotNet.TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
@@ -317,14 +501,79 @@
             Gets the CUDA runtime version.
             </summary>
         </member>
+        <member name="T:DlibDotNet.ImageDatasetMetadata.Box">
+            <summary>
+            Represents an annotated rectangular area of an image. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Box.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.ImageDatasetMetadata.Box"/> class.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.ImageDatasetMetadata.Box.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="T:DlibDotNet.ImageDatasetMetadata.Dataset">
+            <summary>
+            Represents a labeled set of images. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Dataset.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.ImageDatasetMetadata.Dataset"/> class.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.ImageDatasetMetadata.Dataset.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ImageDatasetMetadata.Gender">
+            <summary>
+            The Gender enumeration specifies the distinction of sex.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImageDatasetMetadata.Gender.Unknown">
+            <summary>
+            Unknown.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImageDatasetMetadata.Gender.Male">
+            <summary>
+            Male.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.ImageDatasetMetadata.Gender.Female">
+            <summary>
+            Female.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ImageDatasetMetadata.Image">
+            <summary>
+            Represents an annotated image. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Image.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.ImageDatasetMetadata.Image"/> class.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDatasetMetadata.Image.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.ImageDatasetMetadata.Image"/> class with a specified file name of image.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.ImageDatasetMetadata.Image.Boxes">
+            <summary>
+            Gets a collection of annotated rectangular area of an image.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.ImageDatasetMetadata.Image.FileName">
+            <summary>
+            Gets or sets the file name of image.
             </summary>
         </member>
         <member name="M:DlibDotNet.ImageDatasetMetadata.Image.DisposeUnmanaged">
@@ -342,6 +591,11 @@
             Initializes a new instance of the <see cref="T:DlibDotNet.DlibObject"/> class with the specified value indicating whether this instance is disposable.
             </summary>
             <param name="isEnabledDispose">true if this instance is disposable; otherwise, false.</param>
+        </member>
+        <member name="M:DlibDotNet.DlibObject.Finalize">
+            <summary>
+            Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
+            </summary>
         </member>
         <member name="P:DlibDotNet.DlibObject.IsDisposed">
             <summary>
@@ -415,19 +669,173 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="T:DlibDotNet.Dnn.LossMetric">
+            <summary>
+            Represents a loss layer for a deep neural network to learn to map objects into a vector space where objects sharing the same class label are close to each other, while objects with different labels are far apart. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMetric.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.LossMetric"/> class with a specified network type of deep neural network.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMetric.Train``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMetric},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>
+            Trains a supervised neural network based on the given training data.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMetric"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMetric.TrainOneStep``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMetric},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>
+            Performs one stochastic gradient update step based on the mini-batch of data and labels supplied.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMetric"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
+        <member name="T:DlibDotNet.Dnn.LossMmod">
+            <summary>
+            Represents a loss layer for a deep neural network for the Max Margin Object Detection loss. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMmod.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.LossMmod"/> class with a specified network type of deep neural network.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMmod.#ctor(DlibDotNet.Dnn.MModOptions,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.LossMetric"/> class with a specified parameter and network type of deep neural network.
+            </summary>
+            <param name="options">The parameter.</param>
+            <param name="networkType">The network type.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="options"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="options"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMmod.Train``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMmod},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{DlibDotNet.MModRect}})">
+            <summary>
+            Trains a supervised neural network based on the given training data.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMmod"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMmod.TrainOneStep``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMmod},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{DlibDotNet.MModRect}})">
+            <summary>
+            Performs one stochastic gradient update step based on the mini-batch of data and labels supplied.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMmod"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
         <member name="M:DlibDotNet.Dnn.LossMmod.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
+        </member>
+        <member name="T:DlibDotNet.Dnn.LossMulticlassLog">
+            <summary>
+            Represents a loss layer for a deep neural network for the multiclass logistic regression loss (e.g. negative log-likelihood loss), which is appropriate for multiclass classification problems. In particular, this class handles scalar outputs. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLog.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.LossMulticlassLog"/> class with a specified network type of deep neural network.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLog.Train``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMulticlassLog},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>
+            Trains a supervised neural network based on the given training data.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMulticlassLog"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLog.TrainOneStep``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMulticlassLog},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{System.UInt32})">
+            <summary>
+            Performs one stochastic gradient update step based on the mini-batch of data and labels supplied.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMulticlassLog"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
         </member>
         <member name="M:DlibDotNet.Dnn.LossMulticlassLog.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="T:DlibDotNet.Dnn.LossMulticlassLogPerPixel">
+            <summary>
+            Represents a loss layer for a deep neural network for the multiclass logistic regression loss (e.g. negative log-likelihood loss), which is appropriate for multiclass classification problems. In particular, this class handles matrix outputs. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLogPerPixel.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Dnn.LossMulticlassLogPerPixel"/> class with a specified network type of deep neural network.
+            </summary>
+            <param name="networkType">The network type.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLogPerPixel.Train``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMulticlassLogPerPixel},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{System.UInt16}})">
+            <summary>
+            Trains a supervised neural network based on the given training data.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMulticlassLogPerPixel"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dnn.LossMulticlassLogPerPixel.TrainOneStep``1(DlibDotNet.Dnn.DnnTrainer{DlibDotNet.Dnn.LossMulticlassLogPerPixel},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{``0}},System.Collections.Generic.IEnumerable{DlibDotNet.Matrix{System.UInt16}})">
+            <summary>
+            Performs one stochastic gradient update step based on the mini-batch of data and labels supplied.
+            </summary>
+            <typeparam name="T">The type of element in the matrix.</typeparam>
+            <param name="trainer">The trainer object of <see cref="T:DlibDotNet.Dnn.LossMulticlassLogPerPixel"/>.</param>
+            <param name="data">The training data.</param>
+            <param name="label">The label.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+            <exception cref="T:System.ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+            <exception cref="T:System.NotSupportedException">The specified type of element in the matrix does not supported.</exception>
+        </member>
         <member name="M:DlibDotNet.Dnn.LossMulticlassLogPerPixel.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.Dnn.MModOptions">
+            <summary>
+            This object contains all the parameters that control the behavior of <see cref="T:DlibDotNet.Dnn.LossMmod"/>. This class cannot be inherited.
             </summary>
         </member>
         <member name="M:DlibDotNet.Dnn.NetResult`1.DisposeUnmanaged">
@@ -469,6 +877,11 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.EnumerableDisposer`1.Finalize">
+            <summary>
+            Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
+            </summary>
+        </member>
         <member name="P:DlibDotNet.EnumerableDisposer`1.IsDisposed">
             <summary>
             Gets a value indicating whether this instance has been disposed.
@@ -477,14 +890,126 @@
         </member>
         <member name="M:DlibDotNet.EnumerableDisposer`1.Dispose">
             <summary>
-            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            Releases all resources used by this <see cref="T:DlibDotNet.EnumerableDisposer`1"/>.
             </summary>
         </member>
         <member name="M:DlibDotNet.EnumerableDisposer`1.Dispose(System.Boolean)">
             <summary>
-            Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
+            Releases all resources used by this <see cref="T:DlibDotNet.EnumerableDisposer`1"/>.
             </summary>
             <param name="disposing">Indicate value whether <see cref="M:System.IDisposable.Dispose"/> method was called.</param>
+        </member>
+        <member name="T:DlibDotNet.DPoint">
+            <summary>
+            Represents an ordered pair of double-precision floating-point x- and y-coordinates that defines a point in a two-dimensional plane.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.DPoint.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.DPoint"/> class with the specified coordinates.
+            </summary>
+            <param name="x">The horizontal position of the point.</param>
+            <param name="y">The vertical position of the point.</param>
+        </member>
+        <member name="P:DlibDotNet.DPoint.X">
+            <summary>
+            Gets or sets the x-coordinate of this <see cref="T:DlibDotNet.DPoint"/>.
+            </summary>
+            <value>The x-coordinate of this <see cref="T:DlibDotNet.DPoint"/>.</value>
+        </member>
+        <member name="P:DlibDotNet.DPoint.Y">
+            <summary>
+            Gets or sets the x-coordinate of this <see cref="T:DlibDotNet.DPoint"/>.
+            </summary>
+            <value>The x-coordinate of this <see cref="T:DlibDotNet.DPoint"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.DPoint.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.DPoint"/> contains the same coordinates as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.DPoint"/> and has the same coordinates as this <see cref="T:DlibDotNet.DPoint"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.DPoint.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.DPoint"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.DPoint"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.DPoint.op_Equality(DlibDotNet.DPoint,DlibDotNet.DPoint)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.DPoint"/> objects. The result specifies whether the values of the <see cref="P:DlibDotNet.DPoint.X"/> and <see cref="P:DlibDotNet.DPoint.Y"/> properties of the two <see cref="T:DlibDotNet.DPoint"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.DPoint"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.DPoint"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="P:DlibDotNet.DPoint.X"/> and <see cref="P:DlibDotNet.DPoint.Y"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.DPoint.op_Inequality(DlibDotNet.DPoint,DlibDotNet.DPoint)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.DPoint"/> objects. The result specifies whether the values of the <see cref="P:DlibDotNet.DPoint.X"/> or <see cref="P:DlibDotNet.DPoint.Y"/> properties of the two <see cref="T:DlibDotNet.DPoint"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.DPoint"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.DPoint"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="P:DlibDotNet.DPoint.X"/> properties or the <see cref="P:DlibDotNet.DPoint.Y"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.Point">
+            <summary>
+            Represents an ordered pair of integer x- and y-coordinates that defines a point in a two-dimensional plane.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Point.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.Point"/> class with the specified coordinates.
+            </summary>
+            <param name="x">The horizontal position of the point.</param>
+            <param name="y">The vertical position of the point.</param>
+        </member>
+        <member name="P:DlibDotNet.Point.X">
+            <summary>
+            Gets or sets the x-coordinate of this <see cref="T:DlibDotNet.Point"/>.
+            </summary>
+            <value>The x-coordinate of this <see cref="T:DlibDotNet.Point"/>.</value>
+        </member>
+        <member name="P:DlibDotNet.Point.Y">
+            <summary>
+            Gets or sets the y-coordinate of this <see cref="T:DlibDotNet.Point"/>.
+            </summary>
+            <value>The y-coordinate of this <see cref="T:DlibDotNet.Point"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.Point.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.Point"/> contains the same coordinates as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.Point"/> and has the same coordinates as this <see cref="T:DlibDotNet.Point"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Point.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.Point"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.Point"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Point.ToString">
+            <summary>
+            Converts this <see cref="T:DlibDotNet.Point"/> to a human-readable string.
+            </summary>
+            <returns>A string that represents this <see cref="T:DlibDotNet.Point"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Point.op_Equality(DlibDotNet.Point,DlibDotNet.Point)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.Point"/> objects. The result specifies whether the values of the <see cref="P:DlibDotNet.Point.X"/> and <see cref="P:DlibDotNet.Point.Y"/> properties of the two <see cref="T:DlibDotNet.Point"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.Point"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.Point"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="P:DlibDotNet.Point.X"/> and <see cref="P:DlibDotNet.Point.Y"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.Point.op_Inequality(DlibDotNet.Point,DlibDotNet.Point)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.Point"/> objects. The result specifies whether the values of the <see cref="P:DlibDotNet.Point.X"/> or <see cref="P:DlibDotNet.Point.Y"/> properties of the two <see cref="T:DlibDotNet.Point"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.Point"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.Point"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="P:DlibDotNet.Point.X"/> properties or the <see cref="P:DlibDotNet.Point.Y"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
         </member>
         <member name="M:DlibDotNet.Point.NativePoint.DisposeUnmanaged">
             <summary>
@@ -526,12 +1051,27 @@
             Releases all unmanaged resources.
             </summary>
         </member>
-        <member name="M:DlibDotNet.ImageWindow.DisposeUnmanaged">
+        <member name="M:DlibDotNet.MenuItemSeparator.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
         </member>
-        <member name="M:DlibDotNet.ImageWindow.OverlayLine.DisposeUnmanaged">
+        <member name="M:DlibDotNet.MenuItemText.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ClickActionMediator.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.CustomDrawableWindow.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDisplayOverlayRectActionMediator.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
@@ -542,6 +1082,251 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.PerspectiveWindow.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.OverlayLine.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.Byte)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Byte"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.UInt16)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.UInt16"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.UInt32)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.UInt32"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.SByte)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.SByte"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.Int16)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Int16"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.Int32)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Int32"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.Single)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Single"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,System.Double)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Double"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,DlibDotNet.RgbPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.RgbPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,DlibDotNet.RgbAlphaPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,DlibDotNet.HsiPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.HsiPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.Byte)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Byte"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.UInt16)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.UInt16"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.UInt32)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.UInt32"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.SByte)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.SByte"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.Int16)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Int16"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.Int32)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Int32"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.Single)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Single"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,System.Double)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:System.Double"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,DlibDotNet.RgbPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.RgbPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,DlibDotNet.RgbAlphaPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,DlibDotNet.HsiPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.HsiPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SelectIndexedActionMediator.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.StringActionMediator.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.VoidActionMediator.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDisplay.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ImageDisplay.OverlayRect.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Label.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ListBox.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MenuBar.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.TextField.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
@@ -768,6 +1553,11 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.Queue`1.Kernel1A.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.Rand.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
@@ -855,6 +1645,11 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.StdString.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.StdVector`1.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

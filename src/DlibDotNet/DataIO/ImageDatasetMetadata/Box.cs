@@ -6,11 +6,17 @@ using System.Linq;
 namespace DlibDotNet.ImageDatasetMetadata
 {
 
+    /// <summary>
+    /// Represents an annotated rectangular area of an image. This class cannot be inherited.
+    /// </summary>
     public sealed class Box : DlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Box"/> class.
+        /// </summary>
         public Box()
         {
             this.NativePtr = NativeMethods.image_dataset_metadata_box_new();

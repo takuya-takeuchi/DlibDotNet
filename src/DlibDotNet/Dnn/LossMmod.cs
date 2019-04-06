@@ -7,11 +7,18 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet.Dnn
 {
 
+    /// <summary>
+    /// Represents a loss layer for a deep neural network for the Max Margin Object Detection loss. This class cannot be inherited.
+    /// </summary>
     public sealed class LossMmod : Net
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LossMmod"/> class with a specified network type of deep neural network.
+        /// </summary>
+        /// <param name="networkType">The network type.</param>
         public LossMmod(int networkType = 0)
             : base(networkType)
         {
@@ -22,8 +29,15 @@ namespace DlibDotNet.Dnn
             this.NativePtr = net;
         }
 
-        public LossMmod(MModOptions options, int networkType = 0, bool isEnabledDispose = true)
-            : base(networkType, isEnabledDispose)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LossMetric"/> class with a specified parameter and network type of deep neural network.
+        /// </summary>
+        /// <param name="options">The parameter.</param>
+        /// <param name="networkType">The network type.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="options"/> is disposed.</exception>
+        public LossMmod(MModOptions options, int networkType = 0)
+            : base(networkType)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
@@ -210,6 +224,16 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        /// <summary>
+        /// Trains a supervised neural network based on the given training data.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="trainer">The trainer object of <see cref="LossMmod"/>.</param>
+        /// <param name="data">The training data.</param>
+        /// <param name="label">The label.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+        /// <exception cref="NotSupportedException">The specified type of element in the matrix does not supported.</exception>
         public static void Train<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
             where T : struct
         {
@@ -219,6 +243,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+
+            trainer.ThrowIfDisposed();
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
             
@@ -243,6 +269,16 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        /// <summary>
+        /// Performs one stochastic gradient update step based on the mini-batch of data and labels supplied.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the matrix.</typeparam>
+        /// <param name="trainer">The trainer object of <see cref="LossMmod"/>.</param>
+        /// <param name="data">The training data.</param>
+        /// <param name="label">The label.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
+        /// <exception cref="ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
+        /// <exception cref="NotSupportedException">The specified type of element in the matrix does not supported.</exception>
         public static void TrainOneStep<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
             where T : struct
         {
@@ -252,6 +288,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+
+            trainer.ThrowIfDisposed();
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
