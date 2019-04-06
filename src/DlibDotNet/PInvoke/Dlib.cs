@@ -213,7 +213,9 @@ namespace DlibDotNet
 
             GeneralError = 0x76000000,
 
-            GeneralFileIOError = -(GeneralError | 0x00000001),
+            GeneralFileIOError   = -(GeneralError | 0x00000001),
+
+            GeneralFileImageLoad = -(GeneralError | 0x00000002),
 
             #endregion
 

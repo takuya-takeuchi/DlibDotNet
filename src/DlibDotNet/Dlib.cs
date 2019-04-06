@@ -229,6 +229,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
         /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
         public static Array2D<T> LoadBmp<T>(string path)
             where T : struct
         {
@@ -242,9 +243,14 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_bmp(array2DType, image.NativePtr, str);
-            if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
-                throw new ArgumentException($"{image.ImageType} is not supported.");
+            var ret = NativeMethods.load_bmp(array2DType, image.NativePtr, str, out var errorMessage);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(path, StringHelper.FromStdString(errorMessage));
+            }
 
             return image;
         }
@@ -258,6 +264,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
         /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
         public static Array2D<T> LoadDng<T>(string path)
             where T : struct
         {
@@ -271,9 +278,14 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_dng(array2DType, image.NativePtr, str);
-            if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
-                throw new ArgumentException($"{image.ImageType} is not supported.");
+            var ret = NativeMethods.load_dng(array2DType, image.NativePtr, str, out var errorMessage);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(path, StringHelper.FromStdString(errorMessage));
+            }
 
             return image;
         }
@@ -287,6 +299,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
         /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
         public static Array2D<T> LoadImage<T>(string path)
             where T : struct
         {
@@ -300,9 +313,14 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_image(array2DType, image.NativePtr, str);
-            if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
-                throw new ArgumentException($"{image.ImageType} is not supported.");
+            var ret = NativeMethods.load_image(array2DType, image.NativePtr, str, out var errorMessage);
+            switch(ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(path, StringHelper.FromStdString(errorMessage));
+            }
 
             return image;
         }
@@ -316,6 +334,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException">The specified type of matrix is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
         /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
         public static Matrix<T> LoadImageAsMatrix<T>(string path)
             where T : struct
         {
@@ -330,9 +349,14 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var matrixElementType = type.ToNativeMatrixElementType();
-            var ret = NativeMethods.load_image_matrix(matrixElementType, str, out var matrix);
-            if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
-                throw new ArgumentException($"{type} is not supported.");
+            var ret = NativeMethods.load_image_matrix(matrixElementType, str, out var matrix, out var errorMessage);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(path, StringHelper.FromStdString(errorMessage));
+            }
 
             return new Matrix<T>(matrix);
         }
@@ -346,6 +370,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
         /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
         public static Array2D<T> LoadJpeg<T>(string path)
             where T : struct
         {
@@ -359,9 +384,14 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_jpeg(array2DType, image.NativePtr, str);
-            if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
-                throw new ArgumentException($"{image.ImageType} is not supported.");
+            var ret = NativeMethods.load_jpeg(array2DType, image.NativePtr, str, out var errorMessage);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(path, StringHelper.FromStdString(errorMessage));
+            }
 
             return image;
         }
@@ -375,6 +405,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="path"/> is null.</exception>
         /// <exception cref="FileNotFoundException">The specified file does not exist.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
         public static Array2D<T> LoadPng<T>(string path)
             where T : struct
         {
@@ -388,9 +419,14 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_png(array2DType, image.NativePtr, str);
-            if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
-                throw new ArgumentException($"{image.ImageType} is not supported.");
+            var ret = NativeMethods.load_png(array2DType, image.NativePtr, str, out var errorMessage);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(path, StringHelper.FromStdString(errorMessage));
+            }
 
             return image;
         }

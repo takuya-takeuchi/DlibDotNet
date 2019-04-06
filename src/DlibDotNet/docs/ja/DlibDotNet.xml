@@ -301,6 +301,7 @@
             <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
             <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">dlib で画像の読み込みに失敗しました。</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadDng``1(System.String)">
             <summary>
@@ -312,6 +313,7 @@
             <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
             <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">dlib で画像の読み込みに失敗しました。</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadImage``1(System.String)">
             <summary>
@@ -323,6 +325,7 @@
             <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
             <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">dlib で画像の読み込みに失敗しました。</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadImageAsMatrix``1(System.String)">
             <summary>
@@ -334,6 +337,7 @@
             <exception cref="T:System.ArgumentException">指定された行列の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
             <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">dlib で画像の読み込みに失敗しました。</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadJpeg``1(System.String)">
             <summary>
@@ -345,6 +349,7 @@
             <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
             <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">dlib で画像の読み込みに失敗しました。</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadPng``1(System.String)">
             <summary>
@@ -356,6 +361,7 @@
             <exception cref="T:System.ArgumentException">指定された画像の型はサポートされていません。</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> が null 参照です。</exception>
             <exception cref="T:System.IO.FileNotFoundException">指令されたファイルは存在しません。</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">dlib で画像の読み込みに失敗しました。</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.Array2DBase,System.String)">
             <summary>
@@ -478,7 +484,7 @@
         </member>
         <member name="T:DlibDotNet.CudaException">
             <summary>
-            この例外は、CUDA (Compute Unified Device Architecture) の汎用的な例外です。このクラスは継承できません
+            この例外は、CUDA (Compute Unified Device Architecture) の汎用的な例外です。このクラスは継承できません。
             </summary>
         </member>
         <member name="P:DlibDotNet.CudaException.DllName">
@@ -1354,6 +1360,16 @@
         <member name="M:DlibDotNet.SurfPoint.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ImageLoadException">
+            <summary>
+            この例外は、dlib での画像読み込みにおける汎用的な例外です。このクラスは継承できません。
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.ImageLoadException.FilePath">
+            <summary>
+            エラーを発生させたファイル パスを取得します。
             </summary>
         </member>
         <member name="T:DlibDotNet.ImagePixelFormat">

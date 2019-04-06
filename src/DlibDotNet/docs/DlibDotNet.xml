@@ -301,6 +301,7 @@
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadDng``1(System.String)">
             <summary>
@@ -312,6 +313,7 @@
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadImage``1(System.String)">
             <summary>
@@ -323,6 +325,7 @@
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadImageAsMatrix``1(System.String)">
             <summary>
@@ -334,6 +337,7 @@
             <exception cref="T:System.ArgumentException">The specified type of matrix is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadJpeg``1(System.String)">
             <summary>
@@ -345,6 +349,7 @@
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.LoadPng``1(System.String)">
             <summary>
@@ -356,6 +361,7 @@
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.Array2DBase,System.String)">
             <summary>
@@ -1354,6 +1360,16 @@
         <member name="M:DlibDotNet.SurfPoint.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ImageLoadException">
+            <summary>
+            The exception is general exception for image loading on dlib. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.ImageLoadException.FilePath">
+            <summary>
+            Gets the file path which occurs error.
             </summary>
         </member>
         <member name="T:DlibDotNet.ImagePixelFormat">
