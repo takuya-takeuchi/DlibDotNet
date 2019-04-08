@@ -2,8 +2,8 @@
 #define _CPP_RANDOM_COLOR_TRANSFORM_H_
 
 #include "../export.h"
-#include <dlib/image_transforms/random_color_transform.h>
 #include <dlib/matrix.h>
+#include <dlib/image_transforms/random_color_transform.h>
 #include "../shared.h"
 
 using namespace dlib;
