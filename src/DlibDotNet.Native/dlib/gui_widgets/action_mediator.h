@@ -27,12 +27,12 @@ DLLEXPORT __TYPENAME__##_action_mediator* __TYPENAME__##_action_mediator_new(voi
 DLLEXPORT void __TYPENAME__##_action_mediator_delete(__TYPENAME__##_action_mediator* mediator);\
 
 #define MAKE_VOID_MEDIATOR_IMPLEMENTATION(__TYPENAME__)\
-__TYPENAME__##_action_mediator::##__TYPENAME__##_action_mediator(void (*action_handler)()): \
+__TYPENAME__##_action_mediator::__TYPENAME__##_action_mediator(void (*action_handler)()): \
     m_action_handler(action_handler)\
 {\
 }\
 \
-__TYPENAME__##_action_mediator::~##__TYPENAME__##_action_mediator()\
+__TYPENAME__##_action_mediator::~__TYPENAME__##_action_mediator()\
 {\
     this->m_action_handler = nullptr;\
 }\
@@ -71,12 +71,12 @@ DLLEXPORT __TYPENAME__##_action_mediator* __TYPENAME__##_action_mediator_new(voi
 DLLEXPORT void __TYPENAME__##_action_mediator_delete(__TYPENAME__##_action_mediator* mediator);\
 
 #define MAKE_1ARGS_R_MEDIATOR_IMPLEMENTATION(__TYPE__, __TYPENAME__)\
-__TYPENAME__##_action_mediator::##__TYPENAME__##_action_mediator(void (*action_handler)(__TYPE__*)): \
+__TYPENAME__##_action_mediator::__TYPENAME__##_action_mediator(void (*action_handler)(__TYPE__*)): \
     m_action_handler(action_handler)\
 {\
 }\
 \
-__TYPENAME__##_action_mediator::~##__TYPENAME__##_action_mediator()\
+__TYPENAME__##_action_mediator::~__TYPENAME__##_action_mediator()\
 {\
     this->m_action_handler = nullptr;\
 }\
@@ -117,12 +117,12 @@ DLLEXPORT __TYPENAME__##_action_mediator* __TYPENAME__##_action_mediator_new(voi
 DLLEXPORT void __TYPENAME__##_action_mediator_delete(__TYPENAME__##_action_mediator* mediator);\
 
 #define MAKE_1ARGS_V_MEDIATOR_IMPLEMENTATION(__TYPE__, __TYPENAME__)\
-__TYPENAME__##_action_mediator::##__TYPENAME__##_action_mediator(void (*action_handler)(__TYPE__)): \
+__TYPENAME__##_action_mediator::__TYPENAME__##_action_mediator(void (*action_handler)(__TYPE__)): \
     m_action_handler(action_handler)\
 {\
 }\
 \
-__TYPENAME__##_action_mediator::~##__TYPENAME__##_action_mediator()\
+__TYPENAME__##_action_mediator::~__TYPENAME__##_action_mediator()\
 {\
     this->m_action_handler = nullptr;\
 }\
@@ -159,12 +159,12 @@ DLLEXPORT __TYPENAME__##_action_mediator* __TYPENAME__##_action_mediator_new(voi
 DLLEXPORT void __TYPENAME__##_action_mediator_delete(__TYPENAME__##_action_mediator* mediator);\
 
 #define MAKE_3ARGS_R_MEDIATOR_IMPLEMENTATION(__TYPE1__, __TYPE2__, __TYPE3__, __TYPENAME__)\
-__TYPENAME__##_action_mediator::##__TYPENAME__##_action_mediator(void (*action_handler)(__TYPE1__*, __TYPE2__, __TYPE3__)): \
+__TYPENAME__##_action_mediator::__TYPENAME__##_action_mediator(void (*action_handler)(__TYPE1__*, __TYPE2__, __TYPE3__)): \
     m_action_handler(action_handler)\
 {\
 }\
 \
-__TYPENAME__##_action_mediator::~##__TYPENAME__##_action_mediator()\
+__TYPENAME__##_action_mediator::~__TYPENAME__##_action_mediator()\
 {\
     this->m_action_handler = nullptr;\
 }\
