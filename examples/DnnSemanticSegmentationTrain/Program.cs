@@ -11,13 +11,18 @@ using DlibDotNet;
 using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using DnnSemanticSegmentation;
-using DnnSemanticSegmentationTrain;
 
-namespace DnnSemanticSegmentationTrainOld
+namespace DnnSemanticSegmentationTrain
 {
 
     internal class Program
     {
+
+        #region Fields
+
+        private const string SemanticSegmentationNetFilename = "semantic_segmentation_voc2012net_v2.dnn";
+
+        #endregion
 
         #region Constructors
 
@@ -34,14 +39,18 @@ namespace DnnSemanticSegmentationTrainOld
         {
             try
             {
-                if (args.Length != 1)
+                if (args.Length != 1 && args.Length != 2)
                 {
                     Console.WriteLine("To run this program you need a copy of the PASCAL VOC2012 dataset.");
                     Console.WriteLine();
                     Console.WriteLine("You call this program like this: ");
-                    Console.WriteLine("./dnn_semantic_segmentation_train_ex /path/to/VOC2012");
+                    Console.WriteLine("./dnn_semantic_segmentation_train_ex /path/to/VOC2012 [minibatch-size]");
                     return 1;
                 }
+
+                // a mini-batch smaller than the default can be used with GPUs having less memory
+                var minibatchSize = args.Length == 2 ? uint.Parse(args[1]) : 23u;
+                Console.WriteLine($"mini-batch size: {minibatchSize}");
 
                 Console.WriteLine("\nSCANNING PASCAL VOC2012 DATASET\n");
 
@@ -57,9 +66,9 @@ namespace DnnSemanticSegmentationTrainOld
                 const double weightDecay = 0.0001;
                 const double momentum = 0.9;
 
-                using (var net = new LossMulticlassLogPerPixel(1))
+                using (var bnet = new LossMulticlassLogPerPixel(2))
                 using (var sgd = new Sgd((float)weightDecay, (float)momentum))
-                using (var trainer = new DnnTrainer<LossMulticlassLogPerPixel>(net, sgd))
+                using (var trainer = new DnnTrainer<LossMulticlassLogPerPixel>(bnet, sgd))
                 {
                     trainer.BeVerbose();
                     trainer.SetLearningRate(initialLearningRate);
@@ -68,7 +77,7 @@ namespace DnnSemanticSegmentationTrainOld
                     trainer.SetIterationsWithoutProgressThreshold(5000);
                     // Since the progress threshold is so large might as well set the batch normalization
                     // stats window to something big too.
-                    Dlib.SetAllBnRunningStatsWindowSizes(net, 1000);
+                    Dlib.SetAllBnRunningStatsWindowSizes(bnet, 1000);
 
                     // Output training parameters.
                     Console.WriteLine();
@@ -135,8 +144,8 @@ namespace DnnSemanticSegmentationTrainOld
                             samples.Clear();
                             labels.Clear();
 
-                            // make a 30-image mini-batch
-                            while (samples.Count < 30)
+                            // make a mini-batch
+                            while (samples.Count < minibatchSize)
                             {
                                 data.Dequeue(out var temp);
 
@@ -158,13 +167,13 @@ namespace DnnSemanticSegmentationTrainOld
                         // also wait for threaded processing to stop in the trainer.
                         trainer.GetNet();
 
-                        net.Clean();
+                        bnet.Clean();
                         Console.WriteLine("saving network");
-                        LossMulticlassLogPerPixel.Serialize(net, "semantic_segmentation_voc2012net.dnn");
+                        LossMulticlassLogPerPixel.Serialize(bnet, SemanticSegmentationNetFilename);
                     }
 
                     // Make a copy of the network to use it for inference.
-                    using (var anet = net.CloneAs(0))
+                    using (var anet = bnet.CloneAs(0))
                     {
                         Console.WriteLine("Testing the network...");
 
@@ -303,7 +312,7 @@ namespace DnnSemanticSegmentationTrainOld
             return results;
         }
 
-        private static Rectangle MakeRandomCroppingRectResNet(Matrix<RgbPixel> img, Rand rnd)
+        private static Rectangle MakeRandomCroppingRect(Matrix<RgbPixel> img, Rand rnd)
         {
             // figure out what rectangle we want to crop from the image
             const double mins = 0.466666666;
@@ -321,7 +330,7 @@ namespace DnnSemanticSegmentationTrainOld
 
         private static void RandomlyCropImage(Matrix<RgbPixel> inputImage, Matrix<ushort> labelImage, TrainingSample crop, Rand rnd)
         {
-            var rect = MakeRandomCroppingRectResNet(inputImage, rnd);
+            var rect = MakeRandomCroppingRect(inputImage, rnd);
             using (var chipDims = new ChipDims(227, 227))
             using (var chipDetails = new ChipDetails(rect, chipDims))
             {
