@@ -1,5 +1,5 @@
 #ifndef _CPP_COLORMAPS_COLORMAPS_H_
-#define _CPP_COLORMAPS_COLORMAP_H_
+#define _CPP_COLORMAPS_COLORMAPS_H_
 
 #include "../../export.h"
 #include <dlib/hash.h>

@@ -55,6 +55,30 @@ namespace DlibDotNet
 
         #endregion
 
+        #region set_all_bn_running_stats_window_sizes
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_mmod(IntPtr obj,
+                                                                                       int type,
+                                                                                       uint new_window_size);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_metric(IntPtr obj,
+                                                                                         int type,
+                                                                                         uint new_window_size);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_multiclass_log(IntPtr obj,
+                                                                                                 int type,
+                                                                                                 uint new_window_size);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_multiclass_log_per_pixel(IntPtr obj,
+                                                                                                           int type,
+                                                                                                           uint new_window_size);
+
+        #endregion
+
         #region validation
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

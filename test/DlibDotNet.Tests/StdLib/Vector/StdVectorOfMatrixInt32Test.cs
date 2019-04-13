@@ -6,7 +6,7 @@ namespace DlibDotNet.Tests.StdLib.Vector
 {
 
     [TestClass]
-    public class StdVectorOfMatrixTest : TestBase
+    public class StdVectorOfMatrixInt32Test : TestBase
     {
 
         [TestMethod]

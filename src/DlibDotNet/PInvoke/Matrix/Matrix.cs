@@ -88,7 +88,10 @@ namespace DlibDotNet
         public static extern bool matrix_size(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out int ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType matrix_set_size(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, int length);
+        public static extern ErrorType matrix_set_size(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, int value);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType matrix_set_size2(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, int rows, int cols);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_operator_get_one_row_column(MatrixElementType matrixElementType, IntPtr matrix, int index, int templateRows, int templateColumns, IntPtr ret);

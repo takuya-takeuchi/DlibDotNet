@@ -13,9 +13,24 @@ DLLEXPORT dlib::rand* rand_new()
     return new dlib::rand();
 }
 
+DLLEXPORT dlib::rand* rand_new2(time_t seed)
+{
+    return new dlib::rand(seed);
+}
+
 DLLEXPORT double rand_get_random_gaussian(dlib::rand* obj)
 {
     return obj->get_random_gaussian();
+}
+
+DLLEXPORT double rand_get_random_double(dlib::rand* obj)
+{
+    return obj->get_random_double();
+}
+
+DLLEXPORT uint32_t rand_get_random_32bit_number(dlib::rand* obj)
+{
+    return obj->get_random_32bit_number();
 }
 
 DLLEXPORT void rand_delete(dlib::rand* obj)

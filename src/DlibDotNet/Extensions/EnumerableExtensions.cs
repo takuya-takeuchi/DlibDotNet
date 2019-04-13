@@ -25,7 +25,7 @@ namespace DlibDotNet.Extensions
             where T : DlibObject
         {
             foreach (var item in items)
-                item.Dispose();
+                item?.Dispose();
         }
 
         public static void DisposeElement<T>(this IEnumerable<IEnumerable<T>> items)

@@ -24,6 +24,11 @@ namespace DlibDotNet
 
         #region Constructors
 
+        static Matrix()
+        {
+            ContainerBridgeRepository.Add(new MatrixContainerBridge());
+        }
+
         public Matrix()
         {
             if (!TryParse(typeof(TElement), out var type))
@@ -353,7 +358,7 @@ namespace DlibDotNet
             var ptr = NativeMethods.matrix_new4(type.ToNativeMatrixElementType(), templateRows, templateColumns);
             return new Matrix<TElement>(ptr, (int)templateRows, (int)templateColumns);
         }
-        
+
         public static Matrix<TElement> Deserialize(ProxyDeserialize deserialize, uint templateRows = 0, uint templateColumns = 0)
         {
             if (!TryParse(typeof(TElement), out var type))
@@ -365,7 +370,7 @@ namespace DlibDotNet
             deserialize.ThrowIfDisposed();
 
             var ret = NativeMethods.matrix_deserialize_matrix_proxy(deserialize.NativePtr,
-                                                                    type.ToNativeMatrixElementType(), 
+                                                                    type.ToNativeMatrixElementType(),
                                                                     (int)templateRows,
                                                                     (int)templateColumns,
                                                                     out var matrix);
@@ -384,8 +389,8 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
 
-            if (!(this.TemplateColumns == 1 || this.TemplateColumns == 1))
-                throw new InvalidOperationException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateColumns)} must be 1.");
+            if (!(this.TemplateRows == 1 || this.TemplateColumns == 1))
+                throw new InvalidOperationException($"{nameof(this.TemplateRows)} or {nameof(this.TemplateColumns)} must be 1.");
 
             var templateRows = this.TemplateRows;
             var templateColumns = this.TemplateColumns;
@@ -394,6 +399,30 @@ namespace DlibDotNet
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"Input {this._MatrixElementTypes} is not supported.");
+            }
+        }
+
+        public void SetSize(int rows, int cols)
+        {
+            this.ThrowIfDisposed();
+
+            if (!(rows > 0))
+                throw new InvalidOperationException($"{nameof(rows)} must be greater than 0.");
+            if (!(cols > 0))
+                throw new InvalidOperationException($"{nameof(cols)} must be greater than 0.");
+
+            var tr = this.TemplateRows;
+            var tc = this.TemplateColumns;
+            if (!((tr == 0 || tr == rows) && (tc == 0 || tc == cols)))
+                throw new InvalidOperationException($"{nameof(TemplateRows)}: {tr}, {nameof(TemplateColumns)}: {tc}, rows: {rows}, cols: {cols}");
+
+            var ret = NativeMethods.matrix_set_size2(this._ElementType, this.NativePtr, tr, tc, rows, cols);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"Input {this._MatrixElementTypes} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateRows)} is not supported.");
             }
         }
 
@@ -726,7 +755,7 @@ namespace DlibDotNet
         #endregion
 
         #region IEnumerable<TElement> Implementations
-        
+
         public IEnumerator<TElement> GetEnumerator()
         {
             this.ThrowIfDisposed();
@@ -740,6 +769,31 @@ namespace DlibDotNet
         }
 
         #endregion
+
+        private sealed class MatrixContainerBridge : ContainerBridge<Matrix<TElement>>
+        {
+
+            #region Methods
+
+            #region Overrids
+
+            public override Matrix<TElement> Create(IntPtr ptr, IParameter parameter = null)
+            {
+                if (parameter is MatrixTemplateSizeParameter mp)
+                    return new Matrix<TElement>(ptr, mp.TemplateRows, mp.TemplateColumns);
+                return new Matrix<TElement>(ptr, 0, 0);
+            }
+
+            public override IntPtr GetPtr(Matrix<TElement> item)
+            {
+                return item.NativePtr;
+            }
+
+            #endregion
+
+            #endregion
+
+        }
 
     }
 

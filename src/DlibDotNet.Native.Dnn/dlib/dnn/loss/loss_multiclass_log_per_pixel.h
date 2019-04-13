@@ -8,6 +8,7 @@
 
 #include "../trainer.h"
 #include "loss_multiclass_log_per_pixel_defines.h"
+#include "../layers/layers.h"
 #include "../../common.h"
 
 using namespace dlib;
@@ -173,6 +174,85 @@ DLLEXPORT void loss_multiclass_log_per_pixel_delete(void* obj, const int type)
             delete (uanet_type*)obj;
             break;
     }
+}
+
+DLLEXPORT int loss_multiclass_log_per_pixel_clone(void* obj, const int src_type, const int dst_type, void** new_net)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(src_type)
+    {
+        case 0:
+            {
+                anet_type& net = *static_cast<anet_type*>(obj);
+                switch(dst_type)
+                {
+                    case 0:
+                        *new_net = new anet_type(net);
+                        break;
+                    default:
+                        err = ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE;
+                        break;
+                }
+                break;
+            }
+            break;
+        case 1:
+            {
+                net_type& net = *static_cast<net_type*>(obj);
+                switch(dst_type)
+                {
+                    case 0:
+                        *new_net = new anet_type(net);
+                        break;
+                    case 1:
+                        *new_net = new net_type(net);
+                        break;
+                    default:
+                        err = ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE;
+                        break;
+                }
+                break;
+            }
+            break;
+        case 2:
+            {
+                ubnet_type& ubnet = *static_cast<ubnet_type*>(obj);
+                switch(dst_type)
+                {
+                    case 2:
+                        *new_net = new ubnet_type(ubnet);
+                        break;
+                    case 3:
+                        *new_net = new uanet_type(ubnet);
+                        break;
+                    default:
+                        err = ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE;
+                        break;
+                }
+                break;
+            }
+        case 3:
+            {
+                uanet_type& net = *static_cast<uanet_type*>(obj);
+                switch(dst_type)
+                {
+                    case 0:
+                        *new_net = new uanet_type(net);
+                        break;
+                    default:
+                        err = ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE;
+                        break;
+                }
+                break;
+            }
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
 }
 
 DLLEXPORT uint16_t loss_multiclass_log_per_pixel_get_label_to_ignore()
@@ -651,6 +731,28 @@ DLLEXPORT void* dnn_trainer_loss_multiclass_log_per_pixel_new(void* net, const i
     return nullptr;
 }
 
+DLLEXPORT void* dnn_trainer_loss_multiclass_log_per_pixel_new_sgd(void* net, const int type, sgd* sgd)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_new_template2(anet_type, net, *sgd);
+            break;
+        case 1:
+            dnn_trainer_new_template2(net_type, net, *sgd);
+            break;
+        case 2:
+            dnn_trainer_new_template2(ubnet_type, net, *sgd);
+            break;
+        case 3:
+            dnn_trainer_new_template2(uanet_type, net, *sgd);
+            break;
+    }
+
+    return nullptr;
+}
+
 DLLEXPORT void dnn_trainer_loss_multiclass_log_per_pixel_delete(void* trainer, const int type)
 {
     // Check type argument and cast to the proper type
@@ -869,7 +971,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(void* trai
     // Check type argument and cast to the proper type
     int err = ERR_OK;
 
-    if (label_element_type != matrix_element_type::UInt32)
+    if (label_element_type != matrix_element_type::UInt16)
         return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
@@ -926,7 +1028,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train(void* trainer,
     // Check type argument and cast to the proper type
     int err = ERR_OK;
 
-    if (label_element_type != matrix_element_type::UInt32)
+    if (label_element_type != matrix_element_type::UInt16)
         return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
@@ -983,7 +1085,7 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(void* tra
     // Check type argument and cast to the proper type
     int err = ERR_OK;
 
-    if (label_element_type != matrix_element_type::UInt32)
+    if (label_element_type != matrix_element_type::UInt16)
         return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
@@ -1094,5 +1196,36 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_per_pixel_operator_left_shift(void
 }
 
 #pragma endregion dnn_trainer
+
+#pragma region layers
+
+DLLEXPORT int set_all_bn_running_stats_window_sizes_loss_multiclass_log_per_pixel(void* obj, const int type, unsigned long new_window_size)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            set_all_bn_running_stats_window_sizes_template(anet_type, obj, new_window_size);
+            break;
+        case 1:
+            set_all_bn_running_stats_window_sizes_template(net_type, obj, new_window_size);
+            break;
+        case 2:
+            set_all_bn_running_stats_window_sizes_template(ubnet_type, obj, new_window_size);
+            break;
+        case 3:
+            set_all_bn_running_stats_window_sizes_template(uanet_type, obj, new_window_size);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
+}
+
+#pragma endregion layers
 
 #endif

@@ -166,6 +166,18 @@ DLLEXPORT rectangle* rectangle_intersect(rectangle* rect, rectangle* target)
     return new rectangle(result);
 }
 
+DLLEXPORT rectangle* rectangle_move_rect(rectangle* rect, dlib::point* point)
+{
+    const rectangle result = dlib::move_rect(*rect, *point);
+    return new rectangle(result);
+}
+
+DLLEXPORT rectangle* rectangle_move_rect2(rectangle* rect, long x, long y)
+{
+    const rectangle result = dlib::move_rect(*rect, x, y);
+    return new rectangle(result);
+}
+
 DLLEXPORT point* rectangle_center(rectangle* rect)
 {
     const point result = center(*rect);

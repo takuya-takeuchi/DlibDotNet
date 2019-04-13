@@ -17,6 +17,12 @@ do {\
     return new dnn_trainer<__NET_TYPE__>(n);\
 } while (0)
 
+#define dnn_trainer_new_template2(__NET_TYPE__, net, param) \
+do {\
+    __NET_TYPE__& n = *static_cast<__NET_TYPE__*>(net);\
+    return new dnn_trainer<__NET_TYPE__>(n, param);\
+} while (0)
+
 #define dnn_trainer_delete_template(__NET_TYPE__, trainer) \
 do {\
     auto t = static_cast<dnn_trainer<__NET_TYPE__>*>(trainer);\

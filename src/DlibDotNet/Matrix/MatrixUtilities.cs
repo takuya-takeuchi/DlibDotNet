@@ -880,6 +880,28 @@ namespace DlibDotNet
             var imageType = matrix.MatrixElementType;
             return new MatrixOp(NativeMethods.ElementType.OpTrans, imageType, matrixOp, templateRows, templateColumns);
         }
+        
+        public static Matrix<T> FlipLR<T>(Matrix<T> matrix)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed();
+
+            var ret = NativeMethods.fliplr(matrix.MatrixElementType.ToNativeMatrixElementType(),
+                                           matrix.NativePtr,
+                                           matrix.TemplateRows,
+                                           matrix.TemplateColumns,
+                                           out var value);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
+            }
+
+            return new Matrix<T>(value, matrix.TemplateRows, matrix.TemplateColumns);
+        }
 
         #endregion
 

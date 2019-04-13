@@ -63,6 +63,17 @@ namespace DlibDotNet.Dnn
             NativeMethods.loss_metric_clean(this.NetworkType);
         }
 
+        public LossMetric CloneAs(int networkType)
+        {
+            this.ThrowIfDisposed();
+
+            var ret = NativeMethods.loss_metric_clone(this.NativePtr, this.NetworkType, networkType, out var net);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(networkType);
+
+            return new LossMetric(net, networkType);
+        }
+
         public static LossMetric Deserialize(string path, int networkType = 0)
         {
             if (path == null)

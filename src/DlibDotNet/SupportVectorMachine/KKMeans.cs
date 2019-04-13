@@ -39,7 +39,7 @@ namespace DlibDotNet
             var templateRow = sample.TemplateRows;
             var templateColumn = sample.TemplateColumns;
 
-            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            var param = new MatrixTemplateSizeParameter(templateRow, templateColumn);
             using (var inSamples = new StdVector<Matrix<T>>(sampleArray, param))
             using (var inCenters = new StdVector<Matrix<T>>(centerArray, param))
             using (var outResult = new StdVector<Matrix<T>>(param))
@@ -84,7 +84,7 @@ namespace DlibDotNet
             var templateRow = sample.TemplateRows;
             var templateColumn = sample.TemplateColumns;
 
-            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            var param = new MatrixTemplateSizeParameter(templateRow, templateColumn);
             using (var inCenters = new StdVector<Matrix<T>>(centerArray, param))
             {
                 var type = sample.MatrixElementType.ToNativeMatrixElementType();
@@ -132,7 +132,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateColumns)} of {typeof(Matrix<T>).Name}", nameof(samples));
             }
 
-            var param = new StdVector<Matrix<T>>.MatrixTemplateSizeParameter(templateRow, templateColumn);
+            var param = new MatrixTemplateSizeParameter(templateRow, templateColumn);
             using (var inSamples = new StdVector<Matrix<T>>(sampleArray, param))
             using (var outCenters = new StdVector<Matrix<T>>(0, param))
             {

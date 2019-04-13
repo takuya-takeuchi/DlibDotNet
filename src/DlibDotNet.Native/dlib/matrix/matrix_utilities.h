@@ -354,6 +354,16 @@ do {\
     matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, matrix_trans_template_sub, error, matrix, ret);\
 } while (0)
 
+#define fliplr_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, ret) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& mat = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
+auto m = dlib::fliplr(mat);\
+*ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(m);\
+
+#define fliplr_template(__TYPE__, __ROWS__, __COLUMNS__, error, matrix, ret) \
+do {\
+    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, fliplr_template_sub, error, matrix, ret);\
+} while (0)
+
 #pragma endregion template
 
 DLLEXPORT void* linspace(double start, double end, int num)
@@ -760,6 +770,52 @@ DLLEXPORT int matrix_trans(matrix_element_type type, void* matrix, int templateR
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int fliplr(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void** ret)
+{
+    int err = ERR_OK;
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            fliplr_template(uint8_t, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::UInt16:
+            fliplr_template(uint16_t, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::UInt32:
+            fliplr_template(uint32_t, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::Int8:
+            fliplr_template(int8_t, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::Int16:
+            fliplr_template(int16_t, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::Int32:
+            fliplr_template(int32_t, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::Float:
+            fliplr_template(float, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::Double:
+            fliplr_template(double, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::RgbPixel:
+            fliplr_template(rgb_pixel, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::HsiPixel:
+            fliplr_template(hsi_pixel, templateRows, templateColumns, err, matrix, ret);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            fliplr_template(rgb_alpha_pixel, templateRows, templateColumns, err, matrix, ret);
+            break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;

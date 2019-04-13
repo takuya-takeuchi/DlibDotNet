@@ -16,11 +16,11 @@ namespace DlibDotNet
 
         #region Methods
 
-        public void SetPos(int x, int y)
-        {
-            this.ThrowIfDisposed();
-            NativeMethods.scrollable_region_set_pos(this.NativePtr, x, y);
-        }
+        //public void SetPos(int x, int y)
+        //{
+        //    this.ThrowIfDisposed();
+        //    NativeMethods.scrollable_region_set_pos(this.NativePtr, x, y);
+        //}
 
         public void SetSize(uint width, uint height)
         {

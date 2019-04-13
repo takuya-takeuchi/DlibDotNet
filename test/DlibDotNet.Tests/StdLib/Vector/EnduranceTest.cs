@@ -75,12 +75,6 @@ namespace DlibDotNet.Tests.StdLib.Vector
             Assert.IsTrue((end - start) / 1024 < 10240);
         }
 
-        private static long GetCurrentMemory()
-        {
-            return Environment.WorkingSet;
-            //return GC.GetTotalMemory(true);
-        }
-
     }
 
 }

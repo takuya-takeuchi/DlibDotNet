@@ -22,6 +22,18 @@ namespace DlibDotNet.Dnn
             this.NativePtr = this._Imp.NativePtr;
         }
 
+        public DnnTrainer(T net, Sgd sgd)
+        {
+            if (sgd == null)
+                throw new ArgumentNullException(nameof(sgd));
+
+            sgd.ThrowIfDisposed();
+
+            this._Imp = CreateImp(net, sgd);
+
+            this.NativePtr = this._Imp.NativePtr;
+        }
+
         #endregion
 
         #region Properties
@@ -147,6 +159,21 @@ namespace DlibDotNet.Dnn
             throw new NotSupportedException();
         }
 
+        private static TrainerImp<T> CreateImp(T net, Sgd sgd)
+        {
+            var t = typeof(T);
+            if (t == typeof(LossMetric))
+                return new LossMetricTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+            if (t == typeof(LossMmod))
+                return new LossMmodTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+            if (t == typeof(LossMulticlassLog))
+                return new LossMulticlassLogTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+            if (t == typeof(LossMulticlassLogPerPixel))
+                return new LossMulticlassLogPerPixelTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+
+            throw new NotSupportedException();
+        }
+
         #endregion
 
         #endregion
@@ -240,6 +267,12 @@ namespace DlibDotNet.Dnn
             {
                 this.NetworkType = type;
                 this.NativePtr = NativeMethods.dnn_trainer_loss_metric_new(net, type);
+            }
+
+            public LossMetricTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_metric_new_sgd(net, type, sgd.NativePtr);
             }
 
             #endregion
@@ -347,6 +380,12 @@ namespace DlibDotNet.Dnn
                 this.NativePtr = NativeMethods.dnn_trainer_loss_mmod_new(net, type);
             }
 
+            public LossMmodTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_mmod_new_sgd(net, type, sgd.NativePtr);
+            }
+
             #endregion
 
             #region Methods
@@ -452,6 +491,12 @@ namespace DlibDotNet.Dnn
                 this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_new(net, type);
             }
 
+            public LossMulticlassLogTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_new_sgd(net, type, sgd.NativePtr);
+            }
+
             #endregion
 
             #region Methods
@@ -555,6 +600,12 @@ namespace DlibDotNet.Dnn
             {
                 this.NetworkType = type;
                 this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_new(net, type);
+            }
+
+            public LossMulticlassLogPerPixelTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_new_sgd(net, type, sgd.NativePtr);
             }
 
             #endregion
