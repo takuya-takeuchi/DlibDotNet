@@ -125,6 +125,12 @@ namespace DlibDotNet.Tests
             return path;
         }
 
+        public static long GetCurrentMemory()
+        {
+            return Environment.WorkingSet;
+            //return GC.GetTotalMemory(true);
+        }
+
         #region Random
 
         public byte NextByteRandom()

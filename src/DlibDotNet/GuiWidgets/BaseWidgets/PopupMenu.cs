@@ -43,8 +43,7 @@ namespace DlibDotNet
 
             return NativeMethods.popup_menu_add_menu_item_menu_item_separator(this.NativePtr, separator.NativePtr);
         }
-
-
+        
         #region Overrids
         #endregion
 

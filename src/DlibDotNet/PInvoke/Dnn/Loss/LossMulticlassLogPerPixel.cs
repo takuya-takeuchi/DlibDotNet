@@ -9,15 +9,6 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void dnn_output_stdvector_uint16_delete(IntPtr vector);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr dnn_output_stdvector_uint16_getItem(IntPtr vector, int index);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern int dnn_output_stdvector_uint16_getSize(IntPtr vector);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ushort loss_multiclass_log_per_pixel_get_label_to_ignore();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -25,6 +16,9 @@ namespace DlibDotNet
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void loss_multiclass_log_per_pixel_delete(IntPtr obj, int type);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType loss_multiclass_log_per_pixel_clone(IntPtr net, int src_type, int dst_type, out IntPtr new_net);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType loss_multiclass_log_per_pixel_deserialize(byte[] fileName, int type, out IntPtr net);
@@ -59,11 +53,27 @@ namespace DlibDotNet
                                                                                       int templateColumns,
                                                                                       ulong batchSize,
                                                                                       out IntPtr ret);
-        
+
+        #region output
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern void dnn_output_stdvector_uint16_delete(IntPtr vector);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr dnn_output_stdvector_uint16_getItem(IntPtr vector, int index);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern int dnn_output_stdvector_uint16_getSize(IntPtr vector);
+
+        #endregion
+
         #region trainer
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dnn_trainer_loss_multiclass_log_per_pixel_new(IntPtr net, int type);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr dnn_trainer_loss_multiclass_log_per_pixel_new_sgd(IntPtr net, int type, IntPtr sgd);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void dnn_trainer_loss_multiclass_log_per_pixel_delete(IntPtr trainer, int type);

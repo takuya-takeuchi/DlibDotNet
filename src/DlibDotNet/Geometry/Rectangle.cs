@@ -258,6 +258,16 @@ namespace DlibDotNet
                 return result.ToManaged();
         }
 
+        public static Rectangle MoveRect(Rectangle rect, Point point)
+        {
+            return Dlib.MoveRect(rect, point);
+        }
+
+        public static Rectangle MoveRect(Rectangle rect, int x, int y)
+        {
+            return Dlib.MoveRect(rect, x, y);
+        }
+
         public static Rectangle SetAspectRatio(Rectangle rect, double ratio)
         {
             if (!(ratio > 0))

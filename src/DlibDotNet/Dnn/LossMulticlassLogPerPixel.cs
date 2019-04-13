@@ -65,6 +65,17 @@ namespace DlibDotNet.Dnn
             NativeMethods.loss_multiclass_log_per_pixel_clean(this.NetworkType);
         }
 
+        public LossMulticlassLogPerPixel CloneAs(int networkType)
+        {
+            this.ThrowIfDisposed();
+
+            var ret = NativeMethods.loss_multiclass_log_per_pixel_clone(this.NativePtr, this.NetworkType, networkType, out var net);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(networkType);
+
+            return new LossMulticlassLogPerPixel(net, networkType);
+        }
+
         public static LossMulticlassLogPerPixel Deserialize(string path, int networkType = 0)
         {
             if (path == null)
@@ -276,7 +287,7 @@ namespace DlibDotNet.Dnn
                                                                                                  trainer.Type,
                                                                                                  dataElementTypes.ToNativeMatrixElementType(),
                                                                                                  dataVec.NativePtr,
-                                                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                                                 NativeMethods.MatrixElementType.UInt16,
                                                                                                  labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 

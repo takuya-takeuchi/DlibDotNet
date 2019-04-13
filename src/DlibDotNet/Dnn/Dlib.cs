@@ -11,9 +11,61 @@ namespace DlibDotNet
     public static partial class Dlib
     {
 
-        #region Methods
+        #region SetAllBnRunningStatsWindowSizes
 
-        #region AssignPixel
+        public static void SetAllBnRunningStatsWindowSizes(LossMetric net, uint newWindowSize)
+        {
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_metric(net.NativePtr, net.NetworkType, newWindowSize);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(net.NetworkType);
+        }
+
+        public static void SetAllBnRunningStatsWindowSizes(LossMmod net, uint newWindowSize)
+        {
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_mmod(net.NativePtr, net.NetworkType, newWindowSize);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(net.NetworkType);
+        }
+
+        public static void SetAllBnRunningStatsWindowSizes(LossMulticlassLog net, uint newWindowSize)
+        {
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_multiclass_log(net.NativePtr,
+                                                                                              net.NetworkType,
+                                                                                              newWindowSize);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(net.NetworkType);
+        }
+
+        public static void SetAllBnRunningStatsWindowSizes(LossMulticlassLogPerPixel net, uint newWindowSize)
+        {
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_multiclass_log_per_pixel(net.NativePtr,
+                                                                                                        net.NetworkType,
+                                                                                                        newWindowSize);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(net.NetworkType);
+        }
+
+        #endregion
 
         public static Matrix<double> TestObjectDetectionFunction<T>(LossMmod detector,
                                                                     IEnumerable<Matrix<T>> images,
@@ -82,10 +134,6 @@ namespace DlibDotNet
                     overlapIgnoreTester?.Dispose();
             }
         }
-
-        #endregion
-
-        #endregion
 
     }
 

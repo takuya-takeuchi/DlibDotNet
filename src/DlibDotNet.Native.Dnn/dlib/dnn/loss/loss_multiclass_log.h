@@ -8,6 +8,7 @@
 
 #include "../trainer.h"
 #include "loss_multiclass_log_defines.h"
+#include "../layers/layers.h"
 #include "../../common.h"
 
 using namespace dlib;
@@ -42,6 +43,22 @@ train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_train
 #define train_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
 train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_train_one_step_template);\
 
+#define clone_template(__SRC_NET_TYPE__, dst_type, obj, new_net, err) \
+do {\
+    switch(dst_type)\
+    {\
+        case 0:\
+            {\
+                __SRC_NET_TYPE__& net = *static_cast<__SRC_NET_TYPE__*>(obj);\
+                *new_net = new net_type(net);\
+            }\
+            break;\
+        default:\
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
+            break;\
+    }\
+} while (0)
+
 #pragma endregion template
 
 DLLEXPORT int loss_multiclass_log_new(const int type, void** net)
@@ -53,6 +70,38 @@ DLLEXPORT int loss_multiclass_log_new(const int type, void** net)
     {
         case 0:
             *net =  new net_type();
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT void loss_multiclass_log_delete(void* obj, const int type)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            delete (net_type*)obj;
+            break;
+    }
+}
+
+DLLEXPORT int loss_multiclass_log_clone(void* obj, const int src_type, const int dst_type, void** new_net)
+{
+    int err = ERR_OK;
+
+    if (src_type != dst_type)
+        return ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE;
+
+    // Check type argument and cast to the proper type
+    switch(src_type)
+    {
+        case 0:
+            clone_template(net_type, dst_type, obj, new_net, err);
             break;
         default:
             err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
@@ -132,17 +181,6 @@ DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj,
     }
 
     return err;
-}
-
-DLLEXPORT void loss_multiclass_log_delete(void* obj, const int type)
-{
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            delete (net_type*)obj;
-            break;
-    }
 }
 
 DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name, const int type, void** ret)
@@ -383,6 +421,19 @@ DLLEXPORT void* dnn_trainer_loss_multiclass_log_new(void* net, const int type)
     {
         case 0:
             dnn_trainer_new_template(net_type, net);
+            break;
+    }
+
+    return nullptr;
+}
+
+DLLEXPORT void* dnn_trainer_loss_multiclass_log_new_sgd(void* net, const int type, sgd* sgd)
+{
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            dnn_trainer_new_template2(net_type, net, *sgd);
             break;
     }
 
@@ -706,5 +757,27 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_operator_left_shift(void* trainer,
 }
 
 #pragma endregion dnn_trainer
+
+#pragma region layers
+
+DLLEXPORT int set_all_bn_running_stats_window_sizes_loss_multiclass_log(void* obj, const int type, unsigned long new_window_size)
+{
+    int err = ERR_OK;
+
+    // Check type argument and cast to the proper type
+    switch(type)
+    {
+        case 0:
+            set_all_bn_running_stats_window_sizes_template(net_type, obj, new_window_size);
+            break;
+        default:
+            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            break;
+    }
+
+    return err;
+}
+
+#pragma endregion layers
 
 #endif

@@ -14,9 +14,26 @@ namespace DlibDotNet
             this.NativePtr = NativeMethods.rand_new();
         }
 
+        public Rand(ulong seed)
+        {
+            this.NativePtr = NativeMethods.rand_new2(seed);
+        }
+
         #endregion
 
         #region Methods
+
+        public double GetRandomDouble()
+        {
+            this.ThrowIfDisposed();
+            return NativeMethods.rand_get_random_double(this.NativePtr);
+        }
+
+        public uint GetRandom32BitNumber()
+        {
+            this.ThrowIfDisposed();
+            return NativeMethods.rand_get_random_32bit_number(this.NativePtr);
+        }
 
         public double GetRandomGaussian()
         {

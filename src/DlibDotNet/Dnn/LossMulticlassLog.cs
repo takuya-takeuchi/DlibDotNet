@@ -64,6 +64,17 @@ namespace DlibDotNet.Dnn
             NativeMethods.loss_multiclass_log_clean(this.NetworkType);
         }
 
+        public LossMulticlassLog CloneAs(int networkType)
+        {
+            this.ThrowIfDisposed();
+
+            var ret = NativeMethods.loss_multiclass_log_clone(this.NativePtr, this.NetworkType, networkType, out var net);
+            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                throw new NotSupportNetworkTypeException(networkType);
+
+            return new LossMulticlassLog(net, networkType);
+        }
+
         public static LossMulticlassLog Deserialize(string path, int networkType = 0)
         {
             if (path == null)

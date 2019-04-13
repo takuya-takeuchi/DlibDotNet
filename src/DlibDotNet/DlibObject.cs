@@ -24,13 +24,30 @@ namespace DlibDotNet
 
         #region Finalizer
 
-        /// <summary>
-        /// Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
-        /// </summary>
-        ~DlibObject()
-        {
-            this.Dispose(false);
-        }
+        // IMPORTANT
+        //      DlibDotNet passes and get native pointer to unmanaged domain and from.
+        //      Sometimes, DlibDotNet create DlibObject from native pointer.
+        //      There may be some DlibObject has same native pointer .
+        //      It means that developer may dispose objects has same one.
+        //      To avoid this, DlibObject has IsEnableDispose property.
+        //      DlibObject checks this property when Dispose method is called.
+        //      However, if DlibObject implements finalizer and developer forgets to dispose, DlibObject may
+        //      be disposed by GC and native pointer will be corrupted.
+        //      
+        //      If user add DlibObject to StdVector<T> and set null to passed DlibObject.
+        //      Generally, DlibObject means pointer and it should not disposed automatically.
+        //      If it's disposed automatically, element passed to StdVector<T> also be corrupt.
+        //      This problem is only occured on C# rather than C++ because GC and finalizer.
+        //
+        //      In conclusion, DlibDotNet doesn't implement finalizer.
+        //
+        ///// <summary>
+        ///// Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
+        ///// </summary>
+        //~DlibObject()
+        //{
+        //    this.Dispose(false);
+        //}
 
         #endregion
 
@@ -111,10 +128,20 @@ namespace DlibDotNet
 
         }
 
+        protected virtual void DisposingManaged()
+        {
+
+        }
+
         /// <summary>
         /// Releases all unmanaged resources.
         /// </summary>
         protected virtual void DisposeUnmanaged()
+        {
+
+        }
+
+        protected virtual void DisposingUnmanaged()
         {
 
         }
@@ -131,7 +158,7 @@ namespace DlibDotNet
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            //GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -143,6 +170,18 @@ namespace DlibDotNet
             if (this.IsDisposed)
             {
                 return;
+            }
+
+            // pre-disposing
+            {
+                if (disposing)
+                {
+                    if (this.IsEnableDispose)
+                        this.DisposingManaged();
+                }
+
+                if (this.IsEnableDispose)
+                    this.DisposingUnmanaged();
             }
 
             this.IsDisposed = true;

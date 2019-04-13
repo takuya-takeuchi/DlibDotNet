@@ -10,6 +10,26 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static void ApplyRandomColorOffset(MatrixBase image, Rand rand)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rand == null)
+                throw new ArgumentNullException(nameof(rand));
+
+            image.ThrowIfDisposed();
+            rand.ThrowIfDisposed();
+
+            var matrixElementType = image.MatrixElementType.ToNativeMatrixElementType();
+            var ret = NativeMethods.apply_random_color_offset_matrix(matrixElementType,
+                                                                     image.NativePtr,
+                                                                     image.TemplateRows,
+                                                                     image.TemplateColumns,
+                                                                     rand.NativePtr);
+            if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
+                throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+        }
+
         public static void DisturbColors(MatrixBase image, Rand rand, double gammaMagnitude = 0.5, double colorMagnitude = 0.2)
         {
             if (image == null)

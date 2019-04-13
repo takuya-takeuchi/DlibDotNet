@@ -12,6 +12,95 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         private const string LoadTarget = "Lenna_mini";
 
+        #region ExtractImageChip
+
+        [TestMethod]
+        public void ExtractImageChip()
+        {
+            const string testName = nameof(ExtractImageChip);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
+                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = true},
+                new { Type = ImageTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            using (var dims = new ChipDims(227, 227))
+            using (var chip = new ChipDetails(new Rectangle(0, 0, 100, 100), dims))
+                foreach (var input in tests)
+                {
+                    var expectResult = input.ExpectResult;
+                    var imageObj = DlibTest.LoadImage(input.Type, path);
+
+                    var outputImageAction = new Func<bool, Array2DBase>(expect =>
+                    {
+                        switch (input.Type)
+                        {
+                            case ImageTypes.RgbPixel:
+                                return Dlib.ExtractImageChip<RgbPixel>(imageObj, chip);
+                            case ImageTypes.RgbAlphaPixel:
+                                return Dlib.ExtractImageChip<RgbAlphaPixel>(imageObj, chip);
+                            case ImageTypes.UInt8:
+                                return Dlib.ExtractImageChip<byte>(imageObj, chip);
+                            case ImageTypes.UInt16:
+                                return Dlib.ExtractImageChip<ushort>(imageObj, chip);
+                            case ImageTypes.UInt32:
+                                return Dlib.ExtractImageChip<uint>(imageObj, chip);
+                            case ImageTypes.Int8:
+                                return Dlib.ExtractImageChip<sbyte>(imageObj, chip);
+                            case ImageTypes.Int16:
+                                return Dlib.ExtractImageChip<short>(imageObj, chip);
+                            case ImageTypes.Int32:
+                                return Dlib.ExtractImageChip<int>(imageObj, chip);
+                            case ImageTypes.HsiPixel:
+                                return Dlib.ExtractImageChip<HsiPixel>(imageObj, chip);
+                            case ImageTypes.Float:
+                                return Dlib.ExtractImageChip<float>(imageObj, chip);
+                            case ImageTypes.Double:
+                                return Dlib.ExtractImageChip<double>(imageObj, chip);
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    });
+
+                    var successAction = new Action<Array2DBase>(image =>
+                    {
+                        Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}.bmp")}");
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        if (imageObj != null)
+                            this.DisposeAndCheckDisposedState(imageObj);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}, Type: {input.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
+        }
+
+        #endregion
+
         #region FlipImageLeftRight
 
         [TestMethod]

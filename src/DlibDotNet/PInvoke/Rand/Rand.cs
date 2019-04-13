@@ -12,7 +12,16 @@ namespace DlibDotNet
         public static extern IntPtr rand_new();
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr rand_new2(ulong seed);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern double rand_get_random_gaussian(IntPtr rand);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern double rand_get_random_double(IntPtr rand);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern uint rand_get_random_32bit_number(IntPtr rand);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void rand_delete(IntPtr rand);

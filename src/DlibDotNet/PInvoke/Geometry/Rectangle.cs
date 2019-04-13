@@ -96,6 +96,12 @@ namespace DlibDotNet
         public static extern IntPtr rectangle_intersect(IntPtr rect, IntPtr target);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr rectangle_move_rect(IntPtr rect, IntPtr point);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr rectangle_move_rect2(IntPtr rect, int x, int y);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr rectangle_center(IntPtr rect);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

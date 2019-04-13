@@ -146,6 +146,27 @@ enum struct image_pixel_format_type : int
 
 };
 
+enum struct log_level : int
+{
+
+    All = 0,
+
+    None,
+
+    Trace,
+
+    Debug,
+
+    Info,
+
+    Warn,
+
+    Error,
+
+    Fatal
+
+};
+
 typedef struct
 {
     // uint8_t
@@ -240,6 +261,7 @@ typedef struct
 #define ERR_DNN_ERROR                                                     0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE                 -(ERR_DNN_ERROR | 0x00000001)
 #define ERR_DNN_PROPAGATE_EXCEPTION                     -(ERR_DNN_ERROR | 0x00000002)
+#define ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE  -(ERR_DNN_ERROR | 0x00000003)
 
 #pragma region macro
 
