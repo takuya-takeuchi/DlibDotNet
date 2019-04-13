@@ -223,6 +223,11 @@ namespace DnnMmodFindCars
                     }
                 }
             }
+            catch (ImageLoadException ile)
+            {
+                Console.WriteLine(ile.Message);
+                Console.WriteLine("The test image is located in the examples folder.  So you should run this program from a sub folder so that the relative path is correct.");
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
