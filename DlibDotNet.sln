@@ -91,6 +91,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pipe", "examples\Pipe\Pipe.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnSemanticSegmentationTrain", "examples\DnnSemanticSegmentationTrain\DnnSemanticSegmentationTrain.csproj", "{951D0376-47A8-4EE8-9B32-5849F8E5BE2B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMmodFindCars2", "examples\DnnMmodFindCars2\DnnMmodFindCars2.csproj", "{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -683,6 +685,22 @@ Global
 		{951D0376-47A8-4EE8-9B32-5849F8E5BE2B}.Release|x64.Build.0 = Release|Any CPU
 		{951D0376-47A8-4EE8-9B32-5849F8E5BE2B}.Release|x86.ActiveCfg = Release|Any CPU
 		{951D0376-47A8-4EE8-9B32-5849F8E5BE2B}.Release|x86.Build.0 = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|x64.Build.0 = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|ARM.Build.0 = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|x64.ActiveCfg = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|x64.Build.0 = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -727,6 +745,7 @@ Global
 		{D3E632BE-C802-4A19-8377-B18A88DA5D2D} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{0489B9AE-070E-4467-9B2C-DBE10E56C83D} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{951D0376-47A8-4EE8-9B32-5849F8E5BE2B} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{3B7AAF0C-1724-4410-BB66-FA4F72C3F1CA} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}
