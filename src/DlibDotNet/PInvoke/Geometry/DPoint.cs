@@ -33,7 +33,13 @@ namespace DlibDotNet
         public static extern IntPtr dpoint_operator_add(IntPtr point, IntPtr rhs);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr dpoint_operator_add2(IntPtr point, IntPtr rhs);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dpoint_operator_sub(IntPtr point, IntPtr rhs);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr dpoint_operator_sub2(IntPtr point, IntPtr rhs);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dpoint_operator_mul_dpoint_double(IntPtr point, double rhs);

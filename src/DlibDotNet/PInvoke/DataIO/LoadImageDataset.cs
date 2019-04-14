@@ -9,6 +9,12 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType load_image_dataset_array_full_object_detection(Array2DType type,
+                                                                                      IntPtr array_array2d,
+                                                                                      IntPtr boxes,
+                                                                                      byte[] path);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType load_image_dataset_mmod_rect(MatrixElementType type, IntPtr images, IntPtr boxes, byte[] path);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

@@ -22,11 +22,33 @@ do {\
     *full_obj_detect = new full_object_detection(result);\
 } while (0)
 
+#define shape_predictor_test_shape_predictor_template(__TYPE__, predictor, images, objects, scales, ret) \
+do {\
+    std::vector<std::vector<full_object_detection>> in_Objects;\
+    std::vector<std::vector<double>> in_Scales;\
+    vector_vector_pointer_to_value(full_object_detection, objects, in_Objects);\
+    dlib::array<array2d<__TYPE__>>& in_images = *static_cast<dlib::array<array2d<__TYPE__>>*>(images);\
+    vector_vector_valueType_to_value(double, scales, in_Scales);\
+\
+    double d = dlib::test_shape_predictor(*predictor, in_images, in_Objects, in_Scales);\
+    *ret = d;\
+} while (0)
+
 #pragma endregion template
 
 DLLEXPORT shape_predictor* shape_predictor_new()
 {
     return new shape_predictor();
+}
+
+DLLEXPORT void shape_predictor_delete(shape_predictor* obj)
+{
+	delete obj;
+}
+
+DLLEXPORT void serialize_shape_predictor(shape_predictor* predictor, const char* file_name)
+{
+    dlib::serialize(file_name) << (*predictor);
 }
 
 DLLEXPORT shape_predictor* deserialize_shape_predictor(const char* file_name)
@@ -274,9 +296,56 @@ DLLEXPORT unsigned int shape_predictor_num_features(shape_predictor* predictor)
     return predictor->num_features();
 }
 
-DLLEXPORT void shape_predictor_delete(shape_predictor* obj)
+DLLEXPORT int shape_predictor_test_shape_predictor(shape_predictor* predictor,
+                                                   array2d_type img_type,
+                                                   void* images,
+                                                   std::vector<std::vector<full_object_detection*>*>* objects,
+                                                   std::vector<std::vector<double>*>* scales,
+                                                   double* ret)
 {
-	delete obj;
+    int err = ERR_OK;
+
+    switch(img_type)
+    {
+        case array2d_type::UInt8:
+            shape_predictor_test_shape_predictor_template(uint8_t, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::UInt16:
+            shape_predictor_test_shape_predictor_template(uint16_t, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::UInt32:
+            shape_predictor_test_shape_predictor_template(uint32_t, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::Int8:
+            shape_predictor_test_shape_predictor_template(int8_t, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::Int16:
+            shape_predictor_test_shape_predictor_template(int16_t, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::Int32:
+            shape_predictor_test_shape_predictor_template(int32_t, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::Float:
+            shape_predictor_test_shape_predictor_template(float, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::Double:
+            shape_predictor_test_shape_predictor_template(double, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::RgbPixel:
+            shape_predictor_test_shape_predictor_template(rgb_pixel, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::HsiPixel:
+            shape_predictor_test_shape_predictor_template(hsi_pixel, predictor, images, objects, scales, ret);
+            break;
+        case array2d_type::RgbAlphaPixel:
+            shape_predictor_test_shape_predictor_template(rgb_alpha_pixel, predictor, images, objects, scales, ret);
+            break;
+        default:
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
 }
 
 #endif

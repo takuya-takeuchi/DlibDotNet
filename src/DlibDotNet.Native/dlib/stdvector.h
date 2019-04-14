@@ -167,6 +167,44 @@ DLLEXPORT void stdvector_vector_##__TYPENAME__##_copy(std::vector<dlib::vector<_
     memcpy(dst, &(vector->at(0)), length);\
 }\
 
+#define MAKE_FUNC_VECTOR_NOPOINTER(__TYPE__, __TYPENAME__)\
+DLLEXPORT std::vector<std::vector<__TYPE__>*>* stdvector_stdvector_##__TYPENAME__##_new1()\
+{\
+    return new std::vector<std::vector<__TYPE__>*>;\
+}\
+\
+DLLEXPORT std::vector<std::vector<__TYPE__>*>* stdvector_stdvector_##__TYPENAME__##_new2(size_t size)\
+{\
+    return new std::vector<std::vector<__TYPE__>*>(size);\
+}\
+\
+DLLEXPORT std::vector<std::vector<__TYPE__>*>* stdvector_stdvector_##__TYPENAME__##_new3(std::vector<__TYPE__>** data, size_t dataLength)\
+{\
+    return new std::vector<std::vector<__TYPE__>*>(data, data + dataLength);\
+}\
+\
+DLLEXPORT size_t stdvector_stdvector_##__TYPENAME__##_getSize(std::vector<std::vector<__TYPE__>*>* vector)\
+{\
+    return vector->size();\
+}\
+\
+DLLEXPORT std::vector<__TYPE__>* stdvector_stdvector_##__TYPENAME__##_getPointer(std::vector<std::vector<__TYPE__>*> *vector)\
+{\
+    return (vector->at(0));\
+}\
+\
+DLLEXPORT void stdvector_stdvector_##__TYPENAME__##_delete(std::vector<std::vector<__TYPE__>*> *vector)\
+{\
+    delete vector;\
+}\
+\
+DLLEXPORT void stdvector_stdvector_##__TYPENAME__##_copy(std::vector<std::vector<__TYPE__>*> *vector, std::vector<__TYPE__>** dst)\
+{\
+    /* This method is unsafe!! */\
+    size_t length = sizeof(__TYPE__) * vector->size();\
+    memcpy(dst, &(vector->at(0)), length);\
+}\
+
 #define MAKE_FUNC_VECTOR_POINTER(__TYPE__, __TYPENAME__)\
 DLLEXPORT std::vector<std::vector<__TYPE__*>*>* stdvector_stdvector_##__TYPENAME__##_new1()\
 {\
@@ -211,6 +249,7 @@ DLLEXPORT void stdvector_stdvector_##__TYPENAME__##_copy(std::vector<std::vector
 MAKE_FUNC(int32_t, int32)
 MAKE_FUNC(uint32_t, uint32)
 MAKE_FUNC(int64_t, long)
+MAKE_FUNC(double, double)
 
 MAKE_FUNC_POINTER_WITH_DELETE(dlib::rectangle, rectangle)
 MAKE_FUNC_POINTER_WITH_DELETE(dlib::point, point)
@@ -230,8 +269,10 @@ MAKE_FUNC_POINTER(dlib::image_display::overlay_rect, image_display_overlay_rect)
 
 MAKE_FUNC_VECTOR(double, double)
 
+MAKE_FUNC_VECTOR_NOPOINTER(double, double)
 MAKE_FUNC_VECTOR_POINTER(dlib::rectangle, rectangle)
 MAKE_FUNC_VECTOR_POINTER(dlib::mmod_rect, mmod_rect)
+MAKE_FUNC_VECTOR_POINTER(dlib::full_object_detection, full_object_detection)
 
 #pragma region matrix
 
