@@ -177,6 +177,19 @@ namespace DlibDotNet
             return new FullObjectDetection(fullObjDetect);
         }
 
+        public static void Serialize(ShapePredictor predictor, string path)
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException();
+
+            predictor.ThrowIfDisposed();
+
+            var str = Dlib.Encoding.GetBytes(path);
+            NativeMethods.serialize_shape_predictor(predictor.NativePtr, str);
+        }
+
         #region Overrides
 
         /// <summary>

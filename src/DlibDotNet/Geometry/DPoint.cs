@@ -142,7 +142,23 @@ namespace DlibDotNet
                 return ret.ToManaged();
         }
 
+        public static DPoint operator +(DPoint point, Point rhs)
+        {
+            using (var left = point.ToNative())
+            using (var right = rhs.ToNative())
+            using (var ret = left + right)
+                return ret.ToManaged();
+        }
+
         public static DPoint operator -(DPoint point, DPoint rhs)
+        {
+            using (var left = point.ToNative())
+            using (var right = rhs.ToNative())
+            using (var ret = left - right)
+                return ret.ToManaged();
+        }
+
+        public static DPoint operator -(DPoint point, Point rhs)
         {
             using (var left = point.ToNative())
             using (var right = rhs.ToNative())
@@ -330,6 +346,20 @@ namespace DlibDotNet
                 return new NativeDPoint(ptr);
             }
 
+            public static NativeDPoint operator +(NativeDPoint point, Point.NativePoint rhs)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+                if (rhs == null)
+                    throw new ArgumentNullException(nameof(rhs));
+
+                point.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                var ptr = NativeMethods.dpoint_operator_add2(point.NativePtr, rhs.NativePtr);
+                return new NativeDPoint(ptr);
+            }
+
             public static NativeDPoint operator -(NativeDPoint point, NativeDPoint rhs)
             {
                 if (point == null)
@@ -341,6 +371,20 @@ namespace DlibDotNet
                 rhs.ThrowIfDisposed();
 
                 var ptr = NativeMethods.dpoint_operator_sub(point.NativePtr, rhs.NativePtr);
+                return new NativeDPoint(ptr);
+            }
+
+            public static NativeDPoint operator -(NativeDPoint point, Point.NativePoint rhs)
+            {
+                if (point == null)
+                    throw new ArgumentNullException(nameof(point));
+                if (rhs == null)
+                    throw new ArgumentNullException(nameof(rhs));
+
+                point.ThrowIfDisposed();
+                rhs.ThrowIfDisposed();
+
+                var ptr = NativeMethods.dpoint_operator_sub2(point.NativePtr, rhs.NativePtr);
                 return new NativeDPoint(ptr);
             }
 

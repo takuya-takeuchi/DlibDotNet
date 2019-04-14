@@ -24,6 +24,7 @@ namespace DlibDotNet
                 new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
                 new { Type = typeof(uint),                                 ElementType = ElementTypes.UInt32 },
                 new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
+                new { Type = typeof(double),                               ElementType = ElementTypes.Double  },
                 new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
                 new { Type = typeof(Point),                                ElementType = ElementTypes.Point },
                 new { Type = typeof(DPoint),                               ElementType = ElementTypes.DPoint },
@@ -39,8 +40,10 @@ namespace DlibDotNet
                 new { Type = typeof(ImageDatasetMetadata.Image),           ElementType = ElementTypes.ImageDatasetMetadataImage },
                 new { Type = typeof(ImageDatasetMetadata.Box),             ElementType = ElementTypes.ImageDatasetMetadataBox },
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
+                new { Type = typeof(StdVector<double>),                    ElementType = ElementTypes.StdVectorDouble },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
+                new { Type = typeof(StdVector<FullObjectDetection>),       ElementType = ElementTypes.StdVectorFullObjectDetection  },
                 new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  },
                 new { Type = typeof(ImageDisplay.OverlayRect),             ElementType = ElementTypes.OverlayRect  }
             };
@@ -59,6 +62,8 @@ namespace DlibDotNet
             UInt32,
 
             Long,
+
+            Double,
 
             Rectangle,
 
@@ -88,9 +93,13 @@ namespace DlibDotNet
 
             VectorDouble,
 
+            StdVectorDouble,
+
             StdVectorRectangle,
 
             StdVectorMModRect,
+
+            StdVectorFullObjectDetection,
 
             ImageDatasetMetadataImage,
 

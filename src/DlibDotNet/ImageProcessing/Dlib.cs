@@ -98,6 +98,59 @@ namespace DlibDotNet
             return num;
         }
 
+        public static double TestShapePredictor<T>(ShapePredictor predictor,
+                                                   Array<Array2D<T>> images,
+                                                   IEnumerable<IList<FullObjectDetection>> objects,
+                                                   IEnumerable<IList<double>> scales)
+            where T: struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (objects == null)
+                throw new ArgumentNullException(nameof(objects));
+            if (scales == null)
+                throw new ArgumentNullException(nameof(scales));
+
+            predictor.ThrowIfDisposed();
+            images.ThrowIfDisposed();
+
+            var tmpObjects = objects.ToArray();
+            tmpObjects.ThrowIfDisposed();
+            var tmpScales = scales.ToArray();
+
+            if (images.Size != tmpObjects.Length)
+                throw new ArgumentException();
+
+            if (tmpScales.Any())
+            {
+                if (tmpObjects.Where((t, index) => t.Count != tmpScales[index].Count).Any())
+                    throw new ArgumentException();
+            }
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            using (var disposer1 = new EnumerableDisposer<StdVector<FullObjectDetection>>(tmpObjects.Select(r => new StdVector<FullObjectDetection>(r))))
+            using (var objectsVector = new StdVector<StdVector<FullObjectDetection>>(disposer1.Collection))
+            using (var disposer2 = new EnumerableDisposer<StdVector<double>>(tmpScales.Select(r => new StdVector<double>(r)).ToArray()))
+            using (var scaleVector = new StdVector<StdVector<double>>(disposer2.Collection))
+            {
+                var ret = NativeMethods.shape_predictor_test_shape_predictor(predictor.NativePtr,
+                                                                             type.ToNativeArray2DType(),
+                                                                             images.NativePtr,
+                                                                             objectsVector.NativePtr,
+                                                                             scaleVector.NativePtr,
+                                                                             out var value);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"Input {type} is not supported.");
+                }
+
+                return value;
+            }
+        }
+
         public static ObjectDetector<ScanFHogPyramid<T, U>> ThresholdFilterSingularValues<T, U>(ObjectDetector<ScanFHogPyramid<T, U>> detector,
                                                                                                 double threshold,
                                                                                                 uint weightIndex = 0)

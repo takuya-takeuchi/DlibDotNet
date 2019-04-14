@@ -598,11 +598,6 @@
             </summary>
             <param name="isEnabledDispose">true if this instance is disposable; otherwise, false.</param>
         </member>
-        <member name="M:DlibDotNet.DlibObject.Finalize">
-            <summary>
-            Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.
-            </summary>
-        </member>
         <member name="P:DlibDotNet.DlibObject.IsDisposed">
             <summary>
             Gets a value indicating whether this instance has been disposed.
@@ -645,6 +640,11 @@
             Releases all resources used by this <see cref="T:DlibDotNet.DlibObject"/>.
             </summary>
             <param name="disposing">Indicate value whether <see cref="M:System.IDisposable.Dispose"/> method was called.</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Adam.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
         </member>
         <member name="T:DlibDotNet.Dnn.Cuda">
             <summary>
@@ -879,6 +879,11 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.Dnn.ResizableTensor.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Sgd.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
@@ -1442,6 +1447,11 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.ShapePredictorTrainer.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.TestBoxOverlap.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
@@ -1468,6 +1478,11 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.ImageTransforms.RandomCropper.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Logger.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
@@ -1550,6 +1565,11 @@
             If Windows, it will be available after call LoadLibrary.
             And this file name must not contain period. If it does,
             CLR does not add extension (.dll) and CLR fails to load library
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Pipe`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
             </summary>
         </member>
         <member name="T:DlibDotNet.ProxyDeserialize">
@@ -1676,6 +1696,16 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.StructuralObjectDetectionTrainer`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.CustomMultithreadedObject.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MultithreadedObject.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

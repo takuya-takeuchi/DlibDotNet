@@ -290,6 +290,82 @@ do {\
 
 #pragma endregion CUDA
 
+#define array_copy(__TYPE__, src, dst)\
+do {\
+    dlib::array<array2d<__TYPE__>*>* tmp = static_cast<dlib::array<array2d<__TYPE__>*>*>(dst);\
+    for (int index = 0; index < src.size(); index++)\
+    {\
+        /* dlib::array2d deleted copy constructor :( */ \
+        array2d<__TYPE__>& a = src[index];\
+        array2d<__TYPE__>* cpy = new array2d<__TYPE__>(a.nr(), a.nc());\
+        array2d<__TYPE__>& ref = *cpy;\
+        for (int r = 0; r < a.nr(); r++)\
+            for (int c = 0; c < a.nc(); c++)\
+                ref[r][c] = a[r][c];\
+\
+        tmp->push_back(cpy);\
+    }\
+} while (0)
+
+#define array_copy2(__TYPE__, src, dst)\
+do {\
+    dlib::array<array2d<__TYPE__>>* tmp = static_cast<dlib::array<array2d<__TYPE__>>*>(dst);\
+    for (int index = 0; index < src.size(); index++)\
+    {\
+        /* dlib::array2d deleted copy constructor :( */ \
+        array2d<__TYPE__>& a = src[index];\
+        array2d<__TYPE__> cpy(a.nr(), a.nc());\
+        array2d<__TYPE__>& ref = cpy;\
+        for (int r = 0; r < a.nr(); r++)\
+            for (int c = 0; c < a.nc(); c++)\
+                ref[r][c] = a[r][c];\
+\
+        tmp->push_back(cpy);\
+    }\
+} while (0)
+
+#define vector_pointer_to_value(__TYPE__, src, dst) \
+do {\
+    std::vector<__TYPE__*>& tmp_src = *static_cast<std::vector<__TYPE__*>*>(src);\
+    for (int index = 0; index < tmp_src.size(); index++)\
+    {\
+        __TYPE__& tmp = *tmp_src.at(index);\
+        dst.push_back(tmp);\
+    }\
+} while (0)
+
+#define vector_vector_pointer_to_value(__TYPE__, src, dst) \
+do {\
+    std::vector<std::vector<__TYPE__*>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__*>*>*>(src);\
+    for (int j = 0 ; j < tmp_src.size(); j++)\
+    {\
+        auto tmpVector = tmp_src.at(j);\
+        std::vector<__TYPE__> vector;\
+        for (int i = 0 ; i < tmpVector->size(); i++)\
+        {\
+            __TYPE__& o = *(tmpVector->at(i));\
+            vector.push_back(o);\
+        }\
+        dst.push_back(vector);\
+    }\
+} while (0)
+
+#define vector_vector_valueType_to_value(__TYPE__, src, dst) \
+do {\
+    std::vector<std::vector<__TYPE__>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__>*>*>(src);\
+    for (int j = 0 ; j < tmp_src.size(); j++)\
+    {\
+        auto tmpVector = tmp_src.at(j);\
+        std::vector<__TYPE__> vector;\
+        for (int i = 0 ; i < tmpVector->size(); i++)\
+        {\
+            __TYPE__ o = tmpVector->at(i);\
+            vector.push_back(o);\
+        }\
+        dst.push_back(vector);\
+    }\
+} while (0)
+
 #define new_instance_vector_to_instance(__TYPE__, src, dst) \
 do {\
     std::vector<__TYPE__*>& tmp_src = *static_cast<std::vector<__TYPE__*>*>(src);\

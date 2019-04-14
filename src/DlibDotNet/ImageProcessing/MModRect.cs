@@ -63,7 +63,7 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
                 NativeMethods.mmod_rect_get_label(this.NativePtr, out var label);
-                return StringHelper.FromStdString(label);
+                return StringHelper.FromStdString(label, true);
             }
             set
             {

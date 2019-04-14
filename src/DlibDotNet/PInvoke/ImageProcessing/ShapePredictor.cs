@@ -18,6 +18,9 @@ namespace DlibDotNet
         public static extern uint shape_predictor_num_features(IntPtr predictor);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr serialize_shape_predictor(IntPtr predictor, byte[] filName);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr deserialize_shape_predictor(byte[] filName);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -53,6 +56,14 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void shape_predictor_delete(IntPtr point);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType shape_predictor_test_shape_predictor(IntPtr predictor,
+                                                                            Array2DType imgType,
+                                                                            IntPtr array_array2d,
+                                                                            IntPtr objects,
+                                                                            IntPtr scales,
+                                                                            out double ret);
 
     }
 

@@ -50,7 +50,19 @@ DLLEXPORT void* dpoint_operator_add(dpoint* point, dpoint* rhs)
     return new dlib::dpoint(result);
 }
 
+DLLEXPORT void* dpoint_operator_add2(dpoint* point, dlib::point* rhs)
+{
+    const dlib::dpoint result = (*point) + (*rhs);
+    return new dlib::dpoint(result);
+}
+
 DLLEXPORT void* dpoint_operator_sub(dpoint* point, dpoint* rhs)
+{
+    const dlib::dpoint result = (*point) - (*rhs);
+    return new dlib::dpoint(result);
+}
+
+DLLEXPORT void* dpoint_operator_sub2(dpoint* point, dlib::point* rhs)
 {
     const dlib::dpoint result = (*point) - (*rhs);
     return new dlib::dpoint(result);

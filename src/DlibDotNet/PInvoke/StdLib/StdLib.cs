@@ -128,6 +128,31 @@ namespace DlibDotNet
 
         #endregion
 
+        #region double
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_double_new1();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_double_new2(IntPtr size);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_double_new3([In] double[] data, IntPtr dataLength);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_double_getSize(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_double_getPointer(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern double stdvector_double_at(IntPtr vector, int index);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_double_delete(IntPtr vector);
+
+        #endregion
+
         #region full_object_detection
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -576,6 +601,34 @@ namespace DlibDotNet
 
         #endregion
 
+        #region stdvector_double
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_double_new1();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_double_new2(IntPtr size);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_double_new3([In] IntPtr[] data, IntPtr dataLength);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_double_getSize(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_double_getPointer(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_double_at(IntPtr vector, int index);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_stdvector_double_delete(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_stdvector_double_copy(IntPtr vector, IntPtr[] dst);
+
+        #endregion
+
         #region vector_mmod_rect
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -601,6 +654,34 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_stdvector_mmod_rect_copy(IntPtr vector, IntPtr[] dst);
+
+        #endregion
+
+        #region vector_full_object_detection
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_full_object_detection_new1();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_full_object_detection_new2(IntPtr size);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_full_object_detection_new3([In] IntPtr[] data, IntPtr dataLength);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_full_object_detection_getSize(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_full_object_detection_getPointer(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_stdvector_full_object_detection_at(IntPtr vector, int index);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_stdvector_full_object_detection_delete(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_stdvector_full_object_detection_copy(IntPtr vector, IntPtr[] dst);
 
         #endregion
 
