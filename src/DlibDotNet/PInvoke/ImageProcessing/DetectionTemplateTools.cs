@@ -12,6 +12,10 @@ namespace DlibDotNet
         public static extern IntPtr compute_box_dimensions(double filterSize,
                                                            double numScaleLevels);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr create_grid_detection_template(IntPtr object_box,
+                                                                   uint cells_x,
+                                                                   uint cells_y);
 
     }
 
