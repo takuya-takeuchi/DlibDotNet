@@ -181,7 +181,19 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Methods 
+        #region Methods  
+
+        public void SetSize(int rows, int columns)
+        {
+            if (!(rows >= 0 && columns >= 0))
+                throw new ArrayTypeMismatchException();
+
+            this.ThrowIfDisposed();
+            NativeMethods.array2d_set_size(this._Array2DType,
+                                           this.NativePtr,
+                                           rows,
+                                           columns);
+        }
 
         public byte[] ToBytes()
         {

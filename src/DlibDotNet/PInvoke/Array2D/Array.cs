@@ -32,6 +32,10 @@ namespace DlibDotNet
         public static extern bool array2d_size(Array2DType type, IntPtr array, out int ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool array2d_set_size(Array2DType type, IntPtr array, int rows, int cols);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType rectangle_get_rect(Array2DType type, IntPtr array, out IntPtr rect);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -139,6 +143,10 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool array2d_matrix_size(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out int ret);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool array2d_matrix_set_size(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, int rows, int cols);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType array2d_matrix_get_rect(MatrixElementType type, IntPtr array, int templateRows, int templateColumns, out IntPtr rect);

@@ -68,6 +68,14 @@ do {\
     matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, array2d_matrix_size_template_sub, error, array, ret);\
 } while (0)
 
+#define array2d_matrix_set_size_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, array, rows, cols) \
+((dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>*)array)->set_size(rows, cols);\
+
+#define array2d_matrix_set_size_template(__TYPE__, __ROWS__, __COLUMNS__, error, array, rows, cols) \
+do {\
+    matrix_template_size_arg3_template(__TYPE__, __ROWS__, __COLUMNS__, array2d_matrix_set_size_template_sub, error, array, rows, cols);\
+} while (0)
+
 #define array2d_matrix_get_rect_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, array, rect) \
 *rect = new dlib::rectangle(get_rect(*((array2d<matrix<__TYPE__, __ROWS__, __COLUMNS__>>*)array)));\
 
@@ -302,6 +310,48 @@ DLLEXPORT bool array2d_size(array2d_type type, void* array, uint64_t* ret)
 			return true;
         case array2d_type::RgbAlphaPixel:
 			*ret = ((array2d<rgb_alpha_pixel>*)array)->size();
+			return true;
+        default:
+			return false;
+    }
+}
+
+DLLEXPORT bool array2d_set_size(array2d_type type, void* array, const int rows, const int cols)
+{
+    switch(type)
+    {
+        case array2d_type::UInt8:
+			((array2d<uint8_t>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::UInt16:
+			((array2d<uint16_t>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::UInt32:
+			((array2d<uint32_t>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::Int8:
+			((array2d<int8_t>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::Int16:
+			((array2d<int16_t>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::Int32:
+			((array2d<int32_t>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::Float:
+			((array2d<float>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::Double:
+			((array2d<double>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::RgbPixel:
+			((array2d<rgb_pixel>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::HsiPixel:
+			((array2d<hsi_pixel>*)array)->set_size(rows, cols);
+			return true;
+        case array2d_type::RgbAlphaPixel:
+			((array2d<rgb_alpha_pixel>*)array)->set_size(rows, cols);
 			return true;
         default:
 			return false;
@@ -842,6 +892,53 @@ DLLEXPORT bool array2d_matrix_size(matrix_element_type type, void* array, const 
             break;
         case matrix_element_type::RgbAlphaPixel:
             array2d_matrix_size_template(rgb_alpha_pixel, templateRows, templateColumns, err, array, ret);
+            break;
+        default:
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err == ERR_OK;
+}
+
+DLLEXPORT bool array2d_matrix_set_size(matrix_element_type type, void* array, const int templateRows, const int templateColumns, const int rows, const int cols)
+{
+    int err = ERR_OK;
+
+    switch(type)
+    {
+        case matrix_element_type::UInt8:
+            array2d_matrix_set_size_template(uint8_t, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::UInt16:
+            array2d_matrix_set_size_template(uint16_t, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::UInt32:
+            array2d_matrix_set_size_template(uint32_t, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::Int8:
+            array2d_matrix_set_size_template(int8_t, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::Int16:
+            array2d_matrix_set_size_template(int16_t, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::Int32:
+            array2d_matrix_set_size_template(int32_t, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::Float:
+            array2d_matrix_set_size_template(float, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::Double:
+            array2d_matrix_set_size_template(double, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::RgbPixel:
+            array2d_matrix_set_size_template(double, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::HsiPixel:
+            array2d_matrix_set_size_template(hsi_pixel, templateRows, templateColumns, err, array, rows, cols);
+            break;
+        case matrix_element_type::RgbAlphaPixel:
+            array2d_matrix_set_size_template(rgb_alpha_pixel, templateRows, templateColumns, err, array, rows, cols);
             break;
         default:
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
