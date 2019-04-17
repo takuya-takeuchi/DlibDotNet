@@ -47,35 +47,47 @@ namespace DlibDotNet.Tests.ImageTransforms
                     {
                         case ImageTypes.RgbPixel:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, new RgbPixel { Blue = 255 });
+                                Dlib.DrawRectangle((Array2D<RgbPixel>)inImg, r, new RgbPixel { Blue = 255 });
                             break;
                         case ImageTypes.RgbAlphaPixel:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, new RgbAlphaPixel { Blue = 255, Alpha = 255 });
+                                Dlib.DrawRectangle((Array2D<RgbAlphaPixel>)inImg, r, new RgbAlphaPixel { Blue = 255, Alpha = 255 });
                             break;
                         case ImageTypes.UInt8:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, (byte)0);
+                                Dlib.DrawRectangle((Array2D<byte>)inImg, r, (byte)0);
                             break;
                         case ImageTypes.UInt16:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, (ushort)0);
+                                Dlib.DrawRectangle((Array2D<ushort>)inImg, r, (ushort)0);
+                            break;
+                        case ImageTypes.UInt32:
+                            foreach (var r in rects)
+                                Dlib.DrawRectangle((Array2D<uint>)inImg, r, (uint)(255 << 16));
+                            break;
+                        case ImageTypes.Int8:
+                            foreach (var r in rects)
+                                Dlib.DrawRectangle((Array2D<sbyte>)inImg, r, (sbyte)0);
+                            break;
+                        case ImageTypes.Int16:
+                            foreach (var r in rects)
+                                Dlib.DrawRectangle((Array2D<short>)inImg, r, (short)0);
                             break;
                         case ImageTypes.Int32:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, 255 << 16);
+                                Dlib.DrawRectangle((Array2D<int>)inImg, r, 255 << 16);
                             break;
                         case ImageTypes.HsiPixel:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, new HsiPixel { H = 255 });
+                                Dlib.DrawRectangle((Array2D<HsiPixel>)inImg, r, new HsiPixel { H = 255 });
                             break;
                         case ImageTypes.Float:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, 0f);
+                                Dlib.DrawRectangle((Array2D<float>)inImg, r, 0f);
                             break;
                         case ImageTypes.Double:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle(inImg, r, 0d);
+                                Dlib.DrawRectangle((Array2D<double>)inImg, r, 0d);
                             break;
                     }
 
