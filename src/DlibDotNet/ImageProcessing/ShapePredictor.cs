@@ -58,8 +58,17 @@ namespace DlibDotNet
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
-            var ptr = NativeMethods.deserialize_shape_predictor(str);
-            return new ShapePredictor(ptr);
+            var ret = NativeMethods.deserialize_shape_predictor(str,
+                                                                out var predictor,
+                                                                out var errorMessage);
+
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+
+            return new ShapePredictor(predictor);
         }
 
         public static ShapePredictor Deserialize(ProxyDeserialize deserialize)
@@ -69,8 +78,17 @@ namespace DlibDotNet
 
             deserialize.ThrowIfDisposed();
 
-            var ret = NativeMethods.deserialize_shape_predictor_proxy(deserialize.NativePtr);
-            return new ShapePredictor(ret);
+            var ret = NativeMethods.deserialize_shape_predictor_proxy(deserialize.NativePtr,
+                                                                      out var predictor,
+                                                                      out var errorMessage);
+
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+
+            return new ShapePredictor(predictor);
         }
 
         public FullObjectDetection Detect(Array2DBase image, Rectangle rect)
@@ -187,7 +205,15 @@ namespace DlibDotNet
             predictor.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            NativeMethods.serialize_shape_predictor(predictor.NativePtr, str);
+            var ret = NativeMethods.serialize_shape_predictor(predictor.NativePtr,
+                                                              str,
+                                                              out var errorMessage);
+
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
         }
 
         #region Overrides

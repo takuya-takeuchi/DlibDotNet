@@ -18,13 +18,13 @@ namespace DlibDotNet
         public static extern ErrorType loss_metric_clone(IntPtr net, int src_type, int dst_type, out IntPtr new_net);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_metric_deserialize(byte[] fileName, int type, out IntPtr net);
+        public static extern ErrorType loss_metric_deserialize(byte[] fileName, int type, out IntPtr net, out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_metric_deserialize_proxy(IntPtr proxy_deserialize, int type, out IntPtr net);
+        public static extern ErrorType loss_metric_deserialize_proxy(IntPtr proxy_deserialize, int type, out IntPtr net, out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_metric_serialize(IntPtr obj, int type, byte[] fileName);
+        public static extern ErrorType loss_metric_serialize(IntPtr obj, int type, byte[] fileName, out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void loss_metric_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);

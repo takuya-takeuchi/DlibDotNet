@@ -19,13 +19,22 @@ namespace DlibDotNet
         public static extern ErrorType loss_multiclass_log_clone(IntPtr net, int src_type, int dst_type, out IntPtr new_net);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_deserialize(byte[] fileName, int type, out IntPtr net);
+        public static extern ErrorType loss_multiclass_log_deserialize(byte[] fileName, 
+                                                                       int type, 
+                                                                       out IntPtr net,
+                                                                       out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_deserialize_proxy(IntPtr proxy_deserialize, int type, out IntPtr net);
+        public static extern ErrorType loss_multiclass_log_deserialize_proxy(IntPtr proxy_deserialize,
+                                                                             int type, 
+                                                                             out IntPtr net,
+                                                                             out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_serialize(IntPtr obj, int type, byte[] fileName);
+        public static extern ErrorType loss_multiclass_log_serialize(IntPtr obj,
+                                                                     int type,
+                                                                     byte[] fileName,
+                                                                     out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void loss_multiclass_log_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);

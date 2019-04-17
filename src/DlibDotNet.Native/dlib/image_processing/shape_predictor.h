@@ -46,24 +46,68 @@ DLLEXPORT void shape_predictor_delete(shape_predictor* obj)
 	delete obj;
 }
 
-DLLEXPORT void serialize_shape_predictor(shape_predictor* predictor, const char* file_name)
+DLLEXPORT int serialize_shape_predictor(shape_predictor* predictor,
+                                        const char* file_name,
+                                        std::string** error_message)
 {
-    dlib::serialize(file_name) << (*predictor);
+    int err = ERR_OK;
+
+    try
+    {
+        dlib::serialize(file_name) << (*predictor);
+    }
+    catch (serialization_error& e)
+    {
+        err = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+
+    return err;
 }
 
-DLLEXPORT shape_predictor* deserialize_shape_predictor(const char* file_name)
+DLLEXPORT int deserialize_shape_predictor(const char* file_name,
+                                          shape_predictor** ret,
+                                          std::string** error_message)
 {
-    shape_predictor* predictor = new shape_predictor();
-    dlib::deserialize(file_name) >> (*predictor);
-    return predictor;
+    int err = ERR_OK;
+    *ret = nullptr;
+
+    try
+    {
+        shape_predictor* predictor = new shape_predictor();
+        dlib::deserialize(file_name) >> (*predictor);
+        *ret = predictor;
+    }
+    catch (serialization_error& e)
+    {
+        err = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+
+    return err;
 }
 
-DLLEXPORT shape_predictor* deserialize_shape_predictor_proxy(proxy_deserialize* proxy)
+DLLEXPORT int deserialize_shape_predictor_proxy(proxy_deserialize* proxy,
+                                                shape_predictor** ret,
+                                                std::string** error_message)
 {
-    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
-    shape_predictor* predictor = new shape_predictor();
-    p >> (*predictor);
-    return predictor;
+    int err = ERR_OK;
+    *ret = nullptr;
+
+    try
+    {
+        proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
+        shape_predictor* predictor = new shape_predictor();
+        p >> (*predictor);
+        *ret = predictor;
+    }
+    catch (serialization_error& e)
+    {
+        err = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+
+    return err;
 }
 
 DLLEXPORT dlib::point_transform_affine* normalizing_tform(dlib::rectangle* rect)

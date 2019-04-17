@@ -31,7 +31,8 @@ namespace DlibDotNet
                                                                        MatrixElementType matrixElementType,
                                                                        int templateRows,
                                                                        int templateColumns,
-                                                                       out IntPtr matrix);
+                                                                       out IntPtr matrix,
+                                                                       out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_begin(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns, out IntPtr begin);

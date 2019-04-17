@@ -217,6 +217,8 @@ namespace DlibDotNet
 
             GeneralFileImageLoad = -(GeneralError | 0x00000002),
 
+            GeneralSerialization = -(GeneralError | 0x00000003),
+
             #endregion
 
             #region Array2D
@@ -304,7 +306,7 @@ namespace DlibDotNet
             #endregion
 
         }
-        
+
         #region assign_pixel
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -349,7 +351,8 @@ namespace DlibDotNet
                                                                                      PyramidType pyramidType,
                                                                                      uint pyramidRate,
                                                                                      FHogFeatureExtractorType featureExtractorType,
-                                                                                     IntPtr obj);
+                                                                                     IntPtr obj,
+                                                                                     out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType object_detector_scan_fhog_pyramid_operator(PyramidType pyramidType,
@@ -365,7 +368,8 @@ namespace DlibDotNet
                                                                                    PyramidType pyramidType,
                                                                                    uint pyramidRate,
                                                                                    FHogFeatureExtractorType featureExtractorType,
-                                                                                   IntPtr obj);
+                                                                                   IntPtr obj,
+                                                                                   out IntPtr errorMessage);
 
         #endregion
 

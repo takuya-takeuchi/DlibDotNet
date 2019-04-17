@@ -221,6 +221,7 @@ typedef struct
 #define ERR_GENERAL_ERROR                                                 0x76000000
 #define ERR_GENERAL_FILE_IO                         -(ERR_GENERAL_ERROR | 0x00000001)
 #define ERR_GENERAL_IMAGE_LOAD                      -(ERR_GENERAL_ERROR | 0x00000002)
+#define ERR_GENERAL_SERIALIZATION                   -(ERR_GENERAL_ERROR | 0x00000003)
 
 // CUDA
 #define ERR_CUDA_ERROR                                                    0x77000000

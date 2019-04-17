@@ -68,83 +68,99 @@ do {\
     }\
 } while (0)
 
-#define object_detector_scan_fhog_pyramid_deserialize_template(file_name, pyramid_rate, ret) \
+#define object_detector_scan_fhog_pyramid_deserialize_template(file_name, pyramid_rate, ret, error_message) \
 do {\
-    switch(pyramid_rate)\
+    try\
     {\
-        case 1:\
-            {\
-                auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>*)ret;\
-                dlib::deserialize(file_name) >> (*detector);\
-            }\
-            break;\
-        case 2:\
-            {\
-                auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>*)ret;\
-                dlib::deserialize(file_name) >> (*detector);\
-            }\
-            break;\
-        case 3:\
-            {\
-                auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>*)ret;\
-                dlib::deserialize(file_name) >> (*detector);\
-            }\
-            break;\
-        case 4:\
-            {\
-                auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>*)ret;\
-                dlib::deserialize(file_name) >> (*detector);\
-            }\
-            break;\
-        case 6:\
-            {\
-                auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>*)ret;\
-                dlib::deserialize(file_name) >> (*detector);\
-            }\
-            break;\
-        default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
-            break;\
+        switch(pyramid_rate)\
+        {\
+            case 1:\
+                {\
+                    auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>*)ret;\
+                    dlib::deserialize(file_name) >> (*detector);\
+                }\
+                break;\
+            case 2:\
+                {\
+                    auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>*)ret;\
+                    dlib::deserialize(file_name) >> (*detector);\
+                }\
+                break;\
+            case 3:\
+                {\
+                    auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>*)ret;\
+                    dlib::deserialize(file_name) >> (*detector);\
+                }\
+                break;\
+            case 4:\
+                {\
+                    auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>*)ret;\
+                    dlib::deserialize(file_name) >> (*detector);\
+                }\
+                break;\
+            case 6:\
+                {\
+                    auto detector = (object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>*)ret;\
+                    dlib::deserialize(file_name) >> (*detector);\
+                }\
+                break;\
+            default:\
+                err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+                break;\
+        }\
+    }\
+    catch (serialization_error& e)\
+    {\
+        err = ERR_GENERAL_SERIALIZATION;\
+        *error_message = new std::string(e.what());\
     }\
 } while (0)
 
-#define object_detector_scan_fhog_pyramid_serialize_template(file_name, pyramid_rate, obj) \
+#define object_detector_scan_fhog_pyramid_serialize_template(file_name, pyramid_rate, obj, error_message) \
 do {\
-    switch(pyramid_rate)\
+    try\
     {\
-        case 1:\
-            {\
-                object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>*>(obj));\
-                dlib::serialize(file_name) << detector;\
-            }\
-            break;\
-        case 2:\
-            {\
-                object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>*>(obj));\
-                dlib::serialize(file_name) << detector;\
-            }\
-            break;\
-        case 3:\
-            {\
-                object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>*>(obj));\
-                dlib::serialize(file_name) << detector;\
-            }\
-            break;\
-        case 4:\
-            {\
-                object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>*>(obj));\
-                dlib::serialize(file_name) << detector;\
-            }\
-            break;\
-        case 6:\
-            {\
-                object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>*>(obj));\
-                dlib::serialize(file_name) << detector;\
-            }\
-            break;\
-        default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
-            break;\
+        switch(pyramid_rate)\
+        {\
+            case 1:\
+                {\
+                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<1>, EXTRACTOR_TYPE>>*>(obj));\
+                    dlib::serialize(file_name) << detector;\
+                }\
+                break;\
+            case 2:\
+                {\
+                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<2>, EXTRACTOR_TYPE>>*>(obj));\
+                    dlib::serialize(file_name) << detector;\
+                }\
+                break;\
+            case 3:\
+                {\
+                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<3>, EXTRACTOR_TYPE>>*>(obj));\
+                    dlib::serialize(file_name) << detector;\
+                }\
+                break;\
+            case 4:\
+                {\
+                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<4>, EXTRACTOR_TYPE>>*>(obj));\
+                    dlib::serialize(file_name) << detector;\
+                }\
+                break;\
+            case 6:\
+                {\
+                    object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>& detector = *(static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>>*>(obj));\
+                    dlib::serialize(file_name) << detector;\
+                }\
+                break;\
+            default:\
+                err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+                break;\
+        }\
+    }\
+    catch (serialization_error& e)\
+    {\
+        err = ERR_GENERAL_SERIALIZATION;\
+        *error_message = new std::string(e.what());\
     }\
 } while (0)
 
@@ -259,7 +275,8 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_deserialize(const char* file_nam
                                                             const pyramid_type pyramid_type,
                                                             const unsigned int pyramid_rate,
                                                             const fhog_feature_extractor_type extractor_type,
-                                                            void* ret)
+                                                            void* ret,
+                                                            std::string** error_message)
 {
     int err = ERR_OK;
 
@@ -272,7 +289,7 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_deserialize(const char* file_nam
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        object_detector_scan_fhog_pyramid_deserialize_template(file_name, pyramid_rate, ret);
+                        object_detector_scan_fhog_pyramid_deserialize_template(file_name, pyramid_rate, ret, error_message);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
@@ -294,7 +311,8 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_serialize(const char* file_name,
                                                           const pyramid_type pyramid_type,
                                                           const unsigned int pyramid_rate,
                                                           const fhog_feature_extractor_type extractor_type,
-                                                          void* obj)
+                                                          void* obj,
+                                                          std::string** error_message)
 {
     int err = ERR_OK;
 
@@ -307,7 +325,7 @@ DLLEXPORT int object_detector_scan_fhog_pyramid_serialize(const char* file_name,
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        object_detector_scan_fhog_pyramid_serialize_template(file_name, pyramid_rate, obj);
+                        object_detector_scan_fhog_pyramid_serialize_template(file_name, pyramid_rate, obj, error_message);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:

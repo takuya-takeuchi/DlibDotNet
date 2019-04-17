@@ -183,7 +183,10 @@ DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj,
     return err;
 }
 
-DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name, const int type, void** ret)
+DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name,
+                                              const int type,
+                                              void** ret,
+                                              std::string** error_message)
 {
     int err = ERR_OK;
 
@@ -204,6 +207,11 @@ DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name, const int t
                 break;
         }
     }
+    catch (serialization_error& e)
+    {
+        err = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
     catch(dlib::cuda_error ce)
     {
         cuda_error_to_error_code(ce, err);
@@ -212,7 +220,10 @@ DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name, const int t
     return err;
 }
 
-DLLEXPORT int loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy, const int type, void** ret)
+DLLEXPORT int loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy,
+                                                    const int type,
+                                                    void** ret,
+                                                    std::string** error_message)
 {
     int err = ERR_OK;
 
@@ -234,6 +245,11 @@ DLLEXPORT int loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy, co
                 break;
         }
     }
+    catch (serialization_error& e)
+    {
+        err = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
     catch(dlib::cuda_error ce)
     {
         cuda_error_to_error_code(ce, err);
@@ -242,18 +258,36 @@ DLLEXPORT int loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy, co
     return err;
 }
 
-DLLEXPORT void loss_multiclass_log_serialize(void* obj, const int type, const char* file_name)
+DLLEXPORT int loss_multiclass_log_serialize(void* obj,
+                                            const int type,
+                                            const char* file_name,
+                                            std::string** error_message)
 {
+    int err = ERR_OK;
+
     // Check type argument and cast to the proper type
-    switch(type)
+    try
     {
-        case 0:
-            {
-                auto net = static_cast<net_type*>(obj);
-                dlib::serialize(file_name) << (*net);
-            }
-            break;
+        switch(type)
+        {
+            case 0:
+                {
+                    auto net = static_cast<net_type*>(obj);
+                    dlib::serialize(file_name) << (*net);
+                }
+                break;
+            default:
+                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+                break;
+        }
     }
+    catch (serialization_error& e)
+    {
+        err = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+
+    return err;
 }
 
 DLLEXPORT int loss_multiclass_log_num_layers(const int type)

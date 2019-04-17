@@ -373,13 +373,16 @@ namespace DlibDotNet
                                                                     type.ToNativeMatrixElementType(),
                                                                     (int)templateRows,
                                                                     (int)templateColumns,
-                                                                    out var matrix);
+                                                                    out var matrix,
+                                                                    out var errorMessage);
             switch (ret)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{type} is not supported.");
                 case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                     throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
             }
 
             return new Matrix<TElement>(matrix, (int)templateRows, (int)templateColumns);

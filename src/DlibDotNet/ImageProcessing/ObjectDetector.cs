@@ -230,10 +230,11 @@ namespace DlibDotNet
             public override void Deserialize(byte[] filepath)
             {
                 var ret = NativeMethods.object_detector_scan_fhog_pyramid_deserialize(filepath,
-                                                                                    this._PyramidType,
-                                                                                    this._PyramidRate,
-                                                                                    this._FeatureExtractorType,
-                                                                                    this.NativePtr);
+                                                                                      this._PyramidType,
+                                                                                      this._PyramidRate,
+                                                                                      this._FeatureExtractorType,
+                                                                                      this.NativePtr,
+                                                                                      out var errorMessage);
 
                 switch (ret)
                 {
@@ -241,6 +242,8 @@ namespace DlibDotNet
                     case NativeMethods.ErrorType.PyramidNotSupportRate:
                     case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
+                    case NativeMethods.ErrorType.GeneralSerialization:
+                        throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
                 }
             }
 
@@ -296,7 +299,8 @@ namespace DlibDotNet
                                                                                     this._PyramidType,
                                                                                     this._PyramidRate,
                                                                                     this._FeatureExtractorType,
-                                                                                    this.NativePtr);
+                                                                                    this.NativePtr,
+                                                                                    out var errorMessage);
 
                 switch (ret)
                 {
@@ -304,6 +308,8 @@ namespace DlibDotNet
                     case NativeMethods.ErrorType.PyramidNotSupportRate:
                     case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
+                    case NativeMethods.ErrorType.GeneralSerialization:
+                        throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
                 }
             }
 

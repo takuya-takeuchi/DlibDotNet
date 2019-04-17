@@ -83,8 +83,18 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.loss_multiclass_log_deserialize(str, networkType, out var net);
+            var error = NativeMethods.loss_multiclass_log_deserialize(str,
+                                                                      networkType,
+                                                                      out var net,
+                                                                      out var errorMessage);
             Cuda.ThrowCudaException(error);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(networkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
 
             return new LossMulticlassLog(net, networkType);
         }
@@ -96,8 +106,18 @@ namespace DlibDotNet.Dnn
 
             deserialize.ThrowIfDisposed();
 
-            var error = NativeMethods.loss_multiclass_log_deserialize_proxy(deserialize.NativePtr, networkType, out var net);
+            var error = NativeMethods.loss_multiclass_log_deserialize_proxy(deserialize.NativePtr,
+                                                                            networkType, 
+                                                                            out var net,
+                                                                            out var errorMessage);
             Cuda.ThrowCudaException(error);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(networkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
 
             return new LossMulticlassLog(net, networkType);
         }
@@ -148,13 +168,13 @@ namespace DlibDotNet.Dnn
                 var templateColumns = images.First().TemplateColumns;
 
                 var ret = NativeMethods.loss_multiclass_log_operator_matrixs(this.NativePtr,
-                                                              this.NetworkType,
-                                                              imageType.ToNativeMatrixElementType(),
-                                                              vecIn.NativePtr,
-                                                              templateRows,
-                                                              templateColumns,
-                                                              batchSize,
-                                                              out var vecOut);
+                                                                             this.NetworkType,
+                                                                             imageType.ToNativeMatrixElementType(),
+                                                                             vecIn.NativePtr,
+                                                                             templateRows,
+                                                                             templateColumns,
+                                                                             batchSize,
+                                                                             out var vecOut);
 
                 Cuda.ThrowCudaException(ret);
                 switch (ret)
@@ -177,7 +197,14 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            NativeMethods.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str);
+            var error = NativeMethods.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str, out var errorMessage);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(net.NetworkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
         }
 
         public override bool TryGetInputLayer<T>(T layer)
