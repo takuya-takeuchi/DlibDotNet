@@ -16,6 +16,29 @@ using namespace std;
 
 #pragma region template
 
+#define loss_multiclass_log_template(type, error, __FUNC__, ...) \
+switch(type)\
+{\
+    case 0:\
+        {\
+            __FUNC__(net_type, matrix_element_type::UInt8, uint8_t, error, __VA_ARGS__);\
+        }\
+        break;\
+    case 1:\
+        {\
+            __FUNC__(net_1000_type, matrix_element_type::RgbPixel, rgb_pixel, error, __VA_ARGS__);\
+        }\
+        break;\
+    case 2:\
+        {\
+            __FUNC__(anet_1000_type, matrix_element_type::RgbPixel, rgb_pixel, error, __VA_ARGS__);\
+        }\
+        break;\
+    default:\
+        error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
+        break;\
+}
+
 #define train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, sub_template) \
 do {\
     std::vector<matrix<__TYPE__>*>& tmp_data = *(static_cast<std::vector<matrix<__TYPE__>*>*>(data));\
@@ -43,7 +66,7 @@ train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_train
 #define train_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
 train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_train_one_step_template);\
 
-#define clone_template(__SRC_NET_TYPE__, dst_type, obj, new_net, err) \
+#define clone_template(__SRC_NET_TYPE__, dst_type, obj, new_net, error) \
 do {\
     switch(dst_type)\
     {\
@@ -54,45 +77,183 @@ do {\
             }\
             break;\
         default:\
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
+            error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
             break;\
     }\
 } while (0)
+
+#pragma region function template
+
+#define loss_multiclass_log_new_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+*net = new __NET_TYPE__();
+
+#define loss_multiclass_log_delete_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+delete (__NET_TYPE__*)obj;
+
+#define loss_multiclass_log_operator_matrixs_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+switch(element_type)\
+{\
+    case __ELEMENT_TYPENAME__:\
+        {\
+            __NET_TYPE__& net = *(static_cast<__NET_TYPE__*>(obj));\
+            operator_template(net, __ELEMENT_TYPE__, matrix_vector, batch_size, ret);\
+        }\
+        break;\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define loss_multiclass_log_deserialize_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+__NET_TYPE__* net = new __NET_TYPE__();\
+dlib::deserialize(file_name) >> (*net);\
+*ret = net;
+
+#define loss_multiclass_log_deserialize_proxy_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);\
+__NET_TYPE__* net = new __NET_TYPE__();\
+p >> (*net);\
+*ret = net;
+
+#define loss_multiclass_log_serialize_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto net = static_cast<__NET_TYPE__*>(obj);\
+dlib::serialize(file_name) << (*net);
+
+#define loss_multiclass_log_num_layers_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+return __NET_TYPE__::num_layers;
+
+#define loss_multiclass_log_subnet_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto net = static_cast<__NET_TYPE__*>(obj);\
+__NET_TYPE__::subnet_type& sn = net->subnet();\
+*subnet = &sn;
+
+#define loss_multiclass_log_clean_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+((__NET_TYPE__*)obj)->clean();
+
+#define loss_multiclass_log_input_tensor_to_output_tensor_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto net = static_cast<__NET_TYPE__*>(obj);\
+auto rp = dlib::input_tensor_to_output_tensor(net, *p);\
+*ret = new dlib::dpoint(rp);
+
+#define loss_multiclass_log_subnet_delete_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto sb = static_cast<__NET_TYPE__::subnet_type*>(subnet);\
+delete sb;
+
+#define loss_multiclass_log_subnet_get_output_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto net = static_cast<__NET_TYPE__::subnet_type*>(subnet);\
+const dlib::tensor& tensor = net->get_output();\
+return &tensor;
+
+#define loss_multiclass_log_subnet_get_layer_details_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto net = static_cast<__NET_TYPE__::subnet_type*>(subnet);\
+__NET_TYPE__::subnet_type::layer_details_type& layer_details = net->layer_details();\
+return &layer_details;
+
+#define loss_multiclass_log_operator_left_shift_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+__NET_TYPE__& net = *(static_cast<__NET_TYPE__*>(obj));\
+*stream << net;
+
+#define dnn_trainer_loss_multiclass_log_new_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_new_template(__NET_TYPE__, net);
+
+#define dnn_trainer_loss_multiclass_log_new_sgd_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_new_template2(__NET_TYPE__, net, *sgd);
+
+#define dnn_trainer_loss_multiclass_log_delete_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_delete_template(__NET_TYPE__, trainer);
+
+#define dnn_trainer_loss_multiclass_log_set_learning_rate_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_set_learning_rate_template(__NET_TYPE__, trainer, lr);
+
+#define dnn_trainer_loss_multiclass_log_get_learning_rate_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_get_learning_rate_template(__NET_TYPE__, trainer, lr);
+
+#define dnn_trainer_loss_multiclass_log_set_min_learning_rate_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_set_min_learning_rate_template(__NET_TYPE__, trainer, lr);
+
+#define dnn_trainer_loss_multiclass_log_set_mini_batch_size_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_set_mini_batch_size_template(__NET_TYPE__, trainer, size);
+
+#define dnn_trainer_loss_multiclass_log_be_verbose_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_be_verbose_template(__NET_TYPE__, trainer);
+
+#define dnn_trainer_loss_multiclass_log_set_synchronization_file_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_set_synchronization_file_template(__NET_TYPE__, trainer, filename, std::chrono::seconds(second));
+
+#define dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_set_iterations_without_progress_threshold(__NET_TYPE__, trainer, thresh);
+
+#define dnn_trainer_loss_multiclass_log_set_test_iterations_without_progress_threshold_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_set_test_iterations_without_progress_threshold(__NET_TYPE__, trainer, thresh);
+
+#define dnn_trainer_loss_multiclass_log_test_one_step_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+switch(data_element_type)\
+{\
+    case __ELEMENT_TYPENAME__:\
+        test_one_step_template(__NET_TYPE__, trainer, __ELEMENT_TYPE__, data, labels);\
+        break;\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define dnn_trainer_loss_multiclass_log_train_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+switch(data_element_type)\
+{\
+    case __ELEMENT_TYPENAME__:\
+        train_template(__NET_TYPE__, trainer, __ELEMENT_TYPE__, data, labels);\
+        break;\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define dnn_trainer_loss_multiclass_log_train_one_step_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+switch(data_element_type)\
+{\
+    case __ELEMENT_TYPENAME__:\
+        train_one_step_template(__NET_TYPE__, trainer, __ELEMENT_TYPE__, data, labels);\
+        break;\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define dnn_trainer_loss_multiclass_log_get_net_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_get_net_template(__NET_TYPE__, trainer, ret);
+
+#define dnn_trainer_loss_multiclass_log_operator_left_shift_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+dnn_trainer_operator_left_shift_template(__NET_TYPE__, trainer, stream);
+
+#define set_all_bn_running_stats_window_sizes_loss_multiclass_log_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+set_all_bn_running_stats_window_sizes_template(__NET_TYPE__, obj, new_window_size);
+
+#pragma endregion function template
 
 #pragma endregion template
 
 DLLEXPORT int loss_multiclass_log_new(const int type, void** net)
 {
-    int err = ERR_OK;
-
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            *net =  new net_type();
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
-
-    return err;
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_new_template,
+                                 net);
+    return error;
 }
 
 DLLEXPORT void loss_multiclass_log_delete(void* obj, const int type)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            delete (net_type*)obj;
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_delete_template,
+                                 obj);
 }
 
 DLLEXPORT int loss_multiclass_log_clone(void* obj, const int src_type, const int dst_type, void** new_net)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     if (src_type != dst_type)
         return ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE;
@@ -101,14 +262,14 @@ DLLEXPORT int loss_multiclass_log_clone(void* obj, const int src_type, const int
     switch(src_type)
     {
         case 0:
-            clone_template(net_type, dst_type, obj, new_net, err);
+            clone_template(net_type, dst_type, obj, new_net, error);
             break;
         default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+            error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 // NOTE
@@ -122,65 +283,27 @@ DLLEXPORT int loss_multiclass_log_operator_matrixs(void* obj,
                                                    size_t batch_size,
                                                    std::vector<out_type>** ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
     try
     {
-        switch(type)
-        {
-            case 0:
-                {
-                    net_type& net = *(static_cast<net_type*>(obj));
-                    switch(element_type)
-                    {
-                        case matrix_element_type::UInt8:
-                            operator_template(net, uint8_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::UInt16:
-                            operator_template(net, uint16_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::UInt32:
-                            operator_template(net, uint32_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int8:
-                            operator_template(net, int8_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int16:
-                            operator_template(net, int16_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Int32:
-                            operator_template(net, int32_t, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Float:
-                            operator_template(net, float, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::Double:
-                            operator_template(net, double, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::RgbPixel:
-                            operator_template(net, rgb_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::HsiPixel:
-                            operator_template(net, hsi_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        case matrix_element_type::RgbAlphaPixel:
-                            operator_template(net, rgb_alpha_pixel, matrix_vector, batch_size, ret);
-                            break;
-                        default:
-                            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                            break;
-                    }
-                }
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     loss_multiclass_log_operator_matrixs_template,
+                                     obj,
+                                     element_type,
+                                     matrix_vector,
+                                     templateRows,
+                                     templateColumns,
+                                     batch_size,
+                                     ret);
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_error_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, error);
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name,
@@ -188,36 +311,27 @@ DLLEXPORT int loss_multiclass_log_deserialize(const char* file_name,
                                               void** ret,
                                               std::string** error_message)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
     try
     {
-        switch(type)
-        {
-            case 0:
-                {
-                    net_type* net = new net_type();
-                    dlib::deserialize(file_name) >> (*net);
-                    *ret = net;
-                }
-                break;
-            default:
-                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     loss_multiclass_log_deserialize_template,
+                                     file_name,
+                                     ret);
     }
     catch (serialization_error& e)
     {
-        err = ERR_GENERAL_SERIALIZATION;
+        error = ERR_GENERAL_SERIALIZATION;
         *error_message = new std::string(e.what());
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_error_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, error);
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy,
@@ -225,37 +339,27 @@ DLLEXPORT int loss_multiclass_log_deserialize_proxy(proxy_deserialize* proxy,
                                                     void** ret,
                                                     std::string** error_message)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
     try
     {
-        switch(type)
-        {
-            case 0:
-                {
-                    proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);
-                    net_type* net = new net_type();
-                    p >> (*net);
-                    *ret = net;
-                }
-                break;
-            default:
-                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     loss_multiclass_log_deserialize_proxy_template,
+                                     proxy,
+                                     ret);
     }
     catch (serialization_error& e)
     {
-        err = ERR_GENERAL_SERIALIZATION;
+        error = ERR_GENERAL_SERIALIZATION;
         *error_message = new std::string(e.what());
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_error_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, error);
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int loss_multiclass_log_serialize(void* obj,
@@ -263,119 +367,83 @@ DLLEXPORT int loss_multiclass_log_serialize(void* obj,
                                             const char* file_name,
                                             std::string** error_message)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
     try
     {
-        switch(type)
-        {
-            case 0:
-                {
-                    auto net = static_cast<net_type*>(obj);
-                    dlib::serialize(file_name) << (*net);
-                }
-                break;
-            default:
-                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     loss_multiclass_log_serialize_template,
+                                     obj,
+                                     file_name);
     }
     catch (serialization_error& e)
     {
-        err = ERR_GENERAL_SERIALIZATION;
+        error = ERR_GENERAL_SERIALIZATION;
         *error_message = new std::string(e.what());
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int loss_multiclass_log_num_layers(const int type)
-{
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            return net_type::num_layers;
-    }
-
+{    
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_num_layers_template);
     return 0;
 }
 
 DLLEXPORT int loss_multiclass_log_subnet(void* obj, const int type, void** subnet)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            {
-                auto net = static_cast<net_type*>(obj);
-                net_type::subnet_type& sn = net->subnet();
-                *subnet = &sn;
-            }
-            break;
-    }
-
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_subnet_template,
+                                 obj,
+                                 subnet);
     return 0;
 }
 
 DLLEXPORT void loss_multiclass_log_clean(void* obj, const int type)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            ((net_type*)obj)->clean();
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_clean_template);
 }
 
 DLLEXPORT void loss_multiclass_log_input_tensor_to_output_tensor(void* obj, const int type, dlib::dpoint* p, dlib::dpoint** ret)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            {
-                auto net = static_cast<net_type*>(obj);
-                auto rp = dlib::input_tensor_to_output_tensor(net, *p);
-                *ret = new dlib::dpoint(rp);
-            }
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_input_tensor_to_output_tensor_template,
+                                 obj,
+                                 p,
+                                 ret);
 }
 
 #pragma region subnet
 
 DLLEXPORT void loss_multiclass_log_subnet_delete(const int type, void* subnet)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            {
-                auto sb = static_cast<net_type::subnet_type*>(subnet);
-                delete sb;
-            }
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_subnet_delete_template,
+                                 subnet);
 }
 
 DLLEXPORT const dlib::tensor* loss_multiclass_log_subnet_get_output(void* subnet, const int type, int* ret)
 {
-    // Check type argument and cast to the proper type
-    *ret = ERR_OK;
-
-    switch(type)
-    {
-        case 0:
-            {
-                auto net = static_cast<net_type::subnet_type*>(subnet);
-                const dlib::tensor& tensor = net->get_output();
-                return &tensor;
-            }
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_subnet_get_output_template,
+                                 subnet,
+                                 ret);
 
     *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
     return nullptr;
@@ -383,19 +451,12 @@ DLLEXPORT const dlib::tensor* loss_multiclass_log_subnet_get_output(void* subnet
 
 DLLEXPORT void* loss_multiclass_log_subnet_get_layer_details(void* subnet, const int type, int* ret)
 {
-    // Check type argument and cast to the proper type
-    *ret = ERR_OK;
-
-    switch(type)
-    {
-        case 0:
-            {
-                auto net = static_cast<net_type::subnet_type*>(subnet);
-                net_type::subnet_type::layer_details_type& layer_details = net->layer_details();
-                return &layer_details;
-            }
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_subnet_get_layer_details_template,
+                                 subnet,
+                                 ret);
 
     *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
     return nullptr;
@@ -425,23 +486,15 @@ DLLEXPORT void loss_multiclass_log_layer_details_set_num_filters(void* layer, co
 
 DLLEXPORT int loss_multiclass_log_operator_left_shift(void* obj, const int type, std::ostringstream* stream)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            {
-                net_type& net = *(static_cast<net_type*>(obj));
-                *stream << net;
-            }
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 loss_multiclass_log_operator_left_shift_template,
+                                 obj,
+                                 stream);
 
-    return err;
+    return error;
 }
 
 #pragma endregion operator
@@ -450,155 +503,129 @@ DLLEXPORT int loss_multiclass_log_operator_left_shift(void* obj, const int type,
 
 DLLEXPORT void* dnn_trainer_loss_multiclass_log_new(void* net, const int type)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_new_template(net_type, net);
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_new_template,
+                                 net);
 
     return nullptr;
 }
 
 DLLEXPORT void* dnn_trainer_loss_multiclass_log_new_sgd(void* net, const int type, sgd* sgd)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_new_template2(net_type, net, *sgd);
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_new_template,
+                                 net,
+                                 sgd);
 
     return nullptr;
 }
 
 DLLEXPORT void dnn_trainer_loss_multiclass_log_delete(void* trainer, const int type)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_delete_template(net_type, trainer);
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_delete_template,
+                                 trainer);
 }
 
 DLLEXPORT void dnn_trainer_loss_multiclass_log_set_learning_rate(void* trainer, const int type, const double lr)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_set_learning_rate_template(net_type, trainer, lr);
-            break;
-    }
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_set_learning_rate_template,
+                                 trainer,
+                                 lr);
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_get_learning_rate(void* trainer, const int type, double* lr)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_get_learning_rate_template(net_type, trainer, lr);
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_get_learning_rate_template,
+                                 trainer,
+                                 lr);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT void dnn_trainer_loss_multiclass_log_set_min_learning_rate(void* trainer, const int type, const double lr)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_set_min_learning_rate_template(net_type, trainer, lr);
-            break;
-    }
+    int error = ERR_OK;
+
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_set_min_learning_rate_template,
+                                 trainer,
+                                 lr);
 }
 
 DLLEXPORT void dnn_trainer_loss_multiclass_log_set_mini_batch_size(void* trainer, const int type, const unsigned long size)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_set_mini_batch_size_template(net_type, trainer, size);
-            break;
-    }
+    int error = ERR_OK;
+
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_set_mini_batch_size_template,
+                                 trainer,
+                                 size);
 }
 
 DLLEXPORT void dnn_trainer_loss_multiclass_log_be_verbose(void* trainer, const int type)
 {
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_be_verbose_template(net_type, trainer);
-            break;
-    }
+    int error = ERR_OK;
+
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_be_verbose_template,
+                                 trainer);
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_set_synchronization_file(void* trainer, const int type, const char* filename, const unsigned long second)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_set_synchronization_file_template(net_type, trainer, filename, std::chrono::seconds(second));
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_set_synchronization_file_template,
+                                 trainer,
+                                 filename,
+                                 second);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold(void* trainer, const int type, const unsigned long thresh)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_set_iterations_without_progress_threshold(net_type, trainer, thresh);
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold_template,
+                                 trainer,
+                                 thresh);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_set_test_iterations_without_progress_threshold(void* trainer, const int type, const unsigned long thresh)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_set_test_iterations_without_progress_threshold(net_type, trainer, thresh);
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_set_test_iterations_without_progress_threshold_template,
+                                 trainer,
+                                 thresh);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_test_one_step(void* trainer,
@@ -609,44 +636,28 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_test_one_step(void* trainer,
                                                             void* labels)
 {
     // Check type argument and cast to the proper type
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
         return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
-        switch(data_element_type)
-        {
-            case matrix_element_type::UInt8:
-                switch(type)
-                {
-                    case 0:
-                        test_one_step_template(net_type, trainer, uint8_t, data, labels);
-                        break;
-                }
-                break;
-            case matrix_element_type::UInt16:
-            case matrix_element_type::UInt32:
-            case matrix_element_type::Int8:
-            case matrix_element_type::Int16:
-            case matrix_element_type::Int32:
-            case matrix_element_type::Float:
-            case matrix_element_type::Double:
-            case matrix_element_type::RgbPixel:
-            case matrix_element_type::HsiPixel:
-            case matrix_element_type::RgbAlphaPixel:
-            default:
-                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     dnn_trainer_loss_multiclass_log_test_one_step_template,
+                                     trainer,
+                                     data_element_type,
+                                     data,
+                                     label_element_type,
+                                     labels);
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_error_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, error);
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_train(void* trainer,
@@ -657,44 +668,28 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_train(void* trainer,
                                                     void* labels)
 {
     // Check type argument and cast to the proper type
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
         return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
-        switch(data_element_type)
-        {
-            case matrix_element_type::UInt8:
-                switch(type)
-                {
-                    case 0:
-                        train_template(net_type, trainer, uint8_t, data, labels);
-                        break;
-                }
-                break;
-            case matrix_element_type::UInt16:
-            case matrix_element_type::UInt32:
-            case matrix_element_type::Int8:
-            case matrix_element_type::Int16:
-            case matrix_element_type::Int32:
-            case matrix_element_type::Float:
-            case matrix_element_type::Double:
-            case matrix_element_type::RgbPixel:
-            case matrix_element_type::HsiPixel:
-            case matrix_element_type::RgbAlphaPixel:
-            default:
-                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     dnn_trainer_loss_multiclass_log_train_template,
+                                     trainer,
+                                     data_element_type,
+                                     data,
+                                     label_element_type,
+                                     labels);
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_error_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, error);
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_train_one_step(void* trainer,
@@ -705,89 +700,63 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_train_one_step(void* trainer,
                                                              void* labels)
 {
     // Check type argument and cast to the proper type
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     if (label_element_type != matrix_element_type::UInt32)
         return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
 
     try
     {
-        switch(data_element_type)
-        {
-            case matrix_element_type::UInt8:
-                switch(type)
-                {
-                    case 0:
-                        train_one_step_template(net_type, trainer, uint8_t, data, labels);
-                        break;
-                }
-                break;
-            case matrix_element_type::UInt16:
-            case matrix_element_type::UInt32:
-            case matrix_element_type::Int8:
-            case matrix_element_type::Int16:
-            case matrix_element_type::Int32:
-            case matrix_element_type::Float:
-            case matrix_element_type::Double:
-            case matrix_element_type::RgbPixel:
-            case matrix_element_type::HsiPixel:
-            case matrix_element_type::RgbAlphaPixel:
-            default:
-                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     dnn_trainer_loss_multiclass_log_train_one_step_template,
+                                     trainer,
+                                     data_element_type,
+                                     data,
+                                     label_element_type,
+                                     labels);
     }
     catch(dlib::cuda_error ce)
     {
-        cuda_error_to_error_code(ce, err);
+        cuda_error_to_error_code(ce, error);
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_get_net(void* trainer,
                                                       const int type,
                                                       void** ret)
 {
-    // Check type argument and cast to the proper type
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     try
     {
-        switch(type)
-        {
-            case 0:
-                dnn_trainer_get_net_template(net_type, trainer, ret);
-                break;
-            default:
-                err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-                break;
-        }
+        loss_multiclass_log_template(type,
+                                     error,
+                                     dnn_trainer_loss_multiclass_log_get_net_template,
+                                     trainer,
+                                     ret);
     }
     catch(std::exception)
     {
-        err = ERR_DNN_PROPAGATE_EXCEPTION;
+        error = ERR_DNN_PROPAGATE_EXCEPTION;
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int dnn_trainer_loss_multiclass_log_operator_left_shift(void* trainer, const int type, std::ostringstream* stream)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            dnn_trainer_operator_left_shift_template(net_type, trainer, stream);
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 dnn_trainer_loss_multiclass_log_operator_left_shift_template,
+                                 trainer,
+                                 stream);
 
-    return err;
+    return error;
 }
 
 #pragma endregion dnn_trainer
@@ -796,20 +765,15 @@ DLLEXPORT int dnn_trainer_loss_multiclass_log_operator_left_shift(void* trainer,
 
 DLLEXPORT int set_all_bn_running_stats_window_sizes_loss_multiclass_log(void* obj, const int type, unsigned long new_window_size)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            set_all_bn_running_stats_window_sizes_template(net_type, obj, new_window_size);
-            break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
+    loss_multiclass_log_template(type,
+                                 error,
+                                 set_all_bn_running_stats_window_sizes_loss_multiclass_log_template,
+                                 obj,
+                                 new_window_size);
 
-    return err;
+    return error;
 }
 
 #pragma endregion layers
