@@ -5,15 +5,28 @@
 #include <dlib/matrix.h>
 #include <vector>
 
+#include "template.h"
 #include "../trainer.h"
 #include "loss_metric_defines.h"
-#include "../layers/layers.h"
-#include "../../common.h"
 
 using namespace dlib;
 using namespace std;
 
 #pragma region template
+
+#define loss_metric_template(type, error, __FUNC__, ...) \
+switch(type)\
+{\
+    case 0:\
+        {\
+            __FUNC__(anet_type, matrix_element_type::RgbPixel, rgb_pixel, error, __VA_ARGS__);\
+        }\
+        break;\
+        break;\
+    default:\
+        error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
+        break;\
+}
 
 #define train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, sub_template) \
 do {\
@@ -325,6 +338,15 @@ DLLEXPORT void loss_metric_input_tensor_to_output_tensor(void* obj, const int ty
             }
             break;
     }
+}
+
+DLLEXPORT void loss_metric_net_to_xml(void* obj, const int type, const char* filename)
+{
+    int error = ERR_OK;
+    loss_metric_template(type,
+                         error,
+                         net_to_xml_template,
+                         filename);
 }
 
 #pragma region subnet

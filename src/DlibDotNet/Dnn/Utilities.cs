@@ -23,6 +23,17 @@ namespace DlibDotNet
             return net.InputTensorToOutputTensor(point);
         }
 
+        public static void NetToXml(Net net, string filename)
+        {
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+            if (string.IsNullOrWhiteSpace(filename))
+                throw new ArgumentException();
+
+            net.ThrowIfDisposed();
+            net.NetToXml(filename);
+        }
+
     }
 
 }

@@ -87,7 +87,7 @@ namespace DlibDotNet.Dnn
             this._Imp.SetMinLearningRate(learningRate);
         }
 
-        public void SetMinBatchSize(uint size)
+        public void SetMiniBatchSize(uint size)
         {
             this.ThrowIfDisposed();
 

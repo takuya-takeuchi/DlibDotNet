@@ -165,6 +165,20 @@ namespace DlibDotNet
 
         #region Methods 
 
+        public void SetSize(int rows, int columns)
+        {
+            if (!(rows >= 0 && columns >= 0))
+                throw new ArrayTypeMismatchException();
+
+            this.ThrowIfDisposed();
+            NativeMethods.array2d_matrix_set_size(this._MatrixElementType,
+                                                  this.NativePtr,
+                                                  this.TemplateRows,
+                                                  this.TemplateColumns,
+                                                  rows,
+                                                  columns);
+        }
+
         #region Overrides 
 
         /// <summary>

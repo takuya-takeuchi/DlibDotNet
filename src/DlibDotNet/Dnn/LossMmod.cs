@@ -159,6 +159,12 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        internal override void NetToXml(string filename)
+        {
+            var fileNameByte = Dlib.Encoding.GetBytes(filename);
+            NativeMethods.loss_mmod_net_to_xml(this.NativePtr, this.NetworkType, fileNameByte);
+        }
+
         public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
             where T : struct
         {

@@ -12,13 +12,12 @@
 #include <dlib/pixel.h>
 #include "../shared.h"
 
-DLLEXPORT int draw_line_canvas(
-    void* canvas,
-    dlib::point* p1,
-    dlib::point* p2,
-    array2d_type type,
-    void* p,
-    dlib::rectangle* area)
+DLLEXPORT int draw_line_canvas(void* canvas,
+                               dlib::point* p1,
+                               dlib::point* p2,
+                               array2d_type type,
+                               void* p,
+                               dlib::rectangle* area)
 {
     int err = ERR_OK;
 
@@ -55,12 +54,11 @@ DLLEXPORT int draw_line_canvas(
     return err;
 }
 
-DLLEXPORT int draw_line_canvas_infinity(
-   void* canvas,
-   dlib::point* p1,
-   dlib::point* p2,
-   array2d_type type,
-   void* p)
+DLLEXPORT int draw_line_canvas_infinity(void* canvas,
+                                        dlib::point* p1,
+                                        dlib::point* p2,
+                                        array2d_type type,
+                                        void* p)
 {
     int err = ERR_OK;
 
@@ -97,12 +95,11 @@ DLLEXPORT int draw_line_canvas_infinity(
     return err;
 }
 
-DLLEXPORT int draw_rectangle_canvas(
-    void* canvas,
-    dlib::rectangle* rect,
-    dlib::rectangle* area,
-    array2d_type type,
-    void* p)
+DLLEXPORT int draw_rectangle_canvas(void* canvas,
+                                    dlib::rectangle* rect,
+                                    dlib::rectangle* area,
+                                    array2d_type type,
+                                    void* p)
 {
     int err = ERR_OK;
 
@@ -142,11 +139,10 @@ DLLEXPORT int draw_rectangle_canvas(
     return err;
 }
 
-DLLEXPORT int draw_rectangle_canvas_infinity(
-   void* canvas,
-   dlib::rectangle* rect,
-   array2d_type type,
-   void* p)
+DLLEXPORT int draw_rectangle_canvas_infinity(void* canvas,
+                                             dlib::rectangle* rect,
+                                             array2d_type type,
+                                             void* p)
 {
     int err = ERR_OK;
 
@@ -162,6 +158,58 @@ DLLEXPORT int draw_rectangle_canvas_infinity(
             break;
         case array2d_type::Int32:
             dlib::draw_rectangle(*c, *rect, *((int32_t*)p));
+            break;
+        case array2d_type::Float:
+            dlib::draw_rectangle(*c, *rect, *((float*)p));
+            break;
+        case array2d_type::Double:
+            dlib::draw_rectangle(*c, *rect, *((double*)p));
+            break;
+        case array2d_type::RgbPixel:
+            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_pixel*)p));
+            break;
+        case array2d_type::HsiPixel:
+            dlib::draw_rectangle(*c, *rect, *((dlib::hsi_pixel*)p));
+            break;
+        case array2d_type::RgbAlphaPixel:
+            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_alpha_pixel*)p));
+            break;
+        default:
+            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return err;
+}
+
+DLLEXPORT int fill_rect_canvas(void* canvas,
+                               dlib::rectangle* rect,
+                               array2d_type type,
+                               void* p)
+{
+    int err = ERR_OK;
+
+    dlib::canvas* c = static_cast<dlib::canvas*>(canvas);
+
+    switch(type)
+    {
+        case array2d_type::Int8:
+            dlib::draw_rectangle(*c, *rect, *((int8_t*)p));
+            break;
+        case array2d_type::Int16:
+            dlib::draw_rectangle(*c, *rect, *((int16_t*)p));
+            break;
+        case array2d_type::Int32:
+            dlib::draw_rectangle(*c, *rect, *((int32_t*)p));
+            break;
+        case array2d_type::UInt8:
+            dlib::draw_rectangle(*c, *rect, *((uint8_t*)p));
+            break;
+        case array2d_type::UInt16:
+            dlib::draw_rectangle(*c, *rect, *((uint16_t*)p));
+            break;
+        case array2d_type::UInt32:
+            dlib::draw_rectangle(*c, *rect, *((uint32_t*)p));
             break;
         case array2d_type::Float:
             dlib::draw_rectangle(*c, *rect, *((float*)p));

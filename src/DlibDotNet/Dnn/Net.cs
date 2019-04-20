@@ -35,6 +35,8 @@
 
         internal abstract DPoint InputTensorToOutputTensor(DPoint p);
 
+        internal abstract void NetToXml(string filename);
+
         public abstract bool TryGetInputLayer<T>(T layer)
             where T : Input;
 

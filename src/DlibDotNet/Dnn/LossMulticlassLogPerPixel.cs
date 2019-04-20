@@ -138,6 +138,12 @@ namespace DlibDotNet.Dnn
                 return new DPoint(ret);
             }
         }
+        
+        internal override void NetToXml(string filename)
+        {
+            var fileNameByte = Dlib.Encoding.GetBytes(filename);
+            NativeMethods.loss_multiclass_log_per_pixel_net_to_xml(this.NativePtr, this.NetworkType, fileNameByte);
+        }
 
         public OutputLabels<Matrix<ushort>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
             where T : struct

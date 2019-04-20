@@ -40,6 +40,9 @@ namespace DlibDotNet
         public static extern void loss_multiclass_log_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern void loss_multiclass_log_net_to_xml(IntPtr net, int networkType, byte[] fileName);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern int loss_multiclass_log_num_layers(int type);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
