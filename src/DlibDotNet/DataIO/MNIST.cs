@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 // ReSharper disable once CheckNamespace
@@ -11,10 +12,10 @@ namespace DlibDotNet
         #region Methods
 
         public static void LoadMNISTDataset(string folderPath,
-                                            out Matrix<byte>[] trainingImages,
-                                            out uint[] trainingLabels,
-                                            out Matrix<byte>[] testingImages,
-                                            out uint[] testingLabels)
+                                            out IList<Matrix<byte>> trainingImages,
+                                            out IList<uint> trainingLabels,
+                                            out IList<Matrix<byte>> testingImages,
+                                            out IList<uint> testingLabels)
         {
             if (folderPath == null)
                 throw new ArgumentNullException(nameof(folderPath));

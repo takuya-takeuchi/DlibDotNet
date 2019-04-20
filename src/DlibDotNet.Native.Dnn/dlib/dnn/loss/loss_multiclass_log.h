@@ -6,10 +6,9 @@
 #include <dlib/matrix.h>
 #include <vector>
 
+#include "template.h"
 #include "../trainer.h"
 #include "loss_multiclass_log_defines.h"
-#include "../layers/layers.h"
-#include "../../common.h"
 
 using namespace dlib;
 using namespace std;
@@ -34,6 +33,11 @@ switch(type)\
             __FUNC__(anet_1000_type, matrix_element_type::RgbPixel, rgb_pixel, error, __VA_ARGS__);\
         }\
         break;\
+    case 3:\
+        {\
+            __FUNC__(net_type2, matrix_element_type::UInt8, uint8_t, error, __VA_ARGS__);\
+        }\
+        break;\
     default:\
         error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
         break;\
@@ -54,7 +58,7 @@ do {\
     for (int i = 0; i< tmp_label.size(); i++)\
         in_tmp_label.push_back(tmp_label[i]);\
 \
-    dnn_trainer_train_one_step_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
+    sub_template(__NET_TYPE__, trainer, in_tmp_data, in_tmp_label);\
 } while (0)
 
 #define test_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
@@ -423,6 +427,15 @@ DLLEXPORT void loss_multiclass_log_input_tensor_to_output_tensor(void* obj, cons
                                  obj,
                                  p,
                                  ret);
+}
+
+DLLEXPORT void loss_multiclass_log_net_to_xml(void* obj, const int type, const char* filename)
+{
+    int error = ERR_OK;
+    loss_multiclass_log_template(type,
+                                 error,
+                                 net_to_xml_template,
+                                 filename);
 }
 
 #pragma region subnet
