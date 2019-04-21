@@ -11,6 +11,26 @@
 #include <dlib/matrix.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
+#include "../template.h"
+
+#pragma region template
+
+#define draw_line_canvas_template(__TYPE__, error, type, ...) \
+dlib::draw_line(*c, *p1, *p2, *((__TYPE__*)p), *area);
+
+#define draw_line_canvas_infinity_template(__TYPE__, error, type, ...) \
+dlib::draw_line(*c, *p1, *p2, *((__TYPE__*)p));
+
+#define draw_rectangle_canvas_template(__TYPE__, error, type, ...) \
+dlib::draw_rectangle(*c, *rect, *((__TYPE__*)p), *area);
+
+#define draw_rectangle_canvas_infinity_template(__TYPE__, error, type, ...) \
+dlib::draw_rectangle(*c, *rect, *((__TYPE__*)p));
+
+#define fill_rect_canvas_template(__TYPE__, error, type, ...) \
+dlib::fill_rect(*c, *rect, *((__TYPE__*)p));
+
+#pragma endregion template
 
 DLLEXPORT int draw_line_canvas(void* canvas,
                                dlib::point* p1,
@@ -19,39 +39,19 @@ DLLEXPORT int draw_line_canvas(void* canvas,
                                void* p,
                                dlib::rectangle* area)
 {
-    int err = ERR_OK;
-
+    int error = ERR_OK;
     dlib::canvas* c = static_cast<dlib::canvas*>(canvas);
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            dlib::draw_line(*c, *p1, *p2, *((uint8_t*)p), *area);
-            break;
-        case array2d_type::UInt16:
-            dlib::draw_line(*c, *p1, *p2, *((uint16_t*)p), *area);
-            break;
-        case array2d_type::Float:
-            dlib::draw_line(*c, *p1, *p2, *((float*)p), *area);
-            break;
-        case array2d_type::Double:
-            dlib::draw_line(*c, *p1, *p2, *((double*)p), *area);
-            break;
-        case array2d_type::RgbPixel:
-            dlib::draw_line(*c, *p1, *p2, *((dlib::rgb_pixel*)p), *area);
-            break;
-        case array2d_type::HsiPixel:
-            dlib::draw_line(*c, *p1, *p2, *((dlib::hsi_pixel*)p), *area);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            dlib::draw_line(*c, *p1, *p2, *((dlib::rgb_alpha_pixel*)p), *area);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     draw_line_canvas_template,
+                     c,
+                     p1,
+                     p2,
+                     p,
+                     area);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int draw_line_canvas_infinity(void* canvas,
@@ -60,39 +60,18 @@ DLLEXPORT int draw_line_canvas_infinity(void* canvas,
                                         array2d_type type,
                                         void* p)
 {
-    int err = ERR_OK;
-
+    int error = ERR_OK;
     dlib::canvas* c = static_cast<dlib::canvas*>(canvas);
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            dlib::draw_line(*c, *p1, *p2, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            dlib::draw_line(*c, *p1, *p2, *((uint16_t*)p));
-            break;
-        case array2d_type::Float:
-            dlib::draw_line(*c, *p1, *p2, *((float*)p));
-            break;
-        case array2d_type::Double:
-            dlib::draw_line(*c, *p1, *p2, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            dlib::draw_line(*c, *p1, *p2, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            dlib::draw_line(*c, *p1, *p2, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            dlib::draw_line(*c, *p1, *p2, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     draw_line_canvas_infinity_template,
+                     c,
+                     p1,
+                     p2,
+                     p);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int draw_rectangle_canvas(void* canvas,
@@ -101,42 +80,18 @@ DLLEXPORT int draw_rectangle_canvas(void* canvas,
                                     array2d_type type,
                                     void* p)
 {
-    int err = ERR_OK;
-
+    int error = ERR_OK;
     dlib::canvas* c = static_cast<dlib::canvas*>(canvas);
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            dlib::draw_rectangle(*c, *rect, *((uint8_t*)p), *area);
-            break;
-        case array2d_type::UInt16:
-            dlib::draw_rectangle(*c, *rect, *((uint16_t*)p), *area);
-            break;
-        case array2d_type::Int32:
-            dlib::draw_rectangle(*c, *rect, *((int32_t*)p), *area);
-            break;
-        case array2d_type::Float:
-            dlib::draw_rectangle(*c, *rect, *((float*)p), *area);
-            break;
-        case array2d_type::Double:
-            dlib::draw_rectangle(*c, *rect, *((double*)p), *area);
-            break;
-        case array2d_type::RgbPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_pixel*)p), *area);
-            break;
-        case array2d_type::HsiPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::hsi_pixel*)p), *area);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_alpha_pixel*)p), *area);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     draw_rectangle_canvas_template,
+                     c,
+                     rect,
+                     p,
+                     area);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int draw_rectangle_canvas_infinity(void* canvas,
@@ -144,42 +99,17 @@ DLLEXPORT int draw_rectangle_canvas_infinity(void* canvas,
                                              array2d_type type,
                                              void* p)
 {
-    int err = ERR_OK;
-
+    int error = ERR_OK;
     dlib::canvas* c = static_cast<dlib::canvas*>(canvas);
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            dlib::draw_rectangle(*c, *rect, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            dlib::draw_rectangle(*c, *rect, *((uint16_t*)p));
-            break;
-        case array2d_type::Int32:
-            dlib::draw_rectangle(*c, *rect, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            dlib::draw_rectangle(*c, *rect, *((float*)p));
-            break;
-        case array2d_type::Double:
-            dlib::draw_rectangle(*c, *rect, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     draw_rectangle_canvas_infinity_template,
+                     c,
+                     rect,
+                     p);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int fill_rect_canvas(void* canvas,
@@ -187,51 +117,17 @@ DLLEXPORT int fill_rect_canvas(void* canvas,
                                array2d_type type,
                                void* p)
 {
-    int err = ERR_OK;
-
+    int error = ERR_OK;
     dlib::canvas* c = static_cast<dlib::canvas*>(canvas);
 
-    switch(type)
-    {
-        case array2d_type::Int8:
-            dlib::draw_rectangle(*c, *rect, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            dlib::draw_rectangle(*c, *rect, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            dlib::draw_rectangle(*c, *rect, *((int32_t*)p));
-            break;
-        case array2d_type::UInt8:
-            dlib::draw_rectangle(*c, *rect, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            dlib::draw_rectangle(*c, *rect, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            dlib::draw_rectangle(*c, *rect, *((uint32_t*)p));
-            break;
-        case array2d_type::Float:
-            dlib::draw_rectangle(*c, *rect, *((float*)p));
-            break;
-        case array2d_type::Double:
-            dlib::draw_rectangle(*c, *rect, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            dlib::draw_rectangle(*c, *rect, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     fill_rect_canvas_template,
+                     c,
+                     rect,
+                     p);
 
-    return err;
+    return error;
 }
 
 #endif
