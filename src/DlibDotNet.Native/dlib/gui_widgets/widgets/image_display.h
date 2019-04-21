@@ -6,6 +6,7 @@
 #include "../../export.h"
 #include <dlib/gui_widgets/widgets.h>
 #include "../../shared.h"
+#include "../../template.h"
 
 #include "../action_mediator.h"
 
@@ -14,11 +15,9 @@ using namespace std;
 
 #pragma region template
 
-#define image_display_set_image_template(__TYPE__, display, img) \
-do {\
-    array2d<__TYPE__>& tmp = *((array2d<__TYPE__>*)img);\
-    display->set_image(tmp);\
-} while (0)
+#define image_display_set_image_template(__TYPE__, error, type, ...) \
+array2d<__TYPE__>& tmp = *((array2d<__TYPE__>*)img);\
+display->set_image(tmp);
 
 #pragma endregion template
 
@@ -57,52 +56,18 @@ DLLEXPORT void image_displayclear_overlay(image_display* display)
 }
 
 DLLEXPORT int image_display_set_image(image_display* display,
-                                      array2d_type img_type,
+                                      array2d_type type,
                                       void* img)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            image_display_set_image_template(uint8_t, display, img);
-            break;
-        case array2d_type::UInt16:
-            image_display_set_image_template(uint16_t, display, img);
-            break;
-        case array2d_type::UInt32:
-            image_display_set_image_template(uint32_t, display, img);
-            break;
-        case array2d_type::Int8:
-            image_display_set_image_template(int8_t, display, img);
-            break;
-        case array2d_type::Int16:
-            image_display_set_image_template(int16_t, display, img);
-            break;
-        case array2d_type::Int32:
-            image_display_set_image_template(int32_t, display, img);
-            break;
-        case array2d_type::Float:
-            image_display_set_image_template(float, display, img);
-            break;
-        case array2d_type::Double:
-            image_display_set_image_template(double, display, img);
-            break;
-        case array2d_type::RgbPixel:
-            image_display_set_image_template(rgb_pixel, display, img);
-            break;
-        case array2d_type::HsiPixel:
-            image_display_set_image_template(hsi_pixel, display, img);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            image_display_set_image_template(hsi_pixel, display, img);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     image_display_set_image_template,
+                     display,
+                     img);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT void image_display_set_default_overlay_rect_color(image_display* display, rgb_alpha_pixel color)

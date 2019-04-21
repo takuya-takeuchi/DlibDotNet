@@ -166,7 +166,7 @@ namespace DlibDotNet
         #region layer_details
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_per_pixel_layer_details_set_num_filters(IntPtr layer, int type, int num);
+        public static extern ErrorType loss_multiclass_log_per_pixel_layer_details_set_num_filters(IntPtr layer, int type, int num);
 
         #endregion
 

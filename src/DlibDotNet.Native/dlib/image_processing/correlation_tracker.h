@@ -4,9 +4,29 @@
 #include "../export.h"
 #include <dlib/image_processing.h>
 #include "../shared.h"
+#include "../template.h"
 
 using namespace dlib;
 using namespace std;
+
+#pragma region template
+
+#define correlation_tracker_start_track_template(__TYPE__, error, type, ...) \
+tracker->start_track(*((array2d<__TYPE__>*)img), *p);
+
+#define correlation_tracker_update_noscale_template(__TYPE__, error, type, ...) \
+*confident = tracker->update_noscale(*((array2d<__TYPE__>*)img), *guess);
+
+#define correlation_tracker_update_noscale2_template(__TYPE__, error, type, ...) \
+*confident = tracker->update_noscale(*((array2d<__TYPE__>*)img));
+
+#define correlation_tracker_update_template(__TYPE__, error, type, ...) \
+*confident = tracker->update(*((array2d<__TYPE__>*)img), *guess);
+
+#define correlation_tracker_update2_template(__TYPE__, error, type, ...) \
+*confident = tracker->update(*((array2d<__TYPE__>*)img));
+
+#pragma endregion template
 
 DLLEXPORT correlation_tracker* correlation_tracker_new(
     unsigned int filter_size,
@@ -29,49 +49,17 @@ DLLEXPORT correlation_tracker* correlation_tracker_new(
         scale_pyramid_alpha);
 }
 
-DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, array2d_type img_type, void* img, dlib::drectangle* p)
+DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, array2d_type type, void* img, dlib::drectangle* p)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
+    
+    array2d_nonalpha_template(type,
+                              error,
+                              correlation_tracker_start_track_template,
+                              img,
+                              p);
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            tracker->start_track(*((array2d<uint8_t>*)img), *p);
-            break;
-        case array2d_type::UInt16:
-            tracker->start_track(*((array2d<uint16_t>*)img), *p);
-            break;
-        case array2d_type::UInt32:
-            tracker->start_track(*((array2d<uint32_t>*)img), *p);
-            break;
-        case array2d_type::Int8:
-            tracker->start_track(*((array2d<int8_t>*)img), *p);
-            break;
-        case array2d_type::Int16:
-            tracker->start_track(*((array2d<int16_t>*)img), *p);
-            break;
-        case array2d_type::Int32:
-            tracker->start_track(*((array2d<int32_t>*)img), *p);
-            break;
-        case array2d_type::Float:
-            tracker->start_track(*((array2d<float>*)img), *p);
-            break;
-        case array2d_type::Double:
-            tracker->start_track(*((array2d<double>*)img), *p);
-            break;
-        case array2d_type::RgbPixel:
-            tracker->start_track(*((array2d<rgb_pixel>*)img), *p);
-            break;
-        case array2d_type::HsiPixel:
-            tracker->start_track(*((array2d<hsi_pixel>*)img), *p);
-            break;
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
+    return error;
 }
 
 DLLEXPORT drectangle* correlation_tracker_get_position(correlation_tracker* tracker)
@@ -80,202 +68,72 @@ DLLEXPORT drectangle* correlation_tracker_get_position(correlation_tracker* trac
     return new dlib::drectangle(rect);
 }
 
-DLLEXPORT int correlation_tracker_update_noscale(
-    correlation_tracker* tracker,
-    const array2d_type img_type,
-    void* img,
-    drectangle* guess,
-    double* confident)
+DLLEXPORT int correlation_tracker_update_noscale(correlation_tracker* tracker,
+                                                 const array2d_type type,
+                                                 void* img,
+                                                 drectangle* guess,
+                                                 double* confident)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
+    
+    array2d_nonalpha_template(type,
+                              error,
+                              correlation_tracker_update_noscale_template,
+                              img,
+                              guess,
+                              confident);
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            *confident = tracker->update_noscale(*((array2d<uint8_t>*)img), *guess);
-            break;
-        case array2d_type::UInt16:
-            *confident = tracker->update_noscale(*((array2d<uint16_t>*)img), *guess);
-            break;
-        case array2d_type::UInt32:
-            *confident = tracker->update_noscale(*((array2d<uint32_t>*)img), *guess);
-            break;
-        case array2d_type::Int8:
-            *confident = tracker->update_noscale(*((array2d<int8_t>*)img), *guess);
-            break;
-        case array2d_type::Int16:
-            *confident = tracker->update_noscale(*((array2d<int16_t>*)img), *guess);
-            break;
-        case array2d_type::Int32:
-            *confident = tracker->update_noscale(*((array2d<int32_t>*)img), *guess);
-            break;
-        case array2d_type::Float:
-            *confident = tracker->update_noscale(*((array2d<float>*)img), *guess);
-            break;
-        case array2d_type::Double:
-            *confident = tracker->update_noscale(*((array2d<double>*)img), *guess);
-            break;
-        case array2d_type::RgbPixel:
-            *confident = tracker->update_noscale(*((array2d<rgb_pixel>*)img), *guess);
-            break;
-        case array2d_type::HsiPixel:
-            *confident = tracker->update_noscale(*((array2d<hsi_pixel>*)img), *guess);
-            break;
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
+    return error;
 }
 
-DLLEXPORT int correlation_tracker_update_noscale2(
-    correlation_tracker* tracker,
-    const array2d_type img_type,
-    void* img,
-    double* confident)
+DLLEXPORT int correlation_tracker_update_noscale2(correlation_tracker* tracker,
+                                                  const array2d_type type,
+                                                  void* img,
+                                                  double* confident)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
+    
+    array2d_nonalpha_template(type,
+                              error,
+                              correlation_tracker_update_noscale2_template,
+                              img,
+                              confident);
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            *confident = tracker->update_noscale(*((array2d<uint8_t>*)img));
-            break;
-        case array2d_type::UInt16:
-            *confident = tracker->update_noscale(*((array2d<uint16_t>*)img));
-            break;
-        case array2d_type::UInt32:
-            *confident = tracker->update_noscale(*((array2d<uint32_t>*)img));
-            break;
-        case array2d_type::Int8:
-            *confident = tracker->update_noscale(*((array2d<int8_t>*)img));
-            break;
-        case array2d_type::Int16:
-            *confident = tracker->update_noscale(*((array2d<int16_t>*)img));
-            break;
-        case array2d_type::Int32:
-            *confident = tracker->update_noscale(*((array2d<int32_t>*)img));
-            break;
-        case array2d_type::Float:
-            *confident = tracker->update_noscale(*((array2d<float>*)img));
-            break;
-        case array2d_type::Double:
-            *confident = tracker->update_noscale(*((array2d<double>*)img));
-            break;
-        case array2d_type::RgbPixel:
-            *confident = tracker->update_noscale(*((array2d<rgb_pixel>*)img));
-            break;
-        case array2d_type::HsiPixel:
-            *confident = tracker->update_noscale(*((array2d<hsi_pixel>*)img));
-            break;
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
+    return error;
 }
 
-DLLEXPORT int correlation_tracker_update(
-    correlation_tracker* tracker,
-    const array2d_type img_type,
-    void* img,
-    drectangle* guess,
-    double* confident)
+DLLEXPORT int correlation_tracker_update(correlation_tracker* tracker,
+                                         const array2d_type type,
+                                         void* img,
+                                         drectangle* guess,
+                                         double* confident)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
+    
+    array2d_nonalpha_template(type,
+                              error,
+                              correlation_tracker_update_template,
+                              img,
+                              guess,
+                              confident);
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            *confident = tracker->update(*((array2d<uint8_t>*)img), *guess);
-            break;
-        case array2d_type::UInt16:
-            *confident = tracker->update(*((array2d<uint16_t>*)img), *guess);
-            break;
-        case array2d_type::UInt32:
-            *confident = tracker->update(*((array2d<uint32_t>*)img), *guess);
-            break;
-        case array2d_type::Int8:
-            *confident = tracker->update(*((array2d<int8_t>*)img), *guess);
-            break;
-        case array2d_type::Int16:
-            *confident = tracker->update(*((array2d<int16_t>*)img), *guess);
-            break;
-        case array2d_type::Int32:
-            *confident = tracker->update(*((array2d<int32_t>*)img), *guess);
-            break;
-        case array2d_type::Float:
-            *confident = tracker->update(*((array2d<float>*)img), *guess);
-            break;
-        case array2d_type::Double:
-            *confident = tracker->update(*((array2d<double>*)img), *guess);
-            break;
-        case array2d_type::RgbPixel:
-            *confident = tracker->update(*((array2d<rgb_pixel>*)img), *guess);
-            break;
-        case array2d_type::HsiPixel:
-            *confident = tracker->update(*((array2d<hsi_pixel>*)img), *guess);
-            break;
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
+    return error;
 }
 
-DLLEXPORT int correlation_tracker_update2(
-    correlation_tracker* tracker,
-    const array2d_type img_type,
-    void* img,
-    double* confident)
+DLLEXPORT int correlation_tracker_update2(correlation_tracker* tracker,
+                                          const array2d_type type,
+                                          void* img,
+                                          double* confident)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
+    
+    array2d_nonalpha_template(type,
+                              error,
+                              correlation_tracker_update2_template,
+                              img,
+                              confident);
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            *confident = tracker->update(*((array2d<uint8_t>*)img));
-            break;
-        case array2d_type::UInt16:
-            *confident = tracker->update(*((array2d<uint16_t>*)img));
-            break;
-        case array2d_type::UInt32:
-            *confident = tracker->update(*((array2d<uint32_t>*)img));
-            break;
-        case array2d_type::Int8:
-            *confident = tracker->update(*((array2d<int8_t>*)img));
-            break;
-        case array2d_type::Int16:
-            *confident = tracker->update(*((array2d<int16_t>*)img));
-            break;
-        case array2d_type::Int32:
-            *confident = tracker->update(*((array2d<int32_t>*)img));
-            break;
-        case array2d_type::Float:
-            *confident = tracker->update(*((array2d<float>*)img));
-            break;
-        case array2d_type::Double:
-            *confident = tracker->update(*((array2d<double>*)img));
-            break;
-        case array2d_type::RgbPixel:
-            *confident = tracker->update(*((array2d<rgb_pixel>*)img));
-            break;
-        case array2d_type::HsiPixel:
-            *confident = tracker->update(*((array2d<hsi_pixel>*)img));
-            break;
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-
-    return err;
+    return error;
 }
 
 DLLEXPORT void correlation_tracker_delete(correlation_tracker* obj)
