@@ -489,7 +489,12 @@ namespace DlibDotNet.Dnn
             public void SetNumFilters(int num)
             {
                 this._Parent.ThrowIfDisposed();
-                NativeMethods.loss_multiclass_log_per_pixel_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+                var ret = NativeMethods.loss_multiclass_log_per_pixel_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this._Parent.NetworkType);
+                }
             }
 
             #region Overrids
