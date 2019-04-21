@@ -5,85 +5,37 @@
 #include <dlib/image_keypoint/surf.h>
 #include <dlib/pixel.h>
 #include "../shared.h"
+#include "../template.h"
 
 using namespace dlib;
 
 #pragma region template
 
-#define ARRAY2D_ELEMENT element
-#undef ARRAY2D_ELEMENT
-
-#define get_surf_points_template(err, img, max_points, detection_threshold, ret)\
-do {\
-    array2d<ARRAY2D_ELEMENT>& image = *(static_cast<array2d<ARRAY2D_ELEMENT>*>(img));\
-    std::vector<surf_point> points = dlib::get_surf_points(image, max_points, detection_threshold);\
-    for (int index = 0; index < points.size(); index++)\
-        ret->push_back(new dlib::surf_point(points[index]));\
-} while (0)
+#define get_surf_points_template(__TYPE__, error, type, ...) \
+array2d<__TYPE__>& image = *(static_cast<array2d<__TYPE__>*>(img));\
+std::vector<surf_point> points = dlib::get_surf_points(image, max_points, detection_threshold);\
+for (int index = 0; index < points.size(); index++)\
+    ret->push_back(new dlib::surf_point(points[index]));
 
 #pragma endregion template
 
-DLLEXPORT int get_surf_points(
-    array2d_type img_type,
-    void* img,
-    long max_points,
-    double detection_threshold,
-    std::vector<surf_point*>* ret)
+DLLEXPORT int get_surf_points(array2d_type type,
+                              void* img,
+                              long max_points,
+                              double detection_threshold,
+                              std::vector<surf_point*>* ret)
 {
-    int err = ERR_OK;
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            #define ARRAY2D_ELEMENT uint8_t
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::UInt16:
-            #define ARRAY2D_ELEMENT uint16_t
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int16:
-            #define ARRAY2D_ELEMENT int16_t
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int32:
-            #define ARRAY2D_ELEMENT int32_t
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Float:
-            #define ARRAY2D_ELEMENT float
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Double:
-            #define ARRAY2D_ELEMENT double
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::RgbPixel:
-            #define ARRAY2D_ELEMENT rgb_pixel
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::HsiPixel:
-            #define ARRAY2D_ELEMENT hsi_pixel
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::RgbAlphaPixel:
-            #define ARRAY2D_ELEMENT rgb_alpha_pixel
-            get_surf_points_template(err, img, max_points, detection_threshold, ret);
-            #undef ARRAY2D_ELEMENT
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    int error = ERR_OK;
 
-    return err;
+    array2d_template(type,
+                     error,
+                     get_surf_points_template,
+                     img,
+                     max_points,
+                     detection_threshold,
+                     ret);
+
+    return error;
 }
 
 #pragma region surf_point

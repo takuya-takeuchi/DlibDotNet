@@ -406,6 +406,45 @@ switch(type)\
         break;\
 }
 
+#define array2d_nonalpha_template(type, error, __FUNC__, ...) \
+switch(type)\
+{\
+    case array2d_type::UInt8:\
+        { __FUNC__(uint8_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt16:\
+        { __FUNC__(uint16_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt32:\
+        { __FUNC__(uint32_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int8:\
+        { __FUNC__(int8_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int16:\
+        { __FUNC__(int16_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int32:\
+        { __FUNC__(int32_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Float:\
+        { __FUNC__(float, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Double:\
+        { __FUNC__(double, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbPixel:\
+        { __FUNC__(rgb_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::HsiPixel:\
+        { __FUNC__(hsi_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #pragma endregion array2d
 
 #endif
