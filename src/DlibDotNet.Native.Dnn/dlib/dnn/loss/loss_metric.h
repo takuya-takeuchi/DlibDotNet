@@ -99,18 +99,15 @@ DLLEXPORT int loss_metric_clone(void* obj, const int src_type, const int dst_typ
 
 #pragma region layer_details
 
-DLLEXPORT void loss_metric_layer_details_set_num_filters(void* layer, const int type, long num)
+DLLEXPORT int loss_metric_layer_details_set_num_filters(void* layer, const int type, long num)
 {
-    // // Check type argument and cast to the proper type
-    // switch(type)
-    // {
-    //     case 0:
-    //         {
-    //             auto ld = static_cast<layer_details::layer_details_type*>(layer);
-    //             ld->set_num_filters(num);
-    //         }
-    //         break;
-    // }
+    int error = ERR_OK;
+    // loss_metric_template(type,
+    //                      error,
+    //                      loss_layer_details_set_num_filters,
+    //                      subnet,
+    //                      ret);
+    return error;
 }
 
 #pragma endregion layer_details

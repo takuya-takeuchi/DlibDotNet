@@ -482,6 +482,35 @@ namespace DlibDotNet.Dnn
 
             #endregion
 
+            #region Methods
+
+            public void SetNumFilters(int num)
+            {
+                this._Parent.ThrowIfDisposed();
+                var ret = NativeMethods.loss_multiclass_log_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this._Parent.NetworkType);
+                }
+            }
+
+            #region Overrids
+
+            protected override void DisposeUnmanaged()
+            {
+                base.DisposeUnmanaged();
+
+                if (this.NativePtr == IntPtr.Zero)
+                    return;
+
+                //NativeMethods.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+            }
+
+            #endregion
+
+            #endregion
+
         }
 
         private sealed class Output : OutputLabels<OutputLabelType>
