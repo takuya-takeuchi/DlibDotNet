@@ -5,13 +5,11 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class LinearKernel<T> : DlibObject
+    public sealed class LinearKernel<T> : KernelBase
         where T : MatrixBase, new()
     {
 
         #region Fields
-
-        private readonly MatrixElementTypes _MatrixElementTypes;
 
         private readonly NativeMethods.MatrixElementType _ElementType;
 
@@ -19,15 +17,15 @@ namespace DlibDotNet
 
         #region Constructors
 
-        public LinearKernel(int templateRow = 0, int templateColumn = 0)
+        public LinearKernel(int templateRow = 0, int templateColumn = 0) :
+            base(templateRow, templateColumn)
         {
+            if (!KernelTypesRepository.SupportTypes.TryGetValue(typeof(T), out _))
+                throw new NotSupportedException();
+
             using (var tmp = new T())
             {
-                this._MatrixElementTypes = tmp.MatrixElementType;
-                this._ElementType = this._MatrixElementTypes.ToNativeMatrixElementType();
-
-                this.TemplateRows = templateRow;
-                this.TemplateColumns = templateColumn;
+                this._ElementType = tmp.MatrixElementType.ToNativeMatrixElementType();
 
                 this.NativePtr = NativeMethods.linear_kernel_new(this._ElementType, templateRow, templateColumn);
             }
@@ -36,16 +34,6 @@ namespace DlibDotNet
         #endregion
 
         #region Properties
-
-        internal int TemplateColumns
-        {
-            get;
-        }
-
-        internal int TemplateRows
-        {
-            get;
-        }
 
         #endregion
 

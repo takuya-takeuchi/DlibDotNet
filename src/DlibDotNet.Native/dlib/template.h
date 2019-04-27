@@ -59,6 +59,51 @@ switch(type)\
         break;\
 }
 
+#define matrix_nonalpha_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
+switch(type)\
+{\
+    case matrix_element_type::UInt8:\
+        __FUNC__(uint8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt16:\
+        __FUNC__(uint16_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt32:\
+        __FUNC__(uint32_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt64:\
+        __FUNC__(uint64_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int8:\
+        __FUNC__(int8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int16:\
+        __FUNC__(int16_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int32:\
+        __FUNC__(int32_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int64:\
+        __FUNC__(int64_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Float:\
+        __FUNC__(float, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Double:\
+        __FUNC__(double, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::RgbPixel:\
+        __FUNC__(rgb_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::HsiPixel:\
+        __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #define matrix_numeric_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 switch(type)\
 {\
@@ -196,6 +241,14 @@ else { error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT; }
 if (__ROWS__ == 0 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }\
 else if (__ROWS__ == 0 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 0, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 2, 1, __VA_ARGS__); }\
+else { error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT; }
+
+#define matrix_template_size_column1or0_template(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
+if (__ROWS__ == 0 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }\
+else if (__ROWS__ == 0 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 0, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 2 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 2, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 5 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 5, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 31 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 31, 1, __VA_ARGS__); }\
 else { error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT; }
 
 #define matrix_template_size2x2_template(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
