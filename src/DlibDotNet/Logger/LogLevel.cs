@@ -7,8 +7,6 @@ namespace DlibDotNet
 
         All,
 
-        None,
-
         Trace,
 
         Debug,
@@ -19,7 +17,9 @@ namespace DlibDotNet
 
         Error,
 
-        Fatal
+        Fatal,
+
+        None
 
     }
 
