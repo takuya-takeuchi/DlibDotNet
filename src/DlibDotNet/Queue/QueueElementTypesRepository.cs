@@ -20,6 +20,7 @@ namespace DlibDotNet
         {
             var types = new[]
             {
+                new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
                 new { Type = typeof(uint),                                 ElementType = ElementTypes.UInt32 }
             };
 
@@ -31,6 +32,8 @@ namespace DlibDotNet
 
         public enum ElementTypes
         {
+
+            Int32,
 
             UInt32
 

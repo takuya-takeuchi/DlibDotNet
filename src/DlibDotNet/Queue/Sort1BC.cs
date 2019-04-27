@@ -9,24 +9,24 @@ namespace DlibDotNet
     public sealed partial class Queue<TItem>
     {
         
-        public sealed class Kernel1A : DlibObject, IReadOnlyCollection<TItem>
+        public sealed class Sort1BC : DlibObject, IReadOnlyCollection<TItem>
         {
 
             #region Fields
 
-            private readonly Bridge<TItem> _Bridge;
+            private readonly Sort1BCBridge<TItem> _Bridge;
 
             #endregion
 
             #region Constructors
 
-            public Kernel1A()
+            public Sort1BC()
             {
                 this._Bridge = CreateImp();
                 this.NativePtr = this._Bridge.Create();
             }
 
-            internal Kernel1A(IntPtr ptr)
+            internal Sort1BC(IntPtr ptr)
             {
                 this._Bridge = CreateImp();
                 this.NativePtr = ptr;
@@ -79,6 +79,12 @@ namespace DlibDotNet
                 this._Bridge.Reset(this.NativePtr);
             }
 
+            public void Sort()
+            {
+                this.ThrowIfDisposed();
+                this._Bridge.Sort(this.NativePtr);
+            }
+
             #region Overrides 
 
             /// <summary>
@@ -98,16 +104,16 @@ namespace DlibDotNet
             
             #region Helpers
 
-            private static Bridge<TItem> CreateImp()
+            private static Sort1BCBridge<TItem> CreateImp()
             {
                 if (QueueElementTypesRepository.SupportTypes.TryGetValue(typeof(TItem), out var type))
                 {
                     switch (type)
                     {
                         case QueueElementTypesRepository.ElementTypes.Int32:
-                            return new Int32Bridge() as Bridge<TItem>;
+                            return new Int32Bridge() as Sort1BCBridge<TItem>;
                         case QueueElementTypesRepository.ElementTypes.UInt32:
-                            return new UInt32Bridge() as Bridge<TItem>;
+                            return new UInt32Bridge() as Sort1BCBridge<TItem>;
                     }
                 }
 
@@ -143,108 +149,129 @@ namespace DlibDotNet
 
             #region Bridge
 
-            private sealed class Int32Bridge : Bridge<int>
+            private abstract class Sort1BCBridge<T> : Bridge<T>
             {
 
                 #region Methods
 
-                public override IntPtr Create()
-                {
-                    return NativeMethods.queue_kernel_1a_int32_t_new();
-                }
-
-                public override void Dispose(IntPtr ptr)
-                {
-                    NativeMethods.queue_kernel_1a_int32_t_delete(ptr);
-                }
-
-                public override void Clear(IntPtr ptr)
-                {
-                    NativeMethods.queue_kernel_1a_int32_t_clear(ptr);
-                }
-
-                public override void Dequeue(IntPtr ptr, out int item)
-                {
-                    NativeMethods.queue_kernel_1a_int32_t_dequeue(ptr, out item);
-                }
-
-                public override int Element(IntPtr ptr)
-                {
-                    return NativeMethods.queue_kernel_1a_int32_t_element(ptr);
-                }
-
-                public override void Enqueue(IntPtr ptr, int item)
-                {
-                    NativeMethods.queue_kernel_1a_int32_t_enqueue(ptr, item);
-                }
-
-                public override int GetSize(IntPtr ptr)
-                {
-                    return NativeMethods.queue_kernel_1a_int32_t_size(ptr);
-                }
-
-                public override bool MoveNext(IntPtr ptr)
-                {
-                    return NativeMethods.queue_kernel_1a_int32_t_move_next(ptr);
-                }
-
-                public override void Reset(IntPtr ptr)
-                {
-                    NativeMethods.queue_kernel_1a_int32_t_reset(ptr);
-                }
+                public abstract void Sort(IntPtr ptr);
 
                 #endregion
 
             }
 
-            private sealed class UInt32Bridge : Bridge<uint>
+            private sealed class Int32Bridge : Sort1BCBridge<int>
             {
 
                 #region Methods
 
                 public override IntPtr Create()
                 {
-                    return NativeMethods.queue_kernel_1a_uint32_t_new();
+                    return NativeMethods.queue_sort_1b_c_int32_t_new();
                 }
 
                 public override void Dispose(IntPtr ptr)
                 {
-                    NativeMethods.queue_kernel_1a_uint32_t_delete(ptr);
+                    NativeMethods.queue_sort_1b_c_int32_t_delete(ptr);
                 }
 
                 public override void Clear(IntPtr ptr)
                 {
-                    NativeMethods.queue_kernel_1a_uint32_t_clear(ptr);
+                    NativeMethods.queue_sort_1b_c_int32_t_clear(ptr);
                 }
 
-                public override void Dequeue(IntPtr ptr, out uint item)
+                public override void Dequeue(IntPtr ptr, out int item)
                 {
-                    NativeMethods.queue_kernel_1a_uint32_t_dequeue(ptr, out item);
+                    NativeMethods.queue_sort_1b_c_int32_t_dequeue(ptr, out item);
                 }
 
-                public override uint Element(IntPtr ptr)
+                public override int Element(IntPtr ptr)
                 {
-                    return NativeMethods.queue_kernel_1a_uint32_t_element(ptr);
+                    return NativeMethods.queue_sort_1b_c_int32_t_element(ptr);
                 }
 
-                public override void Enqueue(IntPtr ptr, uint item)
+                public override void Enqueue(IntPtr ptr, int item)
                 {
-                    NativeMethods.queue_kernel_1a_uint32_t_enqueue(ptr, item);
+                    NativeMethods.queue_sort_1b_c_int32_t_enqueue(ptr, item);
                 }
 
                 public override int GetSize(IntPtr ptr)
                 {
-                    return NativeMethods.queue_kernel_1a_uint32_t_size(ptr);
+                    return NativeMethods.queue_sort_1b_c_int32_t_size(ptr);
                 }
 
                 public override bool MoveNext(IntPtr ptr)
                 {
-                    return NativeMethods.queue_kernel_1a_uint32_t_move_next(ptr);
+                    return NativeMethods.queue_sort_1b_c_int32_t_move_next(ptr);
                 }
 
                 public override void Reset(IntPtr ptr)
                 {
-                    NativeMethods.queue_kernel_1a_uint32_t_reset(ptr);
+                    NativeMethods.queue_sort_1b_c_int32_t_reset(ptr);
+                }
+
+                public override void Sort(IntPtr ptr)
+                {
+                    NativeMethods.queue_sort_1b_c_int32_t_sort(ptr);
+                }
+
+                #endregion
+
+            }
+            
+            private sealed class UInt32Bridge : Sort1BCBridge<uint>
+            {
+
+                #region Methods
+
+                public override IntPtr Create()
+                {
+                    return NativeMethods.queue_sort_1b_c_uint32_t_new();
+                }
+
+                public override void Dispose(IntPtr ptr)
+                {
+                    NativeMethods.queue_sort_1b_c_uint32_t_delete(ptr);
+                }
+
+                public override void Clear(IntPtr ptr)
+                {
+                    NativeMethods.queue_sort_1b_c_uint32_t_clear(ptr);
+                }
+
+                public override void Dequeue(IntPtr ptr, out uint item)
+                {
+                    NativeMethods.queue_sort_1b_c_uint32_t_dequeue(ptr, out item);
+                }
+
+                public override uint Element(IntPtr ptr)
+                {
+                    return NativeMethods.queue_sort_1b_c_uint32_t_element(ptr);
+                }
+
+                public override void Enqueue(IntPtr ptr, uint item)
+                {
+                    NativeMethods.queue_sort_1b_c_uint32_t_enqueue(ptr, item);
+                }
+
+                public override int GetSize(IntPtr ptr)
+                {
+                    return NativeMethods.queue_sort_1b_c_uint32_t_size(ptr);
+                }
+
+                public override bool MoveNext(IntPtr ptr)
+                {
+                    return NativeMethods.queue_sort_1b_c_uint32_t_move_next(ptr);
+                }
+
+                public override void Reset(IntPtr ptr)
+                {
+                    NativeMethods.queue_sort_1b_c_uint32_t_reset(ptr);
+                }
+
+                public override void Sort(IntPtr ptr)
+                {
+                    NativeMethods.queue_sort_1b_c_uint32_t_sort(ptr);
                 }
 
                 #endregion
