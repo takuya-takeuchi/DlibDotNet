@@ -151,8 +151,6 @@ enum struct log_level : int
 
     All = 0,
 
-    None,
-
     Trace,
 
     Debug,
@@ -163,7 +161,9 @@ enum struct log_level : int
 
     Error,
 
-    Fatal
+    Fatal,
+
+    None
 
 };
 
