@@ -43,7 +43,7 @@ namespace DnnSemanticSegmentation
 
         public static Voc2012Class FindVoc2012Class(Func<Voc2012Class, bool> predicate)
         {
-            var i = Common.Classes.FirstOrDefault(predicate);
+            var i = Classes.FirstOrDefault(predicate);
             if (i != null)
                 return i;
 

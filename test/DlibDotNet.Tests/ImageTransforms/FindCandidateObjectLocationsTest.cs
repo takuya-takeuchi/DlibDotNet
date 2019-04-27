@@ -55,23 +55,23 @@ namespace DlibDotNet.Tests.ImageTransforms
                             break;
                         case ImageTypes.UInt8:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle((Array2D<byte>)inImg, r, (byte)0);
+                                Dlib.DrawRectangle((Array2D<byte>)inImg, r, 0);
                             break;
                         case ImageTypes.UInt16:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle((Array2D<ushort>)inImg, r, (ushort)0);
+                                Dlib.DrawRectangle((Array2D<ushort>)inImg, r, 0);
                             break;
                         case ImageTypes.UInt32:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle((Array2D<uint>)inImg, r, (uint)(255 << 16));
+                                Dlib.DrawRectangle((Array2D<uint>)inImg, r, 255 << 16);
                             break;
                         case ImageTypes.Int8:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle((Array2D<sbyte>)inImg, r, (sbyte)0);
+                                Dlib.DrawRectangle((Array2D<sbyte>)inImg, r, 0);
                             break;
                         case ImageTypes.Int16:
                             foreach (var r in rects)
-                                Dlib.DrawRectangle((Array2D<short>)inImg, r, (short)0);
+                                Dlib.DrawRectangle((Array2D<short>)inImg, r, 0);
                             break;
                         case ImageTypes.Int32:
                             foreach (var r in rects)
