@@ -20,9 +20,25 @@ typedef     queue_kernel_c<kernel_2a>         kernel_2a_c;
 // kernel_2b        
 typedef     queue_kernel_2<T,100,mem_manager> kernel_2b;
 typedef     queue_kernel_c<kernel_2b>         kernel_2b_c;
+
+// sort_1 extend kernel_1a
+typedef     queue_sort_1<kernel_1a>           sort_1a;
+typedef     queue_sort_1<kernel_1a_c>         sort_1a_c;
+
+// sort_1 extend kernel_2a
+typedef     queue_sort_1<kernel_2a>           sort_1b;
+typedef     queue_sort_1<kernel_2a_c>         sort_1b_c;
+
+// sort_1 extend kernel_2b
+typedef     queue_sort_1<kernel_2b>           sort_1c;
+typedef     queue_sort_1<kernel_2b_c>         sort_1c_c;
 */
 
-MAKE_FUNC(kernel_1a, uint32_t, uint32_t)
+MAKE_FUNC_KERNEL(kernel_1a, int32_t, int32_t)
+MAKE_FUNC_KERNEL(kernel_1a, uint32_t, uint32_t)
+
+MAKE_FUNC_SORT(sort_1b_c, int32_t, int32_t)
+MAKE_FUNC_SORT(sort_1b_c, uint32_t, uint32_t)
 
 // DLLEXPORT uint32_t queue_kernel_1a_uint32_t_element(dlib::queue<uint32_t>::kernel_1a* q)
 // {
