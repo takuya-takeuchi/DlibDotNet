@@ -5,7 +5,6 @@ using System.IO;
 using System.Windows.Forms;
 using DlibDotNet;
 using DlibDotNet.Extensions;
-using Dlib = DlibDotNet.Dlib;
 
 namespace FaceDetection
 {

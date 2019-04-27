@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using DlibDotNet.Util;
-using ElementTypes = DlibDotNet.StdVectorElementTypesRepository.ElementTypes;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -121,55 +120,55 @@ namespace DlibDotNet
             {
                 switch (type)
                 {
-                    case ElementTypes.Int32:
+                    case StdVectorElementTypesRepository.ElementTypes.Int32:
                         return new StdVectorInt32Imp() as StdVectorImp<TItem>;
-                    case ElementTypes.UInt32:
+                    case StdVectorElementTypesRepository.ElementTypes.UInt32:
                         return new StdVectorUInt32Imp() as StdVectorImp<TItem>;
-                    case ElementTypes.Long:
+                    case StdVectorElementTypesRepository.ElementTypes.Long:
                         return new StdVectorLongImp() as StdVectorImp<TItem>;
-                    case ElementTypes.Double:
+                    case StdVectorElementTypesRepository.ElementTypes.Double:
                         return new StdVectorDoubleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.VectorDouble:
+                    case StdVectorElementTypesRepository.ElementTypes.VectorDouble:
                         return new StdVectorVectorDoubleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.Rectangle:
+                    case StdVectorElementTypesRepository.ElementTypes.Rectangle:
                         return new StdVectorRectangleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.Point:
+                    case StdVectorElementTypesRepository.ElementTypes.Point:
                         return new StdVectorPointImp() as StdVectorImp<TItem>;
-                    case ElementTypes.DPoint:
+                    case StdVectorElementTypesRepository.ElementTypes.DPoint:
                         return new StdVectorDPointImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ChipDetails:
+                    case StdVectorElementTypesRepository.ElementTypes.ChipDetails:
                         return new StdVectorChipDetailsImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdString:
+                    case StdVectorElementTypesRepository.ElementTypes.StdString:
                         return new StdVectorStdStringImp() as StdVectorImp<TItem>;
-                    case ElementTypes.FullObjectDetection:
+                    case StdVectorElementTypesRepository.ElementTypes.FullObjectDetection:
                         return new StdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
-                    case ElementTypes.RectDetection:
+                    case StdVectorElementTypesRepository.ElementTypes.RectDetection:
                         return new StdVectorRectDetectionImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ImageWindowOverlayLine:
+                    case StdVectorElementTypesRepository.ElementTypes.ImageWindowOverlayLine:
                         return new StdVectorImageWindowOverlayLineImp() as StdVectorImp<TItem>;
-                    case ElementTypes.PerspectiveWindowOverlayDot:
+                    case StdVectorElementTypesRepository.ElementTypes.PerspectiveWindowOverlayDot:
                         return new StdVectorPerspectiveWindowOverlayDotImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ImageDatasetMetadataImage:
+                    case StdVectorElementTypesRepository.ElementTypes.ImageDatasetMetadataImage:
                         return new StdVectorImageDatasetMetadataImageImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ImageDatasetMetadataBox:
+                    case StdVectorElementTypesRepository.ElementTypes.ImageDatasetMetadataBox:
                         return new StdVectorImageDatasetMetadataBoxImp() as StdVectorImp<TItem>;
-                    case ElementTypes.MModRect:
+                    case StdVectorElementTypesRepository.ElementTypes.MModRect:
                         return new StdVectorMModRectImp() as StdVectorImp<TItem>;
-                    case ElementTypes.SurfPoint:
+                    case StdVectorElementTypesRepository.ElementTypes.SurfPoint:
                         return new StdVectorSurfPointImp() as StdVectorImp<TItem>;
-                    case ElementTypes.SamplePair:
+                    case StdVectorElementTypesRepository.ElementTypes.SamplePair:
                         return new StdVectorSamplePairImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdVectorDouble:
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorDouble:
                         return new StdVectorStdVectorDoubleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdVectorRectangle:
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorRectangle:
                         return new StdVectorStdVectorRectangleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdVectorMModRect:
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorMModRect:
                         return new StdVectorStdVectorMModRectImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdVectorFullObjectDetection:
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorFullObjectDetection:
                         return new StdVectorStdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
-                    case ElementTypes.DetectorWindowDetails:
+                    case StdVectorElementTypesRepository.ElementTypes.DetectorWindowDetails:
                         return new StdVectorMModOptionsDetectorWindowDetailsImp() as StdVectorImp<TItem>;
-                    case ElementTypes.OverlayRect:
+                    case StdVectorElementTypesRepository.ElementTypes.OverlayRect:
                         return new StdVectorOverlayRectImp() as StdVectorImp<TItem>;
                 }
             }

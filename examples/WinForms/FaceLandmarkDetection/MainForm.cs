@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using DlibDotNet;
 using DlibDotNet.Extensions;
-using Dlib = DlibDotNet.Dlib;
 
 namespace FaceLandmarkDetection
 {

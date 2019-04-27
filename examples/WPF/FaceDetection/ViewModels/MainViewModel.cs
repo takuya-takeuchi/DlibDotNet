@@ -7,7 +7,6 @@ using DlibDotNet.Extensions;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
-using Dlib = DlibDotNet.Dlib;
 
 namespace FaceDetection.ViewModels
 {
