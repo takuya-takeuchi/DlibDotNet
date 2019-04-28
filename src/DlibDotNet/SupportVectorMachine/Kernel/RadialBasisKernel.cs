@@ -5,8 +5,9 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class RadialBasisKernel<T> : KernelBase
-        where T : MatrixBase, new()
+    public sealed class RadialBasisKernel<TScalar, TSample> : KernelBase
+        where TScalar : struct
+        where TSample : Matrix<TScalar>, new()
     {
 
         #region Fields
@@ -17,18 +18,19 @@ namespace DlibDotNet
 
         #region Constructors
 
-        public RadialBasisKernel(int templateRow = 0, int templateColumn = 0) :
-            base(templateRow, templateColumn)
+        public RadialBasisKernel(TScalar gamma, int templateRow = 0, int templateColumn = 0) :
+            base(KernelType.RadialBasis, templateRow, templateColumn)
         {
-            if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(T), out _))
+            if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
 
-            using (var tmp = new T())
-            {
-                this._ElementType = tmp.MatrixElementType.ToNativeMatrixElementType();
+            if (!Matrix<TScalar>.TryParse<TScalar>(out var type))
+                throw new NotSupportedException();
 
-                this.NativePtr = NativeMethods.radial_basis_kernel_new(this._ElementType, templateRow, templateColumn);
-            }
+            this.SampleType = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+
+            this.NativePtr = NativeMethods.radial_basis_kernel_new(this._ElementType, templateRow, templateColumn);
         }
 
         #endregion

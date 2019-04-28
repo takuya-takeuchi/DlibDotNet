@@ -1,5 +1,5 @@
 ﻿/*
- * This sample program is ported by C# from examples\logger_custom_output_ex.cpp.
+ * This sample program is ported by C# from examples\queue_ex.cpp.
 */
 
 using System;

@@ -204,6 +204,23 @@ namespace DlibDotNet
 
         }
 
+        internal enum KernelType
+        {
+
+            Histogramintersection,
+
+            Linear,
+
+            Offset,
+
+            Polynomial,
+
+            RadialBasis,
+
+            Sigmoid
+
+        }
+
         internal enum ErrorType
         {
 

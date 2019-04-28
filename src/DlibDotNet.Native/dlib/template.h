@@ -145,6 +145,31 @@ switch(type)\
         break;\
 }
 
+#define matrix_decimal_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
+switch(type)\
+{\
+    case matrix_element_type::Float:\
+        __FUNC__(float, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Double:\
+        __FUNC__(double, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt8:\
+    case matrix_element_type::UInt16:\
+    case matrix_element_type::UInt32:\
+    case matrix_element_type::UInt64:\
+    case matrix_element_type::Int8:\
+    case matrix_element_type::Int16:\
+    case matrix_element_type::Int32:\
+    case matrix_element_type::Int64:\
+    case matrix_element_type::RgbPixel:\
+    case matrix_element_type::HsiPixel:\
+    case matrix_element_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #define matrix_double_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 switch(type)\
 {\

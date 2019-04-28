@@ -5,8 +5,9 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class PolynomialKernel<T> : KernelBase
-        where T : MatrixBase, new()
+    public sealed class PolynomialKernel<TScalar, TSample> : KernelBase
+        where TScalar : struct
+        where TSample : Matrix<TScalar>, new()
     {
 
         #region Fields
@@ -18,17 +19,18 @@ namespace DlibDotNet
         #region Constructors
 
         public PolynomialKernel(int templateRow = 0, int templateColumn = 0) :
-            base(templateRow, templateColumn)
+            base(KernelType.Polynomial, templateRow, templateColumn)
         {
-            if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(T), out _))
+            if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
 
-            using (var tmp = new T())
-            {
-                this._ElementType = tmp.MatrixElementType.ToNativeMatrixElementType();
+            if (!Matrix<TScalar>.TryParse<TScalar>(out var type))
+                throw new NotSupportedException();
 
-                this.NativePtr = NativeMethods.polynomial_kernel_new(this._ElementType, templateRow, templateColumn);
-            }
+            this.SampleType = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+
+            this.NativePtr = NativeMethods.polynomial_kernel_new(this._ElementType, templateRow, templateColumn);
         }
 
         #endregion

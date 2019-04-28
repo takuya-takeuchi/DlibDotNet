@@ -167,6 +167,23 @@ enum struct log_level : int
 
 };
 
+enum struct kernel_type : int
+{
+
+    HistogramIntersection,
+
+    Linear,
+
+    Offset,
+
+    Polynomial,
+
+    RadialBasis,
+
+    Sigmoid
+
+};
+
 typedef struct
 {
     // uint8_t

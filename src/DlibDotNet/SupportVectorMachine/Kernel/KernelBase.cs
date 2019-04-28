@@ -1,4 +1,7 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System;
+using System.Collections.Generic;
+
+// ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
@@ -7,8 +10,9 @@ namespace DlibDotNet
 
         #region Constructors
 
-        protected KernelBase(int templateRow = 0, int templateColumn = 0)
+        protected KernelBase(KernelType kernelType, int templateRow, int templateColumn)
         {
+            this.KernelType = kernelType;
             this.TemplateRows = templateRow;
             this.TemplateColumns = templateColumn;
         }
@@ -16,6 +20,17 @@ namespace DlibDotNet
         #endregion
 
         #region Properties
+
+        public KernelType KernelType
+        {
+            get;
+        }
+
+        public MatrixElementTypes SampleType
+        {
+            get;
+            protected set;
+        }
 
         internal int TemplateColumns
         {

@@ -60,7 +60,7 @@ namespace ImgLab
             }
 
             // now do angular clustering of the points
-            var linearKernel = new LinearKernel<Matrix<double>>(0, 1);
+            var linearKernel = new LinearKernel<double, Matrix<double>>(0, 1);
             var tempCenters = Dlib.PickInitialCenters((int)numberClusters, features, linearKernel, 0.05).ToArray();
             var centers = Dlib.FindClustersUsingAngularKMeans(features, tempCenters).ToArray();
             foreach (var center in tempCenters)

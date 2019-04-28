@@ -106,7 +106,7 @@ namespace DlibDotNet
             }
         }
 
-        public static IEnumerable<Matrix<T>> PickInitialCenters<T>(int numberCenters, IEnumerable<Matrix<T>> samples, LinearKernel<Matrix<T>> k, double percentile = 0.01)
+        public static IEnumerable<Matrix<T>> PickInitialCenters<T>(int numberCenters, IEnumerable<Matrix<T>> samples, LinearKernel<T, Matrix<T>> k, double percentile = 0.01)
             where T : struct
         {
             if (samples == null)
