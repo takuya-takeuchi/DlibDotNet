@@ -1,4 +1,4 @@
-﻿# KCentroid
+﻿# K-Centroid
  
 This program is ported by C# from examples\kcentroid_ex.cpp.
 

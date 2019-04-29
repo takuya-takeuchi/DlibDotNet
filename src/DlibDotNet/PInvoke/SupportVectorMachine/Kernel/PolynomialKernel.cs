@@ -9,10 +9,16 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr polynomial_kernel_new(MatrixElementType matrixElementType, int templateRow, int templateColumn);
+        public static extern ErrorType polynomial_kernel_new(MatrixElementType matrixElementType,
+                                                             int templateRow,
+                                                             int templateColumn,
+                                                             out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void polynomial_kernel_delete(MatrixElementType matrixElementType, IntPtr linerKernel, int templateRow, int templateColumn);
+        public static extern void polynomial_kernel_delete(MatrixElementType matrixElementType, 
+                                                           IntPtr linerKernel, 
+                                                           int templateRow,
+                                                           int templateColumn);
 
     }
 

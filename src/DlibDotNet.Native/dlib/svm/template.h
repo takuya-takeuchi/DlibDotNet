@@ -37,7 +37,7 @@ switch(kernel_type)\
         }\
         break;\
     default:\
-        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        error = ERR_SVM_KERNEL_NOT_SUPPORT;\
         break;\
 }
 

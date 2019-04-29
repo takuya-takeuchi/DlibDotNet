@@ -30,7 +30,27 @@ namespace DlibDotNet
             this.SampleType = type;
             this._ElementType = type.ToNativeMatrixElementType();
 
-            this.NativePtr = NativeMethods.polynomial_kernel_new(this._ElementType, templateRow, templateColumn);
+            var error = NativeMethods.polynomial_kernel_new(this._ElementType, templateRow, templateColumn, out var ret);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{type} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(templateColumn)} or {nameof(templateRow)} is not supported.");
+                case NativeMethods.ErrorType.SvmKernelNotSupport:
+                    throw new ArgumentException($"{this.KernelType} is not supported.");
+            }
+
+            this.NativePtr = ret;
+        }
+
+        internal PolynomialKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
+            base(KernelType.Polynomial, templateRow, templateColumn, isEnabledDispose)
+        {
+            Matrix<TScalar>.TryParse<TScalar>(out var type);
+            this.SampleType = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+            this.NativePtr = ptr;
         }
 
         #endregion

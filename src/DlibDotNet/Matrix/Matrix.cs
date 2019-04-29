@@ -350,6 +350,17 @@ namespace DlibDotNet
             }
         }
 
+        public Matrix<TElement> Clone()
+        {
+            this.ThrowIfDisposed();
+
+            var tr = this.TemplateRows;
+            var tc = this.TemplateColumns;
+            var ret = NativeMethods.matrix_clone(this._ElementType, this.NativePtr, tr, tc);
+
+            return new Matrix<TElement>(ret, tr, tc);
+        }
+
         public static Matrix<TElement> CreateTemplateParameterizeMatrix(uint templateRows, uint templateColumns)
         {
             if (!TryParse(typeof(TElement), out var type))

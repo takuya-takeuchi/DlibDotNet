@@ -49,6 +49,16 @@ do {\
 	*dst = new dlib::matrix<ELEMENT_OUT>(tmp);\
 } while (0)
 
+#define MAKE_FUNC(__TYPE__, __TYPENAME__)\
+DLLEXPORT void mat_StdVect_##__TYPENAME__(void* vec, void** mat_op)\
+{\
+    /* dlib::matrix_op<dlib::op_std_vect_to_mat<std::vector<__TYPE__>>> stores reference of vector. */ \
+    /* In other words, called must hold instance or reference of vector. */ \
+    auto& v = *static_cast<std::vector<__TYPE__>*>(vec);\
+    auto ret = dlib::mat(v);\
+	*mat_op = new dlib::matrix_op<dlib::op_std_vect_to_mat<std::vector<__TYPE__>>>(ret);\
+}\
+
 #pragma endregion template
 
 DLLEXPORT int mat_array2d(array2d_type type, void* array, void** mat_op)
@@ -119,6 +129,18 @@ DLLEXPORT int mat_array2d(array2d_type type, void* array, void** mat_op)
 
     return err;
 }
+
+MAKE_FUNC(int8_t, int8_t)
+MAKE_FUNC(int16_t, int16_t)
+MAKE_FUNC(int32_t, int32_t)
+MAKE_FUNC(uint8_t, uint8_t)
+MAKE_FUNC(uint16_t, uint16_t)
+MAKE_FUNC(uint32_t, uint32_t)
+MAKE_FUNC(float, float)
+MAKE_FUNC(double, double)
+MAKE_FUNC(dlib::rgb_pixel, rgb_pixel)
+MAKE_FUNC(dlib::hsi_pixel, hsi_pixel)
+MAKE_FUNC(dlib::rgb_alpha_pixel, rgb_alpha_pixel)
 
 DLLEXPORT int mat_mat_OpStdVectToMat(matrix_element_type type, void* vec, int templateRows, int templateColumns, void** mat_op)
 {

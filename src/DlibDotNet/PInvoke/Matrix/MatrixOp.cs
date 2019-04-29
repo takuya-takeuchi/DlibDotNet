@@ -23,6 +23,9 @@ namespace DlibDotNet
         public static extern void matrix_op_op_std_vect_to_mat_delete(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void matrix_op_op_std_vect_to_mat_value_delete(Array2DType type, IntPtr obj);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void matrix_op_op_trans_delete(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -49,6 +52,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_op_op_std_vect_to_mat_nc(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType matrix_op_op_std_vect_to_mat_value_nc(Array2DType type, IntPtr obj, out int ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_op_op_trans_nc(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
@@ -79,6 +85,9 @@ namespace DlibDotNet
         public static extern ErrorType matrix_op_op_std_vect_to_mat_nr(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType matrix_op_op_std_vect_to_mat_value_nr(Array2DType type, IntPtr obj, out int ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_op_op_trans_nr(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, out int ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -100,6 +109,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_op_op_std_vect_to_mat_operator_left_shift(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, IntPtr stream);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType matrix_op_op_std_vect_to_mat_value_operator_left_shift(Array2DType type, IntPtr obj, IntPtr stream);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_op_op_trans_operator_left_shift(MatrixElementType type, IntPtr obj, int templateRows, int templateColumns, IntPtr stream);

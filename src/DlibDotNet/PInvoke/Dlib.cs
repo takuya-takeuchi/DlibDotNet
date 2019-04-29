@@ -56,6 +56,8 @@ namespace DlibDotNet
 
             OpStdVectToMat,
 
+            OpStdVectToMatValue,
+
             OpJoinRows
 
         }
@@ -318,7 +320,15 @@ namespace DlibDotNet
 
             CudaError = 0x77000000,
 
-            CudaOutOfMemory = -(CudaError | 0x00000001)
+            CudaOutOfMemory = -(CudaError | 0x00000001),
+
+            #endregion
+
+            #region Svm
+
+            SvmError            =              0x75000000,
+
+            SvmKernelNotSupport = -(SvmError | 0x00000001),
 
             #endregion
 

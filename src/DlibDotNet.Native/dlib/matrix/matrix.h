@@ -48,6 +48,10 @@ ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(il);
 #define matrix_delete_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 delete ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix);
 
+#define matrix_clone_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+const auto& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
+ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(m);
+
 #define matrix_begin_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 *((__TYPE__**)ret) = ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix)->begin();\
 
@@ -527,6 +531,23 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix, const int t
                     templateRows,
                     templateColumns,
                     matrix);
+}
+
+DLLEXPORT void* matrix_clone(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns)
+{
+    int error = ERR_OK;
+    void* ret = nullptr;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    matrix_clone_template,
+                    templateRows,
+                    templateColumns,
+                    matrix,
+                    ret);
+
+    return ret;
 }
 
 DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, void* array)

@@ -9,14 +9,15 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr kcentroid_new(KernelType kernelType,
-                                                  MatrixElementType type,
-                                                  int templateRows,
-                                                  int templateColumns,
-                                                  IntPtr kernel,
-                                                  double tolerance,
-                                                  uint maxDictionarySize,
-                                                  bool removeOldestFirst);
+        public static extern ErrorType kcentroid_new(KernelType kernelType,
+                                                     MatrixElementType type,
+                                                     int templateRows,
+                                                     int templateColumns,
+                                                     IntPtr kernel,
+                                                     double tolerance,
+                                                     uint maxDictionarySize,
+                                                     bool removeOldestFirst,
+                                                     out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void kcentroid_delete(KernelType kernelType,
@@ -24,6 +25,22 @@ namespace DlibDotNet
                                                    int templateRows,
                                                    int templateColumns,
                                                    IntPtr obj);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kcentroid_dictionary_size(KernelType kernelType,
+                                                                 MatrixElementType type,
+                                                                 int templateRows,
+                                                                 int templateColumns,
+                                                                 IntPtr obj,
+                                                                 out uint ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kcentroid_get_kernel(KernelType kernelType,
+                                                            MatrixElementType type,
+                                                            int templateRows,
+                                                            int templateColumns,
+                                                            IntPtr obj,
+                                                            out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType kcentroid_operator_float(KernelType kernelType,
