@@ -637,7 +637,7 @@ DLLEXPORT int dnn_trainer_##__TYPENAME__##_operator_left_shift(void* trainer, co
     return error;\
 }\
 \
-DLLEXPORT int set_all_bn_running_stats_window_sizes_##__TYPENAME__##(void* obj, const int type, unsigned long new_window_size)\
+DLLEXPORT int set_all_bn_running_stats_window_sizes_##__TYPENAME__(void* obj, const int type, unsigned long new_window_size)\
 {\
     int error = ERR_OK;\
 \

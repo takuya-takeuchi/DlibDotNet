@@ -64,7 +64,7 @@ matrix<__TYPE__>& i = *(static_cast<matrix<__TYPE__>*>(item));\
 a->push_back(i);
 
 #define MAKE_PUSHBACK_FUNC(__TYPE__, __TYPENAME__, __TYPENAME2__)\
-DLLEXPORT int array_pixel_pushback_##__TYPENAME__##(const array2d_type type, void* array, __TYPE__ item)\
+DLLEXPORT int array_pixel_pushback_##__TYPENAME__(const array2d_type type, void* array, __TYPE__ item)\
 {\
     int error = ERR_OK;\
 \
@@ -82,7 +82,7 @@ DLLEXPORT int array_pixel_pushback_##__TYPENAME__##(const array2d_type type, voi
 }
 
 #define MAKE_GETITEM_FUNC(__TYPE__, __TYPENAME__, __TYPENAME2__)\
-DLLEXPORT int array_pixel_getitem_##__TYPENAME__##(const array2d_type type, void* array, const unsigned int index, __TYPE__* item)\
+DLLEXPORT int array_pixel_getitem_##__TYPENAME__(const array2d_type type, void* array, const unsigned int index, __TYPE__* item)\
 {\
 	int error = ERR_OK;\
 \

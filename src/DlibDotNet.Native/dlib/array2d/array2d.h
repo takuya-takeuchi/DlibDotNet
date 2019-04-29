@@ -79,13 +79,13 @@ auto tmp = static_cast<dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS_
 delete tmp;\
 
 #define MAKE_ROWCOLUMN_FUNC(__TYPE__, __TYPENAME__)\
-DLLEXPORT void array2d_get_row_column_##__TYPENAME__##(void* row, int32_t column, __TYPE__* ret)\
+DLLEXPORT void array2d_get_row_column_##__TYPENAME__(void* row, int32_t column, __TYPE__* ret)\
 {\
     dlib::array2d<__TYPE__>::row& tmp = *(static_cast<dlib::array2d<__TYPE__>::row*>(row));\
     *((__TYPE__*)ret) = tmp[column];\
 }\
 \
-DLLEXPORT void array2d_set_row_column_##__TYPENAME__##(void* row, int32_t column, __TYPE__ ret)\
+DLLEXPORT void array2d_set_row_column_##__TYPENAME__(void* row, int32_t column, __TYPE__ ret)\
 {\
     dlib::array2d<__TYPE__>::row& tmp = *(static_cast<dlib::array2d<__TYPE__>::row*>(row));\
     tmp[column] = ret;\
@@ -112,12 +112,12 @@ do {\
 } while (0)
 
 #define MAKE_ROWCOLUMN_MATRIX_FUNC(__TYPE__, __TYPENAME__)\
-DLLEXPORT void array2d_matrix_get_row_column_##__TYPENAME__##(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)\
+DLLEXPORT void array2d_matrix_get_row_column_##__TYPENAME__(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)\
 {\
     array2d_matrix_get_row_column_template(__TYPE__, templateRows, templateColumns, row, column, ret);\
 }\
 \
-DLLEXPORT void array2d_matrix_set_row_column_##__TYPENAME__##(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)\
+DLLEXPORT void array2d_matrix_set_row_column_##__TYPENAME__(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)\
 {\
     array2d_matrix_set_row_column_template(__TYPE__, templateRows, templateColumns, row, column, ret);\
 }
