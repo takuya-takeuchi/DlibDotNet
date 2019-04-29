@@ -15,10 +15,9 @@ DLLEXPORT void logger_delete(dlib::logger* logger)
     delete logger;
 }
 
-DLLEXPORT void logger_set_level(dlib::logger* logger, log_level log_level)
+DLLEXPORT void logger_set_level(dlib::logger* logger, log_level level)
 {
-
-    switch(log_level)
+    switch(level)
     {
         case log_level::All:
             logger->set_level(dlib::LALL);
@@ -47,11 +46,11 @@ DLLEXPORT void logger_set_level(dlib::logger* logger, log_level log_level)
     }
 }
 
-DLLEXPORT void logger_operator_left_shift(dlib::logger* logger, log_level log_level, const char* message)
+DLLEXPORT void logger_operator_left_shift(dlib::logger* logger, log_level level, const char* message)
 {
     auto& l = *logger;
 
-    switch(log_level)
+    switch(level)
     {
         case log_level::All:
             l << dlib::LALL << std::string(message);

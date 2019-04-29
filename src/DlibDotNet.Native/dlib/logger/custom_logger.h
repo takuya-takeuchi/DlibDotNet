@@ -11,7 +11,7 @@ public:
     custom_logger(void (*log_func)(const std::string*,
                                    const log_level,
                                    const std::string*,
-                                   const uint64_t,
+                                   const dlib::uint64,
                                    const std::string*)):
         m_log_func(log_func)
     {
@@ -24,7 +24,7 @@ public:
 
     void log(const std::string& logger_name,
              const dlib::log_level& ll,
-             const uint64_t thread_id,
+             const dlib::uint64 thread_id,
              const char* message_to_log)
     {        
         if (this->m_log_func)
@@ -96,14 +96,14 @@ private:
     void (*m_log_func)(const std::string*,
                        const log_level,
                        const std::string*,
-                       const uint64_t,
+                       const dlib::uint64,
                        const std::string*);
 };
 
 DLLEXPORT custom_logger* custom_logger_new(void (*log_func)(const std::string*,
                                                             const log_level,
                                                             const std::string*,
-                                                            const uint64_t,
+                                                            const dlib::uint64,
                                                             const std::string*))
 {
     return new custom_logger(log_func);
