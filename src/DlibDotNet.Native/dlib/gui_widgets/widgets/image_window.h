@@ -26,34 +26,13 @@ ret = new image_window(*((dlib::matrix_op<ELEMENT<array2d<__TYPE__>>>*)image));\
 #define image_window_new_matrix_op_template2(__TYPE__, error, type, ...) \
 ret = new image_window(*((matrix_op<ELEMENT<array2d<__TYPE__>>>*)image), title);\
 
-#define image_window_new_matrix_op_template3_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+#define image_window_new_matrix_op_template3(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(img);\
 ret = new image_window(op);\
 
-#define image_window_new_matrix_op_template3(__TYPE__, error, type, ...) \
-matrix_template(type,\
-                error,\
-                matrix_template_size_template,\
-                image_window_new_matrix_op_template3_sub,\
-                templateRows,\
-                templateColumns,\
-                img,\
-                ret);\
-
-#define image_window_new_matrix_op_template4_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+#define image_window_new_matrix_op_template4(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(img);\
 ret = new image_window(op, title);\
-
-#define image_window_new_matrix_op_template4(__TYPE__, error, type, ...) \
-matrix_template(type,\
-                error,\
-                matrix_template_size_template,\
-                image_window_new_matrix_op_template4_sub,\
-                templateRows,\
-                templateColumns,\
-                img,\
-                title,\
-                ret);\
 
 #define image_window_set_image_array2d_template(__TYPE__, error, type, ...) \
 window->set_image(*((dlib::array2d<__TYPE__>*)image));
@@ -248,24 +227,26 @@ DLLEXPORT int image_window_new_matrix_op3(element_type etype,
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            array2d_template(type,
-                             error,
-                             image_window_new_matrix_op_template3,
-                             img,
-                             templateRows,
-                             templateColumns,
-                             ret);
+            matrix_template(type,
+                            error,
+                            matrix_template_size_template,
+                            image_window_new_matrix_op_template3,
+                            templateRows,
+                            templateColumns,
+                            img,
+                            ret);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            array2d_template(type,
-                             error,
-                             image_window_new_matrix_op_template3,
-                             img,
-                             templateRows,
-                             templateColumns,
-                             ret);
+            matrix_template(type,
+                            error,
+                            matrix_template_size_template,
+                            image_window_new_matrix_op_template3,
+                            templateRows,
+                            templateColumns,
+                            img,
+                            ret);
             #undef ELEMENT
             break;
         default:
@@ -293,26 +274,28 @@ DLLEXPORT int image_window_new_matrix_op4(element_type etype,
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            array2d_template(type,
-                             error,
-                             image_window_new_matrix_op_template4,
-                             img,
-                             templateRows,
-                             templateColumns,
-                             title,
-                             ret);
+            matrix_template(type,
+                            error,
+                            matrix_template_size_template,
+                            image_window_new_matrix_op_template4,
+                            templateRows,
+                            templateColumns,
+                            img,
+                            title,
+                            ret);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            array2d_template(type,
-                             error,
-                             image_window_new_matrix_op_template4,
-                             img,
-                             templateRows,
-                             templateColumns,
-                             title,
-                             ret);
+            matrix_template(type,
+                            error,
+                            matrix_template_size_template,
+                            image_window_new_matrix_op_template4,
+                            templateRows,
+                            templateColumns,
+                            img,
+                            title,
+                            ret);
             #undef ELEMENT
             break;
         default:
