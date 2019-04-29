@@ -1,4 +1,4 @@
-﻿# Kernel K-KMeans
+﻿# Kernel K-Means
  
 This program is ported by C# from examples\kkmeans_ex.cpp.
 
