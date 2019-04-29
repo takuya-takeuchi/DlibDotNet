@@ -20,7 +20,7 @@ namespace DlibDotNet
 
         #region Constructors
 
-        public RadialBasisKernel(TScalar gamma, int templateRow = 0, int templateColumn = 0) :
+        public RadialBasisKernel(TScalar gamma, int templateRow, int templateColumn) :
             base(KernelType.RadialBasis, templateRow, templateColumn)
         {
             if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))

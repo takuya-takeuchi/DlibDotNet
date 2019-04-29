@@ -38,7 +38,7 @@ for (int32_t c = 0, step = r * num_cols; c < num_cols; c++)\
 return m;
 
 #define matrix_new4_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
-ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();
+*ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();
 
 #define matrix_new5_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& v = *static_cast<std::vector<__TYPE__>*>(vector);\
@@ -367,10 +367,9 @@ DLLEXPORT void* matrix_new3(const matrix_element_type type, const int num_rows, 
     return ret;
 }
 
-DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, const int templateColumns)
+DLLEXPORT int matrix_new4(matrix_element_type type, const int templateRows, const int templateColumns, void** ret)
 {
     int error = ERR_OK;
-    void* ret = nullptr;
 
     matrix_template(type,
                     error,
@@ -380,7 +379,7 @@ DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, co
                     templateColumns,
                     ret);
 
-    return ret;
+    return error;
 }
 
 DLLEXPORT void* matrix_new5(matrix_element_type type, const int templateRows, const int templateColumns, void* vector)

@@ -36,6 +36,16 @@ namespace DlibDotNet
                                                             IntPtr k,
                                                             double percentile);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType rank_features(KernelType kernelType, 
+                                                     MatrixElementType type,
+                                                     int templateRows,
+                                                     int templateColumns,
+                                                     IntPtr kcentroid,
+                                                     IntPtr samples,
+                                                     IntPtr labels,
+                                                     out IntPtr ret);
+
     }
 
 }

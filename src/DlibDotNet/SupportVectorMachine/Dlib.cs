@@ -170,6 +170,65 @@ namespace DlibDotNet
             }
         }
 
+        public static Matrix<TScalar> RankFeatures<TScalar, TKernel>(KCentroid<TScalar, TKernel> kcentroid,
+                                                                     IEnumerable<Matrix<TScalar>> samples,
+                                                                     IEnumerable<TScalar> labels)
+            where TScalar : struct
+            where TKernel : KernelBase
+        {
+            if (kcentroid == null)
+                throw new ArgumentNullException(nameof(kcentroid));
+            if (samples == null)
+                throw new ArgumentNullException(nameof(samples));
+            if (labels == null)
+                throw new ArgumentNullException(nameof(labels));
+
+            var sampleArray = samples.ToArray();
+            var labelsArray = labels.ToArray();
+
+            var first = sampleArray.FirstOrDefault();
+            if (first == null)
+                throw new ArgumentException($"{nameof(samples)} contains null object", nameof(samples));
+
+            var templateRow = first.TemplateRows;
+            var templateColumn = first.TemplateColumns;
+            foreach (var sample in sampleArray)
+            {
+                if (sample == null)
+                    throw new ArgumentException($"{nameof(samples)} contains null object", nameof(samples));
+                if (sample.TemplateRows != templateRow)
+                    throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateRows)} of {typeof(Matrix<TScalar>).Name}", nameof(samples));
+                if (sample.TemplateColumns != templateColumn)
+                    throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateColumns)} of {typeof(Matrix<TScalar>).Name}", nameof(samples));
+            }
+
+            var param = new MatrixTemplateSizeParameter(templateRow, templateColumn);
+            using (var inSamples = new StdVector<Matrix<TScalar>>(sampleArray, param))
+            using (var inLabels = new StdVector<TScalar>(labelsArray))
+            {
+                var type = first.MatrixElementType.ToNativeMatrixElementType();
+                var error = NativeMethods.rank_features(kcentroid.KernelBase.KernelType.ToNativeKernelType(),
+                                                        type,
+                                                        templateRow,
+                                                        templateColumn,
+                                                        kcentroid.NativePtr,
+                                                        inSamples.NativePtr,
+                                                        inLabels.NativePtr,
+                                                        out var ret);
+                switch (error)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{type} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(first.TemplateColumns)} or {nameof(first.TemplateRows)} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{kcentroid.KernelBase.KernelType} is not supported.");
+                }
+
+                return new Matrix<TScalar>(ret, 0, 2);
+            }
+        }
+
         #endregion
 
     }

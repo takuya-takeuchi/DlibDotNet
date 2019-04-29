@@ -234,6 +234,7 @@ switch(type)\
 #define matrix_template_size_template(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 if (__ROWS__ == 0 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }\
 else if (__ROWS__ == 0 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 0, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 1 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 1, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 1 && __COLUMNS__ == 3) { __SUB_FUNC__(__TYPE__, error, type, 1, 3, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 2, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 2) { __SUB_FUNC__(__TYPE__, error, type, 2, 2, __VA_ARGS__); }\
@@ -256,6 +257,7 @@ else { error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT; }
 #define matrix_template_size4_template(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 if (__ROWS__ == 0 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }\
 else if (__ROWS__ == 0 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 0, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 1 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 1, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 1 && __COLUMNS__ == 3) { __SUB_FUNC__(__TYPE__, error, type, 1, 3, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 2, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 5 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 5, 1, __VA_ARGS__); }\
@@ -271,6 +273,7 @@ else { error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT; }
 #define matrix_template_size_column1or0_template(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 if (__ROWS__ == 0 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }\
 else if (__ROWS__ == 0 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 0, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 1 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 1, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 2, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 5 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 5, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 31 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 31, 1, __VA_ARGS__); }\
