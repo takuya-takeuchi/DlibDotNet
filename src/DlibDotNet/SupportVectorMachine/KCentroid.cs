@@ -12,7 +12,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private readonly KernelBase _KernelBase;
+        private readonly KernelBaseParameter _Parameter;
 
         private readonly Bridge<TScalar> _Bridge;
 
@@ -30,13 +30,13 @@ namespace DlibDotNet
 
             kernelBase.ThrowIfDisposed();
 
-            this._Bridge = CreateBridge(kernelBase);
+            this._Bridge = CreateBridge(new KernelBaseParameter(kernelBase));
 
-            this._KernelBase = kernelBase;
-            var error = NativeMethods.kcentroid_new(this._KernelBase.KernelType.ToNativeKernelType(),
-                                                    this._KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                    this._KernelBase.TemplateRows,
-                                                    this._KernelBase.TemplateColumns,
+            this._Parameter = new KernelBaseParameter(kernelBase);
+            var error = NativeMethods.kcentroid_new(this._Parameter.KernelType.ToNativeKernelType(),
+                                                    this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                    this._Parameter.TemplateRows,
+                                                    this._Parameter.TemplateColumns,
                                                     kernelBase.NativePtr,
                                                     tolerance,
                                                     maxDictionarySize,
@@ -45,24 +45,24 @@ namespace DlibDotNet
             switch (error)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                    throw new ArgumentException($"{this._KernelBase.SampleType} is not supported.");
+                    throw new ArgumentException($"{this._Parameter.SampleType} is not supported.");
                 case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
-                    throw new ArgumentException($"{nameof(this._KernelBase.TemplateColumns)} or {nameof(this._KernelBase.TemplateRows)} is not supported.");
+                    throw new ArgumentException($"{nameof(this._Parameter.TemplateColumns)} or {nameof(this._Parameter.TemplateRows)} is not supported.");
                 case NativeMethods.ErrorType.SvmKernelNotSupport:
-                    throw new ArgumentException($"{this._KernelBase.KernelType} is not supported.");
+                    throw new ArgumentException($"{this._Parameter.KernelType} is not supported.");
             }
 
             this.NativePtr = ret;
         }
 
         internal KCentroid(IntPtr ptr,
-                           KernelBase kernelBase,
+                           KernelBaseParameter parameter,
                            bool isEnabledDispose = true) :
             base(isEnabledDispose)
         {
-            this._Bridge = CreateBridge(kernelBase);
+            this._Bridge = CreateBridge(parameter);
 
-            this._KernelBase = kernelBase;
+            this._Parameter = parameter;
             this.NativePtr = ptr;
         }
 
@@ -75,10 +75,10 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                NativeMethods.kcentroid_dictionary_size(this._KernelBase.KernelType.ToNativeKernelType(),
-                                                        this._KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                        this._KernelBase.TemplateRows,
-                                                        this._KernelBase.TemplateColumns,
+                NativeMethods.kcentroid_dictionary_size(this._Parameter.KernelType.ToNativeKernelType(),
+                                                        this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                        this._Parameter.TemplateRows,
+                                                        this._Parameter.TemplateColumns,
                                                         this.NativePtr,
                                                         out var ret);
 
@@ -86,7 +86,7 @@ namespace DlibDotNet
             }
         }
 
-        internal KernelBase KernelBase => this._KernelBase;
+        internal KernelBaseParameter Parameter => this._Parameter;
 
         public TKernel Kernel
         {
@@ -94,17 +94,17 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
 
-                var error = NativeMethods.kcentroid_get_kernel(this._KernelBase.KernelType.ToNativeKernelType(),
-                                                               this._KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                               this._KernelBase.TemplateRows,
-                                                               this._KernelBase.TemplateColumns,
+                var error = NativeMethods.kcentroid_get_kernel(this._Parameter.KernelType.ToNativeKernelType(),
+                                                               this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                               this._Parameter.TemplateRows,
+                                                               this._Parameter.TemplateColumns,
                                                                this.NativePtr,
                                                                out var ret);
 
                 return KernelFactory.Create<TKernel, TScalar, Matrix<TScalar>>(ret, 
-                                                                               this._KernelBase.KernelType,
-                                                                               this._KernelBase.TemplateRows,
-                                                                               this._KernelBase.TemplateColumns,
+                                                                               this._Parameter.KernelType,
+                                                                               this._Parameter.TemplateRows,
+                                                                               this._Parameter.TemplateColumns,
                                                                                false);
             }
         }
@@ -118,6 +118,7 @@ namespace DlibDotNet
             if (sample == null)
                 throw new ArgumentNullException(nameof(sample));
 
+            this.ThrowIfDisposed();
             sample.ThrowIfDisposed();
 
             return this._Bridge.Operator(this.NativePtr, sample);
@@ -128,6 +129,7 @@ namespace DlibDotNet
             if (sample == null)
                 throw new ArgumentNullException(nameof(sample));
 
+            this.ThrowIfDisposed();
             sample.ThrowIfDisposed();
 
             this._Bridge.Train(this.NativePtr, sample);
@@ -145,10 +147,10 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.kcentroid_delete(this._KernelBase.KernelType.ToNativeKernelType(),
-                                           this._KernelBase.SampleType.ToNativeMatrixElementType(),
-                                           this._KernelBase.TemplateRows,
-                                           this._KernelBase.TemplateColumns,
+            NativeMethods.kcentroid_delete(this._Parameter.KernelType.ToNativeKernelType(),
+                                           this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                           this._Parameter.TemplateRows,
+                                           this._Parameter.TemplateColumns,
                                            this.NativePtr);
         }
 
@@ -156,14 +158,14 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private static Bridge<TScalar> CreateBridge(KernelBase kernel)
+        private static Bridge<TScalar> CreateBridge(KernelBaseParameter parameter)
         {
-            switch (kernel.SampleType)
+            switch (parameter.SampleType)
             {
                 case MatrixElementTypes.Float:
-                    return new FloatBridge(kernel) as Bridge<TScalar>;
+                    return new FloatBridge(parameter) as Bridge<TScalar>;
                 case MatrixElementTypes.Double:
-                    return new DoubleBridge(kernel) as Bridge<TScalar>;
+                    return new DoubleBridge(parameter) as Bridge<TScalar>;
                 default:
                     throw new NotSupportedException();
             }
@@ -179,16 +181,16 @@ namespace DlibDotNet
 
             #region Constructors
 
-            protected Bridge(KernelBase kernel)
+            protected Bridge(KernelBaseParameter parameter)
             {
-                this.Kernel = kernel;
+                this.Parameter = parameter;
             }
 
             #endregion
 
             #region Properties
 
-            protected KernelBase Kernel
+            protected KernelBaseParameter Parameter
             {
                 get;
             }
@@ -210,8 +212,8 @@ namespace DlibDotNet
 
             #region Constructors
 
-            public FloatBridge(KernelBase kernel) :
-                base(kernel)
+            public FloatBridge(KernelBaseParameter parameter) :
+                base(parameter)
             {
             }
 
@@ -221,10 +223,10 @@ namespace DlibDotNet
 
             public override float Operator(IntPtr obj, Matrix<float> sample)
             {
-                var err = NativeMethods.kcentroid_operator_float(this.Kernel.KernelType.ToNativeKernelType(),
-                                                                 this.Kernel.SampleType.ToNativeMatrixElementType(),
-                                                                 this.Kernel.TemplateRows,
-                                                                 this.Kernel.TemplateColumns,
+                var err = NativeMethods.kcentroid_operator_float(this.Parameter.KernelType.ToNativeKernelType(),
+                                                                 this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                 this.Parameter.TemplateRows,
+                                                                 this.Parameter.TemplateColumns,
                                                                  obj,
                                                                  sample.NativePtr,
                                                                  out var ret);
@@ -233,10 +235,10 @@ namespace DlibDotNet
 
             public override void Train(IntPtr obj, Matrix<float> sample)
             {
-                var err = NativeMethods.kcentroid_train_float(this.Kernel.KernelType.ToNativeKernelType(),
-                                                              this.Kernel.SampleType.ToNativeMatrixElementType(),
-                                                              this.Kernel.TemplateRows,
-                                                              this.Kernel.TemplateColumns,
+                var err = NativeMethods.kcentroid_train_float(this.Parameter.KernelType.ToNativeKernelType(),
+                                                              this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                              this.Parameter.TemplateRows,
+                                                              this.Parameter.TemplateColumns,
                                                               obj,
                                                               sample.NativePtr);
             }
@@ -250,8 +252,8 @@ namespace DlibDotNet
 
             #region Constructors
 
-            public DoubleBridge(KernelBase kernel) :
-                base(kernel)
+            public DoubleBridge(KernelBaseParameter parameter) :
+                base(parameter)
             {
             }
 
@@ -261,10 +263,10 @@ namespace DlibDotNet
 
             public override double Operator(IntPtr obj, Matrix<double> sample)
             {
-                var err = NativeMethods.kcentroid_operator_double(this.Kernel.KernelType.ToNativeKernelType(),
-                                                                  this.Kernel.SampleType.ToNativeMatrixElementType(),
-                                                                  this.Kernel.TemplateRows,
-                                                                  this.Kernel.TemplateColumns,
+                var err = NativeMethods.kcentroid_operator_double(this.Parameter.KernelType.ToNativeKernelType(),
+                                                                  this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                  this.Parameter.TemplateRows,
+                                                                  this.Parameter.TemplateColumns,
                                                                   obj,
                                                                   sample.NativePtr,
                                                                   out var ret);
@@ -273,10 +275,10 @@ namespace DlibDotNet
 
             public override void Train(IntPtr obj, Matrix<double> sample)
             {
-                var err = NativeMethods.kcentroid_train_double(this.Kernel.KernelType.ToNativeKernelType(),
-                                                               this.Kernel.SampleType.ToNativeMatrixElementType(),
-                                                               this.Kernel.TemplateRows,
-                                                               this.Kernel.TemplateColumns,
+                var err = NativeMethods.kcentroid_train_double(this.Parameter.KernelType.ToNativeKernelType(),
+                                                               this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                               this.Parameter.TemplateRows,
+                                                               this.Parameter.TemplateColumns,
                                                                obj,
                                                                sample.NativePtr);
             }

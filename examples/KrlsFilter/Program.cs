@@ -97,7 +97,7 @@ namespace KrlsFilter
 
         #region Helpers
 
-        // Here is the sinc function we will be trying to learn with the kcentroid 
+        // Here is the function we will be trying to learn with the krls
         // object.
         private static double Sinc(double x)
         {

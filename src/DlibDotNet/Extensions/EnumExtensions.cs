@@ -204,7 +204,7 @@ namespace DlibDotNet.Extensions
         {
             switch (kernelType)
             {
-                case KernelType.Histogramintersection:
+                case KernelType.HistogramIntersection:
                     return NativeMethods.KernelType.Histogramintersection;
                 case KernelType.Linear:
                     return NativeMethods.KernelType.Linear;

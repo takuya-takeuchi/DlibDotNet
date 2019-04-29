@@ -77,6 +77,32 @@ namespace DlibDotNet
                                                          IntPtr x,
                                                          double y);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType krls_get_decision_function(KernelType kernelType,
+                                                                  MatrixElementType type,
+                                                                  int templateRows,
+                                                                  int templateColumns,
+                                                                  IntPtr krls,
+                                                                  out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType serialize_krls(KernelType kernelType,
+                                                      MatrixElementType type,
+                                                      int templateRows,
+                                                      int templateColumns,
+                                                      IntPtr obj, 
+                                                      byte[] filName,
+                                                      out IntPtr errorMessage);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType deserialize_krls(byte[] filName,
+                                                        KernelType kernelType,
+                                                        MatrixElementType matrixElementType,
+                                                        int templateRows,
+                                                        int templateColumns,
+                                                        IntPtr obj, 
+                                                        out IntPtr errorMessage);
+
     }
 
 }

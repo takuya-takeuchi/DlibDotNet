@@ -5,7 +5,7 @@ namespace DlibDotNet
     public enum KernelType
     {
 
-        Histogramintersection,
+        HistogramIntersection,
 
         Linear,
 

@@ -102,6 +102,28 @@ DLLEXPORT int krls_train_##__TTYPENAME__(kernel_type kernel_type,\
     return error;\
 }\
 
+#define serialize_krls_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
+auto& k = *static_cast<dlib::krls<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(krls);\
+dlib::serialize(file_name) << k;
+
+#define serialize_krls_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, serialize_krls_template_sub, __VA_ARGS__)
+
+#define deserialize_krls_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
+auto& k = *static_cast<dlib::krls<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(krls);\
+dlib::deserialize(file_name) >> k;\
+
+#define deserialize_krls_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, deserialize_krls_template_sub, __VA_ARGS__)
+
+#define krls_get_decision_function_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
+auto k = static_cast<dlib::krls<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(krls);\
+auto r = k->get_decision_function();\
+*ret = new decision_function<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>(r);
+
+#define krls_get_decision_function_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, krls_get_decision_function_template_sub, __VA_ARGS__)
+
 #pragma endregion
 
 DLLEXPORT int krls_new(kernel_type kernel_type,
@@ -171,11 +193,11 @@ DLLEXPORT int krls_get_kernel(kernel_type kernel_type,
 }
 
 DLLEXPORT int krls_dictionary_size(kernel_type kernel_type,
-                                        matrix_element_type type,
-                                        const int templateRows,
-                                        const int templateColumns,
-                                        void* krls,
-                                        unsigned long* ret)
+                                   matrix_element_type type,
+                                   const int templateRows,
+                                   const int templateColumns,
+                                   void* krls,
+                                   unsigned long* ret)
 {
     int error = ERR_OK;
     
@@ -194,5 +216,90 @@ DLLEXPORT int krls_dictionary_size(kernel_type kernel_type,
 
 MAKE_FUNC(double, double)
 MAKE_FUNC(float, float)
+
+DLLEXPORT int serialize_krls(kernel_type kernel_type,
+                             matrix_element_type type,
+                             const int templateRows,
+                             const int templateColumns,
+                             void* krls,
+                             const char* file_name,
+                             std::string** error_message)
+{
+    int error = ERR_OK;
+
+    try
+    {
+        matrix_decimal_template(type,
+                                error,
+                                matrix_template_size_column1or0_template,
+                                serialize_krls_template,
+                                templateRows,
+                                templateColumns,
+                                kernel_type,
+                                krls,
+                                file_name);
+    }
+    catch (serialization_error& e)
+    {
+        error = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+
+    return error;
+}
+
+DLLEXPORT int deserialize_krls(const char* file_name,
+                               kernel_type kernel_type,
+                               matrix_element_type type,
+                               const int templateRows,
+                               const int templateColumns,
+                               void* krls,
+                               std::string** error_message)
+{
+    int error = ERR_OK;
+
+    try
+    {
+        matrix_decimal_template(type,
+                                error,
+                                matrix_template_size_column1or0_template,
+                                deserialize_krls_template,
+                                templateRows,
+                                templateColumns,
+                                kernel_type,
+                                file_name,
+                                krls);
+    }
+    catch (serialization_error& e)
+    {
+        error = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+
+    return error;
+}
+
+DLLEXPORT int krls_get_decision_function(kernel_type kernel_type,
+                                         matrix_element_type type,
+                                         const int templateRows,
+                                         const int templateColumns,
+                                         void* krls,
+                                         void** ret)
+{
+    int error = ERR_OK;
+    *ret = nullptr;
+
+    matrix_decimal_template(type,
+                            error,
+                            matrix_template_size_column1or0_template,
+                            krls_get_decision_function_template,
+                            templateRows,
+                            templateColumns,
+                            kernel_type,
+                            krls,
+                            ret);
+
+    return error;
+}
 
 #endif

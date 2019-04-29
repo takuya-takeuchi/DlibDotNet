@@ -19,7 +19,7 @@ namespace DlibDotNet
         #region Constructors
 
         public HistogramIntersectionKernel(int templateRow = 0, int templateColumn = 0) :
-            base(KernelType.Histogramintersection, templateRow, templateColumn)
+            base(KernelType.HistogramIntersection, templateRow, templateColumn)
         {
             if (!KernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
@@ -45,7 +45,7 @@ namespace DlibDotNet
         }
 
         internal HistogramIntersectionKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
-            base(KernelType.Histogramintersection, templateRow, templateColumn, isEnabledDispose)
+            base(KernelType.HistogramIntersection, templateRow, templateColumn, isEnabledDispose)
         {
             Matrix<TScalar>.TryParse<TScalar>(out var type);
             this.SampleType = type;

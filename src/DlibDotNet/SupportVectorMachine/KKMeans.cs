@@ -26,23 +26,22 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(kcentroid));
 
             kcentroid.ThrowIfDisposed();
-            kcentroid.KernelBase.ThrowIfDisposed();
 
             this._KCentroid = kcentroid;
-            var error = NativeMethods.kkmeans_new(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                  this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                  this._KCentroid.KernelBase.TemplateRows,
-                                                  this._KCentroid.KernelBase.TemplateColumns,
+            var error = NativeMethods.kkmeans_new(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                  this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                  this._KCentroid.Parameter.TemplateRows,
+                                                  this._KCentroid.Parameter.TemplateColumns,
                                                   kcentroid.NativePtr,
                                                   out var ret);
             switch (error)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                    throw new ArgumentException($"{this._KCentroid.KernelBase.SampleType} is not supported.");
+                    throw new ArgumentException($"{this._KCentroid.Parameter.SampleType} is not supported.");
                 case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
-                    throw new ArgumentException($"{nameof(this._KCentroid.KernelBase.TemplateColumns)} or {nameof(this._KCentroid.KernelBase.TemplateRows)} is not supported.");
+                    throw new ArgumentException($"{nameof(this._KCentroid.Parameter.TemplateColumns)} or {nameof(this._KCentroid.Parameter.TemplateRows)} is not supported.");
                 case NativeMethods.ErrorType.SvmKernelNotSupport:
-                    throw new ArgumentException($"{this._KCentroid.KernelBase.KernelType} is not supported.");
+                    throw new ArgumentException($"{this._KCentroid.Parameter.KernelType} is not supported.");
             }
 
             this.NativePtr = ret;
@@ -57,10 +56,10 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                NativeMethods.kkmeans_get_number_of_centers(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                            this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                            this._KCentroid.KernelBase.TemplateRows,
-                                                            this._KCentroid.KernelBase.TemplateColumns,
+                NativeMethods.kkmeans_get_number_of_centers(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                            this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                            this._KCentroid.Parameter.TemplateRows,
+                                                            this._KCentroid.Parameter.TemplateColumns,
                                                             this.NativePtr,
                                                             out var ret);
 
@@ -72,10 +71,10 @@ namespace DlibDotNet
                     throw new ArgumentOutOfRangeException();
 
                 this.ThrowIfDisposed();
-                NativeMethods.kkmeans_set_number_of_centers(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                            this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                            this._KCentroid.KernelBase.TemplateRows,
-                                                            this._KCentroid.KernelBase.TemplateColumns,
+                NativeMethods.kkmeans_set_number_of_centers(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                            this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                            this._KCentroid.Parameter.TemplateRows,
+                                                            this._KCentroid.Parameter.TemplateColumns,
                                                             this.NativePtr,
                                                             value);
             }
@@ -87,7 +86,7 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
 
-                var kernelBase = this._KCentroid.KernelBase;
+                var kernelBase = this._KCentroid.Parameter;
                 var error = NativeMethods.kkmeans_get_kernel(kernelBase.KernelType.ToNativeKernelType(),
                                                              kernelBase.SampleType.ToNativeMatrixElementType(),
                                                              kernelBase.TemplateRows,
@@ -112,15 +111,15 @@ namespace DlibDotNet
             if (!(0 <= index && index < this.NumberOfCenters))
                 throw new ArgumentOutOfRangeException();
 
-            var ret = NativeMethods.kkmeans_get_kcentroid(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                          this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                          this._KCentroid.KernelBase.TemplateRows,
-                                                          this._KCentroid.KernelBase.TemplateColumns,
+            var ret = NativeMethods.kkmeans_get_kcentroid(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                          this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                          this._KCentroid.Parameter.TemplateRows,
+                                                          this._KCentroid.Parameter.TemplateColumns,
                                                           this.NativePtr,
                                                           (uint)index,
                                                           out var kcentroid);
 
-            return new KCentroid<TScalar, TKernel>(kcentroid, this._KCentroid.KernelBase, false);
+            return new KCentroid<TScalar, TKernel>(kcentroid, this._KCentroid.Parameter, false);
         }
 
         public uint Operator(Matrix<TScalar> sample)
@@ -130,10 +129,10 @@ namespace DlibDotNet
 
             sample.ThrowIfDisposed();
 
-            var error = NativeMethods.kkmeans_operator(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                       this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                       this._KCentroid.KernelBase.TemplateRows,
-                                                       this._KCentroid.KernelBase.TemplateColumns,
+            var error = NativeMethods.kkmeans_operator(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                       this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                       this._KCentroid.Parameter.TemplateRows,
+                                                       this._KCentroid.Parameter.TemplateColumns,
                                                        this.NativePtr,
                                                        sample.NativePtr,
                                                        out var ret);
@@ -148,10 +147,10 @@ namespace DlibDotNet
 
             kcentroid.ThrowIfDisposed();
 
-            var ret = NativeMethods.kkmeans_set_kcentroid(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                          this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                          this._KCentroid.KernelBase.TemplateRows,
-                                                          this._KCentroid.KernelBase.TemplateColumns,
+            var ret = NativeMethods.kkmeans_set_kcentroid(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                          this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                          this._KCentroid.Parameter.TemplateRows,
+                                                          this._KCentroid.Parameter.TemplateColumns,
                                                           this.NativePtr,
                                                           kcentroid.NativePtr);
         }
@@ -171,10 +170,10 @@ namespace DlibDotNet
             using (var samplesVector = new StdVector<Matrix<TScalar>>(samplesArray))
             using (var initialCentersVector = new StdVector<Matrix<TScalar>>(initialCentersArray))
             {
-                var ret = NativeMethods.kkmeans_train(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                                      this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                                      this._KCentroid.KernelBase.TemplateRows,
-                                                      this._KCentroid.KernelBase.TemplateColumns,
+                var ret = NativeMethods.kkmeans_train(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                      this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                      this._KCentroid.Parameter.TemplateRows,
+                                                      this._KCentroid.Parameter.TemplateColumns,
                                                       this.NativePtr,
                                                       samplesVector.NativePtr,
                                                       initialCentersVector.NativePtr,
@@ -194,10 +193,10 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.kkmeans_delete(this._KCentroid.KernelBase.KernelType.ToNativeKernelType(),
-                                         this._KCentroid.KernelBase.SampleType.ToNativeMatrixElementType(),
-                                         this._KCentroid.KernelBase.TemplateRows,
-                                         this._KCentroid.KernelBase.TemplateColumns,
+            NativeMethods.kkmeans_delete(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                         this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                         this._KCentroid.Parameter.TemplateRows,
+                                         this._KCentroid.Parameter.TemplateColumns,
                                          this.NativePtr);
         }
 

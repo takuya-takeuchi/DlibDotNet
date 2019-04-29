@@ -207,7 +207,7 @@ namespace DlibDotNet
             using (var inLabels = new StdVector<TScalar>(labelsArray))
             {
                 var type = first.MatrixElementType.ToNativeMatrixElementType();
-                var error = NativeMethods.rank_features(kcentroid.KernelBase.KernelType.ToNativeKernelType(),
+                var error = NativeMethods.rank_features(kcentroid.Parameter.KernelType.ToNativeKernelType(),
                                                         type,
                                                         templateRow,
                                                         templateColumn,
@@ -222,7 +222,7 @@ namespace DlibDotNet
                     case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(first.TemplateColumns)} or {nameof(first.TemplateRows)} is not supported.");
                     case NativeMethods.ErrorType.SvmKernelNotSupport:
-                        throw new ArgumentException($"{kcentroid.KernelBase.KernelType} is not supported.");
+                        throw new ArgumentException($"{kcentroid.Parameter.KernelType} is not supported.");
                 }
 
                 return new Matrix<TScalar>(ret, 0, 2);
