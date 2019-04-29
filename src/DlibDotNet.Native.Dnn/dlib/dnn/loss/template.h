@@ -354,20 +354,20 @@ DLLEXPORT void __TYPENAME__##_net_to_xml(void* obj, const int type, const char* 
 DLLEXPORT void __TYPENAME__##_subnet_delete(const int type, void* subnet)\
 {\
     int error = ERR_OK;\
-    ##__TYPENAME__##_template(type,\
-                              error,\
-                              subnet_delete_template,\
-                              subnet);\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            subnet_delete_template,\
+                            subnet);\
 }\
 \
 DLLEXPORT const dlib::tensor* __TYPENAME__##_subnet_get_output(void* subnet, const int type, int* ret)\
 {\
     int error = ERR_OK;\
-    ##__TYPENAME__##_template(type,\
-                              error,\
-                              subnet_get_output_template,\
-                              subnet,\
-                              ret);\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            subnet_get_output_template,\
+                            subnet,\
+                            ret);\
 \
     *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
     return nullptr;\
@@ -376,11 +376,11 @@ DLLEXPORT const dlib::tensor* __TYPENAME__##_subnet_get_output(void* subnet, con
 DLLEXPORT void* __TYPENAME__##_subnet_get_layer_details(void* subnet, const int type, int* ret)\
 {\
     int error = ERR_OK;\
-    ##__TYPENAME__##_template(type,\
-                              error,\
-                              subnet_get_layer_details_template,\
-                              subnet,\
-                              ret);\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            subnet_get_layer_details_template,\
+                            subnet,\
+                            ret);\
 \
     *ret = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
     return nullptr;\
@@ -654,11 +654,11 @@ DLLEXPORT int __TYPENAME__##_operator_left_shift(void* obj, const int type, std:
 {\
     int error = ERR_OK;\
 \
-    ##__TYPENAME__##_template(type,\
-                              error,\
-                              loss_operator_left_shift_template,\
-                              obj,\
-                              stream);\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            loss_operator_left_shift_template,\
+                            obj,\
+                            stream);\
 \
     return error;\
 }\
