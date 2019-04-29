@@ -1705,6 +1705,11 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.DecisionFunction`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.KCentroid`2.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
@@ -1736,6 +1741,11 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.KKMeans`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Krls`2.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

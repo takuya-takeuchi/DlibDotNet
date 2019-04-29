@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType spectral_cluster(KernelType kernelType,
+        public static extern ErrorType spectral_cluster(SvmKernelType kernelType,
                                                         MatrixElementType type,
                                                         int templateRows,
                                                         int templateColumns,

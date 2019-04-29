@@ -10,7 +10,7 @@ namespace DlibDotNet
 
         #region Constructors
 
-        protected KernelBase(KernelType kernelType, int templateRow, int templateColumn, bool isEnabledDispose = true)
+        protected KernelBase(SvmKernelType kernelType, int templateRow, int templateColumn, bool isEnabledDispose = true)
         {
             this.KernelType = kernelType;
             this.TemplateRows = templateRow;
@@ -21,7 +21,7 @@ namespace DlibDotNet
 
         #region Properties
 
-        public KernelType KernelType
+        public SvmKernelType KernelType
         {
             get;
         }

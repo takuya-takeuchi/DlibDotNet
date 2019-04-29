@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_new(KernelType kernelType, 
+        public static extern ErrorType kkmeans_new(SvmKernelType kernelType, 
                                                    MatrixElementType type,
                                                    int templateRows,
                                                    int templateColumns,
@@ -17,14 +17,14 @@ namespace DlibDotNet
                                                    out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void kkmeans_delete(KernelType kernelType,
+        public static extern void kkmeans_delete(SvmKernelType kernelType,
                                                  MatrixElementType type,
                                                  int templateRows,
                                                  int templateColumns,
                                                  IntPtr kkmeans);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_get_kernel(KernelType kernelType,
+        public static extern ErrorType kkmeans_get_kernel(SvmKernelType kernelType,
                                                           MatrixElementType type,
                                                           int templateRows,
                                                           int templateColumns,
@@ -32,7 +32,7 @@ namespace DlibDotNet
                                                           out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_set_number_of_centers(KernelType kernelType,
+        public static extern ErrorType kkmeans_set_number_of_centers(SvmKernelType kernelType,
                                                                      MatrixElementType type,
                                                                      int templateRows,
                                                                      int templateColumns,
@@ -40,7 +40,7 @@ namespace DlibDotNet
                                                                      uint num);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_get_number_of_centers(KernelType kernelType,
+        public static extern ErrorType kkmeans_get_number_of_centers(SvmKernelType kernelType,
                                                                      MatrixElementType type,
                                                                      int templateRows,
                                                                      int templateColumns,
@@ -48,7 +48,7 @@ namespace DlibDotNet
                                                                      out uint num);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_set_kcentroid(KernelType kernelType,
+        public static extern ErrorType kkmeans_set_kcentroid(SvmKernelType kernelType,
                                                              MatrixElementType type,
                                                              int templateRows,
                                                              int templateColumns,
@@ -56,7 +56,7 @@ namespace DlibDotNet
                                                              IntPtr kcentroid);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_get_kcentroid(KernelType kernelType,
+        public static extern ErrorType kkmeans_get_kcentroid(SvmKernelType kernelType,
                                                              MatrixElementType type,
                                                              int templateRows,
                                                              int templateColumns,
@@ -65,7 +65,7 @@ namespace DlibDotNet
                                                              out IntPtr kcentroid);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_operator(KernelType kernelType,
+        public static extern ErrorType kkmeans_operator(SvmKernelType kernelType,
                                                         MatrixElementType type,
                                                         int templateRows,
                                                         int templateColumns,
@@ -74,7 +74,7 @@ namespace DlibDotNet
                                                         out uint ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType kkmeans_train(KernelType kernelType,
+        public static extern ErrorType kkmeans_train(SvmKernelType kernelType,
                                                      MatrixElementType type,
                                                      int templateRows,
                                                      int templateColumns,

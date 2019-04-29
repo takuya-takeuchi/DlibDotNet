@@ -206,7 +206,7 @@ namespace DlibDotNet
 
         }
 
-        internal enum KernelType
+        internal enum SvmKernelType
         {
 
             Histogramintersection,

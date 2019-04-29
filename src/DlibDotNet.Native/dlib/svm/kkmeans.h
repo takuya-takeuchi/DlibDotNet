@@ -207,7 +207,7 @@ DLLEXPORT int nearest_center(const matrix_element_type type,
 
 #pragma region pick_initial_centers
 
-DLLEXPORT int pick_initial_centers(kernel_type kernel_type,
+DLLEXPORT int pick_initial_centers(svm_kernel_type kernel_type,
                                    const matrix_element_type type,
                                    const int templateRows,
                                    const int templateColumns,
@@ -237,7 +237,7 @@ DLLEXPORT int pick_initial_centers(kernel_type kernel_type,
 
 #pragma endregion pick_initial_centers
 
-DLLEXPORT int kkmeans_new(kernel_type kernel_type,
+DLLEXPORT int kkmeans_new(svm_kernel_type kernel_type,
                           matrix_element_type type,
                           const int templateRows,
                           const int templateColumns,
@@ -259,7 +259,7 @@ DLLEXPORT int kkmeans_new(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT void kkmeans_delete(kernel_type kernel_type,
+DLLEXPORT void kkmeans_delete(svm_kernel_type kernel_type,
                               matrix_element_type type,
                               const int templateRows,
                               const int templateColumns,
@@ -277,7 +277,7 @@ DLLEXPORT void kkmeans_delete(kernel_type kernel_type,
                             kkmeans);
 }
 
-DLLEXPORT int kkmeans_get_kernel(kernel_type kernel_type,
+DLLEXPORT int kkmeans_get_kernel(svm_kernel_type kernel_type,
                                  matrix_element_type type,
                                  const int templateRows,
                                  const int templateColumns,
@@ -299,7 +299,7 @@ DLLEXPORT int kkmeans_get_kernel(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kkmeans_set_number_of_centers(kernel_type kernel_type,
+DLLEXPORT int kkmeans_set_number_of_centers(svm_kernel_type kernel_type,
                                             matrix_element_type type,
                                             const int templateRows,
                                             const int templateColumns,
@@ -321,7 +321,7 @@ DLLEXPORT int kkmeans_set_number_of_centers(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kkmeans_get_number_of_centers(kernel_type kernel_type,
+DLLEXPORT int kkmeans_get_number_of_centers(svm_kernel_type kernel_type,
                                             matrix_element_type type,
                                             const int templateRows,
                                             const int templateColumns,
@@ -343,7 +343,7 @@ DLLEXPORT int kkmeans_get_number_of_centers(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kkmeans_set_kcentroid(kernel_type kernel_type,
+DLLEXPORT int kkmeans_set_kcentroid(svm_kernel_type kernel_type,
                                     matrix_element_type type,
                                     const int templateRows,
                                     const int templateColumns,
@@ -365,7 +365,7 @@ DLLEXPORT int kkmeans_set_kcentroid(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kkmeans_get_kcentroid(kernel_type kernel_type,
+DLLEXPORT int kkmeans_get_kcentroid(svm_kernel_type kernel_type,
                                     matrix_element_type type,
                                     const int templateRows,
                                     const int templateColumns,
@@ -389,7 +389,7 @@ DLLEXPORT int kkmeans_get_kcentroid(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kkmeans_operator(kernel_type kernel_type,
+DLLEXPORT int kkmeans_operator(svm_kernel_type kernel_type,
                                matrix_element_type type,
                                const int templateRows,
                                const int templateColumns,
@@ -413,7 +413,7 @@ DLLEXPORT int kkmeans_operator(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kkmeans_train(kernel_type kernel_type,
+DLLEXPORT int kkmeans_train(svm_kernel_type kernel_type,
                             matrix_element_type type,
                             const int templateRows,
                             const int templateColumns,

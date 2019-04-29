@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_new(KernelType kernelType,
+        public static extern ErrorType krls_new(SvmKernelType kernelType,
                                                 MatrixElementType type,
                                                 int templateRows,
                                                 int templateColumns,
@@ -19,14 +19,14 @@ namespace DlibDotNet
                                                 out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void krls_delete(KernelType kernelType,
+        public static extern void krls_delete(SvmKernelType kernelType,
                                               MatrixElementType type,
                                               int templateRows,
                                               int templateColumns,
                                               IntPtr obj);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_dictionary_size(KernelType kernelType,
+        public static extern ErrorType krls_dictionary_size(SvmKernelType kernelType,
                                                             MatrixElementType type,
                                                             int templateRows,
                                                             int templateColumns,
@@ -34,7 +34,7 @@ namespace DlibDotNet
                                                             out uint ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_get_kernel(KernelType kernelType,
+        public static extern ErrorType krls_get_kernel(SvmKernelType kernelType,
                                                        MatrixElementType type,
                                                        int templateRows,
                                                        int templateColumns,
@@ -42,7 +42,7 @@ namespace DlibDotNet
                                                        out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_operator_float(KernelType kernelType,
+        public static extern ErrorType krls_operator_float(SvmKernelType kernelType,
                                                            MatrixElementType type,
                                                            int templateRows,
                                                            int templateColumns,
@@ -51,7 +51,7 @@ namespace DlibDotNet
                                                            out float ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_operator_double(KernelType kernelType,
+        public static extern ErrorType krls_operator_double(SvmKernelType kernelType,
                                                             MatrixElementType type,
                                                             int templateRows,
                                                             int templateColumns,
@@ -60,7 +60,7 @@ namespace DlibDotNet
                                                             out double ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_train_float(KernelType kernelType,
+        public static extern ErrorType krls_train_float(SvmKernelType kernelType,
                                                         MatrixElementType type,
                                                         int templateRows,
                                                         int templateColumns,
@@ -69,7 +69,7 @@ namespace DlibDotNet
                                                         float y);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_train_double(KernelType kernelType,
+        public static extern ErrorType krls_train_double(SvmKernelType kernelType,
                                                          MatrixElementType type,
                                                          int templateRows,
                                                          int templateColumns,
@@ -78,7 +78,7 @@ namespace DlibDotNet
                                                          double y);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType krls_get_decision_function(KernelType kernelType,
+        public static extern ErrorType krls_get_decision_function(SvmKernelType kernelType,
                                                                   MatrixElementType type,
                                                                   int templateRows,
                                                                   int templateColumns,
@@ -86,7 +86,7 @@ namespace DlibDotNet
                                                                   out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType serialize_krls(KernelType kernelType,
+        public static extern ErrorType serialize_krls(SvmKernelType kernelType,
                                                       MatrixElementType type,
                                                       int templateRows,
                                                       int templateColumns,
@@ -96,7 +96,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType deserialize_krls(byte[] filName,
-                                                        KernelType kernelType,
+                                                        SvmKernelType kernelType,
                                                         MatrixElementType matrixElementType,
                                                         int templateRows,
                                                         int templateColumns,

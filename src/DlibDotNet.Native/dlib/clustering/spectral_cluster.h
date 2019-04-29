@@ -32,7 +32,7 @@ kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel
 
 #pragma endregion template
 
-DLLEXPORT int spectral_cluster(kernel_type kernel_type,
+DLLEXPORT int spectral_cluster(svm_kernel_type kernel_type,
                                matrix_element_type type,
                                const int templateRows,
                                const int templateColumns,

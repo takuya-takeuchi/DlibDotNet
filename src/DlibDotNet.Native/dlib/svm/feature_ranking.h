@@ -34,7 +34,7 @@ kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel
 
 #pragma endregion template
 
-DLLEXPORT int rank_features(const kernel_type kernel_type,
+DLLEXPORT int rank_features(const svm_kernel_type kernel_type,
                             const matrix_element_type type,
                             const int templateRows,
                             const int templateColumns,

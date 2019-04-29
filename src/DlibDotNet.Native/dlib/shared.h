@@ -169,7 +169,7 @@ enum struct log_level : int
 
 };
 
-enum struct kernel_type : int
+enum struct svm_kernel_type : int
 {
 
     HistogramIntersection,

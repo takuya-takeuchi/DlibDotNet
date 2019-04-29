@@ -21,7 +21,7 @@ namespace DlibDotNet
         #region Constructors
 
         public RadialBasisKernel(TScalar gamma, int templateRow, int templateColumn) :
-            base(KernelType.RadialBasis, templateRow, templateColumn)
+            base(SvmKernelType.RadialBasis, templateRow, templateColumn)
         {
             if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
@@ -47,7 +47,7 @@ namespace DlibDotNet
         }
 
         internal RadialBasisKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
-            base(KernelType.RadialBasis, templateRow, templateColumn, isEnabledDispose)
+            base(SvmKernelType.RadialBasis, templateRow, templateColumn, isEnabledDispose)
         {
             Matrix<TScalar>.TryParse<TScalar>(out var type);
             this.SampleType = type;

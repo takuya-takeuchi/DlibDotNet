@@ -10,7 +10,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private static readonly Dictionary<Type, KernelType> SupportKernelTypes = new Dictionary<Type, KernelType>();
+        private static readonly Dictionary<Type, SvmKernelType> SupportKernelTypes = new Dictionary<Type, SvmKernelType>();
 
         private static readonly Dictionary<Type, MatrixElementTypes> SupportMatrixElementTypes = new Dictionary<Type, MatrixElementTypes>();
 
@@ -22,11 +22,11 @@ namespace DlibDotNet
         {
             var kernelTypes = new[]
             {
-                new {Type = typeof(HistogramIntersectionKernel<,>), KernelType = KernelType.HistogramIntersection },
-                new {Type = typeof(LinearKernel<,>),                KernelType = KernelType.Linear                },
-                new {Type = typeof(RadialBasisKernel<,>),           KernelType = KernelType.RadialBasis           },
-                new {Type = typeof(SigmoidKernel<,>),               KernelType = KernelType.Sigmoid               },
-                new {Type = typeof(PolynomialKernel<,>),            KernelType = KernelType.Polynomial            }
+                new {Type = typeof(HistogramIntersectionKernel<,>), KernelType = SvmKernelType.HistogramIntersection },
+                new {Type = typeof(LinearKernel<,>),                KernelType = SvmKernelType.Linear                },
+                new {Type = typeof(RadialBasisKernel<,>),           KernelType = SvmKernelType.RadialBasis           },
+                new {Type = typeof(SigmoidKernel<,>),               KernelType = SvmKernelType.Sigmoid               },
+                new {Type = typeof(PolynomialKernel<,>),            KernelType = SvmKernelType.Polynomial            }
             };
 
             var matrixElementTypes = new[]
@@ -46,7 +46,7 @@ namespace DlibDotNet
         #region Methods
 
         public static TKernel Create<TKernel, TScalar, TSample>(IntPtr ptr, 
-                                                                KernelType kernelType,
+                                                                SvmKernelType kernelType,
                                                                 int templateRow, 
                                                                 int templateColumn,
                                                                 bool isEnabledDispose = true)
@@ -56,15 +56,15 @@ namespace DlibDotNet
         {
             switch (kernelType)
             {
-                case KernelType.HistogramIntersection:
+                case SvmKernelType.HistogramIntersection:
                     return new HistogramIntersectionKernel<TScalar, TSample>(ptr, templateRow, templateColumn, isEnabledDispose) as TKernel;
-                case KernelType.Linear:
+                case SvmKernelType.Linear:
                     return new LinearKernel<TScalar, TSample>(ptr, templateRow, templateColumn, isEnabledDispose) as TKernel;
-                case KernelType.Polynomial:
+                case SvmKernelType.Polynomial:
                     return new PolynomialKernel<TScalar, TSample>(ptr, templateRow, templateColumn, isEnabledDispose) as TKernel;
-                case KernelType.RadialBasis:
+                case SvmKernelType.RadialBasis:
                     return new RadialBasisKernel<TScalar, TSample>(ptr, templateRow, templateColumn, isEnabledDispose) as TKernel;
-                case KernelType.Sigmoid:
+                case SvmKernelType.Sigmoid:
                     return new SigmoidKernel<TScalar, TSample>(ptr, templateRow, templateColumn, isEnabledDispose) as TKernel;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kernelType), kernelType, null);
@@ -82,13 +82,13 @@ namespace DlibDotNet
             return SupportMatrixElementTypes.TryGetValue(type, out result);
         }
 
-        public static bool TryParse<TKernel>(out KernelType result)
+        public static bool TryParse<TKernel>(out SvmKernelType result)
             where TKernel : KernelBase
         {
             return TryParse(typeof(TKernel), out result);
         }
 
-        public static bool TryParse(Type type, out KernelType result)
+        public static bool TryParse(Type type, out SvmKernelType result)
         {
             return SupportKernelTypes.TryGetValue(type, out result);
         }

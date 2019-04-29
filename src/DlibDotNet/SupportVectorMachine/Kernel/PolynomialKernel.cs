@@ -19,7 +19,7 @@ namespace DlibDotNet
         #region Constructors
 
         public PolynomialKernel(int templateRow = 0, int templateColumn = 0) :
-            base(KernelType.Polynomial, templateRow, templateColumn)
+            base(SvmKernelType.Polynomial, templateRow, templateColumn)
         {
             if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
@@ -45,7 +45,7 @@ namespace DlibDotNet
         }
 
         internal PolynomialKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
-            base(KernelType.Polynomial, templateRow, templateColumn, isEnabledDispose)
+            base(SvmKernelType.Polynomial, templateRow, templateColumn, isEnabledDispose)
         {
             Matrix<TScalar>.TryParse<TScalar>(out var type);
             this.SampleType = type;

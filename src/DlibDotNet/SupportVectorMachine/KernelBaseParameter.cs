@@ -12,7 +12,7 @@ namespace DlibDotNet
         {
         }
 
-        public KernelBaseParameter(KernelType kernelType, MatrixElementTypes sampleType, int templateRows, int templateColumns)
+        public KernelBaseParameter(SvmKernelType kernelType, MatrixElementTypes sampleType, int templateRows, int templateColumns)
         {
             this.KernelType = kernelType;
             this.SampleType = sampleType;
@@ -24,7 +24,7 @@ namespace DlibDotNet
 
         #region Properties
 
-        public KernelType KernelType
+        public SvmKernelType KernelType
         {
             get;
         }

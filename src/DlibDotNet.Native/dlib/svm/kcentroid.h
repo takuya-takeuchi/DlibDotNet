@@ -54,7 +54,7 @@ kcentroid.train(s);
 kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, kcentroid_train_template_sub, __VA_ARGS__)
 
 #define MAKE_FUNC(__TTYPE__, __TTYPENAME__)\
-DLLEXPORT int kcentroid_operator_##__TTYPENAME__(kernel_type kernel_type,\
+DLLEXPORT int kcentroid_operator_##__TTYPENAME__(svm_kernel_type kernel_type,\
                                                  matrix_element_type type,\
                                                  const int templateRows,\
                                                  const int templateColumns,\
@@ -78,7 +78,7 @@ DLLEXPORT int kcentroid_operator_##__TTYPENAME__(kernel_type kernel_type,\
     return error;\
 }\
 \
-DLLEXPORT int kcentroid_train_##__TTYPENAME__(kernel_type kernel_type,\
+DLLEXPORT int kcentroid_train_##__TTYPENAME__(svm_kernel_type kernel_type,\
                                               matrix_element_type type,\
                                               const int templateRows,\
                                               const int templateColumns,\
@@ -102,7 +102,7 @@ DLLEXPORT int kcentroid_train_##__TTYPENAME__(kernel_type kernel_type,\
 
 #pragma endregion
 
-DLLEXPORT int kcentroid_new(kernel_type kernel_type,
+DLLEXPORT int kcentroid_new(svm_kernel_type kernel_type,
                             matrix_element_type type,
                             const int templateRows,
                             const int templateColumns,
@@ -130,7 +130,7 @@ DLLEXPORT int kcentroid_new(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT void kcentroid_delete(kernel_type kernel_type,
+DLLEXPORT void kcentroid_delete(svm_kernel_type kernel_type,
                                 matrix_element_type type,
                                 const int templateRows,
                                 const int templateColumns,
@@ -148,7 +148,7 @@ DLLEXPORT void kcentroid_delete(kernel_type kernel_type,
                             obj);
 }
 
-DLLEXPORT int kcentroid_get_kernel(kernel_type kernel_type,
+DLLEXPORT int kcentroid_get_kernel(svm_kernel_type kernel_type,
                                    matrix_element_type type,
                                    const int templateRows,
                                    const int templateColumns,
@@ -170,7 +170,7 @@ DLLEXPORT int kcentroid_get_kernel(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int kcentroid_dictionary_size(kernel_type kernel_type,
+DLLEXPORT int kcentroid_dictionary_size(svm_kernel_type kernel_type,
                                         matrix_element_type type,
                                         const int templateRows,
                                         const int templateColumns,

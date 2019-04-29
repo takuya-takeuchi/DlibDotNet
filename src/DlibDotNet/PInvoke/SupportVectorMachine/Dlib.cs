@@ -26,7 +26,7 @@ namespace DlibDotNet
                                                                           IntPtr result);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType pick_initial_centers(KernelType kernelType, 
+        public static extern ErrorType pick_initial_centers(SvmKernelType kernelType, 
                                                             MatrixElementType elementType,
                                                             int templateRows,
                                                             int templateColumns,
@@ -37,7 +37,7 @@ namespace DlibDotNet
                                                             double percentile);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType rank_features(KernelType kernelType, 
+        public static extern ErrorType rank_features(SvmKernelType kernelType, 
                                                      MatrixElementType type,
                                                      int templateRows,
                                                      int templateColumns,

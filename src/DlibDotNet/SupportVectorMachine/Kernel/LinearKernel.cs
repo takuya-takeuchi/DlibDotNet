@@ -19,7 +19,7 @@ namespace DlibDotNet
         #region Constructors
 
         public LinearKernel(int templateRow = 0, int templateColumn = 0) :
-            base(KernelType.Linear, templateRow, templateColumn)
+            base(SvmKernelType.Linear, templateRow, templateColumn)
         {
             if (!KernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
@@ -45,7 +45,7 @@ namespace DlibDotNet
         }
 
         internal LinearKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
-            base(KernelType.Linear, templateRow, templateColumn, isEnabledDispose)
+            base(SvmKernelType.Linear, templateRow, templateColumn, isEnabledDispose)
         {
             Matrix<TScalar>.TryParse<TScalar>(out var type);
             this.SampleType = type;

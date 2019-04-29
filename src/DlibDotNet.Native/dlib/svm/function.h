@@ -33,7 +33,7 @@ kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel
 
 #pragma endregion
 
-DLLEXPORT void decision_function_delete(kernel_type kernel_type,
+DLLEXPORT void decision_function_delete(svm_kernel_type kernel_type,
                                         matrix_element_type type,
                                         const int templateRows,
                                         const int templateColumns,
@@ -51,7 +51,7 @@ DLLEXPORT void decision_function_delete(kernel_type kernel_type,
                             function);
 }
 
-DLLEXPORT int serialize_decision_function(kernel_type kernel_type,
+DLLEXPORT int serialize_decision_function(svm_kernel_type kernel_type,
                                           matrix_element_type type,
                                           const int templateRows,
                                           const int templateColumns,
@@ -83,7 +83,7 @@ DLLEXPORT int serialize_decision_function(kernel_type kernel_type,
 }
 
 DLLEXPORT int deserialize_decision_function(const char* file_name,
-                                            kernel_type kernel_type,
+                                            svm_kernel_type kernel_type,
                                             matrix_element_type type,
                                             const int templateRows,
                                             const int templateColumns,

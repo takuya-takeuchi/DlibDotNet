@@ -54,7 +54,7 @@ krls.train(in_x, y);
 kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, krls_train_template_sub, __VA_ARGS__)
 
 #define MAKE_FUNC(__TTYPE__, __TTYPENAME__)\
-DLLEXPORT int krls_operator_##__TTYPENAME__(kernel_type kernel_type,\
+DLLEXPORT int krls_operator_##__TTYPENAME__(svm_kernel_type kernel_type,\
                                             matrix_element_type type,\
                                             const int templateRows,\
                                             const int templateColumns,\
@@ -78,7 +78,7 @@ DLLEXPORT int krls_operator_##__TTYPENAME__(kernel_type kernel_type,\
     return error;\
 }\
 \
-DLLEXPORT int krls_train_##__TTYPENAME__(kernel_type kernel_type,\
+DLLEXPORT int krls_train_##__TTYPENAME__(svm_kernel_type kernel_type,\
                                          matrix_element_type type,\
                                          const int templateRows,\
                                          const int templateColumns,\
@@ -126,7 +126,7 @@ kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel
 
 #pragma endregion
 
-DLLEXPORT int krls_new(kernel_type kernel_type,
+DLLEXPORT int krls_new(svm_kernel_type kernel_type,
                        matrix_element_type type,
                        const int templateRows,
                        const int templateColumns,
@@ -152,7 +152,7 @@ DLLEXPORT int krls_new(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT void krls_delete(kernel_type kernel_type,
+DLLEXPORT void krls_delete(svm_kernel_type kernel_type,
                            matrix_element_type type,
                            const int templateRows,
                            const int templateColumns,
@@ -170,7 +170,7 @@ DLLEXPORT void krls_delete(kernel_type kernel_type,
                             obj);
 }
 
-DLLEXPORT int krls_get_kernel(kernel_type kernel_type,
+DLLEXPORT int krls_get_kernel(svm_kernel_type kernel_type,
                               matrix_element_type type,
                               const int templateRows,
                               const int templateColumns,
@@ -192,7 +192,7 @@ DLLEXPORT int krls_get_kernel(kernel_type kernel_type,
     return error;
 }
 
-DLLEXPORT int krls_dictionary_size(kernel_type kernel_type,
+DLLEXPORT int krls_dictionary_size(svm_kernel_type kernel_type,
                                    matrix_element_type type,
                                    const int templateRows,
                                    const int templateColumns,
@@ -217,7 +217,7 @@ DLLEXPORT int krls_dictionary_size(kernel_type kernel_type,
 MAKE_FUNC(double, double)
 MAKE_FUNC(float, float)
 
-DLLEXPORT int serialize_krls(kernel_type kernel_type,
+DLLEXPORT int serialize_krls(svm_kernel_type kernel_type,
                              matrix_element_type type,
                              const int templateRows,
                              const int templateColumns,
@@ -249,7 +249,7 @@ DLLEXPORT int serialize_krls(kernel_type kernel_type,
 }
 
 DLLEXPORT int deserialize_krls(const char* file_name,
-                               kernel_type kernel_type,
+                               svm_kernel_type kernel_type,
                                matrix_element_type type,
                                const int templateRows,
                                const int templateColumns,
@@ -279,7 +279,7 @@ DLLEXPORT int deserialize_krls(const char* file_name,
     return error;
 }
 
-DLLEXPORT int krls_get_decision_function(kernel_type kernel_type,
+DLLEXPORT int krls_get_decision_function(svm_kernel_type kernel_type,
                                          matrix_element_type type,
                                          const int templateRows,
                                          const int templateColumns,

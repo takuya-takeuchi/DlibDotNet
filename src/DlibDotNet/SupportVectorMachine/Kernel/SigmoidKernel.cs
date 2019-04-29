@@ -19,7 +19,7 @@ namespace DlibDotNet
         #region Constructors
 
         public SigmoidKernel(int templateRow = 0, int templateColumn = 0) :
-            base(KernelType.Sigmoid, templateRow, templateColumn)
+            base(SvmKernelType.Sigmoid, templateRow, templateColumn)
         {
             if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
@@ -45,7 +45,7 @@ namespace DlibDotNet
         }
 
         internal SigmoidKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
-            base(KernelType.Sigmoid, templateRow, templateColumn, isEnabledDispose)
+            base(SvmKernelType.Sigmoid, templateRow, templateColumn, isEnabledDispose)
         {
             Matrix<TScalar>.TryParse<TScalar>(out var type);
             this.SampleType = type;

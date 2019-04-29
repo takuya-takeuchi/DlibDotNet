@@ -40,7 +40,7 @@ namespace DlibDotNet
                 throw new FileNotFoundException($"{path} is not found", path);
 
             KernelFactory.TryParse<TScalar>(out MatrixElementTypes sampleType);
-            KernelFactory.TryParse<TKernel>(out KernelType kernelType);
+            KernelFactory.TryParse<TKernel>(out SvmKernelType kernelType);
 
             var param = new KernelBaseParameter(kernelType, sampleType, templateRows, templateColumns);
 

@@ -2,7 +2,7 @@
 namespace DlibDotNet
 {
 
-    public enum KernelType
+    public enum SvmKernelType
     {
 
         HistogramIntersection,
