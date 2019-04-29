@@ -131,11 +131,8 @@ namespace DlibDotNet.Dnn
 
         internal override DPoint InputTensorToOutputTensor(DPoint p)
         {
-            using (var np = p.ToNative())
-            {
-                NativeMethods.loss_multiclass_log_input_tensor_to_output_tensor(this.NativePtr, this.NetworkType, np.NativePtr, out var ret);
-                return new DPoint(ret);
-            }
+            // fc layer does not support
+            throw new NotSupportedException();
         }
 
         internal override void NetToXml(string filename)

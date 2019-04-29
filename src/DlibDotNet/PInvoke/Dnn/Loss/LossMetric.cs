@@ -27,9 +27,6 @@ namespace DlibDotNet
         public static extern ErrorType loss_metric_serialize(IntPtr obj, int type, byte[] fileName, out IntPtr errorMessage);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_metric_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void loss_metric_net_to_xml(IntPtr net, int networkType, byte[] fileName);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

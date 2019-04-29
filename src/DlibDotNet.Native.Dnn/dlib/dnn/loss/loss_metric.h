@@ -22,7 +22,6 @@ switch(type)\
             __FUNC__(anet_type, matrix_element_type::RgbPixel, rgb_pixel, error, __VA_ARGS__);\
         }\
         break;\
-        break;\
     default:\
         error = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;\
         break;\

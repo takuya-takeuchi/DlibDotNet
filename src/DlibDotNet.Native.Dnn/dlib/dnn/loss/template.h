@@ -35,13 +35,13 @@ switch(element_type)\
 }
 
 #define loss_deserialize_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
-__NET_TYPE__* net = new __NET_TYPE__();\
+auto net = new __NET_TYPE__();\
 dlib::deserialize(file_name) >> (*net);\
 *ret = net;
 
 #define loss_deserialize_proxy_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
 proxy_deserialize& p = *static_cast<proxy_deserialize*>(proxy);\
-__NET_TYPE__* net = new __NET_TYPE__();\
+auto net = new __NET_TYPE__();\
 p >> (*net);\
 *ret = net;
 
@@ -65,7 +65,7 @@ __NET_TYPE__::subnet_type& sn = net->subnet();\
 ((__NET_TYPE__*)obj)->clean();
 
 #define loss_input_tensor_to_output_tensor_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
-auto net = static_cast<__NET_TYPE__*>(obj);\
+auto& net = *static_cast<__NET_TYPE__*>(obj);\
 auto rp = dlib::input_tensor_to_output_tensor(net, *p);\
 *ret = new dlib::dpoint(rp);
 
@@ -75,7 +75,7 @@ auto& net = *static_cast<__NET_TYPE__*>(obj);\
 dlib::net_to_xml(net, str);
 
 #define loss_operator_left_shift_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
-__NET_TYPE__& net = *(static_cast<__NET_TYPE__*>(obj));\
+auto& net = *(static_cast<__NET_TYPE__*>(obj));\
 *stream << net;
 
 #define dnn_trainer_loss_new_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
@@ -329,17 +329,6 @@ DLLEXPORT void __TYPENAME__##_clean(void* obj, const int type)\
     __TYPENAME__##_template(type,\
                             error,\
                             loss_clean_template);\
-}\
-\
-DLLEXPORT void __TYPENAME__##_input_tensor_to_output_tensor(void* obj, const int type, dlib::dpoint* p, dlib::dpoint** ret)\
-{\
-    int error = ERR_OK;\
-    __TYPENAME__##_template(type,\
-                            error,\
-                            loss_input_tensor_to_output_tensor_template,\
-                            obj,\
-                            p,\
-                            ret);\
 }\
 \
 DLLEXPORT void __TYPENAME__##_net_to_xml(void* obj, const int type, const char* filename)\
@@ -661,6 +650,19 @@ DLLEXPORT int __TYPENAME__##_operator_left_shift(void* obj, const int type, std:
                             stream);\
 \
     return error;\
+}\
+
+// fc_ does not have input_tensor_to_output_tensor
+#define MAKE_FUNC2(__TYPE__, __TYPENAME__)\
+DLLEXPORT void __TYPENAME__##_input_tensor_to_output_tensor(void* obj, const int type, dlib::dpoint* p, dlib::dpoint** ret)\
+{\
+    int error = ERR_OK;\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            loss_input_tensor_to_output_tensor_template,\
+                            obj,\
+                            p,\
+                            ret);\
 }\
 
 #endif
