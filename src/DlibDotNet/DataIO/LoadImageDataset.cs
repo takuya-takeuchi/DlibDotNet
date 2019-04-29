@@ -34,7 +34,7 @@ namespace DlibDotNet
                                                                                        images.NativePtr,
                                                                                        retBoxes.NativePtr,
                                                                                        str);
-                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
+                if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
                 boxes = retBoxes.ToArray().Select(box => box.ToArray()).ToArray();
