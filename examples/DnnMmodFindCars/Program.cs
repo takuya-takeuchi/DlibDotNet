@@ -145,7 +145,7 @@ namespace DnnMmodFindCars
                                                 Dlib.AssignPixel(ref p, Dlib.ColormapJet(val, lower, upper));
                                                 p.Alpha = 120;
 
-                                                var rgb = new RgbPixel();
+                                                var rgb = tiledImg[r, c];
                                                 Dlib.AssignPixel(ref rgb, p);
                                                 tiledImg[r, c] = rgb;
                                             }
@@ -203,7 +203,7 @@ namespace DnnMmodFindCars
                                                     Dlib.AssignPixel(ref p, Dlib.ColormapJet(maxScore, lower, upper));
                                                     p.Alpha = 120;
 
-                                                    var rgb = new RgbPixel();
+                                                    var rgb = img[r, c];
                                                     Dlib.AssignPixel(ref rgb, p);
                                                     img[r, c] = rgb;
                                                 }
