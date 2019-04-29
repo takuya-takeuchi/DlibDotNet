@@ -9,6 +9,7 @@
 #include <dlib/matrix.h>
 #include <dlib/image_processing/generic_image.h>
 #include <dlib/image_transforms/colormaps.h>
+#include "../../template.h"
 #include "../../shared.h"
 
 using namespace dlib;
@@ -19,387 +20,61 @@ using namespace std;
 #define ELEMENT element
 #undef ELEMENT
 
-#define image_window_new_matrix_op_template(ret, type, image) \
-do { \
-    switch(type)\
-    {\
-        case array2d_type::UInt8:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint8_t>>>*)image));\
-            break;\
-        case array2d_type::UInt16:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image));\
-            break;\
-        case array2d_type::UInt32:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint32_t>>>*)image));\
-            break;\
-        case array2d_type::Int8:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<int8_t>>>*)image));\
-            break;\
-        case array2d_type::Int16:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<int16_t>>>*)image));\
-            break;\
-        case array2d_type::Int32:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<int32_t>>>*)image));\
-            break;\
-        case array2d_type::Float:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<float>>>*)image));\
-            break;\
-        case array2d_type::Double:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<double>>>*)image));\
-            break;\
-        case array2d_type::RgbPixel:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<rgb_pixel>>>*)image));\
-            break;\
-        case array2d_type::HsiPixel:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<hsi_pixel>>>*)image));\
-            break;\
-        case array2d_type::RgbAlphaPixel:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<rgb_alpha_pixel>>>*)image));\
-            break;\
-        default:\
-            break;\
-    }\
-    ret = nullptr;\
-} while (0)
+#define image_window_new_matrix_op_template(__TYPE__, error, type, ...) \
+ret = new image_window(*((dlib::matrix_op<ELEMENT<array2d<__TYPE__>>>*)image));\
 
-#define image_window_new_matrix_op_template2(ret, type, image, title) \
-do { \
-    switch(type)\
-    {\
-        case array2d_type::UInt8:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint8_t>>>*)image), title);\
-            break;\
-        case array2d_type::UInt16:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image), title);\
-            break;\
-        case array2d_type::UInt32:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<uint32_t>>>*)image), title);\
-            break;\
-        case array2d_type::Int8:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<int8_t>>>*)image), title);\
-            break;\
-        case array2d_type::Int16:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<int16_t>>>*)image), title);\
-            break;\
-        case array2d_type::Int32:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<int32_t>>>*)image), title);\
-            break;\
-        case array2d_type::Float:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<float>>>*)image), title);\
-            break;\
-        case array2d_type::Double:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<double>>>*)image), title);\
-            break;\
-        case array2d_type::RgbPixel:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<rgb_pixel>>>*)image), title);\
-            break;\
-        case array2d_type::HsiPixel:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<hsi_pixel>>>*)image), title);\
-            break;\
-        case array2d_type::RgbAlphaPixel:\
-            ret = new image_window(*((matrix_op<ELEMENT<array2d<rgb_alpha_pixel>>>*)image), title);\
-            break;\
-        default:\
-            break;\
-    }\
-    ret = nullptr;\
-} while (0)
+#define image_window_new_matrix_op_template2(__TYPE__, error, type, ...) \
+ret = new image_window(*((matrix_op<ELEMENT<array2d<__TYPE__>>>*)image), title);\
 
-#define image_window_new_matrix_op_template3_sub(img, element, templateRows, templateColumns, ret) \
-do { \
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>*>(img);\
-        ret = new image_window(op);\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>*>(img);\
-        ret = new image_window(op);\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>*>(img);\
-        ret = new image_window(op);\
-    }\
-} while (0)
+#define image_window_new_matrix_op_template3_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(img);\
+ret = new image_window(op);\
 
-#define image_window_new_matrix_op_template3(type, img, templateRows, templateColumns, ret) \
-do { \
-    switch(type)\
-    {\
-        case matrix_element_type::UInt8:\
-            image_window_new_matrix_op_template3_sub(img, uint8_t, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::UInt16:\
-            image_window_new_matrix_op_template3_sub(img, uint16_t, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::UInt32:\
-            image_window_new_matrix_op_template3_sub(img, uint32_t, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::Int8:\
-            image_window_new_matrix_op_template3_sub(img, int8_t, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::Int16:\
-            image_window_new_matrix_op_template3_sub(img, int16_t, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::Int32:\
-            image_window_new_matrix_op_template3_sub(img, int32_t, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::Float:\
-            image_window_new_matrix_op_template3_sub(img, float, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::Double:\
-            image_window_new_matrix_op_template3_sub(img, double, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::RgbPixel:\
-            image_window_new_matrix_op_template3_sub(img, rgb_pixel, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::HsiPixel:\
-            image_window_new_matrix_op_template3_sub(img, hsi_pixel, templateRows, templateColumns, ret);\
-            break;\
-        case matrix_element_type::RgbAlphaPixel:\
-            image_window_new_matrix_op_template3_sub(img, rgb_alpha_pixel, templateRows, templateColumns, ret);\
-            break;\
-        default:\
-            break;\
-    }\
-    ret = nullptr;\
-} while (0)
+#define image_window_new_matrix_op_template3(__TYPE__, error, type, ...) \
+matrix_template(type,\
+                error,\
+                matrix_template_size_template,\
+                image_window_new_matrix_op_template3_sub,\
+                templateRows,\
+                templateColumns,\
+                img,\
+                ret);\
 
-#define image_window_new_matrix_op_template4_sub(img, element, templateRows, templateColumns, title, ret) \
-do { \
-    if (templateRows == 0 && templateColumns == 0)\
-    {\
-        matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 0>>>*>(img);\
-        ret = new image_window(op, title);\
-    }\
-    else if (templateRows == 0 && templateColumns == 1)\
-    {\
-        matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 0, 1>>>*>(img);\
-        ret = new image_window(op, title);\
-    }\
-    else if (templateRows == 31 && templateColumns == 1)\
-    {\
-        matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<element, 31, 1>>>*>(img);\
-        ret = new image_window(op, title);\
-    }\
-} while (0)
+#define image_window_new_matrix_op_template4_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(img);\
+ret = new image_window(op, title);\
 
-#define image_window_new_matrix_op_template4(type, img, templateRows, templateColumns, title, ret) \
-do { \
-    switch(type)\
-    {\
-        case matrix_element_type::UInt8:\
-            image_window_new_matrix_op_template4_sub(img, uint8_t, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::UInt16:\
-            image_window_new_matrix_op_template4_sub(img, uint16_t, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::UInt32:\
-            image_window_new_matrix_op_template4_sub(img, uint32_t, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::Int8:\
-            image_window_new_matrix_op_template4_sub(img, int8_t, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::Int16:\
-            image_window_new_matrix_op_template4_sub(img, int16_t, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::Int32:\
-            image_window_new_matrix_op_template4_sub(img, int32_t, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::Float:\
-            image_window_new_matrix_op_template4_sub(img, float, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::Double:\
-            image_window_new_matrix_op_template4_sub(img, double, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::RgbPixel:\
-            image_window_new_matrix_op_template4_sub(img, rgb_pixel, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::HsiPixel:\
-            image_window_new_matrix_op_template4_sub(img, hsi_pixel, templateRows, templateColumns, title, ret);\
-            break;\
-        case matrix_element_type::RgbAlphaPixel:\
-            image_window_new_matrix_op_template4_sub(img, rgb_alpha_pixel, templateRows, templateColumns, title, ret);\
-            break;\
-        default:\
-            break;\
-    }\
-    ret = nullptr;\
-} while (0)
+#define image_window_new_matrix_op_template4(__TYPE__, error, type, ...) \
+matrix_template(type,\
+                error,\
+                matrix_template_size_template,\
+                image_window_new_matrix_op_template4_sub,\
+                templateRows,\
+                templateColumns,\
+                img,\
+                title,\
+                ret);\
 
-#define image_window_set_image_matrix_op_template(ret, window, type, image) \
-do { \
-    switch(type)\
-    {\
-        case array2d_type::UInt8:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<uint8_t>>>*)image));\
-            break;\
-        case array2d_type::UInt16:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<uint16_t>>>*)image));\
-            break;\
-        case array2d_type::UInt32:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<uint32_t>>>*)image));\
-            break;\
-        case array2d_type::Int8:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<int8_t>>>*)image));\
-            break;\
-        case array2d_type::Int16:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<int16_t>>>*)image));\
-            break;\
-        case array2d_type::Int32:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<int32_t>>>*)image));\
-            break;\
-        case array2d_type::Float:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<float>>>*)image));\
-            break;\
-        case array2d_type::Double:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<double>>>*)image));\
-            break;\
-        case array2d_type::RgbPixel:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<rgb_pixel>>>*)image));\
-            break;\
-        case array2d_type::HsiPixel:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<hsi_pixel>>>*)image));\
-            break;\
-        case array2d_type::RgbAlphaPixel:\
-            window->set_image(*((matrix_op<ELEMENT<array2d<rgb_alpha_pixel>>>*)image));\
-            break;\
-        default:\
-            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-            break;\
-    }\
-} while (0)
+#define image_window_set_image_array2d_template(__TYPE__, error, type, ...) \
+window->set_image(*((dlib::array2d<__TYPE__>*)image));
 
-#define image_window_set_image_matrix_op_op_join_rows_template(ret, window, type, image) \
-do { \
-    switch(type)\
-    {\
-        case matrix_element_type::UInt8:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<uint8_t, 0, 0>, matrix<uint8_t, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::UInt16:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<uint16_t, 0, 0>, matrix<uint16_t, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::UInt32:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<uint32_t, 0, 0>, matrix<uint32_t, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::Int8:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<int8_t, 0, 0>, matrix<int8_t, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::Int16:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<int16_t, 0, 0>, matrix<int16_t, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::Int32:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<int32_t, 0, 0>, matrix<int32_t, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::Float:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<float, 0, 0>, matrix<float, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::Double:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<double, 0, 0>, matrix<double, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::RgbPixel:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<rgb_pixel, 0, 0>, matrix<rgb_pixel, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::HsiPixel:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<hsi_pixel, 0, 0>, matrix<hsi_pixel, 0, 0>>>*)image));\
-            break;\
-        case matrix_element_type::RgbAlphaPixel:\
-            window->set_image(*((matrix_op<op_join_rows<matrix<rgb_alpha_pixel, 0, 0>, matrix<rgb_alpha_pixel, 0, 0>>>*)image));\
-            break;\
-        default:\
-            ret = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
-            break;\
-    }\
-} while (0)
+#define image_window_set_image_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+window->set_image(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image));
 
-#define image_window_add_overlay_pixel_arg1_template(window, type, p, arg1) \
-do { \
-    switch(type)\
-    {\
-        case array2d_type::UInt8:\
-            window->add_overlay(arg1, *((uint8_t*)p));\
-            break;\
-        case array2d_type::UInt16:\
-            window->add_overlay(arg1, *((uint16_t*)p));\
-            break;\
-        case array2d_type::UInt32:\
-            window->add_overlay(arg1, *((uint32_t*)p));\
-            break;\
-        case array2d_type::Int8:\
-            window->add_overlay(arg1, *((int8_t*)p));\
-            break;\
-        case array2d_type::Int16:\
-            window->add_overlay(arg1, *((int16_t*)p));\
-            break;\
-        case array2d_type::Int32:\
-            window->add_overlay(arg1, *((int32_t*)p));\
-            break;\
-        case array2d_type::Float:\
-            window->add_overlay(arg1, *((float*)p));\
-            break;\
-        case array2d_type::Double:\
-            window->add_overlay(arg1, *((double*)p));\
-            break;\
-        case array2d_type::RgbPixel:\
-            window->add_overlay(arg1, *((rgb_pixel*)p));\
-            break;\
-        case array2d_type::HsiPixel:\
-            window->add_overlay(arg1, *((hsi_pixel*)p));\
-            break;\
-        case array2d_type::RgbAlphaPixel:\
-            window->add_overlay(arg1, *((rgb_alpha_pixel*)p));\
-            break;\
-        default:\
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-            break;\
-    }\
-} while (0)
+#define image_window_set_image_matrix_op_template(__TYPE__, error, type, ...) \
+window->set_image(*((matrix_op<ELEMENT<dlib::array2d<__TYPE__>>>*)image));\
 
-#define image_window_add_overlay_pixel_arg2_template(window, type, p, arg1, arg2) \
-do { \
-    switch(type)\
-    {\
-        case array2d_type::UInt8:\
-            window->add_overlay(arg1, *((uint8_t*)p), arg2);\
-            break;\
-        case array2d_type::UInt16:\
-            window->add_overlay(arg1, *((uint16_t*)p), arg2);\
-            break;\
-        case array2d_type::UInt32:\
-            window->add_overlay(arg1, *((uint32_t*)p), arg2);\
-            break;\
-        case array2d_type::Int8:\
-            window->add_overlay(arg1, *((int8_t*)p), arg2);\
-            break;\
-        case array2d_type::Int16:\
-            window->add_overlay(arg1, *((int16_t*)p), arg2);\
-            break;\
-        case array2d_type::Int32:\
-            window->add_overlay(arg1, *((int32_t*)p), arg2);\
-            break;\
-        case array2d_type::Float:\
-            window->add_overlay(arg1, *((float*)p), arg2);\
-            break;\
-        case array2d_type::Double:\
-            window->add_overlay(arg1, *((double*)p), arg2);\
-            break;\
-        case array2d_type::RgbPixel:\
-            window->add_overlay(arg1, *((rgb_pixel*)p), arg2);\
-            break;\
-        case array2d_type::HsiPixel:\
-            window->add_overlay(arg1, *((hsi_pixel*)p), arg2);\
-            break;\
-        case array2d_type::RgbAlphaPixel:\
-            window->add_overlay(arg1, *((rgb_alpha_pixel*)p), arg2);\
-            break;\
-        default:\
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-            break;\
-    }\
-} while (0)
+#define image_window_set_image_matrix_op_op_join_rows_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+window->set_image(*((matrix_op<op_join_rows<matrix<__TYPE__, __ROWS__, __COLUMNS__>, matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*)image));\
+
+#define image_window_add_overlay_pixel_rect_template(__TYPE__, error, type, ...) \
+window->add_overlay(*r, *((__TYPE__*)p));\
+
+#define image_window_add_overlay_pixel_rects_template(__TYPE__, error, type, ...) \
+window->add_overlay(rects, *((__TYPE__*)p));\
+
+#define image_window_add_overlay_pixel_rect_string_template(__TYPE__, error, type, ...) \
+window->add_overlay(*r, *((__TYPE__*)p), *l);\
 
 #pragma endregion template
 
@@ -412,182 +87,151 @@ DLLEXPORT image_window* image_window_new()
     return new image_window();
 }
 
+
+#define image_window_new_array2d1_template(__TYPE__, error, type, ...) \
+ret = new image_window(*((array2d<__TYPE__>*)image));
+
+#define image_window_new_array2d2_template(__TYPE__, error, type, ...) \
+ret = new image_window(*((array2d<__TYPE__>*)image), title);
+
+#define image_window_new_matrix1_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+ret = new image_window(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image));
+
+#define image_window_new_matrix2_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+ret = new image_window(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image), title);
+
 DLLEXPORT image_window* image_window_new_array2d1(array2d_type type, void* image)
 {
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            return new image_window(*((array2d<uint8_t>*)image));
-        case array2d_type::UInt16:
-            return new image_window(*((array2d<uint16_t>*)image));
-        case array2d_type::UInt32:
-            return new image_window(*((array2d<uint32_t>*)image));
-        case array2d_type::Int8:
-            return new image_window(*((array2d<int8_t>*)image));
-        case array2d_type::Int16:
-            return new image_window(*((array2d<int16_t>*)image));
-        case array2d_type::Int32:
-            return new image_window(*((array2d<int32_t>*)image));
-        case array2d_type::Float:
-            return new image_window(*((array2d<float>*)image));
-        case array2d_type::Double:
-            return new image_window(*((array2d<double>*)image));
-        case array2d_type::RgbPixel:
-            return new image_window(*((array2d<rgb_pixel>*)image));
-        case array2d_type::HsiPixel:
-            return new image_window(*((array2d<hsi_pixel>*)image));
-        case array2d_type::RgbAlphaPixel:
-            return new image_window(*((array2d<rgb_alpha_pixel>*)image));
-        default:
-            return nullptr;
-    }
+    int error = ERR_OK;
+    image_window* ret = nullptr;
+
+    array2d_template(type,
+                     error,
+                     image_window_new_array2d1_template,
+                     image,
+                     ret);
+
+    return ret;
 }
 
 DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image, const char* title)
 {
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            return new image_window(*((array2d<uint8_t>*)image), title);
-        case array2d_type::UInt16:
-            return new image_window(*((array2d<uint16_t>*)image), title);
-        case array2d_type::UInt32:
-            return new image_window(*((array2d<uint32_t>*)image), title);
-        case array2d_type::Int8:
-            return new image_window(*((array2d<int8_t>*)image), title);
-        case array2d_type::Int16:
-            return new image_window(*((array2d<int16_t>*)image), title);
-        case array2d_type::Int32:
-            return new image_window(*((array2d<int32_t>*)image), title);
-        case array2d_type::Float:
-            return new image_window(*((array2d<float>*)image), title);
-        case array2d_type::Double:
-            return new image_window(*((array2d<double>*)image), title);
-        case array2d_type::RgbPixel:
-            return new image_window(*((array2d<rgb_pixel>*)image), title);
-        case array2d_type::HsiPixel:
-            return new image_window(*((array2d<hsi_pixel>*)image), title);
-        case array2d_type::RgbAlphaPixel:
-            return new image_window(*((array2d<rgb_alpha_pixel>*)image), title);
-        default:
-            return nullptr;
-    }
+    int error = ERR_OK;
+    image_window* ret = nullptr;
+
+    array2d_template(type,
+                     error,
+                     image_window_new_array2d2_template,
+                     image,
+                     ret);
+
+    return ret;
 }
 
 DLLEXPORT image_window* image_window_new_matrix1(matrix_element_type type, void* image)
 {
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            return new image_window(*((dlib::matrix<uint8_t>*)image));
-        case matrix_element_type::UInt16:
-            return new image_window(*((dlib::matrix<uint16_t>*)image));
-        case matrix_element_type::UInt32:
-            return new image_window(*((dlib::matrix<uint32_t>*)image));
-        case matrix_element_type::Int8:
-            return new image_window(*((dlib::matrix<int8_t>*)image));
-        case matrix_element_type::Int16:
-            return new image_window(*((dlib::matrix<int16_t>*)image));
-        case matrix_element_type::Int32:
-            return new image_window(*((dlib::matrix<int32_t>*)image));
-        case matrix_element_type::Float:
-            return new image_window(*((dlib::matrix<float>*)image));
-        case matrix_element_type::Double:
-            return new image_window(*((dlib::matrix<double>*)image));
-        case matrix_element_type::RgbPixel:
-            return new image_window(*((dlib::matrix<rgb_pixel>*)image));
-        case matrix_element_type::HsiPixel:
-            return new image_window(*((dlib::matrix<hsi_pixel>*)image));
-        case matrix_element_type::RgbAlphaPixel:
-            return new image_window(*((dlib::matrix<rgb_alpha_pixel>*)image));
-        default:
-            return nullptr;
-    }
+    int error = ERR_OK;
+    image_window* ret = nullptr;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    image_window_new_matrix1_template,
+                    0,
+                    0,
+                    image,
+                    ret);
+
+    return ret;
 }
 
 DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void* image, const char* title)
 {
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            return new image_window(*((dlib::matrix<uint8_t>*)image), title);
-        case matrix_element_type::UInt16:
-            return new image_window(*((dlib::matrix<uint16_t>*)image), title);
-        case matrix_element_type::UInt32:
-            return new image_window(*((dlib::matrix<uint32_t>*)image), title);
-        case matrix_element_type::Int8:
-            return new image_window(*((dlib::matrix<int8_t>*)image), title);
-        case matrix_element_type::Int16:
-            return new image_window(*((dlib::matrix<int16_t>*)image), title);
-        case matrix_element_type::Int32:
-            return new image_window(*((dlib::matrix<int32_t>*)image), title);
-        case matrix_element_type::Float:
-            return new image_window(*((dlib::matrix<float>*)image), title);
-        case matrix_element_type::Double:
-            return new image_window(*((dlib::matrix<double>*)image), title);
-        case matrix_element_type::RgbPixel:
-            return new image_window(*((dlib::matrix<rgb_pixel>*)image), title);
-        case matrix_element_type::HsiPixel:
-            return new image_window(*((dlib::matrix<hsi_pixel>*)image), title);
-        case matrix_element_type::RgbAlphaPixel:
-            return new image_window(*((dlib::matrix<rgb_alpha_pixel>*)image), title);
-        default:
-            return nullptr;
-    }
+    int error = ERR_OK;
+    image_window* ret = nullptr;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    image_window_new_matrix2_template,
+                    0,
+                    0,
+                    image,
+                    ret);
+
+    return ret;
 }
 
 DLLEXPORT int image_window_new_matrix_op1(element_type etype, array2d_type type, void* image, void** result)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     void* ret = nullptr;
 
     switch(etype)
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            image_window_new_matrix_op_template(ret, type, image);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template,
+                             image,
+                             ret);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            image_window_new_matrix_op_template(ret, type, image);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template,
+                             image,
+                             ret);
             #undef ELEMENT
             break;
         default:
-            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
+            error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 
     *result = ret;
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title, void** result)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     void* ret = nullptr;
     
     switch(etype)
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            image_window_new_matrix_op_template2(ret, type, image, title);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template2,
+                             image,
+                             title,
+                             ret);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            image_window_new_matrix_op_template2(ret, type, image, title);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template2,
+                             image,
+                             title,
+                             ret);
             #undef ELEMENT
             break;
         default:
-            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
+            error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
     
     *result = ret;
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_new_matrix_op3(element_type etype,
@@ -597,29 +241,41 @@ DLLEXPORT int image_window_new_matrix_op3(element_type etype,
                                           const int templateColumns,
                                           void** result)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     void* ret = nullptr;
     
     switch(etype)
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            image_window_new_matrix_op_template3(type, img, templateRows, templateColumns, ret);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template3,
+                             img,
+                             templateRows,
+                             templateColumns,
+                             ret);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            image_window_new_matrix_op_template3(type, img, templateRows, templateColumns, ret);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template3,
+                             img,
+                             templateRows,
+                             templateColumns,
+                             ret);
             #undef ELEMENT
             break;
         default:
-            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
+            error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
     
     *result = ret;
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_new_matrix_op4(element_type etype,
@@ -630,29 +286,43 @@ DLLEXPORT int image_window_new_matrix_op4(element_type etype,
                                           const char* title,
                                           void** result)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     void* ret = nullptr;
 
     switch(etype)
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            image_window_new_matrix_op_template4(type, img, templateRows, templateColumns, title, ret);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template4,
+                             img,
+                             templateRows,
+                             templateColumns,
+                             title,
+                             ret);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            image_window_new_matrix_op_template4(type, img, templateRows, templateColumns, title, ret);
+            array2d_template(type,
+                             error,
+                             image_window_new_matrix_op_template4,
+                             img,
+                             templateRows,
+                             templateColumns,
+                             title,
+                             ret);
             #undef ELEMENT
             break;
         default:
-            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
+            error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
     
     *result = ret;
 
-    return err;
+    return error;
 }
 
 #pragma endregion new
@@ -666,37 +336,55 @@ DLLEXPORT void image_window_delete(image_window* window)
 
 DLLEXPORT int image_window_add_overlay(image_window* window, dlib::rectangle* r, array2d_type type, void* p)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    image_window_add_overlay_pixel_arg1_template(window, type, p, *r);
+    array2d_template(type,
+                     error,
+                     image_window_add_overlay_pixel_rect_template,
+                     window,
+                     type,
+                     p,
+                     r);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectangle*>* r, array2d_type type, void* p)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     std::vector<rectangle*>& vector = *(static_cast<std::vector<rectangle*>*>(r));
-    std::vector<rectangle> tmpRects;
+    std::vector<rectangle> rects;
     for (int index = 0 ; index < vector.size(); index++)
     {
         dlib::rectangle& rect = *(vector[index]);
-        tmpRects.push_back(rect);
+        rects.push_back(rect);
     }
 
-    image_window_add_overlay_pixel_arg1_template(window, type, p, tmpRects);
+    array2d_template(type,
+                     error,
+                     image_window_add_overlay_pixel_rects_template,
+                     window,
+                     type,
+                     p,
+                     rects);
     
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_add_overlay3(image_window* window, dlib::drectangle* r, array2d_type type, void* p)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    image_window_add_overlay_pixel_arg1_template(window, type, p, *r);
-    
-    return err;
+    array2d_template(type,
+                     error,
+                     image_window_add_overlay_pixel_rect_template,
+                     window,
+                     type,
+                     p,
+                     r);
+
+    return error;
 }
 
 DLLEXPORT int image_window_add_overlay4(image_window* window, image_window::overlay_line* line)
@@ -723,11 +411,18 @@ DLLEXPORT int image_window_add_overlay5(image_window* window, std::vector<image_
 
 DLLEXPORT int image_window_add_overlay6(image_window* window, dlib::rectangle* r, array2d_type type, void* p, std::string* l)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    image_window_add_overlay_pixel_arg2_template(window, type, p, *r, *l);
+    array2d_template(type,
+                     error,
+                     image_window_add_overlay_pixel_rect_string_template,
+                     window,
+                     type,
+                     p,
+                     r,
+                     l);
     
-    return err;
+    return error;
 }
 
 #pragma endregion add_overlay
@@ -746,144 +441,101 @@ DLLEXPORT bool image_window_is_closed(image_window* window)
 
 DLLEXPORT int image_window_set_image_array2d(image_window* window, array2d_type type, void* image)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->set_image(*((array2d<uint8_t>*)image));
-            break;
-        case array2d_type::UInt16:
-            window->set_image(*((array2d<uint16_t>*)image));
-            break;
-        case array2d_type::UInt32:
-            window->set_image(*((array2d<uint32_t>*)image));
-            break;
-        case array2d_type::Int8:
-            window->set_image(*((array2d<int8_t>*)image));
-            break;
-        case array2d_type::Int16:
-            window->set_image(*((array2d<int16_t>*)image));
-            break;
-        case array2d_type::Int32:
-            window->set_image(*((array2d<int32_t>*)image));
-            break;
-        case array2d_type::Float:
-            window->set_image(*((array2d<float>*)image));
-            break;
-        case array2d_type::Double:
-            window->set_image(*((array2d<double>*)image));
-            break;
-        case array2d_type::RgbPixel:
-            window->set_image(*((array2d<rgb_pixel>*)image));
-            break;
-        case array2d_type::HsiPixel:
-            window->set_image(*((array2d<hsi_pixel>*)image));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->set_image(*((array2d<rgb_alpha_pixel>*)image));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     image_window_set_image_array2d_template,
+                     window,
+                     image);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_set_image_matrix(image_window* window, matrix_element_type type, void* image)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            window->set_image(*((dlib::matrix<uint8_t>*)image));
-            break;
-        case matrix_element_type::UInt16:
-            window->set_image(*((dlib::matrix<uint16_t>*)image));
-            break;
-        case matrix_element_type::UInt32:
-            window->set_image(*((dlib::matrix<uint32_t>*)image));
-            break;
-        case matrix_element_type::Int8:
-            window->set_image(*((dlib::matrix<int8_t>*)image));
-            break;
-        case matrix_element_type::Int16:
-            window->set_image(*((dlib::matrix<int16_t>*)image));
-            break;
-        case matrix_element_type::Int32:
-            window->set_image(*((dlib::matrix<int32_t>*)image));
-            break;
-        case matrix_element_type::Float:
-            window->set_image(*((dlib::matrix<float>*)image));
-            break;
-        case matrix_element_type::Double:
-            window->set_image(*((dlib::matrix<double>*)image));
-            break;
-        case matrix_element_type::RgbPixel:
-            window->set_image(*((dlib::matrix<rgb_pixel>*)image));
-            break;
-        case matrix_element_type::HsiPixel:
-            window->set_image(*((dlib::matrix<hsi_pixel>*)image));
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            window->set_image(*((dlib::matrix<rgb_alpha_pixel>*)image));
-            break;
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    image_window_set_image_matrix_template,
+                    0,
+                    0,
+                    window,
+                    image);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int image_window_set_image_matrix_op_array2d(image_window* window, element_type etype, array2d_type type, void* image)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     switch(etype)
     {
         case element_type::OpHeatmap:
             #define ELEMENT dlib::op_heatmap
-            image_window_set_image_matrix_op_template(err, window, type, image);
+            array2d_template(type,
+                             error,
+                             image_window_set_image_matrix_op_template,
+                             image,
+                             window);
             #undef ELEMENT
             break;
         case element_type::OpJet:
             #define ELEMENT dlib::op_jet
-            image_window_set_image_matrix_op_template(err, window, type, image);
+            array2d_template(type,
+                             error,
+                             image_window_set_image_matrix_op_template,
+                             image,
+                             window);
             #undef ELEMENT
             break;
         case element_type::OpArray2dToMat:
             #define ELEMENT dlib::op_array2d_to_mat
-            image_window_set_image_matrix_op_template(err, window, type, image);
+            array2d_template(type,
+                             error,
+                             image_window_set_image_matrix_op_template,
+                             image,
+                             window);
             #undef ELEMENT
             break;
         default:
-            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
+            error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 
-    return err;
+    return error;
 }
 
-DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window, element_type etype, matrix_element_type type, void* image)
+DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window,
+                                                      element_type etype,
+                                                      matrix_element_type type,
+                                                      void* image)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     switch(etype)
     {
         case element_type::OpJoinRows:
-            #define ELEMENT dlib::op_join_rows
-            image_window_set_image_matrix_op_op_join_rows_template(err, window, type, image);
+            #define ELEMENT dlib::op_join_rows        
+            matrix_template(type,
+                            error,
+                            matrix_template_size_template,
+                            image_window_set_image_matrix_op_op_join_rows_template,
+                            0,
+                            0,
+                            image,
+                            window);
             #undef ELEMENT
             break;
         default:
-            err = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
+            error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
 
-    return err;
+    return error;
 }
 
 #pragma endregion set_image

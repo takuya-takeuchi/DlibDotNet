@@ -56,6 +56,8 @@ namespace DlibDotNet
 
             OpStdVectToMat,
 
+            OpStdVectToMatValue,
+
             OpJoinRows
 
         }
@@ -204,6 +206,23 @@ namespace DlibDotNet
 
         }
 
+        internal enum KernelType
+        {
+
+            Histogramintersection,
+
+            Linear,
+
+            Offset,
+
+            Polynomial,
+
+            RadialBasis,
+
+            Sigmoid
+
+        }
+
         internal enum ErrorType
         {
 
@@ -301,7 +320,15 @@ namespace DlibDotNet
 
             CudaError = 0x77000000,
 
-            CudaOutOfMemory = -(CudaError | 0x00000001)
+            CudaOutOfMemory = -(CudaError | 0x00000001),
+
+            #endregion
+
+            #region Svm
+
+            SvmError            =              0x75000000,
+
+            SvmKernelNotSupport = -(SvmError | 0x00000001),
 
             #endregion
 
@@ -372,16 +399,6 @@ namespace DlibDotNet
                                                                                    out IntPtr errorMessage);
 
         #endregion
-
-        #endregion
-
-        #region linear_kernel
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr linear_kernel_new(MatrixElementType matrixElementType, int templateRow, int templateColumn);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void linear_kernel_delete(MatrixElementType matrixElementType, IntPtr linerKernel, int templateRow, int templateColumn);
 
         #endregion
 

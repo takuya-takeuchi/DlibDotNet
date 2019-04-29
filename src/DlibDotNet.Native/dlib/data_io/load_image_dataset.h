@@ -6,6 +6,7 @@
 #include <dlib/matrix.h>
 #include <dlib/data_io/load_image_dataset.h>
 #include <dlib/image_processing/full_object_detection.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -13,14 +14,14 @@ using namespace std;
 
 #pragma region template
 
-#define load_image_dataset_array_template(__TYPE_IN__, __TYPE_OUT__, images, object_locations, filename) \
+#define load_image_dataset_array_template_sub(__TYPE__, error, type, __TYPE_OUT__, ...) \
 do {\
-    dlib::array<array2d<__TYPE_IN__>> tmp_images;\
+    dlib::array<array2d<__TYPE__>> tmp_images;\
     std::vector<std::vector<__TYPE_OUT__>> tmp_locs;\
 \
     dlib::load_image_dataset(tmp_images, tmp_locs, filename);\
 \
-    array_copy2(__TYPE_IN__, tmp_images, images);\
+    array_copy2(__TYPE__, tmp_images, images);\
     std::vector<std::vector<__TYPE_OUT__*>*>* ret_locs = static_cast<std::vector<std::vector<__TYPE_OUT__*>*>*>(object_locations);\
     for (int i = 0; i < tmp_locs.size(); i++)\
     {\
@@ -35,16 +36,19 @@ do {\
     }\
 } while (0)
 
-#define load_image_dataset_template(__TYPE_IN__, __TYPE_OUT__, images, object_locations, filename) \
+#define load_image_dataset_array_full_object_detection_template(__TYPE__, error, type, ...) \
+load_image_dataset_array_template_sub(__TYPE__, error, type, dlib::full_object_detection, __VA_ARGS__)
+
+#define load_image_dataset_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, __TYPE_OUT__, ...) \
 do {\
-    std::vector<matrix<__TYPE_IN__>> tmp_images;\
+    std::vector<matrix<__TYPE__>> tmp_images;\
     std::vector<std::vector<__TYPE_OUT__>> tmp_locs;\
     dlib::load_image_dataset(tmp_images, tmp_locs, filename);\
-    std::vector<matrix<__TYPE_IN__>*>* ret_images = static_cast<std::vector<matrix<__TYPE_IN__>*>*>(images);\
+    std::vector<matrix<__TYPE__>*>* ret_images = static_cast<std::vector<matrix<__TYPE__>*>*>(images);\
     for (int i = 0; i < tmp_images.size(); i++)\
     {\
-        matrix<__TYPE_IN__>& m = tmp_images[i];\
-        ret_images->push_back(new matrix<__TYPE_IN__>(m));\
+        matrix<__TYPE__>& m = tmp_images[i];\
+        ret_images->push_back(new matrix<__TYPE__>(m));\
     }\
     std::vector<std::vector<__TYPE_OUT__*>*>* ret_locs = static_cast<std::vector<std::vector<__TYPE_OUT__*>*>*>(object_locations);\
     for (int i = 0; i < tmp_locs.size(); i++)\
@@ -59,55 +63,30 @@ do {\
         ret_locs->push_back(vec);\
     }\
 } while (0)
+
+#define load_image_dataset_mmod_rect_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+load_image_dataset_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, dlib::mmod_rect, __VA_ARGS__)
+
+#define load_image_dataset_rectangle_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+load_image_dataset_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, dlib::rectangle, __VA_ARGS__)
 
 #pragma endregion template
 
-DLLEXPORT int load_image_dataset_array_full_object_detection(matrix_element_type type,
+DLLEXPORT int load_image_dataset_array_full_object_detection(array2d_type type,
                                                              void* images,
                                                              void* object_locations,
                                                              const char* filename)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            load_image_dataset_array_template(uint8_t, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::UInt16:
-            load_image_dataset_array_template(uint16_t, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::UInt32:
-            load_image_dataset_array_template(uint32_t, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int8:
-            load_image_dataset_array_template(int8_t, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int16:
-            load_image_dataset_array_template(int16_t, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int32:
-            load_image_dataset_array_template(int32_t, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::Float:
-            load_image_dataset_array_template(float, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::Double:
-            load_image_dataset_array_template(double, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::RgbPixel:
-            load_image_dataset_array_template(rgb_pixel, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::HsiPixel:
-            load_image_dataset_array_template(hsi_pixel, dlib::full_object_detection, images, object_locations, filename);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_nonalpha_template(type,
+                              error,
+                              load_image_dataset_array_full_object_detection_template,
+                              images,
+                              object_locations,
+                              filename);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
@@ -115,47 +94,19 @@ DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
                                            void* object_locations,
                                            const char* filename)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            load_image_dataset_template(uint8_t, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::UInt16:
-            load_image_dataset_template(uint16_t, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::UInt32:
-            load_image_dataset_template(uint32_t, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int8:
-            load_image_dataset_template(int8_t, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int16:
-            load_image_dataset_template(int16_t, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int32:
-            load_image_dataset_template(int32_t, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::Float:
-            load_image_dataset_template(float, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::Double:
-            load_image_dataset_template(double, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::RgbPixel:
-            load_image_dataset_template(rgb_pixel, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::HsiPixel:
-            load_image_dataset_template(hsi_pixel, dlib::mmod_rect, images, object_locations, filename);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_nonalpha_template(type,
+                             error,
+                             matrix_template_size_template,
+                             load_image_dataset_mmod_rect_template,
+                             0,
+                             0,
+                             images,
+                             object_locations,
+                             filename);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int load_image_dataset_rectangle(matrix_element_type type,
@@ -163,47 +114,19 @@ DLLEXPORT int load_image_dataset_rectangle(matrix_element_type type,
                                            void* object_locations,
                                            const char* filename)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            load_image_dataset_template(uint8_t, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::UInt16:
-            load_image_dataset_template(uint16_t, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::UInt32:
-            load_image_dataset_template(uint32_t, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int8:
-            load_image_dataset_template(int8_t, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int16:
-            load_image_dataset_template(int16_t, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::Int32:
-            load_image_dataset_template(int32_t, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::Float:
-            load_image_dataset_template(float, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::Double:
-            load_image_dataset_template(double, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::RgbPixel:
-            load_image_dataset_template(rgb_pixel, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::HsiPixel:
-            load_image_dataset_template(hsi_pixel, dlib::rectangle, images, object_locations, filename);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_nonalpha_template(type,
+                             error,
+                             matrix_template_size_template,
+                             load_image_dataset_rectangle_template,
+                             0,
+                             0,
+                             images,
+                             object_locations,
+                             filename);
 
-    return err;
+    return error;
 }
 
 #endif

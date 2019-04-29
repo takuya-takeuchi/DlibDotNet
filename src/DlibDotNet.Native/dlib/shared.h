@@ -75,6 +75,8 @@ enum element_type : int
 
     OpStdVectToMat,
 
+    OpStdVectToMatValue,
+
     OpJoinRows
 
 };
@@ -167,6 +169,23 @@ enum struct log_level : int
 
 };
 
+enum struct kernel_type : int
+{
+
+    HistogramIntersection,
+
+    Linear,
+
+    Offset,
+
+    Polynomial,
+
+    RadialBasis,
+
+    Sigmoid
+
+};
+
 typedef struct
 {
     // uint8_t
@@ -216,6 +235,10 @@ typedef struct
 } matrix_range_exp_create_param;
 
 #define ERR_OK                                                            0x00000000
+
+// svm
+#define ERR_SVM_ERROR                                                     0x75000000
+#define ERR_SVM_KERNEL_NOT_SUPPORT                      -(ERR_SVM_ERROR | 0x00000001)
 
 // General
 #define ERR_GENERAL_ERROR                                                 0x76000000
@@ -324,6 +347,14 @@ do {\
         tmp->push_back(cpy);\
     }\
 } while (0)
+
+#define vector_value_to_value(__TYPE__, src, dst) \
+auto& tmp_src = *static_cast<std::vector<__TYPE__>*>(src);\
+for (int index = 0; index < tmp_src.size(); index++)\
+{\
+    __TYPE__ tmp = tmp_src.at(index);\
+    dst.push_back(tmp);\
+}
 
 #define vector_pointer_to_value(__TYPE__, src, dst) \
 do {\

@@ -15,6 +15,7 @@
 #include <dlib/image_processing/object_detector.h>
 #include <dlib/image_transforms/interpolation.h>
 #include <dlib/image_keypoint/surf.h>
+#include "template.h"
 #include "shared.h"
 
 using namespace dlib;
@@ -278,327 +279,123 @@ MAKE_FUNC_VECTOR_POINTER(dlib::full_object_detection, full_object_detection)
 
 #pragma region template
 
-#define stdvector_matrix_new1_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, ret) \
+#define stdvector_matrix_new1_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 ret = new std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>();\
 
-#define stdvector_matrix_new1_template(__TYPE__, __ROWS__, __COLUMNS__, ret) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg1_template(__TYPE__, __ROWS__, __COLUMNS__, stdvector_matrix_new1_template_sub, error, ret);\
-} while (0)
-
-#define stdvector_matrix_new2_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, size, ret) \
+#define stdvector_matrix_new2_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 ret = new std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(size);\
 
-#define stdvector_matrix_new2_template(__TYPE__, __ROWS__, __COLUMNS__, size, ret) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, stdvector_matrix_new2_template_sub, error, size, ret);\
-} while (0)
-
-#define stdvector_matrix_new3_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, data, dataLength, ret) \
+#define stdvector_matrix_new3_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto tmp = (matrix<__TYPE__, __ROWS__, __COLUMNS__>**)(data);\
 ret = new std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(tmp, tmp + dataLength);\
 
-#define stdvector_matrix_new3_template(__TYPE__, __ROWS__, __COLUMNS__, data, dataLength, ret) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg3_template(__TYPE__, __ROWS__, __COLUMNS__, stdvector_matrix_new3_template_sub, error, data, dataLength, ret);\
-} while (0)
+#define stdvector_matrix_delete_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+delete ((std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*)vector);\
 
-#define stdvector_matrix_delete_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, in_vector) \
-delete ((std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*)in_vector);\
+#define stdvector_matrix_getSize_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+ret = ((std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*)vector)->size();\
 
-#define stdvector_matrix_delete_template(__TYPE__, __ROWS__, __COLUMNS__, in_vector) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg1_template(__TYPE__, __ROWS__, __COLUMNS__, stdvector_matrix_delete_template_sub, error, in_vector);\
-} while (0)
-
-#define stdvector_matrix_getSize_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, in_vector, ret) \
-ret = ((std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*)in_vector)->size();\
-
-#define stdvector_matrix_getSize_template(__TYPE__, __ROWS__, __COLUMNS__, in_vector) \
-do {\
-    int error = ERR_OK;\
-    size_t ret;\
-    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, stdvector_matrix_getSize_template_sub, error, in_vector, ret);\
-    return ret;\
-} while (0)
-
-#define stdvector_matrix_getPointer_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, in_vector, ret) \
-ret = ((std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*)in_vector)->at(0);\
-
-#define stdvector_matrix_getPointer_template(__TYPE__, __ROWS__, __COLUMNS__, in_vector, ret) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, stdvector_matrix_getPointer_template_sub, error, in_vector, ret);\
-} while (0)
+#define stdvector_matrix_getPointer_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+ret = ((std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*)vector)->at(0);\
 
 #pragma endregion template
 
 DLLEXPORT void* stdvector_matrix_new1(matrix_element_type type, const int templateRows, const int templateColumns)
 {
+    int error = ERR_OK;
     void* ret = nullptr;
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            stdvector_matrix_new1_template(uint8_t, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::UInt16:
-            stdvector_matrix_new1_template(uint16_t, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::UInt32:
-            stdvector_matrix_new1_template(uint32_t, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::Int8:
-            stdvector_matrix_new1_template(int8_t, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::Int16:
-            stdvector_matrix_new1_template(int16_t, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::Int32:
-            stdvector_matrix_new1_template(int32_t, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::Float:
-            stdvector_matrix_new1_template(float, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::Double:
-            stdvector_matrix_new1_template(double, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::RgbPixel:
-            stdvector_matrix_new1_template(rgb_pixel, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::HsiPixel:
-            stdvector_matrix_new1_template(hsi_pixel, templateRows, templateColumns, ret);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            stdvector_matrix_new1_template(rgb_alpha_pixel, templateRows, templateColumns, ret);
-            break;
-        default:
-            break;
-    }
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    stdvector_matrix_new1_template,
+                    templateRows,
+                    templateColumns,
+                    ret);
 
     return ret;
 }
 
 DLLEXPORT void* stdvector_matrix_new2(matrix_element_type type, size_t size, const int templateRows, const int templateColumns)
 {
+    int error = ERR_OK;
     void* ret = nullptr;
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            stdvector_matrix_new2_template(uint8_t, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::UInt16:
-            stdvector_matrix_new2_template(uint16_t, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::UInt32:
-            stdvector_matrix_new2_template(uint32_t, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::Int8:
-            stdvector_matrix_new2_template(int8_t, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::Int16:
-            stdvector_matrix_new2_template(int16_t, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::Int32:
-            stdvector_matrix_new2_template(int32_t, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::Float:
-            stdvector_matrix_new2_template(float, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::Double:
-            stdvector_matrix_new2_template(double, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::RgbPixel:
-            stdvector_matrix_new2_template(rgb_pixel, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::HsiPixel:
-            stdvector_matrix_new2_template(hsi_pixel, templateRows, templateColumns, size, ret);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            stdvector_matrix_new2_template(rgb_alpha_pixel, templateRows, templateColumns, size, ret);
-            break;
-        default:
-            break;
-    }
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    stdvector_matrix_new2_template,
+                    templateRows,
+                    templateColumns,
+                    size,
+                    ret);
 
     return ret;
 }
 
 DLLEXPORT void* stdvector_matrix_new3(matrix_element_type type, void** data, size_t dataLength, const int templateRows, const int templateColumns)
 {
+    int error = ERR_OK;
     void* ret = nullptr;
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            stdvector_matrix_new3_template(uint8_t, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::UInt16:
-            stdvector_matrix_new3_template(uint16_t, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::UInt32:
-            stdvector_matrix_new3_template(uint32_t, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::Int8:
-            stdvector_matrix_new3_template(int8_t, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::Int16:
-            stdvector_matrix_new3_template(int16_t, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::Int32:
-            stdvector_matrix_new3_template(int32_t, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::Float:
-            stdvector_matrix_new3_template(float, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::Double:
-            stdvector_matrix_new3_template(double, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::RgbPixel:
-            stdvector_matrix_new3_template(rgb_pixel, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::HsiPixel:
-            stdvector_matrix_new3_template(hsi_pixel, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            stdvector_matrix_new3_template(rgb_alpha_pixel, templateRows, templateColumns, data, dataLength, ret);
-            break;
-        default:
-            break;
-    }
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    stdvector_matrix_new3_template,
+                    templateRows,
+                    templateColumns,
+                    data,
+                    dataLength,
+                    ret);
 
     return ret;
 }
 
 DLLEXPORT size_t stdvector_matrix_getSize(matrix_element_type type, void* vector, const int templateRows, const int templateColumns)
 {
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            stdvector_matrix_getSize_template(uint8_t, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::UInt16:
-            stdvector_matrix_getSize_template(uint16_t, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::UInt32:
-            stdvector_matrix_getSize_template(uint32_t, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::Int8:
-            stdvector_matrix_getSize_template(int8_t, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::Int16:
-            stdvector_matrix_getSize_template(int16_t, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::Int32:
-            stdvector_matrix_getSize_template(int32_t, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::Float:
-            stdvector_matrix_getSize_template(float, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::Double:
-            stdvector_matrix_getSize_template(double, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::RgbPixel:
-            stdvector_matrix_getSize_template(rgb_pixel, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::HsiPixel:
-            stdvector_matrix_getSize_template(hsi_pixel, templateRows, templateColumns, vector);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            stdvector_matrix_getSize_template(rgb_alpha_pixel, templateRows, templateColumns, vector);
-            break;
-        default:
-            return ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-    }
-}
+    int error = ERR_OK;
+    size_t ret;
 
-DLLEXPORT void* stdvector_matrix_getPointer(matrix_element_type type, void* vector, const int templateRows, const int templateColumns)
-{
-    void* ret = nullptr;
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            stdvector_matrix_getPointer_template(uint8_t, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::UInt16:
-            stdvector_matrix_getPointer_template(uint16_t, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::UInt32:
-            stdvector_matrix_getPointer_template(uint32_t, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::Int8:
-            stdvector_matrix_getPointer_template(int8_t, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::Int16:
-            stdvector_matrix_getPointer_template(int16_t, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::Int32:
-            stdvector_matrix_getPointer_template(int32_t, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::Float:
-            stdvector_matrix_getPointer_template(float, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::Double:
-            stdvector_matrix_getPointer_template(double, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::RgbPixel:
-            stdvector_matrix_getPointer_template(rgb_pixel, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::HsiPixel:
-            stdvector_matrix_getPointer_template(hsi_pixel, templateRows, templateColumns, vector, ret);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            stdvector_matrix_getPointer_template(rgb_alpha_pixel, templateRows, templateColumns, vector, ret);
-            break;
-        default:
-            break;
-    }
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    stdvector_matrix_getSize_template,
+                    templateRows,
+                    templateColumns,
+                    vector,
+                    ret);
 
     return ret;
 }
 
-DLLEXPORT void stdvector_matrix_delete(matrix_element_type type, std::vector<void*> *in_vector, const int templateRows, const int templateColumns)
+DLLEXPORT void* stdvector_matrix_getPointer(matrix_element_type type, void* vector, const int templateRows, const int templateColumns)
 {
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            stdvector_matrix_delete_template(uint8_t, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::UInt16:
-            stdvector_matrix_delete_template(uint16_t, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::UInt32:
-            stdvector_matrix_delete_template(uint32_t, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::Int8:
-            stdvector_matrix_delete_template(int8_t, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::Int16:
-            stdvector_matrix_delete_template(int16_t, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::Int32:
-            stdvector_matrix_delete_template(int32_t, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::Float:
-            stdvector_matrix_delete_template(float, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::Double:
-            stdvector_matrix_delete_template(double, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::RgbPixel:
-            stdvector_matrix_delete_template(rgb_pixel, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::HsiPixel:
-            stdvector_matrix_delete_template(hsi_pixel, templateRows, templateColumns, in_vector);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            stdvector_matrix_delete_template(rgb_alpha_pixel, templateRows, templateColumns, in_vector);
-            break;
-        default:
-            break;
-    }
+    int error = ERR_OK;
+    void* ret = nullptr;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    stdvector_matrix_getPointer_template,
+                    templateRows,
+                    templateColumns,
+                    vector,
+                    ret);
+
+    return ret;
+}
+
+DLLEXPORT void stdvector_matrix_delete(matrix_element_type type, std::vector<void*> *vector, const int templateRows, const int templateColumns)
+{
+    int error = ERR_OK;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    stdvector_matrix_delete_template,
+                    templateRows,
+                    templateColumns,
+                    vector);
 }
 
 DLLEXPORT void stdvector_matrix_copy(std::vector<void*> *vector, void** dst)

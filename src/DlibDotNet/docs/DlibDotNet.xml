@@ -1482,6 +1482,11 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.CustomLogger.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.Logger.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
@@ -1594,9 +1599,19 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.Queue`1.Sort1BC.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.Rand.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.SerializationException">
+            <summary>
+            The exception is general exception for serialization and deserialization on dlib. This class cannot be inherited.
             </summary>
         </member>
         <member name="T:DlibDotNet.RunningStats`1">
@@ -1690,7 +1705,37 @@
             Releases all unmanaged resources.
             </summary>
         </member>
-        <member name="M:DlibDotNet.LinearKernel`1.DisposeUnmanaged">
+        <member name="M:DlibDotNet.KCentroid`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.HistogramIntersectionKernel`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.LinearKernel`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PolynomialKernel`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RadialBasisKernel`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SigmoidKernel`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.KKMeans`2.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

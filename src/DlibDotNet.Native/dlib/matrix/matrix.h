@@ -38,7 +38,7 @@ for (int32_t c = 0, step = r * num_cols; c < num_cols; c++)\
 return m;
 
 #define matrix_new4_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
-ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();
+*ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();
 
 #define matrix_new5_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& v = *static_cast<std::vector<__TYPE__>*>(vector);\
@@ -47,6 +47,10 @@ ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(il);
 
 #define matrix_delete_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 delete ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix);
+
+#define matrix_clone_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+const auto& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
+ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(m);
 
 #define matrix_begin_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 *((__TYPE__**)ret) = ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix)->begin();\
@@ -363,10 +367,9 @@ DLLEXPORT void* matrix_new3(const matrix_element_type type, const int num_rows, 
     return ret;
 }
 
-DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, const int templateColumns)
+DLLEXPORT int matrix_new4(matrix_element_type type, const int templateRows, const int templateColumns, void** ret)
 {
     int error = ERR_OK;
-    void* ret = nullptr;
 
     matrix_template(type,
                     error,
@@ -376,7 +379,7 @@ DLLEXPORT void* matrix_new4(matrix_element_type type, const int templateRows, co
                     templateColumns,
                     ret);
 
-    return ret;
+    return error;
 }
 
 DLLEXPORT void* matrix_new5(matrix_element_type type, const int templateRows, const int templateColumns, void* vector)
@@ -527,6 +530,23 @@ DLLEXPORT void matrix_delete(matrix_element_type type, void* matrix, const int t
                     templateRows,
                     templateColumns,
                     matrix);
+}
+
+DLLEXPORT void* matrix_clone(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns)
+{
+    int error = ERR_OK;
+    void* ret = nullptr;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    matrix_clone_template,
+                    templateRows,
+                    templateColumns,
+                    matrix,
+                    ret);
+
+    return ret;
 }
 
 DLLEXPORT int matrix_operator_array(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, void* array)

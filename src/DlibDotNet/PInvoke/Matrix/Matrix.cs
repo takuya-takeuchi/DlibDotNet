@@ -21,10 +21,16 @@ namespace DlibDotNet
         public static extern unsafe IntPtr matrix_new3(MatrixElementType matrixElementType, int row, int column, byte* src);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr matrix_new4(MatrixElementType matrixElementType, uint templateRows, uint templateColumns);
+        public static extern ErrorType matrix_new4(MatrixElementType matrixElementType,
+                                                   uint templateRows,
+                                                   uint templateColumns,
+                                                   out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_clone(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_deserialize_matrix_proxy(IntPtr deserializeProxy,
