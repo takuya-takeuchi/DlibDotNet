@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using ElementType = DlibDotNet.NativeMethods.ElementType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
-using NumericType = DlibDotNet.NativeMethods.NumericType;
-using PyramidType = DlibDotNet.NativeMethods.PyramidType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -19,7 +13,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private readonly Array2DType _Array2DType;
+        private readonly NativeMethods.Array2DType _Array2DType;
 
         private static readonly IDictionary<ImageTypes, int> ElementSizeDictionary = new Dictionary<ImageTypes, int>();
 
@@ -187,23 +181,35 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Methods 
+        #region Methods  
+
+        public void SetSize(int rows, int columns)
+        {
+            if (!(rows >= 0 && columns >= 0))
+                throw new ArrayTypeMismatchException();
+
+            this.ThrowIfDisposed();
+            NativeMethods.array2d_set_size(this._Array2DType,
+                                           this.NativePtr,
+                                           rows,
+                                           columns);
+        }
 
         public byte[] ToBytes()
         {
             switch (this._Array2DType)
             {
-                case Array2DType.UInt8:
-                case Array2DType.UInt16:
-                case Array2DType.UInt32:
-                case Array2DType.Int8:
-                case Array2DType.Int16:
-                case Array2DType.Int32:
-                case Array2DType.Float:
-                case Array2DType.Double:
-                case Array2DType.RgbPixel:
-                case Array2DType.RgbAlphaPixel:
-                case Array2DType.HsiPixel:
+                case NativeMethods.Array2DType.UInt8:
+                case NativeMethods.Array2DType.UInt16:
+                case NativeMethods.Array2DType.UInt32:
+                case NativeMethods.Array2DType.Int8:
+                case NativeMethods.Array2DType.Int16:
+                case NativeMethods.Array2DType.Int32:
+                case NativeMethods.Array2DType.Float:
+                case NativeMethods.Array2DType.Double:
+                case NativeMethods.Array2DType.RgbPixel:
+                case NativeMethods.Array2DType.RgbAlphaPixel:
+                case NativeMethods.Array2DType.HsiPixel:
                     var rows = (uint)this.Rows;
                     var columns = (uint)this.Columns;
                     var size = ElementSizeDictionary[this.ImageType];
@@ -212,7 +218,7 @@ namespace DlibDotNet
                     var ret = NativeMethods.extensions_convert_array_to_bytes(this._Array2DType, src, dst, rows, columns);
                     switch (ret)
                     {
-                        case ErrorType.Array2DTypeTypeNotSupport:
+                        case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                             throw new ArgumentException($"Cannot convert Array2D<{this.ImageType}> to byte array.");
                     }
                     return dst;

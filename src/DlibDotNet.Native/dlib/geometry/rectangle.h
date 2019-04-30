@@ -6,19 +6,18 @@
 #include <dlib/geometry/vector.h>
 #include <dlib/image_io.h>
 #include "../shared.h"
+#include "../template.h"
 
 using namespace dlib;
 
 #pragma region template
 
-#define rectangle_get_rect_matrix_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, img, ret) \
-dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(img);\
-*ret = new rectangle(dlib::get_rect(m));\
+#define rectangle_get_rect_template(__TYPE__, error, type, ...) \
+*rect = new dlib::rectangle(get_rect(*((array2d<__TYPE__>*)img)));
 
-#define rectangle_get_rect_matrix_template(__TYPE__, __ROWS__, __COLUMNS__, error, img, ret) \
-do {\
-    matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, rectangle_get_rect_matrix_template_sub, error, img, ret);\
-} while (0)
+#define rectangle_get_rect_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(img);\
+*ret = new rectangle(dlib::get_rect(m));
 
 #pragma endregion template
 
@@ -26,7 +25,7 @@ DLLEXPORT rectangle* rectangle_new()
 {
     return new rectangle();
 }
- 
+
 DLLEXPORT rectangle* rectangle_new1(const int left, const int top, const int right, const int bottom)
 {
      return new rectangle(left, top, right, bottom);
@@ -41,7 +40,7 @@ DLLEXPORT rectangle* rectangle_new3(const point* p)
 {
     return new dlib::rectangle(*p);
 }
-    
+
 DLLEXPORT rectangle* rectangle_new4(const point* p1, const point* p2)
 {
     return new rectangle(*p1, *p2);
@@ -166,6 +165,18 @@ DLLEXPORT rectangle* rectangle_intersect(rectangle* rect, rectangle* target)
     return new rectangle(result);
 }
 
+DLLEXPORT rectangle* rectangle_move_rect(rectangle* rect, dlib::point* point)
+{
+    const rectangle result = dlib::move_rect(*rect, *point);
+    return new rectangle(result);
+}
+
+DLLEXPORT rectangle* rectangle_move_rect2(rectangle* rect, long x, long y)
+{
+    const rectangle result = dlib::move_rect(*rect, x, y);
+    return new rectangle(result);
+}
+
 DLLEXPORT point* rectangle_center(rectangle* rect)
 {
     const point result = center(*rect);
@@ -178,98 +189,33 @@ DLLEXPORT dpoint* rectangle_dcenter(rectangle* rect)
     return new dpoint(result);
 }
 
-DLLEXPORT int rectangle_get_rect(array2d_type img_type, void* img, rectangle** rect)
+DLLEXPORT int rectangle_get_rect(array2d_type type, void* img, rectangle** rect)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            *rect = new dlib::rectangle(get_rect(*((array2d<uint8_t>*)img)));
-            break;
-        case array2d_type::UInt16:
-            *rect = new dlib::rectangle(get_rect(*((array2d<uint16_t>*)img)));
-            break;
-        case array2d_type::UInt32:
-            *rect = new dlib::rectangle(get_rect(*((array2d<uint32_t>*)img)));
-            break;
-        case array2d_type::Int8:
-            *rect = new dlib::rectangle(get_rect(*((array2d<int8_t>*)img)));
-            break;
-        case array2d_type::Int16:
-            *rect = new dlib::rectangle(get_rect(*((array2d<int16_t>*)img)));
-            break;
-        case array2d_type::Int32:
-            *rect = new dlib::rectangle(get_rect(*((array2d<int32_t>*)img)));
-            break;
-        case array2d_type::Float:
-            *rect = new dlib::rectangle(get_rect(*((array2d<float>*)img)));
-            break;
-        case array2d_type::Double:        
-            *rect = new dlib::rectangle(get_rect(*((array2d<double>*)img)));
-            break;
-        case array2d_type::RgbPixel:
-            *rect = new dlib::rectangle(get_rect(*((array2d<rgb_pixel>*)img)));
-            break;
-        case array2d_type::HsiPixel:
-            *rect = new dlib::rectangle(get_rect(*((array2d<hsi_pixel>*)img)));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            *rect = new dlib::rectangle(get_rect(*((array2d<rgb_alpha_pixel>*)img)));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     rectangle_get_rect_template,
+                     img,
+                     rect);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int rectangle_get_rect_matrix(matrix_element_type type, void* img, const int templateRows, const int templateColumns, rectangle** ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-		case matrix_element_type::UInt8:
-            rectangle_get_rect_matrix_template(uint8_t, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::UInt16:
-            rectangle_get_rect_matrix_template(uint16_t, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::UInt32:
-            rectangle_get_rect_matrix_template(uint32_t, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::Int8:
-            rectangle_get_rect_matrix_template(int8_t, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::Int16:
-            rectangle_get_rect_matrix_template(int16_t, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::Int32:
-            rectangle_get_rect_matrix_template(int32_t, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::Float:
-            rectangle_get_rect_matrix_template(float, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::Double:
-            rectangle_get_rect_matrix_template(double, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::RgbPixel:
-            rectangle_get_rect_matrix_template(rgb_pixel, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::HsiPixel:
-            rectangle_get_rect_matrix_template(hsi_pixel, templateRows, templateColumns, err, img, ret);
-			break;
-		case matrix_element_type::RgbAlphaPixel:
-            rectangle_get_rect_matrix_template(rgb_alpha_pixel, templateRows, templateColumns, err, img, ret);
-			break;
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    rectangle_get_rect_matrix_template,
+                    templateRows,
+                    templateColumns,
+                    img,
+                    ret);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT rectangle* rectangle_set_aspect_ratio(rectangle* rect, const double ratio)
@@ -301,7 +247,7 @@ DLLEXPORT void* rectangle_operator_add_point(rectangle* rect, point* rhs)
 {
     // rectangle r(*rect);
     // point p(*rhs);
-    // r += p;    
+    // r += p;
     *rect = *rect + rectangle(*rhs);
     return new rectangle(*rect);
 }

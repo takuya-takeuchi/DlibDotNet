@@ -60,7 +60,7 @@ namespace ImgLab
             }
 
             // now do angular clustering of the points
-            var linearKernel = new LinearKernel<Matrix<double>>(0, 1);
+            var linearKernel = new LinearKernel<double, Matrix<double>>(0, 1);
             var tempCenters = Dlib.PickInitialCenters((int)numberClusters, features, linearKernel, 0.05).ToArray();
             var centers = Dlib.FindClustersUsingAngularKMeans(features, tempCenters).ToArray();
             foreach (var center in tempCenters)
@@ -82,19 +82,16 @@ namespace ImgLab
             return assignments;
         }
 
-        private static int ClusterDataset(CommandLineApplication commandLine)
+        private static int ClusterDataset(string filename, CommandArgument clusterNumArgs, CommandOption sizeOption)
         {
             // make sure the user entered an argument to this program
-            if (commandLine.RemainingArguments.Count != 1)
+            if (string.IsNullOrWhiteSpace(filename))
             {
                 Console.WriteLine("The --cluster option requires you to give one XML file on the command line.");
                 return ExitFailure;
             }
 
-            var clusterOption = commandLine.Option("-cluster|--cluster", "", CommandOptionType.SingleValue);
-            var sizeOption = commandLine.Option("-size|--size", "", CommandOptionType.SingleValue);
-
-            var clusterValue = clusterOption.HasValue() ? clusterOption.Value() : "2";
+            var clusterValue = clusterNumArgs.Value ?? "2";
             var sizeValue = sizeOption.HasValue() ? sizeOption.Value() : "8000";
 
             if (!uint.TryParse(clusterValue, out var numClusters))
@@ -103,10 +100,9 @@ namespace ImgLab
             if (!uint.TryParse(sizeValue, out var chipSize))
                 return ExitFailure;
 
-            var argument = commandLine.RemainingArguments[0];
-            using (var data = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(argument))
+            using (var data = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(filename))
             {
-                Environment.CurrentDirectory = Path.GetDirectoryName(argument);
+                Environment.CurrentDirectory = Path.GetDirectoryName(filename);
 
 
                 double aspectRatio = MeanAspectRatio(data);
@@ -119,7 +115,7 @@ namespace ImgLab
                 // extract all the object chips and HOG features.
                 Console.WriteLine("Loading image data...");
 
-                for (var i = 0; i < dataImages.Length; ++i)
+                for (int i = 0, count = dataImages.Count; i < count; ++i)
                 {
                     //pbar.print_status(i);
                     if (!HasNonIgnoredBoxes(dataImages[i]))
@@ -128,7 +124,7 @@ namespace ImgLab
                     using (var img = Dlib.LoadImage<RgbPixel>(dataImages[i].FileName))
                     {
                         var boxes = dataImages[i].Boxes;
-                        for (var j = 0; j < boxes.Length; ++j)
+                        for (var j = 0; j < boxes.Count; ++j)
                         {
                             if (boxes[j].Ignore || boxes[j].Rect.Area < 10)
                                 continue;
@@ -165,9 +161,9 @@ namespace ImgLab
                     // come before less central chips.  The idea being to get the good chips to
                     // show up first in the listing, making it easy to manually remove bad ones if
                     // that is desired.
-                    var idata = new List<Pair<double, Image>>(dataImages.Length);
+                    var idata = new List<Pair<double, Image>>(dataImages.Count);
                     var idx = 0;
-                    for (var i = 0; i < dataImages.Length; ++i)
+                    for (int i = 0, count = dataImages.Count; i < count; ++i)
                     {
                         idata.Add(new Pair<double, Image> { Second = new Image() });
 
@@ -179,10 +175,8 @@ namespace ImgLab
 
                         var idataBoxes = new List<Box>();
                         var boxes = dataImages[i].Boxes;
-                        for (var j = 0; j < boxes.Length; ++j)
+                        for (var j = 0; j < boxes.Count; ++j)
                         {
-                            idataBoxes.Add(boxes[j]);
-
                             if (boxes[j].Ignore || boxes[j].Rect.Area < 10)
                                 continue;
 
@@ -196,8 +190,6 @@ namespace ImgLab
 
                             ++idx;
                         }
-
-                        idata[i].Second.Boxes = idataBoxes.ToArray();
                     }
 
                     // now save idata to an xml file.
@@ -212,15 +204,13 @@ namespace ImgLab
                         cdata.Comment = $"{data.Comment}\n\n This file contains objects which were clustered into group {c + 1} of {numClusters} groups with a chip size of {chipSize} by imglab.";
                         cdata.Name = data.Name;
 
-                        var cdataImages = new List<Image>();
+                        var cdataImages = cdata.Images;
                         for (var i = 0; i < idata.Count; ++i)
                         {
                             // if this image has non-ignored boxes in it then include it in the output.
                             if (!double.IsPositiveInfinity(idata[i].First))
                                 cdataImages.Add(idata[i].Second);
                         }
-
-                        cdata.Images = cdataImages.ToArray();
 
                         var outfile = $"cluster_{c + 1:D3}.xml";
                         Console.WriteLine($"Saving {outfile}");
@@ -273,10 +263,10 @@ namespace ImgLab
             double sum = 0;
             var cnt = 0;
             var images = data.Images;
-            for (var index = 0; index < images.Length; ++index)
+            for (int index = 0, iCount = images.Count; index < iCount; ++index)
             {
                 var boxes = images[index].Boxes;
-                for (var j = 0; j < boxes.Length; ++j)
+                for (int j = 0, bCount = boxes.Count; j < bCount; ++j)
                 {
                     var rect = boxes[j].Rect;
                     if (rect.Area == 0 || boxes[j].Ignore)
@@ -285,13 +275,7 @@ namespace ImgLab
                     sum += rect.Width / (double)rect.Height;
                     ++cnt;
                 }
-
-                foreach (var box in boxes)
-                    box.Dispose();
             }
-
-            foreach (var image in images)
-                image.Dispose();
 
             return cnt != 0 ? sum / cnt : 0;
         }

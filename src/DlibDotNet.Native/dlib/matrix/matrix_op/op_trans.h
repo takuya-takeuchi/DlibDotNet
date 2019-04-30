@@ -344,7 +344,7 @@ DLLEXPORT int matrix_op_op_trans_operator_left_shift(matrix_element_type type, v
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:
-            err =  ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
 

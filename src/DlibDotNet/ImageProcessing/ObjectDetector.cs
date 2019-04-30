@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DlibDotNet.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -231,10 +230,11 @@ namespace DlibDotNet
             public override void Deserialize(byte[] filepath)
             {
                 var ret = NativeMethods.object_detector_scan_fhog_pyramid_deserialize(filepath,
-                                                                                    this._PyramidType,
-                                                                                    this._PyramidRate,
-                                                                                    this._FeatureExtractorType,
-                                                                                    this.NativePtr);
+                                                                                      this._PyramidType,
+                                                                                      this._PyramidRate,
+                                                                                      this._FeatureExtractorType,
+                                                                                      this.NativePtr,
+                                                                                      out var errorMessage);
 
                 switch (ret)
                 {
@@ -242,6 +242,8 @@ namespace DlibDotNet
                     case NativeMethods.ErrorType.PyramidNotSupportRate:
                     case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
+                    case NativeMethods.ErrorType.GeneralSerialization:
+                        throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
                 }
             }
 
@@ -297,7 +299,8 @@ namespace DlibDotNet
                                                                                     this._PyramidType,
                                                                                     this._PyramidRate,
                                                                                     this._FeatureExtractorType,
-                                                                                    this.NativePtr);
+                                                                                    this.NativePtr,
+                                                                                    out var errorMessage);
 
                 switch (ret)
                 {
@@ -305,33 +308,34 @@ namespace DlibDotNet
                     case NativeMethods.ErrorType.PyramidNotSupportRate:
                     case NativeMethods.ErrorType.PyramidNotSupportType:
                         throw new NotSupportedException();
+                    case NativeMethods.ErrorType.GeneralSerialization:
+                        throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
                 }
             }
 
             public override Matrix<double> TestObjectDetectionFunction<U>(IEnumerable<Matrix<U>> images, IEnumerable<IEnumerable<Rectangle>> objects)
             {
                 using (var vecImage = new StdVector<Matrix<U>>(images))
+                using (var disposer = new EnumerableDisposer<StdVector<Rectangle>>(objects.Select(r => new StdVector<Rectangle>(r))))
+                using (var vecObject = new StdVector<StdVector<Rectangle>>(disposer.Collection))
+                using (new EnumerableDisposer<StdVector<Rectangle>>(vecObject))
                 {
-                    var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
-                    using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                    Matrix<U>.TryParse<U>(out var matrixElementType);
+                    var ret = NativeMethods.cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_rectangle(this._PyramidType,
+                                                                                                                                               this._PyramidRate,
+                                                                                                                                               this._FeatureExtractorType,
+                                                                                                                                               this.NativePtr,
+                                                                                                                                               matrixElementType.ToNativeMatrixElementType(),
+                                                                                                                                               vecImage.NativePtr,
+                                                                                                                                               vecObject.NativePtr,
+                                                                                                                                               out var matrix);
+                    switch (ret)
                     {
-                        Matrix<U>.TryParse<U>(out var matrixElementType);
-                        var ret = NativeMethods.cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_rectangle(this._PyramidType,
-                                                                                                                                                   this._PyramidRate,
-                                                                                                                                                   this._FeatureExtractorType,
-                                                                                                                                                   this.NativePtr,
-                                                                                                                                                   matrixElementType.ToNativeMatrixElementType(),
-                                                                                                                                                   vecImage.NativePtr,
-                                                                                                                                                   vecObject.NativePtr,
-                                                                                                                                                   out var matrix);
-                        switch (ret)
-                        {
-                            case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                                throw new ArgumentException($"{matrixElementType} is not supported.");
-                        }
-
-                        return new Matrix<double>(matrix, 1, 3);
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{matrixElementType} is not supported.");
                     }
+
+                    return new Matrix<double>(matrix, 1, 3);
                 }
             }
 

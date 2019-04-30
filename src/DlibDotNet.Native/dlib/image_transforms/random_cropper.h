@@ -65,7 +65,7 @@ DLLEXPORT bool random_cropper_get_chip_dims(random_cropper* cropper, chip_dims**
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_background_crops_fraction(random_cropper* cropper, double* value) 
+DLLEXPORT bool random_cropper_get_background_crops_fraction(random_cropper* cropper, double* value)
 {
     *value = cropper->get_background_crops_fraction();
     return true;
@@ -77,31 +77,31 @@ DLLEXPORT bool random_cropper_get_max_object_size(random_cropper* cropper, doubl
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_min_object_length_long_dim(random_cropper* cropper, long* value) 
+DLLEXPORT bool random_cropper_get_min_object_length_long_dim(random_cropper* cropper, long* value)
 {
     *value = cropper->get_min_object_length_long_dim();
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_min_object_length_short_dim(random_cropper* cropper, long* value) 
+DLLEXPORT bool random_cropper_get_min_object_length_short_dim(random_cropper* cropper, long* value)
 {
     *value = cropper->get_min_object_length_short_dim();
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_randomly_flip(random_cropper* cropper, bool* value) 
+DLLEXPORT bool random_cropper_get_randomly_flip(random_cropper* cropper, bool* value)
 {
     *value = cropper->get_randomly_flip();
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_max_rotation_degrees(random_cropper* cropper, double* value) 
+DLLEXPORT bool random_cropper_get_max_rotation_degrees(random_cropper* cropper, double* value)
 {
     *value = cropper->get_max_rotation_degrees();
     return true;
 }
 
-DLLEXPORT bool random_cropper_get_translate_amount(random_cropper* cropper, double* value) 
+DLLEXPORT bool random_cropper_get_translate_amount(random_cropper* cropper, double* value)
 {
     *value = cropper->get_translate_amount();
     return true;
@@ -117,32 +117,37 @@ DLLEXPORT void random_cropper_set_max_object_size(random_cropper* cropper, doubl
     cropper->set_max_object_size(value);
 }
 
-DLLEXPORT void random_cropper_set_min_object_size(random_cropper* cropper, long long_dim, long short_dim) 
+DLLEXPORT void random_cropper_set_min_object_size(random_cropper* cropper, long long_dim, long short_dim)
 {
     cropper->set_min_object_size(long_dim, short_dim);
 }
 
-DLLEXPORT void random_cropper_set_randomly_flip(random_cropper* cropper, bool value) 
+DLLEXPORT void random_cropper_set_randomly_flip(random_cropper* cropper, bool value)
 {
     cropper->set_randomly_flip(value);
 }
 
-DLLEXPORT void random_cropper_set_max_rotation_degrees(random_cropper* cropper, double value) 
+DLLEXPORT void random_cropper_set_max_rotation_degrees(random_cropper* cropper, double value)
 {
     cropper->set_max_rotation_degrees(value);
 }
 
-DLLEXPORT void random_cropper_set_background_crops_fraction(random_cropper* cropper, double value) 
+DLLEXPORT void random_cropper_set_background_crops_fraction(random_cropper* cropper, double value)
 {
     cropper->set_background_crops_fraction(value);
 }
 
-DLLEXPORT void random_cropper_set_translate_amount(random_cropper* cropper, double value) 
+DLLEXPORT void random_cropper_set_seed(random_cropper* cropper, time_t value)
+{
+    cropper->set_seed(value);
+}
+
+DLLEXPORT void random_cropper_set_translate_amount(random_cropper* cropper, double value)
 {
     cropper->set_translate_amount(value);
 }
 
-DLLEXPORT int random_cropper_operator(random_cropper* cropper, 
+DLLEXPORT int random_cropper_operator(random_cropper* cropper,
                                       size_t num_crops,
                                       matrix_element_type type,
                                       void* images,
@@ -189,13 +194,23 @@ DLLEXPORT int random_cropper_operator(random_cropper* cropper,
             err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 
-DLLEXPORT void random_cropper_predictor_delete(random_cropper* obj)
+DLLEXPORT void random_cropper_delete(random_cropper* obj)
 {
 	delete obj;
 }
+
+#pragma region operator
+
+DLLEXPORT void random_cropper_operator_left_shift(random_cropper* cropper, std::ostringstream* stream)
+{
+    random_cropper& c = *cropper;
+    *stream << c;
+}
+
+#pragma endregion operator
 
 #endif

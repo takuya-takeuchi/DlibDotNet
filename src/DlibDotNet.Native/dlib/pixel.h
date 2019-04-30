@@ -16,4 +16,14 @@ DLLEXPORT void assign_pixel_rgbalpha_rgb(rgb_alpha_pixel* dest, rgb_pixel* src)
     dlib::assign_pixel(*dest, *src);
 }
 
+DLLEXPORT void assign_pixel_rgb_hsi(rgb_pixel* dest, hsi_pixel* src)
+{
+    dlib::assign_pixel(*dest, *src);
+}
+
+DLLEXPORT void assign_pixel_rgbalpha_hsi(rgb_alpha_pixel* dest, hsi_pixel* src)
+{
+    dlib::assign_pixel(*dest, *src);
+}
+
 #endif

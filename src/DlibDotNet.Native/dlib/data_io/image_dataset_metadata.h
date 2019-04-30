@@ -6,7 +6,7 @@
 #include <dlib/matrix.h>
 #include <dlib/data_io/image_dataset_metadata.h>
 #include "../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -57,6 +57,8 @@ DLLEXPORT double image_dataset_metadata_box_get_detection_score(image_dataset_me
     return box->detection_score;
 }
 
+#pragma region parts
+
 DLLEXPORT bool image_dataset_metadata_box_get_parts_get_value(image_dataset_metadata::box* box, const char* key, dlib::point** result)
 {
     std::map<std::string,point>& m = box->parts;
@@ -84,6 +86,11 @@ DLLEXPORT void image_dataset_metadata_box_parts_clear(image_dataset_metadata::bo
     m.clear();
 }
 
+DLLEXPORT int image_dataset_metadata_box_get_parts_get_size(image_dataset_metadata::box* box)
+{
+    return box->parts.size();
+}
+
 DLLEXPORT void image_dataset_metadata_box_get_parts_get_all(image_dataset_metadata::box* box,
                                                             std::vector<std::string*>* strings,
                                                             std::vector<dlib::point*>* points)
@@ -98,6 +105,8 @@ DLLEXPORT void image_dataset_metadata_box_get_parts_get_all(image_dataset_metada
         points->push_back(new dlib::point(s));
     }
 }
+
+#pragma endregion parts
 
 DLLEXPORT void image_dataset_metadata_box_set_detection_score(image_dataset_metadata::box* box, double value)
 {
@@ -198,6 +207,8 @@ DLLEXPORT void image_dataset_metadata_dataset_set_comment(image_dataset_metadata
     dataset->comment = std::string(value);
 }
 
+#pragma region images
+
 DLLEXPORT std::vector<image_dataset_metadata::image*>* image_dataset_metadata_dataset_get_images(image_dataset_metadata::dataset* dataset)
 {
     std::vector<image_dataset_metadata::image>& src = dataset->images;
@@ -206,13 +217,34 @@ DLLEXPORT std::vector<image_dataset_metadata::image*>* image_dataset_metadata_da
     return dst;
 }
 
-DLLEXPORT void image_dataset_metadata_dataset_set_images(image_dataset_metadata::dataset* dataset, std::vector<image_dataset_metadata::image*>* images)
+DLLEXPORT image_dataset_metadata::image* image_dataset_metadata_dataset_get_images_at(image_dataset_metadata::dataset* dataset, int index)
+{
+    image_dataset_metadata::image& image = dataset->images.at(index);
+    return &image;
+}
+
+DLLEXPORT int image_dataset_metadata_dataset_get_images_get_size(image_dataset_metadata::dataset* dataset)
+{
+    return dataset->images.size();
+}
+
+DLLEXPORT void image_dataset_metadata_dataset_get_images_clear(image_dataset_metadata::dataset* dataset)
 {
     dataset->images.clear();
-    std::vector<image_dataset_metadata::image*>& tmp = *(static_cast<std::vector<image_dataset_metadata::image*>*>(images));
-    for (int i = 0, size = tmp.size(); i < size; i++ )
-        dataset->images.push_back(*tmp[i]);
 }
+
+DLLEXPORT void image_dataset_metadata_dataset_get_images_push_back(image_dataset_metadata::dataset* dataset, image_dataset_metadata::image* image)
+{
+    image_dataset_metadata::image& i = *image;
+    dataset->images.push_back(i);
+}
+
+DLLEXPORT void image_dataset_metadata_dataset_get_images_remove_at(image_dataset_metadata::dataset* dataset, int index)
+{
+    dataset->images.erase(dataset->images.begin() + index);
+}
+
+#pragma endregion images
 
 DLLEXPORT std::string* image_dataset_metadata_dataset_get_name(image_dataset_metadata::dataset* dataset)
 {
@@ -243,6 +275,8 @@ DLLEXPORT image_dataset_metadata::image* image_dataset_metadata_image_new2()
     return new image_dataset_metadata::image();
 }
 
+#pragma region boxes
+
 DLLEXPORT std::vector<image_dataset_metadata::box*>* image_dataset_metadata_dataset_get_boxes(image_dataset_metadata::image* image)
 {
     std::vector<image_dataset_metadata::box>& src = image->boxes;
@@ -251,13 +285,29 @@ DLLEXPORT std::vector<image_dataset_metadata::box*>* image_dataset_metadata_data
     return dst;
 }
 
-DLLEXPORT void image_dataset_metadata_dataset_set_boxes(image_dataset_metadata::image* image, std::vector<image_dataset_metadata::box*>* boxes)
+DLLEXPORT image_dataset_metadata::box* image_dataset_metadata_dataset_get_boxes_at(image_dataset_metadata::image* image, int index)
+{
+    image_dataset_metadata::box& box = image->boxes.at(index);
+    return &box;
+}
+
+DLLEXPORT int image_dataset_metadata_dataset_get_boxes_get_size(image_dataset_metadata::image* image)
+{
+    return image->boxes.size();
+}
+
+DLLEXPORT void image_dataset_metadata_dataset_get_boxes_clear(image_dataset_metadata::image* image)
 {
     image->boxes.clear();
-    std::vector<image_dataset_metadata::box*>& tmp = *(static_cast<std::vector<image_dataset_metadata::box*>*>(boxes));
-    for (int i = 0, size = tmp.size(); i < size; i++ )
-        image->boxes.push_back(*tmp[i]);
 }
+
+DLLEXPORT void image_dataset_metadata_dataset_get_boxes_push_back(image_dataset_metadata::image* image, image_dataset_metadata::box* box)
+{
+    image_dataset_metadata::box& b = *box;
+    image->boxes.push_back(b);
+}
+
+#pragma endregion boxes
 
 DLLEXPORT std::string* image_dataset_metadata_image_get_filename(image_dataset_metadata::image* image)
 {
@@ -276,18 +326,40 @@ DLLEXPORT void image_dataset_metadata_image_delete(image_dataset_metadata::image
 
 #pragma endregion image
 
-DLLEXPORT void load_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename)
+DLLEXPORT int load_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename)
 {
+    int err = ERR_OK;
+
     image_dataset_metadata::dataset& in_meta = *meta;
     std::string in_filename(filename);
-    dlib::image_dataset_metadata::load_image_dataset_metadata(in_meta, filename);
+    try
+    {    
+        dlib::image_dataset_metadata::load_image_dataset_metadata(in_meta, filename);
+    }
+    catch(dlib::error e)
+    {
+        err = ERR_GENERAL_FILE_IO;
+    }
+
+    return err;
 }
 
-DLLEXPORT void save_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename)
+DLLEXPORT int save_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename)
 {
+    int err = ERR_OK;
+
     const image_dataset_metadata::dataset& in_meta = *meta;
     std::string in_filename(filename);
-    dlib::image_dataset_metadata::save_image_dataset_metadata(in_meta, filename);
+    try
+    {
+        dlib::image_dataset_metadata::save_image_dataset_metadata(in_meta, filename);
+    }
+    catch(dlib::error e)
+    {
+        err = ERR_GENERAL_FILE_IO;
+    }
+
+    return err;
 }
 
 #endif

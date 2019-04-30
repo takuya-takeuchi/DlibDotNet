@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using DlibDotNet;
 using DlibDotNet.ImageDatasetMetadata;
 using Microsoft.Extensions.CommandLineUtils;
@@ -14,23 +13,23 @@ namespace ImgLab
 
         #region Methods
 
-        private static void ConvertPascalV1(CommandLineApplication parser)
+        private static void ConvertPascalV1(CommandArgument fileArgs, CommandOption xmlOption)
         {
             Console.WriteLine("Convert from PASCAL v1.00 annotation format...");
 
             using (var dataset = new Dataset())
             {
-                var filename = parser.GetOptions().FirstOrDefault(option => option.ShortName == "c").Value();
+                var filename = fileArgs.Value;
 
                 // make sure the file exists so we can use the get_parent_directory() command to
                 // figure out it's parent directory.
                 MakeEmptyFile(filename);
                 var parentDir = Path.GetDirectoryName(Path.GetFullPath(filename));
 
-                var images = new List<Image>();
-                for (var i = 0; i < parser.RemainingArguments.Count; ++i)
+                var images = dataset.Images;
+                for (var i = 0; i < xmlOption.Values.Count; ++i)
                 {
-                    var arg = parser.RemainingArguments[i];
+                    var arg = xmlOption.Values[i];
 
                     try
                     {
@@ -46,8 +45,6 @@ namespace ImgLab
                         throw;
                     }
                 }
-
-                dataset.Images = images.ToArray();
 
                 Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(dataset, filename);
             }

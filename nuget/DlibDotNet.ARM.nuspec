@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet-ARM</id>
-    <version>19.16.0.20190313-alpha</version>
+    <version>19.17.0.20190429</version>
     <title>DlibDotNet (for ARM)</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>

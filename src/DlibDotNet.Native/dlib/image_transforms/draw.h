@@ -28,13 +28,13 @@ do { \
 #pragma endregion template
 
 DLLEXPORT int draw_line(array2d_type type,
-                        void* image, 
+                        void* image,
                         dlib::point* p1,
                         dlib::point* p2,
                         void* p)
  {
      int err = ERR_OK;
- 
+
      switch(type)
      {
          case array2d_type::UInt8:
@@ -74,18 +74,18 @@ DLLEXPORT int draw_line(array2d_type type,
              err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
              break;
      }
- 
+
      return err;
  }
 
  DLLEXPORT int draw_rectangle(array2d_type type,
-                              void* image, 
+                              void* image,
                               dlib::rectangle* rect,
                               void* p,
                               unsigned int thickness)
  {
      int err = ERR_OK;
- 
+
      switch(type)
      {
          case array2d_type::UInt8:
@@ -125,9 +125,59 @@ DLLEXPORT int draw_line(array2d_type type,
              err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
              break;
      }
- 
+
      return err;
  }
+
+DLLEXPORT int fill_rect(array2d_type type,
+                        void* image,
+                        dlib::rectangle* rect,
+                        void* p)
+{
+    int err = ERR_OK;
+
+     switch(type)
+     {
+         case array2d_type::UInt8:
+             dlib::fill_rect(*((array2d<uint8_t>*)image), *rect, *((uint8_t*)p));
+             break;
+         case array2d_type::UInt16:
+             dlib::fill_rect(*((array2d<uint16_t>*)image), *rect, *((uint16_t*)p));
+             break;
+         case array2d_type::UInt32:
+             dlib::fill_rect(*((array2d<uint32_t>*)image), *rect, *((uint32_t*)p));
+             break;
+         case array2d_type::Int8:
+             dlib::fill_rect(*((array2d<int8_t>*)image), *rect, *((int8_t*)p));
+             break;
+         case array2d_type::Int16:
+             dlib::fill_rect(*((array2d<int16_t>*)image), *rect, *((int16_t*)p));
+             break;
+         case array2d_type::Int32:
+             dlib::fill_rect(*((array2d<int32_t>*)image), *rect, *((uint32_t*)p));
+             break;
+         case array2d_type::Float:
+             dlib::fill_rect(*((array2d<float>*)image), *rect, *((float*)p));
+             break;
+         case array2d_type::Double:
+             dlib::fill_rect(*((array2d<double>*)image), *rect, *((double*)p));
+             break;
+         case array2d_type::RgbPixel:
+             dlib::fill_rect(*((array2d<dlib::rgb_pixel>*)image), *rect, *((dlib::rgb_pixel*)p));
+             break;
+         case array2d_type::HsiPixel:
+             dlib::fill_rect(*((array2d<dlib::hsi_pixel>*)image), *rect, *((dlib::hsi_pixel*)p));
+             break;
+         case array2d_type::RgbAlphaPixel:
+             dlib::fill_rect(*((array2d<dlib::rgb_alpha_pixel>*)image), *rect, *((dlib::rgb_alpha_pixel*)p));
+             break;
+         default:
+             err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
+             break;
+     }
+
+    return err;
+}
 
 DLLEXPORT int tile_images(array2d_type in_type, void* images, void** ret_image)
 {

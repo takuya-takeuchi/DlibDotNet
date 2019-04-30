@@ -8,32 +8,80 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType nearest_center(MatrixElementType type,
-                                                      int templateRows,
-                                                      int templateColumns,
-                                                      IntPtr centers,
-                                                      IntPtr sample,
-                                                      out uint ret);
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_new(SvmKernelType kernelType, 
+                                                   MatrixElementType type,
+                                                   int templateRows,
+                                                   int templateColumns,
+                                                   IntPtr kcentroid,
+                                                   out IntPtr ret);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType find_clusters_using_angular_kmeans(MatrixElementType type,
-                                                                          int templateRows,
-                                                                          int templateColumns,
-                                                                          IntPtr centers,
-                                                                          IntPtr samples,
-                                                                          uint max_iter,
-                                                                          IntPtr result);
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void kkmeans_delete(SvmKernelType kernelType,
+                                                 MatrixElementType type,
+                                                 int templateRows,
+                                                 int templateColumns,
+                                                 IntPtr kkmeans);
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
-        public static extern ErrorType pick_initial_centers(MatrixElementType elementType,
-                                                            int templateRows,
-                                                            int templateColumns,
-                                                            long num_centers,
-                                                            IntPtr centers,
-                                                            IntPtr samples,
-                                                            IntPtr k,
-                                                            double percentile);
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_get_kernel(SvmKernelType kernelType,
+                                                          MatrixElementType type,
+                                                          int templateRows,
+                                                          int templateColumns,
+                                                          IntPtr obj,
+                                                          out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_set_number_of_centers(SvmKernelType kernelType,
+                                                                     MatrixElementType type,
+                                                                     int templateRows,
+                                                                     int templateColumns,
+                                                                     IntPtr kkmeans,
+                                                                     uint num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_get_number_of_centers(SvmKernelType kernelType,
+                                                                     MatrixElementType type,
+                                                                     int templateRows,
+                                                                     int templateColumns,
+                                                                     IntPtr kkmeans,
+                                                                     out uint num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_set_kcentroid(SvmKernelType kernelType,
+                                                             MatrixElementType type,
+                                                             int templateRows,
+                                                             int templateColumns,
+                                                             IntPtr kkmeans,
+                                                             IntPtr kcentroid);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_get_kcentroid(SvmKernelType kernelType,
+                                                             MatrixElementType type,
+                                                             int templateRows,
+                                                             int templateColumns,
+                                                             IntPtr kkmeans,
+                                                             uint i,
+                                                             out IntPtr kcentroid);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_operator(SvmKernelType kernelType,
+                                                        MatrixElementType type,
+                                                        int templateRows,
+                                                        int templateColumns,
+                                                        IntPtr kkmeans,
+                                                        IntPtr sample,
+                                                        out uint ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType kkmeans_train(SvmKernelType kernelType,
+                                                     MatrixElementType type,
+                                                     int templateRows,
+                                                     int templateColumns,
+                                                     IntPtr kkmeans,
+                                                     IntPtr samples,
+                                                     IntPtr centers,
+                                                     uint max_iter);
 
     }
 

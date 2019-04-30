@@ -478,23 +478,25 @@ namespace DlibDotNet.Tests.Geometry
         [TestMethod]
         public void OperatorEqual()
         {
-            var left = this.NextRandom(0, 100);
-            var top = this.NextRandom(0, 100);
-            var right = left * 2;
-            var bottom = top * 2;
+            for (var left = 1; left <= 100; left++)
+                for (var top = 1; top <= 100; top++)
+                {
+                    var right = left * 2;
+                    var bottom = top * 2;
 
-            var r = new Rectangle(left, top, right, bottom);
-            var l = new Rectangle(left, top, right, bottom);
-            var l1 = new Rectangle(left, top, right * 2, bottom);
-            var l2 = new Rectangle(left, top, right, bottom * 2);
-            var l3 = new Rectangle(left * 2, top, right, bottom);
-            var l4 = new Rectangle(left, top * 2, right, bottom);
+                    var r = new Rectangle(left, top, right, bottom);
+                    var l = new Rectangle(left, top, right, bottom);
+                    var l1 = new Rectangle(left, top, right * 2, bottom);
+                    var l2 = new Rectangle(left, top, right, bottom * 2);
+                    var l3 = new Rectangle(left * 2, top, right, bottom);
+                    var l4 = new Rectangle(left, top * 2, right, bottom);
 
-            Assert.IsTrue(r == l);
-            Assert.IsTrue(r != l1);
-            Assert.IsTrue(r != l2);
-            Assert.IsTrue(r != l3);
-            Assert.IsTrue(r != l4);
+                    Assert.AreEqual(r, l, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.AreNotEqual(r, l1, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.AreNotEqual(r, l2, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.AreNotEqual(r, l3, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.AreNotEqual(r, l4, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                }
         }
 
     }

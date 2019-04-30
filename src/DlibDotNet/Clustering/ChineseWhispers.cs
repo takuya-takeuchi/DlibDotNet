@@ -8,6 +8,7 @@ namespace DlibDotNet
 
     public static partial class Dlib
     {
+
         #region Methods
 
         public static void ChineseWhispers(IEnumerable<SamplePair> edges, uint iterations, out uint clusters, out uint[] labels)

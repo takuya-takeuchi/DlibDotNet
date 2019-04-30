@@ -15,7 +15,7 @@ DLLEXPORT void matrix_range_exp_delete(void* obj)
 }
 
 DLLEXPORT void* matrix_range_exp_create(matrix_element_type type, matrix_range_exp_create_param* param)
-{ 
+{
     void* result = nullptr;
     switch(type)
     {
@@ -89,7 +89,7 @@ DLLEXPORT void* matrix_range_exp_create(matrix_element_type type, matrix_range_e
 
 DLLEXPORT bool matrix_range_exp_nc(matrix_element_type type, void* matrix, int* result)
 {
-    bool err = false;   
+    bool err = false;
     switch(type)
     {
         case matrix_element_type::UInt8:
@@ -146,7 +146,7 @@ DLLEXPORT bool matrix_range_exp_nc(matrix_element_type type, void* matrix, int* 
 
 DLLEXPORT bool matrix_range_exp_nr(matrix_element_type type, void* matrix, int* result)
 {
-    bool err = false;    
+    bool err = false;
     switch(type)
     {
         case matrix_element_type::UInt8:

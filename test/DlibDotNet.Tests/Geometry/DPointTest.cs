@@ -231,8 +231,8 @@ namespace DlibDotNet.Tests.Geometry
         [TestMethod]
         public void OperatorEqual()
         {
-            var x = (double)this.NextRandom(0, 100);
-            var y = (double)this.NextRandom(0, 100);
+            var x = (double)this.NextRandom(1, 100);
+            var y = (double)this.NextRandom(1, 100);
 
             var r = new DPoint(x, y);
             var l = new DPoint(x, y);

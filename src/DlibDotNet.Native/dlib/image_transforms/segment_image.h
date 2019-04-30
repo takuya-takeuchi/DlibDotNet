@@ -113,7 +113,7 @@ DLLEXPORT int find_candidate_object_locations(array2d_type type,
             err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     return err;
 }
 

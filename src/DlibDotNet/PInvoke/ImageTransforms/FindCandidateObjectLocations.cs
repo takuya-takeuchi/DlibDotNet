@@ -8,7 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType find_candidate_object_locations(Array2DType type,
                                                                        IntPtr img,
                                                                        IntPtr rect,

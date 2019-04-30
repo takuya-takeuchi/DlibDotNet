@@ -7,7 +7,7 @@
 #include "cuda_runtime_api.h"
 #include "driver_types.h"
 #endif
- 
+
 using namespace std;
 
 DLLEXPORT bool cuda_cudaDriverGetVersion(int* version)

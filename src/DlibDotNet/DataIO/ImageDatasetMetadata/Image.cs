@@ -1,27 +1,36 @@
 ﻿using System;
-using System.Text;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.ImageDatasetMetadata
 {
 
+    /// <summary>
+    /// Represents an annotated image. This class cannot be inherited.
+    /// </summary>
     public sealed class Image : DlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Image"/> class.
+        /// </summary>
         public Image()
         {
             this.NativePtr = NativeMethods.image_dataset_metadata_image_new2();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Image"/> class with a specified file name of image.
+        /// </summary>
         public Image(string filename)
         {
             var str = Dlib.Encoding.GetBytes(filename);
             this.NativePtr = NativeMethods.image_dataset_metadata_image_new(str);
         }
 
-        internal Image(IntPtr ptr)
+        internal Image(IntPtr ptr, bool isDisposable = true) :
+            base(isDisposable)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -33,29 +42,28 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #region Properties
 
-        public Box[] Boxes
+        /// <summary>
+        /// Gets a collection of annotated rectangular area of an image.
+        /// </summary>
+        public BoxCollection Boxes
         {
             get
             {
                 this.ThrowIfDisposed();
-                var boxes = NativeMethods.image_dataset_metadata_dataset_get_boxes(this.NativePtr);
-                using (var vector = new StdVector<Box>(boxes))
-                    return vector.ToArray();
-            }
-            set
-            {
-                using (var vector = value != null ? new StdVector<Box>(value, null) : new StdVector<Box>())
-                    NativeMethods.image_dataset_metadata_dataset_set_boxes(this.NativePtr, vector.NativePtr);
+                return new BoxCollection(this);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the file name of image.
+        /// </summary>
         public string FileName
         {
             get
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_image_get_filename(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {

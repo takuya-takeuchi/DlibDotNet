@@ -12,7 +12,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static void AddImageLeftRightFlips<T>(IList<Matrix<T>> images, IList<IEnumerable<Rectangle>> objects)
+        public static void AddImageLeftRightFlips<T>(IList<Matrix<T>> images, IList<IList<Rectangle>> objects)
             where T : struct
         {
             if (images == null)
@@ -23,27 +23,26 @@ namespace DlibDotNet
             images.ThrowIfDisposed();
 
             using (var vecImage = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<Rectangle>>(objects.Select(r => new StdVector<Rectangle>(r))))
+            using (var vecObject = new StdVector<StdVector<Rectangle>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<Rectangle>>(vecObject))
             {
-                var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
-                using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                Matrix<T>.TryParse<T>(out var matrixElementType);
+                var ret = NativeMethods.add_image_left_right_flips_rectangle(matrixElementType.ToNativeMatrixElementType(),
+                                                                             vecImage.NativePtr,
+                                                                             vecObject.NativePtr);
+                switch (ret)
                 {
-                    Matrix<T>.TryParse<T>(out var matrixElementType);
-                    var ret = NativeMethods.add_image_left_right_flips_rectangle(matrixElementType.ToNativeMatrixElementType(),
-                                                                                 vecImage.NativePtr,
-                                                                                 vecObject.NativePtr);
-                    switch (ret)
-                    {
-                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                            throw new ArgumentException($"{matrixElementType} is not supported.");
-                    }
-
-                    images.Clear();
-                    foreach (var matrix in vecImage.ToArray())
-                        images.Add(matrix);
-                    objects.Clear();
-                    foreach (var list in vecObject.ToArray())
-                        objects.Add(list);
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
                 }
+
+                images.Clear();
+                foreach (var matrix in vecImage.ToArray())
+                    images.Add(matrix);
+                objects.Clear();
+                foreach (var list in vecObject.ToArray())
+                    objects.Add(list);
             }
         }
 
@@ -494,7 +493,8 @@ namespace DlibDotNet
 
         public static void UpsampleImageDataset<T>(uint pyramidRate,
                                                    IList<Matrix<T>> images,
-                                                   IList<IEnumerable<Rectangle>> objects)
+                                                   IList<IList<Rectangle>> objects,
+                                                   uint maxImageSize = uint.MaxValue)
             where T : struct
         {
             if (images == null)
@@ -511,30 +511,78 @@ namespace DlibDotNet
                 throw new ArgumentException();
 
             using (var vecImage = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<Rectangle>>(objects.Select(r => new StdVector<Rectangle>(r))))
+            using (var vecObject = new StdVector<StdVector<Rectangle>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<Rectangle>>(vecObject))
             {
-                var tmp = objects.Select(rectangles => new StdVector<Rectangle>(rectangles));
-                using (var vecObject = new StdVector<StdVector<Rectangle>>(tmp))
+                Matrix<T>.TryParse<T>(out var matrixElementType);
+                var ret = NativeMethods.upsample_image_dataset_pyramid_down_rect(pyramidRate,
+                                                                                 matrixElementType.ToNativeMatrixElementType(),
+                                                                                 vecImage.NativePtr,
+                                                                                 vecObject.NativePtr,
+                                                                                 maxImageSize);
+                switch (ret)
                 {
-                    Matrix<T>.TryParse<T>(out var matrixElementType);
-                    var ret = NativeMethods.upsample_image_dataset_pyramid_down(pyramidRate,
-                                                                                matrixElementType.ToNativeMatrixElementType(),
-                                                                                vecImage.NativePtr,
-                                                                                vecObject.NativePtr);
-                    switch (ret)
-                    {
-                        case NativeMethods.ErrorType.PyramidNotSupportRate:
-                            throw new ArgumentException($"{pyramidRate} is not supported.");
-                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                            throw new ArgumentException($"{matrixElementType} is not supported.");
-                    }
-
-                    images.Clear();
-                    foreach (var matrix in vecImage.ToArray())
-                        images.Add(matrix);
-                    objects.Clear();
-                    foreach (var list in vecObject.ToArray())
-                        objects.Add(list);
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                        throw new ArgumentException($"{pyramidRate} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
                 }
+
+                images.Clear();
+                foreach (var matrix in vecImage.ToArray())
+                    images.Add(matrix);
+                objects.Clear();
+                foreach (var list in vecObject.ToArray())
+                    objects.Add(list);
+            }
+        }
+
+
+        public static void UpsampleImageDataset<T>(uint pyramidRate,
+                                                   IList<Matrix<T>> images,
+                                                   IList<IList<MModRect>> objects,
+                                                   uint maxImageSize = uint.MaxValue)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (objects == null)
+                throw new ArgumentNullException(nameof(objects));
+
+            images.ThrowIfDisposed();
+
+            var imageCount = images.Count();
+            var objectCount = objects.Count();
+
+            if (imageCount != objectCount)
+                throw new ArgumentException();
+
+            using (var vecImage = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(objects.Select(r => new StdVector<MModRect>(r))))
+            using (var vecObject = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(vecObject))
+            {
+                Matrix<T>.TryParse<T>(out var matrixElementType);
+                var ret = NativeMethods.upsample_image_dataset_pyramid_down_mmod_rect(pyramidRate,
+                                                                                      matrixElementType.ToNativeMatrixElementType(),
+                                                                                      vecImage.NativePtr,
+                                                                                      vecObject.NativePtr,
+                                                                                      maxImageSize);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.PyramidNotSupportRate:
+                        throw new ArgumentException($"{pyramidRate} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{matrixElementType} is not supported.");
+                }
+
+                images.Clear();
+                foreach (var matrix in vecImage.ToArray())
+                    images.Add(matrix);
+                objects.Clear();
+                foreach (var list in vecObject.ToArray())
+                    objects.Add(list);
             }
         }
 

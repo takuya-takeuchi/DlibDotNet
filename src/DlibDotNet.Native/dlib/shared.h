@@ -70,11 +70,13 @@ enum element_type : int
     OpJet,
 
     OpArray2dToMat,
-    
+
     OpTrans,
-    
+
     OpStdVectToMat,
-    
+
+    OpStdVectToMatValue,
+
     OpJoinRows
 
 };
@@ -96,9 +98,9 @@ enum struct point_mapping_type : int
     Rotator = 0,
 
     Transform,
-    
+
     TransformAffine,
-        
+
     TransformProjective
 
 };
@@ -135,14 +137,52 @@ enum struct fhog_feature_extractor_type : int
 
 enum struct image_pixel_format_type : int
 {
-    
+
     Bgr = 0,
-    
+
     Bgra,
-    
+
     Rgb,
-    
+
     Rgba,
+
+};
+
+enum struct log_level : int
+{
+
+    All = 0,
+
+    Trace,
+
+    Debug,
+
+    Info,
+
+    Warn,
+
+    Error,
+
+    Fatal,
+
+    None
+
+};
+
+enum struct svm_kernel_type : int
+{
+
+    HistogramIntersection,
+
+    Linear,
+
+    Offset,
+
+    Polynomial,
+
+    RadialBasis,
+
+    Sigmoid
 
 };
 
@@ -196,21 +236,19 @@ typedef struct
 
 #define ERR_OK                                                            0x00000000
 
-// array2d
-#define ERR_ARRAY2D_ERROR                                                 0x7B000000
-#define ERR_ARRAY2D_TYPE_NOT_SUPPORT                -(ERR_ARRAY2D_ERROR | 0x00000001)
+// svm
+#define ERR_SVM_ERROR                                                     0x75000000
+#define ERR_SVM_KERNEL_NOT_SUPPORT                      -(ERR_SVM_ERROR | 0x00000001)
 
-#define ERR_ELEMENT_TYPE_NOT_SUPPORT                   -4
-#define ERR_INPUT_ELEMENT_TYPE_NOT_SUPPORT             -5
+// General
+#define ERR_GENERAL_ERROR                                                 0x76000000
+#define ERR_GENERAL_FILE_IO                         -(ERR_GENERAL_ERROR | 0x00000001)
+#define ERR_GENERAL_IMAGE_LOAD                      -(ERR_GENERAL_ERROR | 0x00000002)
+#define ERR_GENERAL_SERIALIZATION                   -(ERR_GENERAL_ERROR | 0x00000003)
 
-// matrix
-#define ERR_MATRIX_ERROR                                                  0x7C000000
-#define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT          -(ERR_MATRIX_ERROR | 0x00000001)
-#define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT -(ERR_MATRIX_ERROR | 0x00000002)
-
-// mlp
-#define ERR_MLP_ERROR                                                     0x7A000000
-#define ERR_MLP_KERNEL_NOT_SUPPORT                      -(ERR_MLP_ERROR | 0x00000001)
+// CUDA
+#define ERR_CUDA_ERROR                                                    0x77000000
+#define ERR_CUDA_OUT_OF_MEMORY                         -(ERR_CUDA_ERROR | 0x00000001)
 
 // statistics/statistics.h
 #define ERR_RUNNING_STATS_ERROR                                           0x78000000
@@ -219,6 +257,20 @@ typedef struct
 // vector
 #define ERR_VECTOR_ERROR                                                  0x79000000
 #define ERR_VECTOR_TYPE_NOT_SUPPORT                  -(ERR_VECTOR_ERROR | 0x00000001)
+
+// mlp
+#define ERR_MLP_ERROR                                                     0x7A000000
+#define ERR_MLP_KERNEL_NOT_SUPPORT                      -(ERR_MLP_ERROR | 0x00000001)
+
+// array2d
+#define ERR_ARRAY2D_ERROR                                                 0x7B000000
+#define ERR_ARRAY2D_TYPE_NOT_SUPPORT                -(ERR_ARRAY2D_ERROR | 0x00000001)
+
+// matrix
+#define ERR_MATRIX_ERROR                                                  0x7C000000
+#define ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT          -(ERR_MATRIX_ERROR | 0x00000001)
+#define ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT -(ERR_MATRIX_ERROR | 0x00000002)
+#define ERR_MATRIX_OP_TYPE_NOT_SUPPORT               -(ERR_MATRIX_ERROR | 0x00000003)
 
 // fhog
 #define ERR_FHOG_ERROR                                                    0x7D000000
@@ -232,10 +284,8 @@ typedef struct
 // Dnn
 #define ERR_DNN_ERROR                                                     0x7F000000
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE                 -(ERR_DNN_ERROR | 0x00000001)
-
-// CUDA
-#define ERR_CUDA_ERROR                                                    0x77000000
-#define ERR_CUDA_OUT_OF_MEMORY                         -(ERR_CUDA_ERROR | 0x00000001)
+#define ERR_DNN_PROPAGATE_EXCEPTION                     -(ERR_DNN_ERROR | 0x00000002)
+#define ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE  -(ERR_DNN_ERROR | 0x00000003)
 
 #pragma region macro
 
@@ -246,7 +296,7 @@ typedef struct
 
 // Ex.
 // Error while calling cudaGetDevice(&the_device_id) in file d:\works\lib\dlib\19.15\dlib\cuda\gpu_data.cpp:178. code: 35, reason: CUDA driver version is insufficient for CUDA runtime version
-#define cuda_errot_to_error_code(cuda_error, error) \
+#define cuda_error_to_error_code(cuda_error, error) \
 do {\
     error = ERR_CUDA_ERROR;\
     std::cmatch results;\
@@ -263,6 +313,90 @@ do {\
 } while (0)
 
 #pragma endregion CUDA
+
+#define array_copy(__TYPE__, src, dst)\
+do {\
+    dlib::array<array2d<__TYPE__>*>* tmp = static_cast<dlib::array<array2d<__TYPE__>*>*>(dst);\
+    for (int index = 0; index < src.size(); index++)\
+    {\
+        /* dlib::array2d deleted copy constructor :( */ \
+        array2d<__TYPE__>& a = src[index];\
+        array2d<__TYPE__>* cpy = new array2d<__TYPE__>(a.nr(), a.nc());\
+        array2d<__TYPE__>& ref = *cpy;\
+        for (int r = 0; r < a.nr(); r++)\
+            for (int c = 0; c < a.nc(); c++)\
+                ref[r][c] = a[r][c];\
+\
+        tmp->push_back(cpy);\
+    }\
+} while (0)
+
+#define array_copy2(__TYPE__, src, dst)\
+do {\
+    dlib::array<array2d<__TYPE__>>* tmp = static_cast<dlib::array<array2d<__TYPE__>>*>(dst);\
+    for (int index = 0; index < src.size(); index++)\
+    {\
+        /* dlib::array2d deleted copy constructor :( */ \
+        array2d<__TYPE__>& a = src[index];\
+        array2d<__TYPE__> cpy(a.nr(), a.nc());\
+        array2d<__TYPE__>& ref = cpy;\
+        for (int r = 0; r < a.nr(); r++)\
+            for (int c = 0; c < a.nc(); c++)\
+                ref[r][c] = a[r][c];\
+\
+        tmp->push_back(cpy);\
+    }\
+} while (0)
+
+#define vector_value_to_value(__TYPE__, src, dst) \
+auto& tmp_src = *static_cast<std::vector<__TYPE__>*>(src);\
+for (int index = 0; index < tmp_src.size(); index++)\
+{\
+    __TYPE__ tmp = tmp_src.at(index);\
+    dst.push_back(tmp);\
+}
+
+#define vector_pointer_to_value(__TYPE__, src, dst) \
+do {\
+    std::vector<__TYPE__*>& tmp_src = *static_cast<std::vector<__TYPE__*>*>(src);\
+    for (int index = 0; index < tmp_src.size(); index++)\
+    {\
+        __TYPE__& tmp = *tmp_src.at(index);\
+        dst.push_back(tmp);\
+    }\
+} while (0)
+
+#define vector_vector_pointer_to_value(__TYPE__, src, dst) \
+do {\
+    std::vector<std::vector<__TYPE__*>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__*>*>*>(src);\
+    for (int j = 0 ; j < tmp_src.size(); j++)\
+    {\
+        auto tmpVector = tmp_src.at(j);\
+        std::vector<__TYPE__> vector;\
+        for (int i = 0 ; i < tmpVector->size(); i++)\
+        {\
+            __TYPE__& o = *(tmpVector->at(i));\
+            vector.push_back(o);\
+        }\
+        dst.push_back(vector);\
+    }\
+} while (0)
+
+#define vector_vector_valueType_to_value(__TYPE__, src, dst) \
+do {\
+    std::vector<std::vector<__TYPE__>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__>*>*>(src);\
+    for (int j = 0 ; j < tmp_src.size(); j++)\
+    {\
+        auto tmpVector = tmp_src.at(j);\
+        std::vector<__TYPE__> vector;\
+        for (int i = 0 ; i < tmpVector->size(); i++)\
+        {\
+            __TYPE__ o = tmpVector->at(i);\
+            vector.push_back(o);\
+        }\
+        dst.push_back(vector);\
+    }\
+} while (0)
 
 #define new_instance_vector_to_instance(__TYPE__, src, dst) \
 do {\
@@ -477,78 +611,6 @@ do {\
     }\
 } while (0)
 
-#define matrix_template_size_one_column_vector_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#define matrix_template_size_one_column_vector_arg3_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2, arg3);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#define matrix_template_size_one_column_vector_arg4_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
 #define matrix_template_size_one_column_vector_arg5_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4, arg5) \
 do {\
     if (__ROWS__ == 0 && __COLUMNS__ == 0)\
@@ -574,50 +636,6 @@ do {\
 } while (0)
 
 #pragma endregion a column vector
-
-#pragma region special size
-
-#define matrix_template_size_vector_2_arg4_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 2, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#define matrix_template_size_vector_2x2_arg4_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4)\
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 2, 0, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 2)\
-    {\
-        __FUNC__(__TYPE__, 0, 2, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 2)\
-    {\
-        __FUNC__(__TYPE__, 2, 2, error, arg1, arg2, arg3, arg4);\
-    }\
-    else\
-    {\
-        err = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#pragma endregion special size
 
 #pragma endregion matrix_template_size
 

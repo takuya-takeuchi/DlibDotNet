@@ -22,6 +22,8 @@ namespace ImgLab
 
         private const int ExitFailure = 1;
 
+        internal const string Version = "1.15";
+
         #endregion
 
         #region Methods
@@ -32,22 +34,29 @@ namespace ImgLab
             app.Name = nameof(ImgLab);
             app.HelpOption("-h|--help");
 
-            var createOption = new CommandOption("-c|--create", CommandOptionType.SingleValue);
-            var convertOption = new CommandOption("-convert|--convert", CommandOptionType.SingleValue);
-            var clusterOption = new CommandOption("-cluster|--cluster", CommandOptionType.SingleValue);
-            var flipOption = new CommandOption("-flip|--flip", CommandOptionType.SingleValue);
-            var flipBasicOption = new CommandOption("-flip-basic|--flip-basic", CommandOptionType.SingleValue);
-
-            app.Options.Add(createOption);
-            app.Options.Add(clusterOption);
-            app.Options.Add(new CommandOption("-r|--r", CommandOptionType.NoValue));
-            app.Options.Add(convertOption);
-            app.Options.Add(flipOption);
-            app.Options.Add(flipBasicOption);
-
-            app.OnExecute(() =>
+            app.Command("add", command =>
             {
-                if (createOption.HasValue())
+                command.HelpOption("-?|-h|--help");
+                var srcArgs = command.Argument("src", "");
+                var destArgs = command.Argument("dest", "");
+
+                command.OnExecute(() =>
+                {
+                    MergeMetadataFiles(srcArgs, destArgs);
+                    return 0;
+                });
+            });
+
+            app.Command("c", command =>
+            {
+                command.HelpOption("-?|-h|--help");
+                var fileArgs = command.Argument("file", "");
+                var convertOption = command.Option("-convert", "", CommandOptionType.SingleValue);
+                var xmlOption = command.Option("-xml", "", CommandOptionType.MultipleValue);
+                var imgOption = command.Option("-img", "", CommandOptionType.MultipleValue);
+                var depthOption = command.Option("-r", "", CommandOptionType.NoValue);
+
+                command.OnExecute(() =>
                 {
                     if (convertOption.HasValue())
                     {
@@ -55,31 +64,86 @@ namespace ImgLab
                         switch (value)
                         {
                             case "pascal-xml":
-                                ConvertPascalXml(app);
+                                ConvertPascalXml(fileArgs, xmlOption);
                                 break;
                             case "pascal-v1":
-                                ConvertPascalV1(app);
+                                ConvertPascalV1(fileArgs, xmlOption);
                                 break;
-                            case "idl":
-                                ConvertIdl(app);
-                                break;
+                                //case "idl":
+                                //    ConvertIdl(app);
+                                //    break;
                         }
                     }
                     else
                     {
-                        CreateNewDataset(app);
+                        CreateNewDataset(fileArgs, imgOption, depthOption);
                     }
 
                     return ExitSuccess;
-                }
+                });
+            });
 
-                if (clusterOption.HasValue())
-                    ClusterDataset(app);
+            app.Command("cluster", command =>
+            {
+                command.HelpOption("-?|-h|--help");
+                var fileArgs = command.Argument("file", "");
+                var clusterArgs = command.Argument("cluster", "");
+                var sizeOption = command.Option("-size", "", CommandOptionType.SingleValue);
 
-                if (flipOption.HasValue() || flipBasicOption.HasValue())
-                    FlipDataset(app);
+                command.OnExecute(() =>
+                {
+                    ClusterDataset(fileArgs.Value, clusterArgs, sizeOption);
+                    return ExitSuccess;
+                });
+            });
 
-                return 0;
+            app.Command("gui", command =>
+            {
+                command.HelpOption("-?|-h|--help");
+                var fileArgs = command.Argument("file", "");
+                var partsOption = command.Option("-parts|--parts", "", CommandOptionType.SingleValue);
+
+                command.OnExecute(() =>
+                {
+                    using (var editor = new MetadataEditor(fileArgs.Value))
+                    {
+                        if (partsOption.HasValue())
+                        {
+                            foreach (var value in partsOption.Value().Split(' ', '\t', '\n', '\r', '\t'))
+                                editor.AddLabelablePartName(value);
+                        }
+
+                        editor.WaitUntilClosed();
+                    }
+
+                    return ExitSuccess;
+                });
+            });
+
+            app.Command("flip", command =>
+            {
+                command.HelpOption("-?|-h|--help");
+                var fileArgs = command.Argument("file", "");
+                var jpgOption = command.Option("-jpg", "", CommandOptionType.NoValue);
+
+                command.OnExecute(() =>
+                {
+                    FlipDataset(fileArgs, jpgOption, false);
+                    return ExitSuccess;
+                });
+            });
+
+            app.Command("flip-basic", command =>
+            {
+                command.HelpOption("-?|-h|--help");
+                var fileArgs = command.Argument("file", "");
+                var jpgOption = command.Option("-jpg", "", CommandOptionType.NoValue);
+
+                command.OnExecute(() =>
+                {
+                    FlipDataset(fileArgs, jpgOption, true);
+                    return ExitSuccess;
+                });
             });
 
             app.Execute(args);
@@ -87,12 +151,9 @@ namespace ImgLab
 
         #region Helpers
 
-        private static void CreateNewDataset(CommandLineApplication parser)
+        private static void CreateNewDataset(CommandArgument fileArgs, CommandOption imgOption, CommandOption depthOption)
         {
-            var createOption = parser.GetOptions().FirstOrDefault(option => option.ShortName == "c");
-            var depthOption = parser.GetOptions().FirstOrDefault(option => option.ShortName == "r");
-
-            var filename = createOption.Value();
+            var filename = fileArgs.Value;
 
             // make sure the file exists so we can use the get_parent_directory() command to
             // figure out it's parent directory.
@@ -108,10 +169,10 @@ namespace ImgLab
                 meta.Name = "imglab dataset";
                 meta.Comment = "Created by imglab tool.";
 
-                var images = new List<Image>();
-                for (var i = 0; i < parser.RemainingArguments.Count; ++i)
+                var images = meta.Images;
+                for (var i = 0; i < imgOption.Values.Count; ++i)
                 {
-                    var arg = parser.RemainingArguments[i];
+                    var arg = imgOption.Values[i];
 
                     try
                     {
@@ -131,8 +192,6 @@ namespace ImgLab
                         foreach (var t in files)
                             images.Add(new Image(StripPath(t, parentDir)));
                     }
-
-                    meta.Images = images.ToArray();
 
                     Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(meta, filename);
                 }
@@ -158,6 +217,28 @@ namespace ImgLab
             list.CopyTo(returns, 0);
 
             return returns;
+        }
+
+        public static void MergeMetadataFiles(CommandArgument srcArg, CommandArgument destArg)
+        {
+            using (var src = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(srcArg.Value))
+            using (var dest = Dlib.ImageDatasetMetadata.LoadImageDatasetMetadata(destArg.Value))
+            {
+                var mergedData = new Dictionary<string, Image>();
+                for (int i = 0, count = dest.Images.Count; i < count; ++i)
+                    mergedData[dest.Images[i].FileName] = dest.Images[i];
+
+                // now add in the src data and overwrite anything if there are duplicate entries.
+                for (int i = 0, count = src.Images.Count; i < count; ++i)
+                    mergedData[src.Images[i].FileName] = src.Images[i];
+
+                // copy merged data into dest
+                dest.Images.Clear();
+                foreach (var kvp in mergedData)
+                    dest.Images.Add(kvp.Value);
+
+                Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(dest, "merged.xml");
+            }
         }
 
         #endregion

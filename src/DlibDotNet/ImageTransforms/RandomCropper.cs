@@ -88,8 +88,8 @@ namespace DlibDotNet.ImageTransforms
                 NativeMethods.random_cropper_set_max_rotation_degrees(this.NativePtr, value);
             }
         }
-        
-        public long MinObjectLengthLongDim
+
+        public int MinObjectLengthLongDim
         {
             get
             {
@@ -107,12 +107,12 @@ namespace DlibDotNet.ImageTransforms
                 var s = this.MinObjectLengthShortDim;
                 if (!(0 < s && s <= value))
                     throw new ArgumentException($"{nameof(this.MinObjectLengthShortDim)} should be more than 0 and {nameof(this.MinObjectLengthShortDim)} should be less than {nameof(MinObjectLengthLongDim)}.");
-                
+
                 NativeMethods.random_cropper_set_min_object_size(this.NativePtr, value, s);
             }
         }
 
-        public long MinObjectLengthShortDim
+        public int MinObjectLengthShortDim
         {
             get
             {
@@ -191,39 +191,57 @@ namespace DlibDotNet.ImageTransforms
             if (count != numRect)
                 throw new ArgumentException();
 
-            List<StdVector<MModRect>> listOfVectorOfMModRect = null;
+            images.ThrowIfDisposed();
+            rects.ThrowIfDisposed();
 
-            try
+            using (var matrix = new Matrix<T>())
+            using (var inImages = new StdVector<Matrix<T>>(images))
+            using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(rects.Select(r => new StdVector<MModRect>(r))))
+            using (var inRects = new StdVector<StdVector<MModRect>>(disposer.Collection))
+            using (new EnumerableDisposer<StdVector<MModRect>>(inRects))
+            using (var outCrops = new StdVector<Matrix<T>>())
+            using (var outCropRects = new StdVector<StdVector<MModRect>>())
+            using (new EnumerableDisposer<StdVector<MModRect>>(outCropRects))
             {
-                listOfVectorOfMModRect = rects.Select(r => new StdVector<MModRect>(r)).ToList();
+                var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+                var ret = NativeMethods.random_cropper_operator(this.NativePtr,
+                                                                numCrops,
+                                                                type,
+                                                                inImages.NativePtr,
+                                                                inRects.NativePtr,
+                                                                outCrops.NativePtr,
+                                                                outCropRects.NativePtr);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
+                    throw new ArgumentException($"{type} is not supported.");
 
-                using (var matrix = new Matrix<T>())
-                using (var inImages = new StdVector<Matrix<T>>(images))
-                using (var inRects = new StdVector<StdVector<MModRect>>(listOfVectorOfMModRect))
-                using (var outCrops = new StdVector<Matrix<T>>())
-                using (var outCropRects = new StdVector<StdVector<MModRect>>())
-                {
-                    var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                    var ret = NativeMethods.random_cropper_operator(this.NativePtr,
-                                                                    numCrops,
-                                                                    type,
-                                                                    inImages.NativePtr,
-                                                                    inRects.NativePtr,
-                                                                    outCrops.NativePtr,
-                                                                    outCropRects.NativePtr);
-                    if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
-                        throw new ArgumentException($"{type} is not supported.");
+                crops = outCrops.ToArray();
+                cropRects = outCropRects.ToArray().Select(box => box.ToArray()).ToList();
+            }
+        }
 
-                    crops = outCrops.ToArray();
-                    cropRects = outCropRects.ToArray().Select(box => box.ToArray()).ToList();
-                }
-            }
-            finally
-            {
-                if(listOfVectorOfMModRect!=null)
-                    foreach (var stdVector in listOfVectorOfMModRect)
-                        stdVector?.Dispose();
-            }
+        public void SetChipDims(uint rows, uint cols)
+        {
+            this.ThrowIfDisposed();
+            NativeMethods.random_cropper_set_chip_dims(this.NativePtr, rows, cols);
+        }
+
+        public void SetMinObjectSize(int longDim, int shortDim)
+        {
+            this.ThrowIfDisposed();
+
+            if (!(0 < shortDim && shortDim <= longDim))
+                throw new ArgumentOutOfRangeException();
+
+            NativeMethods.random_cropper_set_min_object_size(this.NativePtr, longDim, shortDim);
+        }
+
+        public void SetSeed(long seed)
+        {
+            this.ThrowIfDisposed();
+
+            // random_cropper_set_seed accept time_t as IntPtr
+            // time_t is long on 32bit, other wise __int64 on 64bit
+            NativeMethods.random_cropper_set_seed(this.NativePtr, new IntPtr(seed));
         }
 
         #region Overrides
@@ -239,6 +257,34 @@ namespace DlibDotNet.ImageTransforms
                 return;
 
             NativeMethods.random_cropper_delete(this.NativePtr);
+        }
+
+        public override string ToString()
+        {
+            var ofstream = IntPtr.Zero;
+            var stdstr = IntPtr.Zero;
+            var str = "";
+
+            try
+            {
+                ofstream = NativeMethods.ostringstream_new();
+                NativeMethods.random_cropper_operator_left_shift(this.NativePtr, ofstream);
+                stdstr = NativeMethods.ostringstream_str(ofstream);
+                str = StringHelper.FromStdString(stdstr);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                if (stdstr != IntPtr.Zero)
+                    NativeMethods.string_delete(stdstr);
+                if (ofstream != IntPtr.Zero)
+                    NativeMethods.ostringstream_delete(ofstream);
+            }
+
+            return str;
         }
 
         #endregion

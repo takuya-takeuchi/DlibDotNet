@@ -200,6 +200,27 @@ namespace DlibDotNet.Extensions
             }
         }
 
+        internal static NativeMethods.SvmKernelType ToNativeKernelType(this SvmKernelType kernelType)
+        {
+            switch (kernelType)
+            {
+                case SvmKernelType.HistogramIntersection:
+                    return NativeMethods.SvmKernelType.Histogramintersection;
+                case SvmKernelType.Linear:
+                    return NativeMethods.SvmKernelType.Linear;
+                case SvmKernelType.Offset:
+                    return NativeMethods.SvmKernelType.Offset;
+                case SvmKernelType.Polynomial:
+                    return NativeMethods.SvmKernelType.Polynomial;
+                case SvmKernelType.RadialBasis:
+                    return NativeMethods.SvmKernelType.RadialBasis;
+                case SvmKernelType.Sigmoid:
+                    return NativeMethods.SvmKernelType.Sigmoid;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kernelType), kernelType, null);
+            }
+        }
+
     }
 
 }

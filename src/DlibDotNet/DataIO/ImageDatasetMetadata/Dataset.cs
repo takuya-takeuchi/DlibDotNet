@@ -1,15 +1,20 @@
 ﻿using System;
-using System.Text;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.ImageDatasetMetadata
 {
 
+    /// <summary>
+    /// Represents a labeled set of images. This class cannot be inherited.
+    /// </summary>
     public sealed class Dataset : DlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Dataset"/> class.
+        /// </summary>
         public Dataset()
         {
             this.NativePtr = NativeMethods.image_dataset_metadata_dataset_new();
@@ -25,7 +30,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_dataset_get_comment(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {
@@ -35,21 +40,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             }
         }
 
-        public Image[] Images
-        {
-            get
-            {
-                this.ThrowIfDisposed();
-                var images = NativeMethods.image_dataset_metadata_dataset_get_images(this.NativePtr);
-                using (var vector = new StdVector<Image>(images))
-                    return vector.ToArray();
-            }
-            set
-            {
-                using (var vector = value != null ? new StdVector<Image>(value, null) : new StdVector<Image>())
-                    NativeMethods.image_dataset_metadata_dataset_set_images(this.NativePtr, vector.NativePtr);
-            }
-        }
+        public ImageCollection Images => new ImageCollection(this);
 
         public string Name
         {
@@ -57,7 +48,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_dataset_get_name(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {

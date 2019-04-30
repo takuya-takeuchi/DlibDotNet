@@ -53,6 +53,44 @@ namespace DlibDotNet
             return new Matrix<double>(ptr, 2, 2);
         }
 
+        #region Rectangle
+
+        public static Rectangle CenteredRect(int x, int y, uint width, uint height)
+        {
+            return Rectangle.CenteredRect(x, y, width, height);
+        }
+
+        public static Rectangle CenteredRect(Point p, uint width, uint height)
+        {
+            return Rectangle.CenteredRect(p, width, height);
+        }
+
+        public static Rectangle CenteredRect(Rectangle rect, uint width, uint height)
+        {
+            return Rectangle.CenteredRect(rect, width, height);
+        }
+
+        public static Rectangle MoveRect(Rectangle rect, Point point)
+        {
+            using (var r = rect.ToNative())
+            using (var p = point.ToNative())
+            {
+                var ret = NativeMethods.rectangle_move_rect(r.NativePtr, p.NativePtr);
+                return new Rectangle(ret);
+            }
+        }
+
+        public static Rectangle MoveRect(Rectangle rect, int x, int y)
+        {
+            using (var r = rect.ToNative())
+            {
+                var ret = NativeMethods.rectangle_move_rect2(r.NativePtr, x, y);
+                return new Rectangle(ret);
+            }
+        }
+
+        #endregion
+
         #endregion
 
     }

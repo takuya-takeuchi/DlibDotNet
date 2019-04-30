@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,17 +6,24 @@ using System.Linq;
 namespace DlibDotNet.ImageDatasetMetadata
 {
 
+    /// <summary>
+    /// Represents an annotated rectangular area of an image. This class cannot be inherited.
+    /// </summary>
     public sealed class Box : DlibObject
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Box"/> class.
+        /// </summary>
         public Box()
         {
             this.NativePtr = NativeMethods.image_dataset_metadata_box_new();
         }
 
-        internal Box(IntPtr ptr)
+        internal Box(IntPtr ptr, bool isDisposable = true) :
+            base(isDisposable)
         {
             if (ptr == IntPtr.Zero)
                 throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
@@ -128,7 +134,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var stdstr = NativeMethods.image_dataset_metadata_box_get_label(this.NativePtr);
-                return StringHelper.FromStdString(stdstr);
+                return StringHelper.FromStdString(stdstr, true);
             }
             set
             {
@@ -152,7 +158,22 @@ namespace DlibDotNet.ImageDatasetMetadata
             }
         }
 
-        public PartCollection Parts => new PartCollection(this);
+        public PartCollection Parts
+        {
+            get => new PartCollection(new InternalPartCollection(this));
+            set
+            {
+                this.ThrowIfDisposed();
+
+                var collection = new InternalPartCollection(this);
+                collection.Clear();
+                if (value == null)
+                    return;
+
+                foreach (var kvp in value)
+                    collection[kvp.Key] = kvp.Value;
+            }
+        }
 
         public double Pose
         {
@@ -221,34 +242,37 @@ namespace DlibDotNet.ImageDatasetMetadata
 
         #endregion
 
-        public sealed class PartCollection : IEnumerable<KeyValuePair<string, Point>>
+        internal sealed class InternalPartCollection : PartCollection.PartCollectionBridge
         {
-
-            #region Fields
-
-            private readonly Box _Parent;
-
-            #endregion
 
             #region Constructors
 
-            internal PartCollection(Box parent)
+            internal InternalPartCollection(Box parent) :
+                base(parent)
             {
-                this._Parent = parent;
             }
 
             #endregion
 
             #region Properties
 
-            public Point this[string key]
+            public override int Count
             {
                 get
                 {
-                    this._Parent.ThrowIfDisposed();
+                    this.Parent.ThrowIfDisposed();
+                    return NativeMethods.image_dataset_metadata_box_get_parts_get_size(this.Parent.NativePtr);
+                }
+            }
+
+            public override Point this[string key]
+            {
+                get
+                {
+                    this.Parent.ThrowIfDisposed();
 
                     var str = Dlib.Encoding.GetBytes(key ?? "");
-                    var native = this._Parent.NativePtr;
+                    var native = this.Parent.NativePtr;
                     if (!NativeMethods.image_dataset_metadata_box_get_parts_get_value(native, str, out var p))
                         throw new KeyNotFoundException();
 
@@ -256,10 +280,10 @@ namespace DlibDotNet.ImageDatasetMetadata
                 }
                 set
                 {
-                    this._Parent.ThrowIfDisposed();
+                    this.Parent.ThrowIfDisposed();
 
                     var str = Dlib.Encoding.GetBytes(key ?? "");
-                    var native = this._Parent.NativePtr;
+                    var native = this.Parent.NativePtr;
                     using (var pp = value.ToNative())
                         NativeMethods.image_dataset_metadata_box_get_parts_set_value(native, str, pp.NativePtr);
                 }
@@ -269,25 +293,25 @@ namespace DlibDotNet.ImageDatasetMetadata
 
             #region Methods
 
-            public void Clear()
+            public override void Clear()
             {
-                this._Parent.ThrowIfDisposed();
+                this.Parent.ThrowIfDisposed();
 
-                NativeMethods.image_dataset_metadata_box_parts_clear(this._Parent.NativePtr);
+                NativeMethods.image_dataset_metadata_box_parts_clear(this.Parent.NativePtr);
             }
 
             #endregion
 
             #region  Implements
 
-            public IEnumerator<KeyValuePair<string, Point>> GetEnumerator()
+            public override IEnumerator<KeyValuePair<string, Point>> GetEnumerator()
             {
-                this._Parent.ThrowIfDisposed();
+                this.Parent.ThrowIfDisposed();
 
                 using (var strings = new StdVector<StdString>())
                 using (var points = new StdVector<Point>())
                 {
-                    NativeMethods.image_dataset_metadata_box_get_parts_get_all(this._Parent.NativePtr, strings.NativePtr, points.NativePtr);
+                    NativeMethods.image_dataset_metadata_box_get_parts_get_all(this.Parent.NativePtr, strings.NativePtr, points.NativePtr);
 
                     var stdStrings = strings.ToArray();
                     var stringArray = stdStrings.Select(stdstr => StringHelper.FromStdString(stdstr.NativePtr)).ToArray();
@@ -303,11 +327,6 @@ namespace DlibDotNet.ImageDatasetMetadata
                         yield return new KeyValuePair<string, Point>(s, p);
                     }
                 }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return this.GetEnumerator();
             }
 
             #endregion

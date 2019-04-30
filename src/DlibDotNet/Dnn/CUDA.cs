@@ -1,6 +1,4 @@
-﻿using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-
-namespace DlibDotNet.Dnn
+﻿namespace DlibDotNet.Dnn
 {
 
     /// <summary>
@@ -33,16 +31,16 @@ namespace DlibDotNet.Dnn
 
         #region Helpers
 
-        internal static void ThrowCudaException(ErrorType error)
+        internal static void ThrowCudaException(NativeMethods.ErrorType error)
         {
-            if (error == ErrorType.OK)
+            if (error == NativeMethods.ErrorType.OK)
                 return;
 
             var tmp = -(int)error;
-            if ((tmp & (int) ErrorType.CudaError) != (int) ErrorType.CudaError)
+            if ((tmp & (int) NativeMethods.ErrorType.CudaError) != (int) NativeMethods.ErrorType.CudaError)
                 return;
 
-            tmp -= (int)ErrorType.CudaError;
+            tmp -= (int)NativeMethods.ErrorType.CudaError;
 
             NativeMethods.dnn_cuda_cudaDriverGetVersion(out var driverVersion);
             NativeMethods.dnn_cuda_cudaRuntimeGetVersion(out var runtimeVersion);

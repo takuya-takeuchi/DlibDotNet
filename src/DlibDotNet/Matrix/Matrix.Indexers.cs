@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DlibDotNet.Extensions;
 using DlibDotNet.Interop;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -21,7 +19,7 @@ namespace DlibDotNet
 
             #region Fields 
 
-            protected readonly MatrixElementType _Type;
+            protected readonly NativeMethods.MatrixElementType _Type;
 
             protected readonly MatrixBase _Parent;
 
@@ -69,13 +67,13 @@ namespace DlibDotNet
                 this.ThrowIfHasError(ret);
             }
 
-            protected void ThrowIfHasError(ErrorType error)
+            protected void ThrowIfHasError(NativeMethods.ErrorType error)
             {
                 switch (error)
                 {
-                    case ErrorType.MatrixElementTypeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"Input {this._Type} is not supported.");
-                    case ErrorType.MatrixElementTemplateSizeNotSupport:
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
                         throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
                 }
             }

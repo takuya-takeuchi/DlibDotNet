@@ -125,6 +125,12 @@ namespace DlibDotNet.Tests
             return path;
         }
 
+        public static long GetCurrentMemory()
+        {
+            return Environment.WorkingSet;
+            //return GC.GetTotalMemory(true);
+        }
+
         #region Random
 
         public byte NextByteRandom()
@@ -220,7 +226,7 @@ namespace DlibDotNet.Tests
 
         public HsiPixel NextHsiPixelRandom(int minValue, int maxValue)
         {
-            return new HsiPixel()
+            return new HsiPixel
             {
                 H = (byte)this._Random.Next(minValue, maxValue),
                 S = (byte)this._Random.Next(minValue, maxValue),

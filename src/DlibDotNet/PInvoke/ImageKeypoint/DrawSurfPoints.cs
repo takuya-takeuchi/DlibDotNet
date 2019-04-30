@@ -8,7 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeMethods.NativeLibrary, CallingConvention = NativeMethods.CallingConvention)]
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void draw_surf_points(IntPtr win, IntPtr points);
 
     }

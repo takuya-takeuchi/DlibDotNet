@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace DlibDotNet.Dnn
 {
@@ -10,7 +9,7 @@ namespace DlibDotNet.Dnn
 
         #region Fields
 
-        private readonly TrainerImp _Imp;
+        private readonly TrainerImp<T> _Imp;
 
         #endregion
 
@@ -19,6 +18,18 @@ namespace DlibDotNet.Dnn
         public DnnTrainer(T net)
         {
             this._Imp = CreateImp(net);
+
+            this.NativePtr = this._Imp.NativePtr;
+        }
+
+        public DnnTrainer(T net, Sgd sgd)
+        {
+            if (sgd == null)
+                throw new ArgumentNullException(nameof(sgd));
+
+            sgd.ThrowIfDisposed();
+
+            this._Imp = CreateImp(net, sgd);
 
             this.NativePtr = this._Imp.NativePtr;
         }
@@ -48,6 +59,20 @@ namespace DlibDotNet.Dnn
             this._Imp.BeVerbose();
         }
 
+        public double GetLearningRate()
+        {
+            this.ThrowIfDisposed();
+
+            return this._Imp.GetLearningRate();
+        }
+
+        public T GetNet()
+        {
+            this.ThrowIfDisposed();
+
+            return this._Imp.GetNet();
+        }
+
         public void SetLearningRate(double learningRate)
         {
             this.ThrowIfDisposed();
@@ -62,7 +87,7 @@ namespace DlibDotNet.Dnn
             this._Imp.SetMinLearningRate(learningRate);
         }
 
-        public void SetMinBatchSize(uint size)
+        public void SetMiniBatchSize(uint size)
         {
             this.ThrowIfDisposed();
 
@@ -79,6 +104,20 @@ namespace DlibDotNet.Dnn
             this._Imp.SetSynchronizationFile(filename, second);
         }
 
+        public void SetIterationsWithoutProgressThreshold(uint threshold)
+        {
+            this.ThrowIfDisposed();
+
+            this._Imp.SetIterationsWithoutProgressThreshold(threshold);
+        }
+
+        public void SetTestIterationsWithoutProgressThreshold(uint threshold)
+        {
+            this.ThrowIfDisposed();
+
+            this._Imp.SetTestIterationsWithoutProgressThreshold(threshold);
+        }
+
         #region Overrides 
 
         /// <summary>
@@ -93,22 +132,44 @@ namespace DlibDotNet.Dnn
 
             this._Imp.Dispose();
         }
+        
+        public override string ToString()
+        {
+            this.ThrowIfDisposed();
+
+            return this._Imp.GetString();
+        }
 
         #endregion
 
         #region Helpers
 
-        private static TrainerImp CreateImp(T net)
+        private static TrainerImp<T> CreateImp(T net)
         {
             var t = typeof(T);
             if (t == typeof(LossMetric))
-                return new LossMetricTrainer(net.NativePtr, net.NetworkType);
+                return new LossMetricTrainer(net.NativePtr, net.NetworkType) as TrainerImp<T>;
             if (t == typeof(LossMmod))
-                return new LossMmodTrainer(net.NativePtr, net.NetworkType);
+                return new LossMmodTrainer(net.NativePtr, net.NetworkType) as TrainerImp<T>;
             if (t == typeof(LossMulticlassLog))
-                return new LossMulticlassLogTrainer(net.NativePtr, net.NetworkType);
+                return new LossMulticlassLogTrainer(net.NativePtr, net.NetworkType) as TrainerImp<T>;
             if (t == typeof(LossMulticlassLogPerPixel))
-                return new LossMulticlassLogPerPixelTrainer(net.NativePtr, net.NetworkType);
+                return new LossMulticlassLogPerPixelTrainer(net.NativePtr, net.NetworkType) as TrainerImp<T>;
+
+            throw new NotSupportedException();
+        }
+
+        private static TrainerImp<T> CreateImp(T net, Sgd sgd)
+        {
+            var t = typeof(T);
+            if (t == typeof(LossMetric))
+                return new LossMetricTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+            if (t == typeof(LossMmod))
+                return new LossMmodTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+            if (t == typeof(LossMulticlassLog))
+                return new LossMulticlassLogTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+            if (t == typeof(LossMulticlassLogPerPixel))
+                return new LossMulticlassLogPerPixelTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
 
             throw new NotSupportedException();
         }
@@ -117,15 +178,28 @@ namespace DlibDotNet.Dnn
 
         #endregion
 
-        private abstract class TrainerImp : DlibObject
+#pragma warning disable 693
+        private abstract class TrainerImp<T> : DlibObject
+#pragma warning restore 693
+            where T : Net
         {
+
+            #region Properties
 
             public abstract int NetworkType
             {
                 get;
             }
 
+            #endregion
+
+            #region Methods
+
             public abstract void BeVerbose();
+
+            public abstract T GetNet();
+
+            public abstract double GetLearningRate();
 
             public abstract void SetLearningRate(double learningRate);
 
@@ -135,9 +209,56 @@ namespace DlibDotNet.Dnn
 
             public abstract void SetSynchronizationFile(string filename, uint second = 15 * 60);
 
+            public abstract void SetIterationsWithoutProgressThreshold(uint thresh);
+
+            public abstract void SetTestIterationsWithoutProgressThreshold(uint thresh);
+
+            public abstract string GetString();
+
+            #region Overrids
+
+            protected string ToString(Func<IntPtr, int, IntPtr, NativeMethods.ErrorType> func)
+            {
+                var ofstream = IntPtr.Zero;
+                var stdstr = IntPtr.Zero;
+                var str = "";
+
+                try
+                {
+                    ofstream = NativeMethods.ostringstream_new();
+                    var ret = func(this.NativePtr, this.NetworkType, ofstream);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.OK:
+                            stdstr = NativeMethods.ostringstream_str(ofstream);
+                            str = StringHelper.FromStdString(stdstr);
+                            break;
+                        case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                            throw new NotSupportNetworkTypeException(this.NetworkType);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
+                finally
+                {
+                    if (stdstr != IntPtr.Zero)
+                        NativeMethods.string_delete(stdstr);
+                    if (ofstream != IntPtr.Zero)
+                        NativeMethods.ostringstream_delete(ofstream);
+                }
+
+                return str;
+            }
+
+            #endregion
+
+            #endregion
+
         }
 
-        private sealed class LossMetricTrainer : TrainerImp
+        private sealed class LossMetricTrainer : TrainerImp<LossMetric>
         {
 
             #region Constructors
@@ -146,6 +267,12 @@ namespace DlibDotNet.Dnn
             {
                 this.NetworkType = type;
                 this.NativePtr = NativeMethods.dnn_trainer_loss_metric_new(net, type);
+            }
+
+            public LossMetricTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_metric_new_sgd(net, type, sgd.NativePtr);
             }
 
             #endregion
@@ -174,6 +301,26 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_metric_delete(this.NativePtr, this.NetworkType);
             }
 
+            public override LossMetric GetNet()
+            {
+                var err = NativeMethods.dnn_trainer_loss_metric_get_net(this.NativePtr, this.NetworkType, out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this.NetworkType);
+                    case NativeMethods.ErrorType.DnnPropagateException:
+                        throw new PropagateException();
+                }
+
+                return new LossMetric(ret, this.NetworkType, false);
+            }
+
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_metric_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_metric_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -197,13 +344,32 @@ namespace DlibDotNet.Dnn
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_metric_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_metric_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override string GetString()
+            {
+                return base.ToString(NativeMethods.dnn_trainer_loss_metric_operator_left_shift);
+            }
+
             #endregion
 
             #endregion
 
         }
 
-        private sealed class LossMmodTrainer : TrainerImp
+        private sealed class LossMmodTrainer : TrainerImp<LossMmod>
         {
 
             #region Constructors
@@ -212,6 +378,12 @@ namespace DlibDotNet.Dnn
             {
                 this.NetworkType = type;
                 this.NativePtr = NativeMethods.dnn_trainer_loss_mmod_new(net, type);
+            }
+
+            public LossMmodTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_mmod_new_sgd(net, type, sgd.NativePtr);
             }
 
             #endregion
@@ -240,6 +412,26 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_mmod_delete(this.NativePtr, this.NetworkType);
             }
 
+            public override LossMmod GetNet()
+            {
+                var err = NativeMethods.dnn_trainer_loss_mmod_get_net(this.NativePtr, this.NetworkType, out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this.NetworkType);
+                    case NativeMethods.ErrorType.DnnPropagateException:
+                        throw new PropagateException();
+                }
+
+                return new LossMmod(ret, this.NetworkType, false);
+            }
+
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_mmod_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_mmod_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -263,13 +455,32 @@ namespace DlibDotNet.Dnn
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_mmod_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_mmod_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override string GetString()
+            {
+                return base.ToString(NativeMethods.dnn_trainer_loss_mmod_operator_left_shift);
+            }
+
             #endregion
 
             #endregion
 
         }
 
-        private sealed class LossMulticlassLogTrainer : TrainerImp
+        private sealed class LossMulticlassLogTrainer : TrainerImp<LossMulticlassLog>
         {
 
             #region Constructors
@@ -278,6 +489,12 @@ namespace DlibDotNet.Dnn
             {
                 this.NetworkType = type;
                 this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_new(net, type);
+            }
+
+            public LossMulticlassLogTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_new_sgd(net, type, sgd.NativePtr);
             }
 
             #endregion
@@ -306,6 +523,26 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
             }
 
+            public override LossMulticlassLog GetNet()
+            {
+                var err = NativeMethods.dnn_trainer_loss_multiclass_log_get_net(this.NativePtr, this.NetworkType, out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this.NetworkType);
+                    case NativeMethods.ErrorType.DnnPropagateException:
+                        throw new PropagateException();
+                }
+
+                return new LossMulticlassLog(ret, this.NetworkType, false);
+            }
+
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_multiclass_log_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_multiclass_log_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -329,13 +566,32 @@ namespace DlibDotNet.Dnn
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
 
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override string GetString()
+            {
+                return base.ToString(NativeMethods.dnn_trainer_loss_multiclass_log_operator_left_shift);
+            }
+
             #endregion
 
             #endregion
 
         }
 
-        private sealed class LossMulticlassLogPerPixelTrainer : TrainerImp
+        private sealed class LossMulticlassLogPerPixelTrainer : TrainerImp<LossMulticlassLogPerPixel>
         {
 
             #region Constructors
@@ -344,6 +600,12 @@ namespace DlibDotNet.Dnn
             {
                 this.NetworkType = type;
                 this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_new(net, type);
+            }
+
+            public LossMulticlassLogPerPixelTrainer(IntPtr net, int type, Sgd sgd)
+            {
+                this.NetworkType = type;
+                this.NativePtr = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_new_sgd(net, type, sgd.NativePtr);
             }
 
             #endregion
@@ -372,6 +634,26 @@ namespace DlibDotNet.Dnn
                 NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(this.NativePtr, this.NetworkType);
             }
 
+            public override LossMulticlassLogPerPixel GetNet()
+            {
+                var err = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_get_net(this.NativePtr, this.NetworkType, out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this.NetworkType);
+                    case NativeMethods.ErrorType.DnnPropagateException:
+                        throw new PropagateException();
+                }
+
+                return new LossMulticlassLogPerPixel(ret, this.NetworkType, false);
+            }
+
+            public override double GetLearningRate()
+            {
+                NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_get_learning_rate(this.NativePtr, this.NetworkType, out var learningRate);
+                return learningRate;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(this.NativePtr, this.NetworkType, learningRate);
@@ -393,6 +675,25 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(this.NativePtr, this.NetworkType, str, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override void SetTestIterationsWithoutProgressThreshold(uint thresh)
+            {
+                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_set_test_iterations_without_progress_threshold(this.NativePtr, this.NetworkType, thresh);
+                if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
+                    throw new NotSupportNetworkTypeException(this.NetworkType);
+            }
+
+            public override string GetString()
+            {
+                return base.ToString(NativeMethods.dnn_trainer_loss_multiclass_log_per_pixel_operator_left_shift);
             }
 
             #endregion

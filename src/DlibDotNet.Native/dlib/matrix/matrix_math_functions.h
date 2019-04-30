@@ -25,44 +25,44 @@ do {\
 
 #pragma endregion template
 
-DLLEXPORT int matrix_round(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void** ret) 
-{ 
-    int error = ERR_OK; 
-    switch(type) 
-    { 
+DLLEXPORT int matrix_round(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void** ret)
+{
+    int error = ERR_OK;
+    switch(type)
+    {
         case matrix_element_type::UInt8:
             matrix_round_template(uint8_t, templateRows, templateColumns, error, matrix, ret);
             break;
         case matrix_element_type::UInt16:
             matrix_round_template(uint16_t, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::UInt32:
             matrix_round_template(uint32_t, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::Int8:
             matrix_round_template(int8_t, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::Int16:
             matrix_round_template(int16_t, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::Int32:
             matrix_round_template(int32_t, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::Float:
             matrix_round_template(float, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::Double:
             matrix_round_template(double, templateRows, templateColumns, error, matrix, ret);
-            break; 
+            break;
         case matrix_element_type::RgbPixel:
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
-        default: 
-            error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT; 
-            break; 
-    } 
- 
-    return error; 
+        default:
+            error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+            break;
+    }
+
+    return error;
 }
 
 #endif

@@ -2,16 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using DlibDotNet.Extensions;
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
     /// <summary>
-    /// This object represents a 1-Dimensional array of objects. 
+    /// Represents a 1-Dimensional array of objects. 
     /// </summary>
     /// <typeparam name="T">The type of elements in the array.</typeparam>
     public sealed class Array<T> : DlibObject, IEnumerable<T>
@@ -19,7 +16,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private readonly Array2DType _Array2DType;
+        private readonly NativeMethods.Array2DType _Array2DType;
 
         private static readonly Dictionary<Type, ItemTypes> SupportItemTypes = new Dictionary<Type, ItemTypes>();
 
@@ -216,7 +213,7 @@ namespace DlibDotNet
                 this.ThrowIfDisposed();
 
                 uint size = 0;
-                var error = ErrorType.OK;
+                var error = NativeMethods.ErrorType.OK;
                 switch (this._ItemType)
                 {
                     case ItemTypes.PixelType:
@@ -332,7 +329,7 @@ namespace DlibDotNet
             }
         }
 
-        private object GetArray2DItem(Array2DType type, uint index)
+        private object GetArray2DItem(NativeMethods.Array2DType type, uint index)
         {
             var err = NativeMethods.array_array2d_getitem(type,
                                                           this.NativePtr, index,
@@ -340,27 +337,27 @@ namespace DlibDotNet
 
             switch (type)
             {
-                case Array2DType.UInt8:
+                case NativeMethods.Array2DType.UInt8:
                     return new Array2D<byte>(array, ImageTypes.UInt8, false);
-                case Array2DType.UInt16:
+                case NativeMethods.Array2DType.UInt16:
                     return new Array2D<ushort>(array, ImageTypes.UInt16, false);
-                case Array2DType.UInt32:
+                case NativeMethods.Array2DType.UInt32:
                     return new Array2D<uint>(array, ImageTypes.UInt32, false);
-                case Array2DType.Int8:
+                case NativeMethods.Array2DType.Int8:
                     return new Array2D<sbyte>(array, ImageTypes.Int8, false);
-                case Array2DType.Int16:
+                case NativeMethods.Array2DType.Int16:
                     return new Array2D<short>(array, ImageTypes.Int16, false);
-                case Array2DType.Int32:
+                case NativeMethods.Array2DType.Int32:
                     return new Array2D<int>(array, ImageTypes.Int32, false);
-                case Array2DType.Float:
+                case NativeMethods.Array2DType.Float:
                     return new Array2D<float>(array, ImageTypes.Float, false);
-                case Array2DType.Double:
+                case NativeMethods.Array2DType.Double:
                     return new Array2D<double>(array, ImageTypes.Double, false);
-                case Array2DType.RgbPixel:
+                case NativeMethods.Array2DType.RgbPixel:
                     return new Array2D<RgbPixel>(array, ImageTypes.RgbPixel, false);
-                case Array2DType.RgbAlphaPixel:
+                case NativeMethods.Array2DType.RgbAlphaPixel:
                     return new Array2D<RgbAlphaPixel>(array, ImageTypes.RgbAlphaPixel, false);
-                case Array2DType.HsiPixel:
+                case NativeMethods.Array2DType.HsiPixel:
                     return new Array2D<HsiPixel>(array, ImageTypes.HsiPixel, false);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -404,13 +401,13 @@ namespace DlibDotNet
             }
         }
 
-        private void PushBackArray2DItem(Array2DType type, IDlibObject item)
+        private void PushBackArray2DItem(NativeMethods.Array2DType type, IDlibObject item)
         {
             item.ThrowIfDisposed();
             NativeMethods.array_array2d_pushback(type, this.NativePtr, item.NativePtr);
         }
         
-        private void PushBackMatrixItem(MatrixElementType type, IDlibObject item)
+        private void PushBackMatrixItem(NativeMethods.MatrixElementType type, IDlibObject item)
         {
             item.ThrowIfDisposed();
             NativeMethods.array_matrix_pushback(type, this.NativePtr, item.NativePtr);

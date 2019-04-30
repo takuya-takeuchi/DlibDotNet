@@ -2088,12 +2088,12 @@ namespace DlibDotNet.Tests
         {
             const int cols = 512;
             const int rows = 512;
-            var path = this.GetDataFile($"lena_gray.raw");
+            var path = this.GetDataFile("lena_gray.raw");
             var data = File.ReadAllBytes(path.FullName);
 
             var tests = new[]
             {
-                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                new { Type = ImageTypes.UInt8,         ExpectResult = true}
                 //new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 //new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 //new { Type = ImageTypes.UInt16,        ExpectResult = true},
@@ -2395,7 +2395,7 @@ namespace DlibDotNet.Tests
 
             return image;
         }
-
+        
         internal static MatrixBase LoadImageAsMatrix(MatrixElementTypes type, FileInfo path)
         {
             MatrixBase matrix;

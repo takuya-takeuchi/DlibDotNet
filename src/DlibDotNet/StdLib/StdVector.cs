@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DlibDotNet.Dnn;
 using DlibDotNet.Extensions;
 using DlibDotNet.Util;
 
@@ -10,71 +11,46 @@ using DlibDotNet.Util;
 namespace DlibDotNet
 {
 
-    public sealed class StdVector<TItem> : DlibObject, IEnumerable<TItem>
+    public sealed class StdVector<TItem> : DlibObject, IList<TItem>
     {
 
         #region Fields
-
-        private static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
-
+        
         private readonly StdVectorImp<TItem> _Imp;
 
         #endregion
 
         #region Constructors
-
-        static StdVector()
+        
+        public StdVector()
         {
-            var types = new[]
-            {
-                new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
-                new { Type = typeof(uint),                                 ElementType = ElementTypes.UInt32 },
-                new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
-                new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
-                new { Type = typeof(Point),                                ElementType = ElementTypes.Point },
-                new { Type = typeof(DPoint),                               ElementType = ElementTypes.DPoint },
-                new { Type = typeof(ChipDetails),                          ElementType = ElementTypes.ChipDetails  },
-                new { Type = typeof(StdString),                            ElementType = ElementTypes.StdString  },
-                new { Type = typeof(FullObjectDetection),                  ElementType = ElementTypes.FullObjectDetection  },
-                new { Type = typeof(RectDetection),                        ElementType = ElementTypes.RectDetection  },
-                new { Type = typeof(ImageWindow.OverlayLine),              ElementType = ElementTypes.ImageWindowOverlayLine  },
-                new { Type = typeof(PerspectiveWindow.OverlayDot),         ElementType = ElementTypes.PerspectiveWindowOverlayDot  },
-                new { Type = typeof(MModRect),                             ElementType = ElementTypes.MModRect  },
-                new { Type = typeof(SurfPoint),                            ElementType = ElementTypes.SurfPoint  },
-                new { Type = typeof(SamplePair),                           ElementType = ElementTypes.SamplePair  },
-                new { Type = typeof(ImageDatasetMetadata.Image),           ElementType = ElementTypes.ImageDatasetMetadataImage },
-                new { Type = typeof(ImageDatasetMetadata.Box),             ElementType = ElementTypes.ImageDatasetMetadataBox },
-                new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
-                new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
-                new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
-            };
-
-            foreach (var type in types)
-                SupportTypes.Add(type.Type, type.ElementType);
+            this.Param = null;
+            this._Imp = CreateImp();
+            this.NativePtr = this._Imp.Create();
         }
 
-        public StdVector(params object[] param)
+        public StdVector(IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create();
         }
 
-        public StdVector(int size, params object[] param)
+        public StdVector(int size, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create(size);
         }
 
-        public StdVector(IEnumerable<TItem> data, params object[] param)
+        public StdVector(IEnumerable<TItem> data, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
             this.NativePtr = this._Imp.Create(data);
         }
 
-        internal StdVector(IntPtr ptr, params object[] param)
+        internal StdVector(IntPtr ptr, IParameter param = null)
         {
             this.Param = param;
             this._Imp = CreateImp(param);
@@ -94,7 +70,7 @@ namespace DlibDotNet
             }
         }
 
-        internal object[] Param
+        internal IParameter Param
         {
             get;
             private set;
@@ -119,54 +95,81 @@ namespace DlibDotNet
             return this._Imp.ToArray(this.NativePtr);
         }
 
+        #region Overrides
+
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
+        protected override void DisposeUnmanaged()
+        {
+            base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            this._Imp?.Dispose(this.NativePtr);
+        }
+
+        #endregion
+
         #region Helpers
 
-        private static StdVectorImp<TItem> CreateImp(object[] param = null)
+        private static StdVectorImp<TItem> CreateImp(IParameter param = null)
         {
-            if (SupportTypes.TryGetValue(typeof(TItem), out var type))
+            if (StdVectorElementTypesRepository.SupportTypes.TryGetValue(typeof(TItem), out var type))
             {
                 switch (type)
                 {
-                    case ElementTypes.Int32:
+                    case StdVectorElementTypesRepository.ElementTypes.Int32:
                         return new StdVectorInt32Imp() as StdVectorImp<TItem>;
-                    case ElementTypes.UInt32:
+                    case StdVectorElementTypesRepository.ElementTypes.UInt32:
                         return new StdVectorUInt32Imp() as StdVectorImp<TItem>;
-                    case ElementTypes.Long:
+                    case StdVectorElementTypesRepository.ElementTypes.Long:
                         return new StdVectorLongImp() as StdVectorImp<TItem>;
-                    case ElementTypes.VectorDouble:
+                    case StdVectorElementTypesRepository.ElementTypes.Double:
+                        return new StdVectorDoubleImp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.VectorDouble:
                         return new StdVectorVectorDoubleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.Rectangle:
+                    case StdVectorElementTypesRepository.ElementTypes.Rectangle:
                         return new StdVectorRectangleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.Point:
+                    case StdVectorElementTypesRepository.ElementTypes.Point:
                         return new StdVectorPointImp() as StdVectorImp<TItem>;
-                    case ElementTypes.DPoint:
+                    case StdVectorElementTypesRepository.ElementTypes.DPoint:
                         return new StdVectorDPointImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ChipDetails:
+                    case StdVectorElementTypesRepository.ElementTypes.ChipDetails:
                         return new StdVectorChipDetailsImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdString:
+                    case StdVectorElementTypesRepository.ElementTypes.StdString:
                         return new StdVectorStdStringImp() as StdVectorImp<TItem>;
-                    case ElementTypes.FullObjectDetection:
+                    case StdVectorElementTypesRepository.ElementTypes.FullObjectDetection:
                         return new StdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
-                    case ElementTypes.RectDetection:
+                    case StdVectorElementTypesRepository.ElementTypes.RectDetection:
                         return new StdVectorRectDetectionImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ImageWindowOverlayLine:
+                    case StdVectorElementTypesRepository.ElementTypes.ImageWindowOverlayLine:
                         return new StdVectorImageWindowOverlayLineImp() as StdVectorImp<TItem>;
-                    case ElementTypes.PerspectiveWindowOverlayDot:
+                    case StdVectorElementTypesRepository.ElementTypes.PerspectiveWindowOverlayDot:
                         return new StdVectorPerspectiveWindowOverlayDotImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ImageDatasetMetadataImage:
+                    case StdVectorElementTypesRepository.ElementTypes.ImageDatasetMetadataImage:
                         return new StdVectorImageDatasetMetadataImageImp() as StdVectorImp<TItem>;
-                    case ElementTypes.ImageDatasetMetadataBox:
+                    case StdVectorElementTypesRepository.ElementTypes.ImageDatasetMetadataBox:
                         return new StdVectorImageDatasetMetadataBoxImp() as StdVectorImp<TItem>;
-                    case ElementTypes.MModRect:
+                    case StdVectorElementTypesRepository.ElementTypes.MModRect:
                         return new StdVectorMModRectImp() as StdVectorImp<TItem>;
-                    case ElementTypes.SurfPoint:
+                    case StdVectorElementTypesRepository.ElementTypes.SurfPoint:
                         return new StdVectorSurfPointImp() as StdVectorImp<TItem>;
-                    case ElementTypes.SamplePair:
+                    case StdVectorElementTypesRepository.ElementTypes.SamplePair:
                         return new StdVectorSamplePairImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdVectorRectangle:
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorDouble:
+                        return new StdVectorStdVectorDoubleImp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorRectangle:
                         return new StdVectorStdVectorRectangleImp() as StdVectorImp<TItem>;
-                    case ElementTypes.StdVectorMModRect:
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorMModRect:
                         return new StdVectorStdVectorMModRectImp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.StdVectorFullObjectDetection:
+                        return new StdVectorStdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.DetectorWindowDetails:
+                        return new StdVectorMModOptionsDetectorWindowDetailsImp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.OverlayRect:
+                        return new StdVectorOverlayRectImp() as StdVectorImp<TItem>;
                 }
             }
             else
@@ -176,41 +179,45 @@ namespace DlibDotNet
                 if (matrix.IsAssignableFrom(t))
                 {
                     var arg = GenericHelper.GetTypeParameter(t);
-                    if (MatrixBase.TryParse(arg, out var r))
-                    {
-                        var templateRows = 0;
-                        var templateColumns = 0;
-                        if (param != null && param.Length == 1 && param[0] is int[] array)
-                        {
-                            templateRows = array[0];
-                            templateColumns = array[1];
-                        }
+                    if (!MatrixBase.TryParse(arg, out var r))
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
 
-                        switch (r)
-                        {
-                            case MatrixElementTypes.UInt8:
-                                return new StdVectorMatrixImp<byte>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.UInt16:
-                                return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.UInt32:
-                                return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int8:
-                                return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int16:
-                                return new StdVectorMatrixImp<short>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Int32:
-                                return new StdVectorMatrixImp<int>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Float:
-                                return new StdVectorMatrixImp<float>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.Double:
-                                return new StdVectorMatrixImp<double>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.RgbPixel:
-                                return new StdVectorMatrixImp<RgbPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.RgbAlphaPixel:
-                                return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                            case MatrixElementTypes.HsiPixel:
-                                return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
-                        }
+                    var templateRows = 0;
+                    var templateColumns = 0;
+
+                    if (param != null)
+                    {
+                        if (!(param is MatrixTemplateSizeParameter sizeParameter))
+                            throw new ArgumentOutOfRangeException(nameof(type), type, null);
+
+                        templateRows = sizeParameter.TemplateRows;
+                        templateColumns = sizeParameter.TemplateColumns;
+                    }
+
+                    switch (r)
+                    {
+                        case MatrixElementTypes.UInt8:
+                            return new StdVectorMatrixImp<byte>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt16:
+                            return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt32:
+                            return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int8:
+                            return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int16:
+                            return new StdVectorMatrixImp<short>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Int32:
+                            return new StdVectorMatrixImp<int>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Float:
+                            return new StdVectorMatrixImp<float>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.Double:
+                            return new StdVectorMatrixImp<double>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.RgbPixel:
+                            return new StdVectorMatrixImp<RgbPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.RgbAlphaPixel:
+                            return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.HsiPixel:
+                            return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
                     }
                 }
             }
@@ -221,53 +228,6 @@ namespace DlibDotNet
         #endregion
 
         #endregion
-
-        private enum ElementTypes
-        {
-
-            Int32,
-
-            UInt32,
-
-            Long,
-
-            Rectangle,
-
-            Point,
-
-            DPoint,
-
-            PerspectiveWindowOverlayDot,
-
-            ImageWindowOverlayLine,
-
-            FullObjectDetection,
-
-            RectDetection,
-
-            ChipDetails,
-
-            StdString,
-
-            Matrix,
-
-            MModRect,
-
-            SurfPoint,
-
-            SamplePair,
-
-            VectorDouble,
-
-            StdVectorRectangle,
-
-            StdVectorMModRect,
-
-            ImageDatasetMetadataImage,
-
-            ImageDatasetMetadataBox
-
-        }
 
         #region StdVectorImp
 
@@ -459,6 +419,64 @@ namespace DlibDotNet
                     return new long[0];
 
                 var dst = new long[size];
+                var elementPtr = this.GetElementPtr(ptr);
+                Marshal.Copy(elementPtr, dst, 0, dst.Length);
+                return dst;
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorDoubleImp : StdVectorImp<double>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_double_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_double_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<double> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.ToArray();
+                return NativeMethods.stdvector_double_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_double_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_double_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_double_getSize(ptr).ToInt32();
+            }
+
+            public override double[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new double[0];
+
+                var dst = new double[size];
                 var elementPtr = this.GetElementPtr(ptr);
                 Marshal.Copy(elementPtr, dst, 0, dst.Length);
                 return dst;
@@ -1234,6 +1252,10 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_rectangle_copy(ptr, dst);
+
+                // Rectangle class does not native pointer. In other words, 
+                // native pointer should not be disposed on caller.
+                // All elements of Point, DPoint and Rectangle are only disposed in Disposed methods.
                 return dst.Select(p => new Rectangle(p, false)).ToArray();
             }
 
@@ -1296,6 +1318,10 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_point_copy(ptr, dst);
+
+                // Point class does not native pointer. In other words, 
+                // native pointer should not be disposed on caller.
+                // All elements of Point, DPoint and Rectangle are only disposed in Disposed methods.
                 return dst.Select(p => new Point(p, false)).ToArray();
             }
 
@@ -1358,6 +1384,10 @@ namespace DlibDotNet
 
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_dpoint_copy(ptr, dst);
+
+                // DPoint class does not native pointer. In other words, 
+                // native pointer should not be disposed on caller.
+                // All elements of Point, DPoint and Rectangle are only disposed in Disposed methods.
                 return dst.Select(p => new DPoint(p, false)).ToArray();
             }
 
@@ -1422,6 +1452,63 @@ namespace DlibDotNet
 
         }
 
+        private sealed class StdVectorStdVectorDoubleImp : StdVectorImp<StdVector<double>>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_stdvector_double_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_stdvector_double_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<StdVector<double>> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(vector => vector.NativePtr).ToArray();
+                return NativeMethods.stdvector_stdvector_double_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_stdvector_double_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_stdvector_double_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_stdvector_double_getSize(ptr).ToInt32();
+            }
+
+            public override StdVector<double>[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new StdVector<double>[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_stdvector_double_copy(ptr, dst);
+                return dst.Select(p => new StdVector<double>(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+
         private sealed class StdVectorStdVectorRectangleImp : StdVectorImp<StdVector<Rectangle>>
         {
 
@@ -1445,7 +1532,7 @@ namespace DlibDotNet
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
-                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                var array = data.Select(vector => vector.NativePtr).ToArray();
                 return NativeMethods.stdvector_stdvector_rectangle_new3(array, new IntPtr(array.Length));
             }
 
@@ -1502,7 +1589,7 @@ namespace DlibDotNet
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
-                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                var array = data.Select(vector => vector.NativePtr).ToArray();
                 return NativeMethods.stdvector_stdvector_mmod_rect_new3(array, new IntPtr(array.Length));
             }
 
@@ -1535,6 +1622,177 @@ namespace DlibDotNet
             #endregion
 
         }
+        
+        private sealed class StdVectorStdVectorFullObjectDetectionImp : StdVectorImp<StdVector<FullObjectDetection>>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_stdvector_full_object_detection_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_stdvector_full_object_detection_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<StdVector<FullObjectDetection>> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(vector => vector.NativePtr).ToArray();
+                return NativeMethods.stdvector_stdvector_full_object_detection_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_stdvector_full_object_detection_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_stdvector_full_object_detection_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_stdvector_full_object_detection_getSize(ptr).ToInt32();
+            }
+
+            public override StdVector<FullObjectDetection>[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new StdVector<FullObjectDetection>[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_stdvector_full_object_detection_copy(ptr, dst);
+                return dst.Select(p => new StdVector<FullObjectDetection>(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorMModOptionsDetectorWindowDetailsImp : StdVectorImp<MModOptions.DetectorWindowDetails>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<MModOptions.DetectorWindowDetails> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(vector => vector.NativePtr).ToArray();
+                return NativeMethods.stdvector_mmod_options_detector_window_details_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_mmod_options_detector_window_details_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_mmod_options_detector_window_details_getSize(ptr).ToInt32();
+            }
+
+            public override MModOptions.DetectorWindowDetails[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new MModOptions.DetectorWindowDetails[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_mmod_options_detector_window_details_copy(ptr, dst);
+                return dst.Select(p => new MModOptions.DetectorWindowDetails(p)).ToArray();
+            }
+
+            #endregion
+
+        }
+        
+        private sealed class StdVectorOverlayRectImp : StdVectorImp<ImageDisplay.OverlayRect>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_image_display_overlay_rect_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_image_display_overlay_rect_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<ImageDisplay.OverlayRect> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
+                return NativeMethods.stdvector_image_display_overlay_rect_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_image_display_overlay_rect_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_image_display_overlay_rect_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_image_display_overlay_rect_getSize(ptr).ToInt32();
+            }
+
+            public override ImageDisplay.OverlayRect[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new ImageDisplay.OverlayRect[0];
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_image_display_overlay_rect_copy(ptr, dst);
+                return dst.Select(p => new ImageDisplay.OverlayRect(p)).ToArray();
+            }
+
+            #endregion
+
+        }
 
         #endregion
 
@@ -1548,6 +1806,63 @@ namespace DlibDotNet
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IList<TItem> Members
+
+        public void Add(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(TItem[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count => this.Size;
+
+        public bool IsReadOnly
+        {
+            get;
+        }
+
+        public int IndexOf(TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, TItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TItem this[int index]
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         #endregion

@@ -57,25 +57,22 @@ namespace DlibDotNet
             }
         }
 
-        public IntPtr Label
+        public string Label
         {
             get
             {
                 this.ThrowIfDisposed();
                 NativeMethods.mmod_rect_get_label(this.NativePtr, out var label);
-
-                // ToDo
-                //return new StdString(label);
-                return label;
+                return StringHelper.FromStdString(label, true);
             }
             set
             {
                 this.ThrowIfDisposed();
-                if (value == IntPtr.Zero)
+                if (value == null)
                     throw new ArgumentNullException();
 
-                //value.ThrowIfDisposed();
-                //NativeMethods.mmod_rect_set_label(this.NativePtr, value.NativePtr);
+                using(var str = new StdString(value))
+                    NativeMethods.mmod_rect_set_label(this.NativePtr, str.NativePtr);
             }
         }
 

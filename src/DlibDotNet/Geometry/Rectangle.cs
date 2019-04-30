@@ -258,6 +258,16 @@ namespace DlibDotNet
                 return result.ToManaged();
         }
 
+        public static Rectangle MoveRect(Rectangle rect, Point point)
+        {
+            return Dlib.MoveRect(rect, point);
+        }
+
+        public static Rectangle MoveRect(Rectangle rect, int x, int y)
+        {
+            return Dlib.MoveRect(rect, x, y);
+        }
+
         public static Rectangle SetAspectRatio(Rectangle rect, double ratio)
         {
             if (!(ratio > 0))
@@ -348,6 +358,11 @@ namespace DlibDotNet
             using (var left = rect.ToNative())
             using (var right = rhs.ToNative())
                 return left != right;
+        }
+
+        public static implicit operator DRectangle(Rectangle val)
+        {
+            return new DRectangle(val);
         }
 
         #endregion

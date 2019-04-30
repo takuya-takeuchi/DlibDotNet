@@ -11,10 +11,10 @@ This program is ported by C# from examples\dnn_inception_ex.cpp.
 ````
 dotnet build -c Release
 ````
-2. Copy ***DlibDotNet.dll***, ***DlibDotNet.Native.dll*** and ***DlibDotNet.Native.Dnn.dll*** to output directory; &lt;DnnInception_dir&gt;\bin\Release\netcoreapp2.0.
+2. Copy ***DlibDotNet.dll***, ***DlibDotNetNative.dll*** and ***DlibDotNetNativeDnn.dll*** to output directory; &lt;DnnInception_dir&gt;\bin\Release\netcoreapp2.0.
 
 **NOTE**  
-- You should build ***DlibDotNet.Native.dll*** and ***DlibDotNet.Native.Dnn.dll*** with CUDA.
+- You should build ***DlibDotNetNative.dll*** and ***DlibDotNetNativeDnn.dll*** with CUDA.
 - If you want to run at Linux and MacOS, you should build the **DlibDotNet** at first.  
 Please refer the [Tutorial for Linux](https://github.com/takuya-takeuchi/DlibDotNet/wiki/Tutorial-for-Linux) or [Tutorial for MacOS](https://github.com/takuya-takeuchi/DlibDotNet/wiki/Tutorial-for-MacOS).
 
@@ -28,7 +28,7 @@ Download test data from the following urls.
   - t10k-images-idx3-ubyte.gz 
   - t10k-labels-idx1-ubyte.gz
 
-And extract them and copy to extracted fiels to &lt;DnnInception_dir&gt;.
+And extract them and copy to extracted files to &lt;DnnInception_dir&gt;.
 
 ## 3. Run
 

@@ -44,7 +44,7 @@ namespace DnnInception
                     {
                         trainer.SetLearningRate(0.01);
                         trainer.SetMinLearningRate(0.00001);
-                        trainer.SetMinBatchSize(128);
+                        trainer.SetMiniBatchSize(128);
                         trainer.BeVerbose();
                         trainer.SetSynchronizationFile("inception_sync", 20);
                         // Train the network.  This might take a few minutes...
@@ -71,7 +71,7 @@ namespace DnnInception
                             var numRight = 0;
                             var numWrong = 0;
                             // And then let's see if it classified them correctly.
-                            for (var i = 0; i < trainingImages.Length; ++i)
+                            for (var i = 0; i < trainingImages.Count; ++i)
                             {
                                 if (predictedLabels[i] == trainingLabels[i])
                                     ++numRight;
@@ -89,7 +89,7 @@ namespace DnnInception
                             {
                                 numRight = 0;
                                 numWrong = 0;
-                                for (var i = 0; i < testingImages.Length; ++i)
+                                for (var i = 0; i < testingImages.Count; ++i)
                                 {
                                     if (predictedLabels2[i] == testingLabels[i])
                                         ++numRight;

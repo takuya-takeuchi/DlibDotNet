@@ -1,7 +1,5 @@
 ﻿using System;
 using DlibDotNet.Extensions;
-using Array2DType = DlibDotNet.NativeMethods.Array2DType;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -62,7 +60,7 @@ namespace DlibDotNet
                 var ret = NativeMethods.correlation_tracker_start_track(this.NativePtr, inType, image.NativePtr, native.NativePtr);
                 switch (ret)
                 {
-                    case ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
             }
@@ -86,7 +84,7 @@ namespace DlibDotNet
                 var ret = NativeMethods.correlation_tracker_update(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
                 switch (ret)
                 {
-                    case ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -107,7 +105,7 @@ namespace DlibDotNet
             var ret = NativeMethods.correlation_tracker_update2(this.NativePtr, inType, image.NativePtr, out var confident);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 
@@ -132,7 +130,7 @@ namespace DlibDotNet
                 var ret = NativeMethods.correlation_tracker_update_noscale(this.NativePtr, inType, image.NativePtr, native.NativePtr, out var confident);
                 switch (ret)
                 {
-                    case ErrorType.Array2DTypeTypeNotSupport:
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                         throw new ArgumentException($"Input {inType} is not supported.");
                 }
 
@@ -153,7 +151,7 @@ namespace DlibDotNet
             var ret = NativeMethods.correlation_tracker_update_noscale2(this.NativePtr, inType, image.NativePtr, out var confident);
             switch (ret)
             {
-                case ErrorType.Array2DTypeTypeNotSupport:
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"Input {inType} is not supported.");
             }
 

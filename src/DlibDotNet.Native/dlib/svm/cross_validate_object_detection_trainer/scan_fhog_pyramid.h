@@ -7,7 +7,7 @@
 #include <dlib/svm/structural_object_detection_trainer.h>
 #include <dlib/svm/svm.h>
 #include "../../shared.h"
- 
+
 using namespace dlib;
 using namespace std;
 
@@ -90,7 +90,7 @@ do { \
 
 #pragma endregion template
 
-DLLEXPORT int cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_rectangle(const pyramid_type pyramid_type, 
+DLLEXPORT int cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_rectangle(const pyramid_type pyramid_type,
                                                                                                                  const unsigned int pyramid_rate,
                                                                                                                  const fhog_feature_extractor_type extractor_type,
                                                                                                                  void* obj,
@@ -116,7 +116,7 @@ DLLEXPORT int cross_validate_object_detection_trainer_scan_fhog_pyramid_test_obj
                         {
                             case matrix_element_type::UInt8:
                                 #define ELEMENT_IN uint8_t
-                                cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_template(ret, pyramid_rate, images, objects);                                
+                                cross_validate_object_detection_trainer_scan_fhog_pyramid_test_object_detection_function_template(ret, pyramid_rate, images, objects);
                                 #undef ELEMENT_IN
                                 break;
                             case matrix_element_type::UInt16:
@@ -173,14 +173,14 @@ DLLEXPORT int cross_validate_object_detection_trainer_scan_fhog_pyramid_test_obj
                         break;
                     default:
                         err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
-                        break;                        
+                        break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
             err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
-            break;  
+            break;
     }
 
     #undef ELEMENT_OUT

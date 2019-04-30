@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using ErrorType = DlibDotNet.NativeMethods.ErrorType;
-using MatrixElementType = DlibDotNet.NativeMethods.MatrixElementType;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet

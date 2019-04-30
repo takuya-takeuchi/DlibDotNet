@@ -7,152 +7,200 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public static partial class Dlib
+    public sealed class KKMeans<TScalar, TKernel> : DlibObject
+        where TScalar : struct
+        where TKernel : KernelBase
     {
+
+        #region Fields
+
+        private readonly KCentroid<TScalar, TKernel> _KCentroid;
+
+        #endregion
+
+        #region Constructors
+
+        public KKMeans(KCentroid<TScalar, TKernel> kcentroid)
+        {
+            if (kcentroid == null)
+                throw new ArgumentNullException(nameof(kcentroid));
+
+            kcentroid.ThrowIfDisposed();
+
+            this._KCentroid = kcentroid;
+            var error = NativeMethods.kkmeans_new(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                  this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                  this._KCentroid.Parameter.TemplateRows,
+                                                  this._KCentroid.Parameter.TemplateColumns,
+                                                  kcentroid.NativePtr,
+                                                  out var ret);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{this._KCentroid.Parameter.SampleType} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(this._KCentroid.Parameter.TemplateColumns)} or {nameof(this._KCentroid.Parameter.TemplateRows)} is not supported.");
+                case NativeMethods.ErrorType.SvmKernelNotSupport:
+                    throw new ArgumentException($"{this._KCentroid.Parameter.KernelType} is not supported.");
+            }
+
+            this.NativePtr = ret;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public uint NumberOfCenters
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                NativeMethods.kkmeans_get_number_of_centers(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                            this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                            this._KCentroid.Parameter.TemplateRows,
+                                                            this._KCentroid.Parameter.TemplateColumns,
+                                                            this.NativePtr,
+                                                            out var ret);
+
+                return ret;
+            }
+            set
+            {
+                if (!(value > 0))
+                    throw new ArgumentOutOfRangeException();
+
+                this.ThrowIfDisposed();
+                NativeMethods.kkmeans_set_number_of_centers(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                            this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                            this._KCentroid.Parameter.TemplateRows,
+                                                            this._KCentroid.Parameter.TemplateColumns,
+                                                            this.NativePtr,
+                                                            value);
+            }
+        }
+
+        public TKernel Kernel
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                var kernelBase = this._KCentroid.Parameter;
+                var error = NativeMethods.kkmeans_get_kernel(kernelBase.KernelType.ToNativeKernelType(),
+                                                             kernelBase.SampleType.ToNativeMatrixElementType(),
+                                                             kernelBase.TemplateRows,
+                                                             kernelBase.TemplateColumns,
+                                                             this.NativePtr,
+                                                             out var ret);
+
+                return KernelFactory.Create<TKernel, TScalar, Matrix<TScalar>>(ret,
+                                                                               kernelBase.KernelType,
+                                                                               kernelBase.TemplateRows,
+                                                                               kernelBase.TemplateColumns,
+                                                                               false);
+            }
+        }
+
+        #endregion
 
         #region Methods
 
-        public static IEnumerable<Matrix<T>> FindClustersUsingAngularKMeans<T>( IEnumerable<Matrix<T>> samples, IEnumerable<Matrix<T>> centers, uint maxIteration = 1000)
-            where T : struct
+        public KCentroid<TScalar, TKernel> GetKCentroid(int index)
         {
-            if (samples == null)
-                throw new ArgumentNullException(nameof(samples));
-            if (centers == null)
-                throw new ArgumentNullException(nameof(centers));
+            if (!(0 <= index && index < this.NumberOfCenters))
+                throw new ArgumentOutOfRangeException();
 
-            var sampleArray = samples.ToArray();
-            if (!sampleArray.Any())
-                yield break;
+            var ret = NativeMethods.kkmeans_get_kcentroid(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                          this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                          this._KCentroid.Parameter.TemplateRows,
+                                                          this._KCentroid.Parameter.TemplateColumns,
+                                                          this.NativePtr,
+                                                          (uint)index,
+                                                          out var kcentroid);
 
-            var centerArray = centers.ToArray();
-            if (!centerArray.Any())
-                yield break;
-
-            var sample = sampleArray.FirstOrDefault();
-            if (sample == null)
-                throw new ArgumentException($"{nameof(samples)} contains null object", nameof(samples));
-
-            var center = centerArray.FirstOrDefault();
-            if (center == null)
-                throw new ArgumentException($"{nameof(centers)} contains null object", nameof(centers));
-
-            var templateRow = sample.TemplateRows;
-            var templateColumn = sample.TemplateColumns;
-
-            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, new[] { templateRow, templateColumn }))
-            using (var inCenters = new StdVector<Matrix<T>>(centerArray, new[] { templateRow, templateColumn }))
-            using (var outResult = new StdVector<Matrix<T>>(new[] { templateRow, templateColumn }))
-            {
-                var type = sample.MatrixElementType.ToNativeMatrixElementType();
-                var ret = NativeMethods.find_clusters_using_angular_kmeans(type,
-                                                                           templateRow,
-                                                                           templateColumn,
-                                                                           inCenters.NativePtr,
-                                                                           inSamples.NativePtr,
-                                                                           maxIteration,
-                                                                           outResult.NativePtr);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{type} is not supported.");
-                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
-                        throw new ArgumentException($"{nameof(sample.TemplateColumns)} or {nameof(sample.TemplateRows)} is not supported.");
-                }
-
-                foreach (var result in outResult.ToArray())
-                    yield return result;
-            }
+            return new KCentroid<TScalar, TKernel>(kcentroid, this._KCentroid.Parameter, false);
         }
 
-        public static uint NearestCenter<T>(IEnumerable<Matrix<T>> centers, Matrix<T> sample)
-            where T : struct
+        public uint Operator(Matrix<TScalar> sample)
         {
-            if (centers == null)
-                throw new ArgumentNullException(nameof(centers));
             if (sample == null)
                 throw new ArgumentNullException(nameof(sample));
 
-            var centerArray = centers.ToArray();
-            if (!centerArray.Any())
-                throw new ArgumentException($"{nameof(centers)} does not contain any element");
+            sample.ThrowIfDisposed();
 
-            var center = centerArray.FirstOrDefault();
-            if (center == null)
-                throw new ArgumentException($"{nameof(centers)} contains null object", nameof(centers));
-
-            var templateRow = sample.TemplateRows;
-            var templateColumn = sample.TemplateColumns;
-
-            using (var inCenters = new StdVector<Matrix<T>>(centerArray, templateRow, templateColumn))
-            {
-                var type = sample.MatrixElementType.ToNativeMatrixElementType();
-                var ret = NativeMethods.nearest_center(type,
-                                                       templateRow,
-                                                       templateColumn,
-                                                       inCenters.NativePtr,
+            var error = NativeMethods.kkmeans_operator(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                       this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                       this._KCentroid.Parameter.TemplateRows,
+                                                       this._KCentroid.Parameter.TemplateColumns,
+                                                       this.NativePtr,
                                                        sample.NativePtr,
-                                                       out var result);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{type} is not supported.");
-                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
-                        throw new ArgumentException($"{nameof(sample.TemplateColumns)} or {nameof(sample.TemplateRows)} is not supported.");
-                }
+                                                       out var ret);
 
-                return result;
-            }
+            return ret;
         }
 
-        public static IEnumerable<Matrix<T>> PickInitialCenters<T>(int numberCenters, IEnumerable<Matrix<T>> samples, LinearKernel<Matrix<T>> k, double percentile = 0.01)
-            where T : struct
+        public void SetKCentroid(KCentroid<TScalar, TKernel> kcentroid)
+        {
+            if (kcentroid == null)
+                throw new ArgumentNullException(nameof(kcentroid));
+
+            kcentroid.ThrowIfDisposed();
+
+            var ret = NativeMethods.kkmeans_set_kcentroid(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                          this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                          this._KCentroid.Parameter.TemplateRows,
+                                                          this._KCentroid.Parameter.TemplateColumns,
+                                                          this.NativePtr,
+                                                          kcentroid.NativePtr);
+        }
+
+        public void Train(IEnumerable<Matrix<TScalar>> samples, IEnumerable<Matrix<TScalar>> initialCenters, int maxIterator = 1000)
         {
             if (samples == null)
                 throw new ArgumentNullException(nameof(samples));
+            if (initialCenters == null)
+                throw new ArgumentNullException(nameof(initialCenters));
 
-            var sampleArray = samples.ToArray();
-            if (!sampleArray.Any())
-                return new Matrix<T>[0];
+            var samplesArray = samples.ToArray();
+            var initialCentersArray = initialCenters.ToArray();
+            samplesArray.ThrowIfDisposed();
+            initialCentersArray.ThrowIfDisposed();
 
-            var first = sampleArray.FirstOrDefault();
-            if (first == null)
-                throw new ArgumentException($"{nameof(samples)} contains null object", nameof(samples));
-
-            var templateRow = first.TemplateRows;
-            var templateColumn = first.TemplateColumns;
-            foreach (var sample in sampleArray)
+            using (var samplesVector = new StdVector<Matrix<TScalar>>(samplesArray))
+            using (var initialCentersVector = new StdVector<Matrix<TScalar>>(initialCentersArray))
             {
-                if (sample == null)
-                    throw new ArgumentException($"{nameof(samples)} contains null object", nameof(samples));
-                if (sample.TemplateRows != templateRow)
-                    throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateRows)} of {typeof(Matrix<T>).Name}", nameof(samples));
-                if (sample.TemplateColumns != templateColumn)
-                    throw new ArgumentException($"{nameof(samples)} contains different {nameof(sample.TemplateColumns)} of {typeof(Matrix<T>).Name}", nameof(samples));
-            }
-
-            using (var inSamples = new StdVector<Matrix<T>>(sampleArray, templateRow, templateColumn))
-            using (var outCenters = new StdVector<Matrix<T>>(0, new[] { templateRow, templateColumn }))
-            {
-                var type = first.MatrixElementType.ToNativeMatrixElementType();
-                var ret = NativeMethods.pick_initial_centers(type,
-                                                             templateRow,
-                                                             templateColumn,
-                                                             numberCenters,
-                                                             outCenters.NativePtr,
-                                                             inSamples.NativePtr,
-                                                             k.NativePtr,
-                                                             percentile);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{type} is not supported.");
-                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
-                        throw new ArgumentException($"{nameof(first.TemplateColumns)} or {nameof(first.TemplateRows)} is not supported.");
-                }
-
-                return outCenters.ToArray();
+                var ret = NativeMethods.kkmeans_train(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                                      this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                      this._KCentroid.Parameter.TemplateRows,
+                                                      this._KCentroid.Parameter.TemplateColumns,
+                                                      this.NativePtr,
+                                                      samplesVector.NativePtr,
+                                                      initialCentersVector.NativePtr,
+                                                      (uint)maxIterator);
             }
         }
+
+        #region Overrides 
+
+        /// <summary>
+        /// Releases all unmanaged resources.
+        /// </summary>
+        protected override void DisposeUnmanaged()
+        {
+            base.DisposeUnmanaged();
+
+            if (this.NativePtr == IntPtr.Zero)
+                return;
+
+            NativeMethods.kkmeans_delete(this._KCentroid.Parameter.KernelType.ToNativeKernelType(),
+                                         this._KCentroid.Parameter.SampleType.ToNativeMatrixElementType(),
+                                         this._KCentroid.Parameter.TemplateRows,
+                                         this._KCentroid.Parameter.TemplateColumns,
+                                         this.NativePtr);
+        }
+
+        #endregion
 
         #endregion
 

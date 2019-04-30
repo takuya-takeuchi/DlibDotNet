@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 using DlibDotNet;
 using DlibDotNet.ImageDatasetMetadata;
@@ -15,30 +13,30 @@ namespace ImgLab
 
         #region Methods
 
-        private static void ConvertPascalXml(CommandLineApplication parser)
+        private static void ConvertPascalXml(CommandArgument fileArgs, CommandOption xmlOption)
         {
             Console.WriteLine("Convert from PASCAL XML annotation format...");
 
             using (var dataset = new Dataset())
             {
-                var filename = parser.GetOptions().FirstOrDefault(option => option.ShortName == "c").Value();
+                var filename = fileArgs.Value;
 
                 // make sure the file exists so we can use the get_parent_directory() command to
                 // figure out it's parent directory.
                 MakeEmptyFile(filename);
                 var parentDir = Path.GetDirectoryName(Path.GetFullPath(filename));
 
-                var images = new List<Image>();
-                for (var i = 0; i < parser.RemainingArguments.Count; ++i)
+                var images = dataset.Images;
+                for (var i = 0; i < xmlOption.Values.Count; ++i)
                 {
-                    var arg = parser.RemainingArguments[i];
+                    var arg = xmlOption.Values[i];
 
                     try
                     {
                         using (var fs = new FileStream(arg, FileMode.Open, FileAccess.Read))
                         {
-                            var formmater = new XmlSerializer(typeof(Annotation));
-                            var annotation = formmater.Deserialize(fs) as Annotation;
+                            var formatter = new XmlSerializer(typeof(Annotation));
+                            var annotation = formatter.Deserialize(fs) as Annotation;
                             ParseAnnotationFile(arg, annotation, out var image, out var datasetName);
 
                             var root = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(arg)));
@@ -55,8 +53,6 @@ namespace ImgLab
                         throw;
                     }
                 }
-
-                dataset.Images = images.ToArray();
 
                 Dlib.ImageDatasetMetadata.SaveImageDatasetMetadata(dataset, filename);
             }
@@ -81,8 +77,6 @@ namespace ImgLab
                     FileName = annotation.FileName
                 };
 
-                var boxes = new List<Box>();
-
                 foreach (var annotationObject in annotation.Objects)
                 {
                     var box = new Box
@@ -100,10 +94,8 @@ namespace ImgLab
                         Difficult = ToBoolean(annotationObject.Difficult)
                     };
 
-                    boxes.Add(box);
+                    image.Boxes.Add(box);
                 }
-
-                image.Boxes = boxes.ToArray();
             }
             catch (Exception)
             {
