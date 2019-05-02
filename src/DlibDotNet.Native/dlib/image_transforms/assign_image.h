@@ -7,57 +7,101 @@
 #include <dlib/image_transforms/assign_image.h>
 #include <dlib/matrix.h>
 #include <dlib/pixel.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
 using namespace std;
 
+#pragma region template
+
 #define ELEMENT_IN element
 #undef ELEMENT_IN
 
-#define assign_all_pixels_template(err, out_type, out_img, in_pixel) \
-do { \
-    err = ERR_OK;\
-    switch(out_type)\
-    {\
-        case array2d_type::UInt8:\
-            dlib::assign_all_pixels(*((array2d<uint8_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::UInt16:\
-            dlib::assign_all_pixels(*((array2d<uint16_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::UInt32:\
-            dlib::assign_all_pixels(*((array2d<uint32_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::Int8:\
-            dlib::assign_all_pixels(*((array2d<int8_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::Int16:\
-            dlib::assign_all_pixels(*((array2d<int16_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::Int32:\
-            dlib::assign_all_pixels(*((array2d<int32_t>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::Float:\
-            dlib::assign_all_pixels(*((array2d<float>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::Double:\
-            dlib::assign_all_pixels(*((array2d<double>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::RgbPixel:\
-            dlib::assign_all_pixels(*((array2d<rgb_pixel>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::HsiPixel:\
-            dlib::assign_all_pixels(*((array2d<hsi_pixel>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        case array2d_type::RgbAlphaPixel:\
-            dlib::assign_all_pixels(*((array2d<rgb_alpha_pixel>*)out_img), *((ELEMENT_IN*)in_pixel));\
-            break;\
-        default:\
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-			break;\
-    }\
-} while (0)
+#define array2d_inout_out_template(__TYPE__, error, type, __SUB_FUNC__, subtype, ...) \
+switch(subtype)\
+{\
+    case array2d_type::UInt8:\
+        { __SUB_FUNC__(__TYPE__, error, type, uint8_t, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt16:\
+        { __SUB_FUNC__(__TYPE__, error, type, uint16_t, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt32:\
+        { __SUB_FUNC__(__TYPE__, error, type, uint32_t, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int8:\
+        { __SUB_FUNC__(__TYPE__, error, type, int8_t, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int16:\
+        { __SUB_FUNC__(__TYPE__, error, type, int16_t, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int32:\
+        { __SUB_FUNC__(__TYPE__, error, type, int32_t, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Float:\
+        { __SUB_FUNC__(__TYPE__, error, type, float, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Double:\
+        { __SUB_FUNC__(__TYPE__, error, type, double, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, rgb_pixel, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::HsiPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, hsi_pixel, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbAlphaPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, rgb_alpha_pixel, subtype, __VA_ARGS__); }\
+        break;\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}\
+
+#define array2d_inout_in_template(type, error, __FUNC__, __SUB_FUNC__, subtype, ...) \
+switch(type)\
+{\
+    case array2d_type::UInt8:\
+        { __FUNC__(uint8_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt16:\
+        { __FUNC__(uint16_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt32:\
+        { __FUNC__(uint32_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int8:\
+        { __FUNC__(int8_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int16:\
+        { __FUNC__(int16_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int32:\
+        { __FUNC__(int32_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Float:\
+        { __FUNC__(float, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Double:\
+        { __FUNC__(double, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbPixel:\
+        { __FUNC__(rgb_pixel, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::HsiPixel:\
+        { __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbAlphaPixel:\
+        { __FUNC__(rgb_alpha_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
+        break;\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}\
+
+#define assign_all_pixels_template(__TYPE__, error, type, __SUBTYPE__, subtype, ...) \
+dlib::assign_all_pixels(*((dlib::array2d<__SUBTYPE__>*)out_img), *((__TYPE__*)in_pixel));\
 
 #define assign_image_template(err, out_type, out_img, in_img) \
 do { \
@@ -138,73 +182,23 @@ do { \
     }\
 } while (0)
 
+#pragma endregion template
+
 DLLEXPORT int assign_all_pixels(array2d_type out_type, void* out_img, array2d_type in_type, void* in_pixel)
 {
-   int err = ERR_OK;
+    int error = ERR_OK;
 
-   switch(in_type)
-   {
-       case array2d_type::UInt8:
-           #define ELEMENT_IN uint8_t
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::UInt16:
-           #define ELEMENT_IN uint16_t
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::UInt32:
-           #define ELEMENT_IN uint32_t
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::Int8:
-           #define ELEMENT_IN int8_t
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::Int16:
-           #define ELEMENT_IN int16_t
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::Int32:
-           #define ELEMENT_IN int32_t
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::Float:
-           #define ELEMENT_IN float
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::Double:
-           #define ELEMENT_IN double
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::RgbPixel:
-           #define ELEMENT_IN rgb_pixel
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::HsiPixel:
-           #define ELEMENT_IN hsi_pixel
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       case array2d_type::RgbAlphaPixel:
-           #define ELEMENT_IN rgb_alpha_pixel
-           assign_all_pixels_template(err, out_type, out_img, in_pixel);
-           #undef ELEMENT_IN
-           break;
-       default:
-           err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-           break;
-   }
+    auto type = in_type;
+    auto subtype = out_type;
 
-   return err;
+    array2d_inout_in_template(type,
+                              error,
+                              array2d_inout_out_template,
+                              assign_all_pixels_template,
+                              subtype,
+                              in_pixel,
+                              out_img);
+    return error;
 }
 
 DLLEXPORT int assign_image(array2d_type out_type, void* out_img, array2d_type in_type, void* in_img)
