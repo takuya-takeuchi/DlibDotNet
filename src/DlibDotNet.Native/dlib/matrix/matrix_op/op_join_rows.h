@@ -15,9 +15,6 @@ using namespace std;
 
 #pragma region template
 
-#define ELEMENT_IN element
-#undef ELEMENT_IN
-
 #define matrix_op_op_join_rows_delete_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto mat= ((matrix_op<op_join_rows<matrix<__TYPE__, __ROWS__, __COLUMNS__>, matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*)obj);\
 delete mat;\
