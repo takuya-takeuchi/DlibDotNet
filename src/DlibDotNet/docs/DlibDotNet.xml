@@ -374,7 +374,7 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SaveBmp``1(DlibDotNet.Matrix{``0},System.String)">
+        <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.MatrixBase,System.String)">
             <summary>
             This function saves matrix to disk as Microsoft Windows Bitmap file.
             </summary>
@@ -398,7 +398,7 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SaveDng``1(DlibDotNet.Matrix{``0},System.String)">
+        <member name="M:DlibDotNet.Dlib.SaveDng(DlibDotNet.MatrixBase,System.String)">
             <summary>
             This function saves matrix to disk as DNG (Digital Negative) file.
             </summary>
@@ -424,7 +424,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SaveJpeg``1(DlibDotNet.Matrix{``0},System.String,System.Int32)">
+        <member name="M:DlibDotNet.Dlib.SaveJpeg(DlibDotNet.MatrixBase,System.String,System.Int32)">
             <summary>
             This function saves matrix to disk as JPEG (Joint Photographic Experts Group) file.
             </summary>
@@ -450,7 +450,7 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> or <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> is disposed.</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SavePng``1(DlibDotNet.Matrix{``0},System.String)">
+        <member name="M:DlibDotNet.Dlib.SavePng(DlibDotNet.MatrixBase,System.String)">
             <summary>
             This function saves matrix to disk as PNG (Portable Network Graphics) file.
             </summary>

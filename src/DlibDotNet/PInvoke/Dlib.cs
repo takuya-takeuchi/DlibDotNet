@@ -232,11 +232,13 @@ namespace DlibDotNet
 
             GeneralError = 0x76000000,
 
-            GeneralFileIOError   = -(GeneralError | 0x00000001),
+            GeneralFileIOError      = -(GeneralError | 0x00000001),
 
-            GeneralFileImageLoad = -(GeneralError | 0x00000002),
+            GeneralFileImageLoad    = -(GeneralError | 0x00000002),
 
-            GeneralSerialization = -(GeneralError | 0x00000003),
+            GeneralSerialization    = -(GeneralError | 0x00000003),
+
+            GeneralInvalidParameter = -(GeneralError | 0x00000004),
 
             #endregion
 

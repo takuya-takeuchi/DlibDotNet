@@ -2322,6 +2322,9 @@ DLLEXPORT int extract_image_chip2(array2d_type img_type, void* in_img, chip_deta
                 case interpolation_type::Bilinear:
                     dlib::extract_image_chip(*((array2d<hsi_pixel>*)in_img), *chip_location, *((array2d<hsi_pixel>*)out_chip), interpolate_bilinear());
                     break;
+                default:
+                    err = ERR_GENERAL_INVALID_PARAMETER;
+                    break;
             }
             break;
         case array2d_type::RgbAlphaPixel:
@@ -2461,6 +2464,9 @@ DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_
                     break;
                 case interpolation_type::Bilinear:
                     dlib::extract_image_chip(*((matrix<hsi_pixel>*)in_img), *chip_location, *((matrix<hsi_pixel>*)out_chip), interpolate_bilinear());
+                    break;
+                default:
+                    err = ERR_GENERAL_INVALID_PARAMETER;
                     break;
             }
             break;

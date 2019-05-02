@@ -374,7 +374,7 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SaveBmp``1(DlibDotNet.Matrix{``0},System.String)">
+        <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.MatrixBase,System.String)">
             <summary>
             Microsoft Windows Bitmap ファイルとしてディスクに行列を保存します。
             </summary>
@@ -398,7 +398,7 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SaveDng``1(DlibDotNet.Matrix{``0},System.String)">
+        <member name="M:DlibDotNet.Dlib.SaveDng(DlibDotNet.MatrixBase,System.String)">
             <summary>
             DNG (Digital Negative) ファイルとしてディスクに行列を保存します。
             </summary>
@@ -424,7 +424,7 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="quality"/> が 0 未満または 100 より大きいです。</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SaveJpeg``1(DlibDotNet.Matrix{``0},System.String,System.Int32)">
+        <member name="M:DlibDotNet.Dlib.SaveJpeg(DlibDotNet.MatrixBase,System.String,System.Int32)">
             <summary>
             JPEG (Joint Photographic Experts Group) ファイルとしてディスクに行列を保存します。
             </summary>
@@ -450,7 +450,7 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="image"/> または <paramref name="path"/> is null.</exception>
             <exception cref="T:System.ObjectDisposedException"><paramref name="image"/> は破棄されています。</exception>
         </member>
-        <member name="M:DlibDotNet.Dlib.SavePng``1(DlibDotNet.Matrix{``0},System.String)">
+        <member name="M:DlibDotNet.Dlib.SavePng(DlibDotNet.MatrixBase,System.String)">
             <summary>
             PNG (Portable Network Graphics) ファイルとしてディスクに行列を保存します。
             </summary>
@@ -598,11 +598,6 @@
             </summary>
             <param name="isEnabledDispose">インスタンスが可能である場合は true。それ以外の場合は false。</param>
         </member>
-        <member name="M:DlibDotNet.DlibObject.Finalize">
-            <summary>
-            オブジェクトが、ガベージ コレクションによって収集される前に、リソースの解放とその他のクリーンアップ操作の実行を試みることができるようにします。
-            </summary>
-        </member>
         <member name="P:DlibDotNet.DlibObject.IsDisposed">
             <summary>
             インスタンスが破棄されているかどうかを示す値を取得します。
@@ -645,6 +640,11 @@
             この <see cref="T:DlibDotNet.DlibObject"/> によって使用されている全てのリソースを解放します。
             </summary>
             <param name="disposing"><see cref="M:System.IDisposable.Dispose"/> メソッドが呼ばれたかどうかを示す値。</param>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Adam.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
         </member>
         <member name="T:DlibDotNet.Dnn.Cuda">
             <summary>
@@ -879,6 +879,11 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.Dnn.ResizableTensor.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Dnn.Sgd.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
             </summary>
@@ -1442,6 +1447,11 @@
             アンマネージ リソースを解放します。
             </summary>
         </member>
+        <member name="M:DlibDotNet.ShapePredictorTrainer.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
         <member name="M:DlibDotNet.TestBoxOverlap.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
@@ -1468,6 +1478,16 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.ImageTransforms.RandomCropper.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.CustomLogger.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Logger.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
             </summary>
@@ -1531,6 +1551,11 @@
             アンマネージ リソースを解放します。
             </summary>
         </member>
+        <member name="M:DlibDotNet.Pipe`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
         <member name="T:DlibDotNet.ProxyDeserialize">
             <summary>
             ファイルから連続したオブジェクトを逆シリアル化します。
@@ -1553,9 +1578,19 @@
             アンマネージ リソースを解放します。
             </summary>
         </member>
+        <member name="M:DlibDotNet.Queue`1.Sort1BC.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
         <member name="M:DlibDotNet.Rand.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.SerializationException">
+            <summary>
+            この例外は、シリアライズと逆シリアル化の汎用的な例外です。このクラスは継承できません。
             </summary>
         </member>
         <member name="T:DlibDotNet.RunningStats`1">
@@ -1649,12 +1684,62 @@
             アンマネージ リソースを解放します。
             </summary>
         </member>
-        <member name="M:DlibDotNet.LinearKernel`1.DisposeUnmanaged">
+        <member name="M:DlibDotNet.DecisionFunction`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.KCentroid`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.HistogramIntersectionKernel`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.LinearKernel`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.PolynomialKernel`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.RadialBasisKernel`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SigmoidKernel`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.KKMeans`2.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.Krls`2.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
             </summary>
         </member>
         <member name="M:DlibDotNet.StructuralObjectDetectionTrainer`1.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.CustomMultithreadedObject.DisposeUnmanaged">
+            <summary>
+            アンマネージ リソースを解放します。
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.MultithreadedObject.DisposeUnmanaged">
             <summary>
             アンマネージ リソースを解放します。
             </summary>
