@@ -7,6 +7,7 @@
 #include <dlib/pixel.h>
 #include <dlib/image_processing/generic_image.h>
 #include <dlib/image_transforms/edge_detector.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -15,194 +16,70 @@ using namespace std;
 #define ARRAY2D_ELEMENT element
 #undef ARRAY2D_ELEMENT
 
-#define sobel_edge_detector_template(in_img, out_type, horz, vert)\
-do {\
-    switch(out_type)\
-    {\
-        case array2d_type::Int16:\
-            dlib::sobel_edge_detector(*((array2d<ARRAY2D_ELEMENT>*)in_img), *((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert));\
-            break;\
-        case array2d_type::Float:\
-            dlib::sobel_edge_detector(*((array2d<ARRAY2D_ELEMENT>*)in_img), *((array2d<float>*)horz), *((array2d<float>*)vert));\
-            break;\
-        case array2d_type::Double:\
-            dlib::sobel_edge_detector(*((array2d<ARRAY2D_ELEMENT>*)in_img), *((array2d<double>*)horz), *((array2d<double>*)vert));\
-            break;\
-    }\
-} while (0)
+#define sobel_edge_detector_template(__TYPE__, error, type, ...) \
+switch(out_type)\
+{\
+    case array2d_type::Int16:\
+        dlib::sobel_edge_detector(*((array2d<__TYPE__>*)in_img), *((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert));\
+        break;\
+    case array2d_type::Float:\
+        dlib::sobel_edge_detector(*((array2d<__TYPE__>*)in_img), *((array2d<float>*)horz), *((array2d<float>*)vert));\
+        break;\
+    case array2d_type::Double:\
+        dlib::sobel_edge_detector(*((array2d<__TYPE__>*)in_img), *((array2d<double>*)horz), *((array2d<double>*)vert));\
+        break;\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}\
 
-#define suppress_non_maximum_edges_template(in_type, horz, vert, out_img)\
-do {\
-    switch(in_type)\
-    {\
-        case array2d_type::Int16:\
-            dlib::suppress_non_maximum_edges(*((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert), *((array2d<ARRAY2D_ELEMENT>*)out_img));\
-            break;\
-        case array2d_type::Float:\
-            dlib::suppress_non_maximum_edges(*((array2d<float>*)horz), *((array2d<float>*)vert), *((array2d<ARRAY2D_ELEMENT>*)out_img));\
-            break;\
-        case array2d_type::Double:\
-            dlib::suppress_non_maximum_edges(*((array2d<double>*)horz), *((array2d<double>*)vert), *((array2d<ARRAY2D_ELEMENT>*)out_img));\
-            break;\
-    }\
-} while (0)
+#define suppress_non_maximum_edges_template(__TYPE__, error, type, ...) \
+switch(in_type)\
+{\
+    case array2d_type::Int16:\
+            dlib::suppress_non_maximum_edges(*((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert), *((array2d<__TYPE__>*)out_img));\
+        break;\
+    case array2d_type::Float:\
+            dlib::suppress_non_maximum_edges(*((array2d<float>*)horz), *((array2d<float>*)vert), *((array2d<__TYPE__>*)out_img));\
+        break;\
+    case array2d_type::Double:\
+            dlib::suppress_non_maximum_edges(*((array2d<double>*)horz), *((array2d<double>*)vert), *((array2d<__TYPE__>*)out_img));\
+        break;\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}\
 
-DLLEXPORT int sobel_edge_detector(array2d_type in_type, void* in_img, array2d_type out_type, void* horz, void* vert)
+DLLEXPORT int sobel_edge_detector(array2d_type type, void* in_img, array2d_type out_type, void* horz, void* vert)
 {
-    // Check output type
-    switch(out_type)
-    {
-		case array2d_type::Int16:
-		case array2d_type::Float:
-		case array2d_type::Double:
-			break;
-        default:
-            return ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-    }
+    int error = ERR_OK;
 
-    int err = ERR_OK;
-    switch(in_type)
-    {
-        case array2d_type::UInt8:
-            #define ARRAY2D_ELEMENT uint8_t
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::UInt16:
-            #define ARRAY2D_ELEMENT uint16_t
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::UInt32:
-            #define ARRAY2D_ELEMENT uint32_t
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int8:
-            #define ARRAY2D_ELEMENT int8_t
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int16:
-            #define ARRAY2D_ELEMENT int16_t
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int32:
-            #define ARRAY2D_ELEMENT int32_t
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Float:
-            #define ARRAY2D_ELEMENT float
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Double:
-            #define ARRAY2D_ELEMENT double
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::RgbPixel:
-            #define ARRAY2D_ELEMENT rgb_pixel
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::HsiPixel:
-            #define ARRAY2D_ELEMENT hsi_pixel
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::RgbAlphaPixel:
-            #define ARRAY2D_ELEMENT rgb_alpha_pixel
-            sobel_edge_detector_template(in_img, out_type, horz, vert);
-            #undef ARRAY2D_ELEMENT
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     sobel_edge_detector_template,
+                     in_img,
+                     out_type,
+                     horz,
+                     vert);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void* vert, array2d_type out_type, void* out_img)
 {
-    // Check output type
-    switch(in_type)
-    {
-		case array2d_type::Int16:
-		case array2d_type::Float:
-		case array2d_type::Double:
-			break;
-        default:
-            return ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-    }
+    int error = ERR_OK;
 
-    int err = ERR_OK;
-    switch(out_type)
-    {
-        case array2d_type::UInt8:
-            #define ARRAY2D_ELEMENT uint8_t
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::UInt16:
-            #define ARRAY2D_ELEMENT uint16_t
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::UInt32:
-            #define ARRAY2D_ELEMENT uint32_t
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int8:
-            #define ARRAY2D_ELEMENT int8_t
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int16:
-            #define ARRAY2D_ELEMENT int16_t
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Int32:
-            #define ARRAY2D_ELEMENT int32_t
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Float:
-            #define ARRAY2D_ELEMENT float
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::Double:
-            #define ARRAY2D_ELEMENT double
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::RgbPixel:
-            #define ARRAY2D_ELEMENT rgb_pixel
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::HsiPixel:
-            #define ARRAY2D_ELEMENT hsi_pixel
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        case array2d_type::RgbAlphaPixel:
-            #define ARRAY2D_ELEMENT rgb_alpha_pixel
-            suppress_non_maximum_edges_template(in_type, horz, vert, out_img);
-            #undef ARRAY2D_ELEMENT
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    auto type = out_type;
 
-    return err;
+    array2d_template(type,
+                     error,
+                     suppress_non_maximum_edges_template,
+                     horz,
+                     vert,
+                     in_type,
+                     out_img);
+
+    return error;
 }
 
 #endif
