@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DlibDotNet
 {
 
-    internal static class NumericKernelTypesRepository
+    internal static class RealKernelTypesRepository
     {
 
         #region Fields
@@ -16,16 +16,10 @@ namespace DlibDotNet
 
         #region Constructors
         
-        static NumericKernelTypesRepository()
+        static RealKernelTypesRepository()
         {
             var types = new[]
             {
-                new { Type = typeof(sbyte),         ElementType = MatrixElementTypes.Int8   },
-                new { Type = typeof(short),         ElementType = MatrixElementTypes.Int16  },
-                new { Type = typeof(int),           ElementType = MatrixElementTypes.Int32  },
-                new { Type = typeof(byte),          ElementType = MatrixElementTypes.UInt8  },
-                new { Type = typeof(ushort),        ElementType = MatrixElementTypes.UInt16 },
-                new { Type = typeof(uint),          ElementType = MatrixElementTypes.UInt32 },
                 new { Type = typeof(float),         ElementType = MatrixElementTypes.Float  },
                 new { Type = typeof(double),        ElementType = MatrixElementTypes.Double }
             };

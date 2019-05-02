@@ -28,7 +28,7 @@ DLLEXPORT int sigmoid_kernel_new(matrix_element_type type,
 {
     int error = ERR_OK;
 
-    matrix_numeric_template(type,
+    matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
                             sigmoid_kernel_new_template,
@@ -46,7 +46,7 @@ DLLEXPORT void sigmoid_kernel_delete(matrix_element_type type,
 {
     int error = ERR_OK;
 
-    matrix_numeric_template(type,
+    matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
                             sigmoid_kernel_delete_template,
