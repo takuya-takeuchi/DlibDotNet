@@ -21,7 +21,7 @@ namespace DlibDotNet
         public SigmoidKernel(int templateRow = 0, int templateColumn = 0) :
             base(SvmKernelType.Sigmoid, templateRow, templateColumn)
         {
-            if (!NumericKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
+            if (!RealKernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
 
             if (!Matrix<TScalar>.TryParse<TScalar>(out var type))
