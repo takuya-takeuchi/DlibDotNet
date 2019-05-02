@@ -6,6 +6,7 @@
 #include <dlib/matrix/matrix_utilities.h>
 #include <dlib/geometry/rectangle.h>
 #include <dlib/geometry/vector.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -301,12 +302,10 @@ do {\
     }\
 } while (0)
 
-#define matrix_max_point_template(__TYPE__, matrix, ret) \
-do {\
-    auto mat_op = static_cast<matrix_op<op_array2d_to_mat<array2d<__TYPE__>>>*>(matrix);\
-    auto p = dlib::max_point(*mat_op);\
-    *ret = new dlib::point(p);\
-} while (0)
+#define matrix_max_point_template(__TYPE__, error, type, ...) \
+auto& mat_op = *static_cast<matrix_op<op_array2d_to_mat<array2d<__TYPE__>>>*>(matrix);\
+auto p = dlib::max_point(mat_op);\
+*ret = new dlib::point(p);\
 
 #define matrix_max_pointwise_matrix_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, matrix1, matrix2, ret) \
 matrix<__TYPE__, __ROWS__, __COLUMNS__>& m1 = *static_cast<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix1);\
@@ -644,42 +643,15 @@ DLLEXPORT int matrix_min(matrix_element_type type, void* matrix, int templateRow
 
 DLLEXPORT int matrix_max_point(matrix_element_type type, void* matrix, dlib::point** ret)
 {
-    int err = ERR_OK;
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            matrix_max_point_template(uint8_t, matrix, ret);
-            break;
-        case matrix_element_type::UInt16:
-            matrix_max_point_template(uint16_t, matrix, ret);
-            break;
-        case matrix_element_type::UInt32:
-            matrix_max_point_template(uint32_t, matrix, ret);
-            break;
-        case matrix_element_type::Int8:
-            matrix_max_point_template(int8_t, matrix, ret);
-            break;
-        case matrix_element_type::Int16:
-            matrix_max_point_template(int16_t, matrix, ret);
-            break;
-        case matrix_element_type::Int32:
-            matrix_max_point_template(int32_t, matrix, ret);
-            break;
-        case matrix_element_type::Float:
-            matrix_max_point_template(float, matrix, ret);
-            break;
-        case matrix_element_type::Double:
-            matrix_max_point_template(double, matrix, ret);
-            break;
-        case matrix_element_type::RgbPixel:
-        case matrix_element_type::HsiPixel:
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    int error = ERR_OK;
 
-    return err;
+    array2d_numeric_template(type,
+                             error,
+                             matrix_max_point_template,
+                             matrix,
+                             ret);
+
+    return error;
 }
 
 DLLEXPORT int matrix_max_pointwise_matrix(matrix_element_type type, void* matrix1, void* matrix2, int templateRows, int templateColumns, void** ret)
