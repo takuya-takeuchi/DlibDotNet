@@ -145,6 +145,43 @@ switch(type)\
         break;\
 }
 
+#define matrix_integer_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
+switch(type)\
+{\
+    case matrix_element_type::UInt8:\
+        __FUNC__(uint8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt16:\
+        __FUNC__(uint16_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt32:\
+        __FUNC__(uint32_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt64:\
+        __FUNC__(uint64_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int8:\
+        __FUNC__(int8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int16:\
+        __FUNC__(int16_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int32:\
+        __FUNC__(int32_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int64:\
+        __FUNC__(int64_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Float:\
+    case matrix_element_type::Double:\
+    case matrix_element_type::RgbPixel:\
+    case matrix_element_type::HsiPixel:\
+    case matrix_element_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #define matrix_decimal_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 switch(type)\
 {\
