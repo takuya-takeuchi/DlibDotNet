@@ -3,6 +3,7 @@
 
 #include "../export.h"
 #include <dlib/image_processing/scan_fhog_pyramid.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -17,7 +18,7 @@ using namespace std;
 #undef EXTRACTOR_TYPE
 #undef PYRAMID_TYPE
 
-#define scan_fhog_pyramid_new_template(pyramid_rate, ret, err) \
+#define scan_fhog_pyramid_new_template(pyramid_rate, ret, error) \
 do {\
     switch(pyramid_rate)\
     {\
@@ -37,7 +38,7 @@ do {\
             *ret = new scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>();\
             break;\
         default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
             break;\
     }\
 } while (0)
@@ -64,7 +65,7 @@ do {\
     }\
 } while (0)
 
-#define scan_fhog_pyramid_set_detection_window_size_template(pyramid_rate, obj, width, height, err) \
+#define scan_fhog_pyramid_set_detection_window_size_template(pyramid_rate, obj, width, height, error) \
 do {\
     switch(pyramid_rate)\
     {\
@@ -84,12 +85,12 @@ do {\
             ((scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>*)obj)->set_detection_window_size(width, height);\
             break;\
         default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
             break;\
     }\
 } while (0)
 
-#define scan_fhog_pyramid_set_nuclear_norm_regularization_strength_template(pyramid_rate, obj, strength, err) \
+#define scan_fhog_pyramid_set_nuclear_norm_regularization_strength_template(pyramid_rate, obj, strength, error) \
 do {\
     switch(pyramid_rate)\
     {\
@@ -109,12 +110,12 @@ do {\
             ((scan_fhog_pyramid<PYRAMID_TYPE<6>, EXTRACTOR_TYPE>*)obj)->set_nuclear_norm_regularization_strength(strength);\
             break;\
         default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
             break;\
     }\
 } while (0)
 
-#define scan_fhog_pyramid_evaluate_detectors_sub_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err) \
+#define scan_fhog_pyramid_evaluate_detectors_sub_template(pyramid_rate, __TYPE__, objects, objects_num, image, adjust_threshold, ret, error) \
 do {\
     object_detector<scan_fhog_pyramid<PYRAMID_TYPE<pyramid_rate>, EXTRACTOR_TYPE>>** in_objects = static_cast<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<pyramid_rate>, EXTRACTOR_TYPE>>**>(objects);\
     std::vector<object_detector<scan_fhog_pyramid<PYRAMID_TYPE<pyramid_rate>, EXTRACTOR_TYPE>>> detectors;\
@@ -123,7 +124,7 @@ do {\
         object_detector<scan_fhog_pyramid<PYRAMID_TYPE<pyramid_rate>, EXTRACTOR_TYPE>>& tmp = *(in_objects[i]);\
         detectors.push_back(tmp);\
     }\
-    matrix<ELEMENT_IN>& mat = *static_cast<matrix<ELEMENT_IN>*>(image);\
+    matrix<__TYPE__>& mat = *static_cast<matrix<__TYPE__>*>(image);\
     auto dect = evaluate_detectors(detectors, mat, adjust_threshold);\
     auto ret_dect = new std::vector<rectangle*>();\
     for (int i = 0; i < dect.size(); i++)\
@@ -131,32 +132,32 @@ do {\
     *ret = ret_dect;\
 } while (0)
 
-#define scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err) \
+#define scan_fhog_pyramid_evaluate_detectors_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 do {\
     switch(pyramid_rate)\
     {\
         case 1:\
-            scan_fhog_pyramid_evaluate_detectors_sub_template(1, objects, objects_num, image, adjust_threshold, ret, err);\
+            scan_fhog_pyramid_evaluate_detectors_sub_template(1, __TYPE__, objects, objects_num, image, adjust_threshold, ret, error);\
             break;\
         case 2:\
-            scan_fhog_pyramid_evaluate_detectors_sub_template(2, objects, objects_num, image, adjust_threshold, ret, err);\
+            scan_fhog_pyramid_evaluate_detectors_sub_template(2, __TYPE__, objects, objects_num, image, adjust_threshold, ret, error);\
             break;\
         case 3:\
-            scan_fhog_pyramid_evaluate_detectors_sub_template(3, objects, objects_num, image, adjust_threshold, ret, err);\
+            scan_fhog_pyramid_evaluate_detectors_sub_template(3, __TYPE__, objects, objects_num, image, adjust_threshold, ret, error);\
             break;\
         case 4:\
-            scan_fhog_pyramid_evaluate_detectors_sub_template(4, objects, objects_num, image, adjust_threshold, ret, err);\
+            scan_fhog_pyramid_evaluate_detectors_sub_template(4, __TYPE__, objects, objects_num, image, adjust_threshold, ret, error);\
             break;\
         case 6:\
-            scan_fhog_pyramid_evaluate_detectors_sub_template(6, objects, objects_num, image, adjust_threshold, ret, err);\
+            scan_fhog_pyramid_evaluate_detectors_sub_template(6, __TYPE__, objects, objects_num, image, adjust_threshold, ret, error);\
             break;\
         default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
             break;\
     }\
 } while (0)
 
-#define scan_fhog_pyramid_num_separable_filters_template(pyramid_rate, obj, weight_index, ret, err) \
+#define scan_fhog_pyramid_num_separable_filters_template(pyramid_rate, obj, weight_index, ret, error) \
 do {\
     switch(pyramid_rate)\
     {\
@@ -191,12 +192,12 @@ do {\
             }\
             break;\
         default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
             break;\
     }\
 } while (0)
 
-#define scan_fhog_pyramid_threshold_filter_singular_values_template(pyramid_rate, obj, threshold, weight_index, ret, err) \
+#define scan_fhog_pyramid_threshold_filter_singular_values_template(pyramid_rate, obj, threshold, weight_index, ret, error) \
 do {\
     switch(pyramid_rate)\
     {\
@@ -231,7 +232,7 @@ do {\
             }\
             break;\
         default:\
-            err = ERR_PYRAMID_NOT_SUPPORT_RATE;\
+            error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
             break;\
     }\
 } while (0)
@@ -243,7 +244,7 @@ DLLEXPORT int scan_fhog_pyramid_new(const pyramid_type pyramid_type,
                                     const fhog_feature_extractor_type extractor_type,
                                     void** ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     // Too complex....
     switch(pyramid_type)
@@ -255,22 +256,22 @@ DLLEXPORT int scan_fhog_pyramid_new(const pyramid_type pyramid_type,
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        scan_fhog_pyramid_new_template(pyramid_rate, ret, err);
+                        scan_fhog_pyramid_new_template(pyramid_rate, ret, error);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
-                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        error = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
                         break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
-            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            error = ERR_PYRAMID_NOT_SUPPORT_TYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT void scan_fhog_pyramid_delete(const pyramid_type pyramid_type,
@@ -304,7 +305,7 @@ DLLEXPORT int scan_fhog_pyramid_set_detection_window_size(const pyramid_type pyr
                                                           const unsigned long width,
                                                           const unsigned long height)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     // Too complex....
     switch(pyramid_type)
@@ -316,22 +317,22 @@ DLLEXPORT int scan_fhog_pyramid_set_detection_window_size(const pyramid_type pyr
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        scan_fhog_pyramid_set_detection_window_size_template(pyramid_rate, obj, width, height, err);
+                        scan_fhog_pyramid_set_detection_window_size_template(pyramid_rate, obj, width, height, error);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
-                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        error = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
                         break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
-            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            error = ERR_PYRAMID_NOT_SUPPORT_TYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int scan_fhog_pyramid_set_nuclear_norm_regularization_strength(const pyramid_type pyramid_type,
@@ -340,7 +341,7 @@ DLLEXPORT int scan_fhog_pyramid_set_nuclear_norm_regularization_strength(const p
                                                                          void* obj,
                                                                          const double strength)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     // Too complex....
     switch(pyramid_type)
@@ -352,22 +353,22 @@ DLLEXPORT int scan_fhog_pyramid_set_nuclear_norm_regularization_strength(const p
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        scan_fhog_pyramid_set_nuclear_norm_regularization_strength_template(pyramid_rate, obj, strength, err);
+                        scan_fhog_pyramid_set_nuclear_norm_regularization_strength_template(pyramid_rate, obj, strength, error);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
-                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        error = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
                         break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
-            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            error = ERR_PYRAMID_NOT_SUPPORT_TYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int scan_fhog_pyramid_evaluate_detectors(const pyramid_type pyramid_type,
@@ -375,12 +376,12 @@ DLLEXPORT int scan_fhog_pyramid_evaluate_detectors(const pyramid_type pyramid_ty
                                                    const fhog_feature_extractor_type extractor_type,
                                                    void* objects,
                                                    const int objects_num,
-                                                   const matrix_element_type element_type,
+                                                   const matrix_element_type type,
                                                    void* image,
                                                    const double adjust_threshold,
                                                    void** ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     // Too complex....
     switch(pyramid_type)
@@ -392,78 +393,35 @@ DLLEXPORT int scan_fhog_pyramid_evaluate_detectors(const pyramid_type pyramid_ty
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        switch(element_type)
                         {
-                            case matrix_element_type::UInt8:
-                                #define ELEMENT_IN uint8_t
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::UInt16:
-                                #define ELEMENT_IN uint16_t
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::UInt32:
-                                #define ELEMENT_IN uint32_t
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::Int8:
-                                #define ELEMENT_IN int8_t
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::Int16:
-                                #define ELEMENT_IN int16_t
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::Int32:
-                                #define ELEMENT_IN int32_t
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::Float:
-                                #define ELEMENT_IN float
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::Double:
-                                #define ELEMENT_IN double
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::RgbPixel:
-                                #define ELEMENT_IN rgb_pixel
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::HsiPixel:
-                                #define ELEMENT_IN hsi_pixel
-                                scan_fhog_pyramid_evaluate_detectors_template(pyramid_rate, objects, objects_num, image, adjust_threshold, ret, err);
-                                #undef ELEMENT_IN
-                                break;
-                            case matrix_element_type::RgbAlphaPixel:
-                            default:
-                                err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-                                break;
+                            matrix_nonalpha_template(type,
+                                                     error,
+                                                     matrix_template_size_template,
+                                                     scan_fhog_pyramid_evaluate_detectors_template,
+                                                     0,
+                                                     0,
+                                                     pyramid_rate,
+                                                     objects,
+                                                     objects_num,
+                                                     image,
+                                                     adjust_threshold,
+                                                     ret);
                         }
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
-                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        error = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
                         break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
-            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            error = ERR_PYRAMID_NOT_SUPPORT_TYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int scan_fhog_pyramid_num_separable_filters(const pyramid_type pyramid_type,
@@ -473,7 +431,7 @@ DLLEXPORT int scan_fhog_pyramid_num_separable_filters(const pyramid_type pyramid
                                                       const unsigned long weight_index,
                                                       unsigned int* ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     // Too complex....
     switch(pyramid_type)
@@ -485,22 +443,22 @@ DLLEXPORT int scan_fhog_pyramid_num_separable_filters(const pyramid_type pyramid
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        scan_fhog_pyramid_num_separable_filters_template(pyramid_rate, obj, weight_index, ret, err);
+                        scan_fhog_pyramid_num_separable_filters_template(pyramid_rate, obj, weight_index, ret, error);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
-                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        error = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
                         break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
-            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            error = ERR_PYRAMID_NOT_SUPPORT_TYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int scan_fhog_pyramid_threshold_filter_singular_values(const pyramid_type pyramid_type,
@@ -511,7 +469,7 @@ DLLEXPORT int scan_fhog_pyramid_threshold_filter_singular_values(const pyramid_t
                                                                  const unsigned long weight_index,
                                                                  void** ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     // Too complex....
     switch(pyramid_type)
@@ -523,22 +481,22 @@ DLLEXPORT int scan_fhog_pyramid_threshold_filter_singular_values(const pyramid_t
                 {
                     case fhog_feature_extractor_type::Default:
                         #define EXTRACTOR_TYPE default_fhog_feature_extractor
-                        scan_fhog_pyramid_threshold_filter_singular_values_template(pyramid_rate, obj, threshold, weight_index, ret, err);
+                        scan_fhog_pyramid_threshold_filter_singular_values_template(pyramid_rate, obj, threshold, weight_index, ret, error);
                         #undef EXTRACTOR_TYPE
                         break;
                     default:
-                        err = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
+                        error = ERR_FHOG_NOT_SUPPORT_EXTRACTOR;
                         break;
                 }
                 #undef PYRAMID_TYPE
             }
             break;
         default:
-            err = ERR_PYRAMID_NOT_SUPPORT_TYPE;
+            error = ERR_PYRAMID_NOT_SUPPORT_TYPE;
             break;
     }
 
-    return err;
+    return error;
 }
 
 #endif

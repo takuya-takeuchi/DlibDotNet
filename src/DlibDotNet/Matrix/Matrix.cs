@@ -41,7 +41,7 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        public Matrix(Array2DBase array)
+        public Matrix(Array2D<TElement> array)
         {
             if (array == null)
                 throw new ArgumentNullException(nameof(array));

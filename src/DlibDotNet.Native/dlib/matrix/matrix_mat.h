@@ -27,12 +27,10 @@ auto ret = dlib::mat(tmp);\
 auto ret = dlib::mat(*((array2d<__TYPE__>*)array));\
 *mat_op = new matrix_op<op_array2d_to_mat<array2d<__TYPE__>>>(ret);\
 
-#define mat_matrix_template(rc, dst) \
-do {\
-    dlib::array2d<ELEMENT_IN>& array = *static_cast<dlib::array2d<ELEMENT_IN>*>(src);\
-    dlib::matrix<ELEMENT_OUT> tmp = mat(array);\
-	*dst = new dlib::matrix<ELEMENT_OUT>(tmp);\
-} while (0)
+#define mat_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& array = *static_cast<dlib::array2d<__TYPE__>*>(src);\
+dlib::matrix<__TYPE__> tmp = mat(array);\
+*dst = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);\
 
 #define MAKE_FUNC(__TYPE__, __TYPENAME__)\
 DLLEXPORT void mat_StdVect_##__TYPENAME__(void* vec, void** mat_op)\
@@ -86,128 +84,27 @@ DLLEXPORT int mat_mat_OpStdVectToMat(matrix_element_type type, void* vec, int te
     return error;
 }
 
-DLLEXPORT int mat_matrix(array2d_type srcType, void* src, const int templateRows, const int templateColumns, matrix_element_type dstType, void** dst)
+DLLEXPORT int mat_matrix(array2d_type srcType,
+                         void* src,
+                         const int templateRows,
+                         const int templateColumns,
+                         matrix_element_type dstType,
+                         void** dst)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
+    auto type = dstType;
 
-    switch(dstType)
-    {
-		case matrix_element_type::UInt8:
-            if (srcType == array2d_type::UInt8)
-            {
-                #define ELEMENT_IN uint8_t
-                #define ELEMENT_OUT uint8_t
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::UInt16:
-            if (srcType == array2d_type::UInt16)
-            {
-                #define ELEMENT_IN uint16_t
-                #define ELEMENT_OUT uint16_t
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::UInt32:
-            if (srcType == array2d_type::UInt32)
-            {
-                #define ELEMENT_IN uint32_t
-                #define ELEMENT_OUT uint32_t
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::Int8:
-            if (srcType == array2d_type::Int8)
-            {
-                #define ELEMENT_IN int8_t
-                #define ELEMENT_OUT int8_t
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::Int16:
-            if (srcType == array2d_type::Int16)
-            {
-                #define ELEMENT_IN int16_t
-                #define ELEMENT_OUT int16_t
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::Int32:
-            if (srcType == array2d_type::Int32)
-            {
-                #define ELEMENT_IN int32_t
-                #define ELEMENT_OUT int32_t
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::Float:
-            if (srcType == array2d_type::Float)
-            {
-                #define ELEMENT_IN float
-                #define ELEMENT_OUT float
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::Double:
-            if (srcType == array2d_type::Double)
-            {
-                #define ELEMENT_IN double
-                #define ELEMENT_OUT double
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::RgbPixel:
-            if (srcType == array2d_type::RgbPixel)
-            {
-                #define ELEMENT_IN rgb_pixel
-                #define ELEMENT_OUT rgb_pixel
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::HsiPixel:
-            if (srcType == array2d_type::HsiPixel)
-            {
-                #define ELEMENT_IN hsi_pixel
-                #define ELEMENT_OUT hsi_pixel
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-		case matrix_element_type::RgbAlphaPixel:
-            if (srcType == array2d_type::RgbAlphaPixel)
-            {
-                #define ELEMENT_IN rgb_alpha_pixel
-                #define ELEMENT_OUT rgb_alpha_pixel
-                mat_matrix_template(src, dst);
-                #undef ELEMENT_OUT
-                #undef ELEMENT_IN
-            }
-			break;
-        default:
-			err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-			break;
-    }
+    // src should equal to dst type
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    mat_matrix_template,
+                    templateRows,
+                    templateColumns,
+                    src,
+                    dst);
 
-    return err;
+    return error;
 }
 
 #endif
