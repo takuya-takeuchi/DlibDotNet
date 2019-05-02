@@ -135,6 +135,8 @@ namespace DlibDotNet
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException("Output or input type is not supported.");
+                case NativeMethods.ErrorType.GeneralInvalidParameter:
+                    throw new ArgumentException($"{type} is not supported for {array2DType}.");
             }
 
             return chip;
@@ -167,6 +169,8 @@ namespace DlibDotNet
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{image.MatrixElementType} is not supported.");
+                case NativeMethods.ErrorType.GeneralInvalidParameter:
+                    throw new ArgumentException($"{type} is not supported for {elementType}.");
             }
 
             return chip;
