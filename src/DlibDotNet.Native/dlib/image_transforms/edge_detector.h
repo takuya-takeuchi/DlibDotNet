@@ -13,54 +13,33 @@
 using namespace dlib;
 using namespace std;
 
-#define ARRAY2D_ELEMENT element
-#undef ARRAY2D_ELEMENT
+#define sobel_edge_detector_template(__TYPE__, error, type, __SUBTYPE__, subtype, ...) \
+auto& in = *((array2d<__TYPE__>*)in_img);\
+auto& h = *((array2d<__SUBTYPE__>*)horz);\
+auto& v = *((array2d<__SUBTYPE__>*)vert);\
+dlib::sobel_edge_detector(in, h, v);\
 
-#define sobel_edge_detector_template(__TYPE__, error, type, ...) \
-switch(out_type)\
-{\
-    case array2d_type::Int16:\
-        dlib::sobel_edge_detector(*((array2d<__TYPE__>*)in_img), *((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert));\
-        break;\
-    case array2d_type::Float:\
-        dlib::sobel_edge_detector(*((array2d<__TYPE__>*)in_img), *((array2d<float>*)horz), *((array2d<float>*)vert));\
-        break;\
-    case array2d_type::Double:\
-        dlib::sobel_edge_detector(*((array2d<__TYPE__>*)in_img), *((array2d<double>*)horz), *((array2d<double>*)vert));\
-        break;\
-    default:\
-        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-        break;\
-}\
-
-#define suppress_non_maximum_edges_template(__TYPE__, error, type, ...) \
-switch(in_type)\
-{\
-    case array2d_type::Int16:\
-            dlib::suppress_non_maximum_edges(*((array2d<int16_t>*)horz), *((array2d<int16_t>*)vert), *((array2d<__TYPE__>*)out_img));\
-        break;\
-    case array2d_type::Float:\
-            dlib::suppress_non_maximum_edges(*((array2d<float>*)horz), *((array2d<float>*)vert), *((array2d<__TYPE__>*)out_img));\
-        break;\
-    case array2d_type::Double:\
-            dlib::suppress_non_maximum_edges(*((array2d<double>*)horz), *((array2d<double>*)vert), *((array2d<__TYPE__>*)out_img));\
-        break;\
-    default:\
-        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-        break;\
-}\
+#define suppress_non_maximum_edges_template(__TYPE__, error, type, __SUBTYPE__, subtype, ...) \
+auto& h = *((array2d<__TYPE__>*)horz);\
+auto& v = *((array2d<__TYPE__>*)vert);\
+auto& out = *((array2d<__SUBTYPE__>*)out_img);\
+dlib::suppress_non_maximum_edges(h, v, out);\
 
 DLLEXPORT int sobel_edge_detector(array2d_type type, void* in_img, array2d_type out_type, void* horz, void* vert)
 {
     int error = ERR_OK;
 
-    array2d_template(type,
-                     error,
-                     sobel_edge_detector_template,
-                     in_img,
-                     out_type,
-                     horz,
-                     vert);
+    auto subtype = out_type;
+
+    array2d_inout_in_template(type,
+                              error,
+                              array2d_shortdecimal_inout_out_template,
+                              sobel_edge_detector_template,
+                              subtype,
+                              in_img,
+                              out_type,
+                              horz,
+                              vert);
 
     return error;
 }
@@ -69,15 +48,17 @@ DLLEXPORT int suppress_non_maximum_edges(array2d_type in_type, void* horz, void*
 {
     int error = ERR_OK;
 
-    auto type = out_type;
+    auto type = in_type;
+    auto subtype = out_type;
 
-    array2d_template(type,
-                     error,
-                     suppress_non_maximum_edges_template,
-                     horz,
-                     vert,
-                     in_type,
-                     out_img);
+    array2d_shortdecimal_inout_in_template(type,
+                                           error,
+                                           array2d_inout_out_template,
+                                           suppress_non_maximum_edges_template,
+                                           subtype,
+                                           horz,
+                                           vert,
+                                           out_img);
 
     return error;
 }

@@ -4,6 +4,7 @@
 #include "../export.h"
 #include <dlib/pixel.h>
 #include <dlib/image_transforms.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -12,43 +13,15 @@ using namespace std;
 #define ELEMENT_OUT element
 #undef ELEMENT_OUT
 
-#define hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle) \
-do { \
-    ret = ERR_OK;\
-    switch(in_type)\
-    {\
-        case array2d_type::UInt8:\
-            (*obj)(*((array2d<uint8_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::UInt16:\
-            (*obj)(*((array2d<uint16_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::UInt32:\
-            (*obj)(*((array2d<uint32_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::Int8:\
-            (*obj)(*((array2d<int8_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::Int16:\
-            (*obj)(*((array2d<int16_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::Int32:\
-            (*obj)(*((array2d<int32_t>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::Float:\
-            (*obj)(*((array2d<float>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::Double:\
-            (*obj)(*((array2d<double>*)in_img), *rectangle, *((array2d<ELEMENT_OUT>*)out_img));\
-            break;\
-        case array2d_type::RgbPixel:\
-        case array2d_type::HsiPixel:\
-        case array2d_type::RgbAlphaPixel:\
-        default:\
-            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
-			break;\
-    }\
-} while (0)
+#define assign_image_template(__TYPE__, error, type, __SUBTYPE__, subtype, ...) \
+auto& o = *obj;\
+auto& in_ = *((array2d<__TYPE__>*)in_img);\
+auto& out_ = *((array2d<__SUBTYPE__>*)out_img);\
+o(in_, *rectangle, out_);\
+
+#define hough_transform_get_best_hough_point_template(__TYPE__, error, type, ...) \
+auto& in_ = *((dlib::array2d<__TYPE__>*)img);\
+*point = new dlib::point(obj->get_best_hough_point(*p, in_));
 
 DLLEXPORT dlib::hough_transform* hough_transform_new(unsigned int size)
 {
@@ -88,44 +61,23 @@ DLLEXPORT std::pair<dlib::point*, dlib::point*>* hough_transform_get_line(
     return new std::pair<dlib::point*, dlib::point*>(new dlib::point(line.first), new dlib::point(line.second));
 }
 
-DLLEXPORT int hough_transform_get_best_hough_point(dlib::hough_transform* obj, dlib::point* p, array2d_type type, void* img, dlib::point** point)
+DLLEXPORT int hough_transform_get_best_hough_point(dlib::hough_transform* obj,
+                                                   dlib::point* p,
+                                                   array2d_type type,
+                                                   void* img,
+                                                   dlib::point** point)
 {
-    int err = ERR_OK;
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<uint8_t>*)img)));
-            break;
-        case array2d_type::UInt16:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<uint16_t>*)img)));
-            break;
-        case array2d_type::UInt32:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<uint32_t>*)img)));
-            break;
-        case array2d_type::Int8:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<int8_t>*)img)));
-            break;
-        case array2d_type::Int16:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<int16_t>*)img)));
-            break;
-        case array2d_type::Int32:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<int32_t>*)img)));
-            break;
-        case array2d_type::Float:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<float>*)img)));
-            break;
-        case array2d_type::Double:
-            *point = new dlib::point(obj->get_best_hough_point(*p, *((dlib::array2d<double>*)img)));
-            break;
-        case array2d_type::RgbPixel:
-        case array2d_type::HsiPixel:
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-			break;;
-    }
+    int error = ERR_OK;
 
-    return err;
+    array2d_numeric_template(type,
+                             error,
+                             hough_transform_get_best_hough_point_template,
+                             obj,
+                             p,
+                             img,
+                             point);
+
+    return error;
 }
 
 DLLEXPORT int hough_transform_operator(dlib::hough_transform* obj,
@@ -135,58 +87,20 @@ DLLEXPORT int hough_transform_operator(dlib::hough_transform* obj,
                                        void* out_img,
                                        dlib::rectangle* rectangle)
 {
-    int ret = ERR_OK;
-    switch(out_type)
-    {
-        case array2d_type::UInt8:
-            #define ELEMENT_OUT uint8_t
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::UInt16:
-            #define ELEMENT_OUT uint16_t
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::UInt32:
-            #define ELEMENT_OUT uint32_t
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::Int8:
-            #define ELEMENT_OUT int8_t
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::Int16:
-            #define ELEMENT_OUT int16_t
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::Int32:
-            #define ELEMENT_OUT int32_t
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::Float:
-            #define ELEMENT_OUT float
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::Double:
-            #define ELEMENT_OUT double
-            hough_transform_operator_template(ret, obj, in_type, in_img, out_img, rectangle);
-            #undef ELEMENT_OUT
-            break;
-        case array2d_type::RgbPixel:
-        case array2d_type::HsiPixel:
-        case array2d_type::RgbAlphaPixel:
-        default:
-            ret = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-			break;;
-    }
+    int error = ERR_OK;
 
-    return ret;
+    auto type = in_type;
+    auto subtype = out_type;
+
+    array2d_numeric_inout_in_template(type,
+                                      error,
+                                      array2d_numeric_inout_out_template,
+                                      assign_image_template,
+                                      subtype,
+                                      in_img,
+                                      out_img,
+                                      rectangle);
+    return error;
 }
 
 DLLEXPORT void hough_transform_delete(dlib::hough_transform* obj)
