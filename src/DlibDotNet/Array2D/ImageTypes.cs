@@ -5,10 +5,6 @@ namespace DlibDotNet
     public enum ImageTypes
     {
 
-        RgbPixel,
-
-        RgbAlphaPixel,
-
         UInt8,
 
         UInt16,
@@ -21,11 +17,15 @@ namespace DlibDotNet
 
         Int32,
 
-        HsiPixel,
-
         Float,
 
         Double,
+
+        RgbPixel,
+
+        HsiPixel,
+
+        RgbAlphaPixel,
 
         Matrix
 
