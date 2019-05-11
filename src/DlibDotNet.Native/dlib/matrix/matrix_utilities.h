@@ -312,7 +312,7 @@ DLLEXPORT int matrix_min(matrix_element_type type, void* matrix, int templateRow
     return error;
 }
 
-DLLEXPORT int matrix_max_point(matrix_element_type type, void* matrix, dlib::point** ret)
+DLLEXPORT int matrix_max_point(array2d_type type, void* matrix, dlib::point** ret)
 {
     int error = ERR_OK;
 
