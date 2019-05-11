@@ -42,7 +42,7 @@ namespace DlibDotNet
                     images.Add(matrix);
                 objects.Clear();
                 foreach (var list in vecObject.ToArray())
-                    objects.Add(list);
+                    objects.Add(list.ToArray());
             }
         }
 
@@ -538,7 +538,7 @@ namespace DlibDotNet
                     images.Add(matrix);
                 objects.Clear();
                 foreach (var list in vecObject.ToArray())
-                    objects.Add(list);
+                    objects.Add(list.ToArray());
             }
         }
 
@@ -586,7 +586,7 @@ namespace DlibDotNet
                     images.Add(matrix);
                 objects.Clear();
                 foreach (var list in vecObject.ToArray())
-                    objects.Add(list);
+                    objects.Add(list.ToArray());
             }
         }
 

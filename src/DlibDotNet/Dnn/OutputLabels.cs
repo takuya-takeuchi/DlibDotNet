@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DlibDotNet.Dnn
 {
 
-    public abstract class OutputLabels<T> : DlibObject, IUndisposableElementCollection<T>
+    public abstract class OutputLabels<T> : DlibObject, IEnumerable<T>
     {
 
         #region Constructors

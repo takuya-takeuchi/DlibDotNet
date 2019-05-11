@@ -4,6 +4,7 @@
 #include "../export.h"
 #include <dlib/image_transforms/assign_image.h>
 #include <dlib/image_processing/shape_predictor_trainer.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -11,15 +12,12 @@ using namespace std;
 
 #pragma region template
 
-#define shape_predictor_trainer_train_template(__TYPE__, trainer, images, objects, predictor) \
-do {\
-    dlib::array<array2d<__TYPE__>>& in_images = *static_cast<dlib::array<array2d<__TYPE__>>*>(images);\
-    std::vector<std::vector<full_object_detection>> in_Objects;\
-    vector_vector_pointer_to_value(full_object_detection, objects, in_Objects);\
-\
-    auto p = trainer->train(in_images, in_Objects);\
-    *predictor = new shape_predictor(p);\
-} while (0)
+#define shape_predictor_trainer_train_template(__TYPE__, error, type, ...) \
+auto& in_images = *static_cast<dlib::array<array2d<__TYPE__>>*>(images);\
+std::vector<std::vector<full_object_detection>> in_Objects;\
+vector_vector_pointer_to_value(full_object_detection, objects, in_Objects);\
+auto p = trainer->train(in_images, in_Objects);\
+*predictor = new shape_predictor(p);\
 
 #pragma endregion template
 
@@ -175,54 +173,22 @@ DLLEXPORT void shape_predictor_trainer_be_quiet(shape_predictor_trainer* trainer
 }
 
 DLLEXPORT int shape_predictor_trainer_train(shape_predictor_trainer* trainer,
-                                            array2d_type img_type,
+                                            array2d_type type,
                                             void* images,
                                             std::vector<std::vector<full_object_detection*>*>* objects,
                                             shape_predictor** predictor)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            shape_predictor_trainer_train_template(uint8_t, trainer, images, objects, predictor);
-            break;
-        case array2d_type::UInt16:
-            shape_predictor_trainer_train_template(uint16_t, trainer, images, objects, predictor);
-            break;
-        case array2d_type::UInt32:
-            shape_predictor_trainer_train_template(uint32_t, trainer, images, objects, predictor);
-            break;
-        case array2d_type::Int8:
-            shape_predictor_trainer_train_template(int8_t, trainer, images, objects, predictor);
-            break;
-        case array2d_type::Int16:
-            shape_predictor_trainer_train_template(int16_t, trainer, images, objects, predictor);
-            break;
-        case array2d_type::Int32:
-            shape_predictor_trainer_train_template(int32_t, trainer, images, objects, predictor);
-            break;
-        case array2d_type::Float:
-            shape_predictor_trainer_train_template(float, trainer, images, objects, predictor);
-            break;
-        case array2d_type::Double:
-            shape_predictor_trainer_train_template(double, trainer, images, objects, predictor);
-            break;
-        case array2d_type::RgbPixel:
-            shape_predictor_trainer_train_template(rgb_pixel, trainer, images, objects, predictor);
-            break;
-        case array2d_type::HsiPixel:
-            shape_predictor_trainer_train_template(hsi_pixel, trainer, images, objects, predictor);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            shape_predictor_trainer_train_template(rgb_alpha_pixel, trainer, images, objects, predictor);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     shape_predictor_trainer_train_template,
+                     trainer,
+                     images,
+                     objects,
+                     predictor);
 
-    return err;
+    return error;
 }
 
 #endif

@@ -12,6 +12,8 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         private const string LoadTarget = "Lenna_mini";
 
+        private readonly uint[] PyramidRates = new[] { 1u, 2u, 3u, 4u, 6u };
+
         #region ExtractImageChip
 
         [TestMethod]
@@ -391,7 +393,7 @@ namespace DlibDotNet.Tests.ImageTransforms
         [TestMethod]
         public void PyramidUp()
         {
-            const string testName = "PyramidUp";
+            const string testName = nameof(PyramidUp);
             var path = this.GetDataFile($"{LoadTarget}.bmp");
 
             var tests = new[]
@@ -444,6 +446,253 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
             }
+        }
+
+        [TestMethod]
+        public void PyramidUpMatrix()
+        {
+            const string testName = nameof(PyramidUpMatrix);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var test in tests)
+            {
+                var expectResult = test.ExpectResult;
+                var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+
+                var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                {
+                    Dlib.PyramidUp(imageObj);
+                    return imageObj;
+                });
+
+                var successAction = new Action<MatrixBase>(image =>
+                {
+                    Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
+                });
+
+                var failAction = new Action(() =>
+                {
+                    Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                });
+
+                var finallyAction = new Action(() =>
+                {
+                    if (imageObj != null)
+                        this.DisposeAndCheckDisposedState(imageObj);
+                });
+
+                var exceptionAction = new Action(() =>
+                {
+                    Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                });
+
+                DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+            }
+        }
+
+        [TestMethod]
+        public void PyramidUpMatrix2()
+        {
+            const string testName = nameof(PyramidUpMatrix2);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var pyramidRate in this.PyramidRates)
+                foreach (var test in tests)
+                {
+                    var expectResult = test.ExpectResult;
+                    var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+
+                    var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                    {
+                        using (var pyr = new PyramidDown(pyramidRate))
+                        {
+                            switch (test.Type)
+                            {
+                                case MatrixElementTypes.UInt8:
+                                    {
+                                        Dlib.PyramidUp((Matrix<byte>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.UInt16:
+                                    {
+                                        Dlib.PyramidUp((Matrix<ushort>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.UInt32:
+                                    {
+                                        Dlib.PyramidUp((Matrix<uint>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.UInt64:
+                                    {
+                                        Dlib.PyramidUp((Matrix<ulong>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int8:
+                                    {
+                                        Dlib.PyramidUp((Matrix<sbyte>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int16:
+                                    {
+                                        Dlib.PyramidUp((Matrix<short>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int32:
+                                    {
+                                        Dlib.PyramidUp((Matrix<int>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int64:
+                                    {
+                                        Dlib.PyramidUp((Matrix<long>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Float:
+                                    {
+                                        Dlib.PyramidUp((Matrix<float>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Double:
+                                    {
+                                        Dlib.PyramidUp((Matrix<double>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.RgbPixel:
+                                    {
+                                        Dlib.PyramidUp((Matrix<RgbPixel>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.RgbAlphaPixel:
+                                    {
+                                        Dlib.PyramidUp((Matrix<RgbAlphaPixel>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.HsiPixel:
+                                    {
+                                        Dlib.PyramidUp((Matrix<HsiPixel>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                    });
+
+                    var successAction = new Action<MatrixBase>(image =>
+                    {
+                        Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{pyramidRate}.bmp")}");
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        if (imageObj != null)
+                            this.DisposeAndCheckDisposedState(imageObj);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
+        }
+
+        [TestMethod]
+        public void PyramidUpMatrix3()
+        {
+            const string testName = nameof(PyramidUpMatrix3);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var pyramidRate in this.PyramidRates)
+                foreach (var test in tests)
+                {
+                    var expectResult = test.ExpectResult;
+                    var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+
+                    var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                    {
+                        Dlib.PyramidUp<PyramidDown>(imageObj, pyramidRate);
+                        return imageObj;
+                    });
+
+                    var successAction = new Action<MatrixBase>(image =>
+                    {
+                        Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{pyramidRate}.bmp")}");
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        if (imageObj != null)
+                            this.DisposeAndCheckDisposedState(imageObj);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
         }
 
         #endregion

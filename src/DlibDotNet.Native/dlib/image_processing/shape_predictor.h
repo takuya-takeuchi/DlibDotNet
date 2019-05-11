@@ -3,6 +3,7 @@
 
 #include "../export.h"
 #include <dlib/image_processing/shape_predictor.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -10,29 +11,25 @@ using namespace std;
 
 #pragma region template
 
-#define shape_predictor_operator_template(__TYPE__, img, full_obj_detect) \
-do {\
-    auto result = (*predictor)(*((array2d<__TYPE__>*)img), *rect);\
-    *full_obj_detect = new full_object_detection(result);\
-} while (0)
+#define shape_predictor_operator_template(__TYPE__, error, type, ...) \
+auto& d = *predictor;\
+auto result = d(*((array2d<__TYPE__>*)img), *rect);\
+*full_obj_detect = new full_object_detection(result);\
 
-#define shape_predictor_matrix_operator_template(__TYPE__, img, full_obj_detect) \
-do {\
-    auto result = (*predictor)(*((matrix<__TYPE__>*)img), *rect);\
-    *full_obj_detect = new full_object_detection(result);\
-} while (0)
+#define shape_predictor_matrix_operator_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& d = *predictor;\
+auto result = d(*((matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img), *rect);\
+*full_obj_detect = new full_object_detection(result);\
 
-#define shape_predictor_test_shape_predictor_template(__TYPE__, predictor, images, objects, scales, ret) \
-do {\
-    std::vector<std::vector<full_object_detection>> in_Objects;\
-    std::vector<std::vector<double>> in_Scales;\
-    vector_vector_pointer_to_value(full_object_detection, objects, in_Objects);\
-    dlib::array<array2d<__TYPE__>>& in_images = *static_cast<dlib::array<array2d<__TYPE__>>*>(images);\
-    vector_vector_valueType_to_value(double, scales, in_Scales);\
-\
-    double d = dlib::test_shape_predictor(*predictor, in_images, in_Objects, in_Scales);\
-    *ret = d;\
-} while (0)
+#define shape_predictor_test_shape_predictor_template(__TYPE__, error, type, ...) \
+auto& d = *predictor;\
+std::vector<std::vector<full_object_detection>> in_Objects;\
+std::vector<std::vector<double>> in_Scales;\
+vector_vector_pointer_to_value(full_object_detection, objects, in_Objects);\
+auto& in_images = *static_cast<dlib::array<array2d<__TYPE__>>*>(images);\
+vector_vector_valueType_to_value(double, scales, in_Scales);\
+double rd = dlib::test_shape_predictor(d, in_images, in_Objects, in_Scales);\
+*ret = rd;\
 
 #pragma endregion template
 
@@ -121,211 +118,89 @@ DLLEXPORT dlib::point_transform_affine* normalizing_tform(dlib::rectangle* rect)
 #pragma region shape_predictor_operator
 
 DLLEXPORT int shape_predictor_operator(shape_predictor* predictor,
-                                       array2d_type img_type,
+                                       array2d_type type,
                                        void* img,
                                        rectangle* rect,
                                        full_object_detection** full_obj_detect)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     *full_obj_detect = nullptr;
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            shape_predictor_operator_template(uint8_t, img, full_obj_detect);
-            break;
-        case array2d_type::UInt16:
-            shape_predictor_operator_template(uint16_t, img, full_obj_detect);
-            break;
-        case array2d_type::UInt32:
-            shape_predictor_operator_template(uint32_t, img, full_obj_detect);
-            break;
-        case array2d_type::Int8:
-            shape_predictor_operator_template(int8_t, img, full_obj_detect);
-            break;
-        case array2d_type::Int16:
-            shape_predictor_operator_template(int16_t, img, full_obj_detect);
-            break;
-        case array2d_type::Int32:
-            shape_predictor_operator_template(int32_t, img, full_obj_detect);
-            break;
-        case array2d_type::Float:
-            shape_predictor_operator_template(float, img, full_obj_detect);
-            break;
-        case array2d_type::Double:
-            shape_predictor_operator_template(double, img, full_obj_detect);
-            break;
-        case array2d_type::RgbPixel:
-            shape_predictor_operator_template(rgb_pixel, img, full_obj_detect);
-            break;
-        case array2d_type::HsiPixel:
-            shape_predictor_operator_template(hsi_pixel, img, full_obj_detect);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            shape_predictor_operator_template(rgb_alpha_pixel, img, full_obj_detect);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     shape_predictor_operator_template,
+                     predictor,
+                     img,
+                     rect,
+                     full_obj_detect);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int shape_predictor_matrix_operator(shape_predictor* predictor,
-                                              matrix_element_type img_type,
+                                              matrix_element_type type,
                                               void* img,
                                               rectangle* rect,
                                               full_object_detection** full_obj_detect)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     *full_obj_detect = nullptr;
 
-    switch(img_type)
-    {
-        case matrix_element_type::UInt8:
-            shape_predictor_matrix_operator_template(uint8_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::UInt16:
-            shape_predictor_matrix_operator_template(uint16_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::UInt32:
-            shape_predictor_matrix_operator_template(uint32_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Int8:
-            shape_predictor_matrix_operator_template(int8_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Int16:
-            shape_predictor_matrix_operator_template(int16_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Int32:
-            shape_predictor_matrix_operator_template(int32_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Float:
-            shape_predictor_matrix_operator_template(float, img, full_obj_detect);
-            break;
-        case matrix_element_type::Double:
-            shape_predictor_matrix_operator_template(double, img, full_obj_detect);
-            break;
-        case matrix_element_type::RgbPixel:
-            shape_predictor_matrix_operator_template(rgb_pixel, img, full_obj_detect);
-            break;
-        case matrix_element_type::HsiPixel:
-            shape_predictor_matrix_operator_template(hsi_pixel, img, full_obj_detect);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            shape_predictor_matrix_operator_template(rgb_alpha_pixel, img, full_obj_detect);
-            break;
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    shape_predictor_matrix_operator_template,
+                    0,
+                    0,
+                    predictor,
+                    img,
+                    rect,
+                    full_obj_detect);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int shape_predictor_operator_mmod_rect(shape_predictor* predictor,
-                                                 array2d_type img_type,
+                                                 array2d_type type,
                                                  void* img,
                                                  mmod_rect* rect,
                                                  full_object_detection** full_obj_detect)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     *full_obj_detect = nullptr;
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            shape_predictor_operator_template(uint8_t, img, full_obj_detect);
-            break;
-        case array2d_type::UInt16:
-            shape_predictor_operator_template(uint16_t, img, full_obj_detect);
-            break;
-        case array2d_type::UInt32:
-            shape_predictor_operator_template(uint32_t, img, full_obj_detect);
-            break;
-        case array2d_type::Int8:
-            shape_predictor_operator_template(int8_t, img, full_obj_detect);
-            break;
-        case array2d_type::Int16:
-            shape_predictor_operator_template(int16_t, img, full_obj_detect);
-            break;
-        case array2d_type::Int32:
-            shape_predictor_operator_template(int32_t, img, full_obj_detect);
-            break;
-        case array2d_type::Float:
-            shape_predictor_operator_template(float, img, full_obj_detect);
-            break;
-        case array2d_type::Double:
-            shape_predictor_operator_template(double, img, full_obj_detect);
-            break;
-        case array2d_type::RgbPixel:
-            shape_predictor_operator_template(rgb_pixel, img, full_obj_detect);
-            break;
-        case array2d_type::HsiPixel:
-            shape_predictor_operator_template(hsi_pixel, img, full_obj_detect);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            shape_predictor_operator_template(rgb_alpha_pixel, img, full_obj_detect);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     shape_predictor_operator_template,
+                     predictor,
+                     img,
+                     rect,
+                     full_obj_detect);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int shape_predictor_matrix_operator_mmod_rect(shape_predictor* predictor,
-                                                        matrix_element_type img_type,
+                                                        matrix_element_type type,
                                                         void* img,
                                                         mmod_rect* rect,
                                                         full_object_detection** full_obj_detect)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
     *full_obj_detect = nullptr;
 
-    switch(img_type)
-    {
-        case matrix_element_type::UInt8:
-            shape_predictor_matrix_operator_template(uint8_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::UInt16:
-            shape_predictor_matrix_operator_template(uint16_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::UInt32:
-            shape_predictor_matrix_operator_template(uint32_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Int8:
-            shape_predictor_matrix_operator_template(int8_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Int16:
-            shape_predictor_matrix_operator_template(int16_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Int32:
-            shape_predictor_matrix_operator_template(int32_t, img, full_obj_detect);
-            break;
-        case matrix_element_type::Float:
-            shape_predictor_matrix_operator_template(float, img, full_obj_detect);
-            break;
-        case matrix_element_type::Double:
-            shape_predictor_matrix_operator_template(double, img, full_obj_detect);
-            break;
-        case matrix_element_type::RgbPixel:
-            shape_predictor_matrix_operator_template(rgb_pixel, img, full_obj_detect);
-            break;
-        case matrix_element_type::HsiPixel:
-            shape_predictor_matrix_operator_template(hsi_pixel, img, full_obj_detect);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-            shape_predictor_matrix_operator_template(rgb_alpha_pixel, img, full_obj_detect);
-            break;
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    shape_predictor_matrix_operator_template,
+                    0,
+                    0,
+                    predictor,
+                    img,
+                    rect,
+                    full_obj_detect);
 
-    return err;
+    return error;
 }
 
 #pragma endregion shape_predictor_operator
@@ -341,55 +216,24 @@ DLLEXPORT unsigned int shape_predictor_num_features(shape_predictor* predictor)
 }
 
 DLLEXPORT int shape_predictor_test_shape_predictor(shape_predictor* predictor,
-                                                   array2d_type img_type,
+                                                   array2d_type type,
                                                    void* images,
                                                    std::vector<std::vector<full_object_detection*>*>* objects,
                                                    std::vector<std::vector<double>*>* scales,
                                                    double* ret)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(img_type)
-    {
-        case array2d_type::UInt8:
-            shape_predictor_test_shape_predictor_template(uint8_t, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::UInt16:
-            shape_predictor_test_shape_predictor_template(uint16_t, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::UInt32:
-            shape_predictor_test_shape_predictor_template(uint32_t, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::Int8:
-            shape_predictor_test_shape_predictor_template(int8_t, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::Int16:
-            shape_predictor_test_shape_predictor_template(int16_t, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::Int32:
-            shape_predictor_test_shape_predictor_template(int32_t, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::Float:
-            shape_predictor_test_shape_predictor_template(float, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::Double:
-            shape_predictor_test_shape_predictor_template(double, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::RgbPixel:
-            shape_predictor_test_shape_predictor_template(rgb_pixel, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::HsiPixel:
-            shape_predictor_test_shape_predictor_template(hsi_pixel, predictor, images, objects, scales, ret);
-            break;
-        case array2d_type::RgbAlphaPixel:
-            shape_predictor_test_shape_predictor_template(rgb_alpha_pixel, predictor, images, objects, scales, ret);
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     shape_predictor_test_shape_predictor_template,
+                     predictor,
+                     images,
+                     objects,
+                     scales,
+                     ret);
 
-    return err;
+    return error;
 }
 
 #endif

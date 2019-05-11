@@ -91,35 +91,41 @@ DLLEXPORT void array2d_set_row_column_##__TYPENAME__(void* row, int32_t column, 
     tmp[column] = ret;\
 }
 
-#define array2d_matrix_get_row_column_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, row, column, ret) \
-dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>::row*>(row));\
+#define array2d_matrix_get_row_column_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& tmp = *(static_cast<dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>::row*>(row));\
 *ret = tmp[column];\
 
-#define array2d_matrix_get_row_column_template(__TYPE__, __ROWS__, __COLUMNS__, row, column, ret) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg3_template(__TYPE__, __ROWS__, __COLUMNS__, array2d_matrix_get_row_column_template_sub, error, row, column, ret);\
-} while (0)
-
-#define array2d_matrix_set_row_column_template_sub(__TYPE__, __ROWS__, __COLUMNS__, error, row, column, ret) \
-dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>::row& tmp = *(static_cast<dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>::row*>(row));\
+#define array2d_matrix_set_row_column_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& tmp = *(static_cast<dlib::array2d<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>::row*>(row));\
 tmp[column] = (dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)ret;\
 
-#define array2d_matrix_set_row_column_template(__TYPE__, __ROWS__, __COLUMNS__, row, column, ret) \
-do {\
-    int error = ERR_OK;\
-    matrix_template_size_arg3_template(__TYPE__, __ROWS__, __COLUMNS__, array2d_matrix_set_row_column_template_sub, error, row, column, ret);\
-} while (0)
-
-#define MAKE_ROWCOLUMN_MATRIX_FUNC(__TYPE__, __TYPENAME__)\
+#define MAKE_ROWCOLUMN_MATRIX_FUNC(__TYPE__, __TYPENAME__, __ELEMENT_TYPE__)\
 DLLEXPORT void array2d_matrix_get_row_column_##__TYPENAME__(void* row, const int templateRows, const int templateColumns, int32_t column, void** ret)\
 {\
-    array2d_matrix_get_row_column_template(__TYPE__, templateRows, templateColumns, row, column, ret);\
+    int error = ERR_OK;\
+    matrix_template_size_template(__TYPE__,\
+                                  error,\
+                                  __ELEMENT_TYPE__,\
+                                  array2d_matrix_get_row_column_template,\
+                                  templateRows,\
+                                  templateColumns,\
+                                  row,\
+                                  column,\
+                                  ret);\
 }\
 \
 DLLEXPORT void array2d_matrix_set_row_column_##__TYPENAME__(void* row, const int templateRows, const int templateColumns, int32_t column, void* ret)\
 {\
-    array2d_matrix_set_row_column_template(__TYPE__, templateRows, templateColumns, row, column, ret);\
+    int error = ERR_OK;\
+    matrix_template_size_template(__TYPE__,\
+                                  error,\
+                                  __ELEMENT_TYPE__,\
+                                  array2d_matrix_set_row_column_template,\
+                                  templateRows,\
+                                  templateColumns,\
+                                  row,\
+                                  column,\
+                                  ret);\
 }
 
 #pragma endregion template
@@ -416,17 +422,17 @@ DLLEXPORT int array2d_matrix_row(matrix_element_type type, void* array, const in
 
 #pragma region array2d_get_row_column
 
-MAKE_ROWCOLUMN_MATRIX_FUNC(int8_t, int8_t)
-MAKE_ROWCOLUMN_MATRIX_FUNC(int16_t, int16_t)
-MAKE_ROWCOLUMN_MATRIX_FUNC(int32_t, int32_t)
-MAKE_ROWCOLUMN_MATRIX_FUNC(uint8_t, uint8_t)
-MAKE_ROWCOLUMN_MATRIX_FUNC(uint16_t, uint16_t)
-MAKE_ROWCOLUMN_MATRIX_FUNC(uint32_t, uint32_t)
-MAKE_ROWCOLUMN_MATRIX_FUNC(float, float)
-MAKE_ROWCOLUMN_MATRIX_FUNC(double, double)
-MAKE_ROWCOLUMN_MATRIX_FUNC(rgb_pixel, rgb_pixel)
-MAKE_ROWCOLUMN_MATRIX_FUNC(hsi_pixel, hsi_pixel)
-MAKE_ROWCOLUMN_MATRIX_FUNC(rgb_alpha_pixel, rgb_alpha_pixel)
+MAKE_ROWCOLUMN_MATRIX_FUNC(int8_t, int8_t, matrix_element_type::Int8)
+MAKE_ROWCOLUMN_MATRIX_FUNC(int16_t, int16_t, matrix_element_type::Int16)
+MAKE_ROWCOLUMN_MATRIX_FUNC(int32_t, int32_t, matrix_element_type::Int32)
+MAKE_ROWCOLUMN_MATRIX_FUNC(uint8_t, uint8_t, matrix_element_type::UInt8)
+MAKE_ROWCOLUMN_MATRIX_FUNC(uint16_t, uint16_t, matrix_element_type::UInt16)
+MAKE_ROWCOLUMN_MATRIX_FUNC(uint32_t, uint32_t, matrix_element_type::UInt32)
+MAKE_ROWCOLUMN_MATRIX_FUNC(float, float, matrix_element_type::Float)
+MAKE_ROWCOLUMN_MATRIX_FUNC(double, double, matrix_element_type::Double)
+MAKE_ROWCOLUMN_MATRIX_FUNC(rgb_pixel, rgb_pixel, matrix_element_type::RgbPixel)
+MAKE_ROWCOLUMN_MATRIX_FUNC(hsi_pixel, hsi_pixel, matrix_element_type::HsiPixel)
+MAKE_ROWCOLUMN_MATRIX_FUNC(rgb_alpha_pixel, rgb_alpha_pixel, matrix_element_type::RgbAlphaPixel)
 
 #pragma endregion array2d_get_row_column
 
