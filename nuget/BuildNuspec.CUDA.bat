@@ -1,3 +1,8 @@
 dotnet restore ..\src\DlibDotNet
 dotnet build -c Release ..\src\DlibDotNet
-nuget pack DlibDotNet.CUDA.nuspec
+
+@set target=100 92
+
+for %%t in (%target%) do (
+  nuget pack DlibDotNet.CUDA-%%t.nuspec
+)
