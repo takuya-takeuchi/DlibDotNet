@@ -5,8 +5,8 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 |Package|Windows|Linux|MacOSX|
 |---|---|---|---|
 |DlibDotNet|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|
-|DlibDotNet for CUDA 9.2|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA.92.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA.92)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA.92.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA.92)|N/A|
-|DlibDotNet for CUDA 10.0|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA.100.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA.100)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA.100.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA.100)|N/A|
+|DlibDotNet for CUDA 9.2|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA92.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA92)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA92.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA92)|N/A|
+|DlibDotNet for CUDA 10.0|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA100.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA100)|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA100.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA100)|N/A|
 |DlibDotNet for ARM|N/A|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-ARM.svg)](https://www.nuget.org/packages/DlibDotNet-ARM)|N/A|
 
 ##### :warning: DlibDotNet for ARM  is not tested yet
