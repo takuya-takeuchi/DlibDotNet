@@ -10,7 +10,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        public static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
+        public static readonly Dictionary<Type, MatrixElementTypes> SupportTypes = new Dictionary<Type, MatrixElementTypes>();
 
         #endregion
 
@@ -20,14 +20,14 @@ namespace DlibDotNet
         {
             var types = new[]
             {
-                new { Type = typeof(sbyte),         ElementType = ElementTypes.Int8   },
-                new { Type = typeof(short),         ElementType = ElementTypes.Int16  },
-                new { Type = typeof(int),           ElementType = ElementTypes.Int32  },
-                new { Type = typeof(byte),          ElementType = ElementTypes.UInt8  },
-                new { Type = typeof(ushort),        ElementType = ElementTypes.UInt16 },
-                new { Type = typeof(uint),          ElementType = ElementTypes.UInt32 },
-                new { Type = typeof(float),         ElementType = ElementTypes.Float  },
-                new { Type = typeof(double),        ElementType = ElementTypes.Double }
+                new { Type = typeof(sbyte),         ElementType = MatrixElementTypes.Int8   },
+                new { Type = typeof(short),         ElementType = MatrixElementTypes.Int16  },
+                new { Type = typeof(int),           ElementType = MatrixElementTypes.Int32  },
+                new { Type = typeof(byte),          ElementType = MatrixElementTypes.UInt8  },
+                new { Type = typeof(ushort),        ElementType = MatrixElementTypes.UInt16 },
+                new { Type = typeof(uint),          ElementType = MatrixElementTypes.UInt32 },
+                new { Type = typeof(float),         ElementType = MatrixElementTypes.Float  },
+                new { Type = typeof(double),        ElementType = MatrixElementTypes.Double }
             };
 
             foreach (var type in types)
@@ -35,33 +35,6 @@ namespace DlibDotNet
         }
 
         #endregion
-        
-        public enum ElementTypes
-        {
-
-            Int8,
-
-            Int16,
-
-            Int32,
-
-            UInt8,
-
-            UInt16,
-
-            UInt32,
-
-            Float,
-
-            Double,
-
-            RgbPixel,
-
-            HsiPixel,
-
-            RgbAlphaPixel
-
-        }
 
     }
 

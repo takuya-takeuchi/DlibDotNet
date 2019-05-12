@@ -8,83 +8,53 @@
 #include <dlib/image_processing/generic_image.h>
 #include <dlib/image_transforms/equalize_histogram.h>
 #include <dlib/matrix.h>
+#include "../template.h"
 #include "../shared.h"
-
-#include "template.h"
 
 using namespace dlib;
 using namespace std;
 
-DLLEXPORT int equalize_histogram_array2d(array2d_type in_type, void* in_img)
+#pragma region template
+
+#define equalize_histogram_array2d_template(__TYPE__, error, type, ...) \
+auto& in = *(array2d<__TYPE__>*)in_img;\
+dlib::equalize_histogram(in);\
+
+#define equalize_histogram_array2d_2_template(__TYPE__, error, type, __SUBTYPE__, subtype, ...) \
+auto& in = *(array2d<__TYPE__>*)in_img;\
+auto& out = *(array2d<__SUBTYPE__>*)out_img;\
+dlib::equalize_histogram(in, out);\
+
+#pragma endregion template
+
+DLLEXPORT int equalize_histogram_array2d(array2d_type type, void* in_img)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    #define FUNCTION equalize_histogram
-    switch(in_type)
-    {
-        case array2d_type::UInt8:
-            image_transforms_in_U_2_array2d__template(err, in_type, in_img);
-            break;
-        case array2d_type::UInt16:
-            image_transforms_in_U_2_array2d__template(err, in_type, in_img);
-            break;
-        case array2d_type::RgbPixel:
-            image_transforms_in_U_2_array2d__template(err, in_type, in_img);
-            break;
-        case array2d_type::HsiPixel:
-            image_transforms_in_U_2_array2d__template(err, in_type, in_img);
-            break;
-        case array2d_type::Int8:
-        case array2d_type::Int16:
-        case array2d_type::Int32:
-        case array2d_type::UInt32:
-        case array2d_type::Float:
-        case array2d_type::Double:
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-    #undef FUNCTION
+    array2d_U2nonalpha_template(type,
+                                error,
+                                equalize_histogram_array2d_template,
+                                in_img);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int equalize_histogram_array2d_2(array2d_type in_type, void* in_img, array2d_type out_type, void* out_img)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    #define FUNCTION equalize_histogram
-    switch(out_type)
-    {
-        case array2d_type::UInt8:
-            image_transforms_inout_U_2_array2d__template(err, in_type, in_img, uint8_t, out_img);
-            break;
-        case array2d_type::UInt16:
-            image_transforms_inout_U_2_array2d__template(err, in_type, in_img, uint16_t, out_img);
-            break;
-        case array2d_type::UInt32:
-            image_transforms_inout_U_2_array2d__template(err, in_type, in_img, uint32_t, out_img);
-            break;
-        case array2d_type::RgbPixel:
-            image_transforms_inout_U_2_array2d__template(err, in_type, in_img, rgb_pixel, out_img);
-            break;
-        case array2d_type::HsiPixel:
-            image_transforms_inout_U_2_array2d__template(err, in_type, in_img, hsi_pixel, out_img);
-            break;
-        case array2d_type::Int8:
-        case array2d_type::Int16:
-        case array2d_type::Int32:
-        case array2d_type::Float:
-        case array2d_type::Double:
-        case array2d_type::RgbAlphaPixel:
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
-    #undef FUNCTION
+    auto type = in_type;
+    auto subtype = out_type;
 
-    return err;
+    array2d_U2nonalpha_inout_in_template(type,
+                                         error,
+                                         array2d_unsigned_nonalpha_inout_out_template,
+                                         equalize_histogram_array2d_2_template,
+                                         subtype,
+                                         in_img,
+                                         out_img);
+    
+    return error;
 }
 
 #endif

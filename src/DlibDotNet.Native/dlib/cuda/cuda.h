@@ -8,8 +8,6 @@
 #include "driver_types.h"
 #endif
 
-using namespace std;
-
 DLLEXPORT bool cuda_cudaDriverGetVersion(int* version)
 {
     bool b = false;

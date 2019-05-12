@@ -8,16 +8,12 @@ namespace DlibDotNet
     public static partial class Dlib
     {
 
-        public static void EqualizeHistogram<T>(Array2D<T> image)
-            where T : struct
+        public static void EqualizeHistogram(Array2DBase image)
         {
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
 
             image.ThrowIfDisposed();
-
-            if (!Array2D<T>.TryParse<T>(out _))
-                throw new NotSupportedException();
 
             var elementType = image.ImageType.ToNativeArray2DType();
             var ret = NativeMethods.equalize_histogram_array2d(elementType, image.NativePtr);
@@ -28,9 +24,8 @@ namespace DlibDotNet
             }
         }
 
-        public static void EqualizeHistogram<T, U>(Array2D<T> image, out Array2D<U> outImage)
+        public static void EqualizeHistogram<T>(Array2DBase image, out Array2D<T> outImage)
             where T : struct
-            where U : struct
         {
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
@@ -39,10 +34,8 @@ namespace DlibDotNet
 
             if (!Array2D<T>.TryParse<T>(out _))
                 throw new NotSupportedException();
-            if (!Array2D<U>.TryParse<U>(out _))
-                throw new NotSupportedException();
 
-            outImage = new Array2D<U>();
+            outImage = new Array2D<T>();
 
             var inType = image.ImageType.ToNativeArray2DType();
             var outType = outImage.ImageType.ToNativeArray2DType();

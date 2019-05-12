@@ -5,10 +5,24 @@
 
 #include "../../export.h"
 #include <dlib/gui_widgets/widgets.h>
+#include "../../template.h"
 #include "../../shared.h"
 
 using namespace dlib;
 using namespace std;
+
+#pragma region template
+
+#define perspective_window_add_overlay_template(__TYPE__, error, type, ...) \
+window->add_overlay(*p1, *p2, *((__TYPE__*)p));
+
+#define perspective_window_add_overlay3_template(__TYPE__, error, type, ...) \
+window->add_overlay(tmp, *((__TYPE__*)p));
+
+#define perspective_window_overlay_dot_new2_template(__TYPE__, error, type, ...) \
+ret = new perspective_window::overlay_dot(tmp, *((__TYPE__*)p));
+
+#pragma endregion template
 
 DLLEXPORT perspective_window* perspective_window_new()
 {
@@ -50,54 +64,22 @@ DLLEXPORT void perspective_window_delete(perspective_window* window)
 
 DLLEXPORT int perspective_window_add_overlay(perspective_window* window, dlib::vector<double>* p1, dlib::vector<double>* p2, array2d_type type, void* p)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(*p1, *p2, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(*p1, *p2, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(*p1, *p2, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(*p1, *p2, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(*p1, *p2, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(*p1, *p2, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(*p1, *p2, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(*p1, *p2, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(*p1, *p2, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(*p1, *p2, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(*p1, *p2, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     perspective_window_add_overlay_template,
+                     window,
+                     p1,
+                     p2,
+                     p);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int perspective_window_add_overlay2(perspective_window* window, std::vector<dlib::vector<double>*>* points)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(points));
     std::vector<dlib::vector<double>> tmp;
@@ -109,12 +91,12 @@ DLLEXPORT int perspective_window_add_overlay2(perspective_window* window, std::v
 
     window->add_overlay(tmp);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int perspective_window_add_overlay3(perspective_window* window, std::vector<dlib::vector<double>*>* points, array2d_type type, void* p)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(points));
     std::vector<dlib::vector<double>> tmp;
@@ -124,52 +106,19 @@ DLLEXPORT int perspective_window_add_overlay3(perspective_window* window, std::v
         tmp.push_back(p);
     }
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            window->add_overlay(tmp, *((uint8_t*)p));
-            break;
-        case array2d_type::UInt16:
-            window->add_overlay(tmp, *((uint16_t*)p));
-            break;
-        case array2d_type::UInt32:
-            window->add_overlay(tmp, *((uint32_t*)p));
-            break;
-        case array2d_type::Int8:
-            window->add_overlay(tmp, *((int8_t*)p));
-            break;
-        case array2d_type::Int16:
-            window->add_overlay(tmp, *((int16_t*)p));
-            break;
-        case array2d_type::Int32:
-            window->add_overlay(tmp, *((int32_t*)p));
-            break;
-        case array2d_type::Float:
-            window->add_overlay(tmp, *((float*)p));
-            break;
-        case array2d_type::Double:
-            window->add_overlay(tmp, *((double*)p));
-            break;
-        case array2d_type::RgbPixel:
-            window->add_overlay(tmp, *((dlib::rgb_pixel*)p));
-            break;
-        case array2d_type::HsiPixel:
-            window->add_overlay(tmp, *((dlib::hsi_pixel*)p));
-            break;
-        case array2d_type::RgbAlphaPixel:
-            window->add_overlay(tmp, *((dlib::rgb_alpha_pixel*)p));
-            break;
-        default:
-            err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;
-            break;
-    }
+    array2d_template(type,
+                     error,
+                     perspective_window_add_overlay3_template,
+                     window,
+                     tmp,
+                     p);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT int perspective_window_add_overlay4(perspective_window* window, std::vector<perspective_window::overlay_dot*>* overlay)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
     std::vector<perspective_window::overlay_dot*>& vector = *(static_cast<std::vector<perspective_window::overlay_dot*>*>(overlay));
     std::vector<perspective_window::overlay_dot> tmp;
@@ -181,7 +130,7 @@ DLLEXPORT int perspective_window_add_overlay4(perspective_window* window, std::v
 
     window->add_overlay(tmp);
 
-    return err;
+    return error;
 }
 
 #pragma endregion add_overlay
@@ -196,35 +145,19 @@ DLLEXPORT perspective_window::overlay_dot* perspective_window_overlay_dot_new(dl
 
 DLLEXPORT perspective_window::overlay_dot* perspective_window_overlay_dot_new2(dlib::vector<double>* v, array2d_type type, void* p)
 {
+    int error = ERR_OK;
+    perspective_window::overlay_dot* ret = nullptr;
+
     dlib::vector<double>& tmp = *(static_cast<dlib::vector<double>*>(v));
 
-    switch(type)
-    {
-        case array2d_type::UInt8:
-            return new perspective_window::overlay_dot(tmp, *((uint8_t*)p));
-        case array2d_type::UInt16:
-            return new perspective_window::overlay_dot(tmp, *((uint16_t*)p));
-        case array2d_type::UInt32:
-            return new perspective_window::overlay_dot(tmp, *((uint32_t*)p));
-        case array2d_type::Int8:
-            return new perspective_window::overlay_dot(tmp, *((int8_t*)p));
-        case array2d_type::Int16:
-            return new perspective_window::overlay_dot(tmp, *((int16_t*)p));
-        case array2d_type::Int32:
-            return new perspective_window::overlay_dot(tmp, *((int32_t*)p));
-        case array2d_type::Float:
-            return new perspective_window::overlay_dot(tmp, *((float*)p));
-        case array2d_type::Double:
-            return new perspective_window::overlay_dot(tmp, *((double*)p));
-        case array2d_type::RgbPixel:
-            return new perspective_window::overlay_dot(tmp, *((dlib::rgb_pixel*)p));
-        case array2d_type::HsiPixel:
-            return new perspective_window::overlay_dot(tmp, *((dlib::hsi_pixel*)p));
-        case array2d_type::RgbAlphaPixel:
-            return new perspective_window::overlay_dot(tmp, *((dlib::rgb_alpha_pixel*)p));
-        default:
-            return nullptr;
-    }
+    array2d_template(type,
+                     error,
+                     perspective_window_overlay_dot_new2_template,
+                     tmp,
+                     p,
+                     ret);
+
+    return ret;
 }
 
 DLLEXPORT bool perspective_window_overlay_dot_color(perspective_window::overlay_dot* dot, dlib::rgb_alpha_pixel* color)

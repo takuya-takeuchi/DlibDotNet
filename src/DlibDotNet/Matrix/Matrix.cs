@@ -41,7 +41,7 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
-        public Matrix(Array2DBase array)
+        public Matrix(Array2D<TElement> array)
         {
             if (array == null)
                 throw new ArgumentNullException(nameof(array));
@@ -94,7 +94,7 @@ namespace DlibDotNet
             if (column < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(column)}", $"{nameof(column)} should be positive value.");
             if (array.Length != row * column)
-                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}.");
+                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equal to {nameof(row)} x {nameof(column)}.");
 
             if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");
@@ -197,10 +197,10 @@ namespace DlibDotNet
                 throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
             if (column < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(column)}", $"{nameof(column)} should be positive value.");
-            if (column < 1)
-                throw new ArgumentOutOfRangeException($"{nameof(elementSize)} should be more than 1");
+            if (elementSize < 1)
+                throw new ArgumentOutOfRangeException($"{nameof(elementSize)} should be greater than or equal to 1.");
             if (array.Length != row * column * elementSize)
-                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equalt to {nameof(column)}x{nameof(column)}*{nameof(elementSize)}.");
+                throw new ArgumentOutOfRangeException($"{nameof(array)}.Length should equal to {nameof(row)} x {nameof(column)} x {nameof(elementSize)}.");
 
             if (!TryParse(typeof(TElement), out var type))
                 throw new NotSupportedException($"{typeof(TElement).Name} does not support");

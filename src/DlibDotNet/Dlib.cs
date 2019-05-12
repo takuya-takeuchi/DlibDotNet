@@ -658,8 +658,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
-        public static void SaveBmp<T>(Matrix<T> matrix, string path)
-            where T : struct
+        public static void SaveBmp(MatrixBase matrix, string path)
         {
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
@@ -728,8 +727,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
-        public static void SaveDng<T>(Matrix<T> matrix, string path)
-            where T : struct
+        public static void SaveDng(MatrixBase matrix, string path)
         {
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
@@ -804,8 +802,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="quality"/> is less than zero or greater than 100.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
-        public static void SaveJpeg<T>(Matrix<T> matrix, string path, int quality = 75)
-            where T : struct
+        public static void SaveJpeg(MatrixBase matrix, string path, int quality = 75)
         {
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
@@ -874,8 +871,7 @@ namespace DlibDotNet
         /// <exception cref="ArgumentException"><see cref="TwoDimensionObjectBase.Rows"/> or <see cref="TwoDimensionObjectBase.Columns"/> are less than or equal to zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="matrix"/> or <paramref name="path"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="matrix"/> is disposed.</exception>
-        public static void SavePng<T>(Matrix<T> matrix, string path)
-            where T : struct
+        public static void SavePng(MatrixBase matrix, string path)
         {
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));

@@ -3,6 +3,7 @@
 
 #include "../export.h"
 #include <dlib/image_transforms/random_cropper.h>
+#include "../template.h"
 #include "../shared.h"
 
 using namespace dlib;
@@ -11,45 +12,43 @@ using namespace std;
 
 #pragma region template
 
-#define random_cropper_operator_template(__TYPE__, cropper, num_crops, type, images, rects, crops, crop_rects) \
-do {\
-    random_cropper& c = *cropper;\
-    std::vector<matrix<__TYPE__>> tmp_images;\
-    std::vector<std::vector<mmod_rect>> tmp_rects;\
-    std::vector<matrix<__TYPE__>*>& in_images = *(static_cast<std::vector<matrix<__TYPE__>*>*>(images));\
-    std::vector<std::vector<mmod_rect*>*>& in_rects = *(static_cast<std::vector<std::vector<mmod_rect*>*>*>(rects));\
-    std::vector<matrix<__TYPE__>> tmp_ret_images;\
-    std::vector<std::vector<mmod_rect>> tmp_ret_rects;\
-    std::vector<matrix<__TYPE__>*>& out_images = *(static_cast<std::vector<matrix<__TYPE__>*>*>(crops));\
-    std::vector<std::vector<mmod_rect*>*>& out_rects = *(static_cast<std::vector<std::vector<mmod_rect*>*>*>(crop_rects));\
-    for (int j = 0; j < in_images.size(); j++)\
+#define random_cropper_operator_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+random_cropper& c = *cropper;\
+std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>> tmp_images;\
+std::vector<std::vector<mmod_rect>> tmp_rects;\
+auto& in_images = *(static_cast<std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*>(images));\
+std::vector<std::vector<mmod_rect*>*>& in_rects = *(static_cast<std::vector<std::vector<mmod_rect*>*>*>(rects));\
+std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>> tmp_ret_images;\
+std::vector<std::vector<mmod_rect>> tmp_ret_rects;\
+auto& out_images = *(static_cast<std::vector<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>*>(crops));\
+auto& out_rects = *(static_cast<std::vector<std::vector<mmod_rect*>*>*>(crop_rects));\
+for (int j = 0; j < in_images.size(); j++)\
+{\
+    auto& m = *(in_images[j]);\
+    tmp_images.push_back(m);\
+    auto& v = *(in_rects[j]);\
+    std::vector<mmod_rect> tmp_v;\
+    for (int i = 0; i < v.size(); i++)\
     {\
-        matrix<__TYPE__>& m = *(in_images[j]);\
-        tmp_images.push_back(m);\
-        std::vector<mmod_rect*>& v = *(in_rects[j]);\
-        std::vector<mmod_rect> tmp_v;\
-        for (int i = 0; i < v.size(); i++)\
-        {\
-            mmod_rect& r = *(v[i]);\
-            tmp_v.push_back(r);\
-        }\
-        tmp_rects.push_back(tmp_v);\
+        auto& r = *(v[i]);\
+        tmp_v.push_back(r);\
     }\
-    c(num_crops, tmp_images, tmp_rects, tmp_ret_images, tmp_ret_rects);\
-    for (int j = 0; j < tmp_ret_images.size(); j++)\
+    tmp_rects.push_back(tmp_v);\
+}\
+c(num_crops, tmp_images, tmp_rects, tmp_ret_images, tmp_ret_rects);\
+for (int j = 0; j < tmp_ret_images.size(); j++)\
+{\
+    matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = tmp_ret_images[j];\
+    out_images.push_back(new matrix<__TYPE__, __ROWS__, __COLUMNS__>(m));\
+    auto& v = tmp_ret_rects[j];\
+    auto tmp_v = new std::vector<mmod_rect*>();\
+    for (int i = 0; i < v.size(); i++)\
     {\
-        matrix<__TYPE__>& m = tmp_ret_images[j];\
-        out_images.push_back(new matrix<__TYPE__>(m));\
-        std::vector<mmod_rect>& v = tmp_ret_rects[j];\
-        std::vector<mmod_rect*>* tmp_v = new std::vector<mmod_rect*>();\
-        for (int i = 0; i < v.size(); i++)\
-        {\
-            mmod_rect& r = v[i];\
-            tmp_v->push_back(new mmod_rect(r));\
-        }\
-        out_rects.push_back(tmp_v);\
+        auto& r = v[i];\
+        tmp_v->push_back(new mmod_rect(r));\
     }\
-} while (0)
+    out_rects.push_back(tmp_v);\
+}\
 
 #pragma endregion template
 
@@ -155,47 +154,22 @@ DLLEXPORT int random_cropper_operator(random_cropper* cropper,
                                       void* crops,
                                       void* crop_rects)
 {
-    int err = ERR_OK;
+    int error = ERR_OK;
 
-    switch(type)
-    {
-        case matrix_element_type::UInt8:
-            random_cropper_operator_template(uint8_t, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::UInt16:
-            random_cropper_operator_template(uint16_t, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::UInt32:
-            random_cropper_operator_template(uint32_t, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::Int8:
-            random_cropper_operator_template(int8_t, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::Int16:
-            random_cropper_operator_template(int16_t, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::Int32:
-            random_cropper_operator_template(int32_t, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::Float:
-            random_cropper_operator_template(float, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::Double:
-            random_cropper_operator_template(double, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::RgbPixel:
-            random_cropper_operator_template(rgb_pixel, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::HsiPixel:
-            random_cropper_operator_template(hsi_pixel, cropper, num_crops, type, images, rects, crops, crop_rects);
-            break;
-        case matrix_element_type::RgbAlphaPixel:
-        default:
-            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
-            break;
-    }
+    matrix_nonalpha_template(type,
+                             error,
+                             matrix_template_size_template,
+                             random_cropper_operator_template,
+                             0,
+                             0,
+                             cropper,
+                             num_crops,
+                             images,
+                             rects,
+                             crops,
+                             crop_rects);
 
-    return err;
+    return error;
 }
 
 DLLEXPORT void random_cropper_delete(random_cropper* obj)

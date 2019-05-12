@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using uint8_t = System.Byte;
 using uint16_t = System.UInt16;
 using uint32_t = System.UInt32;
+using int64_t = System.Int64;
 using int8_t = System.SByte;
 using int16_t = System.Int16;
 using int32_t = System.Int32;
@@ -232,11 +233,13 @@ namespace DlibDotNet
 
             GeneralError = 0x76000000,
 
-            GeneralFileIOError   = -(GeneralError | 0x00000001),
+            GeneralFileIOError      = -(GeneralError | 0x00000001),
 
-            GeneralFileImageLoad = -(GeneralError | 0x00000002),
+            GeneralFileImageLoad    = -(GeneralError | 0x00000002),
 
-            GeneralSerialization = -(GeneralError | 0x00000003),
+            GeneralSerialization    = -(GeneralError | 0x00000003),
+
+            GeneralInvalidParameter = -(GeneralError | 0x00000004),
 
             #endregion
 
@@ -404,60 +407,80 @@ namespace DlibDotNet
 
         #region matrix_range_exp
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct matrix_range_exp_create_param
-        {
-            // uint8_t
-            public uint8_t uint8_t_start;
-            public uint8_t uint8_t_inc;
-            public uint8_t uint8_t_end;
-            public bool use_uint8_t_inc;
-
-            // uint16_t
-            public uint16_t uint16_t_start;
-            public uint16_t uint16_t_inc;
-            public uint16_t uint16_t_end;
-            bool use_uint16_t_inc;
-
-            // int8_t
-            public int8_t int8_t_start;
-            public int8_t int8_t_inc;
-            public int8_t int8_t_end;
-            bool use_int8_t_inc;
-
-            // int16_t
-            public int16_t int16_t_start;
-            public int16_t int16_t_inc;
-            public int16_t int16_t_end;
-            bool use_int16_t_inc;
-
-            // int32_t
-            public int32_t int32_t_start;
-            public int32_t int32_t_inc;
-            public int32_t int32_t_end;
-            public bool use_int32_t_inc;
-
-            // float
-            public float float_start;
-            public float float_inc;
-            public float float_end;
-            public bool use_float_inc;
-
-            // double
-            public double double_start;
-            public double double_inc;
-            public double double_end;
-            public bool use_double_inc;
-
-            public bool use_num;
-            public int num;
-        }
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int8_t_new1(int8_t start, int8_t inc, int8_t end);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr matrix_range_exp_create(MatrixElementType matrixElementType, ref matrix_range_exp_create_param param);
+        public static extern IntPtr matrix_range_exp_create_int8_t_new2(int8_t start, int8_t end, int num);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void matrix_range_exp_delete(IntPtr array);
+        public static extern IntPtr matrix_range_exp_create_int8_t_new3(int8_t start, int8_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int16_t_new1(int16_t start, int16_t inc, int16_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int16_t_new2(int16_t start, int16_t end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int16_t_new3(int16_t start, int16_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int32_t_new1(int32_t start, int32_t inc, int32_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int32_t_new2(int32_t start, int32_t end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int32_t_new3(int32_t start, int32_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int64_t_new1(int64_t start, int64_t inc, int64_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int64_t_new2(int64_t start, int64_t end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_int64_t_new3(int64_t start, int64_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_uint8_t_new1(uint8_t start, uint8_t inc, uint8_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_uint8_t_new2(uint8_t start, uint8_t end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_uint8_t_new3(uint8_t start, uint8_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_uint16_t_new1(uint16_t start, uint16_t inc, uint16_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_uint16_t_new2(uint16_t start, uint16_t end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_uint16_t_new3(uint16_t start, uint16_t end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_float_new1(float start, float inc, float end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_float_new2(float start, float end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_float_new3(float start, float end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_double_new1(double start, double inc, double end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_double_new2(double start, double end, int num);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_range_exp_create_double_new3(double start, double end);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void matrix_range_exp_delete(MatrixElementType matrixElementType, IntPtr array);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]

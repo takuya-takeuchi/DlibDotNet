@@ -31,7 +31,7 @@ do {\
     dlib::matrix<ELEMENT_IN>& tmp_img = *static_cast<dlib::matrix<ELEMENT_IN>*>(img);\
     dlib::matrix<ELEMENT_OUT> tmp_tiled_img;\
     std::vector<dlib::rectangle> tmp_rects;\
-    create_tiled_pyramid<PYRAMID_TYPE<rate>>(tmp_img, tmp_tiled_img, tmp_rects, padding, outer_padding);\
+    dlib::create_tiled_pyramid<PYRAMID_TYPE<rate>>(tmp_img, tmp_tiled_img, tmp_rects, padding, outer_padding);\
     auto out_rects = new std::vector<dlib::rectangle*>();\
     for (int i = 0; i < tmp_rects.size(); i++)\
         out_rects->push_back(new dlib::rectangle(tmp_rects[i]));\

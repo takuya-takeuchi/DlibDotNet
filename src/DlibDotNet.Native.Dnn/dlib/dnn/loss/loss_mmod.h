@@ -79,35 +79,21 @@ train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_train
 #define train_one_step_template(__NET_TYPE__, trainer, __TYPE__, data, labels) \
 train_test_template_sub(__NET_TYPE__, trainer, __TYPE__, data, labels, dnn_trainer_train_one_step_template);\
 
+#define loss_mmod_new2_template(__NET_TYPE__, __ELEMENT_TYPENAME__, __ELEMENT_TYPE__, error, ...) \
+auto& o = *option;\
+*net = new __NET_TYPE__(o);
+
 #pragma endregion template
 
 DLLEXPORT int loss_mmod_new2(const int type, mmod_options* option, void** net)
 {
-    int err = ERR_OK;
-
-    mmod_options& o = *option;
-
-    // Check type argument and cast to the proper type
-    switch(type)
-    {
-        case 0:
-            *net = new net_type(o);
-            break;
-        // case 1:
-        //     *net = new net_type_1(o);
-        //     break;
-        // case 2:
-        //     *net = new net_type_2(o);
-        //     break;
-        // case 3:
-        //     *net = new net_type_3(o);
-        //     break;
-        default:
-            err = ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-            break;
-    }
-
-    return err;
+    int error = ERR_OK;
+    loss_mmod_template(type,
+                       error,
+                       loss_mmod_new2_template,
+                       option,
+                       net);
+    return error;
 }
 
 DLLEXPORT int loss_mmod_clone(void* obj, const int src_type, const int dst_type, void** new_net)

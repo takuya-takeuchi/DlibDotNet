@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using DlibDotNet.Extensions;
-using uint8_t = System.Byte;
-using uint16_t = System.UInt16;
-using uint32_t = System.UInt32;
-using int8_t = System.SByte;
-using int16_t = System.Int16;
-using int32_t = System.Int32;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -23,72 +16,55 @@ namespace DlibDotNet
 
         private readonly NativeMethods.MatrixElementType _NativeMatrixElementType;
 
-        private static readonly Dictionary<Type, MatrixElementTypes> SupportTypes = new Dictionary<Type, MatrixElementTypes>();
+        private readonly Bridge<T> _Bridge;
 
         #endregion
 
         #region Constructors
 
-        static MatrixRangeExp()
-        {
-            var types = new[]
-            {
-                new { Type = typeof(byte),          ElementType = MatrixElementTypes.UInt8  },
-                new { Type = typeof(ushort),        ElementType = MatrixElementTypes.UInt16 },
-                new { Type = typeof(sbyte),         ElementType = MatrixElementTypes.Int8  },
-                new { Type = typeof(short),         ElementType = MatrixElementTypes.Int16 },
-                new { Type = typeof(int),           ElementType = MatrixElementTypes.Int32 },
-                new { Type = typeof(float),         ElementType = MatrixElementTypes.Float  },
-                new { Type = typeof(double),        ElementType = MatrixElementTypes.Double }
-            };
-
-            foreach (var type in types)
-                SupportTypes.Add(type.Type, type.ElementType);
-        }
-
         public MatrixRangeExp(T start, T end)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            Matrix<T>.TryParse<T>(out var type);
+
+            this._Bridge = CreateBridge(type);
 
             this._NativeMatrixElementType = type.ToNativeMatrixElementType();
             this._MatrixElementType = type;
 
-            var param = this.CreataParam(start, end, false, default(T), false, 0);
-            this.NativePtr = NativeMethods.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
+            this.NativePtr = this._Bridge.Create1(start, end);
         }
 
         public MatrixRangeExp(T start, T inc, T end)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            Matrix<T>.TryParse<T>(out var type);
+
+            this._Bridge = CreateBridge(type);
 
             this._NativeMatrixElementType = type.ToNativeMatrixElementType();
             this._MatrixElementType = type;
 
-            var param = this.CreataParam(start, end, true, inc, false, 0);
-            this.NativePtr = NativeMethods.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
+            this.NativePtr = this._Bridge.Create2(start, inc, end);
         }
 
-        public MatrixRangeExp(T start, T end, uint num)
+        public MatrixRangeExp(T start, T end, int num)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            Matrix<T>.TryParse<T>(out var type);
+
+            this._Bridge = CreateBridge(type);
 
             this._NativeMatrixElementType = type.ToNativeMatrixElementType();
             this._MatrixElementType = type;
 
-            var param = this.CreataParam(start, end, false, default(T), true, num);
-            this.NativePtr = NativeMethods.matrix_range_exp_create(this._NativeMatrixElementType, ref param);
+            this.NativePtr = this._Bridge.Create3(start, end, num);
         }
 
         internal MatrixRangeExp(IntPtr ptr)
         {
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            Matrix<T>.TryParse<T>(out var type);
 
             this._NativeMatrixElementType = type.ToNativeMatrixElementType();
             this._MatrixElementType = type;
+
             this.NativePtr = ptr;
         }
 
@@ -134,75 +110,274 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.matrix_range_exp_delete(this.NativePtr);
+            NativeMethods.matrix_range_exp_delete(this._NativeMatrixElementType, this.NativePtr);
         }
 
         #endregion
 
         #region Helpers
 
-        private NativeMethods.matrix_range_exp_create_param CreataParam(T start, T end, bool useInc, T inc, bool useNum, uint num)
+        private static Bridge<T> CreateBridge(MatrixElementTypes types)
         {
-            var param = new NativeMethods.matrix_range_exp_create_param();
-
-            if (!SupportTypes.TryGetValue(typeof(T), out var type))
-                return param;
-
-            switch (type)
+            switch (types)
             {
                 case MatrixElementTypes.UInt8:
-                    param.uint8_t_start = (uint8_t) (object) start;
-                    param.uint8_t_end = (uint8_t)(object)end;
-                    if(useInc)
-                        param.uint8_t_inc = (uint8_t)(object)inc;
-                    break;
+                    return new UInt8Bridge() as Bridge<T>;
                 case MatrixElementTypes.UInt16:
-                    param.uint16_t_start = (uint16_t)(object)start;
-                    param.uint16_t_end = (uint16_t)(object)end;
-                    if (useInc)
-                        param.uint16_t_inc = (uint16_t)(object)inc;
-                    break;
+                    return new UInt16Bridge() as Bridge<T>;
                 case MatrixElementTypes.Int8:
-                    param.int8_t_start = (int8_t)(object)start;
-                    param.int8_t_end = (int8_t)(object)end;
-                    if (useInc)
-                        param.int8_t_inc = (int8_t)(object)inc;
-                    break;
+                    return new Int8Bridge() as Bridge<T>;
                 case MatrixElementTypes.Int16:
-                    param.int16_t_start = (int16_t)(object)start;
-                    param.int16_t_end = (int16_t)(object)end;
-                    if (useInc)
-                        param.int16_t_inc = (int16_t)(object)inc;
-                    break;
+                    return new Int16Bridge() as Bridge<T>;
                 case MatrixElementTypes.Int32:
-                    param.int32_t_start = (int32_t)(object)start;
-                    param.int32_t_end = (int32_t)(object)end;
-                    if (useInc)
-                        param.int32_t_inc = (int32_t)(object)inc;
-                    break;
+                    return new Int32Bridge() as Bridge<T>;
+                case MatrixElementTypes.Int64:
+                    return new Int64Bridge() as Bridge<T>;
                 case MatrixElementTypes.Float:
-                    param.float_start = (float)(object)start;
-                    param.float_end = (float)(object)end;
-                    if (useInc)
-                        param.float_inc = (float)(object)inc;
-                    break;
+                    return new FloatBridge() as Bridge<T>;
                 case MatrixElementTypes.Double:
-                    param.double_start = (double)(object)start;
-                    param.double_end = (double)(object)end;
-                    if (useInc)
-                        param.double_inc = (double)(object)inc;
-                    break;
+                    return new DoubleBridge() as Bridge<T>;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(types), types, null);
             }
-
-            if (useNum)
-                param.num = (int)num;
-
-            return param;
         }
 
         #endregion
+
+        #endregion
+
+        #region Bridge
+        
+        private abstract class Bridge<T>
+        {
+
+            #region Methods
+
+            public abstract IntPtr Create1(T start, T end);
+
+            public abstract IntPtr Create2(T start, T inc, T end);
+
+            public abstract IntPtr Create3(T start, T end, int num);
+
+            #endregion
+
+        }
+
+        private sealed class Int8Bridge : Bridge<sbyte>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(sbyte start, sbyte end)
+            {
+                return NativeMethods.matrix_range_exp_create_int8_t_new3(start, end);
+            }
+
+            public override IntPtr Create2(sbyte start, sbyte inc, sbyte end)
+            {
+                if(inc == 0)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_int8_t_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(sbyte start, sbyte end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_int8_t_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class Int16Bridge : Bridge<short>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(short start, short end)
+            {
+                return NativeMethods.matrix_range_exp_create_int16_t_new3(start, end);
+            }
+
+            public override IntPtr Create2(short start, short inc, short end)
+            {
+                if (inc == 0)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_int16_t_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(short start, short end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_int16_t_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class Int32Bridge : Bridge<int>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(int start, int end)
+            {
+                return NativeMethods.matrix_range_exp_create_int32_t_new3(start, end);
+            }
+
+            public override IntPtr Create2(int start, int inc, int end)
+            {
+                if (inc == 0)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_int32_t_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(int start, int end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_int32_t_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class Int64Bridge : Bridge<long>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(long start, long end)
+            {
+                return NativeMethods.matrix_range_exp_create_int64_t_new3(start, end);
+            }
+
+            public override IntPtr Create2(long start, long inc, long end)
+            {
+                if (inc == 0)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_int64_t_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(long start, long end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_int64_t_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class UInt8Bridge : Bridge<byte>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(byte start, byte end)
+            {
+                return NativeMethods.matrix_range_exp_create_uint8_t_new3(start, end);
+            }
+
+            public override IntPtr Create2(byte start, byte inc, byte end)
+            {
+                if (inc == 0)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_uint8_t_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(byte start, byte end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_uint8_t_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class UInt16Bridge : Bridge<ushort>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(ushort start, ushort end)
+            {
+                return NativeMethods.matrix_range_exp_create_uint16_t_new3(start, end);
+            }
+
+            public override IntPtr Create2(ushort start, ushort inc, ushort end)
+            {
+                if (inc == 0)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_uint16_t_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(ushort start, ushort end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_uint16_t_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class FloatBridge : Bridge<float>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(float start, float end)
+            {
+                return NativeMethods.matrix_range_exp_create_float_new3(start, end);
+            }
+
+            public override IntPtr Create2(float start, float inc, float end)
+            {
+                if (Math.Abs(inc) < float.Epsilon)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_float_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(float start, float end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_float_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
+
+        private sealed class DoubleBridge : Bridge<double>
+        {
+
+            #region Methods
+
+            public override IntPtr Create1(double start, double end)
+            {
+                return NativeMethods.matrix_range_exp_create_double_new3(start, end);
+            }
+
+            public override IntPtr Create2(double start, double inc, double end)
+            {
+                if (Math.Abs(inc) < double.Epsilon)
+                    throw new ArgumentOutOfRangeException($"{nameof(inc)} must not be 0.");
+
+                return NativeMethods.matrix_range_exp_create_double_new1(start, inc, end);
+            }
+
+            public override IntPtr Create3(double start, double end, int num)
+            {
+                return NativeMethods.matrix_range_exp_create_double_new2(start, end, num);
+            }
+
+            #endregion
+
+        }
 
         #endregion
 

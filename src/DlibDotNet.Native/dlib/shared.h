@@ -245,6 +245,7 @@ typedef struct
 #define ERR_GENERAL_FILE_IO                         -(ERR_GENERAL_ERROR | 0x00000001)
 #define ERR_GENERAL_IMAGE_LOAD                      -(ERR_GENERAL_ERROR | 0x00000002)
 #define ERR_GENERAL_SERIALIZATION                   -(ERR_GENERAL_ERROR | 0x00000003)
+#define ERR_GENERAL_INVALID_PARAMETER               -(ERR_GENERAL_ERROR | 0x00000004)
 
 // CUDA
 #define ERR_CUDA_ERROR                                                    0x77000000
@@ -423,38 +424,6 @@ do {\
 
 #pragma region general
 
-#define matrix_template_size_arg1_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1);\
-    }\
-    else if (__ROWS__ == 1 && __COLUMNS__ == 3)\
-    {\
-        __FUNC__(__TYPE__, 1, 3, error, arg1);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 2, 1, error, arg1);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
 #define matrix_template_size_arg2_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2) \
 do {\
     if (__ROWS__ == 0 && __COLUMNS__ == 0)\
@@ -487,158 +456,6 @@ do {\
     }\
 } while (0)
 
-#define matrix_template_size_arg3_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 1 && __COLUMNS__ == 3)\
-    {\
-        __FUNC__(__TYPE__, 1, 3, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 2, 1, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2, arg3);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2, arg3);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#define matrix_template_size_arg4_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 1 && __COLUMNS__ == 3)\
-    {\
-        __FUNC__(__TYPE__, 1, 3, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 2, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2, arg3, arg4);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#define matrix_template_size_arg5_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4, arg5) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 1 && __COLUMNS__ == 3)\
-    {\
-        __FUNC__(__TYPE__, 1, 3, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 2 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 2, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
 #pragma endregion general
-
-#pragma region a column vector
-
-#define matrix_template_size_one_column_vector_arg1_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#define matrix_template_size_one_column_vector_arg5_template(__TYPE__, __ROWS__, __COLUMNS__, __FUNC__, error, arg1, arg2, arg3, arg4, arg5) \
-do {\
-    if (__ROWS__ == 0 && __COLUMNS__ == 0)\
-    {\
-        __FUNC__(__TYPE__, 0, 0, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 0 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 0, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 5 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 5, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else if (__ROWS__ == 31 && __COLUMNS__ == 1)\
-    {\
-        __FUNC__(__TYPE__, 31, 1, error, arg1, arg2, arg3, arg4, arg5);\
-    }\
-    else\
-    {\
-        error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT;\
-    }\
-} while (0)
-
-#pragma endregion a column vector
-
-#pragma endregion matrix_template_size
-
-#pragma endregion macro
 
 #endif

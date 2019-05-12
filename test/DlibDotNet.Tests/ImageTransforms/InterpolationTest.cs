@@ -12,6 +12,8 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         private const string LoadTarget = "Lenna_mini";
 
+        private readonly uint[] PyramidRates = new[] { 1u, 2u, 3u, 4u, 6u };
+
         #region ExtractImageChip
 
         [TestMethod]
@@ -22,81 +24,170 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
-                new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
-                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
-                new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.RgbPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.RgbAlphaPixel, SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = false }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = ImageTypes.UInt8,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.UInt16,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.UInt32,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.Int8,          SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.Int16,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.Int32,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.HsiPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = ImageTypes.Float,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = ImageTypes.Double,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }}
             };
 
             var type = this.GetType().Name;
             using (var dims = new ChipDims(227, 227))
             using (var chip = new ChipDetails(new Rectangle(0, 0, 100, 100), dims))
                 foreach (var input in tests)
-                {
-                    var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
-
-                    var outputImageAction = new Func<bool, Array2DBase>(expect =>
+                    foreach (var supportType in input.SupportType)
                     {
-                        switch (input.Type)
+                        var expectResult = supportType.ExpectResult;
+                        var interpolation = supportType.Type;
+                        var imageObj = DlibTest.LoadImage(input.Type, path);
+
+                        var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
-                            case ImageTypes.RgbPixel:
-                                return Dlib.ExtractImageChip<RgbPixel>(imageObj, chip);
-                            case ImageTypes.RgbAlphaPixel:
-                                return Dlib.ExtractImageChip<RgbAlphaPixel>(imageObj, chip);
-                            case ImageTypes.UInt8:
-                                return Dlib.ExtractImageChip<byte>(imageObj, chip);
-                            case ImageTypes.UInt16:
-                                return Dlib.ExtractImageChip<ushort>(imageObj, chip);
-                            case ImageTypes.UInt32:
-                                return Dlib.ExtractImageChip<uint>(imageObj, chip);
-                            case ImageTypes.Int8:
-                                return Dlib.ExtractImageChip<sbyte>(imageObj, chip);
-                            case ImageTypes.Int16:
-                                return Dlib.ExtractImageChip<short>(imageObj, chip);
-                            case ImageTypes.Int32:
-                                return Dlib.ExtractImageChip<int>(imageObj, chip);
-                            case ImageTypes.HsiPixel:
-                                return Dlib.ExtractImageChip<HsiPixel>(imageObj, chip);
-                            case ImageTypes.Float:
-                                return Dlib.ExtractImageChip<float>(imageObj, chip);
-                            case ImageTypes.Double:
-                                return Dlib.ExtractImageChip<double>(imageObj, chip);
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    });
+                            switch (input.Type)
+                            {
+                                case ImageTypes.RgbPixel:
+                                    return Dlib.ExtractImageChip<RgbPixel>(imageObj, chip, interpolation);
+                                case ImageTypes.RgbAlphaPixel:
+                                    return Dlib.ExtractImageChip<RgbAlphaPixel>(imageObj, chip, interpolation);
+                                case ImageTypes.UInt8:
+                                    return Dlib.ExtractImageChip<byte>(imageObj, chip, interpolation);
+                                case ImageTypes.UInt16:
+                                    return Dlib.ExtractImageChip<ushort>(imageObj, chip, interpolation);
+                                case ImageTypes.UInt32:
+                                    return Dlib.ExtractImageChip<uint>(imageObj, chip, interpolation);
+                                case ImageTypes.Int8:
+                                    return Dlib.ExtractImageChip<sbyte>(imageObj, chip, interpolation);
+                                case ImageTypes.Int16:
+                                    return Dlib.ExtractImageChip<short>(imageObj, chip, interpolation);
+                                case ImageTypes.Int32:
+                                    return Dlib.ExtractImageChip<int>(imageObj, chip, interpolation);
+                                case ImageTypes.HsiPixel:
+                                    return Dlib.ExtractImageChip<HsiPixel>(imageObj, chip, interpolation);
+                                case ImageTypes.Float:
+                                    return Dlib.ExtractImageChip<float>(imageObj, chip, interpolation);
+                                case ImageTypes.Double:
+                                    return Dlib.ExtractImageChip<double>(imageObj, chip, interpolation);
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        });
 
-                    var successAction = new Action<Array2DBase>(image =>
+                        var successAction = new Action<Array2DBase>(image =>
+                        {
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}_{interpolation}.bmp")}");
+                        });
+
+                        var failAction = new Action(() =>
+                        {
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        });
+
+                        var finallyAction = new Action(() =>
+                        {
+                            if (imageObj != null)
+                                this.DisposeAndCheckDisposedState(imageObj);
+                        });
+
+                        var exceptionAction = new Action(() =>
+                        {
+                            Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}, Type: {input.Type}.");
+                        });
+
+                        DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                    }
+        }
+
+        [TestMethod]
+        public void ExtractImageChipMatrix()
+        {
+            const string testName = nameof(ExtractImageChipMatrix);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = false }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.UInt8,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.UInt16,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.UInt32,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.Int8,          SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.Int16,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.Int32,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.HsiPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.Float,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.Double,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }}
+            };
+
+            var type = this.GetType().Name;
+            using (var dims = new ChipDims(227, 227))
+            using (var chip = new ChipDetails(new Rectangle(0, 0, 100, 100), dims))
+                foreach (var input in tests)
+                    foreach (var supportType in input.SupportType)
                     {
-                        Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}.bmp")}");
-                    });
+                        var expectResult = supportType.ExpectResult;
+                        var interpolation = supportType.Type;
+                        var imageObj = DlibTest.LoadImageAsMatrix(input.Type, path);
 
-                    var failAction = new Action(() =>
-                    {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
-                    });
+                        var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                        {
+                            switch (input.Type)
+                            {
+                                case MatrixElementTypes.RgbPixel:
+                                    return Dlib.ExtractImageChip<RgbPixel>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.RgbAlphaPixel:
+                                    return Dlib.ExtractImageChip<RgbAlphaPixel>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.UInt8:
+                                    return Dlib.ExtractImageChip<byte>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.UInt16:
+                                    return Dlib.ExtractImageChip<ushort>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.UInt32:
+                                    return Dlib.ExtractImageChip<uint>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.Int8:
+                                    return Dlib.ExtractImageChip<sbyte>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.Int16:
+                                    return Dlib.ExtractImageChip<short>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.Int32:
+                                    return Dlib.ExtractImageChip<int>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.HsiPixel:
+                                    return Dlib.ExtractImageChip<HsiPixel>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.Float:
+                                    return Dlib.ExtractImageChip<float>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.Double:
+                                    return Dlib.ExtractImageChip<double>(imageObj, chip, interpolation);
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        });
 
-                    var finallyAction = new Action(() =>
-                    {
-                        if (imageObj != null)
-                            this.DisposeAndCheckDisposedState(imageObj);
-                    });
+                        var successAction = new Action<MatrixBase>(image =>
+                        {
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}_{interpolation}.bmp")}");
+                        });
 
-                    var exceptionAction = new Action(() =>
-                    {
-                        Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}, Type: {input.Type}.");
-                    });
+                        var failAction = new Action(() =>
+                        {
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        });
 
-                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
-                }
+                        var finallyAction = new Action(() =>
+                        {
+                            if (imageObj != null)
+                                this.DisposeAndCheckDisposedState(imageObj);
+                        });
+
+                        var exceptionAction = new Action(() =>
+                        {
+                            Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}, Type: {input.Type}.");
+                        });
+
+                        DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                    }
         }
 
         #endregion
@@ -302,7 +393,7 @@ namespace DlibDotNet.Tests.ImageTransforms
         [TestMethod]
         public void PyramidUp()
         {
-            const string testName = "PyramidUp";
+            const string testName = nameof(PyramidUp);
             var path = this.GetDataFile($"{LoadTarget}.bmp");
 
             var tests = new[]
@@ -355,6 +446,253 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
             }
+        }
+
+        [TestMethod]
+        public void PyramidUpMatrix()
+        {
+            const string testName = nameof(PyramidUpMatrix);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var test in tests)
+            {
+                var expectResult = test.ExpectResult;
+                var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+
+                var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                {
+                    Dlib.PyramidUp(imageObj);
+                    return imageObj;
+                });
+
+                var successAction = new Action<MatrixBase>(image =>
+                {
+                    Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
+                });
+
+                var failAction = new Action(() =>
+                {
+                    Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                });
+
+                var finallyAction = new Action(() =>
+                {
+                    if (imageObj != null)
+                        this.DisposeAndCheckDisposedState(imageObj);
+                });
+
+                var exceptionAction = new Action(() =>
+                {
+                    Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                });
+
+                DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+            }
+        }
+
+        [TestMethod]
+        public void PyramidUpMatrix2()
+        {
+            const string testName = nameof(PyramidUpMatrix2);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var pyramidRate in this.PyramidRates)
+                foreach (var test in tests)
+                {
+                    var expectResult = test.ExpectResult;
+                    var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+
+                    var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                    {
+                        using (var pyr = new PyramidDown(pyramidRate))
+                        {
+                            switch (test.Type)
+                            {
+                                case MatrixElementTypes.UInt8:
+                                    {
+                                        Dlib.PyramidUp((Matrix<byte>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.UInt16:
+                                    {
+                                        Dlib.PyramidUp((Matrix<ushort>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.UInt32:
+                                    {
+                                        Dlib.PyramidUp((Matrix<uint>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.UInt64:
+                                    {
+                                        Dlib.PyramidUp((Matrix<ulong>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int8:
+                                    {
+                                        Dlib.PyramidUp((Matrix<sbyte>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int16:
+                                    {
+                                        Dlib.PyramidUp((Matrix<short>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int32:
+                                    {
+                                        Dlib.PyramidUp((Matrix<int>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Int64:
+                                    {
+                                        Dlib.PyramidUp((Matrix<long>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Float:
+                                    {
+                                        Dlib.PyramidUp((Matrix<float>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.Double:
+                                    {
+                                        Dlib.PyramidUp((Matrix<double>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.RgbPixel:
+                                    {
+                                        Dlib.PyramidUp((Matrix<RgbPixel>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.RgbAlphaPixel:
+                                    {
+                                        Dlib.PyramidUp((Matrix<RgbAlphaPixel>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                case MatrixElementTypes.HsiPixel:
+                                    {
+                                        Dlib.PyramidUp((Matrix<HsiPixel>)imageObj, pyr, out var ret);
+                                        return ret;
+                                    }
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                    });
+
+                    var successAction = new Action<MatrixBase>(image =>
+                    {
+                        Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{pyramidRate}.bmp")}");
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        if (imageObj != null)
+                            this.DisposeAndCheckDisposedState(imageObj);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
+        }
+
+        [TestMethod]
+        public void PyramidUpMatrix3()
+        {
+            const string testName = nameof(PyramidUpMatrix3);
+            var path = this.GetDataFile($"{LoadTarget}.bmp");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
+                new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
+                new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
+                new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.Float,         ExpectResult = true},
+                new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+            };
+
+            var type = this.GetType().Name;
+            foreach (var pyramidRate in this.PyramidRates)
+                foreach (var test in tests)
+                {
+                    var expectResult = test.ExpectResult;
+                    var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+
+                    var outputImageAction = new Func<bool, MatrixBase>(expect =>
+                    {
+                        Dlib.PyramidUp<PyramidDown>(imageObj, pyramidRate);
+                        return imageObj;
+                    });
+
+                    var successAction = new Action<MatrixBase>(image =>
+                    {
+                        Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}_{pyramidRate}.bmp")}");
+                    });
+
+                    var failAction = new Action(() =>
+                    {
+                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                    });
+
+                    var finallyAction = new Action(() =>
+                    {
+                        if (imageObj != null)
+                            this.DisposeAndCheckDisposedState(imageObj);
+                    });
+
+                    var exceptionAction = new Action(() =>
+                    {
+                        Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                    });
+
+                    DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
+                }
         }
 
         #endregion
@@ -440,7 +778,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             };
 
             var type = this.GetType().Name;
-            foreach (InterpolationTypes itype in Enum.GetValues(typeof(InterpolationTypes)))
+            foreach (InterpolationTypes interpolationTypes in Enum.GetValues(typeof(InterpolationTypes)))
                 foreach (var size in new[] { 128, 512 })
                     foreach (var input in tests)
                     {
@@ -450,18 +788,18 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
-                            Dlib.ResizeImage(imageObj, outputObj, itype);
+                            Dlib.ResizeImage(imageObj, outputObj, interpolationTypes);
                             return outputObj;
                         });
 
                         var successAction = new Action<Array2DBase>(image =>
                         {
-                            Dlib.SaveJpeg(outputObj, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}_{input.Type}_{size}_{itype}.jpg")}");
+                            Dlib.SaveJpeg(outputObj, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}_{input.Type}_{size}_{interpolationTypes}.jpg")}");
                         });
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {itype}.");
+                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {interpolationTypes}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -474,7 +812,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var exceptionAction = new Action(() =>
                         {
-                            Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {itype}.");
+                            Console.WriteLine($"Failed to execute {testName} to InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {interpolationTypes}.");
                         });
 
                         DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);

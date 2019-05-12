@@ -88,7 +88,7 @@ namespace DlibDotNet
             }
         }
 
-        public static MatrixOp Mat<T>(IUndisposableElementCollection<Matrix<T>> collection)
+        public static MatrixOp Mat<T>(OutputLabels<Matrix<T>> collection)
             where T : struct
         {
             if (collection == null)
