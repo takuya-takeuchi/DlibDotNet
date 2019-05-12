@@ -23,7 +23,7 @@ dlib::assign_image(*((array2d<__SUBTYPE__>*)out_img), *((array2d<__TYPE__>*)in_i
 
 #define assign_image_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, __SUBTYPE__, subtype, ...) \
 auto& in = *((matrix<__TYPE__>*)in_img);\
-auto& out = *((matrix<__TYPE__>*)out_img);\
+auto& out = *((matrix<__SUBTYPE__>*)out_img);\
 dlib::assign_image(out, in);\
 
 #pragma endregion template
