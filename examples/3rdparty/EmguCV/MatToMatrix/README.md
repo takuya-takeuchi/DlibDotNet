@@ -14,7 +14,5 @@ Please refer the [Tutorial for Linux](https://github.com/takuya-takeuchi/DlibDot
 
 ## 2. Run
 
-````
-cd <MatToMatrix_dir>
-dotnet run -c Release
-````
+1. Move to output directory
+2. Double click **MatToMatrix.exe**
