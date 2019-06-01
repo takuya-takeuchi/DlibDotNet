@@ -1,7 +1,7 @@
 #***************************************
 #Arguments
 #%1: Build Configuration (Release/Debug)
-#%2: Target (cpu/cuda)
+#%2: Target (cpu/cuda/mkl)
 #%3: Architecture (32/64)
 #%4: CUDA version if Target is cuda [92/100]
 #***************************************
@@ -34,49 +34,98 @@ Param([Parameter(
 # Check Parameter
 $ConfigurationArray = @("Debug","Release")
 if($ConfigurationArray.Contains($Configuration) -eq $False){
-  Write-Host "Error: Speficy Target [cpu/cuda]" -ForegroundColor Red
+  Write-Host "Error: Specify build configuration [Release/Debug]" -ForegroundColor Red
   exit
 }
 
-$TargetArray = @("cpu","cuda")
+$TargetArray = @("cpu","cuda","mkl")
 if($TargetArray.Contains($Target) -eq $False){
-  Write-Host "Error: Speficy build configuration [Release/Debug]" -ForegroundColor Red
+  Write-Host "Error: Specify Target [cpu/cuda/mkl]" -ForegroundColor Red
   exit
 }
 
 $ArchitectureArray = @(32,64)
 if($ArchitectureArray.Contains($Architecture) -eq $False){
-  Write-Host "Error: Speficy Architecture [32/64]" -ForegroundColor Red
+  Write-Host "Error: Specify Architecture [32/64]" -ForegroundColor Red
   exit
 }
 
-if ($Args.Length -eq 1)
-{
-  $CudaVersion = [int]$Args[0]
-  $CudaVersionArray = @(92,100)
-  $CudaVersionHash = @{92 = "9.2"; 100 = "10.0"}
-  if($CudaVersionArray.Contains($CudaVersion) -ne $True){
-    Write-Host "Error: Speficy CUDA version [92/100]" -ForegroundColor Red
-    exit
-  }
-}
-else
-{
-  if ($Target -eq "cuda")
-  {
-    Write-Host "Error: Target is cuda but CUDA Version is not specified" -ForegroundColor Red
-    exit
-  }
+# Check Args
+switch ($Target) {
+    "mkl"
+    {
+      if ($Args.Length -ne 1)
+      {
+        Write-Host "Error: Specify Intel MKL directory" -ForegroundColor Red
+        exit
+      }
+
+      $INTELMKL_DIR = [String]$Args[0]
+      if ((Test-Path $INTELMKL_DIR) -eq $False)
+      {
+        Write-Host "Error: Specified IntelMKL directory '${INTELMKL_DIR}' does not found" -ForegroundColor Red
+        exit
+      }
+
+      $MKL_INCLUDE_DIR       = Join-Path $INTELMKL_DIR "mkl/include"
+      $LIBIOMP5MD_LIB        = Join-Path $INTELMKL_DIR "compiler/lib/intel64_win/libiomp5md.lib"
+      $MKLCOREDLL_LIB        = Join-Path $INTELMKL_DIR "mkl/lib/intel64_win/mkl_core_dll.lib"
+      $MKLINTELLP64DLL_LIB   = Join-Path $INTELMKL_DIR "mkl/lib/intel64_win/mkl_intel_lp64_dll.lib"
+      $MKLINTELTHREADDLL_LIB = Join-Path $INTELMKL_DIR "mkl/lib/intel64_win/mkl_intel_thread_dll.lib"
+
+      if ((Test-Path $LIBIOMP5MD_LIB) -eq $False)
+      {
+        Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
+        exit
+      }
+      if ((Test-Path $MKLCOREDLL_LIB) -eq $False)
+      {
+        Write-Host "Error: ${MKLCOREDLL_LIB} does not found" -ForegroundColor Red
+        exit
+      }
+      if ((Test-Path $MKLINTELLP64DLL_LIB) -eq $False)
+      {
+        Write-Host "Error: ${MKLINTELLP64DLL_LIB} does not found" -ForegroundColor Red
+        exit
+      }
+      if ((Test-Path $MKLINTELTHREADDLL_LIB) -eq $False)
+      {
+        Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
+        exit
+      }
+    }
+    "cuda"
+    {
+      if ($Args.Length -ne 1)
+      {
+        Write-Host "Error: Specify CUDA version [92/100]" -ForegroundColor Red
+        exit
+      }
+
+      $CudaVersion = [int]$Args[0]
+      $CudaVersionArray = @(92,100)
+      $CudaVersionHash = @{92 = "9.2"; 100 = "10.0"}
+      if($CudaVersionArray.Contains($CudaVersion) -ne $True){
+        Write-Host "Error: Specify CUDA version [92/100]" -ForegroundColor Red
+        exit
+      }
+    }
 }
 
 # Set Output directory
-if ($Target -eq "cpu")
-{
-  $OUTPUT = "build_win_cpu_x" + $Architecture
-}
-else
-{
-  $OUTPUT = "build_win_cuda-" + $CudaVersion + "_x" + $Architecture
+switch ($Target) {
+    "cpu"
+    {
+      $OUTPUT = "build_win_cpu_x" + $Architecture
+    }
+    "mkl"
+    {
+      $OUTPUT = "build_win_mkl_x" + $Architecture
+    }
+    "cuda"
+    {
+      $OUTPUT = "build_win_cuda-" + $CudaVersion + "_x" + $Architecture
+    }
 }
 
 # Store current directory
@@ -91,19 +140,33 @@ Set-Location -Path $OUTPUT
 
 # Invoke CMake
 $VisualStudio = @{32 = "Visual Studio 15 2017"; 64 = "Visual Studio 15 2017 Win64"}
-if ($Target -eq "cuda")
-{
-  $env:CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v" + $CudaVersionHash[$CudaVersion]
-  Write-Host $env:CUDA_PATH -ForegroundColor Green
-  cmake -G $VisualStudio[$Architecture] -T host=x64 `
-        -D DLIB_USE_CUDA=ON `
-        ..
-}
-else
-{
-  cmake -G $VisualStudio[$Architecture] -T host=x64 `
-        -D DLIB_USE_CUDA=OFF `
-        ..
+switch ($Target) {
+    "cpu"
+    {
+      cmake -G $VisualStudio[$Architecture] -T host=x64 `
+            -D DLIB_USE_CUDA=OFF `
+            ..
+    }
+    "mkl"
+    {
+      cmake -G $VisualStudio[$Architecture] -T host=x64 `
+            -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_BLAS=ON `
+            -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
+            -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
+            -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
+            -D BLAS_mkl_intel_lp64_dll_LIBRARY="${MKLINTELLP64DLL_LIB}" `
+            -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
+            ..
+    }
+    "cuda"
+    {
+      $env:CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v" + $CudaVersionHash[$CudaVersion]
+      Write-Host $env:CUDA_PATH -ForegroundColor Green
+      cmake -G $VisualStudio[$Architecture] -T host=x64 `
+            -D DLIB_USE_CUDA=ON `
+            ..
+    }
 }
 
 cmake --build . --config $Configuration
