@@ -11,6 +11,7 @@ NATIVEDNN=${DDNDIR}/src/DlibDotNet.Native.Dnn
 
 arch=(
     "cpu"
+    "mkl"
     #"cuda"
 )
 

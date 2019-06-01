@@ -52,7 +52,14 @@ fi
 if [ "$2" == "cpu" ]; then
    mkdir -p ${OUTPUT}
    cd ${OUTPUT}
-   cmake -D DLIB_USE_CUDA=OFF ..
+   # If install Intel MKL, cmake uses it
+   cmake -D DLIB_USE_CUDA=OFF \
+         -D mkl_include_dir="" \
+         -D mkl_intel="" \
+         -D mkl_rt="" \
+         -D mkl_thread="" \
+         -D mkl_pthread="" \
+         ..
 elif [ "$2" == "cuda" ]; then
    mkdir -p ${OUTPUT}
    cd ${OUTPUT}
