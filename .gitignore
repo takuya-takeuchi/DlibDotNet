@@ -328,3 +328,6 @@ nuget/cpu/runtimes/win-x64/native/*.dll
 nuget/cuda*/runtimes/linux-x64/native/*.so
 nuget/cuda*/runtimes/osx-x64/native/*.dylib
 nuget/cuda*/runtimes/win-x64/native/*.dll
+nuget/mkl/runtimes/linux-x64/native/*.so
+nuget/mkl/runtimes/osx-x64/native/*.dylib
+nuget/mkl/runtimes/win-x64/native/*.dll

@@ -3,7 +3,7 @@
 # ***************************************
 # Arguments
 # $1: Build Configuration (Release/Debug)
-# $2: Target (cpu/cuda/arm)
+# $2: Target (cpu/cuda/arm/mkl)
 # $3: Architecture  (32/64)
 # $4: CUDA version if Target is cuda [92/100]
 # ***************************************
@@ -14,7 +14,7 @@ if [ "$2" == "cuda" ]; then
    fi
 else
    if [ $# -ne 3 ]; then
-     echo "Error: Specify build configuration [Release/Debug], Target [cpu/cuda/arm] and Architecture [32/64]"
+     echo "Error: Specify build configuration [Release/Debug], Target [cpu/cuda/arm/mkl] and Architecture [32/64]"
      exit 1
    fi
 fi
@@ -74,6 +74,12 @@ elif [ "$2" == "arm" ]; then
             -D CMAKE_CXX_COMPILER=/usr/bin/aarch64-linux-gnu-g++ \
             ..
    fi
+elif [ "$2" == "mkl" ]; then
+   mkdir -p ${OUTPUT}
+   cd ${OUTPUT}
+   cmake -D DLIB_USE_CUDA=OFF \
+         -D DLIB_USE_BLAS=ON \
+         ..
 else
    echo "Error: Target should be [cpu/cuda/arm] but '$2' is specified"
    exit 1

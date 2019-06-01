@@ -18,6 +18,16 @@ if [ "${TARGET}" == 'cpu' ] ; then
       BUILDDIR=build_linux_${TARGET}_x64
    fi
 
+elif [ "${TARGET}" == 'mkl' ] ; then
+
+   if [ "$2" == "32" ]; then
+      OUTDIR=${DDNROOT}/nuget/${TARGET}/runtimes/linux-x86/native
+      BUILDDIR=build_linux_${TARGET}_x86
+   elif [ "$2" == "64" ]; then
+      OUTDIR=${DDNROOT}/nuget/${TARGET}/runtimes/linux-x64/native
+      BUILDDIR=build_linux_${TARGET}_x64
+   fi
+
 elif [ "${TARGET}" == 'cuda' ]; then
 
    if [ "$2" == "32" ]; then
