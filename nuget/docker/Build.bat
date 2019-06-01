@@ -3,16 +3,16 @@
 @rem ***************************************
 @rem Arguments
 @rem %1: Distribution Configuration (ubuntu-16/centos-6)
-@rem %2: Target Configuration (cpu/cuda/arm)
+@rem %2: Target Configuration (cpu/cuda/arm/mkl)
 @rem %3: Architecture Configuration (32/64)
 @rem ***************************************
 if "%1"=="" ( 
-  @echo Error: Speficy build configuration [Release/Debug]
+  @echo Error: Speficy build Distribution Configuration [ubuntu-16/centos-6]
   @exit /B
 )
 
 if "%2"=="" ( 
-  @echo Error: Speficy Target [cpu/cuda]
+  @echo Error: Speficy Target [cpu/cuda/arm/mkl]
   @exit /B
 )
 

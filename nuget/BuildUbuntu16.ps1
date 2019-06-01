@@ -11,7 +11,7 @@ $DockerDir = Join-Path $Current docker
 Set-Location -Path $DockerDir
 
 $Configuration = "Release"
-$TargetArray = @("cpu","cuda")
+$TargetArray = @("cpu","cuda","mkl")
 $CUDAVersionArray = @(92,100)
 $ArchitectureArray = @(64)
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
@@ -42,6 +42,13 @@ foreach($architecture in $ArchitectureArray)
       docker run --name $dockername --rm `
                  -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                  -t $dockername cpu $architecture
+
+      $targetname_mkl = $Distribution + "_mkl"
+      $dockername_mkl = "dlibdotnet-" + $targetname_mkl
+      Write-Host "Run $dockername_mkl [mkl]" -ForegroundColor Green
+      docker run --name $dockername_mkl --rm `
+                 -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                 -t $dockername_mkl mkl $architecture
     }
 
     Write-Host "Run $dockername [cuda-$cuda]" -ForegroundColor Green
@@ -50,7 +57,6 @@ foreach($architecture in $ArchitectureArray)
                -t $dockername cuda $architecture $cuda
 
     # Copy output binary
-
     foreach($source in $BuildSourceArray)
     {
       $dll = $BuildSourceHash[$source]

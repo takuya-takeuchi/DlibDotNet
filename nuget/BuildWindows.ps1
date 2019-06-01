@@ -6,8 +6,9 @@ $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
 $Configuration = "Release"
-$TargetArray = @("cpu","cuda")
+$TargetArray = @("cpu","cuda","mkl")
 $CUDAVersionArray = @(92,100)
+$IntelMKLDir = ""
 $ArchitectureArray = @(64)
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
@@ -29,6 +30,26 @@ foreach($source in $BuildSourceArray)
       {
         Write-Host "Build $source [$arc] for $target" -ForegroundColor Green
         powershell .\BuildWindowsVS2017.ps1 $Configuration $target $architecture
+
+        # Copy output binary
+        $dll = $BuildSourceHash[$source]
+        $build = "build_win_" + $target + "_" + $ArchitectureHash[$architecture]
+        $binary = Join-Path $srcDir $build  | `
+                  Join-Path -ChildPath $Configuration | `
+                  Join-Path -ChildPath $dll
+        $output = Join-Path $Current $target  | `
+                  Join-Path -ChildPath runtimes | `
+                  Join-Path -ChildPath ("win-" + $ArchitectureHash[$architecture]) | `
+                  Join-Path -ChildPath native | `
+                  Join-Path -ChildPath $dll
+
+        Write-Host "`tCopy $dll"
+        Copy-Item $binary $output
+      }
+      elseif ($target -eq "mkl")
+      {
+        Write-Host "Build $source [$arc] for $target" -ForegroundColor Green
+        powershell .\BuildWindowsVS2017.ps1 $Configuration $target $architecture $IntelMKLDir
 
         # Copy output binary
         $dll = $BuildSourceHash[$source]
@@ -88,9 +109,9 @@ foreach($source in $BuildSourceArray)
     {
       $arc = $ArchitectureHash[$architecture]
 
-      if ($target -eq "cpu")
+      if (($target -eq "cpu") -Or ($target -eq "mkl"))
       {
-        # Copy output binary
+        # Create output binary
         $dll = $BuildSourceHash[$source]
         $output = Join-Path $Current $target  | `
                   Join-Path -ChildPath runtimes | `
@@ -105,7 +126,7 @@ foreach($source in $BuildSourceArray)
       {
         foreach($cuda in $CUDAVersionArray)
         {
-          # Copy output binary
+          # Create output binary
           $dll = $BuildSourceHash[$source]
           $output = Join-Path $Current ($target + "-" + $cuda)  | `
                     Join-Path -ChildPath runtimes | `
