@@ -58,6 +58,9 @@ namespace DlibDotNet
         public static extern ErrorType array_pixel_getitem_rgb_pixel(Array2DType type, IntPtr array, uint index, out RgbPixel item);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType array_pixel_getitem_bgr_pixel(Array2DType type, IntPtr array, uint index, out BgrPixel item);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType array_pixel_getitem_hsi_pixel(Array2DType type, IntPtr array, uint index, out HsiPixel item);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -93,6 +96,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType array_pixel_pushback_rgb_pixel(Array2DType type, IntPtr array, RgbPixel item);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType array_pixel_pushback_bgr_pixel(Array2DType type, IntPtr array, BgrPixel item);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType array_pixel_pushback_hsi_pixel(Array2DType type, IntPtr array, HsiPixel item);

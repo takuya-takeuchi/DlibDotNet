@@ -23,6 +23,8 @@ namespace DlibDotNet
 
         RgbPixel,
 
+        BgrPixel,
+
         HsiPixel,
 
         RgbAlphaPixel,

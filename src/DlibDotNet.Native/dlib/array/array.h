@@ -235,6 +235,7 @@ MAKE_PUSHBACK_FUNC(int32_t, int32, Int32)
 MAKE_PUSHBACK_FUNC(float, float, Float)
 MAKE_PUSHBACK_FUNC(double, double, Double)
 MAKE_PUSHBACK_FUNC(rgb_pixel, rgb_pixel, RgbPixel)
+MAKE_PUSHBACK_FUNC(bgr_pixel, bgr_pixel, BgrPixel)
 MAKE_PUSHBACK_FUNC(hsi_pixel, hsi_pixel, HsiPixel)
 MAKE_PUSHBACK_FUNC(rgb_alpha_pixel, rgb_alpha_pixel, RgbAlphaPixel)
 
