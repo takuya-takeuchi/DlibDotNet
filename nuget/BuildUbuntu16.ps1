@@ -1,6 +1,7 @@
 Param()
 
-$Distribution="ubuntu-16"
+$Distribution="ubuntu"
+$DistributionVersion="16"
 
 # Store current directory
 $Current = Get-Location
@@ -10,89 +11,63 @@ $DockerDir = Join-Path $Current docker
 
 Set-Location -Path $DockerDir
 
-$Configuration = "Release"
-$TargetArray = @("cpu","cuda","mkl")
-$CUDAVersionArray = @(92,100)
-$ArchitectureArray = @(64)
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
 $BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.so"; "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"}
 
-foreach($architecture in $ArchitectureArray)
+$BuildTargets = @()
+$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100 }
+
+foreach($BuildTarget in $BuildTargets)
 {
-  foreach($cuda in $CUDAVersionArray)
+  $target = $BuildTarget.Target
+  $architecture = $BuildTarget.Architecture
+  $cudaVersion = $BuildTarget.CUDA
+  $options = New-Object 'System.Collections.Generic.List[string]'
+  if ($target -ne "cuda")
   {
-    $cudaname = "cuda-" + $cuda
-    $targetname = $Distribution + "_" + $cudaname
-    $dockername = "dlibdotnet-" + $targetname
+     $libraryDir = $target
+     $build = "build_linux_" + $target + "_" + $ArchitectureHash[$architecture]
+     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
+     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
+  }
+  else
+  {
+     $libraryDir = $target + "-" + $cudaVersion
+     $build = "build_linux_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
+     $options.Add($cudaVersion.ToString())
+     $cudaVersion = ($cudaVersion / 10).ToString("0.0")
+     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+  }
 
-    if ((Test-Path Dockerfile.$targetname) -eq $False)
-    {
-      Write-Host "Dockerfile.$targetname is not found" -ForegroundColor Red
-      continue
-    }
+  Write-Host "Start 'docker build'" -ForegroundColor Green
+  docker build -q -t $dockername . --build-arg IMAGE_NAME="$imagename"
 
-    Write-Host "Build dockerfile [$targetname]" -ForegroundColor Green
-    docker build -t $dockername -f Dockerfile.$targetname .
+  Write-Host "Start 'docker run'" -ForegroundColor Green
+  docker run --rm `
+             -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+             -t "$dockername" $target $architecture ($options -join " ")
 
-    # Only one time
-    if ($cuda -eq 92)
-    {
-      Write-Host "Run $dockername [cpu]" -ForegroundColor Green
-      docker run --name $dockername --rm `
-                 -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-                 -t $dockername cpu $architecture
+  # Copy output binary
+  foreach($Source in $BuildSourceArray)
+  {
+    $dll = $BuildSourceHash[$Source]
+    $srcDir = Join-Path $DlibDotNetSourceRoot $Source
 
-      $targetname_mkl = $Distribution + "_mkl"
-      $dockername_mkl = "dlibdotnet-" + $targetname_mkl
-      Write-Host "Run $dockername_mkl [mkl]" -ForegroundColor Green
-      docker run --name $dockername_mkl --rm `
-                 -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-                 -t $dockername_mkl mkl $architecture
-    }
+    $binary = Join-Path $srcDir $build  | `
+              Join-Path -ChildPath $dll
+    $output = Join-Path $Current $libraryDir  | `
+              Join-Path -ChildPath runtimes | `
+              Join-Path -ChildPath ("linux-" + $ArchitectureHash[$architecture]) | `
+              Join-Path -ChildPath native | `
+              Join-Path -ChildPath $dll
 
-    Write-Host "Run $dockername [cuda-$cuda]" -ForegroundColor Green
-    docker run --name $dockername --rm `
-               -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-               -t $dockername cuda $architecture $cuda
-
-    # Copy output binary
-    foreach($source in $BuildSourceArray)
-    {
-      $dll = $BuildSourceHash[$source]
-      $srcDir = Join-Path $DlibDotNetSourceRoot $source
-
-      foreach($target in $TargetArray)
-      {
-        if ($target -eq "cuda")
-        {
-          $build = "build_linux_" + $target + "-" + $cuda + "_" + $ArchitectureHash[$architecture]
-          $libraryDir = $target + "-" + $cuda
-        }
-        else
-        {
-          # Only one time
-          if ($cuda -ne 92)
-          {
-            continue
-          }
-
-          $build = "build_linux_" + $target + "_" + $ArchitectureHash[$architecture]
-          $libraryDir = $target
-        }
-
-        $binary = Join-Path $srcDir $build  | `
-                  Join-Path -ChildPath $dll
-        $output = Join-Path $Current $libraryDir  | `
-                  Join-Path -ChildPath runtimes | `
-                  Join-Path -ChildPath ("linux-" + $ArchitectureHash[$architecture]) | `
-                  Join-Path -ChildPath native | `
-                  Join-Path -ChildPath $dll
-
-        Write-Host "`tCopy $dll to $output" -ForegroundColor Green
-        Copy-Item $binary $output
-      }
-    }
+    Write-Host "Copy $dll to $output" -ForegroundColor Green
+    Copy-Item $binary $output
   }
 }
 
