@@ -1,7 +1,6 @@
 Param()
 
-$Distribution="ubuntu"
-$DistributionVersion="16"
+$OperatingSystem="win"
 
 # Store current directory
 $Current = Get-Location
@@ -13,7 +12,7 @@ Set-Location -Path $DockerDir
 
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
-$BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.dll"; "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"}
+$BuildSourceHash = @{"DlibDotNet.Native" = "DlibDotNetNative.dll"; "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"}
 $IntelMKLDir = ""
 
 $BuildTargets = @()
@@ -28,29 +27,23 @@ foreach($BuildTarget in $BuildTargets)
   $architecture = $BuildTarget.Architecture
   $cudaVersion = $BuildTarget.CUDA
   $options = New-Object 'System.Collections.Generic.List[string]'
-  if ($target -eq "cuda")
+  if ($target -eq "cpu")
   {
-     $build = "build_linux_" + $target + "_" + $ArchitectureHash[$architecture]
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
      $libraryDir = $target
+     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
   }
   elseif ($target -eq "mkl")
   {
-     $build = "build_linux_" + $target + "_" + $ArchitectureHash[$architecture]
-     $options.Add($IntelMKLDir)
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
      $libraryDir = $target
+     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
+     $options.Add($IntelMKLDir)
   }
   else
   {
-     $build = "build_linux_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
+     $libraryDir = $target + "-" + $cudaVersion
+     $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
      $options.Add($cudaVersion.ToString())
      $cudaVersion = ($cudaVersion / 10).ToString("0.0")
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
-     $libraryDir = $target + "-" + $cudaVersion
   }
 
   foreach($Source in $BuildSourceArray)
@@ -72,10 +65,11 @@ foreach($BuildTarget in $BuildTargets)
     $srcDir = Join-Path $DlibDotNetSourceRoot $Source
 
     $binary = Join-Path $srcDir $build  | `
+              Join-Path -ChildPath Release | `
               Join-Path -ChildPath $dll
     $output = Join-Path $Current $libraryDir  | `
               Join-Path -ChildPath runtimes | `
-              Join-Path -ChildPath ("linux-" + $ArchitectureHash[$architecture]) | `
+              Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
               Join-Path -ChildPath native | `
               Join-Path -ChildPath $dll
 
