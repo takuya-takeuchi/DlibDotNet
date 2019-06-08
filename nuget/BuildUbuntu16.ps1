@@ -1,5 +1,6 @@
 Param()
 
+$OperatingSystem="linux"
 $Distribution="ubuntu"
 $DistributionVersion="16"
 
@@ -30,14 +31,14 @@ foreach($BuildTarget in $BuildTargets)
   if ($target -ne "cuda")
   {
      $libraryDir = $target
-     $build = "build_linux_" + $target + "_" + $ArchitectureHash[$architecture]
+     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
   }
   else
   {
      $libraryDir = $target + "-" + $cudaVersion
-     $build = "build_linux_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
+     $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
      $options.Add($cudaVersion.ToString())
      $cudaVersion = ($cudaVersion / 10).ToString("0.0")
      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
@@ -62,7 +63,7 @@ foreach($BuildTarget in $BuildTargets)
               Join-Path -ChildPath $dll
     $output = Join-Path $Current $libraryDir  | `
               Join-Path -ChildPath runtimes | `
-              Join-Path -ChildPath ("linux-" + $ArchitectureHash[$architecture]) | `
+              Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
               Join-Path -ChildPath native | `
               Join-Path -ChildPath $dll
 
