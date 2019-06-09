@@ -7,6 +7,9 @@ namespace DlibDotNet
 
     internal sealed partial class NativeMethods
     {
+        
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(get_version))]
+        public static extern IntPtr dnn_get_version();
 
         #region input
 

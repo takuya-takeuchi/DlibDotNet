@@ -336,6 +336,9 @@ namespace DlibDotNet
             #endregion
 
         }
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr get_version();
 
         #region assign_pixel
 

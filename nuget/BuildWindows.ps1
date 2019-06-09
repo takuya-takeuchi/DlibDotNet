@@ -1,143 +1,82 @@
 Param()
 
+$OperatingSystem="win"
+
 # Store current directory
 $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
+$DockerDir = Join-Path $Current docker
 
-$Configuration = "Release"
-$TargetArray = @("cpu","cuda","mkl")
-$CUDAVersionArray = @(92,100)
-$IntelMKLDir = ""
-$ArchitectureArray = @(64)
+Set-Location -Path $DockerDir
+
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
 $BuildSourceHash = @{"DlibDotNet.Native" = "DlibDotNetNative.dll"; "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"}
+$IntelMKLDir = ""
 
-foreach($source in $BuildSourceArray)
+$BuildTargets = @()
+$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100 }
+
+foreach($BuildTarget in $BuildTargets)
 {
-  foreach($target in $TargetArray)
+  $target = $BuildTarget.Target
+  $architecture = $BuildTarget.Architecture
+  $cudaVersion = $BuildTarget.CUDA
+  $options = New-Object 'System.Collections.Generic.List[string]'
+  if ($target -eq "cpu")
   {
-    foreach($architecture in $ArchitectureArray)
-    {
-      $arc = $ArchitectureHash[$architecture]
-      $srcDir = Join-Path $DlibDotNetSourceRoot $source
+     $libraryDir = Join-Path "artifacts" $target
+     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
+  }
+  elseif ($target -eq "mkl")
+  {
+     $libraryDir = Join-Path "artifacts" $target
+     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
+     $options.Add($IntelMKLDir)
+  }
+  else
+  {
+     $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
+     $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
+     $options.Add($cudaVersion.ToString())
+     $cudaVersion = ($cudaVersion / 10).ToString("0.0")
+  }
 
-      # Move to build target directory
-      Set-Location -Path $srcDir
+  foreach($Source in $BuildSourceArray)
+  {
+    $srcDir = Join-Path $DlibDotNetSourceRoot $Source
 
-      if ($target -eq "cpu")
-      {
-        Write-Host "Build $source [$arc] for $target" -ForegroundColor Green
-        powershell .\BuildWindowsVS2017.ps1 $Configuration $target $architecture
+    # Move to build target directory
+    Set-Location -Path $srcDir
 
-        # Copy output binary
-        $dll = $BuildSourceHash[$source]
-        $build = "build_win_" + $target + "_" + $ArchitectureHash[$architecture]
-        $binary = Join-Path $srcDir $build  | `
-                  Join-Path -ChildPath $Configuration | `
-                  Join-Path -ChildPath $dll
-        $output = Join-Path $Current $target  | `
-                  Join-Path -ChildPath runtimes | `
-                  Join-Path -ChildPath ("win-" + $ArchitectureHash[$architecture]) | `
-                  Join-Path -ChildPath native | `
-                  Join-Path -ChildPath $dll
+    $arc = $ArchitectureHash[$architecture]
+    Write-Host "Build $Source [$arc] for $target" -ForegroundColor Green
+    powershell .\BuildWindowsVS2017.ps1 Release $target $architecture ($options -join " ")
+  }
 
-        Write-Host "`tCopy $dll"
-        Copy-Item $binary $output
-      }
-      elseif ($target -eq "mkl")
-      {
-        Write-Host "Build $source [$arc] for $target" -ForegroundColor Green
-        powershell .\BuildWindowsVS2017.ps1 $Configuration $target $architecture $IntelMKLDir
+  # Copy output binary
+  foreach($Source in $BuildSourceArray)
+  {
+    $dll = $BuildSourceHash[$Source]
+    $srcDir = Join-Path $DlibDotNetSourceRoot $Source
 
-        # Copy output binary
-        $dll = $BuildSourceHash[$source]
-        $build = "build_win_" + $target + "_" + $ArchitectureHash[$architecture]
-        $binary = Join-Path $srcDir $build  | `
-                  Join-Path -ChildPath $Configuration | `
-                  Join-Path -ChildPath $dll
-        $output = Join-Path $Current $target  | `
-                  Join-Path -ChildPath runtimes | `
-                  Join-Path -ChildPath ("win-" + $ArchitectureHash[$architecture]) | `
-                  Join-Path -ChildPath native | `
-                  Join-Path -ChildPath $dll
+    $binary = Join-Path $srcDir $build  | `
+              Join-Path -ChildPath Release | `
+              Join-Path -ChildPath $dll
+    $output = Join-Path $Current $libraryDir  | `
+              Join-Path -ChildPath runtimes | `
+              Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
+              Join-Path -ChildPath native | `
+              Join-Path -ChildPath $dll
 
-        Write-Host "`tCopy $dll"
-        Copy-Item $binary $output
-      }
-      else
-      {
-        foreach($cuda in $CUDAVersionArray)
-        {
-          Write-Host "Build $source [$arc] for CUDA $cuda" -ForegroundColor Green
-          powershell .\BuildWindowsVS2017.ps1 $Configuration $target $architecture $cuda
-
-          # Copy output binary
-          $dll = $BuildSourceHash[$source]
-          $build = "build_win_" + $target + "-" + $cuda + "_" + $ArchitectureHash[$architecture]
-          $binary = Join-Path $srcDir $build  | `
-                    Join-Path -ChildPath $Configuration | `
-                    Join-Path -ChildPath $dll
-          $output = Join-Path $Current ($target + "-" + $cuda)  | `
-                    Join-Path -ChildPath runtimes | `
-                    Join-Path -ChildPath ("win-" + $ArchitectureHash[$architecture]) | `
-                    Join-Path -ChildPath native | `
-                    Join-Path -ChildPath $dll
-
-          Write-Host "`tCopy $dll" -ForegroundColor Green
-          Copy-Item $binary $output
-        }
-      }
-    }
+    Write-Host "Copy $dll to $output" -ForegroundColor Green
+    Copy-Item $binary $output
   }
 }
 
 # Move to Root directory 
 Set-Location -Path $Current
-
-# Check version
-Write-Host ""
-Write-Host "********************" -ForegroundColor Green
-Write-Host "Check file version  " -ForegroundColor Green
-Write-Host "********************" -ForegroundColor Green
-foreach($source in $BuildSourceArray)
-{
-  foreach($target in $TargetArray)
-  {
-    foreach($architecture in $ArchitectureArray)
-    {
-      $arc = $ArchitectureHash[$architecture]
-
-      if (($target -eq "cpu") -Or ($target -eq "mkl"))
-      {
-        # Create output binary
-        $dll = $BuildSourceHash[$source]
-        $output = Join-Path $Current $target  | `
-                  Join-Path -ChildPath runtimes | `
-                  Join-Path -ChildPath ("win-" + $ArchitectureHash[$architecture]) | `
-                  Join-Path -ChildPath native | `
-                  Join-Path -ChildPath $dll
-
-        Write-Host "$dll" -ForegroundColor Green
-        filever /v $output | findstr ProductVersion
-      }
-      else
-      {
-        foreach($cuda in $CUDAVersionArray)
-        {
-          # Create output binary
-          $dll = $BuildSourceHash[$source]
-          $output = Join-Path $Current ($target + "-" + $cuda)  | `
-                    Join-Path -ChildPath runtimes | `
-                    Join-Path -ChildPath ("win-" + $ArchitectureHash[$architecture]) | `
-                    Join-Path -ChildPath native | `
-                    Join-Path -ChildPath $dll
-
-          Write-Host "$dll" -ForegroundColor Green
-          filever /v $output | findstr ProductVersion
-        }
-      }
-    }
-  }
-}

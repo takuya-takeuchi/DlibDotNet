@@ -16,6 +16,16 @@ namespace DlibDotNet
 
         #region Methods
 
+        public static string GetNativeVersion()
+        {
+            return StringHelper.FromStdString(NativeMethods.get_version(), true);
+        }
+
+        public static string GetNativeDnnVersion()
+        {
+            return StringHelper.FromStdString(NativeMethods.dnn_get_version(), true);
+        }
+
         #region AssignPixel
 
         public static void AssignPixel(ref RgbPixel dest, RgbAlphaPixel src)

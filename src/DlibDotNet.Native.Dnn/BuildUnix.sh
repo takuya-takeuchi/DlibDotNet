@@ -59,11 +59,15 @@ if [ "$2" == "cpu" ]; then
          -D mkl_rt="" \
          -D mkl_thread="" \
          -D mkl_pthread="" \
+         -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
          ..
 elif [ "$2" == "cuda" ]; then
    mkdir -p ${OUTPUT}
    cd ${OUTPUT}
-   cmake -D DLIB_USE_CUDA=ON ..
+   cmake -D DLIB_USE_CUDA=ON \
+         -D DLIB_USE_BLAS=OFF \
+         -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
+         ..
 elif [ "$2" == "arm" ]; then
    mkdir -p ${OUTPUT}
    cd ${OUTPUT}
@@ -73,12 +77,14 @@ elif [ "$2" == "arm" ]; then
             -D ENABLE_NEON=ON \
             -D CMAKE_C_COMPILER=/usr/bin/arm-linux-gnueabihf-gcc \
             -D CMAKE_CXX_COMPILER=/usr/bin/arm-linux-gnueabihf-g++ \
+            -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
             ..
    elif [ "$3" == "64" ]; then
       cmake -D DLIB_USE_CUDA=OFF \
             -D ENABLE_NEON=ON \
             -D CMAKE_C_COMPILER=/usr/bin/aarch64-linux-gnu-gcc \
             -D CMAKE_CXX_COMPILER=/usr/bin/aarch64-linux-gnu-g++ \
+            -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
             ..
    fi
 elif [ "$2" == "mkl" ]; then
@@ -86,6 +92,7 @@ elif [ "$2" == "mkl" ]; then
    cd ${OUTPUT}
    cmake -D DLIB_USE_CUDA=OFF \
          -D DLIB_USE_BLAS=ON \
+         -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
          ..
 else
    echo "Error: Target should be [cpu/cuda/arm] but '$2' is specified"
