@@ -10,17 +10,6 @@ RUN sh -c 'echo deb https://apt.repos.intel.com/mkl all main > /etc/apt/sources.
 
 # install package to build
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    liblapack-dev \
-    libx11-dev \
+    libx11-6 \
     intel-mkl-64bit-2019.0-045 \
-    cmake
-
-# set compiler
-ENV CMAKE_C_COMPILER=/usr/bin/gcc
-ENV CMAKE_CXX_COMPILER=/usr/bin/g++
-
-# copy build script and run
-COPY runBuild.sh /runBuild.sh
-RUN chmod 744 /runBuild.sh
-ENTRYPOINT ["./runBuild.sh"]
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
