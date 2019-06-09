@@ -64,6 +64,11 @@ if (${ENABLE_NEON})
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
 endif()
 
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/dlib/config.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/dlib/config.h
+    @ONLY)
+
 if (${DLIB_USE_CUDA})
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in
@@ -86,6 +91,7 @@ if (${DLIB_USE_CUDA})
 
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}
+                                    ${CMAKE_CURRENT_BINARY_DIR}/dlib/config.h
                                     ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc)
 else()
     configure_file(
@@ -95,6 +101,7 @@ else()
 
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}
+                                    ${CMAKE_CURRENT_BINARY_DIR}/dlib/config.h
                                     ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 endif()
 
