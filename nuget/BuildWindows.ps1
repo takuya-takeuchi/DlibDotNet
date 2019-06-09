@@ -29,18 +29,18 @@ foreach($BuildTarget in $BuildTargets)
   $options = New-Object 'System.Collections.Generic.List[string]'
   if ($target -eq "cpu")
   {
-     $libraryDir = $target
+     $libraryDir = Join-Path "artifacts" $target
      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
   }
   elseif ($target -eq "mkl")
   {
-     $libraryDir = $target
+     $libraryDir = Join-Path "artifacts" $target
      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
      $options.Add($IntelMKLDir)
   }
   else
   {
-     $libraryDir = $target + "-" + $cudaVersion
+     $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
      $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
      $options.Add($cudaVersion.ToString())
      $cudaVersion = ($cudaVersion / 10).ToString("0.0")

@@ -22,8 +22,8 @@ $DockerDir = Join-Path $Current docker
 Set-Location -Path $DockerDir
 
 $DockerFileDir = Join-Path $DockerDir test  | `
-              Join-Path -ChildPath $Distribution | `
-              Join-Path -ChildPath $DistributionVersion
+                 Join-Path -ChildPath $Distribution | `
+                 Join-Path -ChildPath $DistributionVersion
 
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 
@@ -57,7 +57,7 @@ foreach($BuildTarget in $BuildTargets)
   Write-Host "Start '$dockername'" -ForegroundColor Green
   docker run --rm `
              -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-             -t "$dockername" $Version $package
+             -t "$dockername" $Version $package $Distribution $DistributionVersion
 }
 
 # Move to Root directory 

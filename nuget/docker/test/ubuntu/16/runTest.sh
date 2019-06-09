@@ -2,10 +2,12 @@
 
 VERSION=$1
 PACKAGE=$2
+OS=$3
+OSVERSION=$4
 
 DDNROOT=/opt/data/DlibDotNet
 WORK=/opt/data/work
-TESTDIR=${DDNROOT}/nuget/artifacts/test/${PACKAGE}.${VERSION}
+TESTDIR=${DDNROOT}/nuget/artifacts/test/${PACKAGE}.${VERSION}/${OS}/${OSVERSION}
 
 mkdir -p ${WORK}
 mkdir -p ${TESTDIR}

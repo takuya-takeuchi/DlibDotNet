@@ -12,6 +12,10 @@ $DockerDir = Join-Path $Current docker
 
 Set-Location -Path $DockerDir
 
+$DockerFileDir = Join-Path $DockerDir build  | `
+                 Join-Path -ChildPath $Distribution | `
+                 Join-Path -ChildPath $DistributionVersion
+
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
 $BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.so"; "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"}
@@ -30,14 +34,14 @@ foreach($BuildTarget in $BuildTargets)
   $options = New-Object 'System.Collections.Generic.List[string]'
   if ($target -ne "cuda")
   {
-     $libraryDir = $target
+     $libraryDir = Join-Path "artifacts" $target
      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
   }
   else
   {
-     $libraryDir = $target + "-" + $cudaVersion
+     $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
      $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
      $options.Add($cudaVersion.ToString())
      $cudaVersion = ($cudaVersion / 10).ToString("0.0")
@@ -46,7 +50,7 @@ foreach($BuildTarget in $BuildTargets)
   }
 
   Write-Host "Start 'docker build'" -ForegroundColor Green
-  docker build -q -t $dockername . --build-arg IMAGE_NAME="$imagename"
+  docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
   Write-Host "Start 'docker run'" -ForegroundColor Green
   docker run --rm `
