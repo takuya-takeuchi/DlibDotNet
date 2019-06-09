@@ -1,18 +1,37 @@
-﻿using DlibDotNet;
-namespace PackageReference
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace DlibDotNet.Native.Tests
 {
-    using System;
-    public static class Program
+
+    [TestClass]
+    public class DlibTest
     {
-        public static void Main(string[] args)
+
+        private const string VersionKey = "DLIBDOTNET_VERSION";
+
+        [TestMethod]
+        public void CheckDlibDotNetNativeVersion()
         {
-            var detector = Dlib.GetFrontalFaceDetector();
-            if (detector == null)
-            {
-                throw new Exception("'DlibDotNet.Native' should be in 'runtime/[win-x64|linux-x64|osx-x64]/native' ");
-            }
-            detector.ThrowIfDisposed();
-            Console.WriteLine(detector.NativePtr.ToInt64());
+            var values = Environment.GetEnvironmentVariables();
+            if (!values.Contains(VersionKey))
+                Assert.Fail($"{VersionKey} is not found.");
+
+            Console.WriteLine($"{VersionKey}: {values[VersionKey]}");
+            Assert.AreEqual(values[VersionKey], DlibDotNet.Dlib.GetNativeVersion());
         }
+
+        [TestMethod]
+        public void CheckDlibDotNetNativeDnnVersion()
+        {
+            var values = Environment.GetEnvironmentVariables();
+            if (!values.Contains(VersionKey))
+                Assert.Fail($"{VersionKey} is not found.");
+
+            Console.WriteLine($"{VersionKey}: {values[VersionKey]}");
+            Assert.AreEqual(values[VersionKey], DlibDotNet.Dlib.GetNativeDnnVersion());
+        }
+
     }
+
 }
