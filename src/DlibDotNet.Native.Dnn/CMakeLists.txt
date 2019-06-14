@@ -49,6 +49,11 @@ endif()
 set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
 
+# create config file
+configure_file(
+    ${PROJECT_SOURCE_DIR}/dlib/config.h.in
+    ${PROJECT_SOURCE_DIR}/dlib/config.h
+    @ONLY)
 
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h
                           ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.h)
@@ -63,11 +68,6 @@ if (${ENABLE_NEON})
 	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
 endif()
-
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/dlib/config.h.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/dlib/config.h
-    @ONLY)
 
 if (${DLIB_USE_CUDA})
 configure_file(
@@ -93,7 +93,6 @@ configure_file(
                                     ${SOURCES}
                                     ${DLIBDOTNET_SHARED_HEADER1}
                                     ${DLIBDOTNET_SHARED_HEADER2}
-                                    ${CMAKE_CURRENT_BINARY_DIR}/dlib/config.h
                                     ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc)
 else()
     configure_file(
@@ -105,7 +104,6 @@ else()
                                     ${SOURCES}
                                     ${DLIBDOTNET_SHARED_HEADER1}
                                     ${DLIBDOTNET_SHARED_HEADER2}
-                                    ${CMAKE_CURRENT_BINARY_DIR}/dlib/config.h
                                     ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 endif()
 
