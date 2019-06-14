@@ -53,6 +53,12 @@ endif()
 set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
 
+# create config file
+configure_file(
+    ${PROJECT_SOURCE_DIR}/dlib/config.h.in
+    ${PROJECT_SOURCE_DIR}/dlib/config.h
+    @ONLY)
+
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
 
@@ -91,7 +97,6 @@ if (${DLIB_USE_CUDA})
 
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}
-                                    ${CMAKE_CURRENT_BINARY_DIR}/dlib/config.h
                                     ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc)
 else()
     configure_file(
@@ -101,7 +106,6 @@ else()
 
     add_library(${PROJ_NAME} SHARED ${HEADERS}
                                     ${SOURCES}
-                                    ${CMAKE_CURRENT_BINARY_DIR}/dlib/config.h
                                     ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 endif()
 
