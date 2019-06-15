@@ -13,7 +13,15 @@ Set-Location -Path $DockerDir
 $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
 $BuildSourceHash = @{"DlibDotNet.Native" = "DlibDotNetNative.dll"; "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"}
-$IntelMKLDir = ""
+
+$IntelMKLDir = $env:MKL_WIN
+if ([string]::IsNullOrEmpty($IntelMKLDir)) {
+  Write-Host "Environmental Value 'MKL_WIN' is not defined." -ForegroundColor Yellow
+}
+
+if (($IntelMKLDir -ne $null) -And !(Test-Path $IntelMKLDir)) {
+  Write-Host "Environmental Value 'MKL_WIN' does not exist." -ForegroundColor Yellow
+}
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0   }
