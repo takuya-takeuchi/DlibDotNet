@@ -35,7 +35,7 @@ for package in "${packages[@]}" ; do
     cd $CURDIR
 
     # to make sure, delete
-    if [ -e ${WORK}] then;
+    if [ -e ${WORK} ]; then
        rm -Rf ${WORK}
     fi
 done
