@@ -25,6 +25,32 @@ $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture =
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100; Package = "DlibDotNet.CUDA100" }
 $BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet.MKL"     }
 
+
+# For DlibDotNet.CUDA92
+$tmp92 = New-Object 'System.Collections.Generic.List[string]'
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\cublas64_92.dll")
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\cudnn64_7.dll")
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\curand64_92.dll")
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\cusolver64_92.dll")
+
+# For DlibDotNet.CUDA100
+$tmp100 = New-Object 'System.Collections.Generic.List[string]'
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\cublas64_100.dll")
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\cudnn64_7.dll")
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\curand64_100.dll")
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\cusolver64_100.dll")
+
+# For mkl
+$tmpmkl = New-Object 'System.Collections.Generic.List[string]'
+$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_core.dll")
+$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_intel_thread.dll")
+$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_avx2.dll")
+$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\compiler\libiomp5md.dll")
+
+$DependencyHash = @{"DlibDotNet.CUDA92"  = $tmp92;
+                    "DlibDotNet.CUDA100" = $tmp100;
+                    "DlibDotNet.MKL"     = $tmpmkl}
+
 foreach($BuildTarget in $BuildTargets)
 {
   $target = $BuildTarget.Target
@@ -64,7 +90,21 @@ foreach($BuildTarget in $BuildTargets)
   
   # restore package from local nuget pacakge
   # And drop stdout message
-  dotnet add package $package -s "$NugetDir" > $null
+  dotnet add package $package -v $VERSION --source "$NugetDir" > $null
+
+  # Copy Dependencies
+  $OutDir = Join-Path $TargetDir bin | `
+            Join-Path -ChildPath Release | `
+            Join-Path -ChildPath netcoreapp2.0
+  New-Item "$OutDir" -ItemType Directory > $null
+
+  if ($DependencyHash.Contains($package))
+  {
+    foreach($Dependency in $DependencyHash[$package])
+    {
+      Copy-Item "$Dependency" "$OutDir"
+    }
+  }
   
   $ErrorActionPreference = "silentlycontinue"
   dotnet test -c Release -r "$TestDir" --logger trx
@@ -73,6 +113,7 @@ foreach($BuildTarget in $BuildTargets)
      Write-Host "Test Successful" -ForegroundColor Green
   } else {
      Write-Host "Test Fail for $package" -ForegroundColor Red
+     Set-Location -Path $Current
      exit -1
   }
 
