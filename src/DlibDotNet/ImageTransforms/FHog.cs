@@ -147,7 +147,7 @@ namespace DlibDotNet
             return hogImage;
         }
 
-        public static Point ImgaeToFHog(Point point, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
+        public static Point ImageToFHog(Point point, int cellSize = 8, int filterRowsPadding = 1, int filterColsPadding = 1)
         {
             if (point == null)
                 throw new ArgumentNullException(nameof(point));
