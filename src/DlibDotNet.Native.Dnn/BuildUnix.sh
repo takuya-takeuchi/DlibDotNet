@@ -5,11 +5,11 @@
 # $1: Build Configuration (Release/Debug)
 # $2: Target (cpu/cuda/arm/mkl)
 # $3: Architecture  (32/64)
-# $4: CUDA version if Target is cuda [92/100]
+# $4: CUDA version if Target is cuda [90/91/92/100/101]
 # ***************************************
 if [ "$2" == "cuda" ]; then
    if [ $# -ne 4 ]; then
-     echo "Error: Specify build configuration [Release/Debug], Target [cpu/cuda/arm], Architecture [32/64] and CUDA version  [92/100]"
+     echo "Error: Specify build configuration [Release/Debug], Target [cpu/cuda/arm], Architecture [32/64] and CUDA version  [90/91/92/100/101]"
      exit 1
    fi
 else

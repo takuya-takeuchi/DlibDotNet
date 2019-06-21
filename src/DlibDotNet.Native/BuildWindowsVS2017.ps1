@@ -3,7 +3,7 @@
 #%1: Build Configuration (Release/Debug)
 #%2: Target (cpu/cuda/mkl)
 #%3: Architecture (32/64)
-#%4: CUDA version if Target is cuda [92/100]
+#%4: CUDA version if Target is cuda [90/91/92/100/101]
 #***************************************
 Param([Parameter(
       Mandatory=$True,
@@ -98,15 +98,15 @@ switch ($Target) {
     {
       if ($Args.Length -ne 1)
       {
-        Write-Host "Error: Specify CUDA version [92/100]" -ForegroundColor Red
+        Write-Host "Error: Specify CUDA version [90/91/92/100/101]" -ForegroundColor Red
         exit
       }
 
       $CudaVersion = [int]$Args[0]
       $CudaVersionArray = @(92,100)
-      $CudaVersionHash = @{92 = "9.2"; 100 = "10.0"}
+      $CudaVersionHash = @{90 = "9.0"; 91 = "9.1"; 92 = "9.2"; 100 = "10.0"; 101 = "10.1"}
       if($CudaVersionArray.Contains($CudaVersion) -ne $True){
-        Write-Host "Error: Specify CUDA version [92/100]" -ForegroundColor Red
+        Write-Host "Error: Specify CUDA version [90/91/92/100/101]" -ForegroundColor Red
         exit
       }
     }
