@@ -103,7 +103,7 @@ switch ($Target) {
       }
 
       $CudaVersion = [int]$Args[0]
-      $CudaVersionArray = @(92,100)
+      $CudaVersionArray = @(90,91,92,100,101)
       $CudaVersionHash = @{90 = "9.0"; 91 = "9.1"; 92 = "9.2"; 100 = "10.0"; 101 = "10.1"}
       if($CudaVersionArray.Contains($CudaVersion) -ne $True){
         Write-Host "Error: Specify CUDA version [90/91/92/100/101]" -ForegroundColor Red
