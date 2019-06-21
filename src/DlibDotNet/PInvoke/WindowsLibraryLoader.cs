@@ -42,7 +42,7 @@ namespace DlibDotNet
 
         private static readonly IDictionary<string, IntPtr> LoadedLibraries = new Dictionary<string, IntPtr>();
 
-        [DllImport("kernel32", CallingConvention = CallingConvention.Winapi, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+        [DllImport("kernel32", EntryPoint = "LoadLibrary", CallingConvention = CallingConvention.Winapi, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         private static extern IntPtr Win32LoadLibrary(string dllPath);
 
         #endregion
