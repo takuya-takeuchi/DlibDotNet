@@ -21,8 +21,8 @@ $ArchitectureHash = @{32 = "x86"; 64 = "x64"}
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet"         }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90;  Package = "DlibDotNet.CUDA90"  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91;  Package = "DlibDotNet.CUDA91"  }
+#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90;  Package = "DlibDotNet.CUDA90"  }
+#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91;  Package = "DlibDotNet.CUDA91"  }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92;  Package = "DlibDotNet.CUDA92"  }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100; Package = "DlibDotNet.CUDA100" }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101; Package = "DlibDotNet.CUDA101" }
@@ -30,18 +30,18 @@ $BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture =
 
 
 # For DlibDotNet.CUDA90
-$tmp92 = New-Object 'System.Collections.Generic.List[string]'
-$tmp92.Add("$env:CUDA_PATH_V9_0\bin\cublas64_90.dll")
-$tmp92.Add("$env:CUDA_PATH_V9_0\bin\cudnn64_7.dll")
-$tmp92.Add("$env:CUDA_PATH_V9_0\bin\curand64_90.dll")
-$tmp92.Add("$env:CUDA_PATH_V9_0\bin\cusolver64_90.dll")
+$tmp90 = New-Object 'System.Collections.Generic.List[string]'
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\cublas64_90.dll")
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\cudnn64_7.dll")
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\curand64_90.dll")
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\cusolver64_90.dll")
 
 # For DlibDotNet.CUDA91
-$tmp92 = New-Object 'System.Collections.Generic.List[string]'
-$tmp92.Add("$env:CUDA_PATH_V9_1\bin\cublas64_91.dll")
-$tmp92.Add("$env:CUDA_PATH_V9_1\bin\cudnn64_7.dll")
-$tmp92.Add("$env:CUDA_PATH_V9_1\bin\curand64_91.dll")
-$tmp92.Add("$env:CUDA_PATH_V9_1\bin\cusolver64_91.dll")
+$tmp91 = New-Object 'System.Collections.Generic.List[string]'
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\cublas64_91.dll")
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\cudnn64_7.dll")
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\curand64_91.dll")
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\cusolver64_91.dll")
 
 # For DlibDotNet.CUDA92
 $tmp92 = New-Object 'System.Collections.Generic.List[string]'
@@ -71,8 +71,8 @@ $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_intel_thread.dll")
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_avx2.dll")
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\compiler\libiomp5md.dll")
 
-$DependencyHash = @{#"DlibDotNet.CUDA90"  = $tmp90;
-                    #"DlibDotNet.CUDA91"  = $tmp91;
+$DependencyHash = @{"DlibDotNet.CUDA90"  = $tmp90;
+                    "DlibDotNet.CUDA91"  = $tmp91;
                     "DlibDotNet.CUDA92"  = $tmp92;
                     "DlibDotNet.CUDA100" = $tmp100;
                     "DlibDotNet.CUDA101" = $tmp101;
