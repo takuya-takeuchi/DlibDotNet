@@ -22,7 +22,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 17)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20190513)
+set(VERSION_DATE 20190623)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
@@ -53,6 +53,12 @@ endif()
 set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
 
+# create config file
+configure_file(
+    ${PROJECT_SOURCE_DIR}/dlib/config.h.in
+    ${PROJECT_SOURCE_DIR}/dlib/config.h
+    @ONLY)
+
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
 
@@ -63,6 +69,11 @@ if (${ENABLE_NEON})
 	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
 endif()
+
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/dlib/config.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/dlib/config.h
+    @ONLY)
 
 if (${DLIB_USE_CUDA})
     configure_file(

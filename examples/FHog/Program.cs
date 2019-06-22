@@ -49,7 +49,7 @@ namespace FHog
                             Point p;  // A 2D point, used to represent pixel locations.
                             while (win.GetNextDoubleClick(out p))
                             {
-                                var hp = Dlib.ImgaeToFHog(p);
+                                var hp = Dlib.ImageToFHog(p);
                                 Console.WriteLine($"The point {p} in the input image corresponds to {hp} in hog space.");
                                 var row = hog[hp.Y];
                                 var column = row[hp.X];
