@@ -162,6 +162,7 @@ switch ($Target) {
     "cuda"
     {
       $env:CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v" + $CudaVersionHash[$CudaVersion]
+      $env:PATH="$env:CUDA_PATH\bin;$env:CUDA_PATH\libnvvp;$ENV:PATH"
       Write-Host $env:CUDA_PATH -ForegroundColor Green
       cmake -G $VisualStudio[$Architecture] -T host=x64 `
             -D DLIB_USE_CUDA=ON `
