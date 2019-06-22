@@ -57,12 +57,12 @@ $tmp100.Add("$env:CUDA_PATH_V10_0\bin\cudnn64_7.dll")
 $tmp100.Add("$env:CUDA_PATH_V10_0\bin\curand64_100.dll")
 $tmp100.Add("$env:CUDA_PATH_V10_0\bin\cusolver64_100.dll")
 
-# For DlibDotNet.CUDA100
-$tmp100 = New-Object 'System.Collections.Generic.List[string]'
-$tmp100.Add("$env:CUDA_PATH_V10_1\bin\cublas64_101.dll")
-$tmp100.Add("$env:CUDA_PATH_V10_1\bin\cudnn64_7.dll")
-$tmp100.Add("$env:CUDA_PATH_V10_1\bin\curand64_101.dll")
-$tmp100.Add("$env:CUDA_PATH_V10_1\bin\cusolver64_101.dll")
+# For DlibDotNet.CUDA101
+$tmp101 = New-Object 'System.Collections.Generic.List[string]'
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\cublas64_10.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\cudnn64_7.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\curand64_10.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\cusolver64_10.dll")
 
 # For mkl
 $tmpmkl = New-Object 'System.Collections.Generic.List[string]'
