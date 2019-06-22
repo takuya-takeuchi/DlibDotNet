@@ -71,8 +71,8 @@ $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_intel_thread.dll")
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_avx2.dll")
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\compiler\libiomp5md.dll")
 
-$DependencyHash = @{"DlibDotNet.CUDA90"  = $tmp90;
-                    "DlibDotNet.CUDA91"  = $tmp91;
+$DependencyHash = @{#"DlibDotNet.CUDA90"  = $tmp90;
+                    #"DlibDotNet.CUDA91"  = $tmp91;
                     "DlibDotNet.CUDA92"  = $tmp92;
                     "DlibDotNet.CUDA100" = $tmp100;
                     "DlibDotNet.CUDA101" = $tmp101;
