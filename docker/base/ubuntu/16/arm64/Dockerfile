@@ -1,4 +1,4 @@
-FROM arm32v7/ubuntu:16.04
+FROM arm64v8/ubuntu:16.04
 LABEL maintainer "Takuya Takeuchi <takuya.takeuchi.dev@gmail.com>"
 
 # install package to build

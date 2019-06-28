@@ -21,18 +21,21 @@ $BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
 $BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.so"; "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"}
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90  }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101 }
+$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 90  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 91  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
+$BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 64; RID = "$OperatingSystem-arm64"; CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 32; RID = "$OperatingSystem-arm";   CUDA = 0   }
 
 foreach($BuildTarget in $BuildTargets)
 {
   $target = $BuildTarget.Target
   $architecture = $BuildTarget.Architecture
+  $rid = $BuildTarget.RID
   $cudaVersion = $BuildTarget.CUDA
   $options = New-Object 'System.Collections.Generic.List[string]'
   if ($target -ne "cuda")
@@ -70,7 +73,7 @@ foreach($BuildTarget in $BuildTargets)
               Join-Path -ChildPath $dll
     $output = Join-Path $Current $libraryDir  | `
               Join-Path -ChildPath runtimes | `
-              Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
+              Join-Path -ChildPath ($rid) | `
               Join-Path -ChildPath native | `
               Join-Path -ChildPath $dll
 
