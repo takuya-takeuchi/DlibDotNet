@@ -23,8 +23,6 @@ $BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.so"; "DlibDotNet
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
 $BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 90  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 91  }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
@@ -42,8 +40,14 @@ foreach($BuildTarget in $BuildTargets)
   {
      $libraryDir = Join-Path "artifacts" $target
      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
+
+     if (($target -eq "arm") -And ($architecture -eq 64)) {
+        $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target" + "64"
+        $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target" + "64"
+     } else {
+        $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
+        $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
+     }
   }
   else
   {
@@ -55,10 +59,10 @@ foreach($BuildTarget in $BuildTargets)
      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
   }
 
-  Write-Host "Start 'docker build'" -ForegroundColor Green
+  Write-Host "Start 'docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
   docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
-  Write-Host "Start 'docker run'" -ForegroundColor Green
+  Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t $dockername'" -ForegroundColor Green
   docker run --rm `
              -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
              -t "$dockername" $target $architecture ($options -join " ")

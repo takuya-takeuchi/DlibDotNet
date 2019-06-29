@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION=$1
-OS='osx'
+OS='raspbian'
 
 CURDIR=${pwd}
 DDNROOT=`dirname $(pwd)`
@@ -9,9 +9,7 @@ WORK=${DDNROOT}/work
 export DLIBDOTNET_VERSION=$VERSION
 
 packages=(
-    "DlibDotNet"
-    "DlibDotNet.MKL"
-    #"cuda"
+    "DlibDotNet.ARM"
 )
 
 for package in "${packages[@]}" ; do
