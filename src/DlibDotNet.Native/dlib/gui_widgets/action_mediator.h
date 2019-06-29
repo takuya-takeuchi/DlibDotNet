@@ -1,12 +1,14 @@
-#ifndef DLIB_NO_GUI_SUPPORT
-
 #ifndef _CPP_GUI_WIDGETS_ACTION_MEDIATOR_H_
 #define _CPP_GUI_WIDGETS_ACTION_MEDIATOR_H_
 
 #include "../export.h"
+
+#ifndef DLIB_NO_GUI_SUPPORT
 #include <dlib/gui_widgets/base_widgets.h>
 #include <dlib/gui_widgets/widgets.h>
 #include <dlib/gui_core.h>
+#endif
+
 #include "../shared.h"
 
 #pragma region template
@@ -191,12 +193,13 @@ DLLEXPORT void __TYPENAME__##_action_mediator_delete(__TYPENAME__##_action_media
 
 #pragma endregion template
 
-MAKE_1ARGS_R_MEDIATOR(std::string, string)
+#ifndef DLIB_NO_GUI_SUPPORT
 MAKE_1ARGS_R_MEDIATOR(dlib::image_display::overlay_rect, image_display_overlay_rect)
+MAKE_1ARGS_R_MEDIATOR(std::string, string)
 MAKE_1ARGS_V_MEDIATOR(unsigned long, uint32t)
 MAKE_3ARGS_R_MEDIATOR(dlib::point, bool, unsigned long, click)
-MAKE_VOID_MEDIATOR(void)
-
 #endif
+
+MAKE_VOID_MEDIATOR(void)
 
 #endif
