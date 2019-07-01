@@ -75,6 +75,7 @@ elif [ "$2" == "arm" ]; then
    if [ "$3" == "32" ]; then
       cmake -D DLIB_USE_CUDA=OFF \
             -D ENABLE_NEON=ON \
+            -D DLIB_USE_BLAS=ON \
             -D CMAKE_C_COMPILER=/usr/bin/arm-linux-gnueabihf-gcc \
             -D CMAKE_CXX_COMPILER=/usr/bin/arm-linux-gnueabihf-g++ \
             -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
@@ -82,6 +83,7 @@ elif [ "$2" == "arm" ]; then
    elif [ "$3" == "64" ]; then
       cmake -D DLIB_USE_CUDA=OFF \
             -D ENABLE_NEON=ON \
+            -D DLIB_USE_BLAS=ON \
             -D CMAKE_C_COMPILER=/usr/bin/aarch64-linux-gnu-gcc \
             -D CMAKE_CXX_COMPILER=/usr/bin/aarch64-linux-gnu-g++ \
             -D LIBPNG_IS_GOOD=OFF -D PNG_FOUND=OFF -D PNG_LIBRARY_RELEASE="" -D PNG_LIBRARY_DEBUG="" -D PNG_PNG_INCLUDE_DIR="" \
