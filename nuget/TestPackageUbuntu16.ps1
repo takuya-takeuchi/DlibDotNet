@@ -55,9 +55,10 @@ foreach($BuildTarget in $BuildTargets)
      $imagename  = "dlibdotnet/runtime/$Distribution/$DistributionVersion/$Target/$cudaVersion"
   }
 
+  Write-Host "Start docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""" -ForegroundColor Green
   docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
-  Write-Host "Start '$dockername'" -ForegroundColor Green
+  Write-Host "Start docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t ""$dockername"" $Version $package $Distribution $DistributionVersion" -ForegroundColor Green
   docker run --rm `
              -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
              -t "$dockername" $Version $package $Distribution $DistributionVersion
