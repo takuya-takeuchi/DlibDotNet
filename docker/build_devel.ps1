@@ -13,7 +13,7 @@ foreach($dockerfile in $dockerfiles)
 
    if ($lastexitcode -ne 0)
    {
-      Write-Host "Failed 'docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Red
+      Write-Host "Failed 'docker build -q -t $tag $dockerfileDirectory'" -ForegroundColor Red
       exit -1
    }
 }
