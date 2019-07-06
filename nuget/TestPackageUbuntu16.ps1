@@ -76,13 +76,8 @@ foreach($BuildTarget in $BuildTargets)
                   -t "$dockername" $Version $package $OperatingSystem $OperatingSystemVersion
    }
 
-   if ($lastexitcode -eq 0)
+   if ($lastexitcode -ne 0)
    {
-      Write-Host "Test Successful" -ForegroundColor Green
-   }
-   else
-   {
-      Write-Host "Test Fail for $package" -ForegroundColor Red
       Set-Location -Path $Current
       exit -1
    }

@@ -14,6 +14,9 @@ Set-StrictMode -Version Latest
 $OperatingSystem="windows"
 $OperatingSystemVersion="10"
 
+# Store current directory
+$Current = Get-Location
+
 $BuildTargets = ( "DlibDotNet",
                   # "DlibDotNet.CUDA90",
                   # "DlibDotNet.CUDA91",
@@ -27,4 +30,10 @@ foreach($BuildTarget in $BuildTargets)
 {
    $command = ".\\TestPackage.ps1 -Package $BuildTarget -Version $Version -OperatingSystem $OperatingSystem -OperatingSystemVersion $OperatingSystemVersion"
    Invoke-Expression $command
+
+   if ($lastexitcode -ne 0)
+   {
+      Set-Location -Path $Current
+      exit -1
+   }
 }
