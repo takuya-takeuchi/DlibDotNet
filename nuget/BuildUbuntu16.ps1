@@ -62,6 +62,12 @@ foreach($BuildTarget in $BuildTargets)
    Write-Host "Start 'docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
    docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
+   if ($lastexitcode -ne 0)
+   {
+      Set-Location -Path $Current
+      exit -1
+   }
+
    Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t $dockername'" -ForegroundColor Green
    docker run --rm `
                -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `

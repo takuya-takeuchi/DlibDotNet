@@ -8,8 +8,14 @@ foreach($dockerfile in $baseDockerfiles)
    $dockerfileDirectory = Resolve-Path ((Get-ChildItem $relativePath).Directory.FullName) -Relative
    $basetag = "dlibdotnet" + $dockerfileDirectory.Trim('.').Replace('\', '/')
 
-   Write-Host "Start docker build -t $basetag $dockerfileDirectory" -ForegroundColor Green
+   Write-Host "Start 'docker build -t $basetag $dockerfileDirectory'" -ForegroundColor Green
    docker build -t $basetag $dockerfileDirectory
+
+   if ($lastexitcode -ne 0)
+   {
+      Write-Host "Failed 'docker build -t $basetag $dockerfileDirectory'" -ForegroundColor Red
+      exit -1
+   }
 
    # check operation system and version
    $path = $dockerfileDirectory.Replace('\', '/').Split('/')
@@ -22,6 +28,12 @@ foreach($dockerfile in $baseDockerfiles)
    $runtimeDockerfileDirectory = Resolve-Path ((Get-ChildItem $runtimeDockerfileDirectory).Directory.FullName) -Relative
 
    $runtimetag = "dlibdotnet" + (Resolve-Path $runtimeNameBase -Relative).Trim('.').Replace('\', '/').Replace('base', 'runtime')
-   Write-Host "Start docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME=""$basetag""" -ForegroundColor Green
+   Write-Host "Start 'docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME=""$basetag""'" -ForegroundColor Green
    docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME="$basetag"
+
+   if ($lastexitcode -ne 0)
+   {
+      Write-Host "Failed 'docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME=""$basetag""'" -ForegroundColor Red
+      exit -1
+   }
 }
