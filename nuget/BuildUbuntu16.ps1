@@ -59,8 +59,8 @@ foreach($BuildTarget in $BuildTargets)
       $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
    }
 
-   Write-Host "Start 'docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
-   docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
+   Write-Host "Start 'docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
+   docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
    if ($lastexitcode -ne 0)
    {

@@ -9,7 +9,7 @@ foreach($dockerfile in $baseDockerfiles)
    $basetag = "dlibdotnet" + $dockerfileDirectory.Trim('.').Replace('\', '/')
 
    Write-Host "Start 'docker build -t $basetag $dockerfileDirectory'" -ForegroundColor Green
-   docker build -t $basetag $dockerfileDirectory
+   docker build --force-rm=true -t $basetag $dockerfileDirectory
 
    if ($lastexitcode -ne 0)
    {
@@ -29,7 +29,7 @@ foreach($dockerfile in $baseDockerfiles)
 
    $runtimetag = "dlibdotnet" + (Resolve-Path $runtimeNameBase -Relative).Trim('.').Replace('\', '/').Replace('base', 'runtime')
    Write-Host "Start 'docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME=""$basetag""'" -ForegroundColor Green
-   docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME="$basetag"
+   docker build --force-rm=true -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME="$basetag"
 
    if ($lastexitcode -ne 0)
    {

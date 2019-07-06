@@ -9,11 +9,11 @@ foreach($dockerfile in $dockerfiles)
    $tag = "dlibdotnet" + (Resolve-Path $dockerfileDirectory -Relative).Trim('.').Replace('\', '/')
 
    Write-Host "Start 'docker build -t $tag $dockerfileDirectory'" -ForegroundColor Green
-   docker build -t $tag $dockerfileDirectory
+   docker build --force-rm=true -t $tag $dockerfileDirectory
 
    if ($lastexitcode -ne 0)
    {
-      Write-Host "Failed 'docker build -q -t $tag $dockerfileDirectory'" -ForegroundColor Red
+      Write-Host "Failed 'docker build -t $tag $dockerfileDirectory'" -ForegroundColor Red
       exit -1
    }
 }
