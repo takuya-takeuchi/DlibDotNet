@@ -31,59 +31,71 @@ $BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture =
 
 foreach($BuildTarget in $BuildTargets)
 {
-  $target = $BuildTarget.Target
-  $architecture = $BuildTarget.Architecture
-  $rid = $BuildTarget.RID
-  $cudaVersion = $BuildTarget.CUDA
-  $options = New-Object 'System.Collections.Generic.List[string]'
-  if ($target -ne "cuda")
-  {
-     $libraryDir = Join-Path "artifacts" $target
-     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
+   $target = $BuildTarget.Target
+   $architecture = $BuildTarget.Architecture
+   $rid = $BuildTarget.RID
+   $cudaVersion = $BuildTarget.CUDA
+   $options = New-Object 'System.Collections.Generic.List[string]'
+   if ($target -ne "cuda")
+   {
+      $libraryDir = Join-Path "artifacts" $target
+      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
 
-     if (($target -eq "arm") -And ($architecture -eq 64)) {
-        $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target" + "64"
-        $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target" + "64"
-     } else {
-        $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
-        $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
-     }
-  }
-  else
-  {
-     $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
-     $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
-     $options.Add($cudaVersion.ToString())
-     $cudaVersion = ($cudaVersion / 10).ToString("0.0")
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
-  }
+      if (($target -eq "arm") -And ($architecture -eq 64)) {
+         $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target" + "64"
+         $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target" + "64"
+      } else {
+         $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
+         $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
+      }
+   }
+   else
+   {
+      $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
+      $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
+      $options.Add($cudaVersion.ToString())
+      $cudaVersion = ($cudaVersion / 10).ToString("0.0")
+      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+   }
 
-  Write-Host "Start 'docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
-  docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
+   Write-Host "Start 'docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
+   docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
-  Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t $dockername'" -ForegroundColor Green
-  docker run --rm `
-             -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-             -t "$dockername" $target $architecture ($options -join " ")
+   if ($lastexitcode -ne 0)
+   {
+      Set-Location -Path $Current
+      exit -1
+   }
 
-  # Copy output binary
-  foreach($Source in $BuildSourceArray)
-  {
-    $dll = $BuildSourceHash[$Source]
-    $srcDir = Join-Path $DlibDotNetSourceRoot $Source
+   Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t $dockername'" -ForegroundColor Green
+   docker run --rm `
+               -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+               -t "$dockername" $target $architecture ($options -join " ")
 
-    $binary = Join-Path $srcDir $build  | `
-              Join-Path -ChildPath $dll
-    $output = Join-Path $Current $libraryDir  | `
-              Join-Path -ChildPath runtimes | `
-              Join-Path -ChildPath ($rid) | `
-              Join-Path -ChildPath native | `
-              Join-Path -ChildPath $dll
+   if ($lastexitcode -ne 0)
+   {
+      Set-Location -Path $Current
+      exit -1
+   }
 
-    Write-Host "Copy $dll to $output" -ForegroundColor Green
-    Copy-Item $binary $output
-  }
+   # Copy output binary
+   foreach($Source in $BuildSourceArray)
+   {
+      $dll = $BuildSourceHash[$Source]
+      $srcDir = Join-Path $DlibDotNetSourceRoot $Source
+
+      $binary = Join-Path $srcDir $build  | `
+               Join-Path -ChildPath $dll
+      $output = Join-Path $Current $libraryDir  | `
+               Join-Path -ChildPath runtimes | `
+               Join-Path -ChildPath ($rid) | `
+               Join-Path -ChildPath native | `
+               Join-Path -ChildPath $dll
+
+      Write-Host "Copy $dll to $output" -ForegroundColor Green
+      Copy-Item $binary $output
+   }
 }
 
 # Move to Root directory 

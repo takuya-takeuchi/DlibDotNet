@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install the .NET SDK
-#ENV DOTNET_URL https://download.microsoft.com/download/9/D/2/9D2354BE-778B-42D6-BA4F-3CEF489A4FDE/dotnet-sdk-2.1.400-linux-arm64.tar.gz
-ENV DOTNET_URL https://download.microsoft.com/download/A/7/8/A78F1D25-8D5C-4411-B544-C7D527296D5E/dotnet-runtime-2.1.4-linux-arm64.tar.gz
+ENV DOTNET_URL https://download.microsoft.com/download/9/D/2/9D2354BE-778B-42D6-BA4F-3CEF489A4FDE/dotnet-sdk-2.1.400-linux-arm64.tar.gz
 RUN wget ${DOTNET_URL}
 ENV DOTNET_ROOT=/usr/local/share/dotnet
 ENV PATH $PATH:$DOTNET_ROOT
