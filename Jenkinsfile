@@ -1,11 +1,11 @@
 #!groovy
 
 def errorMessage
+def git_url = "https://github.com/takuya-takeuchi/DlibDotNet"
+def git_branch = "develop"
 
 def getSource()
 {
-    def git_url = "https://github.com/takuya-takeuchi/DlibDotNet"
-    def git_branch = "develop"
     def work
     def dlibDotNet
 
@@ -26,7 +26,7 @@ def getSource()
         {
             dir(work)
             {
-                sh 'git clone -b ' + git_branch + ' ' + git_url
+                sh "git clone -b ${git_branch} ${git_url}"
             }
         }
     }
@@ -47,7 +47,7 @@ def getSource()
         {
             dir(work)
             {
-                bat 'git clone -b ' + git_branch + ' ' + git_url
+                bat "git clone -b ${git_branch} ${git_url}"
             }
         }
     }
@@ -63,14 +63,14 @@ def initialize(root)
         {
             sh 'git clean -fxd nuget'
             sh 'git checkout .'
-            sh 'git pull origin develop'
+            sh "git pull origin ${git_branch}"
             sh './Initialize.sh'
         }
         else
         {
             bat 'git clean -fxd nuget'
             bat 'git checkout .'
-            bat 'git pull origin develop'
+            bat "git pull origin ${git_branch}"
             bat 'Initialize.bat'
         }
     }
@@ -136,13 +136,13 @@ def buildContainer()
         {
             if(isUnix())
             {     
-                sh 'pwsh ./build_devel.ps1'  
-                sh 'pwsh ./build_runtime.ps1'    
+                sh 'pwsh build_devel.ps1'  
+                sh 'pwsh build_runtime.ps1'    
             }
             else
             {
-                bat 'pwsh .\\build_devel.ps1'  
-                bat 'pwsh .\\build_runtime.ps1'    
+                bat 'pwsh build_devel.ps1'  
+                bat 'pwsh build_runtime.ps1'    
             }
         }   
     }
@@ -273,7 +273,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Build for Windows'
-                    build('pwsh .\\BuildWindows.ps1', 'windows')
+                    build('pwsh BuildWindows.ps1', 'windows')
                 }
             }
             builders['linux'] =
@@ -282,7 +282,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Build for Linux'
-                    build('pwsh .\\BuildUbuntu16.ps1', 'linux')
+                    build('pwsh BuildUbuntu16.ps1', 'linux')
                 }
             }
             builders['osx'] =
@@ -293,7 +293,7 @@ node('master')
                     echo 'Build for OSX'
                     withEnv(["PATH+LOCAL=/usr/local/bin"])
                     {
-                        build('./BuildOSX.sh', 'osx')
+                        build('pwsh BuildOSX.ps1', 'osx')
                     }
                 }
             }
@@ -381,7 +381,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on Windows'
-                    test('pwsh .\\TestPackageWindows.ps1 ' + params.Version, 'test-windows')
+                    test('pwsh TestPackageWindows.ps1 ' + params.Version, 'test-windows')
                 }
             }
             builders['linux'] =
@@ -390,7 +390,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on Linux'
-                    test('pwsh .\\TestPackageUbuntu16.ps1 ' + params.Version, 'test-linux')
+                    test('pwsh TestPackageUbuntu16.ps1 ' + params.Version, 'test-linux')
                 }
             }
             builders['linux-arm'] =
@@ -413,7 +413,7 @@ node('master')
                     echo 'Test on OSX'
                     withEnv(["PATH+LOCAL=/usr/local/share/dotnet"])
                     {
-                        test('./TestPackageOSX.sh ' + params.Version, 'test-osx')
+                        test('pwsh TestPackageOSX.ps1 ' + params.Version, 'test-osx')
                     }
                 }
             }
