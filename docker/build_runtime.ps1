@@ -17,15 +17,18 @@ foreach($dockerfile in $baseDockerfiles)
       exit -1
    }
 
-   # check operation system and version
-   $path = $dockerfileDirectory.Replace('\', '/').Split('/')
-   $os = $path[2]
-   $version = $path[3]
+   $dockerfileDirectory = $dockerfileDirectory.Replace('base', 'runtime') 
+   if (Test-Path $dockerfileDirectory)
+   { 
+      $runtimeDockerfileDirectory = $dockerfileDirectory 
+   }
+   else
+   {
+      $runtimeDockerfileDirectory = Join-Path 'runtime' $os  | `
+                                    Join-Path -ChildPath $version -Resolve
+   }
 
    $runtimeNameBase = $dockerfileDirectory
-   $runtimeDockerfileDirectory = Join-Path 'runtime' $os  | `
-                                 Join-Path -ChildPath $version -Resolve
-   $runtimeDockerfileDirectory = Resolve-Path ((Get-ChildItem $runtimeDockerfileDirectory).Directory.FullName) -Relative
 
    $runtimetag = "dlibdotnet" + (Resolve-Path $runtimeNameBase -Relative).Trim('.').Replace('\', '/').Replace('base', 'runtime')
    Write-Host "Start 'docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME=""$basetag""'" -ForegroundColor Green
