@@ -1,6 +1,14 @@
 Param()
 
+$requirementFiles = Get-ChildItem  -Recurse base -include Requirement.ps1
 $dockerfiles = Get-ChildItem  -Recurse devel -include Dockerfile
+
+foreach($requirement in $requirementFiles)
+{
+   $relativePath = Resolve-Path $requirement -Relative
+   Write-Host "pwsh ${relativePath}" -ForegroundColor Green
+   pwsh $relativePath
+}
 
 foreach($dockerfile in $dockerfiles)
 {
