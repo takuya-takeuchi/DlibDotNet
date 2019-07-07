@@ -75,6 +75,7 @@ def initialize(root)
         {
             sh 'git clean -fxd nuget'
             sh 'git checkout .'
+            sh "git checkout ${gitBranch}"
             sh "git pull origin ${gitBranch}"
             sh './Initialize.sh'
         }
@@ -82,6 +83,7 @@ def initialize(root)
         {
             bat 'git clean -fxd nuget'
             bat 'git checkout .'
+            bat "git checkout ${gitBranch}"
             bat "git pull origin ${gitBranch}"
             bat 'Initialize.bat'
         }

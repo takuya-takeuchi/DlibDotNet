@@ -19,7 +19,7 @@ function build-container($Image, $Qemu)
     $containerid = ""
 
     # Run container and it fails, then get container id
-    run-command "docker run -it ${Image}"
+    run-command "docker run -t ${Image}"
     Start-Sleep 10
     $containerid = Invoke-Expression "docker ps -a -l -q --filter ""exited=1"" --filter ""ancestor=${Image}"""
 
