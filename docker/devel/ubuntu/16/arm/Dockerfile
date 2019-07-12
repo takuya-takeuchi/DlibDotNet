@@ -19,3 +19,15 @@ RUN apt-get update && apt-get install -y \
 # set compiler 
 #ENV CMAKE_C_COMPILER /usr/bin/gcc 
 #ENV CMAKE_CXX_COMPILER /usr/bin/g++
+
+# Install prerequisites
+RUN apt-get update && apt-get install -y \
+    libunwind8 \
+    wget \
+    tar \
+    apt-transport-https \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN wget https://github.com/PowerShell/PowerShell/releases/download/v6.2.0/powershell-6.2.0-linux-arm32.tar.gz \
+ && mkdir /usr/local/share/powershell \
+ && tar -xvf ./powershell-6.2.0-linux-arm32.tar.gz -C /usr/local/share/powershell \
+ && ln -s /usr/local/share/powershell/pwsh /usr/bin/pwsh

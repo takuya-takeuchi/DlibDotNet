@@ -23,3 +23,13 @@ ENV NCCL_ROOT /usr/local/nccl
 ENV CPATH $NCCL_ROOT/include:$CPATH
 ENV LD_LIBRARY_PATH $NCCL_ROOT/lib/:$LD_LIBRARY_PATH
 ENV LIBRARY_PATH $NCCL_ROOT/lib/:$LIBRARY_PATH
+
+# Register Microsoft key and feed
+RUN apt-get update && apt-get install -y \
+    wget \
+    apt-transport-https
+RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
+RUN apt-get update && apt-get install -y \
+    powershell \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
