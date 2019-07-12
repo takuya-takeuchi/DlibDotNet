@@ -425,7 +425,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on OSX'
-                    withEnv(["PATH+LOCAL=/usr/local/share/dotnet"])
+                    withEnv(["PATH+LOCAL=/usr/local/bin:/usr/local/share/dotnet"])
                     {
                         test('pwsh TestPackageOSX.ps1 ' + params.Version, 'test-osx')
                     }
@@ -437,7 +437,7 @@ node('master')
 
         stage("result")
         {
-            def nodeName = props['packaging-node']
+            def nodeName = props['packaging']['node']
             node(nodeName)
             {
                 dir(buildWorkSpace)
