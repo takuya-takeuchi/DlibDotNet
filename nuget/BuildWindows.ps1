@@ -34,24 +34,23 @@ foreach($BuildTarget in $BuildTargets)
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $cudaVersion = $BuildTarget.CUDA
-   $options = New-Object 'System.Collections.Generic.List[string]'
    if ($target -eq "cpu")
    {
       $libraryDir = Join-Path "artifacts" $target
       $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
+      $option = ""
    }
    elseif ($target -eq "mkl")
    {
       $libraryDir = Join-Path "artifacts" $target
       $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
-      $options.Add($IntelMKLDir)
+      $option = $IntelMKLDir
    }
    else
    {
       $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
       $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
-      $options.Add($cudaVersion.ToString())
-      $cudaVersion = ($cudaVersion / 10).ToString("0.0")
+      $option = $cudaVersion
    }
 
    foreach($Source in $BuildSourceArray)
@@ -63,7 +62,7 @@ foreach($BuildTarget in $BuildTargets)
 
       $arc = $ArchitectureHash[$architecture]
       Write-Host "Build $Source [$arc] for $target" -ForegroundColor Green
-      powershell .\BuildWindowsVS2017.ps1 Release $target $architecture ($options -join " ")
+      pwsh .\Build.ps1 Release $target $architecture $option
 
       if ($lastexitcode -ne 0)
       {
