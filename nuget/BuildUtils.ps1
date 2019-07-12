@@ -247,11 +247,13 @@ function ConfigCPU([Config]$Config)
    {
       cmake -G $Config.GetVisualStudio() -T host=x64 `
             -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_LAPACK=OFF `
             ..
    }
    else
    {
       cmake -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_LAPACK=OFF `
             -D mkl_include_dir="" `
             -D mkl_intel="" `
             -D mkl_rt="" `
@@ -277,12 +279,15 @@ function ConfigCUDA([Config]$Config)
 
       cmake -G $Config.GetVisualStudio() -T host=x64 `
             -D DLIB_USE_CUDA=ON `
+            -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
             ..
    }
    else
    {
       cmake -D DLIB_USE_CUDA=ON `
             -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
             -D LIBPNG_IS_GOOD=OFF  `
             -D PNG_FOUND=OFF `
             -D PNG_LIBRARY_RELEASE="" `
@@ -333,6 +338,7 @@ function ConfigMKL([Config]$Config)
       cmake -G $Config.GetVisualStudio() -T host=x64 `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=ON `
+            -D DLIB_USE_LAPACK=OFF `
             -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
             -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
             -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
@@ -344,6 +350,7 @@ function ConfigMKL([Config]$Config)
    {
       cmake -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=ON `
+            -D DLIB_USE_LAPACK=OFF `
             -D LIBPNG_IS_GOOD=OFF `
             -D PNG_FOUND=OFF `
             -D PNG_LIBRARY_RELEASE="" `
@@ -360,6 +367,7 @@ function ConfigARM([Config]$Config)
       cmake -D DLIB_USE_CUDA=OFF `
             -D ENABLE_NEON=ON `
             -D DLIB_USE_BLAS=ON `
+            -D DLIB_USE_LAPACK=OFF `
             -D CMAKE_C_COMPILER="/usr/bin/arm-linux-gnueabihf-gcc" `
             -D CMAKE_CXX_COMPILER="/usr/bin/arm-linux-gnueabihf-g++" `
             -D LIBPNG_IS_GOOD=OFF `
@@ -374,6 +382,7 @@ function ConfigARM([Config]$Config)
       cmake -D DLIB_USE_CUDA=OFF `
             -D ENABLE_NEON=ON `
             -D DLIB_USE_BLAS=ON `
+            -D DLIB_USE_LAPACK=OFF `
             -D CMAKE_C_COMPILER="/usr/bin/aarch64-linux-gnu-gcc" `
             -D CMAKE_CXX_COMPILER="/usr/bin/aarch64-linux-gnu-g++" `
             -D LIBPNG_IS_GOOD=OFF `
