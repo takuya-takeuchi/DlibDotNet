@@ -38,5 +38,5 @@ if ($IsMac)
     exit -1
 }
 
-build-container "arm64v8/ubuntu:16.04" "aarch64"
-build-container "arm32v7/ubuntu:16.04" "arm"
+# build-container "arm64v8/ubuntu:16.04" "aarch64"
+# build-container "arm32v7/ubuntu:16.04" "arm"
