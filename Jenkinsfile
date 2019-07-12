@@ -361,10 +361,10 @@ node('master')
                             {
                                 bat 'BuildNuspec.MKL.bat'
                             }
-                        }, 'ARM': {
+                        },'ARM': {
                             stage('Build DlibDotNet.ARM')
                             {
-                                bat 'BuildNuspec.ARM.bat'
+                                // bat 'BuildNuspec.ARM.bat'
                             }
                         }
                     }
@@ -407,18 +407,18 @@ node('master')
                     test('pwsh TestPackageUbuntu16.ps1 ' + params.Version, 'test-linux')
                 }
             }
-            builders['linux-arm'] =
-            {
-                def nodeName = props['test']['linux-arm-node']
-                node(nodeName)
-                {
-                    echo 'Test on Linux-ARM'
-                    withEnv(["PATH+LOCAL=/usr/local/share/dotnet"])
-                    {
-                        test('./TestPackageRaspberryPi.sh ' + params.Version, 'test-linux-arm')
-                    }
-                }
-            }
+            // builders['linux-arm'] =
+            // {
+            //     def nodeName = props['test']['linux-arm-node']
+            //     node(nodeName)
+            //     {
+            //         echo 'Test on Linux-ARM'
+            //         withEnv(["PATH+LOCAL=/usr/local/share/dotnet"])
+            //         {
+            //             test('./TestPackageRaspberryPi.sh ' + params.Version, 'test-linux-arm')
+            //         }
+            //     }
+            // }
             builders['osx'] =
             {
                 def nodeName = props['test']['osx-node']
@@ -445,7 +445,7 @@ node('master')
                     unstash 'nupkg'
                     unstash 'test-windows'
                     unstash 'test-linux'
-                    unstash 'test-linux-arm'
+                    // unstash 'test-linux-arm'
                     unstash 'test-osx'
 
                     archiveArtifacts artifacts: 'artifacts/test/**/*.*'
