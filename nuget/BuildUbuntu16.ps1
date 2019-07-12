@@ -97,7 +97,7 @@ foreach($BuildTarget in $BuildTargets)
       $dll = $BuildSourceHash[$key]
       $dstDir = Join-Path $Current $libraryDir
 
-      CopyToArtifact -configuration "Release" -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+      CopyToArtifact -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
    }
 }
 

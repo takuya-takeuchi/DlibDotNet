@@ -416,11 +416,22 @@ function Build([Config]$Config)
    Set-Location -Path $Current
 }
 
-function CopyToArtifact([string]$configuration, [string]$srcDir, [string]$build, [string]$libraryName, [string]$dstDir, [string]$rid)
+function CopyToArtifact()
 {
-   $binary = Join-Path ${srcDir} ${build}  | `
-            Join-Path -ChildPath ${configuration} | `
-            Join-Path -ChildPath ${libraryName}
+   Param([string]$srcDir, [string]$build, [string]$libraryName, [string]$dstDir, [string]$rid, [string]$configuration="")
+
+   if ($configuration)
+   {
+      $binary = Join-Path ${srcDir} ${build}  | `
+               Join-Path -ChildPath ${configuration} | `
+               Join-Path -ChildPath ${libraryName}
+   }
+   else
+   {
+      $binary = Join-Path ${srcDir} ${build}  | `
+               Join-Path -ChildPath ${libraryName}
+   }
+
    $output = Join-Path $dstDir runtimes | `
             Join-Path -ChildPath ${rid} | `
             Join-Path -ChildPath native | `
