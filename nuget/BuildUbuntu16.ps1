@@ -82,6 +82,8 @@ foreach($BuildTarget in $BuildTargets)
    Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t $dockername'" -ForegroundColor Green
    docker run --rm `
                -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+               -e "LOCAL_UID=$(id -u $USER)" `
+               -e "LOCAL_GID=$(id -g $USER)" `
                -t "$dockername" $target $architecture $option
 
    if ($lastexitcode -ne 0)
