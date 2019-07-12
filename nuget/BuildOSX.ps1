@@ -28,7 +28,7 @@ foreach($BuildTarget in $BuildTargets)
 
    $Config = [Config]::new("Release", $target, $architecture, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
-   $build = $Config.GetBuildDirectoryName()
+   $build = $Config.GetBuildDirectoryName($OperatingSystem)
 
    foreach ($key in $BuildSourceHash.keys)
    {

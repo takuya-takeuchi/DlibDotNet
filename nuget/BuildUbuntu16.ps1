@@ -68,7 +68,7 @@ foreach($BuildTarget in $BuildTargets)
 
    $Config = [Config]::new("Release", $target, $architecture, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
-   $build = $Config.GetBuildDirectoryName()
+   $build = $Config.GetBuildDirectoryName($OperatingSystem)
 
    Write-Host "Start 'docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
    docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"

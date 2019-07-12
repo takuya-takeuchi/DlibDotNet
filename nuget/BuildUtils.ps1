@@ -205,9 +205,17 @@ class Config
       return $arch
    }
 
-   [string] GetBuildDirectoryName()
+   [string] GetBuildDirectoryName([string]$os="")
    {
-      $osname = $this.GetOSName()
+      if ($os)
+      {
+         $osname = $os
+      }
+      else
+      {
+         $osname = $this.GetOSName()
+      }
+      
       $target = $this._Target
       $architecture = $this.GetArchitectureName()
 
@@ -382,7 +390,7 @@ function Build([Config]$Config)
 {
    $Current = Get-Location
 
-   $Output = $Config.GetBuildDirectoryName()
+   $Output = $Config.GetBuildDirectoryName("")
    if ((Test-Path $Output) -eq $False)
    {
       New-Item $Output -ItemType Directory
