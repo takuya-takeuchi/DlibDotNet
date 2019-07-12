@@ -23,7 +23,7 @@ $DockerFileDir = Join-Path $DockerDir build  | `
                  Join-Path -ChildPath $Distribution | `
                  Join-Path -ChildPath $DistributionVersion
 
-$BuildSourceHash = [Config]::GetBinaryLibraryHash()
+$BuildSourceHash = [Config]::GetBinaryLibraryLinuxHash()
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }

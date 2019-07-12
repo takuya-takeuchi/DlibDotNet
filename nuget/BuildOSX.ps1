@@ -14,7 +14,7 @@ $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
-$BuildSourceHash = [Config]::GetBinaryLibraryHash()
+$BuildSourceHash = [Config]::GetBinaryLibraryOSXHash()
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }

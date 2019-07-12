@@ -14,7 +14,7 @@ $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
-$BuildSourceHash = [Config]::GetBinaryLibraryHash()
+$BuildSourceHash = [Config]::GetBinaryLibraryWindowsHash()
 
 $IntelMKLDir = $env:MKL_WIN
 if ([string]::IsNullOrEmpty($IntelMKLDir))

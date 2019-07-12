@@ -118,20 +118,19 @@ class Config
       $this._Option = $Option
    }
 
-   static [hashtable] GetBinaryLibraryHash()
+   static [hashtable] GetBinaryLibraryWindowsHash()
    {
-      if ($global:IsWindows)
-      {
-         return [Config]::BuildLibraryWindowsHash
-      }
-      elseif ($global:IsMacOS)
-      {
-         return [Config]::BuildLibraryOSXHash
-      }
-      else
-      {
-         return [Config]::BuildLibraryLinuxHash
-      }
+      return [Config]::BuildLibraryWindowsHash
+   }
+
+   static [hashtable] GetBinaryLibraryOSXHash()
+   {
+      return [Config]::BuildLibraryOSXHash
+   }
+
+   static [hashtable] GetBinaryLibraryLinuxHash()
+   {
+      return [Config]::BuildLibraryLinuxHash
    }
 
    [int] GetArchitecture()
