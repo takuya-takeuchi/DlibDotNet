@@ -1,5 +1,12 @@
 Param()
 
+# import class and function
+$ScriptPath = $PSScriptRoot
+$DlibDotNetRoot = Split-Path $ScriptPath -Parent
+$NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
+             Join-Path -ChildPath "BuildUtils.ps1"
+import-module $NugetPath -function *
+
 $OperatingSystem="osx"
 
 # Store current directory
@@ -7,9 +14,7 @@ $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
-$ArchitectureHash = @{32 = "x86"; 64 = "x64"}
-$BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
-$BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.dylib"; "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib"}
+$BuildSourceHash = [Config]::GetBinaryLibraryHash()
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
@@ -17,47 +22,41 @@ $BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture =
 
 foreach($BuildTarget in $BuildTargets)
 {
-    $target = $BuildTarget.Target
-    $architecture = $BuildTarget.Architecture
-    $libraryDir = Join-Path "artifacts" $target
-    $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
-  
-    foreach($Source in $BuildSourceArray)
-    {
-      $srcDir = Join-Path $DlibDotNetSourceRoot $Source
-  
+   $target = $BuildTarget.Target
+   $architecture = $BuildTarget.Architecture
+   $rid = $BuildTarget.RID
+
+   $Config = [Config]::new("Release", $target, $architecture, $option)
+   $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
+   $build = $Config.GetBuildDirectoryName()
+
+   foreach ($key in $BuildSourceHash.keys)
+   {
+      $srcDir = Join-Path $DlibDotNetSourceRoot $key
+
       # Move to build target directory
       Set-Location -Path $srcDir
-  
-      $arc = $ArchitectureHash[$architecture]
-      Write-Host "Build $Source [$arc] for $target" -ForegroundColor Green
-      $command = "./BuildUnix.sh Release $target $architecture"
-      Invoke-Expression $command
+
+      $arc = $Config.GetArchitectureName()
+      Write-Host "Build $key [$arc] for $target" -ForegroundColor Green
+      Build -Config $Config
 
       if ($lastexitcode -ne 0)
       {
          Set-Location -Path $Current
          exit -1
       }
-    }
+   }
   
-    # Copy output binary
-    foreach($Source in $BuildSourceArray)
-    {
-      $dll = $BuildSourceHash[$Source]
-      $srcDir = Join-Path $DlibDotNetSourceRoot $Source
-  
-      $binary = Join-Path $srcDir $build  | `
-                Join-Path -ChildPath $dll
-      $output = Join-Path $Current $libraryDir  | `
-                Join-Path -ChildPath runtimes | `
-                Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
-                Join-Path -ChildPath native | `
-                Join-Path -ChildPath $dll
-  
-      Write-Host "Copy $dll to $output" -ForegroundColor Green
-      Copy-Item $binary $output
-    }
+   # Copy output binary
+   foreach ($key in $BuildSourceHash.keys)
+   {
+      $srcDir = Join-Path $DlibDotNetSourceRoot $key
+      $dll = $BuildSourceHash[$key]
+      $dstDir = Join-Path $Current $libraryDir
+
+      CopyToArtifact -configuration "Release" -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+   }
 }
 
 # Move to Root directory 

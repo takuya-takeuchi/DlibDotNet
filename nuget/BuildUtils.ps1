@@ -44,6 +44,24 @@ class Config
       32 = "Visual Studio 15 2017";
       64 = "Visual Studio 15 2017 Win64"
    }
+   
+   static $BuildLibraryWindowsHash = 
+   @{
+      "DlibDotNet.Native"     = "DlibDotNetNative.dll";
+      "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"
+   }
+   
+   static $BuildLibraryLinuxHash = 
+   @{
+      "DlibDotNet.Native"     = "libDlibDotNetNative.so";
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"
+   }
+   
+   static $BuildLibraryOSXHash = 
+   @{
+      "DlibDotNet.Native"     = "libDlibDotNetNative.dylib";
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib"
+   }
 
    [string]   $_Configuration
    [int]      $_Architecture
@@ -51,6 +69,15 @@ class Config
    [string[]] $_Option
    [int]      $_CudaVersion
 
+   #***************************************
+   # Arguments
+   #  %1: Build Configuration (Release/Debug)
+   #  %2: Target (cpu/cuda/mkl/arm)
+   #  %3: Architecture (32/64)
+   #  %4: Optional Argument
+   #    if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101]
+   #    if Target is mkl and Windows, IntelMKL directory path
+   #***************************************
    Config([string]$Configuration, [string]$Target, [int]$Architecture, [string]$Option)
    {
       if ($this.ConfigurationArray.Contains($Configuration) -eq $False)
@@ -91,9 +118,45 @@ class Config
       $this._Option = $Option
    }
 
+   static [hashtable] GetBinaryLibraryHash()
+   {
+      if ($global:IsWindows)
+      {
+         return [Config]::BuildLibraryWindowsHash
+      }
+      elseif ($global:IsMacOS)
+      {
+         return [Config]::BuildLibraryOSXHash
+      }
+      else
+      {
+         return [Config]::BuildLibraryLinuxHash
+      }
+   }
+
    [int] GetArchitecture()
    {
       return $this._Architecture
+   }
+
+   [string] GetConfigurationName()
+   {
+      return $this._Configuration
+   }
+
+   [string] GetArtifactDirectoryName()
+   {
+      $target = $this._Target
+
+      if ($this._Target -eq "cuda")
+      {
+         $cudaVersion = $this._CudaVersion
+         return "${target}-${cudaVersion}"
+      }
+      else
+      {
+         return $target
+      }
    }
 
    [string] GetOSName()
@@ -315,32 +378,8 @@ function ConfigARM([Config]$Config)
    }
 }
 
-#***************************************
-#Arguments
-#%1: Build Configuration (Release/Debug)
-#%2: Target (cpu/cuda/mkl/arm)
-#%3: Architecture (32/64)
-#%4: Optional Argument
-#   if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101]
-#   if Target is mkl and Windows, IntelMKL directory path
-#***************************************
-function Build
-(
-   [string]
-   $Configuration,
-
-   [string]
-   $Target,
-
-   [int]
-   $Architecture,
-
-   [string]
-   $Option
-)
+function Build([Config]$Config)
 {
-   $Config = [Config]::new($Configuration, $Target, $Architecture, $Option)
-
    $Current = Get-Location
 
    $Output = $Config.GetBuildDirectoryName()
@@ -371,8 +410,22 @@ function Build
       }
    }
 
-   cmake --build . --config $Configuration
+   cmake --build . --config $Config.GetConfigurationName()
 
    # Move to Root directory
    Set-Location -Path $Current
+}
+
+function CopyToArtifact([string]$configuration, [string]$srcDir, [string]$build, [string]$libraryName, [string]$dstDir, [string]$rid)
+{
+   $binary = Join-Path ${srcDir} ${build}  | `
+            Join-Path -ChildPath ${configuration} | `
+            Join-Path -ChildPath ${libraryName}
+   $output = Join-Path $dstDir runtimes | `
+            Join-Path -ChildPath ${rid} | `
+            Join-Path -ChildPath native | `
+            Join-Path -ChildPath $libraryName
+
+   Write-Host "Copy ${libraryName} to ${output}" -ForegroundColor Green
+   Copy-Item ${binary} ${output}
 }

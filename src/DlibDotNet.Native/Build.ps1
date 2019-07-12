@@ -35,6 +35,12 @@ Param
 )
 
 # import class and function
-. ../../nuget/BuildUtils.ps1
+$ScriptPath = $PSScriptRoot
+$SrcPath = Split-Path $ScriptPath -Parent
+$DlibDotNetRoot = Split-Path $SrcPath -Parent
+$NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
+             Join-Path -ChildPath "BuildUtils.ps1"
+import-module $NugetPath -function *
 
-Build -Configuration $Configuration -Target $Target -Architecture $Architecture -Option $Option
+$Config = [Config]::new($Configuration, $Target, $Architecture, $Option)
+Build -Config $Config

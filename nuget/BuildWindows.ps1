@@ -1,5 +1,12 @@
 Param()
 
+# import class and function
+$ScriptPath = $PSScriptRoot
+$DlibDotNetRoot = Split-Path $ScriptPath -Parent
+$NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
+             Join-Path -ChildPath "BuildUtils.ps1"
+import-module $NugetPath -function *
+
 $OperatingSystem="win"
 
 # Store current directory
@@ -7,62 +14,62 @@ $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
-$ArchitectureHash = @{32 = "x86"; 64 = "x64"}
-$BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
-$BuildSourceHash = @{"DlibDotNet.Native" = "DlibDotNetNative.dll"; "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"}
+$BuildSourceHash = [Config]::GetBinaryLibraryHash()
 
 $IntelMKLDir = $env:MKL_WIN
-if ([string]::IsNullOrEmpty($IntelMKLDir)){
-  Write-Host "Environmental Value 'MKL_WIN' is not defined." -ForegroundColor Yellow
+if ([string]::IsNullOrEmpty($IntelMKLDir))
+{
+   Write-Host "Environmental Value 'MKL_WIN' is not defined." -ForegroundColor Yellow
 }
 
-if (($IntelMKLDir -ne $null) -And !(Test-Path $IntelMKLDir)) {
-  Write-Host "Environmental Value 'MKL_WIN' does not exist." -ForegroundColor Yellow
+if ($IntelMKLDir -And !(Test-Path $IntelMKLDir))
+{
+   Write-Host "Environmental Value 'MKL_WIN' does not exist." -ForegroundColor Yellow
 }
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90  }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101 }
+$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 90  }
+#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 91  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
 
-foreach($BuildTarget in $BuildTargets)
+foreach ($BuildTarget in $BuildTargets)
 {
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
+   $rid = $BuildTarget.RID
    $cudaVersion = $BuildTarget.CUDA
+
    if ($target -eq "cpu")
    {
-      $libraryDir = Join-Path "artifacts" $target
-      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
       $option = ""
    }
    elseif ($target -eq "mkl")
    {
-      $libraryDir = Join-Path "artifacts" $target
-      $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
       $option = $IntelMKLDir
    }
    else
    {
-      $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
-      $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
       $option = $cudaVersion
    }
 
-   foreach($Source in $BuildSourceArray)
+   $Config = [Config]::new("Release", $target, $architecture, $option)
+   $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
+   $build = $Config.GetBuildDirectoryName()
+
+   foreach ($key in $BuildSourceHash.keys)
    {
-      $srcDir = Join-Path $DlibDotNetSourceRoot $Source
+      $srcDir = Join-Path $DlibDotNetSourceRoot $key
 
       # Move to build target directory
       Set-Location -Path $srcDir
 
-      $arc = $ArchitectureHash[$architecture]
-      Write-Host "Build $Source [$arc] for $target" -ForegroundColor Green
-      pwsh .\Build.ps1 Release $target $architecture $option
+      $arc = $Config.GetArchitectureName()
+      Write-Host "Build $key [$arc] for $target" -ForegroundColor Green
+      Build -Config $Config
 
       if ($lastexitcode -ne 0)
       {
@@ -72,22 +79,13 @@ foreach($BuildTarget in $BuildTargets)
    }
 
    # Copy output binary
-   foreach($Source in $BuildSourceArray)
+   foreach ($key in $BuildSourceHash.keys)
    {
-      $dll = $BuildSourceHash[$Source]
-      $srcDir = Join-Path $DlibDotNetSourceRoot $Source
+      $srcDir = Join-Path $DlibDotNetSourceRoot $key
+      $dll = $BuildSourceHash[$key]
+      $dstDir = Join-Path $Current $libraryDir
 
-      $binary = Join-Path $srcDir $build  | `
-               Join-Path -ChildPath Release | `
-               Join-Path -ChildPath $dll
-      $output = Join-Path $Current $libraryDir  | `
-               Join-Path -ChildPath runtimes | `
-               Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
-               Join-Path -ChildPath native | `
-               Join-Path -ChildPath $dll
-
-      Write-Host "Copy $dll to $output" -ForegroundColor Green
-      Copy-Item $binary $output
+      CopyToArtifact -configuration "Release" -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
    }
 }
 
