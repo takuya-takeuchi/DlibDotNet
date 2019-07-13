@@ -63,7 +63,7 @@ foreach($BuildTarget in $BuildTargets)
 
    if ($BuildTarget.CUDA -ne 0)
    {
-      Write-Host "Start docker run --runtime=nvidia --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
+      Write-Host "Start docker run --runtime=nvidia --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
       docker run --runtime=nvidia --rm `
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
@@ -72,7 +72,7 @@ foreach($BuildTarget in $BuildTargets)
    }
    else
    {
-      Write-Host "Start docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
+      Write-Host "Start docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
       docker run --rm `
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `

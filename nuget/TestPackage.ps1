@@ -75,16 +75,18 @@ function RunTest($BuildTargets, $DependencyHash)
       $OutDir = Join-Path $TargetDir bin | `
                   Join-Path -ChildPath Release | `
                   Join-Path -ChildPath netcoreapp2.0
-      New-Item "$OutDir" -ItemType Directory > $null
+      if (!(Test-Path "$OutDir")) {
+         New-Item "$OutDir" -ItemType Directory > $null
+      }
 
       if ($IsWindows)
       {
          if ($DependencyHash.Contains($package))
          {
-         foreach($Dependency in $DependencyHash[$package])
-         {
-            Copy-Item "$Dependency" "$OutDir"
-         }
+            foreach($Dependency in $DependencyHash[$package])
+            {
+               Copy-Item "$Dependency" "$OutDir"
+            }
          }
       }
 

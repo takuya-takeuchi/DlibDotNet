@@ -32,6 +32,17 @@ namespace DlibDotNet.Native.Tests
             Assert.AreEqual(values[VersionKey], DlibDotNet.Dlib.GetNativeDnnVersion());
         }
 
+        [TestMethod]
+        public void GetFrontalFaceDetector()
+        {
+            using(var faceDetector = DlibDotNet.Dlib.GetFrontalFaceDetector())
+            using(var image = DlibDotNet.Dlib.LoadImage<RgbPixel>("Lenna.png"))
+            {
+                var dets = faceDetector.Operator(image);
+                Assert.AreEqual(1, dets.Length);
+            }
+        }
+
     }
 
 }
