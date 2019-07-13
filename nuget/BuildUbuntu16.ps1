@@ -41,7 +41,6 @@ foreach($BuildTarget in $BuildTargets)
    $rid = $BuildTarget.RID
    $cudaVersion = $BuildTarget.CUDA
 
-   $options = New-Object 'System.Collections.Generic.List[string]'
    if ($target -ne "cuda")
    {
       $option = ""
