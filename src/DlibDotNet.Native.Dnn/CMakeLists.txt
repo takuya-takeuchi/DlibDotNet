@@ -102,11 +102,19 @@ else()
       ${CMAKE_CURRENT_BINARY_DIR}/version.rc
       @ONLY)
 
-    add_library(${PROJ_NAME} SHARED ${HEADERS}
-                                    ${SOURCES}
-                                    ${DLIBDOTNET_SHARED_HEADER1}
-                                    ${DLIBDOTNET_SHARED_HEADER2}
-                                    ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+    if ("${TARGET_PLATFORM}" STREQUAL "IOS")
+        add_library(${PROJ_NAME} ${HEADERS}
+                                 ${SOURCES}
+                                 ${DLIBDOTNET_SHARED_HEADER1}
+                                 ${DLIBDOTNET_SHARED_HEADER2}
+                                 ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+    else()
+        add_library(${PROJ_NAME} SHARED ${HEADERS}
+                                        ${SOURCES}
+                                        ${DLIBDOTNET_SHARED_HEADER1}
+                                        ${DLIBDOTNET_SHARED_HEADER2}
+                                        ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+    endif()
 endif()
 
 target_link_libraries(${PROJ_NAME} dlib::dlib )

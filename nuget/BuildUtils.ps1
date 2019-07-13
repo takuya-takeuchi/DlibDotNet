@@ -12,7 +12,8 @@ class Config
       "cpu",
       "cuda",
       "mkl",
-      "arm"
+      "arm",
+      "ios"
    )
 
    $ArchitectureArray =
@@ -61,6 +62,12 @@ class Config
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.dylib";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib"
+   }
+   
+   static $BuildLibraryIOSHash = 
+   @{
+      "DlibDotNet.Native"     = "libDlibDotNetNative.a";
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
    }
 
    [string]   $_Configuration
@@ -394,6 +401,37 @@ function ConfigARM([Config]$Config)
    }
 }
 
+function ConfigIOS([Config]$Config)
+{
+   if ($IsMacOS)
+   {
+      cmake -G Xcode `
+            -D CMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake `
+            -D PLATFORM=OS64COMBINED `
+            -D TARGET_PLATFORM=IOS `
+            -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
+            -D mkl_include_dir="" `
+            -D mkl_intel="" `
+            -D mkl_rt="" `
+            -D mkl_thread="" `
+            -D mkl_pthread="" `
+            -D LIBPNG_IS_GOOD=OFF `
+            -D PNG_FOUND=OFF `
+            -D PNG_LIBRARY_RELEASE="" `
+            -D PNG_LIBRARY_DEBUG="" `
+            -D PNG_PNG_INCLUDE_DIR="" `
+            -D DLIB_NO_GUI_SUPPORT=ON `
+            ..
+   }
+   else
+   {      
+      Write-Host "Error: This platform can not build iOS binary" -ForegroundColor Red
+      exit -1
+   }
+}
+
 function Build([Config]$Config)
 {
    $Current = Get-Location
@@ -423,6 +461,10 @@ function Build([Config]$Config)
       "arm"
       {
          ConfigARM $Config
+      }
+      "ios"
+      {
+         ConfigIOS $Config
       }
    }
 
