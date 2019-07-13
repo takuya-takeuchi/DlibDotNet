@@ -32,7 +32,7 @@ function build-container($Image, $Qemu)
     run-command "docker rm ${containerid}"
 }
 
-if ($IsMac)
+if ($IsMacOS)
 {
     Write-Host "This system is not Linux or Windows" -ForegroundColor Red
     exit -1
