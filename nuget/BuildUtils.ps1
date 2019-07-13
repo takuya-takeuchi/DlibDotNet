@@ -394,6 +394,24 @@ function ConfigARM([Config]$Config)
    }
 }
 
+function ConfigUWP([Config]$Config)
+{
+   if ($IsWindows)
+   {
+      cmake -G $Config.GetVisualStudio() -T host=x64 `
+            -D CMAKE_SYSTEM_NAME=WindowsStore `
+            -D CMAKE_SYSTEM_VERSION=10.0.17763.0 `
+            -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
+            -D _WINDLL=ON `
+            -D _WIN32_UNIVERSAL_APP=ON `
+            -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
+            -D DLIB_NO_GUI_SUPPORT=ON `
+            ..
+   }
+}
+
 function Build([Config]$Config)
 {
    $Current = Get-Location
