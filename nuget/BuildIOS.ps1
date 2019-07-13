@@ -14,7 +14,7 @@ $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
-$BuildSourceHash = [Config]::GetBinaryLibraryOSXHash()
+$BuildSourceHash = [Config]::GetBinaryLibraryIOSHash()
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "ios";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
@@ -27,7 +27,7 @@ foreach($BuildTarget in $BuildTargets)
 
    $Config = [Config]::new("Release", $target, $architecture, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
-   $build = $Config.GetBuildDirectoryName($OperatingSystem)
+   $build = $Config.GetBuildDirectoryName("")
 
    foreach ($key in $BuildSourceHash.keys)
    {

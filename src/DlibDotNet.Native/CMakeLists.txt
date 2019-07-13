@@ -106,7 +106,7 @@ else()
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc
         @ONLY)
 
-    if ("${TARGET_PLATFORM}" STREQUAL "IOS")
+    if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
         add_library(${PROJ_NAME} ${HEADERS}
                                  ${SOURCES}
                                  ${CMAKE_CURRENT_BINARY_DIR}/version.rc)

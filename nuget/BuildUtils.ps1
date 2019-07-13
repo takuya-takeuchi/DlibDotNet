@@ -140,6 +140,11 @@ class Config
       return [Config]::BuildLibraryLinuxHash
    }
 
+   static [hashtable] GetBinaryLibraryIOSHash()
+   {
+      return [Config]::BuildLibraryIOSHash
+   }
+
    [int] GetArchitecture()
    {
       return $this._Architecture
@@ -408,7 +413,6 @@ function ConfigIOS([Config]$Config)
       cmake -G Xcode `
             -D CMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake `
             -D PLATFORM=OS64COMBINED `
-            -D TARGET_PLATFORM=IOS `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
