@@ -78,17 +78,21 @@ foreach($BuildTarget in $BuildTargets)
       exit -1
    }
 
-   Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
-   docker run --rm `
-               -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-               -e "LOCAL_UID=$(id -u $env:USER)" `
-               -e "LOCAL_GID=$(id -g $env:USER)" `
-               -t "$dockername" $target $architecture $option
-
-   if ($lastexitcode -ne 0)
+   # Build binary
+   foreach ($key in $BuildSourceHash.keys)
    {
-      Set-Location -Path $Current
-      exit -1
+      Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
+      docker run --rm `
+                  -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                  -e "LOCAL_UID=$(id -u $env:USER)" `
+                  -e "LOCAL_GID=$(id -g $env:USER)" `
+                  -t "$dockername" $key $target $architecture $option
+   
+      if ($lastexitcode -ne 0)
+      {
+         Set-Location -Path $Current
+         exit -1
+      }
    }
 
    # Copy output binary

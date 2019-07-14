@@ -36,6 +36,8 @@ Param
 
 # import class and function
 $ScriptPath = $PSScriptRoot
+Write-Host "Build "(Split-Path $ScriptPath -Leaf) -ForegroundColor Green
+
 $SrcPath = Split-Path $ScriptPath -Parent
 $DlibDotNetRoot = Split-Path $SrcPath -Parent
 $NugetPath = Join-Path $DlibDotNetRoot "nuget" | `

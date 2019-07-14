@@ -62,21 +62,25 @@ foreach($BuildTarget in $BuildTargets)
       'ANDROID_NATIVE_API_LEVEL' = $AndroidNativeApiLevel
    }
 
-   $option = [Config]::Base64Encode((ConvertTo-Json -Compress $setting))
-   $Config = [Config]::new("Release", $target, $architecture, $option)
-   $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
-   $build = $Config.GetBuildDirectoryName($OperatingSystem)
-   Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
-   docker run --rm `
-               -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-               -e "LOCAL_UID=$(id -u $env:USER)" `
-               -e "LOCAL_GID=$(id -g $env:USER)" `
-               -t "$dockername" $target $architecture $option
-
-   if ($lastexitcode -ne 0)
+   # Build binary
+   foreach ($key in $BuildSourceHash.keys)
    {
-      Set-Location -Path $Current
-      exit -1
+      $option = [Config]::Base64Encode((ConvertTo-Json -Compress $setting))
+      $Config = [Config]::new("Release", $target, $architecture, $option)
+      $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
+      $build = $Config.GetBuildDirectoryName($OperatingSystem)
+      Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
+      docker run --rm `
+                  -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                  -e "LOCAL_UID=$(id -u $env:USER)" `
+                  -e "LOCAL_GID=$(id -g $env:USER)" `
+                  -t "$dockername" $key $target $architecture $option
+   
+      if ($lastexitcode -ne 0)
+      {
+         Set-Location -Path $Current
+         exit -1
+      }
    }
 
    # Copy output binary
