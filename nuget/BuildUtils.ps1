@@ -13,6 +13,7 @@ class Config
       "cuda",
       "mkl",
       "arm",
+      "android",
       "ios"
    )
 
@@ -73,8 +74,10 @@ class Config
    [string]   $_Configuration
    [int]      $_Architecture
    [string]   $_Target
-   [string[]] $_Option
+   [string[]] $_MklDirectory
    [int]      $_CudaVersion
+   [string]   $_AndroidABI
+   [string]   $_AndroidNativeAPILevel
 
    #***************************************
    # Arguments
@@ -108,21 +111,46 @@ class Config
          exit -1
       }
 
-      if ($Target -eq "cuda")
+      switch ($Target)
       {
-         $this._CudaVersion = [int]$Option
-         if ($this.CudaVersionArray.Contains($this._CudaVersion) -ne $True)
+         "cuda"
          {
-            $candidate = $this.CudaVersionArray -join "/"
-            Write-Host "Error: Specify CUDA version [${candidate}]" -ForegroundColor Red
-            exit -1
+            $this._CudaVersion = [int]$Option
+            if ($this.CudaVersionArray.Contains($this._CudaVersion) -ne $True)
+            {
+               $candidate = $this.CudaVersionArray -join "/"
+               Write-Host "Error: Specify CUDA version [${candidate}]" -ForegroundColor Red
+               exit -1
+            }
+         }
+         "mkl"
+         {
+            $this._MklDirectory = $Option
+         }
+         "android"
+         {
+            $decoded = [Config]::Base64Decode($Option)
+            $setting = ConvertFrom-Json $decoded
+            $this._AndroidABI            = $setting.ANDROID_ABI
+            $this._AndroidNativeAPILevel = $setting.ANDROID_NATIVE_API_LEVEL
          }
       }
 
       $this._Configuration = $Configuration
       $this._Architecture = $Architecture
       $this._Target = $Target
-      $this._Option = $Option
+   }
+
+   static [string] Base64Encode([string]$text)
+   {
+      $byte = ([System.Text.Encoding]::Default).GetBytes($text)
+      return [Convert]::ToBase64String($byte)
+   }
+
+   static [string] Base64Decode([string]$base64)
+   {
+      $byte = [System.Convert]::FromBase64String($base64)
+      return [System.Text.Encoding]::Default.GetString($byte)
    }
 
    static [hashtable] GetBinaryLibraryWindowsHash()
@@ -153,6 +181,16 @@ class Config
    [string] GetConfigurationName()
    {
       return $this._Configuration
+   }
+
+   [string] GetAndroidABI()
+   {
+      return $this._AndroidABI
+   }
+
+   [string] GetAndroidNativeAPILevel()
+   {
+      return $this._AndroidNativeAPILevel
    }
 
    [string] GetArtifactDirectoryName()
@@ -197,7 +235,7 @@ class Config
 
    [string] GetIntelMklDirectory()
    {
-      return [string]$this._Option
+      return [string]$this._MklDirectory
    }
 
    [string] GetArchitectureName()
@@ -234,6 +272,11 @@ class Config
       {
          $version = $this._CudaVersion
          return "build_${osname}_cuda-${version}_${architecture}"
+      }
+      elseif ($target -eq "android")
+      {
+         $abi = $this._AndroidABI
+         return "build_${osname}_${target}-${abi}"
       }
       else
       {
@@ -406,6 +449,55 @@ function ConfigARM([Config]$Config)
    }
 }
 
+function ConfigANDROID([Config]$Config)
+{
+   if ($IsLinux)
+   {
+      if (!${env:ANDROID_NDK_HOME})
+      {
+         Write-Host "Error: Specify ANDROID_NDK_HOME environmental value" -ForegroundColor Red
+         exit -1
+      }
+
+      if ((Test-Path "${env:ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake") -eq $False)
+      {
+         Write-Host "Error: Specified Android NDK toolchain '${env:ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake' does not found" -ForegroundColor Red
+         exit -1
+      }
+
+      $level = $Config.GetAndroidNativeAPILevel()
+      $abi = $Config.GetAndroidABI()
+
+      cmake -G Ninja `
+            -D CMAKE_TOOLCHAIN_FILE=${env:ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake `
+            -D ANDROID_NDK=${env:ANDROID_NDK_HOME} `
+            -D CMAKE_MAKE_PROGRAM=ninja `
+            -D ANDROID_NATIVE_API_LEVEL=${level} `
+            -D ANDROID_ABI=${abi} `
+            -D ANDROID_TOOLCHAIN=clang `
+            -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
+            -D mkl_include_dir="" `
+            -D mkl_intel="" `
+            -D mkl_rt="" `
+            -D mkl_thread="" `
+            -D mkl_pthread="" `
+            -D LIBPNG_IS_GOOD=OFF `
+            -D PNG_FOUND=OFF `
+            -D PNG_LIBRARY_RELEASE="" `
+            -D PNG_LIBRARY_DEBUG="" `
+            -D PNG_PNG_INCLUDE_DIR="" `
+            -D DLIB_NO_GUI_SUPPORT=ON `
+            ..
+   }
+   else
+   {      
+      Write-Host "Error: This platform can not build android binary" -ForegroundColor Red
+      exit -1
+   }
+}
+
 function ConfigIOS([Config]$Config)
 {
    if ($IsMacOS)
@@ -465,6 +557,10 @@ function Build([Config]$Config)
       "arm"
       {
          ConfigARM $Config
+      }
+      "android"
+      {
+         ConfigANDROID $Config
       }
       "ios"
       {

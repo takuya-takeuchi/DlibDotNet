@@ -5,7 +5,7 @@ ARCH=$2
 DDNROOT=/opt/data/DlibDotNet
 
 if [ $# -eq 3 ]; then
-   CUDA=$3
+   OPTION=$3
 fi
 
 CONFIG=Release
@@ -20,7 +20,7 @@ groupmod -g $GROUP_ID $NON_ROOT_USER
 export HOME=/home/$NON_ROOT_USER
 
 cd ${DDNROOT}/src/DlibDotNet.Native
-exec /usr/sbin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${CUDA}
+exec /usr/sbin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${OPTION}
 
 cd ${DDNROOT}/src/DlibDotNet.Native.Dnn
-exec /usr/sbin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${CUDA}
+exec /usr/sbin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${OPTION}
