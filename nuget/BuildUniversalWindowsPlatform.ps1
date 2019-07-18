@@ -29,12 +29,6 @@ if ($IntelMKLDir -And !(Test-Path $IntelMKLDir))
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 90  }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 91  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
 
 foreach ($BuildTarget in $BuildTargets)
 {
@@ -42,21 +36,9 @@ foreach ($BuildTarget in $BuildTargets)
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
    $cudaVersion = $BuildTarget.CUDA
+   $option = ""
 
-   if ($target -eq "cpu")
-   {
-      $option = ""
-   }
-   elseif ($target -eq "mkl")
-   {
-      $option = $IntelMKLDir
-   }
-   else
-   {
-      $option = $cudaVersion
-   }
-
-   $Config = [Config]::new("Release", $target, $architecture, 'desktop', $option)
+   $Config = [Config]::new("Release", $target, $architecture, "uwp", $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 

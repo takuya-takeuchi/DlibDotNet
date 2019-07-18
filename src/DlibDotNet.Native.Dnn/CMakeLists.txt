@@ -44,6 +44,11 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
 	# C4819: The file contains a character that cannot be represented in the current code page
 	# C4503: identifier' : decorated name length exceeded, name was truncated
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819 /wd4503 /bigobj")
+
+	# C4146: unary minus operator applied to unsigned type, result still unsigned
+	if ("${CMAKE_SYSTEM_NAME}" STREQUAL "WindowsStore")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4146")
+	endif()
 endif()
 
 
