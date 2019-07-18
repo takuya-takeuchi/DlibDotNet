@@ -74,6 +74,7 @@ class Config
    [string]   $_Configuration
    [int]      $_Architecture
    [string]   $_Target
+   [string]   $_Platform
    [string[]] $_MklDirectory
    [int]      $_CudaVersion
    [string]   $_AndroidABI
@@ -84,11 +85,12 @@ class Config
    #  %1: Build Configuration (Release/Debug)
    #  %2: Target (cpu/cuda/mkl/arm)
    #  %3: Architecture (32/64)
-   #  %4: Optional Argument
+   #  %4: Platform (desktop/android/ios/uwp)
+   #  %5: Optional Argument
    #    if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101]
    #    if Target is mkl and Windows, IntelMKL directory path
    #***************************************
-   Config([string]$Configuration, [string]$Target, [int]$Architecture, [string]$Option)
+   Config([string]$Configuration, [string]$Target, [int]$Architecture, [string]$Platform, [string]$Option)
    {
       if ($this.ConfigurationArray.Contains($Configuration) -eq $False)
       {
@@ -139,6 +141,7 @@ class Config
       $this._Configuration = $Configuration
       $this._Architecture = $Architecture
       $this._Target = $Target
+      $this._Platform = $Platform
    }
 
    static [string] Base64Encode([string]$text)
@@ -196,6 +199,7 @@ class Config
    [string] GetArtifactDirectoryName()
    {
       $target = $this._Target
+      $platform = $this._Platform
 
       if ($this._Target -eq "cuda")
       {
@@ -204,7 +208,7 @@ class Config
       }
       else
       {
-         return $target
+         return Join-Path $platform $target
       }
    }
 
@@ -266,6 +270,7 @@ class Config
       }
       
       $target = $this._Target
+      $platform = $this._Platform
       $architecture = $this.GetArchitectureName()
 
       if ($target -eq "cuda")
@@ -280,7 +285,7 @@ class Config
       }
       else
       {
-         return "build_${osname}_${target}_${architecture}"
+         return "build_${osname}_${platform}_${target}_${architecture}"
       }
    }
 
@@ -449,6 +454,24 @@ function ConfigARM([Config]$Config)
    }
 }
 
+function ConfigUWP([Config]$Config)
+{
+   if ($IsWindows)
+   {
+      cmake -G $Config.GetVisualStudio() -T host=x64 `
+            -D CMAKE_SYSTEM_NAME=WindowsStore `
+            -D CMAKE_SYSTEM_VERSION=10.0 `
+            -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
+            -D _WINDLL=ON `
+            -D _WIN32_UNIVERSAL_APP=ON `
+            -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
+            -D DLIB_NO_GUI_SUPPORT=ON `
+            ..
+   }
+}
+
 function ConfigANDROID([Config]$Config)
 {
    if ($IsLinux)
@@ -540,31 +563,41 @@ function Build([Config]$Config)
 
    Set-Location -Path $Output
 
-   switch ($Target)
+   switch ($Platform)
    {
-      "cpu"
+      "uwp"
       {
-         ConfigCPU $Config
+         ConfigUWP $Config
       }
-      "mkl"
+      default
       {
-         ConfigMKL $Config
-      }
-      "cuda"
-      {
-         ConfigCUDA $Config
-      }
-      "arm"
-      {
-         ConfigARM $Config
-      }
-      "android"
-      {
-         ConfigANDROID $Config
-      }
-      "ios"
-      {
-         ConfigIOS $Config
+         switch ($Target)
+         {
+            "cpu"
+            {
+               ConfigCPU $Config
+            }
+            "mkl"
+            {
+               ConfigMKL $Config
+            }
+            "cuda"
+            {
+               ConfigCUDA $Config
+            }
+            "arm"
+            {
+               ConfigARM $Config
+            }
+            "android"
+            {
+               ConfigANDROID $Config
+            }
+            "ios"
+            {
+               ConfigIOS $Config
+            }
+         }
       }
    }
 
