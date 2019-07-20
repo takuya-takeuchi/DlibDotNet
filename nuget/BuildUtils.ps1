@@ -12,9 +12,15 @@ class Config
       "cpu",
       "cuda",
       "mkl",
-      "arm",
+      "arm"
+   )
+
+   $PlatformArray =
+   @(
+      "desktop",
       "android",
-      "ios"
+      "ios",
+      "uwp"
    )
 
    $ArchitectureArray =
@@ -34,11 +40,11 @@ class Config
 
    $CudaVersionHash =
    @{
-      90 = "9.0";
-      91 = "9.1";
-      92 = "9.2";
-      100 = "10.0";
-      101 = "10.1"
+      90 = "9_0";
+      91 = "9_1";
+      92 = "9_2";
+      100 = "10_0";
+      101 = "10_1"
    }
 
    $VisualStudioHash =
@@ -76,7 +82,7 @@ class Config
    [int]      $_Architecture
    [string]   $_Target
    [string]   $_Platform
-   [string[]] $_MklDirectory
+   [string]   $_MklDirectory
    [int]      $_CudaVersion
    [string]   $_AndroidABI
    [string]   $_AndroidNativeAPILevel
@@ -95,7 +101,7 @@ class Config
    Config(  [string]$Root,
             [string]$Configuration,
             [string]$Target,
-            [int]$Architecture,
+            [int]   $Architecture,
             [string]$Platform,
             [string]$Option
          )
@@ -121,6 +127,13 @@ class Config
          exit -1
       }
 
+      if ($this.PlatformArray.Contains($Platform) -eq $False)
+      {
+         $candidate = $this.PlatformArray -join "/"
+         Write-Host "Error: Specify Architecture [${candidate}]" -ForegroundColor Red
+         exit -1
+      }
+
       switch ($Target)
       {
          "cuda"
@@ -137,6 +150,10 @@ class Config
          {
             $this._MklDirectory = $Option
          }
+      }
+
+      switch ($Platform)
+      {
          "android"
          {
             $decoded = [Config]::Base64Decode($Option)
@@ -192,13 +209,13 @@ class Config
 
    [string] GetDlibRootDir()
    {
-      return   Join-Path $this._Root src |
+      return   Join-Path $this.GetRootDir() src |
                Join-Path -ChildPath dlib
    }
 
    [string] GetNugetDir()
    {
-      return   Join-Path $this._Root nuget
+      return   Join-Path $this.GetRootDir() nuget
    }
 
    [int] GetArchitecture()
@@ -225,16 +242,37 @@ class Config
    {
       $target = $this._Target
       $platform = $this._Platform
+      $name = ""
 
-      if ($this._Target -eq "cuda")
+      switch ($platform)
       {
-         $cudaVersion = $this._CudaVersion
-         return "${target}-${cudaVersion}"
+         "desktop"
+         {
+            if ($target -eq "cuda")
+            {
+               $cudaVersion = $this._CudaVersion
+               $name = "${target}-${cudaVersion}"
+            }
+            else
+            {
+               $name = $target
+            }
+         }
+         "android"
+         {
+            $name = $platform
+         }
+         "ios"
+         {
+            $name = $platform
+         }
+         "uwp"
+         {
+            $name = Join-Path $platform $target
+         }
       }
-      else
-      {
-         return Join-Path $platform $target
-      }
+
+      return $name
    }
 
    [string] GetOSName()
@@ -270,14 +308,29 @@ class Config
    [string] GetArchitectureName()
    {
       $arch = ""
+      $target = $this._Target
 
-      if ($this._Architecture -eq 32)
+      if ($target -eq "arm")
       {
-         $arch = "x86"
+         if ($target -eq 32)
+         {
+            $arch = "arm"
+         }
+         elseif ($target -eq 64)
+         {
+            $arch = "arm64"
+         }
       }
-      elseif ($this._Architecture -eq 64)
+      else
       {
-         $arch = "x64"
+         if ($target -eq 32)
+         {
+            $arch = "x86"
+         }
+         elseif ($target -eq 64)
+         {
+            $arch = "x64"
+         }
       }
 
       return $arch
@@ -311,12 +364,7 @@ class Config
       if ($target -eq "cuda")
       {
          $version = $this._CudaVersion
-         return "build_${osname}_cuda-${version}_${architecture}"
-      }
-      elseif ($target -eq "android")
-      {
-         $abi = $this._AndroidABI
-         return "build_${osname}_${target}-${abi}"
+         return "build_${osname}_${platform}_cuda-${version}_${architecture}"
       }
       else
       {
@@ -331,7 +379,13 @@ class Config
 
    [string] GetCUDAPath()
    {
-      return "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v" + $this.CudaVersionHash[$this._CudaVersion]
+      # CUDA_PATH_V10_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0
+      # CUDA_PATH_V10_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1
+      # CUDA_PATH_V9_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0
+      # CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1
+      # CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2
+      $version = $this.CudaVersionHash[$this._CudaVersion]      
+      return Get-Item "env:CUDA_PATH_V$version"
    }
 
 }
@@ -627,11 +681,7 @@ function Build([Config]$Config)
 
    switch ($Platform)
    {
-      "uwp"
-      {
-         ConfigUWP $Config
-      }
-      default
+      "desktop"
       {
          switch ($Target)
          {
@@ -651,15 +701,19 @@ function Build([Config]$Config)
             {
                ConfigARM $Config
             }
-            "android"
-            {
-               ConfigANDROID $Config
-            }
-            "ios"
-            {
-               ConfigIOS $Config
-            }
          }
+      }
+      "android"
+      {
+         ConfigANDROID $Config
+      }
+      "ios"
+      {
+         ConfigIOS $Config
+      }
+      "uwp"
+      {
+         ConfigUWP $Config
       }
    }
 
