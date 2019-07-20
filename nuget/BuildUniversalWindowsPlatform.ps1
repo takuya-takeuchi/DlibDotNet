@@ -16,17 +16,6 @@ $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
 $BuildSourceHash = [Config]::GetBinaryLibraryWindowsHash()
 
-$IntelMKLDir = $env:MKL_WIN
-if ([string]::IsNullOrEmpty($IntelMKLDir))
-{
-   Write-Host "Environmental Value 'MKL_WIN' is not defined." -ForegroundColor Yellow
-}
-
-if ($IntelMKLDir -And !(Test-Path $IntelMKLDir))
-{
-   Write-Host "Environmental Value 'MKL_WIN' does not exist." -ForegroundColor Yellow
-}
-
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
 
@@ -35,10 +24,9 @@ foreach ($BuildTarget in $BuildTargets)
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
-   $cudaVersion = $BuildTarget.CUDA
    $option = ""
 
-   $Config = [Config]::new("Release", $target, $architecture, "uwp", $option)
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "uwp", $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 

@@ -47,7 +47,7 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
 
 	# C4146: unary minus operator applied to unsigned type, result still unsigned
 	if ("${CMAKE_SYSTEM_NAME}" STREQUAL "WindowsStore")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4146")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4146 /ZW /EHsc")
 	endif()
 endif()
 

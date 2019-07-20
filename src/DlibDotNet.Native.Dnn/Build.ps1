@@ -44,5 +44,5 @@ $NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
              Join-Path -ChildPath "BuildUtils.ps1"
 import-module $NugetPath -function *
 
-$Config = [Config]::new($Configuration, $Target, $Architecture, $Option)
+$Config = [Config]::new($DlibDotNetRoot, $Configuration, $Target, $Architecture, $Option)
 Build -Config $Config
