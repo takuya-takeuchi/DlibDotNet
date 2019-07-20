@@ -35,29 +35,65 @@ Specify **password** as password of pfx.
 ### Add *.pfx file to system
 
 1. Double click *DlibDotNet.pfx*
-1. Select **Local Computer** and click **Next**
-1. Click **Next***
-1. Input password that is used on execute pvk2pfx
-1. Click **Next**
-1. Select **Place all certificates in the following store** and select **Browse**
-1. Select **Trusted Root Certification Authorities** and click **OK**
-1. Click **Next**
-1. Click **Finish**
+
+![import](images/01.png "import")
+
+2. Select **Local Computer** and click **Next**
+
+![import](images/02.png "import")
+
+3. Click **Next***
+
+![import](images/03.png "import")
+
+4. Input password that is used on execute pvk2pfx
+5. Click **Next**
+
+![import](images/04.png "import")
+
+6. Select **Place all certificates in the following store** and select **Browse**
+
+![import](images/05.png "import")
+
+7. Select **Trusted Root Certification Authorities** and click **OK**
+8. Click **Next**
+
+![import](images/06.png "import")
+
+9. Click **Finish**
 
 ### Check install result of *pfx
 
 1. Run **certmgr.msc**
 
+![certmgr](images/certmgr.png "certmgr")
+
+2. Select **Trusted Root Certification Authorities** and **Certificates**
+3. You can see code signing of **DlibDotNet**
+
 ## 2. Build Application 
+
+You must create **DlibDotNet.UWP.nupkg** in nuget directory before build.
 
 ### Build
 
 ````bat
-> cd DlibDotNet.UWP.Tests
+> cd DlibDotNet
+> set rootDlibDotNet=%cd%
+> cd test\DlibDotNet.UWP.Tests
 > set OutputDir=Package
 > set msbuild="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\amd64\MSBuild.exe"
 > if exist Package rmdir Package /s /q
-> %msbuild% DlibDotNet.UWP.Tests.csproj /t:restore /t:Rebuild /p:RestoreAdditionalProjectSources=D:\Works\OpenSource\DlibDotNet\nuget;RestoreNoCache=true /p:Configuration=Release;Platform="x64";OutDir=%OutputDir%;AppxBundle=Always;AppxBundlePlatforms="x64"
+> %msbuild% DlibDotNet.UWP.Tests.csproj ^
+            /t:restore ^
+            /t:Rebuild ^
+            /p:RestoreAdditionalProjectSources=%rootDlibDotNet%\nuget ^
+            /p:RestoreNoCache=true ^
+            /p:Configuration=Release ^
+            /p:Platform="x64" ^
+            /p:OutDir=%OutputDir% ^
+            /p:AppxBundle=Always ^
+            /p:AppxBundlePlatforms="x64"
 ````
 
 ### Sign appx
