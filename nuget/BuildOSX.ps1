@@ -17,16 +17,17 @@ $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 $BuildSourceHash = [Config]::GetBinaryLibraryOSXHash()
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
 
 foreach($BuildTarget in $BuildTargets)
 {
+   $platform = $BuildTarget.Platform
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
 
-   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "desktop", $option)
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $platform, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 

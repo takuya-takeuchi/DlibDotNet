@@ -33,10 +33,10 @@ $BuildSourceHash = [Config]::GetBinaryLibraryLinuxHash()
 # x86
 # x86_64
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "android"; Architecture = 64; RID = "arm64-v8a"   }
-$BuildTargets += New-Object PSObject -Property @{Target = "android"; Architecture = 32; RID = "armeabi-v7a" }
-$BuildTargets += New-Object PSObject -Property @{Target = "android"; Architecture = 32; RID = "x86"         }
-$BuildTargets += New-Object PSObject -Property @{Target = "android"; Architecture = 64; RID = "x86_64"      }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "android"; Target = "arm"; Architecture = 64; RID = "arm64-v8a"   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "android"; Target = "arm"; Architecture = 32; RID = "armeabi-v7a" }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "android"; Target = "arm"; Architecture = 32; RID = "x86"         }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "android"; Target = "arm"; Architecture = 64; RID = "x86_64"      }
 
 $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/android/$AndroidVersion"
 $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/android/$AndroidVersion"
@@ -52,6 +52,7 @@ if ($lastexitcode -ne 0)
 
 foreach($BuildTarget in $BuildTargets)
 {
+   $platform = $BuildTarget.Platform
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
@@ -66,7 +67,7 @@ foreach($BuildTarget in $BuildTargets)
    foreach ($key in $BuildSourceHash.keys)
    {
       $option = [Config]::Base64Encode((ConvertTo-Json -Compress $setting))
-      $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "android", $option)
+      $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $platform, $option)
       $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
       $build = $Config.GetBuildDirectoryName($OperatingSystem)
       Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
@@ -74,7 +75,7 @@ foreach($BuildTarget in $BuildTargets)
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $key $target $architecture $option
+                  -t "$dockername" $key $target $architecture $platform $option
    
       if ($lastexitcode -ne 0)
       {

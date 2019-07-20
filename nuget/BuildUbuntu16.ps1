@@ -26,16 +26,17 @@ $DockerFileDir = Join-Path $DockerDir build  | `
 $BuildSourceHash = [Config]::GetBinaryLibraryLinuxHash()
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
 # $BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 64; RID = "$OperatingSystem-arm64"; CUDA = 0   }
 # $BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 32; RID = "$OperatingSystem-arm";   CUDA = 0   }
 
 foreach($BuildTarget in $BuildTargets)
 {
+   $platform = $BuildTarget.Platform
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
@@ -65,7 +66,7 @@ foreach($BuildTarget in $BuildTargets)
       $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
    }
 
-   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "desktop", $option)
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $platform, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 
@@ -86,7 +87,7 @@ foreach($BuildTarget in $BuildTargets)
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $key $target $architecture $option
+                  -t "$dockername" $key $target $architecture $platform $option
    
       if ($lastexitcode -ne 0)
       {

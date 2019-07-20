@@ -3,9 +3,10 @@
 Source=$1
 TARGET=$2
 ARCH=$3
+PLATFORM=$4
 DDNROOT=/opt/data/DlibDotNet
 
-if [ $# -eq 4 ]; then
+if [ $# -eq 5 ]; then
    OPTION=$4
 fi
 
@@ -21,4 +22,4 @@ groupmod -g $GROUP_ID $NON_ROOT_USER
 export HOME=/home/$NON_ROOT_USER
 
 cd ${DDNROOT}/src/${Source}
-exec /usr/sbin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${OPTION}
+exec /usr/sbin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${PLATFORM} ${OPTION}
