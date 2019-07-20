@@ -309,25 +309,26 @@ class Config
    {
       $arch = ""
       $target = $this._Target
+      $architecture = $this._Architecture
 
       if ($target -eq "arm")
       {
-         if ($target -eq 32)
+         if ($architecture -eq 32)
          {
             $arch = "arm"
          }
-         elseif ($target -eq 64)
+         elseif ($architecture -eq 64)
          {
             $arch = "arm64"
          }
       }
       else
       {
-         if ($target -eq 32)
+         if ($architecture -eq 32)
          {
             $arch = "x86"
          }
-         elseif ($target -eq 64)
+         elseif ($architecture -eq 64)
          {
             $arch = "x64"
          }
