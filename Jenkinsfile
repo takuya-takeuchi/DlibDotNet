@@ -288,6 +288,9 @@ node('master')
                 {
                     echo 'Build for Windows'
                     build('pwsh BuildWindows.ps1', 'windows')
+
+                    echo 'Build for Universal Windows Application'
+                    build('pwsh BuildUniversalWindowsPlatform.ps1', 'uwp')
                 }
             }
             builders['linux'] =
@@ -331,6 +334,7 @@ node('master')
                 dir(artifactsSpace)
                 {
                     unstash 'windows'
+                    unstash 'uwp'
                     unstash 'linux'
                     unstash 'osx'
                 }
@@ -349,22 +353,29 @@ node('master')
                         {
                             stage('Build DlibDotNet.CPU')
                             {
-                                bat 'BuildNuspec.CPU.bat'
+                                bat 'pwsh CreatePackage.ps1 CPU'
                             }
                         }, 'CUDA': {
                             stage('Build DlibDotNet.CUDA')
                             {
-                                bat 'BuildNuspec.CUDA.bat'
+                                bat 'pwsh CreatePackage.ps1 CUDA-92'
+                                bat 'pwsh CreatePackage.ps1 CUDA-100'
+                                bat 'pwsh CreatePackage.ps1 CUDA-101'
                             }
                         }, 'MKL': {
                             stage('Build DlibDotNet.MKL')
                             {
-                                bat 'BuildNuspec.MKL.bat'
+                                bat 'pwsh CreatePackage.ps1 MKL'
+                            }
+                        }, 'UWP': {
+                            stage('Build DlibDotNet.UWP')
+                            {
+                                bat 'pwsh CreatePackage.ps1 UWP'
                             }
                         },'ARM': {
                             stage('Build DlibDotNet.ARM')
                             {
-                                // bat 'BuildNuspec.ARM.bat'
+                                // bat 'pwsh CreatePackage.ps1 ARM'
                             }
                         }
                     }
@@ -396,6 +407,9 @@ node('master')
                 {
                     echo 'Test on Windows'
                     test('pwsh TestPackageWindows.ps1 ' + params.Version, 'test-windows')
+
+                    echo 'Test on Universal Windows Application'
+                    test('pwsh TestPackageUniversalWindowsPlatform.ps1 ' + params.Version, 'test-uwp')
                 }
             }
             builders['linux'] =
@@ -444,6 +458,7 @@ node('master')
                 {
                     unstash 'nupkg'
                     unstash 'test-windows'
+                    unstash 'test-uwp'
                     unstash 'test-linux'
                     // unstash 'test-linux-arm'
                     unstash 'test-osx'
