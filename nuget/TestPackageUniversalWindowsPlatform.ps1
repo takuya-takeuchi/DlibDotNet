@@ -193,6 +193,19 @@ function main()
       Update-Version $testDirectory $Version
       Build $BuildTarget.Architecture $OutputDir
       $report = AppCert $BuildTarget.Architecture $OutputDir
+      
+      # copy report as artifacts
+      $TestDir = Join-Path $NugetPath artifacts | `
+                  Join-Path -ChildPath test | `
+                  Join-Path -ChildPath $BuildTarget.Package | `
+                  Join-Path -ChildPath $Version | `
+                  Join-Path -ChildPath $OperatingSystem | `
+                  Join-Path -ChildPath $OperatingSystemVersion
+      if (!(Test-Path "$TestDir")) {
+         New-Item "$TestDir" -ItemType Directory > $null
+      }
+      Copy-Item $report $TestDir
+
       Check-Report $report
    }
 
