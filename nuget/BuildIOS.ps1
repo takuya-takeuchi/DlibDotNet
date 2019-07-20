@@ -25,7 +25,7 @@ foreach($BuildTarget in $BuildTargets)
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
 
-   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $option)
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "ios", $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName("")
 

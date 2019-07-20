@@ -66,7 +66,7 @@ foreach($BuildTarget in $BuildTargets)
    foreach ($key in $BuildSourceHash.keys)
    {
       $option = [Config]::Base64Encode((ConvertTo-Json -Compress $setting))
-      $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $option)
+      $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "android", $option)
       $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
       $build = $Config.GetBuildDirectoryName($OperatingSystem)
       Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green

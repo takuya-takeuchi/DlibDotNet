@@ -3,7 +3,8 @@
 #%1: Build Configuration (Release/Debug)
 #%2: Target (cpu/cuda/mkl/arm)
 #%3: Architecture (32/64)
-#%4: Optional Argument
+#%4: Platform (desktop,android/ios/uwp)
+#%5: Optional Argument
 #   if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101]
 #   if Target is mkl and Windows, IntelMKL directory path
 #***************************************
@@ -31,6 +32,12 @@ Param
    Mandatory=$False,
    Position = 4
    )][string]
+   $Platform,
+
+   [Parameter(
+   Mandatory=$False,
+   Position = 5
+   )][string]
    $Option
 )
 
@@ -44,5 +51,5 @@ $NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
              Join-Path -ChildPath "BuildUtils.ps1"
 import-module $NugetPath -function *
 
-$Config = [Config]::new($DlibDotNetRoot, $Configuration, $Target, $Architecture, $Option)
+$Config = [Config]::new($DlibDotNetRoot, $Configuration, $Target, $Architecture, $Platform, $Option)
 Build -Config $Config
