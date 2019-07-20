@@ -11,7 +11,7 @@ Param
    $Package
 )
 
-$nuspec = "DlibDotNet.${Package}.nuspec"
+$nuspec = Join-Path nuspec "DlibDotNet.${Package}.nuspec"
 if (!(Test-Path ${nuspec}))
 {
    Write-Host "Error: ${nuspec} does not exist" -ForegroundColor Red
