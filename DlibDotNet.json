@@ -11,6 +11,11 @@
       "linux-arm-node": "linux-arm-raspberrypi",
       "linux-node": "linux-cuda",
       "osx-node":  "mac",
-      "windows-node": "windows-cuda"
+      "windows-node": "windows-cuda",
+
+      "uwp" : {
+         "thumbprint": "",
+         "certificateKeyFile": ""
+      }
    }
 }

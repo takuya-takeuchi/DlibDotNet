@@ -6,7 +6,19 @@ Param([Parameter(
       Mandatory=$True,
       Position = 1
       )][string]
-      $Version
+      $Version,
+
+      [Parameter(
+      Mandatory=$True,
+      Position = 2
+      )][string]
+      $Thumbprint,
+      
+      [Parameter(
+      Mandatory=$True,
+      Position = 3
+      )][string]
+      $CertificateKeyFile
 )
 
 Set-StrictMode -Version Latest
@@ -67,11 +79,18 @@ function Update-Version([string]$TestProjectDir, [string]$Version)
    $xml.Save($projectFile)
 }
 
-function Build([string]$Architecture, [string]$OutputDir)
+function Build([string]$Architecture, [string]$OutputDir, [string]$Thumbprint, [string]$CertificateKeyFile)
 {
    if (Test-Path $OutputDir)
    {
       Remove-Item -Path "$OutputDir" -Recurse -Force
+   }
+   
+   if (!(Test-Path ${CertificateKeyFile}))
+   {
+      Write-Host "Error: ${CertificateKeyFile} does not exist" -ForegroundColor Red
+      Set-Location -Path $Current
+      exit -1
    }
 
    $msbuild = Join-Path $MSBuildDir msbuild.exe
@@ -86,6 +105,9 @@ function Build([string]$Architecture, [string]$OutputDir)
    $command += " /p:OutDir=${OutputDir}"
    $command += " /p:AppxBundle=Always"
    $command += " /p:AppxBundlePlatforms=""${Architecture}"""
+   $command += " /p:AppxPackageSigningEnabled=true"
+   $command += " /p:PackageCertificateThumbprint=${Thumbprint}"
+   $command += " /p:PackageCertificateKeyFile=""${CertificateKeyFile}"""
 
    Invoke-Expression "cmd.exe /c $command"
    if ($lastexitcode -ne 0)
@@ -191,7 +213,7 @@ function main()
       $OutputDir = Join-Path $testDirectory Package
 
       Update-Version $testDirectory $Version
-      Build $BuildTarget.Architecture $OutputDir
+      Build $BuildTarget.Architecture $OutputDir $Thumbprint, $CertificateKeyFile
       $report = AppCert $BuildTarget.Architecture $OutputDir
       
       # copy report as artifacts

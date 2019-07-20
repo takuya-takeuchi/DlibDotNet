@@ -66,10 +66,14 @@ Specify **password** as password of pfx.
 
 1. Run **certmgr.msc**
 
-![certmgr](images/certmgr.png "certmgr")
+![certmgr](images/certmgr01.png "certmgr")
 
 2. Select **Trusted Root Certification Authorities** and **Certificates**
-3. You can see code signing of **DlibDotNet**
+3. You can see and double click **DlibDotNet** 
+
+![certmgr](images/certmgr02.png "certmgr")
+
+4. Move to **Details** tag and copy **Thumbprint** to clipboard
 
 ## 2. Build Application 
 
@@ -77,13 +81,15 @@ You must create **DlibDotNet.UWP.nupkg** in nuget directory before build.
 
 ### Build
 
+Specify copied **thumbprint** for **/p:PackageCertificateThumbprint**
+
 ````bat
 > cd DlibDotNet
 > set rootDlibDotNet=%cd%
 > cd test\DlibDotNet.UWP.Tests
 > set OutputDir=Package
 > set msbuild="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\amd64\MSBuild.exe"
-> if exist Package rmdir Package /s /q
+> if exist Package rmdir %OutputDir% /s /q
 > %msbuild% DlibDotNet.UWP.Tests.csproj ^
             /t:restore ^
             /t:Rebuild ^
@@ -93,7 +99,10 @@ You must create **DlibDotNet.UWP.nupkg** in nuget directory before build.
             /p:Platform="x64" ^
             /p:OutDir=%OutputDir% ^
             /p:AppxBundle=Always ^
-            /p:AppxBundlePlatforms="x64"
+            /p:AppxBundlePlatforms="x64" ^
+            /p:AppxPackageSigningEnabled=true ^
+            /p:PackageCertificateThumbprint=f57d76083b91b1bddf9bfbc5fdb14bd352c73fec ^
+            /p:PackageCertificateKeyFile="DlibDotNet.pfx"
 ````
 
 ### Sign appx

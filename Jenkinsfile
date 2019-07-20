@@ -399,6 +399,7 @@ node('master')
         stage("Test")
         {
             def builders = [:]
+            def version = params.Version
 
             builders['windows'] =
             {
@@ -406,10 +407,12 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on Windows'
-                    test('pwsh TestPackageWindows.ps1 ' + params.Version, 'test-windows')
+                    test("pwsh TestPackageWindows.ps1 ${version}", 'test-windows')
 
+                    def thumbprint = props['test']['uwp']['thumbprint']
+                    def certificateKeyFile = props['test']['uwp']['certificateKeyFile']
                     echo 'Test on Universal Windows Application'
-                    test('pwsh TestPackageUniversalWindowsPlatform.ps1 ' + params.Version, 'test-uwp')
+                    test("pwsh TestPackageUniversalWindowsPlatform.ps1 ${version} ${thumbprint} ${certificateKeyFile}", 'test-uwp')
                 }
             }
             builders['linux'] =
@@ -418,7 +421,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on Linux'
-                    test('pwsh TestPackageUbuntu16.ps1 ' + params.Version, 'test-linux')
+                    test("pwsh TestPackageUbuntu16.ps1 ${version}", 'test-linux')
                 }
             }
             // builders['linux-arm'] =
@@ -441,7 +444,7 @@ node('master')
                     echo 'Test on OSX'
                     withEnv(["PATH+LOCAL=/usr/local/bin:/usr/local/share/dotnet"])
                     {
-                        test('pwsh TestPackageOSX.ps1 ' + params.Version, 'test-osx')
+                        test("pwsh TestPackageOSX.ps1 ${version}", 'test-osx')
                     }
                 }
             }
