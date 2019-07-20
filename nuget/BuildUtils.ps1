@@ -71,6 +71,7 @@ class Config
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
    }
 
+   [string]   $_Root
    [string]   $_Configuration
    [int]      $_Architecture
    [string]   $_Target
@@ -82,15 +83,22 @@ class Config
 
    #***************************************
    # Arguments
-   #  %1: Build Configuration (Release/Debug)
-   #  %2: Target (cpu/cuda/mkl/arm)
-   #  %3: Architecture (32/64)
-   #  %4: Platform (desktop/android/ios/uwp)
-   #  %5: Optional Argument
+   #  %1: Root directory of DlibDotNet
+   #  %2: Build Configuration (Release/Debug)
+   #  %3: Target (cpu/cuda/mkl/arm)
+   #  %4: Architecture (32/64)
+   #  %5: Platform (desktop/android/ios/uwp)
+   #  %6: Optional Argument
    #    if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101]
    #    if Target is mkl and Windows, IntelMKL directory path
    #***************************************
-   Config([string]$Configuration, [string]$Target, [int]$Architecture, [string]$Platform, [string]$Option)
+   Config(  [string]$Root,
+            [string]$Configuration,
+            [string]$Target,
+            [int]$Architecture,
+            [string]$Platform,
+            [string]$Option
+         )
    {
       if ($this.ConfigurationArray.Contains($Configuration) -eq $False)
       {
@@ -138,6 +146,7 @@ class Config
          }
       }
 
+      $this._Root = $Root
       $this._Configuration = $Configuration
       $this._Architecture = $Architecture
       $this._Target = $Target
@@ -174,6 +183,22 @@ class Config
    static [hashtable] GetBinaryLibraryIOSHash()
    {
       return [Config]::BuildLibraryIOSHash
+   }
+
+   [string] GetRootDir()
+   {
+      return $this._Root
+   }
+
+   [string] GetDlibRootDir()
+   {
+      return   Join-Path $this._Root src |
+               Join-Path -ChildPath dlib
+   }
+
+   [string] GetNugetDir()
+   {
+      return   Join-Path $this._Root nuget
    }
 
    [int] GetArchitecture()
@@ -256,6 +281,16 @@ class Config
       }
 
       return $arch
+   }
+
+   [string] GetTarget()
+   {
+      return $this._Target
+   }
+
+   [string] GetPlatform()
+   {
+      return $this._Platform
    }
 
    [string] GetBuildDirectoryName([string]$os="")
@@ -458,6 +493,18 @@ function ConfigUWP([Config]$Config)
 {
    if ($IsWindows)
    {
+      # apply patch
+      $patch = "uwp.patch"
+      $nugetDir = $Config.GetNugetDir()
+      $dlibDir = $Config.GetDlibRootDir()
+      $patchFullPath = Join-Path $nugetDir $patch
+      $current = Get-Location
+      Set-Location -Path $dlibDir
+      Write-Host "Apply ${patch} to ${dlibDir}" -ForegroundColor Yellow
+      Write-Host "git apply ""${patchFullPath}""" -ForegroundColor Yellow
+      git apply """${patchFullPath}"""
+      Set-Location -Path $current
+
       cmake -G $Config.GetVisualStudio() -T host=x64 `
             -D CMAKE_SYSTEM_NAME=WindowsStore `
             -D CMAKE_SYSTEM_VERSION=10.0 `
@@ -551,6 +598,15 @@ function ConfigIOS([Config]$Config)
    }
 }
 
+function Reset-Dlib-Modification([Config]$Config, [string]$currentDir)
+{
+   $dlibDir = $Config.GetDlibRootDir()
+   Set-Location -Path $dlibDir
+   Write-Host "Reset modification of ${dlibDir}" -ForegroundColor Yellow
+   git checkout .
+   Set-Location -Path $currentDir
+}
+
 function Build([Config]$Config)
 {
    $Current = Get-Location
@@ -562,6 +618,12 @@ function Build([Config]$Config)
    }
 
    Set-Location -Path $Output
+
+   $Target = $Config.GetTarget()
+   $Platform = $Config.GetPlatform()
+
+   # revert dlib
+   Reset-Dlib-Modification $Config (Join-Path $Current $Output)
 
    switch ($Platform)
    {

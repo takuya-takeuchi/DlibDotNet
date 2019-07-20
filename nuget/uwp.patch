@@ -411,19 +411,86 @@ index acf87be7..8233c052 100644
  #endif
  
 diff --git a/dlib/misc_api/misc_api_kernel_1.cpp b/dlib/misc_api/misc_api_kernel_1.cpp
-index f17d850e..6b93d576 100644
+index f17d850e..e5568f01 100644
 --- a/dlib/misc_api/misc_api_kernel_1.cpp
 +++ b/dlib/misc_api/misc_api_kernel_1.cpp
-@@ -6,7 +6,7 @@
+@@ -6,7 +6,12 @@
  #include "../platform.h"
  #include "../threads.h"
  
 -#ifdef WIN32
 +#ifdef WIN32_UNIVERSAL_APP
++
++#include <iostream>
++#include <locale> 
++#include <codecvt> 
++#include <cstdio>
  
  #include "misc_api_kernel_1.h"
  
-@@ -95,7 +95,8 @@ namespace dlib
+@@ -57,6 +62,7 @@ namespace dlib
+         } oaimvweoinvwe;
+     }
+ 
++    /*
+     std::string get_current_dir (
+     )
+     {
+@@ -73,9 +79,29 @@ namespace dlib
+             return std::string(buf);
+         }
+     }
++    */
+ 
+-// ----------------------------------------------------------------------------------------
++    std::string get_current_dir (
++    )
++    {
++        // need to lock a mutex here because getting and setting the
++        // current working directory is not thread safe on windows.
++        auto_mutex lock(cwd_mutex());        
++        wchar_t buf[1024];
++        if (GetCurrentDirectoryW(sizeof(buf),buf) == 0)
++        {
++            return std::string();
++        }
++        else
++        {
++            std::wstring_convert<std::codecvt_utf8<wchar_t>,wchar_t> cv;
++            std::string buf_w = cv.to_bytes(buf);
++            return buf_w;
++        }
++    }
+ 
++// ----------------------------------------------------------------------------------------
++    /*
+     void set_current_dir (
+         const std::string& new_dir
+     )
+@@ -88,6 +114,22 @@ namespace dlib
+             throw set_current_dir_error("Error changing current dir to '" + new_dir + "'");
+         }
+     }
++    */
++    
++    void set_current_dir (
++        const std::string& new_dir
++    )
++    {
++        // need to lock a mutex here because getting and setting the
++        // current working directory is not thread safe on windows.
++        auto_mutex lock(cwd_mutex());
++        std::wstring_convert<std::codecvt_utf8<wchar_t>,wchar_t> cv;
++        std::wstring new_dir_w = cv.from_bytes(new_dir);
++        if (SetCurrentDirectoryW(new_dir_w.c_str()) == 0)
++        {
++            throw set_current_dir_error("Error changing current dir to '" + new_dir + "'");
++        }
++    }
+ 
+ // ----------------------------------------------------------------------------------------
+ 
+@@ -95,7 +137,8 @@ namespace dlib
      get_timestamp (
      ) const
      {
@@ -433,7 +500,7 @@ index f17d850e..6b93d576 100644
          if (temp >= last_time)
          {            
              last_time = temp;
-@@ -143,7 +144,7 @@ namespace dlib
+@@ -143,7 +186,7 @@ namespace dlib
      
  }
  

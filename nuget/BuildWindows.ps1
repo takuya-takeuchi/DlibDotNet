@@ -56,7 +56,7 @@ foreach ($BuildTarget in $BuildTargets)
       $option = $cudaVersion
    }
 
-   $Config = [Config]::new("Release", $target, $architecture, 'desktop', $option)
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, 'desktop', $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 

@@ -17,8 +17,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>DlibDotNet.UWP.Tests_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>5C51C0AB17016693F8ABDC31F2AC4B24B2F32BD8</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>DlibDotNet.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>F57D76083B91B1BDDF9BFBC5FDB14BD352C73FEC</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -94,7 +94,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -112,6 +112,8 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include=".nuget\NuGet.Config" />
+    <None Include="DlibDotNet.pfx" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +140,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DlibDotNet">
+    <PackageReference Include="DlibDotNet.UWP">
       <Version>19.17.0.20190623</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
