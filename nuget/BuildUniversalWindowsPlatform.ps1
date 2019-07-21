@@ -17,16 +17,20 @@ $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 $BuildSourceHash = [Config]::GetBinaryLibraryWindowsHash()
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "uwp"; Target = "cpu";  Architecture = 64; RID = "${OperatingSystem}10-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "uwp"; Target = "cpu";  Architecture = 32; RID = "${OperatingSystem}10-x86";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "uwp"; Target = "arm";  Architecture = 32; RID = "${OperatingSystem}10-arm";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "uwp"; Target = "arm";  Architecture = 64; RID = "${OperatingSystem}10-arm64"; CUDA = 0   }
 
 foreach ($BuildTarget in $BuildTargets)
 {
+   $platform = $BuildTarget.Platform
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
    $option = ""
 
-   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "uwp", $option)
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $platform, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 
