@@ -451,9 +451,15 @@ function ConfigCUDA([Config]$Config)
    if ($IsWindows)
    {
       $cudaPath = $Config.GetCUDAPath()
+      if (!(Test-Path $cudaPath))
+      {
+         Write-Host "Error: '${cudaPath}' does not found" -ForegroundColor Red
+         exit -1
+      }
+
       $env:CUDA_PATH="${cudaPath}"
       $env:PATH="$env:CUDA_PATH\bin;$env:CUDA_PATH\libnvvp;$ENV:PATH"
-      Write-Host $env:CUDA_PATH -ForegroundColor Green
+      Write-Host "Info: CUDA_PATH: ${env:CUDA_PATH}" -ForegroundColor Green
 
       cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
             -D DLIB_USE_CUDA=ON `

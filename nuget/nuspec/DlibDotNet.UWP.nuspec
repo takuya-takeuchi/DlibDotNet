@@ -28,8 +28,14 @@
 
     <file src="..\..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
 
-    <file src="..\artifacts\uwp\cpu\runtimes\win-x64\native\DlibDotNetNative.dll" target="runtimes\win-x64\native\DlibDotNetNative.dll" />
-    <file src="..\artifacts\uwp\cpu\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
+    <file src="..\artifacts\uwp\cpu\runtimes\win10-x64\native\DlibDotNetNative.dll" target="runtimes\win10-x64\native\DlibDotNetNative.dll" />
+    <file src="..\artifacts\uwp\cpu\runtimes\win10-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win10-x64\native\DlibDotNetNativeDnn.dll" />
+    <file src="..\artifacts\uwp\cpu\runtimes\win10-x86\native\DlibDotNetNative.dll" target="runtimes\win10-x86\native\DlibDotNetNative.dll" />
+    <file src="..\artifacts\uwp\cpu\runtimes\win10-x86\native\DlibDotNetNativeDnn.dll" target="runtimes\win10-x86\native\DlibDotNetNativeDnn.dll" />
+    <file src="..\artifacts\uwp\arm\runtimes\win10-arm64\native\DlibDotNetNative.dll" target="runtimes\win10-arm64\native\DlibDotNetNative.dll" />
+    <file src="..\artifacts\uwp\arm\runtimes\win10-arm64\native\DlibDotNetNativeDnn.dll" target="runtimes\win10-arm64\native\DlibDotNetNativeDnn.dll" />
+    <file src="..\artifacts\uwp\arm\runtimes\win10-arm\native\DlibDotNetNative.dll" target="runtimes\win10-arm\native\DlibDotNetNative.dll" />
+    <file src="..\artifacts\uwp\arm\runtimes\win10-arm\native\DlibDotNetNativeDnn.dll" target="runtimes\win10-arm\native\DlibDotNetNativeDnn.dll" />
 
     <!-- license -->
     <file src="..\..\LICENSE.txt" target="" />
