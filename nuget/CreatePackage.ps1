@@ -27,8 +27,3 @@ if (!(Test-Path ${nugetPath}))
 
 Write-Host "${nuspec}" -ForegroundColor Green
 Invoke-Expression "${nugetPath} pack ${nuspec}"
-if ($lastexitcode -ne 0)
-{
-   Write-Host "Failed '${nugetPath} pack ${nuspec}" -ForegroundColor Red
-   exit -1
-}

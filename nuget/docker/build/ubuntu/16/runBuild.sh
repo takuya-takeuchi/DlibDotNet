@@ -7,7 +7,7 @@ PLATFORM=$4
 DDNROOT=/opt/data/DlibDotNet
 
 if [ $# -eq 5 ]; then
-   OPTION=$5
+   OPTION=$4
 fi
 
 CONFIG=Release
