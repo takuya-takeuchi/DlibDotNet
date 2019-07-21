@@ -47,11 +47,7 @@ class Config
       101 = "10_1"
    }
 
-   $VisualStudioHash =
-   @{
-      32 = "Visual Studio 15 2017";
-      64 = "Visual Studio 15 2017 Win64"
-   }
+   $VisualStudio = "Visual Studio 15 2017"
    
    static $BuildLibraryWindowsHash = 
    @{
@@ -375,7 +371,39 @@ class Config
 
    [string] GetVisualStudio()
    {
-      return $this.VisualStudioHash[$this._Architecture]
+      return $this.VisualStudio
+   }
+
+   [string] GetVisualStudioArchitecture()
+   {
+      $architecture = $this._Architecture
+      $target = $this._Target
+      
+      if ($target -eq "arm")
+      {
+         if ($architecture -eq 32)
+         {
+            return "ARM"
+         }
+         elseif ($architecture -eq 64)
+         {
+            return "ARM64"
+         }
+      }
+      else
+      {
+         if ($architecture -eq 32)
+         {
+            return "Win32"
+         }
+         elseif ($architecture -eq 64)
+         {
+            return "x64"
+         }
+      }
+
+      Write-Host "${architecture} and ${target} do not support" -ForegroundColor Red
+      exit -1
    }
 
    [string] GetCUDAPath()
@@ -395,7 +423,7 @@ function ConfigCPU([Config]$Config)
 {
    if ($IsWindows)
    {
-      cmake -G $Config.GetVisualStudio() -T host=x64 `
+      cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_LAPACK=OFF `
             ..
@@ -427,7 +455,7 @@ function ConfigCUDA([Config]$Config)
       $env:PATH="$env:CUDA_PATH\bin;$env:CUDA_PATH\libnvvp;$ENV:PATH"
       Write-Host $env:CUDA_PATH -ForegroundColor Green
 
-      cmake -G $Config.GetVisualStudio() -T host=x64 `
+      cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
             -D DLIB_USE_CUDA=ON `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
@@ -485,7 +513,7 @@ function ConfigMKL([Config]$Config)
          exit -1
       }
 
-      cmake -G $Config.GetVisualStudio() -T host=x64 `
+      cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=ON `
             -D DLIB_USE_LAPACK=OFF `
@@ -560,17 +588,38 @@ function ConfigUWP([Config]$Config)
       git apply """${patchFullPath}"""
       Set-Location -Path $current
 
-      cmake -G $Config.GetVisualStudio() -T host=x64 `
-            -D CMAKE_SYSTEM_NAME=WindowsStore `
-            -D CMAKE_SYSTEM_VERSION=10.0 `
-            -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
-            -D _WINDLL=ON `
-            -D _WIN32_UNIVERSAL_APP=ON `
-            -D DLIB_USE_CUDA=OFF `
-            -D DLIB_USE_BLAS=OFF `
-            -D DLIB_USE_LAPACK=OFF `
-            -D DLIB_NO_GUI_SUPPORT=ON `
-            ..
+      if ($Config.GetTarget() -eq "arm")
+      {
+         cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+               -D CMAKE_SYSTEM_NAME=WindowsStore `
+               -D USE_AVX_INSTRUCTIONS:BOOL=OFF `
+               -D USE_SSE2_INSTRUCTIONS:BOOL=OFF `
+               -D USE_SSE4_INSTRUCTIONS:BOOL=OFF `
+               -D CMAKE_SYSTEM_VERSION=10.0 `
+               -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
+               -D _WINDLL=ON `
+               -D _WIN32_UNIVERSAL_APP=ON `
+               -D DLIB_USE_CUDA=OFF `
+               -D DLIB_USE_BLAS=OFF `
+               -D DLIB_USE_LAPACK=OFF `
+               -D DLIB_NO_GUI_SUPPORT=ON `
+               ..
+      }
+      else
+      {
+         cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+               -D CMAKE_SYSTEM_NAME=WindowsStore `
+               -D CMAKE_SYSTEM_VERSION=10.0 `
+               -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
+               -D _WINDLL=ON `
+               -D _WIN32_UNIVERSAL_APP=ON `
+               -D DLIB_USE_CUDA=OFF `
+               -D DLIB_USE_BLAS=OFF `
+               -D DLIB_USE_LAPACK=OFF `
+               -D DLIB_NO_GUI_SUPPORT=ON `
+               ..
+      }
+
    }
 }
 
