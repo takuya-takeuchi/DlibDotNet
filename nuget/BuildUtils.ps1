@@ -414,7 +414,7 @@ class Config
       # CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1
       # CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2
       $version = $this.CudaVersionHash[$this._CudaVersion]      
-      return Get-Item "env:CUDA_PATH_V$version"
+      return Get-Item "$env:CUDA_PATH_V$version"
    }
 
 }
