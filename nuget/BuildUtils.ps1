@@ -40,11 +40,11 @@ class Config
 
    $CudaVersionHash =
    @{
-      90 = "9_0";
-      91 = "9_1";
-      92 = "9_2";
-      100 = "10_0";
-      101 = "10_1"
+      90 = "CUDA_PATH_9_0";
+      91 = "CUDA_PATH_9_1";
+      92 = "CUDA_PATH_9_2";
+      100 = "CUDA_PATH_10_0";
+      101 = "CUDA_PATH_10_1"
    }
 
    $VisualStudio = "Visual Studio 15 2017"
@@ -414,7 +414,7 @@ class Config
       # CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1
       # CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2
       $version = $this.CudaVersionHash[$this._CudaVersion]      
-      return Get-Item "$env:CUDA_PATH_V$version"
+      return [environment]::GetEnvironmentVariable($version, 'Machine')
    }
 
 }
