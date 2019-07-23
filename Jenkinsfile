@@ -203,7 +203,7 @@ def build(script, stashName)
     }
 }
 
-def test(script, stashName)
+def test(script, stashName, include)
 {
     echo 'script: ' + script
     echo 'stashName: ' + stashName
@@ -244,7 +244,7 @@ def test(script, stashName)
     {
         dir(buildWorkSpace)
         {
-            stash name: stashName, includes: 'artifacts/test/**/*.trx', excludes: '*.log'
+            stash name: stashName, includes: include, excludes: '*.log'
         }
     }
 }
@@ -407,13 +407,13 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on Windows'
-                    test("pwsh TestPackageWindows.ps1 ${version}", 'test-windows')
+                    test("pwsh TestPackageWindows.ps1 ${version}", 'test-windows', 'artifacts/test/**/*.trx')
 
                     def thumbprint = props['test']['uwp']['thumbprint']
                     def certificateKeyFile = props['test']['uwp']['certificateKeyFile']
                     def notCountAsFailTests = props['test']['uwp']['windowsAppCertificationKit']['notCountAsFailTests']
                     echo 'Test on Universal Windows Application'
-                    test("pwsh TestPackageUniversalWindowsPlatform.ps1 ${version} ${thumbprint} ${certificateKeyFile} ${notCountAsFailTests}", 'test-uwp')
+                    test("pwsh TestPackageUniversalWindowsPlatform.ps1 ${version} ${thumbprint} ${certificateKeyFile} ${notCountAsFailTests}", 'test-uwp', 'artifacts/test/**/*.xml')
                 }
             }
             builders['linux'] =
@@ -422,7 +422,7 @@ node('master')
                 node(nodeName)
                 {
                     echo 'Test on Linux'
-                    test("pwsh TestPackageUbuntu16.ps1 ${version}", 'test-linux')
+                    test("pwsh TestPackageUbuntu16.ps1 ${version}", 'test-linux', 'artifacts/test/**/*.trx')
                 }
             }
             // builders['linux-arm'] =
@@ -433,7 +433,7 @@ node('master')
             //         echo 'Test on Linux-ARM'
             //         withEnv(["PATH+LOCAL=/usr/local/share/dotnet"])
             //         {
-            //             test('./TestPackageRaspberryPi.sh ' + params.Version, 'test-linux-arm')
+            //             test('./TestPackageRaspberryPi.sh ' + params.Version, 'test-linux-arm', 'artifacts/test/**/*.trx')
             //         }
             //     }
             // }
@@ -445,7 +445,7 @@ node('master')
                     echo 'Test on OSX'
                     withEnv(["PATH+LOCAL=/usr/local/bin:/usr/local/share/dotnet"])
                     {
-                        test("pwsh TestPackageOSX.ps1 ${version}", 'test-osx')
+                        test("pwsh TestPackageOSX.ps1 ${version}", 'test-osx', 'artifacts/test/**/*.trx')
                     }
                 }
             }
