@@ -88,7 +88,7 @@ function Build([string]$Architecture, [string]$OutputDir, [string]$Thumbprint, [
    
    if (!(Test-Path ${CertificateKeyFile}))
    {
-      Write-Host "Error: ${CertificateKeyFile} does not exist" -ForegroundColor Red
+      Write-Host "Error: CertificateKeyFile '${CertificateKeyFile}' does not exist" -ForegroundColor Red
       Set-Location -Path $Current
       exit -1
    }
@@ -168,7 +168,7 @@ function Check-Report([string]$Report)
 {
    if (!(Test-Path ${Report}))
    {
-      Write-Host "Error: ${Report} does not exist" -ForegroundColor Red
+      Write-Host "Error: Report '${Report}' does not exist" -ForegroundColor Red
       Set-Location -Path $Current
       exit -1
    }
@@ -197,12 +197,11 @@ function Check-Report([string]$Report)
       exit -1
    }
 }
-function main()
+
+function main([string]$Version, [string]$Thumbprint, [string]$CertificateKeyFile)
 {
    $Env:Path += "$MSBuildDir;"
    $Env:Path += "$AppcertDir;"
-
-   # Write-Host $Env:Path
 
    foreach($BuildTarget in $BuildTargets)
    {
@@ -213,8 +212,12 @@ function main()
       $OutputDir = Join-Path $testDirectory Package
 
       Update-Version $testDirectory $Version
-      Build $BuildTarget.Architecture $OutputDir $Thumbprint, $CertificateKeyFile
-      $report = AppCert $BuildTarget.Architecture $OutputDir
+      Build -Architecture $BuildTarget.Architecture `
+            -OutputDir $OutputDir `
+            -Thumbprint $Thumbprint `
+            -CertificateKeyFile $CertificateKeyFile
+      $report = AppCert -Architecture $BuildTarget.Architecture `
+                        -OutputDir $OutputDir
       
       # copy report as artifacts
       $TestDir = Join-Path $NugetPath artifacts | `
@@ -228,7 +231,7 @@ function main()
       }
       Copy-Item $report $TestDir
 
-      Check-Report $report
+      Check-Report -Report $report
    }
 
    Set-Location -Path $Current
@@ -237,4 +240,4 @@ function main()
 # Store current directory
 $Current = Get-Location
 
-main
+main -Version ${Version} -Thumbprint ${Thumbprint} -CertificateKeyFile ${CertificateKeyFile}
