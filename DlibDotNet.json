@@ -15,7 +15,10 @@
 
       "uwp" : {
          "thumbprint": "",
-         "certificateKeyFile": ""
+         "certificateKeyFile": "",
+         "windowsAppCertificationKit" : {
+            "notCountAsFailTests" : "47,79,81"
+         }
       }
    }
 }

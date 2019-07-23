@@ -411,8 +411,9 @@ node('master')
 
                     def thumbprint = props['test']['uwp']['thumbprint']
                     def certificateKeyFile = props['test']['uwp']['certificateKeyFile']
+                    def notCountAsFailTests = props['test']['uwp']['windowsAppCertificationKit']['notCountAsFailTests']
                     echo 'Test on Universal Windows Application'
-                    test("pwsh TestPackageUniversalWindowsPlatform.ps1 ${version} ${thumbprint} ${certificateKeyFile}", 'test-uwp')
+                    test("pwsh TestPackageUniversalWindowsPlatform.ps1 ${version} ${thumbprint} ${certificateKeyFile} ${notCountAsFailTests}", 'test-uwp')
                 }
             }
             builders['linux'] =

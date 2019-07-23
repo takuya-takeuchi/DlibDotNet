@@ -18,7 +18,13 @@ Param([Parameter(
       Mandatory=$True,
       Position = 3
       )][string]
-      $CertificateKeyFile
+      $CertificateKeyFile,
+      
+      [Parameter(
+      Mandatory=$False,
+      Position = 4
+      )][string]
+      $NotCountAsFailTests
 )
 
 Set-StrictMode -Version Latest
@@ -164,7 +170,7 @@ function AppCert([string]$Architecture, [string]$OutputDir)
    return $report
 }
 
-function Check-Report([string]$Report)
+function Check-Report([string]$Report, [string]$NotCountAsFailTests)
 {
    if (!(Test-Path ${Report}))
    {
@@ -174,6 +180,7 @@ function Check-Report([string]$Report)
    }
 
    $notPassCount = 0
+   $skipCount = 0
    $xml = [XML](Get-Content ${Report})
    foreach($test in $xml.REPORT.REQUIREMENTS.REQUIREMENT.TEST)
    {
@@ -184,8 +191,16 @@ function Check-Report([string]$Report)
       }
       else
       {
-         Write-Host "Result:"$test.RESULT.InnerText -ForegroundColor Red
-         $notPassCount += 1
+         if ($NotCountAsFailTests.Split(',').Contains($test.INDEX))
+         {
+            Write-Host "Result:"$test.RESULT.InnerText" (SKIP)" -ForegroundColor Yellow
+            $skipCount += 1
+         }
+         else
+         {
+            Write-Host "Result:"$test.RESULT.InnerText -ForegroundColor Red
+            $notPassCount += 1
+         }
       }
       Write-Host ""
    }
@@ -198,7 +213,7 @@ function Check-Report([string]$Report)
    }
 }
 
-function main([string]$Version, [string]$Thumbprint, [string]$CertificateKeyFile)
+function main([string]$Version, [string]$Thumbprint, [string]$CertificateKeyFile, [string]$NotCountAsFailTests)
 {
    $Env:Path += "$MSBuildDir;"
    $Env:Path += "$AppcertDir;"
@@ -231,7 +246,7 @@ function main([string]$Version, [string]$Thumbprint, [string]$CertificateKeyFile
       }
       Copy-Item $report $TestDir
 
-      Check-Report -Report $report
+      Check-Report -Report $report -NotCountAsFailTests $NotCountAsFailTests
    }
 
    Set-Location -Path $Current
@@ -240,4 +255,7 @@ function main([string]$Version, [string]$Thumbprint, [string]$CertificateKeyFile
 # Store current directory
 $Current = Get-Location
 
-main -Version ${Version} -Thumbprint ${Thumbprint} -CertificateKeyFile ${CertificateKeyFile}
+main -Version ${Version} `
+     -Thumbprint ${Thumbprint} `
+     -CertificateKeyFile ${CertificateKeyFile} `
+     -NotCountAsFailTests ${NotCountAsFailTests}
