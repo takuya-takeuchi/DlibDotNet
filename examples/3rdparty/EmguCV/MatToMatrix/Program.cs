@@ -15,9 +15,9 @@ namespace MatToMatrix
                 var array = new byte[mat.Width * mat.Height * mat.ElementSize];
                 mat.CopyTo(array);
 
-                // TODO: support BGR image
+                // Alignment of OpenCV is not rgb but bgr
                 using (var win = new ImageWindow())
-                using (var image = new DlibDotNet.Matrix<RgbPixel>(array, mat.Height, mat.Width, mat.ElementSize))
+                using (var image = new DlibDotNet.Matrix<BgrPixel>(array, mat.Height, mat.Width, mat.ElementSize))
                 {
                     // Display it all on the screen
                     win.ClearOverlay();

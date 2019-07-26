@@ -190,9 +190,9 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                                 auto drow = dst[r];
                                 for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += 3)
                                 {
-                                    drow[c].red   = src[src_row + dst_column + 2];
+                                    drow[c].red   = src[src_row + dst_column + 0];
                                     drow[c].green = src[src_row + dst_column + 1];
-                                    drow[c].blue  = src[src_row + dst_column + 0];
+                                    drow[c].blue  = src[src_row + dst_column + 2];
                                 }
                             }
                             return ret;
@@ -214,9 +214,9 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
             {
                 switch(src_type)
                 {
-                    // from rgb_pixel to rgb_pixel
+                    // from bgr_pixel to bgr_pixel
                     case array2d_type::BgrPixel:
-                        extensions_load_image_data_from_to_sametype(rgb_pixel, data, rows, columns, steps);
+                        extensions_load_image_data_from_to_sametype(bgr_pixel, data, rows, columns, steps);
                     case array2d_type::UInt8:
                         {
                             dlib::array2d<bgr_pixel>* ret = new dlib::array2d<bgr_pixel>(rows, columns);
