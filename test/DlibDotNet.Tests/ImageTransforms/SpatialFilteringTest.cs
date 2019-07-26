@@ -21,6 +21,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             var tests = new[]
             {
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
@@ -111,6 +112,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             var path = this.GetDataFile($"{ LoadTarget}.bmp");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false,  Sigma = 0, MaxSize = 1},
@@ -122,6 +124,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.Float,         ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.Double,        ExpectResult = false,  Sigma = 0, MaxSize = 1},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false,  Sigma = 10, MaxSize = 0},
@@ -133,6 +136,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = false,  Sigma = 10, MaxSize = 0},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false,  Sigma = 10, MaxSize = 2},
@@ -144,6 +148,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.Float,         ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.Double,        ExpectResult = false,  Sigma = 10, MaxSize = 2},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Sigma = 10, MaxSize = 1001},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true, Sigma = 10, MaxSize = 1001},
                 //new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false, Sigma = 10, MaxSize = 1001},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true, Sigma = 10, MaxSize = 1001},
@@ -216,6 +221,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false}
             };

@@ -26,6 +26,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget2}.JPG");
             var tests = new[]
             {
+                    new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                     new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                     new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                     new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -57,6 +58,11 @@ namespace DlibDotNet.Tests
                 {
                     switch (test.Type)
                     {
+                        case ImageTypes.BgrPixel:
+                            using (var image = Dlib.LoadImage<BgrPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
                         case ImageTypes.RgbPixel:
                             using (var image = Dlib.LoadImage<RgbPixel>(path.FullName))
                             using (var output = Dlib.ExtractImage4Points(image, points, width, height))
@@ -134,6 +140,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget2}.JPG");
             var tests = new[]
             {
+                    new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = true},
                     new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                     new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
                     new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
@@ -167,6 +174,11 @@ namespace DlibDotNet.Tests
                 {
                     switch (test.Type)
                     {
+                        case MatrixElementTypes.BgrPixel:
+                            using (var image = Dlib.LoadImageAsMatrix<BgrPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
                         case MatrixElementTypes.RgbPixel:
                             using (var image = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName))
                             using (var output = Dlib.ExtractImage4Points(image, points, width, height))
@@ -260,6 +272,7 @@ namespace DlibDotNet.Tests
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -278,6 +291,9 @@ namespace DlibDotNet.Tests
                 TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        image = Dlib.LoadBmp<RgbPixel>(path.FullName);
+                        break;
                     case ImageTypes.RgbPixel:
                         image = Dlib.LoadBmp<RgbPixel>(path.FullName);
                         break;
@@ -335,6 +351,7 @@ namespace DlibDotNet.Tests
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -353,6 +370,9 @@ namespace DlibDotNet.Tests
                 TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        image = Dlib.LoadDng<BgrPixel>(path.FullName);
+                        break;
                     case ImageTypes.RgbPixel:
                         image = Dlib.LoadDng<RgbPixel>(path.FullName);
                         break;
@@ -423,6 +443,7 @@ namespace DlibDotNet.Tests
                 var path = this.GetDataFile($"{LoadTarget}.{ext}");
                 var tests = new[]
                 {
+                    new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                     new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                     new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                     new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -441,6 +462,9 @@ namespace DlibDotNet.Tests
                     TwoDimensionObjectBase image;
                     switch (test.Type)
                     {
+                        case ImageTypes.BgrPixel:
+                            image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            break;
                         case ImageTypes.RgbPixel:
                             image = Dlib.LoadImage<RgbPixel>(path.FullName);
                             break;
@@ -532,6 +556,9 @@ namespace DlibDotNet.Tests
                     MatrixBase image;
                     switch (test.Type)
                     {
+                        case MatrixElementTypes.BgrPixel:
+                            image = Dlib.LoadImageAsMatrix<BgrPixel>(path.FullName);
+                            break;
                         case MatrixElementTypes.RgbPixel:
                             image = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName);
                             break;
@@ -596,6 +623,7 @@ namespace DlibDotNet.Tests
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -614,6 +642,9 @@ namespace DlibDotNet.Tests
                 TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        image = Dlib.LoadJpeg<BgrPixel>(path.FullName);
+                        break;
                     case ImageTypes.RgbPixel:
                         image = Dlib.LoadJpeg<RgbPixel>(path.FullName);
                         break;
@@ -671,6 +702,7 @@ namespace DlibDotNet.Tests
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -689,6 +721,9 @@ namespace DlibDotNet.Tests
                 TwoDimensionObjectBase image;
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        image = Dlib.LoadPng<BgrPixel>(path.FullName);
+                        break;
                     case ImageTypes.RgbPixel:
                         image = Dlib.LoadPng<RgbPixel>(path.FullName);
                         break;
@@ -744,6 +779,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -762,6 +798,13 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -852,6 +895,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -870,6 +914,15 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            var matrix = new Matrix<BgrPixel>(image);
+                            Dlib.SaveBmp(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -986,6 +1039,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1004,6 +1058,13 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1094,6 +1155,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1112,6 +1174,15 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            var matrix = new Matrix<BgrPixel>(image);
+                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1228,6 +1299,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1246,6 +1318,13 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1336,6 +1415,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1354,6 +1434,15 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            var matrix = new Matrix<BgrPixel>(image);
+                            Dlib.SaveJpeg(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1466,6 +1555,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true, Quality = 0},
@@ -1477,6 +1567,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 0},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true, Quality = 100},
@@ -1488,6 +1579,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 100},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false, Quality = -1},
@@ -1499,6 +1591,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Float,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Double,        ExpectResult = false, Quality = -1},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false, Quality = 101},
@@ -1522,6 +1615,14 @@ namespace DlibDotNet.Tests
                 {
                     switch (test.Type)
                     {
+                        case ImageTypes.BgrPixel:
+                            {
+                                var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                                dimensionObject = image;
+                                Dlib.SaveJpeg(image, filepath, test.Quality);
+                                this.DisposeAndCheckDisposedState(image);
+                            }
+                            break;
                         case ImageTypes.RgbPixel:
                             {
                                 var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1644,6 +1745,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true, Quality = 0},
@@ -1655,6 +1757,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 0},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true, Quality = 100},
@@ -1666,6 +1769,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 100},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false, Quality = -1},
@@ -1677,6 +1781,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Float,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Double,        ExpectResult = false, Quality = -1},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.UInt8,         ExpectResult = false, Quality = 101},
@@ -1700,6 +1805,16 @@ namespace DlibDotNet.Tests
                 {
                     switch (test.Type)
                     {
+                        case ImageTypes.BgrPixel:
+                            {
+                                var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                                dimensionObject = image;
+                                var matrix = new Matrix<BgrPixel>(image);
+                                Dlib.SaveJpeg(matrix, filepath, test.Quality);
+                                this.DisposeAndCheckDisposedState(matrix);
+                                this.DisposeAndCheckDisposedState(image);
+                            }
+                            break;
                         case ImageTypes.RgbPixel:
                             {
                                 var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1848,6 +1963,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1866,6 +1982,13 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -1956,6 +2079,7 @@ namespace DlibDotNet.Tests
             var path = this.GetDataFile($"{LoadTarget}.jpg");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1974,6 +2098,15 @@ namespace DlibDotNet.Tests
             {
                 switch (test.Type)
                 {
+                    case ImageTypes.BgrPixel:
+                        {
+                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                            var matrix = new Matrix<BgrPixel>(image);
+                            Dlib.SavePng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
@@ -2094,6 +2227,7 @@ namespace DlibDotNet.Tests
             var tests = new[]
             {
                 new { Type = ImageTypes.UInt8,         ExpectResult = true}
+                //new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 //new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 //new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 //new { Type = ImageTypes.UInt16,        ExpectResult = true},
@@ -2162,6 +2296,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
@@ -2294,6 +2429,27 @@ namespace DlibDotNet.Tests
                                 }
                             }
                             break;
+                        case ImageTypes.BgrPixel:
+                            {
+                                var data = new BgrPixel[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                for (var c = 0; c < cols; c++)
+                                    data[steps * r + c] = new BgrPixel
+                                    {
+                                        Red = (byte)random.Next(0, 255),
+                                        Green = (byte)random.Next(0, 255),
+                                        Blue = (byte)random.Next(0, 255)
+                                    };
+
+                                image = Dlib.LoadImageData<BgrPixel>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<BgrPixel>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
                         case ImageTypes.RgbPixel:
                             {
                                 var data = new RgbPixel[rows * cols];
@@ -2356,6 +2512,9 @@ namespace DlibDotNet.Tests
             Array2DBase image;
             switch (type)
             {
+                case ImageTypes.BgrPixel:
+                    image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                    break;
                 case ImageTypes.RgbPixel:
                     image = Dlib.LoadImage<RgbPixel>(path.FullName);
                     break;
@@ -2401,6 +2560,10 @@ namespace DlibDotNet.Tests
             MatrixBase matrix;
             switch (type)
             {
+                case MatrixElementTypes.BgrPixel:
+                    using (var image = Dlib.LoadImage<BgrPixel>(path.FullName))
+                        matrix = new Matrix<BgrPixel>(image);
+                    break;
                 case MatrixElementTypes.RgbPixel:
                     using (var image = Dlib.LoadImage<RgbPixel>(path.FullName))
                         matrix = new Matrix<RgbPixel>(image);

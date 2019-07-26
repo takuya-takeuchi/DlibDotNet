@@ -36,6 +36,7 @@ namespace DlibDotNet
                 new { Type = typeof(float),         ElementType = ImageTypes.Float,         Size = sizeof(float) },
                 new { Type = typeof(double),        ElementType = ImageTypes.Double,        Size = sizeof(double) },
                 new { Type = typeof(RgbPixel),      ElementType = ImageTypes.RgbPixel,      Size = Marshal.SizeOf<RgbPixel>() },
+                new { Type = typeof(BgrPixel),      ElementType = ImageTypes.BgrPixel,      Size = Marshal.SizeOf<BgrPixel>() },
                 new { Type = typeof(RgbAlphaPixel), ElementType = ImageTypes.RgbAlphaPixel, Size = Marshal.SizeOf<RgbAlphaPixel>() },
                 new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel,      Size = Marshal.SizeOf<HsiPixel>() }
             };
@@ -151,6 +152,8 @@ namespace DlibDotNet
                 {
                     case ImageTypes.RgbPixel:
                         return new RowRgbPixel(ret, this.ImageType, this) as Row<TElement>;
+                    case ImageTypes.BgrPixel:
+                        return new RowBgrPixel(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.RgbAlphaPixel:
                         return new RowRgbAlphaPixel(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.UInt8:
@@ -644,6 +647,44 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     NativeMethods.array2d_set_row_column_rgb_pixel(this.NativePtr, column, value);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowBgrPixel : Row<BgrPixel>
+        {
+
+            #region Constructors
+
+            public RowBgrPixel(IntPtr ptr, ImageTypes type, Array2DBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override BgrPixel this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    BgrPixel value;
+                    NativeMethods.array2d_get_row_column_bgr_pixel(this.NativePtr, column, out value);
+                    return value;
+                }
+                set
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    NativeMethods.array2d_set_row_column_bgr_pixel(this.NativePtr, column, value);
                 }
             }
 

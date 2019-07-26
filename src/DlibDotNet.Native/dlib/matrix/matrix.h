@@ -919,6 +919,7 @@ DLLEXPORT int matrix_operator_multiply_right_numeric(matrix_element_type type,
             matrix_operator_multiply_right_numeric_template(double, templateRows, templateColumns, err, lhs, numeric_type, rhs, ret);
             break;
         case matrix_element_type::RgbPixel:
+        case matrix_element_type::BgrPixel:
         case matrix_element_type::HsiPixel:
         case matrix_element_type::RgbAlphaPixel:
         default:

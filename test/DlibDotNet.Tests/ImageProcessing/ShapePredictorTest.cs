@@ -81,6 +81,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             var path = this.GetDataFile("Lenna_mini.bmp");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
@@ -239,6 +240,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             var path = this.GetDataFile("Lenna_mini.bmp");
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},

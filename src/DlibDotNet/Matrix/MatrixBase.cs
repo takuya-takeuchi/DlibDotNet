@@ -34,6 +34,7 @@ namespace DlibDotNet
                 new {Type = typeof(float),          ElementType = MatrixElementTypes.Float },
                 new {Type = typeof(double),         ElementType = MatrixElementTypes.Double },
                 new {Type = typeof(RgbPixel),       ElementType = MatrixElementTypes.RgbPixel },
+                new {Type = typeof(BgrPixel),       ElementType = MatrixElementTypes.BgrPixel },
                 new {Type = typeof(RgbAlphaPixel),  ElementType = MatrixElementTypes.RgbAlphaPixel },
                 new {Type = typeof(HsiPixel),       ElementType = MatrixElementTypes.HsiPixel }
             };
@@ -53,6 +54,7 @@ namespace DlibDotNet
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.Float, sizeof(float));
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.Double, sizeof(double));
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.RgbPixel, Marshal.SizeOf<RgbPixel>());
+            ElementSizeDictionary.Add(NativeMethods.MatrixElementType.BgrPixel, Marshal.SizeOf<BgrPixel>());
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.RgbAlphaPixel, Marshal.SizeOf<RgbAlphaPixel>());
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.HsiPixel, Marshal.SizeOf<HsiPixel>());
         }

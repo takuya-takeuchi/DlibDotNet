@@ -33,6 +33,7 @@ namespace DlibDotNet
                 new { Type = typeof(float),         ElementType = MatrixElementTypes.Float },
                 new { Type = typeof(double),        ElementType = MatrixElementTypes.Double },
                 new { Type = typeof(RgbPixel),      ElementType = MatrixElementTypes.RgbPixel },
+                new { Type = typeof(BgrPixel),      ElementType = MatrixElementTypes.BgrPixel },
                 new { Type = typeof(HsiPixel),      ElementType = MatrixElementTypes.HsiPixel },
                 new { Type = typeof(RgbAlphaPixel), ElementType = MatrixElementTypes.RgbAlphaPixel }
             };
@@ -151,6 +152,8 @@ namespace DlibDotNet
                         return new RowDouble(ret, type, this) as Row<TElement>;
                     case NativeMethods.MatrixElementType.RgbPixel:
                         return new RowRgbPixel(ret, type, this) as Row<TElement>;
+                    case NativeMethods.MatrixElementType.BgrPixel:
+                        return new RowBgrPixel(ret, type, this) as Row<TElement>;
                     case NativeMethods.MatrixElementType.RgbAlphaPixel:
                         return new RowRgbAlphaPixel(ret, type, this) as Row<TElement>;
                     case NativeMethods.MatrixElementType.HsiPixel:
@@ -633,6 +636,49 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     NativeMethods.array2d_matrix_set_row_column_rgb_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowBgrPixel : Row<BgrPixel>
+        {
+
+            #region Constructors 
+
+            internal RowBgrPixel(IntPtr ptr, NativeMethods.MatrixElementType type, Array2DMatrixBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override Matrix<BgrPixel> this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    IntPtr value;
+                    NativeMethods.array2d_matrix_get_row_column_bgr_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, out value);
+                    return new Matrix<BgrPixel>(value, this._Parent.TemplateRows, this._Parent.TemplateColumns);
+                }
+                set
+                {
+                    if (value == null)
+                        throw new ArgumentNullException(nameof(value));
+
+                    value.ThrowIfDisposed();
+
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    NativeMethods.array2d_matrix_set_row_column_bgr_pixel(this.NativePtr, this._Parent.TemplateRows, this._Parent.TemplateColumns, column, value.NativePtr);
                 }
             }
 

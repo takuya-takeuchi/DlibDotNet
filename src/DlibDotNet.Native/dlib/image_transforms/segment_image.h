@@ -54,6 +54,7 @@ do {\
             find_candidate_object_locations_template_sub(__TYPE__, in_img, rects, double, kvals, min_size, max_merging_iterations);\
             break;\
         case ::matrix_element_type::RgbPixel:\
+        case ::matrix_element_type::BgrPixel:\
         case ::matrix_element_type::RgbAlphaPixel:\
         case ::matrix_element_type::HsiPixel:\
         default:\
@@ -101,6 +102,9 @@ DLLEXPORT int find_candidate_object_locations(array2d_type type,
             break;
         case array2d_type::RgbPixel:
             find_candidate_object_locations_template(rgb_pixel, in_img, rects, matrix_element_type, kvals, min_size, max_merging_iterations, err);
+            break;
+        case array2d_type::BgrPixel:
+            find_candidate_object_locations_template(bgr_pixel, in_img, rects, matrix_element_type, kvals, min_size, max_merging_iterations, err);
             break;
         case array2d_type::RgbAlphaPixel:
             find_candidate_object_locations_template(rgb_alpha_pixel, in_img, rects, matrix_element_type, kvals, min_size, max_merging_iterations, err);

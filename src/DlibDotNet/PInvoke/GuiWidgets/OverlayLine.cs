@@ -15,6 +15,9 @@ namespace DlibDotNet
         public static extern IntPtr image_window_overlay_line_new_rgb(IntPtr p1, IntPtr p2, RgbPixel pixel);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr image_window_overlay_line_new_bgr(IntPtr p1, IntPtr p2, BgrPixel pixel);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool image_window_overlay_line_p1(IntPtr line, out IntPtr point);
 

@@ -15,12 +15,6 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Fields
-
-        private readonly IntPtr _Handle;
-
-        #endregion
-
         #region Constructors
 
         public MenuItemText(string str, VoidActionMediator mediator, char hk)

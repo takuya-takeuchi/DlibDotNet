@@ -12,6 +12,8 @@ namespace DlibDotNet.Extensions
             {
                 case ImageTypes.RgbPixel:
                     return NativeMethods.Array2DType.RgbPixel;
+                case ImageTypes.BgrPixel:
+                    return NativeMethods.Array2DType.BgrPixel;
                 case ImageTypes.RgbAlphaPixel:
                     return NativeMethods.Array2DType.RgbAlphaPixel;
                 case ImageTypes.UInt8:
@@ -65,6 +67,8 @@ namespace DlibDotNet.Extensions
                     return NativeMethods.MatrixElementType.Double;
                 case MatrixElementTypes.RgbPixel:
                     return NativeMethods.MatrixElementType.RgbPixel;
+                case MatrixElementTypes.BgrPixel:
+                    return NativeMethods.MatrixElementType.BgrPixel;
                 case MatrixElementTypes.RgbAlphaPixel:
                     return NativeMethods.MatrixElementType.RgbAlphaPixel;
                 case MatrixElementTypes.HsiPixel:
@@ -121,6 +125,8 @@ namespace DlibDotNet.Extensions
                     return ImageTypes.Double;
                 case MatrixElementTypes.RgbPixel:
                     return ImageTypes.RgbPixel;
+                case MatrixElementTypes.BgrPixel:
+                    return ImageTypes.BgrPixel;
                 case MatrixElementTypes.RgbAlphaPixel:
                     return ImageTypes.HsiPixel;
                 case MatrixElementTypes.HsiPixel:

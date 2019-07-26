@@ -12,6 +12,10 @@ namespace DlibDotNet.Tests.Geometry
         public void Create1()
         {
             var rect = new Rectangle();
+            Assert.AreEqual(0, rect.Left);
+            Assert.AreEqual(0, rect.Top);
+            Assert.AreEqual(1u, rect.Width);
+            Assert.AreEqual(1u, rect.Height);
         }
 
         [TestMethod]
@@ -369,7 +373,7 @@ namespace DlibDotNet.Tests.Geometry
                 rect = Rectangle.SetAspectRatio(rect, 0);
                 Assert.Fail($"{nameof(Rectangle.SetAspectRatio)} should throw {nameof(ArgumentOutOfRangeException)} if ration is 0");
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException)
             {
             }
         }

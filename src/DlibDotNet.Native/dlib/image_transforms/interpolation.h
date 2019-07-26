@@ -666,14 +666,14 @@ DLLEXPORT int resize_image_matrix_scale(matrix_element_type type, void* matrix, 
 {
     int error = ERR_OK;
 
-    matrix_numericrgb_template(type,
-                               error,
-                               matrix_template_size_template,
-                               resize_image_matrix_scale_template,
-                               templateRows,
-                               templateColumns,
-                               matrix,
-                               scale);
+    matrix_numericrgbbgr_template(type,
+                                  error,
+                                  matrix_template_size_template,
+                                  resize_image_matrix_scale_template,
+                                  templateRows,
+                                  templateColumns,
+                                  matrix,
+                                  scale);
 
     return error;
 }
@@ -1060,18 +1060,18 @@ DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_
     }
     else
     {
-        matrix_numericrgb_inout_in_template(type,
-                                            error,
-                                            matrix_inout_out_template,
-                                            matrix_inout_template_size_template,
-                                            extract_image_chip_matrix2_template,
-                                            subtype,
-                                            0,
-                                            0,
-                                            in_img,
-                                            chip_location,
-                                            int_type,
-                                            out_chip);
+        matrix_numericrgbbgr_inout_in_template(type,
+                                               error,
+                                               matrix_inout_out_template,
+                                               matrix_inout_template_size_template,
+                                               extract_image_chip_matrix2_template,
+                                               subtype,
+                                               0,
+                                               0,
+                                               in_img,
+                                               chip_location,
+                                               int_type,
+                                               out_chip);
     }
 
     return error;

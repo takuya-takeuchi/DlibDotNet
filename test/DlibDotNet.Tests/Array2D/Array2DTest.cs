@@ -15,6 +15,7 @@ namespace DlibDotNet.Tests.Array2D
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -50,6 +51,7 @@ namespace DlibDotNet.Tests.Array2D
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -138,6 +140,7 @@ namespace DlibDotNet.Tests.Array2D
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -220,6 +223,26 @@ namespace DlibDotNet.Tests.Array2D
                                 Assert.AreEqual(row[0], 255, "Array<double> failed");
                         }
                         break;
+                    case ImageTypes.BgrPixel:
+                        {
+                            var array = (Array2D<BgrPixel>)array2D;
+                            var pixel = new BgrPixel
+                            {
+                                Red = 255,
+                                Blue = 255,
+                                Green = 255
+                            };
+
+                            Dlib.AssignAllPpixels(array, pixel);
+                            using (var row = array[0])
+                            {
+                                var t = row[0];
+                                Assert.AreEqual(t.Red, 255, "Array<BgrPixel> failed");
+                                Assert.AreEqual(t.Blue, 255, "Array<BgrPixel> failed");
+                                Assert.AreEqual(t.Green, 255, "Array<BgrPixel> failed");
+                            }
+                        }
+                        break;
                     case ImageTypes.RgbPixel:
                         {
                             var array = (Array2D<RgbPixel>)array2D;
@@ -297,6 +320,7 @@ namespace DlibDotNet.Tests.Array2D
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -400,6 +424,32 @@ namespace DlibDotNet.Tests.Array2D
                             {
                                 row[50] = 0;
                                 Assert.AreEqual(row[50], 0, "Array<double> failed");
+                            }
+                        }
+                        break;
+                    case ImageTypes.BgrPixel:
+                        {
+                            var array = (Array2D<BgrPixel>)array2D;
+                            var pixel = new BgrPixel
+                            {
+                                Red = 255,
+                                Blue = 255,
+                                Green = 255
+                            };
+
+                            Dlib.AssignAllPpixels(array, pixel);
+                            using (var row = array[0])
+                            {
+                                row[50] = new BgrPixel
+                                {
+                                    Red = 100,
+                                    Green = 128,
+                                    Blue = 64
+                                };
+                                var t = row[50];
+                                Assert.AreEqual(t.Red, 100, "Array<BgrPixel> failed");
+                                Assert.AreEqual(t.Green, 128, "Array<BgrPixel> failed");
+                                Assert.AreEqual(t.Blue, 64, "Array<BgrPixel> failed");
                             }
                         }
                         break;
@@ -1044,6 +1094,8 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<float>();
                 case ImageTypes.Double:
                     return new Array2D<double>();
+                case ImageTypes.BgrPixel:
+                    return new Array2D<BgrPixel>();
                 case ImageTypes.RgbPixel:
                     return new Array2D<RgbPixel>();
                 case ImageTypes.RgbAlphaPixel:
@@ -1075,6 +1127,8 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<float>(rows, columns);
                 case ImageTypes.Double:
                     return new Array2D<double>(rows, columns);
+                case ImageTypes.BgrPixel:
+                    return new Array2D<BgrPixel>(rows, columns);
                 case ImageTypes.RgbPixel:
                     return new Array2D<RgbPixel>(rows, columns);
                 case ImageTypes.RgbAlphaPixel:

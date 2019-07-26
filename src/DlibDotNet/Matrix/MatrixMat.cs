@@ -76,6 +76,9 @@ namespace DlibDotNet
                     case MatrixElementTypes.RgbPixel:
                         NativeMethods.mat_StdVect_rgb_pixel(vector.NativePtr, out ret);
                         return new MatrixOp(NativeMethods.ElementType.OpStdVectToMatValue, ImageTypes.RgbPixel, ret);
+                    case MatrixElementTypes.BgrPixel:
+                        NativeMethods.mat_StdVect_bgr_pixel(vector.NativePtr, out ret);
+                        return new MatrixOp(NativeMethods.ElementType.OpStdVectToMatValue, ImageTypes.BgrPixel, ret);
                     case MatrixElementTypes.RgbAlphaPixel:
                         NativeMethods.mat_StdVect_rgb_alpha_pixel(vector.NativePtr, out ret);
                         return new MatrixOp(NativeMethods.ElementType.OpStdVectToMatValue, ImageTypes.RgbAlphaPixel, ret);

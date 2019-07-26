@@ -13,6 +13,7 @@ namespace DlibDotNet.Tests.Array
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -217,6 +218,7 @@ namespace DlibDotNet.Tests.Array
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -500,6 +502,7 @@ namespace DlibDotNet.Tests.Array
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -783,6 +786,7 @@ namespace DlibDotNet.Tests.Array
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -998,6 +1002,7 @@ namespace DlibDotNet.Tests.Array
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -1281,6 +1286,7 @@ namespace DlibDotNet.Tests.Array
         {
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
