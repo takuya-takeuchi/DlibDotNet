@@ -29,6 +29,8 @@ namespace DlibDotNet.Extensions
 
             RgbPixel,
 
+            BgrPixel,
+
             RgbAlphaPixel,
 
             HsiPixel,
@@ -61,6 +63,8 @@ namespace DlibDotNet.Extensions
             Double,
 
             RgbPixel,
+
+            BgrPixel,
 
             RgbAlphaPixel,
 

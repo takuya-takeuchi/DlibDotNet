@@ -169,6 +169,13 @@ namespace DlibDotNet
                                 this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
+                    case NativeMethods.MatrixElementType.BgrPixel:
+                        {
+                            var tmp = array as BgrPixel[];
+                            fixed (BgrPixel* src = &tmp[0])
+                                this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                        }
+                        break;
                     case NativeMethods.MatrixElementType.RgbAlphaPixel:
                         {
                             var tmp = array as RgbAlphaPixel[];
@@ -339,6 +346,9 @@ namespace DlibDotNet
                 case MatrixElementTypes.RgbPixel:
                     NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<RgbPixel>().ToArray());
                     break;
+                case MatrixElementTypes.BgrPixel:
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<BgrPixel>().ToArray());
+                    break;
                 case MatrixElementTypes.RgbAlphaPixel:
                     NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<RgbAlphaPixel>().ToArray());
                     break;
@@ -476,7 +486,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.UInt16:
                     unsafe
@@ -494,7 +503,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.UInt32:
                     unsafe
@@ -512,7 +520,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.Int8:
                     unsafe
@@ -530,7 +537,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.Int16:
                     unsafe
@@ -548,7 +554,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.Int32:
                     unsafe
@@ -566,7 +571,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.Float:
                     unsafe
@@ -584,7 +588,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.Double:
                     unsafe
@@ -602,7 +605,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.RgbPixel:
                     unsafe
@@ -620,7 +622,23 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
+                    break;
+                case MatrixElementTypes.BgrPixel:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
 
+                        var array = new BgrPixel[row * column];
+                        fixed (BgrPixel* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
                     break;
                 case MatrixElementTypes.RgbAlphaPixel:
                     unsafe
@@ -638,7 +656,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 case MatrixElementTypes.HsiPixel:
                     unsafe
@@ -656,7 +673,6 @@ namespace DlibDotNet
 
                         result = array as TElement[];
                     }
-
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -763,6 +779,8 @@ namespace DlibDotNet
                     return new IndexerDouble(this) as Indexer<TElement>;
                 case MatrixElementTypes.RgbPixel:
                     return new IndexerRgbPixel(this) as Indexer<TElement>;
+                case MatrixElementTypes.BgrPixel:
+                    return new IndexerBgrPixel(this) as Indexer<TElement>;
                 case MatrixElementTypes.RgbAlphaPixel:
                     return new IndexerRgbAlphaPixel(this) as Indexer<TElement>;
                 case MatrixElementTypes.HsiPixel:

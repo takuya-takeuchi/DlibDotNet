@@ -74,6 +74,9 @@ namespace DlibDotNet
         public static extern void array2d_get_row_column_rgb_pixel(IntPtr row, int column, out RgbPixel value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void array2d_get_row_column_bgr_pixel(IntPtr row, int column, out BgrPixel value);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_get_row_column_rgb_alpha_pixel(IntPtr row, int column, out RgbAlphaPixel value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -109,6 +112,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_set_row_column_rgb_pixel(IntPtr row, int column, RgbPixel value);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void array2d_set_row_column_bgr_pixel(IntPtr row, int column, BgrPixel value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_set_row_column_rgb_alpha_pixel(IntPtr row, int column, RgbAlphaPixel value);
@@ -186,6 +192,9 @@ namespace DlibDotNet
         public static extern void array2d_matrix_get_row_column_rgb_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void array2d_matrix_get_row_column_bgr_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_matrix_get_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int templateColumns, int column, out IntPtr value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -221,6 +230,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_matrix_set_row_column_rgb_pixel(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void array2d_matrix_set_row_column_bgr_pixel(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_matrix_set_row_column_rgb_alpha_pixel(IntPtr row, int templateRows, int templateColumns, int column, IntPtr value);

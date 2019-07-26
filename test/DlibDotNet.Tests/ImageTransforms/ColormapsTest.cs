@@ -25,6 +25,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false },
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
@@ -129,6 +130,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 255,  Min = 0},
@@ -140,6 +142,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 75,   Min = 50},
@@ -245,6 +248,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false },
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false },
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
@@ -349,6 +353,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 255,  Min = 0},
@@ -360,6 +365,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 255,  Min = 0},
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true,   Max = 75,   Min = 50},

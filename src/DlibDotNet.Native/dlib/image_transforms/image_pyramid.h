@@ -175,6 +175,13 @@ DLLEXPORT int create_tiled_pyramid(const matrix_element_type element_type,
                         #undef ELEMENT_OUT
                         #undef ELEMENT_IN
                         break;
+                    case matrix_element_type::BgrPixel:
+                        #define ELEMENT_IN bgr_pixel
+                        #define ELEMENT_OUT bgr_pixel
+                        create_tiled_pyramid_template(img, pyramid_rate, tiled_img, rects, padding, outer_padding);
+                        #undef ELEMENT_OUT
+                        #undef ELEMENT_IN
+                        break;
                     case matrix_element_type::HsiPixel:
                         #define ELEMENT_IN hsi_pixel
                         #define ELEMENT_OUT hsi_pixel

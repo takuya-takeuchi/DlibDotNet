@@ -24,6 +24,66 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="T:DlibDotNet.BgrPixel">
+            <summary>
+            Represents an BGR color value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.BgrPixel.Blue">
+            <summary>
+            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <value>The blue component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.BgrPixel.Green">
+            <summary>
+            Gets or sets the green component of the color. of this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <value>The green component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.BgrPixel.Red">
+            <summary>
+            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <value>The red component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.BgrPixel"/> class with the specified BGR color value.
+            </summary>
+            <param name="blue">The blue component of the color.</param>
+            <param name="green">The green component of the color.</param>
+            <param name="red">The red component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.BgrPixel"/> contains the same BGR color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.BgrPixel"/> and has the same BGR color value as this <see cref="T:DlibDotNet.BgrPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.BgrPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.op_Equality(DlibDotNet.BgrPixel,DlibDotNet.BgrPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.BgrPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> and <see cref="F:DlibDotNet.BgrPixel.Red"/> properties of the two <see cref="T:DlibDotNet.BgrPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> and <see cref="F:DlibDotNet.BgrPixel.Red"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.op_Inequality(DlibDotNet.BgrPixel,DlibDotNet.BgrPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.BgrPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> or <see cref="F:DlibDotNet.BgrPixel.Red"/> properties of the two <see cref="T:DlibDotNet.BgrPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.BgrPixel.Red"/> properties or the <see cref="F:DlibDotNet.BgrPixel.Green"/> properties or the <see cref="F:DlibDotNet.BgrPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
         <member name="T:DlibDotNet.HsiPixel">
             <summary>
             Represents an HSI color space value.

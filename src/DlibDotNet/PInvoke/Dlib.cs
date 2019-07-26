@@ -623,6 +623,9 @@ namespace DlibDotNet
         public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, RgbPixel[] data, uint rows, uint columns, uint steps);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, BgrPixel[] data, uint rows, uint columns, uint steps);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, RgbAlphaPixel[] data, uint rows, uint columns, uint steps);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

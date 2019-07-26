@@ -588,6 +588,24 @@ namespace DlibDotNet
             return new Array2D<T>(ret, type);
         }
 
+        public static Array2D<T> LoadImageData<T>(BgrPixel[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.BgrPixel.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.BgrPixel} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
         public static Array2D<T> LoadImageData<T>(RgbAlphaPixel[] data, uint rows, uint columns, uint steps)
             where T : struct
         {

@@ -27,6 +27,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -87,6 +88,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -148,6 +150,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -209,6 +212,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -270,6 +274,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -331,6 +336,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},

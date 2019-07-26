@@ -108,6 +108,7 @@ namespace DlibDotNet
                 new { Type = typeof(float),         ElementType = MatrixElementTypes.Float },
                 new { Type = typeof(double),        ElementType = MatrixElementTypes.Double },
                 new { Type = typeof(RgbPixel),      ElementType = MatrixElementTypes.RgbPixel },
+                new { Type = typeof(BgrPixel),      ElementType = MatrixElementTypes.BgrPixel },
                 new { Type = typeof(HsiPixel),      ElementType = MatrixElementTypes.HsiPixel },
                 new { Type = typeof(RgbAlphaPixel), ElementType = MatrixElementTypes.RgbAlphaPixel }
             };
@@ -398,6 +399,8 @@ namespace DlibDotNet
                     return new Matrix<double>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.RgbPixel:
                     return new Matrix<RgbPixel>(mat, templateRow, templateColumn, false);
+                case MatrixElementTypes.BgrPixel:
+                    return new Matrix<BgrPixel>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.RgbAlphaPixel:
                     return new Matrix<RgbAlphaPixel>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.HsiPixel:

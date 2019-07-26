@@ -17,6 +17,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },

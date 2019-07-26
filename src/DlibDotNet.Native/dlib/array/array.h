@@ -327,6 +327,7 @@ MAKE_GETITEM_FUNC(int32_t, int32, Int32)
 MAKE_GETITEM_FUNC(float, float, Float)
 MAKE_GETITEM_FUNC(double, double, Double)
 MAKE_GETITEM_FUNC(rgb_pixel, rgb_pixel, RgbPixel)
+MAKE_GETITEM_FUNC(bgr_pixel, bgr_pixel, RgbPixel)
 MAKE_GETITEM_FUNC(hsi_pixel, hsi_pixel, HsiPixel)
 MAKE_GETITEM_FUNC(rgb_alpha_pixel, rgb_alpha_pixel, RgbAlphaPixel)
 

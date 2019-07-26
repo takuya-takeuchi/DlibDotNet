@@ -93,6 +93,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                         case matrix_element_type::Int32:
                         case matrix_element_type::Float:
                         case matrix_element_type::Double:
+                        case matrix_element_type::BgrPixel:
                         case matrix_element_type::HsiPixel:
                         case matrix_element_type::RgbAlphaPixel:
                         default:
@@ -126,6 +127,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                         case matrix_element_type::Int32:
                         case matrix_element_type::Float:
                         case matrix_element_type::Double:
+                        case matrix_element_type::BgrPixel:
                         case matrix_element_type::HsiPixel:
                         case matrix_element_type::RgbAlphaPixel:
                         default:
@@ -159,6 +161,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                         case matrix_element_type::Int32:
                         case matrix_element_type::Float:
                         case matrix_element_type::Double:
+                        case matrix_element_type::BgrPixel:
                         case matrix_element_type::HsiPixel:
                         case matrix_element_type::RgbAlphaPixel:
                         default:
@@ -192,6 +195,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                         case matrix_element_type::Int32:
                         case matrix_element_type::Float:
                         case matrix_element_type::Double:
+                        case matrix_element_type::BgrPixel:
                         case matrix_element_type::HsiPixel:
                         case matrix_element_type::RgbAlphaPixel:
                         default:

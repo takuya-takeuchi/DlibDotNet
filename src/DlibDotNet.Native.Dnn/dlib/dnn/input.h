@@ -172,6 +172,7 @@ DLLEXPORT int input_rgb_image_pyramid_to_tensor(void* input,
                     case matrix_element_type::Int32:
                     case matrix_element_type::Float:
                     case matrix_element_type::Double:
+                    case matrix_element_type::BgrPixel:
                     case matrix_element_type::HsiPixel:
                     default:
                         err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
