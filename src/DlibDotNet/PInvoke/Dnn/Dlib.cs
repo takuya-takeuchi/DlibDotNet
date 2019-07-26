@@ -11,6 +11,10 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(get_version))]
         public static extern IntPtr dnn_get_version();
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(is_support_gui))]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool dnn_is_support_gui();
+
         #region input
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

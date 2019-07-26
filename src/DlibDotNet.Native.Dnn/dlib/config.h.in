@@ -19,4 +19,13 @@ DLLEXPORT std::string* get_version()
     return new std::string(ss.str());
 }
 
+DLLEXPORT bool is_support_gui()
+{
+#ifdef DLIB_NO_GUI_SUPPORT
+    return false;
+#else
+    return true;
+#endif
+}
+
 #endif

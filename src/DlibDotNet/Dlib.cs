@@ -918,6 +918,10 @@ namespace DlibDotNet
             set => _Encoding = value ?? Encoding.UTF8;
         }
 
+        public static bool IsSupportGui => NativeMethods.is_support_gui();
+
+        public static bool IsDnnSupportGui => NativeMethods.dnn_is_support_gui();
+
         #endregion
 
     }

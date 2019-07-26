@@ -340,6 +340,10 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr get_version();
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool is_support_gui();
+
         #region assign_pixel
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

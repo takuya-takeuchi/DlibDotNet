@@ -30,6 +30,18 @@ Param([Parameter(
 
 Set-StrictMode -Version Latest
 
+function Clear-PackakgeCache([string]$Package, [string]$Version)
+{
+   $path = (dotnet nuget locals global-packages --list).Replace('info : global-packages: ', '').Trim()
+   $path =  Join-Path $path $Package | `
+            Join-Path -ChildPath $Version
+   if (Test-Path $path)
+   {
+      Write-Host "Remove '$path'" -Foreground Green
+      Remove-Item -Path "$path" -Recurse -Force
+   }
+}
+
 function RunTest($BuildTargets, $DependencyHash)
 {
    foreach($BuildTarget in $BuildTargets)
@@ -54,6 +66,7 @@ function RunTest($BuildTargets, $DependencyHash)
       }
 
       $env:DLIBDOTNET_VERSION = $VERSION
+      $env:DLIBDOTNET_GUI_SUPPORT = 1
 
       $NativeTestDir = Join-Path $DlibDotNetRoot test | `
                         Join-Path -ChildPath DlibDotNet.Native.Tests
@@ -66,6 +79,8 @@ function RunTest($BuildTargets, $DependencyHash)
       Copy-Item "$NativeTestDir" "$WorkDir" -Recurse
 
       Set-Location -Path "$TargetDir"
+
+      Clear-PackakgeCache -Package $Package -Version $Version
 
       # restore package from local nuget pacakge
       # And drop stdout message

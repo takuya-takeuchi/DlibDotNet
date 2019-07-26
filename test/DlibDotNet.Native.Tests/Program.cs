@@ -10,6 +10,8 @@ namespace DlibDotNet.Native.Tests
 
         private const string VersionKey = "DLIBDOTNET_VERSION";
 
+        private const string GuiSupportKey = "DLIBDOTNET_GUI_SUPPORT";
+
         [TestMethod]
         public void CheckDlibDotNetNativeVersion()
         {
@@ -41,6 +43,28 @@ namespace DlibDotNet.Native.Tests
                 var dets = faceDetector.Operator(image);
                 Assert.AreEqual(1, dets.Length);
             }
+        }
+
+        [TestMethod]
+        public void CheckIsSupoortGui()
+        {
+            var values = Environment.GetEnvironmentVariables();
+            if (!values.Contains(GuiSupportKey))
+                Assert.Fail($"{GuiSupportKey} is not found.");
+
+            Console.WriteLine($"{GuiSupportKey}: {values[GuiSupportKey]}");
+            Assert.AreEqual((string)values[GuiSupportKey] != "0", DlibDotNet.Dlib.IsSupportGui);
+        }
+
+        [TestMethod]
+        public void CheckIsDnnSupoortGui()
+        {
+            var values = Environment.GetEnvironmentVariables();
+            if (!values.Contains(GuiSupportKey))
+                Assert.Fail($"{GuiSupportKey} is not found.");
+
+            Console.WriteLine($"{GuiSupportKey}: {values[GuiSupportKey]}");
+            Assert.AreEqual((string)values[GuiSupportKey] != "0", DlibDotNet.Dlib.IsDnnSupportGui);
         }
 
     }
