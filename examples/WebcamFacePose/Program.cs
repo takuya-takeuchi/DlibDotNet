@@ -50,7 +50,7 @@ namespace WebcamFacePose
                             // while using cimg.
                             var array = new byte[temp.Width * temp.Height * temp.ElemSize()];
                             Marshal.Copy(temp.Data, array, 0 , array.Length);
-                            using (var cimg = Dlib.LoadImageData<RgbPixel>(array, (uint)temp.Height, (uint)temp.Width, (uint)(temp.Width * temp.ElemSize())))
+                            using (var cimg = Dlib.LoadImageData<BgrPixel>(array, (uint)temp.Height, (uint)temp.Width, (uint)(temp.Width * temp.ElemSize())))
                             {
                                 // Detect faces 
                                 var faces = detector.Operator(cimg);
