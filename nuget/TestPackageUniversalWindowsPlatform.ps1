@@ -42,6 +42,10 @@ $MSBuildDir = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSB
 $AppcertDir = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{ Target = "cpu";  Architecture = "x64"; CUDA = 0;   Package = "DlibDotNet.UWP" }
+# appcert return fail for only x86. why?
+#$BuildTargets += New-Object PSObject -Property @{ Target = "cpu";  Architecture = "x86"; CUDA = 0;   Package = "DlibDotNet.UWP" }
+$BuildTargets += New-Object PSObject -Property @{ Target = "cpu";  Architecture = "ARM64"; CUDA = 0;   Package = "DlibDotNet.UWP" }
+$BuildTargets += New-Object PSObject -Property @{ Target = "cpu";  Architecture = "ARM"; CUDA = 0;   Package = "DlibDotNet.UWP" }
 
 function Invoke-Admin()
 {
@@ -224,14 +228,15 @@ function main([string]$Version, [string]$Thumbprint, [string]$CertificateKeyFile
                         Join-Path -ChildPath DlibDotNet.UWP.Tests
       Set-Location $testDirectory
 
-      $OutputDir = Join-Path $testDirectory Package
+      $architecture = $BuildTarget.Architecture
+      $OutputDir = Join-Path $testDirectory Package_$architecture
 
       Update-Version $testDirectory $Version
-      Build -Architecture $BuildTarget.Architecture `
+      Build -Architecture $architecture `
             -OutputDir $OutputDir `
             -Thumbprint $Thumbprint `
             -CertificateKeyFile $CertificateKeyFile
-      $report = AppCert -Architecture $BuildTarget.Architecture `
+      $report = AppCert -Architecture $architecture `
                         -OutputDir $OutputDir
       
       # copy report as artifacts
