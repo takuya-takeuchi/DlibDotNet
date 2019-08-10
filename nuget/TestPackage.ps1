@@ -42,7 +42,7 @@ function Clear-PackakgeCache([string]$Package, [string]$Version)
    }
 }
 
-function RunTest($BuildTargets, $DependencyHash)
+function RunTest($BuildTargets)
 {
    foreach($BuildTarget in $BuildTargets)
    {
@@ -72,7 +72,7 @@ function RunTest($BuildTargets, $DependencyHash)
 
       $TargetDir = Join-Path $WorkDir DlibDotNet.Native.Tests
       if (Test-Path "$TargetDir") {
-         Remove-Item -Path "$TargetDir" -Recurse -Force
+         Remove-Item -Path "$TargetDir" -Recurse -Force > $null
       }
 
       Copy-Item "$NativeTestDir" "$WorkDir" -Recurse
@@ -95,9 +95,9 @@ function RunTest($BuildTargets, $DependencyHash)
 
       if ($IsWindows)
       {
-         if ($DependencyHash.Contains($package))
+         if ($null -ne $BuildTarget.Dependencies)
          {
-            foreach($Dependency in $DependencyHash[$package])
+            foreach($Dependency in $BuildTarget.Dependencies)
             {
                Copy-Item "$Dependency" "$OutDir"
             }
@@ -127,16 +127,6 @@ function RunTest($BuildTargets, $DependencyHash)
       }
    }
 }
-
-$BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet"         }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90;  Package = "DlibDotNet.CUDA90"  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91;  Package = "DlibDotNet.CUDA91"  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92;  Package = "DlibDotNet.CUDA92"  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100; Package = "DlibDotNet.CUDA100" }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101; Package = "DlibDotNet.CUDA101" }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet.MKL"     }
-$BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 32; CUDA = 0;   Package = "DlibDotNet.ARM"     }
 
 # For windows
 # For DlibDotNet.CUDA90
@@ -181,19 +171,30 @@ $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_intel_thread.dll")
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_avx2.dll")
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\compiler\libiomp5md.dll")
 
-$DependencyHash = @{"DlibDotNet.CUDA90"  = $tmp90;
-                    "DlibDotNet.CUDA91"  = $tmp91;
-                    "DlibDotNet.CUDA92"  = $tmp92;
-                    "DlibDotNet.CUDA100" = $tmp100;
-                    "DlibDotNet.CUDA101" = $tmp101;
-                    "DlibDotNet.MKL"     = $tmpmkl}
+$tmpmkl86 = New-Object 'System.Collections.Generic.List[string]'
+$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\mkl\mkl_core.dll")
+$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\mkl\mkl_intel_thread.dll")
+$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\mkl\mkl_avx2.dll")
+$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\compiler\libiomp5md.dll")
+
+$BuildTargets = @()
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet";         Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet";         Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA90";  Dependencies = $tmp90    }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA91";  Dependencies = $tmp91    }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA92";  Dependencies = $tmp92    }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA100"; Dependencies = $tmp100   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA101"; Dependencies = $tmp101   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.MKL";     Dependencies = $tmpmkl   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet.MKL";     Dependencies = $tmpmkl86 }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "arm"; Architecture = 32; Package = "DlibDotNet.ARM";     Dependencies = $null     }
 
 # Store current directory
 $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 
-$targets = $BuildTargets.Where({$PSItem.Package -eq $Package})
-RunTest $targets $DependencyHash
+$targets = $BuildTargets.Where({$PSItem.Package -eq $Package}).Where({$PSItem.PlatformTarget -eq $PlatformTarget})
+RunTest $targets
 
 # Move to Root directory
 Set-Location -Path $Current

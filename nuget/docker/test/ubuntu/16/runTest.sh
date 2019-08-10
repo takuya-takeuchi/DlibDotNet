@@ -2,7 +2,8 @@
 
 VERSION=$1
 PACKAGE=$2
-RID=$3
+PLATFORMTARGET=$3
+RID=$4
 
 # create non-root user
 NON_ROOT_USER=user
@@ -18,4 +19,4 @@ NUGETDIR=${DDNROOT}/nuget
 
 cd ${NUGETDIR}
 
-exec /usr/sbin/gosu $NON_ROOT_USER pwsh ./TestPackage.ps1 $PACKAGE $VERSION $RID
+exec /usr/sbin/gosu $NON_ROOT_USER pwsh ./TestPackage.ps1 $PACKAGE $VERSION $PLATFORMTARGET $RID
