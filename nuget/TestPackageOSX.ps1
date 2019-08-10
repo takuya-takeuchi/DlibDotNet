@@ -17,14 +17,17 @@ $OperatingSystem="osx"
 $Current = Get-Location
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     RID = "$OperatingSystem-x64"; }
-$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     RID = "$OperatingSystem-x86"; }
-$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; RID = "$OperatingSystem-x64"; }
-$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; RID = "$OperatingSystem-x86"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     PlatformTarget="x86"; RID = "$OperatingSystem-x86"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; PlatformTarget="x86"; RID = "$OperatingSystem-x86"; }
 
 foreach($BuildTarget in $BuildTargets)
 {
-   $command = ".\\TestPackage.ps1 -Package ${BuildTarget.Package} -Version $Version -RuntimeIdentifier ${BuildTarget.RID}"
+   $package = $BuildTarget.Package
+   $platformTarget = $BuildTarget.PlatformTarget
+   $runtimeIdentifier = $BuildTarget.RID
+   $command = ".\\TestPackage.ps1 -Package ${package} -Version $Version -PlatformTarget ${platformTarget} -RuntimeIdentifier ${runtimeIdentifier}"
    Invoke-Expression $command
 
    if ($lastexitcode -ne 0)

@@ -19,6 +19,12 @@ Param([Parameter(
       Mandatory=$True,
       Position = 3
       )][string]
+      $PlatformTarget,
+
+      [Parameter(
+      Mandatory=$True,
+      Position = 4
+      )][string]
       $RuntimeIdentifier
 )
 
@@ -99,6 +105,7 @@ function RunTest($BuildTargets, $DependencyHash)
       }
 
       $ErrorActionPreference = "silentlycontinue"
+      $env:PlatformTarget = $PlatformTarget
       dotnet test -c Release -r "$TestDir" -p:RuntimeIdentifier=$RuntimeIdentifier --logger trx
 
       if ($lastexitcode -eq 0) {
