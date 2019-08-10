@@ -430,7 +430,9 @@ function ConfigCPU([Config]$Config)
    }
    else
    {
-      cmake -D DLIB_USE_CUDA=OFF `
+      $arch_type = $Config.GetArchitecture()
+      cmake -D ARCH_TYPE="$arch_type" `
+            -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_LAPACK=OFF `
             -D mkl_include_dir="" `
             -D mkl_intel="" `
@@ -578,7 +580,9 @@ function ConfigMKL([Config]$Config)
    }
    else
    {
-      cmake -D DLIB_USE_CUDA=OFF `
+      $arch_type = $Config.GetArchitecture()
+      cmake -D ARCH_TYPE="$arch_type" `
+            -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=ON `
             -D DLIB_USE_LAPACK=OFF `
             -D LIBPNG_IS_GOOD=OFF `
