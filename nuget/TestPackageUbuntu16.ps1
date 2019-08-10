@@ -11,6 +11,7 @@ Param([Parameter(
 
 Set-StrictMode -Version Latest
 
+$RidOperatingSystem="linux"
 $OperatingSystem="ubuntu"
 $OperatingSystemVersion="16"
 
@@ -26,19 +27,22 @@ $DockerFileDir = Join-Path $DockerDir test  | `
                  Join-Path -ChildPath $OperatingSystemVersion
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet"         }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet.MKL"     }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90;  Package = "DlibDotNet.CUDA90"  }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91;  Package = "DlibDotNet.CUDA91"  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92;  Package = "DlibDotNet.CUDA92"  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100; Package = "DlibDotNet.CUDA100" }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101; Package = "DlibDotNet.CUDA101" }
+$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet";         RID = "$RidOperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 32; CUDA = 0;   Package = "DlibDotNet";         RID = "$RidOperatingSystem-x86"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0;   Package = "DlibDotNet.MKL";     RID = "$RidOperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 32; CUDA = 0;   Package = "DlibDotNet.MKL";     RID = "$RidOperatingSystem-x86"; }
+#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90;  Package = "DlibDotNet.CUDA90"; RID = "$RidOperatingSystem-x64"; }
+#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91;  Package = "DlibDotNet.CUDA91"; RID = "$RidOperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92;  Package = "DlibDotNet.CUDA92";  RID = "$RidOperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100; Package = "DlibDotNet.CUDA100"; RID = "$RidOperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101; Package = "DlibDotNet.CUDA101"; RID = "$RidOperatingSystem-x64"; }
 
 foreach($BuildTarget in $BuildTargets)
 {
    $target = $BuildTarget.Target
    $cudaVersion = $BuildTarget.CUDA
    $package = $BuildTarget.Package
+   $rid = $BuildTarget.RID
    if ($target -ne "cuda")
    {
       $dockername = "dlibdotnet/test/$OperatingSystem/$OperatingSystemVersion/$Target"
@@ -68,7 +72,7 @@ foreach($BuildTarget in $BuildTargets)
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $Version $package $OperatingSystem $OperatingSystemVersion
+                  -t "$dockername" $Version $package $rid
    }
    else
    {
@@ -77,7 +81,7 @@ foreach($BuildTarget in $BuildTargets)
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $Version $package $OperatingSystem $OperatingSystemVersion
+                  -t "$dockername" $Version $package $rid
    }
 
    if ($lastexitcode -ne 0)

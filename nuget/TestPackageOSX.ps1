@@ -12,18 +12,19 @@ Param([Parameter(
 Set-StrictMode -Version Latest
 
 $OperatingSystem="osx"
-$OperatingSystemVersion="10"
 
 # Store current directory
 $Current = Get-Location
 
-$BuildTargets = ( "DlibDotNet",
-                  "DlibDotNet.MKL"
-                )
+$BuildTargets = @()
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     RID = "$OperatingSystem-x86"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; RID = "$OperatingSystem-x86"; }
 
 foreach($BuildTarget in $BuildTargets)
 {
-   $command = ".\\TestPackage.ps1 -Package $BuildTarget -Version $Version -OperatingSystem $OperatingSystem -OperatingSystemVersion $OperatingSystemVersion"
+   $command = ".\\TestPackage.ps1 -Package ${BuildTarget.Package} -Version $Version -RuntimeIdentifier ${BuildTarget.RID}"
    Invoke-Expression $command
 
    if ($lastexitcode -ne 0)

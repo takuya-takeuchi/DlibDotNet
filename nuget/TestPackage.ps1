@@ -19,13 +19,7 @@ Param([Parameter(
       Mandatory=$True,
       Position = 3
       )][string]
-      $OperatingSystem,
-
-      [Parameter(
-      Mandatory=$True,
-      Position = 4
-      )][string]
-      $OperatingSystemVersion
+      $RuntimeIdentifier
 )
 
 Set-StrictMode -Version Latest
@@ -55,8 +49,7 @@ function RunTest($BuildTargets, $DependencyHash)
                   Join-Path -ChildPath test | `
                   Join-Path -ChildPath $package | `
                   Join-Path -ChildPath $Version | `
-                  Join-Path -ChildPath $OperatingSystem | `
-                  Join-Path -ChildPath $OperatingSystemVersion
+                  Join-Path -ChildPath $RuntimeIdentifier
 
       if (!(Test-Path "$WorkDir")) {
          New-Item "$WorkDir" -ItemType Directory > $null
@@ -106,7 +99,7 @@ function RunTest($BuildTargets, $DependencyHash)
       }
 
       $ErrorActionPreference = "silentlycontinue"
-      dotnet test -c Release -r "$TestDir" --logger trx
+      dotnet test -c Release -r "$TestDir" -p:RuntimeIdentifier=$RuntimeIdentifier --logger trx
 
       if ($lastexitcode -eq 0) {
          Write-Host "Test Successful" -ForegroundColor Green

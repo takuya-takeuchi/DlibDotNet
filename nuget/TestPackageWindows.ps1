@@ -11,24 +11,23 @@ Param([Parameter(
 
 Set-StrictMode -Version Latest
 
-$OperatingSystem="windows"
-$OperatingSystemVersion="10"
+$OperatingSystem="win"
 
 # Store current directory
 $Current = Get-Location
 
-$BuildTargets = ( "DlibDotNet",
-                  # "DlibDotNet.CUDA90",
-                  # "DlibDotNet.CUDA91",
-                  "DlibDotNet.CUDA92",
-                  "DlibDotNet.CUDA100",
-                  "DlibDotNet.CUDA101",
-                  "DlibDotNet.MKL"
-                )
+$BuildTargets = @()
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";         RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";         RID = "$OperatingSystem-x86"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL";     RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL";     RID = "$OperatingSystem-x86"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA92";  RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA100"; RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA101"; RID = "$OperatingSystem-x64"; }
 
 foreach($BuildTarget in $BuildTargets)
 {
-   $command = ".\\TestPackage.ps1 -Package $BuildTarget -Version $Version -OperatingSystem $OperatingSystem -OperatingSystemVersion $OperatingSystemVersion"
+   $command = ".\\TestPackage.ps1 -Package ${BuildTarget.Package} -Version $Version -RuntimeIdentifier ${BuildTarget.RID}"
    Invoke-Expression $command
 
    if ($lastexitcode -ne 0)
