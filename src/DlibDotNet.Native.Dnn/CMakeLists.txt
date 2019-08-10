@@ -32,6 +32,16 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set(CMAKE_CXX_FLAGS "-fPIC")
 endif()
 
+# set architecture
+if (NOT ${CMAKE_GENERATOR} MATCHES "Visual Studio")
+    if ("${ARCH_TYPE}" STREQUAL "32")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+    elseif ("${ARCH_TYPE}" STREQUAL "64")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+    endif()
+endif()
 
 # Select the release build type by default
 if (NOT CMAKE_BUILD_TYPE)
@@ -40,7 +50,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set /bigobj for MSVC
-if (CMAKE_GENERATOR MATCHES "Visual Studio")
+if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
 	# C4819: The file contains a character that cannot be represented in the current code page
 	# C4503: identifier' : decorated name length exceeded, name was truncated
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819 /wd4503 /bigobj")
