@@ -495,40 +495,86 @@ function ConfigMKL([Config]$Config)
          Write-Host "Error: Specified IntelMKL directory '${intelMklDirectory}' does not found" -ForegroundColor Red
          exit -1
       }
-
-      $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
-      $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/intel64_win/libiomp5md.lib"
-      $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/intel64_win/mkl_core_dll.lib"
-      $MKLINTELLP64DLL_LIB = Join-Path $intelMklDirectory "mkl/lib/intel64_win/mkl_intel_lp64_dll.lib"
-      $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/intel64_win/mkl_intel_thread_dll.lib"
-
-      if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
-         Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
-         exit -1
+ 
+      $architecture = $Config.GetArchitecture()
+      $architectureDir = ""
+      switch ($architecture)
+      {
+         32
+         { 
+            $architectureDir = "ia32_win"
+            $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
+            $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/${architectureDir}/libiomp5md.lib"
+            $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_core_dll.lib"
+            $MKLINTELC_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_c.lib"            
+            $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_thread_dll.lib"
+      
+            if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
+               Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+            if ((Test-Path $MKLCOREDLL_LIB) -eq $False) {
+               Write-Host "Error: ${MKLCOREDLL_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+            if ((Test-Path $MKLINTELC_LIB) -eq $False) {
+               Write-Host "Error: ${MKLINTELC_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+            if ((Test-Path $MKLINTELTHREADDLL_LIB) -eq $False) {
+               Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+      
+            cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+                  -D DLIB_USE_CUDA=OFF `
+                  -D DLIB_USE_BLAS=ON `
+                  -D DLIB_USE_LAPACK=OFF `
+                  -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
+                  -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
+                  -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
+                  -D BLAS_mkl_intel_c_dll_LIBRARY="${MKLINTELC_LIB}" `
+                  -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
+                  ..
+         }
+         64
+         { 
+            $architectureDir = "intel64_win"
+            $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
+            $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/${architectureDir}/libiomp5md.lib"
+            $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_core_dll.lib"
+            $MKLINTELLP64DLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_lp64_dll.lib"
+            $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_thread_dll.lib"
+      
+            if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
+               Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+            if ((Test-Path $MKLCOREDLL_LIB) -eq $False) {
+               Write-Host "Error: ${MKLCOREDLL_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+            if ((Test-Path $MKLINTELLP64DLL_LIB) -eq $False) {
+               Write-Host "Error: ${MKLINTELLP64DLL_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+            if ((Test-Path $MKLINTELTHREADDLL_LIB) -eq $False) {
+               Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
+               exit -1
+            }
+      
+            cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+                  -D DLIB_USE_CUDA=OFF `
+                  -D DLIB_USE_BLAS=ON `
+                  -D DLIB_USE_LAPACK=OFF `
+                  -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
+                  -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
+                  -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
+                  -D BLAS_mkl_intel_lp64_dll_LIBRARY="${MKLINTELLP64DLL_LIB}" `
+                  -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
+                  ..
+         }
       }
-      if ((Test-Path $MKLCOREDLL_LIB) -eq $False) {
-         Write-Host "Error: ${MKLCOREDLL_LIB} does not found" -ForegroundColor Red
-         exit -1
-      }
-      if ((Test-Path $MKLINTELLP64DLL_LIB) -eq $False) {
-         Write-Host "Error: ${MKLINTELLP64DLL_LIB} does not found" -ForegroundColor Red
-         exit -1
-      }
-      if ((Test-Path $MKLINTELTHREADDLL_LIB) -eq $False) {
-         Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
-         exit -1
-      }
-
-      cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
-            -D DLIB_USE_CUDA=OFF `
-            -D DLIB_USE_BLAS=ON `
-            -D DLIB_USE_LAPACK=OFF `
-            -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
-            -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
-            -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
-            -D BLAS_mkl_intel_lp64_dll_LIBRARY="${MKLINTELLP64DLL_LIB}" `
-            -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
-            ..
    }
    else
    {
