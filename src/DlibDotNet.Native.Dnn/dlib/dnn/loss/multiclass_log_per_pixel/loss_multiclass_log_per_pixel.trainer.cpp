@@ -1,1 +1,0 @@
-#include "loss_multiclass_log_per_pixel.trainer.h"

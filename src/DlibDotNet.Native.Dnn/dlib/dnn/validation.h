@@ -4,7 +4,7 @@
 #include <dlib/dnn.h>
 #include <vector>
 
-#include "loss/mmod/loss_mmod_defines.h"
+#include "loss/mmod/defines.h"
 #include "../common.h"
 
 using namespace dlib;

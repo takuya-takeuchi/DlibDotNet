@@ -6,10 +6,10 @@
 #include <dlib/matrix.h>
 #include <vector>
 
-#include "loss_multiclass_log_per_pixel.common.h"
+#include "common.h"
 #include "../template.h"
 #include "../../trainer.h"
-#include "loss_multiclass_log_per_pixel_defines.h"
+#include "defines.h"
 
 using namespace dlib;
 using namespace std;
