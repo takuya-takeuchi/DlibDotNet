@@ -196,5 +196,6 @@ DLLEXPORT int loss_mmod_layer_details_set_num_filters(void* layer, const int typ
 // layers
 MAKE_FUNC(loss_mmod, loss_mmod)
 MAKE_FUNC2(loss_mmod, loss_mmod)
+MAKE_TRAINER_FUNC(loss_mmod, loss_mmod)
 
 #endif

@@ -221,5 +221,6 @@ DLLEXPORT int loss_multiclass_log_per_pixel_layer_details_set_num_filters(void* 
 // layers
 MAKE_FUNC(loss_multiclass_log_per_pixel, loss_multiclass_log_per_pixel)
 MAKE_FUNC2(loss_multiclass_log_per_pixel, loss_multiclass_log_per_pixel)
+MAKE_TRAINER_FUNC(loss_multiclass_log_per_pixel, loss_multiclass_log_per_pixel)
 
 #endif

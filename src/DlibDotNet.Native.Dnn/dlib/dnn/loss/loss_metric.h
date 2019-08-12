@@ -113,5 +113,6 @@ DLLEXPORT int loss_metric_layer_details_set_num_filters(void* layer, const int t
 
 // layers
 MAKE_FUNC(loss_metric, loss_metric)
+MAKE_TRAINER_FUNC(loss_metric, loss_metric)
 
 #endif

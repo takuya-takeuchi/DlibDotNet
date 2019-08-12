@@ -126,5 +126,6 @@ DLLEXPORT int loss_multiclass_log_layer_details_set_num_filters(void* layer, con
 
 // layers
 MAKE_FUNC(loss_multiclass_log, loss_multiclass_log)
+MAKE_TRAINER_FUNC(loss_multiclass_log, loss_multiclass_log)
 
 #endif
