@@ -28,12 +28,13 @@ RUN apt-get update && apt-get install -y \
     cmake
 
 RUN apt-get update && apt-get install -y \
+    libc6:i386 \
     libc6-dev:i386 \
     gcc-multilib:i386 \
     g++-multilib:i386
 
 # install package to build
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     intel-mkl-32bit-2019.0-045
 
 # set compiler
