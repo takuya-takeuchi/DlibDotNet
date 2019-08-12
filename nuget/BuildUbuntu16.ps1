@@ -26,15 +26,15 @@ $DockerFileDir = Join-Path $DockerDir build  | `
 $BuildSourceHash = [Config]::GetBinaryLibraryLinuxHash()
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 32; RID = "$OperatingSystem-x86";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 32; RID = "$OperatingSystem-x86";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
-# $BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 64; RID = "$OperatingSystem-arm64"; CUDA = 0   }
-# $BuildTargets += New-Object PSObject -Property @{Target = "arm";  Architecture = 32; RID = "$OperatingSystem-arm";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 32; Postfix = "/x86"; RID = "$OperatingSystem-x86";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 32; Postfix = "/x86"; RID = "$OperatingSystem-x86";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 101 }
+#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "arm";  Architecture = 64; Postfix = "64";   RID = "$OperatingSystem-arm64"; CUDA = 0   }
+#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "arm";  Architecture = 32; Postfix = "";     RID = "$OperatingSystem-arm";   CUDA = 0   }
 
 foreach($BuildTarget in $BuildTargets)
 {
@@ -43,21 +43,14 @@ foreach($BuildTarget in $BuildTargets)
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
    $cudaVersion = $BuildTarget.CUDA
+   $postfix = $BuildTarget.Postfix
 
    if ($target -ne "cuda")
    {
       $option = ""
-
-      if (($target -eq "arm") -And ($architecture -eq 64))
-      {
-         $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target" + "64"
-         $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target" + "64"
-      }
-      else
-      {
-         $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
-         $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
-      }
+      
+      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target" + $postfix
+      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target" + $postfix
    }
    else
    {
