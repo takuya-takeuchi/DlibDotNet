@@ -88,7 +88,8 @@ function RunTest($BuildTargets)
       # Copy Dependencies
       $OutDir = Join-Path $TargetDir bin | `
                   Join-Path -ChildPath Release | `
-                  Join-Path -ChildPath netcoreapp2.0
+                  Join-Path -ChildPath netcoreapp2.0 | `
+                  Join-Path -ChildPath $RuntimeIdentifier
       if (!(Test-Path "$OutDir")) {
          New-Item "$OutDir" -ItemType Directory > $null
       }
