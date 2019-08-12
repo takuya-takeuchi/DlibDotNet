@@ -6,8 +6,8 @@
 #include <dlib/matrix.h>
 #include <vector>
 
-#include "template.h"
-#include "../trainer.h"
+#include "../template.h"
+#include "../../trainer.h"
 #include "loss_multiclass_log_per_pixel_defines.h"
 
 using namespace dlib;
