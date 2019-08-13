@@ -32,13 +32,17 @@ Set-StrictMode -Version Latest
 
 function Clear-PackakgeCache([string]$Package, [string]$Version)
 {
-   $path = (dotnet nuget locals global-packages --list).Replace('info : global-packages: ', '').Trim()
-   $path =  Join-Path $path $Package | `
-            Join-Path -ChildPath $Version
-   if (Test-Path $path)
+   # Linux is executed on container
+   if ($global:IsWindows -or $global:IsMacOS)
    {
-      Write-Host "Remove '$path'" -Foreground Green
-      Remove-Item -Path "$path" -Recurse -Force
+      $path = (dotnet nuget locals global-packages --list).Replace('info : global-packages: ', '').Trim()
+      $path =  Join-Path $path $Package | `
+               Join-Path -ChildPath $Version
+      if (Test-Path $path)
+      {
+         Write-Host "Remove '$path'" -Foreground Green
+         Remove-Item -Path "$path" -Recurse -Force
+      }
    }
 }
 
