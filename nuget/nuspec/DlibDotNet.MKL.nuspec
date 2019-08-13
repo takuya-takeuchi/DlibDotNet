@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.MKL</id>
-    <version>19.17.0.20190623</version>
+    <version>19.17.0.20190813</version>
     <title>DlibDotNet for MKL</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
