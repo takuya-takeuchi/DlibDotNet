@@ -6,6 +6,7 @@
     <RootNamespace>DlibDotNet.Native.Tests</RootNamespace>
     <AssemblyName>DlibDotNet.Native.Tests</AssemblyName>
     <Version>1.0.0</Version>
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
