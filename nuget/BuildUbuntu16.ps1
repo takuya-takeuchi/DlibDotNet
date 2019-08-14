@@ -1,5 +1,12 @@
 Param()
 
+# import class and function
+$ScriptPath = $PSScriptRoot
+$DlibDotNetRoot = Split-Path $ScriptPath -Parent
+$NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
+             Join-Path -ChildPath "BuildUtils.ps1"
+import-module $NugetPath -function *
+
 $OperatingSystem="linux"
 $Distribution="ubuntu"
 $DistributionVersion="16"
@@ -16,67 +23,85 @@ $DockerFileDir = Join-Path $DockerDir build  | `
                  Join-Path -ChildPath $Distribution | `
                  Join-Path -ChildPath $DistributionVersion
 
-$ArchitectureHash = @{32 = "x86"; 64 = "x64"}
-$BuildSourceArray = @("DlibDotNet.Native", "DlibDotNet.Native.Dnn")
-$BuildSourceHash = @{"DlibDotNet.Native" = "libDlibDotNetNative.so"; "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"}
+$BuildSourceHash = [Config]::GetBinaryLibraryLinuxHash()
 
+# https://github.com/dotnet/coreclr/issues/9265
+# linux-x86 does not support
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 90  }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 91  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
+# $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 32; Postfix = "/x86"; RID = "$OperatingSystem-x86";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
+# $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 32; Postfix = "/x86"; RID = "$OperatingSystem-x86";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 101 }
+#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "arm";  Architecture = 64; Postfix = "64";   RID = "$OperatingSystem-arm64"; CUDA = 0   }
+#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "arm";  Architecture = 32; Postfix = "";     RID = "$OperatingSystem-arm";   CUDA = 0   }
 
 foreach($BuildTarget in $BuildTargets)
 {
-  $target = $BuildTarget.Target
-  $architecture = $BuildTarget.Architecture
-  $cudaVersion = $BuildTarget.CUDA
-  $options = New-Object 'System.Collections.Generic.List[string]'
-  if ($target -ne "cuda")
-  {
-     $libraryDir = Join-Path "artifacts" $target
-     $build = "build_" + $OperatingSystem + "_" + $target + "_" + $ArchitectureHash[$architecture]
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target"
-  }
-  else
-  {
-     $libraryDir = Join-Path "artifacts" ($target + "-" + $cudaVersion)
-     $build = "build_" + $OperatingSystem + "_" + $target + "-" + $cudaVersion + "_" + $ArchitectureHash[$architecture]
-     $options.Add($cudaVersion.ToString())
-     $cudaVersion = ($cudaVersion / 10).ToString("0.0")
-     $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
-     $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
-  }
+   $platform = $BuildTarget.Platform
+   $target = $BuildTarget.Target
+   $architecture = $BuildTarget.Architecture
+   $rid = $BuildTarget.RID
+   $cudaVersion = $BuildTarget.CUDA
+   $postfix = $BuildTarget.Postfix
 
-  Write-Host "Start 'docker build'" -ForegroundColor Green
-  docker build -q -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
+   if ($target -ne "cuda")
+   {
+      $option = ""
+      
+      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target" + $postfix
+      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target" + $postfix
+   }
+   else
+   {
+      $option = $cudaVersion
 
-  Write-Host "Start 'docker run'" -ForegroundColor Green
-  docker run --rm `
-             -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-             -t "$dockername" $target $architecture ($options -join " ")
+      $cudaVersion = ($cudaVersion / 10).ToString("0.0")
+      $dockername = "dlibdotnet/build/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+      $imagename  = "dlibdotnet/devel/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+   }
 
-  # Copy output binary
-  foreach($Source in $BuildSourceArray)
-  {
-    $dll = $BuildSourceHash[$Source]
-    $srcDir = Join-Path $DlibDotNetSourceRoot $Source
+   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $platform, $option)
+   $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
+   $build = $Config.GetBuildDirectoryName($OperatingSystem)
 
-    $binary = Join-Path $srcDir $build  | `
-              Join-Path -ChildPath $dll
-    $output = Join-Path $Current $libraryDir  | `
-              Join-Path -ChildPath runtimes | `
-              Join-Path -ChildPath ($OperatingSystem + "-" + $ArchitectureHash[$architecture]) | `
-              Join-Path -ChildPath native | `
-              Join-Path -ChildPath $dll
+   Write-Host "Start 'docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
+   docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
-    Write-Host "Copy $dll to $output" -ForegroundColor Green
-    Copy-Item $binary $output
-  }
+   if ($lastexitcode -ne 0)
+   {
+      Set-Location -Path $Current
+      exit -1
+   }
+
+   # Build binary
+   foreach ($key in $BuildSourceHash.keys)
+   {
+      Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
+      docker run --rm `
+                  -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                  -e "LOCAL_UID=$(id -u $env:USER)" `
+                  -e "LOCAL_GID=$(id -g $env:USER)" `
+                  -t "$dockername" $key $target $architecture $platform $option
+   
+      if ($lastexitcode -ne 0)
+      {
+         Set-Location -Path $Current
+         exit -1
+      }
+   }
+
+   # Copy output binary
+   foreach ($key in $BuildSourceHash.keys)
+   {
+      $srcDir = Join-Path $DlibDotNetSourceRoot $key
+      $dll = $BuildSourceHash[$key]
+      $dstDir = Join-Path $Current $libraryDir
+
+      CopyToArtifact -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+   }
 }
 
 # Move to Root directory 

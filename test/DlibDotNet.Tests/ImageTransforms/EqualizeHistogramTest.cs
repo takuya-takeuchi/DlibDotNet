@@ -21,6 +21,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
@@ -79,6 +80,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var inTests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
@@ -94,6 +96,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var outTests = new[]
             {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true },
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false },
                 new { Type = ImageTypes.UInt8,         ExpectResult = true },
@@ -118,6 +121,11 @@ namespace DlibDotNet.Tests.ImageTransforms
                     {
                         switch (output.Type)
                         {
+                            case ImageTypes.BgrPixel:
+                                {
+                                    Dlib.EqualizeHistogram<BgrPixel>(imageObj, out var ret);
+                                    return ret;
+                                }
                             case ImageTypes.RgbPixel:
                                 {
                                     Dlib.EqualizeHistogram<RgbPixel>(imageObj, out var ret);
@@ -176,7 +184,6 @@ namespace DlibDotNet.Tests.ImageTransforms
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
-                        return imageObj;
                     });
 
                     var successAction = new Action<Array2DBase>(image =>

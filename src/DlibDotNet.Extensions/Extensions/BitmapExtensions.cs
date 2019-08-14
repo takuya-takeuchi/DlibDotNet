@@ -42,6 +42,10 @@ namespace DlibDotNet.Extensions
             {
                 new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbPixel, RgbReverse = true }
             };
+            OptimumConvertImageInfos[PixelFormat.Format24bppRgb] = new[]
+            {
+                new ConvertInfo<ImageTypes>{ Type = ImageTypes.BgrPixel, RgbReverse = false }
+            };
             OptimumConvertImageInfos[PixelFormat.Format32bppArgb] = new[]
             {
                 new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true }
@@ -80,6 +84,14 @@ namespace DlibDotNet.Extensions
                     // But .NET Bitmap data
                     // B,G,R,B,G,R,...
                     rgbReverse = true;
+                    format = PixelFormat.Format24bppRgb;
+                    channels = 3;
+                    break;
+                case ImageTypes.BgrPixel:
+                    // Dlib RgbPixel data
+                    // R,G,B,R,G,B,...
+                    // But .NET Bitmap data
+                    // B,G,R,B,G,R,...
                     format = PixelFormat.Format24bppRgb;
                     channels = 3;
                     break;
@@ -265,6 +277,10 @@ namespace DlibDotNet.Extensions
             {
                 case MatrixElementTypes.RgbPixel:
                     rgbReverse = true;
+                    format = PixelFormat.Format24bppRgb;
+                    channels = 3;
+                    break;
+                case MatrixElementTypes.BgrPixel:
                     format = PixelFormat.Format24bppRgb;
                     channels = 3;
                     break;

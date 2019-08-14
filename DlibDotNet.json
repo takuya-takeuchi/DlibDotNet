@@ -1,0 +1,24 @@
+{
+   "build" : {
+      "linux-node": "linux-cuda",
+      "osx-node": "mac",
+      "windows-node": "windows-cuda"
+   },
+   "packaging" : {
+      "node": "windows-cuda"
+   },
+   "test" : {
+      "linux-arm-node": "linux-arm-raspberrypi",
+      "linux-node": "linux-cuda",
+      "osx-node":  "mac",
+      "windows-node": "windows-cuda",
+
+      "uwp" : {
+         "thumbprint": "",
+         "certificateKeyFile": "",
+         "windowsAppCertificationKit" : {
+            "notCountAsFailTests" : "47,79,81"
+         }
+      }
+   }
+}

@@ -12,6 +12,10 @@ namespace DlibDotNet.Tests.Geometry
         public void Create1()
         {
             var rect = new DRectangle();
+            Assert.AreEqual(0d, rect.Left);
+            Assert.AreEqual(0d, rect.Top);
+            Assert.AreEqual(1d, rect.Width);
+            Assert.AreEqual(1d, rect.Height);
         }
 
         [TestMethod]
@@ -307,7 +311,6 @@ namespace DlibDotNet.Tests.Geometry
             width--;
             height--;
 
-            var expected = new DRectangle();
             var eLeft = ((left + right) / 2) - width / 2;
             var eTop = ((top + bottom) / 2) - height / 2;
             var eRight = eLeft + width - 1;
@@ -339,7 +342,7 @@ namespace DlibDotNet.Tests.Geometry
                 rect = DRectangle.SetAspectRatio(rect, 0);
                 Assert.Fail($"{nameof(DRectangle.SetAspectRatio)} should throw {nameof(ArgumentOutOfRangeException)} if ration is 0");
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException)
             {
             }
         }

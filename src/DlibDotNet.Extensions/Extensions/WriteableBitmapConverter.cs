@@ -105,6 +105,14 @@ namespace DlibDotNet.Extensions
                     format = PixelFormats.Bgr24;
                     channels = 3;
                     break;
+                case ImageTypes.BgrPixel:
+                    // Dlib RgbPixel data
+                    // R,G,B,R,G,B,...
+                    // But .NET Bitmap data
+                    // B,G,R,B,G,R,...
+                    format = PixelFormats.Bgr24;
+                    channels = 3;
+                    break;
                 case ImageTypes.RgbAlphaPixel:
                     // Dlib RgbAlphaPixel data
                     // R,G,B,A,R,G,B,A,,...
@@ -198,6 +206,12 @@ namespace DlibDotNet.Extensions
                     // But .NET Bitmap data
                     // B,G,R,B,G,R,...
                     rgbReverse = true;
+                    format = PixelFormats.Bgr24;
+                    channels = 3;
+                    break;
+                case MatrixElementTypes.BgrPixel:
+                    // Dlib RgbPixel data
+                    // R,G,B,R,G,B,...
                     format = PixelFormats.Bgr24;
                     channels = 3;
                     break;

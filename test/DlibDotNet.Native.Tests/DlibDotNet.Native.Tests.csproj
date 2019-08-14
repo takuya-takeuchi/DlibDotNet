@@ -6,6 +6,7 @@
     <RootNamespace>DlibDotNet.Native.Tests</RootNamespace>
     <AssemblyName>DlibDotNet.Native.Tests</AssemblyName>
     <Version>1.0.0</Version>
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -20,6 +21,12 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup> 
+    <None Update="Lenna.png"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </None> 
   </ItemGroup>
 
 </Project>

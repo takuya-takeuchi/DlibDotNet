@@ -36,6 +36,8 @@ namespace DlibDotNet
 
             RgbPixel,
 
+            BgrPixel,
+
             RgbAlphaPixel,
 
             HsiPixel,
@@ -87,6 +89,8 @@ namespace DlibDotNet
             Double,
 
             RgbPixel,
+
+            BgrPixel,
 
             RgbAlphaPixel,
 
@@ -339,6 +343,10 @@ namespace DlibDotNet
         
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr get_version();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool is_support_gui();
 
         #region assign_pixel
 
@@ -613,6 +621,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, RgbPixel[] data, uint rows, uint columns, uint steps);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, BgrPixel[] data, uint rows, uint columns, uint steps);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, RgbAlphaPixel[] data, uint rows, uint columns, uint steps);

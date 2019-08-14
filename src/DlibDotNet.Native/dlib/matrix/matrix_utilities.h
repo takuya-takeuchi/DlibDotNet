@@ -84,6 +84,19 @@ do {\
     }\
 } while (0)
 
+#define matrix_cast_template_bgr_pixel(__TYPE__, desttype, matrix, templateRows, templateColumns, ret, err) \
+do {\
+    switch(desttype)\
+    {\
+        case matrix_element_type::BgrPixel:\
+            matrix_cast_template_sub(__TYPE__, matrix, templateRows, templateColumns, bgr_pixel, ret);\
+            break;\
+        default:\
+            err = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+            break;\
+    }\
+} while (0)
+
 #define matrix_cast_template_hsi_pixel(__TYPE__, desttype, matrix, templateRows, templateColumns, ret, err) \
 do {\
     switch(desttype)\
@@ -204,6 +217,9 @@ DLLEXPORT int matrix_cast(matrix_element_type type, void* matrix, int templateRo
             break;
         case matrix_element_type::RgbPixel:
             matrix_cast_template_rgb_pixel(rgb_pixel, desttype, matrix, templateRows, templateColumns, ret, err);
+            break;
+        case matrix_element_type::BgrPixel:
+            matrix_cast_template_bgr_pixel(bgr_pixel, desttype, matrix, templateRows, templateColumns, ret, err);
             break;
         case matrix_element_type::HsiPixel:
             matrix_cast_template_hsi_pixel(hsi_pixel, desttype, matrix, templateRows, templateColumns, ret, err);

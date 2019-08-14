@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project version="4.0">
+  <PropertyGroup>
+    <IsOSX Condition="Exists('/Library/Frameworks') and Exists ('/etc')">true</IsOSX>
+    <IsLinux Condition="Exists ('/proc') and Exists ('/etc/')">true</IsLinux>
+
+    <Platform Condition="'$(Platform)'==''">x64</Platform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(OS)==''">
+    <OS>Windows_NT</OS>
+  </PropertyGroup>
+
+  <Target Name="TestMessage" AfterTargets="Build" >
+    <Message Text="DlibDotNet.Native Build Message" Importance="high"/>
+    <Message Text="Platform: $(Platform)" Importance="high"/>
+    <Message Text="OS: $(OS)" Importance="high"/>
+    <Message Text="IsOSX: $(IsOSX)" Importance="high"/>
+    <Message Text="IsLinux: $(IsLinux)" Importance="high"/>
+  </Target>
+
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-$(Platform)\native\DlibDotNetNative.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>DlibDotNetNative.dll</Link>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-$(Platform)\native\DlibDotNetNativeDnn.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>DlibDotNetNativeDnn.dll</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsLinux)' == 'true'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-$(Platform)\native\libDlibDotNetNative.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libDlibDotNetNative.so</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-$(Platform)\native\libDlibDotNetNativeDnn.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libDlibDotNetNativeDnn.so</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-$(Platform)\native\libDlibDotNetNative.so" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\linux-$(Platform)\native\libDlibDotNetNativeDnn.so" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsOSX)' == 'true'">
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-$(Platform)\native\libDlibDotNetNative.dylib" Condition="'$(IsOSX)' == 'true'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libDlibDotNetNative.dylib</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-$(Platform)\native\libDlibDotNetNativeDnn.dylib" Condition="'$(IsOSX)' == 'true'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libDlibDotNetNativeDnn.dylib</Link>
+      <DeploymentContent>True</DeploymentContent>
+    </Content>
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-$(Platform)\native\libDlibDotNetNative.dylib" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\runtimes\osx-$(Platform)\native\libDlibDotNetNativeDnn.dylib" />
+  </ItemGroup>
+
+</Project>

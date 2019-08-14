@@ -1,5 +1,7 @@
 #include "custom_drawable_window.h"
 
+#ifndef DLIB_NO_GUI_SUPPORT
+
 custom_drawable_window::custom_drawable_window(const bool resizable,
                                                const bool undecorated,
                                                void (*constructor_function)(custom_drawable_window*),
@@ -39,3 +41,5 @@ void custom_drawable_window::on_keydown(unsigned long key,
     if (this->m_on_keydown_function)
         this->m_on_keydown_function(key, is_printable, state);
 }
+
+#endif

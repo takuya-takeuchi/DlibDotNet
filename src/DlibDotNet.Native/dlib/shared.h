@@ -14,6 +14,7 @@ enum struct array2d_type : int
     Float,
     Double,
     RgbPixel,
+    BgrPixel,
     RgbAlphaPixel,
     HsiPixel,
     Matrix,
@@ -32,6 +33,7 @@ enum struct matrix_element_type : int
     Float,
     Double,
     RgbPixel,
+    BgrPixel,
     RgbAlphaPixel,
     HsiPixel
 };

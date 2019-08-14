@@ -89,6 +89,7 @@ namespace DlibDotNet
                 new { Type = typeof(float),         ElementType = ImageTypes.Float  },
                 new { Type = typeof(double),        ElementType = ImageTypes.Double },
                 new { Type = typeof(RgbPixel),      ElementType = ImageTypes.RgbPixel },
+                new { Type = typeof(BgrPixel),      ElementType = ImageTypes.BgrPixel },
                 new { Type = typeof(RgbAlphaPixel), ElementType = ImageTypes.RgbAlphaPixel },
                 new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel }
             };
@@ -107,6 +108,7 @@ namespace DlibDotNet
                 new { Type = typeof(float),         ElementType = MatrixElementTypes.Float },
                 new { Type = typeof(double),        ElementType = MatrixElementTypes.Double },
                 new { Type = typeof(RgbPixel),      ElementType = MatrixElementTypes.RgbPixel },
+                new { Type = typeof(BgrPixel),      ElementType = MatrixElementTypes.BgrPixel },
                 new { Type = typeof(HsiPixel),      ElementType = MatrixElementTypes.HsiPixel },
                 new { Type = typeof(RgbAlphaPixel), ElementType = MatrixElementTypes.RgbAlphaPixel }
             };
@@ -318,6 +320,9 @@ namespace DlibDotNet
                 case ImageTypes.RgbPixel:
                     NativeMethods.array_pixel_getitem_rgb_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var rgb);
                     return rgb;
+                case ImageTypes.BgrPixel:
+                    NativeMethods.array_pixel_getitem_bgr_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var bgr);
+                    return bgr;
                 case ImageTypes.RgbAlphaPixel:
                     NativeMethods.array_pixel_getitem_rgb_alpha_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var rgba);
                     return rgba;
@@ -355,6 +360,8 @@ namespace DlibDotNet
                     return new Array2D<double>(array, ImageTypes.Double, false);
                 case NativeMethods.Array2DType.RgbPixel:
                     return new Array2D<RgbPixel>(array, ImageTypes.RgbPixel, false);
+                case NativeMethods.Array2DType.BgrPixel:
+                    return new Array2D<BgrPixel>(array, ImageTypes.BgrPixel, false);
                 case NativeMethods.Array2DType.RgbAlphaPixel:
                     return new Array2D<RgbAlphaPixel>(array, ImageTypes.RgbAlphaPixel, false);
                 case NativeMethods.Array2DType.HsiPixel:
@@ -392,6 +399,8 @@ namespace DlibDotNet
                     return new Matrix<double>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.RgbPixel:
                     return new Matrix<RgbPixel>(mat, templateRow, templateColumn, false);
+                case MatrixElementTypes.BgrPixel:
+                    return new Matrix<BgrPixel>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.RgbAlphaPixel:
                     return new Matrix<RgbAlphaPixel>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.HsiPixel:
@@ -443,6 +452,9 @@ namespace DlibDotNet
                     break;
                 case ImageTypes.RgbPixel:
                     NativeMethods.array_pixel_pushback_rgb_pixel(type.ToNativeArray2DType(), this.NativePtr, (RgbPixel)item);
+                    break;
+                case ImageTypes.BgrPixel:
+                    NativeMethods.array_pixel_pushback_bgr_pixel(type.ToNativeArray2DType(), this.NativePtr, (BgrPixel)item);
                     break;
                 case ImageTypes.RgbAlphaPixel:
                     NativeMethods.array_pixel_pushback_rgb_alpha_pixel(type.ToNativeArray2DType(), this.NativePtr, (RgbAlphaPixel)item);

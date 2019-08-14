@@ -12,6 +12,8 @@ namespace DlibDotNet.Tests.Geometry
         public void Create1()
         {
             var point = new Point();
+            Assert.AreEqual(point.X, 0);
+            Assert.AreEqual(point.Y, 0);
         }
 
         [TestMethod]

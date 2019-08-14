@@ -375,6 +375,33 @@ DLLEXPORT void* __TYPENAME__##_subnet_get_layer_details(void* subnet, const int 
     return nullptr;\
 }\
 \
+DLLEXPORT int set_all_bn_running_stats_window_sizes_##__TYPENAME__(void* obj, const int type, unsigned long new_window_size)\
+{\
+    int error = ERR_OK;\
+\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            set_all_bn_running_stats_window_sizes_loss_template,\
+                            obj,\
+                            new_window_size);\
+\
+    return error;\
+}\
+\
+DLLEXPORT int __TYPENAME__##_operator_left_shift(void* obj, const int type, std::ostringstream* stream)\
+{\
+    int error = ERR_OK;\
+\
+    __TYPENAME__##_template(type,\
+                            error,\
+                            loss_operator_left_shift_template,\
+                            obj,\
+                            stream);\
+\
+    return error;\
+}\
+
+#define MAKE_TRAINER_FUNC(__TYPE__, __TYPENAME__)\
 DLLEXPORT void* dnn_trainer_##__TYPENAME__##_new(void* net, const int type)\
 {\
     int error = ERR_OK;\
@@ -621,32 +648,6 @@ DLLEXPORT int dnn_trainer_##__TYPENAME__##_operator_left_shift(void* trainer, co
                             error,\
                             dnn_trainer_loss_operator_left_shift_template,\
                             trainer,\
-                            stream);\
-\
-    return error;\
-}\
-\
-DLLEXPORT int set_all_bn_running_stats_window_sizes_##__TYPENAME__(void* obj, const int type, unsigned long new_window_size)\
-{\
-    int error = ERR_OK;\
-\
-    __TYPENAME__##_template(type,\
-                            error,\
-                            set_all_bn_running_stats_window_sizes_loss_template,\
-                            obj,\
-                            new_window_size);\
-\
-    return error;\
-}\
-\
-DLLEXPORT int __TYPENAME__##_operator_left_shift(void* obj, const int type, std::ostringstream* stream)\
-{\
-    int error = ERR_OK;\
-\
-    __TYPENAME__##_template(type,\
-                            error,\
-                            loss_operator_left_shift_template,\
-                            obj,\
                             stream);\
 \
     return error;\

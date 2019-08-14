@@ -2,23 +2,21 @@
 
 VERSION=$1
 PACKAGE=$2
-OS=$3
-OSVERSION=$4
+PLATFORMTARGET=$3
+RID=$4
+
+# create non-root user
+NON_ROOT_USER=user
+USER_ID=${LOCAL_UID:-9001}
+GROUP_ID=${LOCAL_GID:-9001}
+echo "Starting with UID : $USER_ID, GID: $GROUP_ID"
+useradd -u $USER_ID -o -m $NON_ROOT_USER
+groupmod -g $GROUP_ID $NON_ROOT_USER
+export HOME=/home/$NON_ROOT_USER
 
 DDNROOT=/opt/data/DlibDotNet
-WORK=/opt/data/work
-TESTDIR=${DDNROOT}/nuget/artifacts/test/${PACKAGE}.${VERSION}/${OS}/${OSVERSION}
+NUGETDIR=${DDNROOT}/nuget
 
-mkdir -p ${WORK}
-mkdir -p ${TESTDIR}
+cd ${NUGETDIR}
 
-export DLIBDOTNET_VERSION=$VERSION
-
-cp -Rf ${DDNROOT}/test/DlibDotNet.Native.Tests ${WORK}
-cd ${WORK}/DlibDotNet.Native.Tests
-
-# restore package from local nuget pacakge
-# And drop stdout message
-dotnet add package $PACKAGE -s ${DDNROOT}/nuget/ > /dev/null 2>&1
-
-dotnet test -c Release -r ${TESTDIR} --logger trx
+exec /usr/sbin/gosu $NON_ROOT_USER pwsh ./TestPackage.ps1 $PACKAGE $VERSION $PLATFORMTARGET $RID

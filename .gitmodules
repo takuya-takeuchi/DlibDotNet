@@ -1,3 +1,6 @@
 [submodule "dlib"]
 	path = src/dlib
 	url = https://github.com/davisking/dlib
+[submodule "src/ios-cmake"]
+	path = src/ios-cmake
+	url = https://github.com/leetal/ios-cmake

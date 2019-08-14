@@ -37,6 +37,12 @@ namespace DlibDotNet.Interop
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<RgbPixel>()));
         }
 
+        public static unsafe void Copy(IntPtr ptrSource, BgrPixel[] dest, uint elements)
+        {
+            fixed (BgrPixel* ptrDest = &dest[0])
+                NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<BgrPixel>()));
+        }
+
         public static unsafe void Copy(IntPtr ptrSource, RgbAlphaPixel[] dest, uint elements)
         {
             fixed (RgbAlphaPixel* ptrDest = &dest[0])

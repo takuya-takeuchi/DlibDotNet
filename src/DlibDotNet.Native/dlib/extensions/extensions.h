@@ -65,6 +65,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -84,6 +85,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -103,6 +105,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -122,6 +125,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -141,6 +145,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Int32:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -160,6 +165,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Int32:
                     case array2d_type::Float:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -184,6 +190,44 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                                 auto drow = dst[r];
                                 for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += 3)
                                 {
+                                    drow[c].red   = src[src_row + dst_column + 0];
+                                    drow[c].green = src[src_row + dst_column + 1];
+                                    drow[c].blue  = src[src_row + dst_column + 2];
+                                }
+                            }
+                            return ret;
+                        }
+                        break;
+                    case array2d_type::UInt16:
+                    case array2d_type::Int16:
+                    case array2d_type::Int32:
+                    case array2d_type::Float:
+                    case array2d_type::Double:
+                    case array2d_type::BgrPixel:
+                    case array2d_type::HsiPixel:
+                    case array2d_type::RgbAlphaPixel:
+                    default:
+                        return nullptr;
+                }
+            }
+        case array2d_type::BgrPixel:
+            {
+                switch(src_type)
+                {
+                    // from bgr_pixel to bgr_pixel
+                    case array2d_type::BgrPixel:
+                        extensions_load_image_data_from_to_sametype(bgr_pixel, data, rows, columns, steps);
+                    case array2d_type::UInt8:
+                        {
+                            dlib::array2d<bgr_pixel>* ret = new dlib::array2d<bgr_pixel>(rows, columns);
+                            dlib::array2d<bgr_pixel>& dst = *(ret);
+                            uint8_t* src = static_cast<uint8_t*>(data);
+                            for (uint32_t r = 0; r < rows; r++)
+                            {
+                                uint32_t src_row = steps * r;
+                                auto drow = dst[r];
+                                for (uint32_t c = 0, dst_column = 0; c < columns; c++, dst_column += 3)
+                                {
                                     drow[c].red   = src[src_row + dst_column + 2];
                                     drow[c].green = src[src_row + dst_column + 1];
                                     drow[c].blue  = src[src_row + dst_column + 0];
@@ -197,6 +241,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Int32:
                     case array2d_type::Float:
                     case array2d_type::Double:
+                    case array2d_type::RgbPixel:
                     case array2d_type::HsiPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
@@ -217,6 +262,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
                     default:
                         return nullptr;
@@ -236,6 +282,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Float:
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -904,6 +951,9 @@ DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, co
         case matrix_element_type::RgbPixel:
             extensions_matrix_to_array_template(rgb_pixel, templateRows, templateColumns, err, src, dst);
             break;
+        case matrix_element_type::BgrPixel:
+            extensions_matrix_to_array_template(bgr_pixel, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::HsiPixel:
             extensions_matrix_to_array_template(hsi_pixel, templateRows, templateColumns, err, src, dst);
             break;
@@ -954,6 +1004,9 @@ DLLEXPORT int extensions_convert_array_to_bytes(array2d_type src_type, void* src
             break;
         case array2d_type::RgbPixel:
             extensions_convert_array_to_bytes_template(dlib::rgb_pixel, src, dst, rows, columns);
+            break;
+        case array2d_type::BgrPixel:
+            extensions_convert_array_to_bytes_template(dlib::bgr_pixel, src, dst, rows, columns);
             break;
         case array2d_type::RgbAlphaPixel:
             extensions_convert_array_to_bytes_template(dlib::rgb_alpha_pixel, src, dst, rows, columns);
