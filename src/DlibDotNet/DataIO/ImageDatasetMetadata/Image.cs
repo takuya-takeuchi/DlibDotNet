@@ -26,6 +26,9 @@ namespace DlibDotNet.ImageDatasetMetadata
         public Image(string filename)
         {
             var str = Dlib.Encoding.GetBytes(filename);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             this.NativePtr = NativeMethods.image_dataset_metadata_image_new(str);
         }
 
@@ -69,6 +72,9 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var str = Dlib.Encoding.GetBytes(value ?? "");
+                var strLength = str.Length;
+                Array.Resize(ref str, strLength + 1);
+                str[strLength] = (byte)'\0';
                 NativeMethods.image_dataset_metadata_image_set_filename(this.NativePtr, str);
             }
         }

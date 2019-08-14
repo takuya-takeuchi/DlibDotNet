@@ -47,6 +47,9 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
                 var str = Dlib.Encoding.GetBytes(value ?? "");
+                var strLength = str.Length;
+                Array.Resize(ref str, strLength + 1);
+                str[strLength] = (byte)'\0';
                 NativeMethods.text_field_set_text(this.NativePtr, str);
             }
         }

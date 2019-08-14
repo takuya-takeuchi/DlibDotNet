@@ -120,6 +120,9 @@ namespace DlibDotNet
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var error = NativeMethods.deserialize_krls(str,
                                                        krls.Parameter.KernelType.ToNativeKernelType(),
                                                        krls.Parameter.SampleType.ToNativeMatrixElementType(),
@@ -175,6 +178,9 @@ namespace DlibDotNet
             krls.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var ret = NativeMethods.serialize_krls(krls._Parameter.KernelType.ToNativeKernelType(),
                                                    krls._Parameter.SampleType.ToNativeMatrixElementType(),
                                                    krls._Parameter.TemplateRows,

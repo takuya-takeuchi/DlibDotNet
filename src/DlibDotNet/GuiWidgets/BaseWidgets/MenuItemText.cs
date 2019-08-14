@@ -31,6 +31,9 @@ namespace DlibDotNet
             mediator.ThrowIfDisposed();
 
             var s = Dlib.Encoding.GetBytes(str ?? "");
+            var strLength = s.Length;
+            Array.Resize(ref s, strLength + 1);
+            s[strLength] = (byte)'\0';
             this.NativePtr = NativeMethods.menu_item_text_new(s, mediator.NativePtr, hk);
         }
 

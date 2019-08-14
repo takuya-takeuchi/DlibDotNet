@@ -23,6 +23,9 @@ namespace DlibDotNet
                     throw new FileNotFoundException($"{filename} is not found", filename);
 
                 var str = Encoding.GetBytes(filename);
+                var strLength = str.Length;
+                Array.Resize(ref str, strLength + 1);
+                str[strLength] = (byte)'\0';
 
                 var dataset = new Dataset();
                 var ret = NativeMethods.load_image_dataset_metadata(dataset.NativePtr, str);
@@ -42,6 +45,9 @@ namespace DlibDotNet
                 dataset.ThrowIfDisposed();
 
                 var str = Encoding.GetBytes(filename);
+                var strLength = str.Length;
+                Array.Resize(ref str, strLength + 1);
+                str[strLength] = (byte)'\0';
 
                 var ret = NativeMethods.save_image_dataset_metadata(dataset.NativePtr, str);
                 if (ret == NativeMethods.ErrorType.GeneralFileIOError)

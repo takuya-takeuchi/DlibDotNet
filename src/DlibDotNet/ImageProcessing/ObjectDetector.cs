@@ -71,6 +71,9 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             this._Imp.Deserialize(str);
         }
 
@@ -101,6 +104,9 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             this._Imp.Serialize(str);
         }
 

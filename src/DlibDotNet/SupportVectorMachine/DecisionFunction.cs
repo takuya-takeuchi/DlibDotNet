@@ -45,6 +45,9 @@ namespace DlibDotNet
             var param = new KernelBaseParameter(kernelType, sampleType, templateRows, templateColumns);
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var error = NativeMethods.deserialize_decision_function(str,
                                                                     kernelType.ToNativeKernelType(),
                                                                     sampleType.ToNativeMatrixElementType(),
@@ -78,6 +81,9 @@ namespace DlibDotNet
             function.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var ret = NativeMethods.serialize_decision_function(function._Parameter.KernelType.ToNativeKernelType(),
                                                                 function._Parameter.SampleType.ToNativeMatrixElementType(),
                                                                 function._Parameter.TemplateRows,

@@ -1,6 +1,9 @@
 ﻿
 
 // ReSharper disable once CheckNamespace
+
+using System;
+
 namespace DlibDotNet
 {
 
@@ -24,6 +27,9 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
                 var title = Dlib.Encoding.GetBytes(value ?? "");
+                var strLength = title.Length;
+                Array.Resize(ref title, strLength + 1);
+                title[strLength] = (byte)'\0';
                 NativeMethods.base_window_set_title(this.NativePtr, title);
             }
         }

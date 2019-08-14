@@ -12,6 +12,9 @@ namespace DlibDotNet
         public Logger(string name)
         {
             var nameByte = Dlib.Encoding.GetBytes(name ?? "");
+            var strLength = nameByte.Length;
+            Array.Resize(ref nameByte, strLength + 1);
+            nameByte[strLength] = (byte)'\0';
             this.NativePtr = NativeMethods.logger_new(nameByte);
         }
 
@@ -31,6 +34,9 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var messageByte = Dlib.Encoding.GetBytes(message ?? "");
+            var strLength = messageByte.Length;
+            Array.Resize(ref messageByte, strLength + 1);
+            messageByte[strLength] = (byte)'\0';
             NativeMethods.logger_operator_left_shift(this.NativePtr, level, messageByte);
         }
 

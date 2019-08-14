@@ -58,6 +58,9 @@ namespace DlibDotNet
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1 );
+            str[strLength] = (byte)'\0';
             var ret = NativeMethods.deserialize_shape_predictor(str,
                                                                 out var predictor,
                                                                 out var errorMessage);
@@ -205,6 +208,9 @@ namespace DlibDotNet
             predictor.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var ret = NativeMethods.serialize_shape_predictor(predictor.NativePtr,
                                                               str,
                                                               out var errorMessage);

@@ -28,6 +28,9 @@ namespace DlibDotNet
             testingLabels = null;
 
             var str = Encoding.GetBytes(folderPath);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
 
             NativeMethods.load_mnist_dataset(str, 
                                              out var retTrainingImages,

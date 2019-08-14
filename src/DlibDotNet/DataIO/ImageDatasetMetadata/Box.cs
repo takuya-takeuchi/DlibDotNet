@@ -140,6 +140,9 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var str = Dlib.Encoding.GetBytes(value ?? "");
+                var strLength = str.Length;
+                Array.Resize(ref str, strLength + 1);
+                str[strLength] = (byte)'\0';
                 NativeMethods.image_dataset_metadata_box_set_label(this.NativePtr, str);
             }
         }
@@ -272,6 +275,9 @@ namespace DlibDotNet.ImageDatasetMetadata
                     this.Parent.ThrowIfDisposed();
 
                     var str = Dlib.Encoding.GetBytes(key ?? "");
+                    var strLength = str.Length;
+                    Array.Resize(ref str, strLength + 1);
+                    str[strLength] = (byte)'\0';
                     var native = this.Parent.NativePtr;
                     if (!NativeMethods.image_dataset_metadata_box_get_parts_get_value(native, str, out var p))
                         throw new KeyNotFoundException();
@@ -283,6 +289,9 @@ namespace DlibDotNet.ImageDatasetMetadata
                     this.Parent.ThrowIfDisposed();
 
                     var str = Dlib.Encoding.GetBytes(key ?? "");
+                    var strLength = str.Length;
+                    Array.Resize(ref str, strLength + 1);
+                    str[strLength] = (byte)'\0';
                     var native = this.Parent.NativePtr;
                     using (var pp = value.ToNative())
                         NativeMethods.image_dataset_metadata_box_get_parts_set_value(native, str, pp.NativePtr);

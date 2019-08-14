@@ -197,6 +197,9 @@ namespace DlibDotNet.Dnn
                                          string label = null)
             {
                 var str = Dlib.Encoding.GetBytes(label ?? "");
+                var strLength = str.Length;
+                Array.Resize(ref str, strLength + 1);
+                str[strLength] = (byte)'\0';
                 this.NativePtr = NativeMethods.detector_window_details_new(width, height, str);
             }
 

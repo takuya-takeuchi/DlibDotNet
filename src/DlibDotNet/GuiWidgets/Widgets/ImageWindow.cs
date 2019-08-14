@@ -36,6 +36,9 @@ namespace DlibDotNet
             image.ThrowIfDisposed(nameof(image));
 
             var str = Dlib.Encoding.GetBytes(title);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             this.NativePtr = NativeMethods.image_window_new_array2d2(image.ImageType.ToNativeArray2DType(), image.NativePtr, str);
         }
 
@@ -61,6 +64,9 @@ namespace DlibDotNet
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
             var str = Dlib.Encoding.GetBytes(title);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             this.NativePtr = NativeMethods.image_window_new_matrix2(type, matrix.NativePtr, str);
         }
 
@@ -101,6 +107,9 @@ namespace DlibDotNet
             matrix.ThrowIfDisposed(nameof(matrix));
 
             var str = Dlib.Encoding.GetBytes(title);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
 
             IntPtr ret;
             NativeMethods.ErrorType err;

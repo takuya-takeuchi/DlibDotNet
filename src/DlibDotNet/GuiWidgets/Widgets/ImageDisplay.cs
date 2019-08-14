@@ -31,6 +31,9 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(name));
 
             var str = Dlib.Encoding.GetBytes(name);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             NativeMethods.image_display_add_labelable_part_name(this.NativePtr, str);
         }
 
@@ -128,6 +131,9 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var labelStr = Dlib.Encoding.GetBytes(label ?? "");
+            var strLength = labelStr.Length;
+            Array.Resize(ref labelStr, strLength + 1);
+            labelStr[strLength] = (byte)'\0';
             NativeMethods.image_display_set_default_overlay_rect_label(this.NativePtr, labelStr);
         }
 
@@ -212,6 +218,9 @@ namespace DlibDotNet
                 {
                     this.ThrowIfDisposed();
                     var str = Dlib.Encoding.GetBytes(value ?? "");
+                    var strLength = str.Length;
+                    Array.Resize(ref str, strLength + 1);
+                    str[strLength] = (byte)'\0';
                     NativeMethods.image_display_overlay_rect_set_label(this.NativePtr, str);
                 }
             }
@@ -302,6 +311,9 @@ namespace DlibDotNet
                         this.Parent.ThrowIfDisposed();
 
                         var str = Dlib.Encoding.GetBytes(key ?? "");
+                        var strLength = str.Length;
+                        Array.Resize(ref str, strLength + 1);
+                        str[strLength] = (byte)'\0';
                         var native = this.Parent.NativePtr;
                         if (!NativeMethods.image_display_overlay_rect_get_parts_get_value(native, str, out var p))
                             throw new KeyNotFoundException();
@@ -311,8 +323,11 @@ namespace DlibDotNet
                     set
                     {
                         this.Parent.ThrowIfDisposed();
-
+                        
                         var str = Dlib.Encoding.GetBytes(key ?? "");
+                        var strLength = str.Length;
+                        Array.Resize(ref str, strLength + 1);
+                        str[strLength] = (byte)'\0';
                         var native = this.Parent.NativePtr;
                         using (var pp = value.ToNative())
                             NativeMethods.image_display_overlay_rect_get_parts_set_value(native, str, pp.NativePtr);

@@ -23,6 +23,9 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
             var str = Dlib.Encoding.GetBytes(name ?? "");
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             NativeMethods.label_set_text(this.NativePtr, str);
         }
 

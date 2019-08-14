@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Takuya Takeuchi</Authors>
@@ -11,36 +10,29 @@
     <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
     <PackageTags>dlib .net machinelearning</PackageTags>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-  
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <UpgradeBackupLocation>C:\Development\DlibDotNet\Backup\src\DlibDotNet\</UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
-
-
   <!-- define $(PlatformId) and compile-time constants for NativeMethods.cs  -->
   <Import Project="RuntimeId.props" />
-
   <PropertyGroup>
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
     <DocumentationFile>docs\DlibDotNet.xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="StdLib\Pair\**" />
     <EmbeddedResource Remove="StdLib\Pair\**" />
     <None Remove="StdLib\Pair\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="docs\" />
   </ItemGroup>
-
-
 </Project>

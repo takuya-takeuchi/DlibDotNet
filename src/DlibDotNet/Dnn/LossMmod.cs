@@ -104,6 +104,9 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var error = NativeMethods.loss_mmod_deserialize(str,
                                                             networkType,
                                                             out var net,
@@ -162,6 +165,9 @@ namespace DlibDotNet.Dnn
         internal override void NetToXml(string filename)
         {
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
+            var strLength = fileNameByte.Length;
+            Array.Resize(ref fileNameByte, strLength + 1);
+            fileNameByte[strLength] = (byte)'\0';
             NativeMethods.loss_mmod_net_to_xml(this.NativePtr, this.NetworkType, fileNameByte);
         }
 
@@ -225,6 +231,9 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             var error = NativeMethods.loss_mmod_serialize(net.NativePtr, net.NetworkType, str, out var errorMessage);
             switch (error)
             {

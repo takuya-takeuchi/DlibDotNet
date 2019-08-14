@@ -12,7 +12,13 @@ namespace DlibDotNet
         public static void MessageBox(string title, string message)
         {
             var t = Encoding.GetBytes(title ?? "");
+            var strLength = t.Length;
+            Array.Resize(ref t, strLength + 1);
+            t[strLength] = (byte)'\0';
             var m = Encoding.GetBytes(message ?? "");
+            strLength = m.Length;
+            Array.Resize(ref m, strLength + 1);
+            m[strLength] = (byte)'\0';
             NativeMethods.message_box(t, m);
         }
 

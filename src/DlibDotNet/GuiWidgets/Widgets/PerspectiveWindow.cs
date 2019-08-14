@@ -35,6 +35,9 @@ namespace DlibDotNet
             points.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(title);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
             using (var vector = new StdVector<Vector<double>>(points))
                 this.NativePtr = NativeMethods.perspective_window_new3(vector.NativePtr, str);
         }

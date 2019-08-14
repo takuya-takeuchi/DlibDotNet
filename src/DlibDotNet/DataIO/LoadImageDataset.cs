@@ -25,6 +25,9 @@ namespace DlibDotNet
                 throw new NotSupportedException();
 
             var str = Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
 
             images = new Array<Array2D<T>>();
             using (var retBoxes = new StdVector<StdVector<FullObjectDetection>>())
@@ -50,6 +53,9 @@ namespace DlibDotNet
                 throw new FileNotFoundException("", path);
 
             var str = Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
 
             using (var matrix = new Matrix<T>())
             using (var retImages = new StdVector<Matrix<T>>())
@@ -75,6 +81,9 @@ namespace DlibDotNet
                 throw new FileNotFoundException("", path);
 
             var str = Encoding.GetBytes(path);
+            var strLength = str.Length;
+            Array.Resize(ref str, strLength + 1);
+            str[strLength] = (byte)'\0';
 
             using (var matrix = new Matrix<T>())
             using (var retImages = new StdVector<Matrix<T>>())
