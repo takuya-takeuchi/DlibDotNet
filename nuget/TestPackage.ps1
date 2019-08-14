@@ -111,8 +111,23 @@ function RunTest($BuildTargets)
 
       $ErrorActionPreference = "silentlycontinue"
       $env:PlatformTarget = $PlatformTarget
-      dotnet test -c Release -r "$TestDir" -p:RuntimeIdentifier=$RuntimeIdentifier --logger trx
+      $dotnetPath = ""
+      if ($global:IsWindows)
+      {
+         switch($PlatformTarget)
+         {
+            "x64"
+            {
+               $dotnetPath = Join-Path $env:ProgramFiles "dotnet\dotnet.exe"
+            }
+            "x86"
+            {
+               $dotnetPath = Join-Path ${env:ProgramFiles(x86)} "dotnet\dotnet.exe"
+            }
+         }
+      }
 
+      & ${dotnetPath} test -c Release -r "$TestDir" -p:RuntimeIdentifier=$RuntimeIdentifier --logger trx
       if ($lastexitcode -eq 0) {
          Write-Host "Test Successful" -ForegroundColor Green
       } else {
