@@ -417,19 +417,45 @@ class Config
       return [environment]::GetEnvironmentVariable($version, 'Machine')
    }
 
+   [string] GetAVXINSTRUCTIONS()
+   {
+      return "ON"
+   }
+
+   [string] GetSSE4INSTRUCTIONS()
+   {
+      return "ON"
+   }
+
+   [string] GetSSE2INSTRUCTIONS()
+   {
+      return "OFF"
+   }
+
 }
 
 function ConfigCPU([Config]$Config)
 {
    if ($IsWindows)
    {
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
       cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_LAPACK=OFF `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
    }
    else
    {
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
       $arch_type = $Config.GetArchitecture()
       cmake -D ARCH_TYPE="$arch_type" `
             -D DLIB_USE_CUDA=OFF `
@@ -444,6 +470,9 @@ function ConfigCPU([Config]$Config)
             -D PNG_LIBRARY_RELEASE="" `
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
    }
 }
@@ -463,14 +492,25 @@ function ConfigCUDA([Config]$Config)
       $env:PATH="$env:CUDA_PATH\bin;$env:CUDA_PATH\libnvvp;$ENV:PATH"
       Write-Host "Info: CUDA_PATH: ${env:CUDA_PATH}" -ForegroundColor Green
 
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
       cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
             -D DLIB_USE_CUDA=ON `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
    }
    else
    {
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
       cmake -D DLIB_USE_CUDA=ON `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
@@ -479,6 +519,9 @@ function ConfigCUDA([Config]$Config)
             -D PNG_LIBRARY_RELEASE="" `
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
    }
 }
@@ -528,6 +571,10 @@ function ConfigMKL([Config]$Config)
                exit -1
             }
       
+            $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+            $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+            $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
             cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
                   -D DLIB_USE_CUDA=OFF `
                   -D DLIB_USE_BLAS=ON `
@@ -537,6 +584,9 @@ function ConfigMKL([Config]$Config)
                   -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
                   -D BLAS_mkl_intel_c_dll_LIBRARY="${MKLINTELC_LIB}" `
                   -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
+                  -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+                  -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+                  -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
                   ..
          }
          64
@@ -564,6 +614,10 @@ function ConfigMKL([Config]$Config)
                Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
                exit -1
             }
+
+            $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+            $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+            $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
       
             cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
                   -D DLIB_USE_CUDA=OFF `
@@ -574,12 +628,19 @@ function ConfigMKL([Config]$Config)
                   -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
                   -D BLAS_mkl_intel_lp64_dll_LIBRARY="${MKLINTELLP64DLL_LIB}" `
                   -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
+                  -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+                  -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+                  -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
                   ..
          }
       }
    }
    else
    {
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+      
       $arch_type = $Config.GetArchitecture()
       cmake -D ARCH_TYPE="$arch_type" `
             -D DLIB_USE_CUDA=OFF `
@@ -590,6 +651,9 @@ function ConfigMKL([Config]$Config)
             -D PNG_LIBRARY_RELEASE="" `
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
    }
 }
@@ -663,6 +727,10 @@ function ConfigUWP([Config]$Config)
       }
       else
       {
+         $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+         $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+         $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+         
          cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
                -D CMAKE_SYSTEM_NAME=WindowsStore `
                -D CMAKE_SYSTEM_VERSION=10.0 `
@@ -673,6 +741,9 @@ function ConfigUWP([Config]$Config)
                -D DLIB_USE_BLAS=OFF `
                -D DLIB_USE_LAPACK=OFF `
                -D DLIB_NO_GUI_SUPPORT=ON `
+               -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+               -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+               -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
                ..
       }
 
