@@ -141,49 +141,26 @@ auto& o = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(tmpout))
 dlib::extract_image_4points(m, o, ps);\
 *output = tmpout;\
 
+#define pyramid_up_matrix_template_sub(__RATE__, __TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+case __RATE__:\
+    {\
+        auto& pyramid = *(static_cast<dlib::pyramid_down<__RATE__>*>(pyramid_down));\
+        auto m = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();\
+        auto& t = *m;\
+        auto& img_tmp = *((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img);\
+        dlib::pyramid_up(img_tmp, t, pyramid);\
+        *matrix = m;\
+    }\
+    break;\
+
 #define pyramid_up_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 switch(pyramid_rate)\
 {\
-    case 1:\
-        {\
-            auto& pyramid = *(static_cast<dlib::pyramid_down<1>*>(pyramid_down));\
-            dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__> tmp;\
-            dlib::pyramid_up(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img), tmp, pyramid);\
-            *matrix = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);\
-        }\
-        break;\
-    case 2:\
-        {\
-            auto& pyramid = *(static_cast<dlib::pyramid_down<2>*>(pyramid_down));\
-            dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__> tmp;\
-            dlib::pyramid_up(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img), tmp, pyramid);\
-            *matrix = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);\
-        }\
-        break;\
-    case 3:\
-        {\
-            auto& pyramid = *(static_cast<dlib::pyramid_down<3>*>(pyramid_down));\
-            dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__> tmp;\
-            dlib::pyramid_up(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img), tmp, pyramid);\
-            *matrix = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);\
-        }\
-        break;\
-    case 4:\
-        {\
-            auto& pyramid = *(static_cast<dlib::pyramid_down<4>*>(pyramid_down));\
-            dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__> tmp;\
-            dlib::pyramid_up(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img), tmp, pyramid);\
-            *matrix = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);\
-        }\
-        break;\
-    case 6:\
-        {\
-            auto& pyramid = *(static_cast<dlib::pyramid_down<6>*>(pyramid_down));\
-            dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__> tmp;\
-            dlib::pyramid_up(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)img), tmp, pyramid);\
-            *matrix = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);\
-        }\
-        break;\
+    pyramid_up_matrix_template_sub(1, __TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...)\
+    pyramid_up_matrix_template_sub(2, __TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...)\
+    pyramid_up_matrix_template_sub(3, __TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...)\
+    pyramid_up_matrix_template_sub(4, __TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...)\
+    pyramid_up_matrix_template_sub(6, __TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...)\
     default:\
         error = ERR_PYRAMID_NOT_SUPPORT_RATE;\
         break;\
