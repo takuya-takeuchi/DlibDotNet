@@ -294,7 +294,6 @@ namespace DlibDotNet
             image.ThrowIfDisposed();
             random.ThrowIfDisposed();
 
-            var chip = new Matrix<T>();
             var elementType = image.MatrixElementType.ToNativeMatrixElementType();
             var ret = NativeMethods.jitter_image(elementType,
                                                  image.NativePtr,
