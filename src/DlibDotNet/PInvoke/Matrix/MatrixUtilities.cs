@@ -136,7 +136,7 @@ namespace DlibDotNet
         #endregion
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType matrix_mean(MatrixElementType array2DType, IntPtr matrix_op, int templateRows, int templateColumns, ElementType type, out IntPtr point);
+        public static extern ErrorType matrix_mean(MatrixElementType dstType, IntPtr matrix_op, int templateRows, int templateColumns, ElementType type, MatrixElementType srcType, out IntPtr point);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_max_point(Array2DType array2DType, IntPtr matrix_op, out IntPtr point);

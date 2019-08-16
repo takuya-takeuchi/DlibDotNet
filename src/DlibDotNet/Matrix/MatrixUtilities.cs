@@ -847,6 +847,7 @@ namespace DlibDotNet
                                                 matrix.TemplateRows,
                                                 matrix.TemplateColumns,
                                                 matrix.ElementType,
+                                                matrix.MatrixElementType,
                                                 out var value);
             switch (ret)
             {

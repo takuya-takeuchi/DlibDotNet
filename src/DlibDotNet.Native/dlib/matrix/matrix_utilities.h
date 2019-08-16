@@ -139,11 +139,17 @@ auto& mat = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix)
 auto& mat = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
 *((__TYPE__*)ret) = dlib::min(mat);\
 
-#define matrix_mean_op_std_vect_to_mat_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+#define matrix_mean_op_std_vect_to_mat_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, __SUBTYPE__, subtype, ...) \
 typedef dlib::matrix_op<dlib::op_std_vect_to_mat<std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>, allocator<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>>> op;\
 op& mat = *static_cast<op*>(matrix);\
-auto r = dlib::mean(mat);\
-*ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(r);\
+auto& r = dlib::mean(mat);\
+/* It is hard to handle return type of dlib::mean. \
+   eg. \
+   const disable_if<is_complex<matrix_op<op_std_vect_to_mat<std::vector<matrix<float, 0, 1>>>>::type>, \
+   matrix_exp<matrix_op<op_std_vect_to_mat<std::vector<matrix<float, 0, 1>>>>>::type>::type \
+  */ \
+auto& r2 = dlib::matrix_cast<__SUBTYPE__>(r);\
+*ret = new dlib::matrix<__SUBTYPE__, __ROWS__, __COLUMNS__>(r2);\
 
 #define matrix_max_point_template(__TYPE__, error, type, ...) \
 auto& mat_op = *static_cast<matrix_op<op_array2d_to_mat<array2d<__TYPE__>>>*>(matrix);\
@@ -358,21 +364,26 @@ DLLEXPORT int matrix_max_pointwise_matrix(matrix_element_type type, void* matrix
     return error;
 }
 
-DLLEXPORT int matrix_mean(matrix_element_type type, void* matrix, int templateRows, int templateColumns, element_type opType, void** ret)
+DLLEXPORT int matrix_mean(matrix_element_type dst_type, void* matrix, int templateRows, int templateColumns, element_type opType, matrix_element_type src_type, void** ret)
 {
     int error = ERR_OK;
+
+    auto type = src_type;
+    auto subtype = dst_type;
 
     switch(opType)
     {
         case element_type::OpStdVectToMat:
-            matrix_numeric_template(type,
-                                    error,
-                                    matrix_template_size_template,
-                                    matrix_mean_op_std_vect_to_mat_template,
-                                    templateRows,
-                                    templateColumns,
-                                    matrix,
-                                    ret);
+            matrix_numeric_inout_in_template(type,
+                                             error,
+                                             matrix_decimal_inout_out_template,
+                                             matrix_inout_template_size_template,
+                                             matrix_mean_op_std_vect_to_mat_template,
+                                             subtype,
+                                             templateRows,
+                                             templateColumns,
+                                             matrix,
+                                             ret);
             break;
         default:
             error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
