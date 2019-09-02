@@ -40,7 +40,4 @@ using anet_type = loss_metric<fc_no_bias<128,avg_pool_everything<
                             >>>>>>>>>>>>;
 #pragma endregion type definitions
 
-typedef matrix<float,0,1> out_type;
-typedef unsigned long train_label_type;
-
 #endif

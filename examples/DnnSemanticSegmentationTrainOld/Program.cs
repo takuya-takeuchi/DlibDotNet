@@ -57,7 +57,7 @@ namespace DnnSemanticSegmentationTrainOld
                 const double weightDecay = 0.0001;
                 const double momentum = 0.9;
 
-                using (var net = new LossMulticlassLogPerPixel(1))
+                using (var net = new LossMulticlassLogPerPixel(0))
                 using (var sgd = new Sgd((float)weightDecay, (float)momentum))
                 using (var trainer = new DnnTrainer<LossMulticlassLogPerPixel>(net, sgd))
                 {
@@ -164,7 +164,7 @@ namespace DnnSemanticSegmentationTrainOld
                     }
 
                     // Make a copy of the network to use it for inference.
-                    using (var anet = net.CloneAs(0))
+                    using (var anet = net.CloneAs(1))
                     {
                         Console.WriteLine("Testing the network...");
 
