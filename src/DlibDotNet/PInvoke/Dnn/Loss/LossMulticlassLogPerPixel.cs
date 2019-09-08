@@ -109,6 +109,12 @@ namespace DlibDotNet
         public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_learning_rate(int id, IntPtr trainer, out double lr);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_average_loss(int id, IntPtr trainer, out double loss);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_average_test_loss(int id, IntPtr trainer, out double loss);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_min_learning_rate(int id, IntPtr trainer, double lr);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

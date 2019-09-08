@@ -66,6 +66,20 @@ namespace DlibDotNet.Dnn
             return this._Imp.GetLearningRate();
         }
 
+        public double GetAverageLoss()
+        {
+            this.ThrowIfDisposed();
+
+            return this._Imp.GetAverageLoss();
+        }
+
+        public double GetAverageTestLoss()
+        {
+            this.ThrowIfDisposed();
+
+            return this._Imp.GetAverageTestLoss();
+        }
+
         public T GetNet()
         {
             this.ThrowIfDisposed();
@@ -132,7 +146,7 @@ namespace DlibDotNet.Dnn
 
             this._Imp.Dispose();
         }
-        
+
         public override string ToString()
         {
             this.ThrowIfDisposed();
@@ -200,6 +214,10 @@ namespace DlibDotNet.Dnn
             public abstract T GetNet();
 
             public abstract double GetLearningRate();
+
+            public abstract double GetAverageLoss();
+
+            public abstract double GetAverageTestLoss();
 
             public abstract void SetLearningRate(double learningRate);
 
@@ -321,6 +339,18 @@ namespace DlibDotNet.Dnn
                 return learningRate;
             }
 
+            public override double GetAverageLoss()
+            {
+                NativeMethods.LossMetric_trainer_get_average_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
+            }
+
+            public override double GetAverageTestLoss()
+            {
+                NativeMethods.LossMetric_trainer_get_average_test_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.LossMetric_trainer_set_learning_rate(this.NetworkType, this.NativePtr, learningRate);
@@ -328,7 +358,7 @@ namespace DlibDotNet.Dnn
 
             public override void SetMinLearningRate(double learningRate)
             {
-                NativeMethods.LossMetric_trainer_set_learning_rate(this.NetworkType, this.NativePtr, learningRate);
+                NativeMethods.LossMetric_trainer_set_min_learning_rate(this.NetworkType, this.NativePtr, learningRate);
             }
 
             public override void SetMinBatchSize(uint size)
@@ -430,6 +460,18 @@ namespace DlibDotNet.Dnn
             {
                 NativeMethods.LossMmod_trainer_get_learning_rate(this.NetworkType, this.NativePtr, out var learningRate);
                 return learningRate;
+            }
+
+            public override double GetAverageLoss()
+            {
+                NativeMethods.LossMmod_trainer_get_average_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
+            }
+
+            public override double GetAverageTestLoss()
+            {
+                NativeMethods.LossMmod_trainer_get_average_test_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
             }
 
             public override void SetLearningRate(double learningRate)
@@ -543,6 +585,18 @@ namespace DlibDotNet.Dnn
                 return learningRate;
             }
 
+            public override double GetAverageLoss()
+            {
+                NativeMethods.LossMulticlassLog_trainer_get_average_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
+            }
+
+            public override double GetAverageTestLoss()
+            {
+                NativeMethods.LossMulticlassLog_trainer_get_average_test_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
+            }
+
             public override void SetLearningRate(double learningRate)
             {
                 NativeMethods.LossMulticlassLog_trainer_set_learning_rate(this.NetworkType, this.NativePtr, learningRate);
@@ -652,6 +706,18 @@ namespace DlibDotNet.Dnn
             {
                 NativeMethods.LossMulticlassLogPerPixel_trainer_get_learning_rate(this.NetworkType, this.NativePtr, out var learningRate);
                 return learningRate;
+            }
+
+            public override double GetAverageLoss()
+            {
+                NativeMethods.LossMulticlassLogPerPixel_trainer_get_average_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
+            }
+
+            public override double GetAverageTestLoss()
+            {
+                NativeMethods.LossMulticlassLogPerPixel_trainer_get_average_test_loss(this.NetworkType, this.NativePtr, out var loss);
+                return loss;
             }
 
             public override void SetLearningRate(double learningRate)
