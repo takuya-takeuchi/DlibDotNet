@@ -250,6 +250,26 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_learning_rate(const int id, 
     return ERR_OK;
 }
 
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_loss(const int id, void* trainer, double* loss)\
+{
+    auto iter = LossMulticlassLogPerPixelRegistry.find(id);
+    if (iter == end(LossMulticlassLogPerPixelRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMulticlassLogPerPixelRegistry[id]->trainer_get_average_loss(trainer, loss);
+    return ERR_OK;
+}
+
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_test_loss(const int id, void* trainer, double* loss)\
+{
+    auto iter = LossMulticlassLogPerPixelRegistry.find(id);
+    if (iter == end(LossMulticlassLogPerPixelRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMulticlassLogPerPixelRegistry[id]->trainer_get_average_test_loss(trainer, loss);
+    return ERR_OK;
+}
+
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)\
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -456,11 +476,11 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train_one_step(const int id,
 
     try
     {
-        LossMulticlassLogPerPixelRegistry[id]->trainer_train(trainer,
-                                                             data_element_type,
-                                                             data,
-                                                             label_element_type,
-                                                             labels);
+        LossMulticlassLogPerPixelRegistry[id]->trainer_train_one_step(trainer,
+                                                                      data_element_type,
+                                                                      data,
+                                                                      label_element_type,
+                                                                      labels);
     }
     catch(dlib::cuda_error ce)
     {

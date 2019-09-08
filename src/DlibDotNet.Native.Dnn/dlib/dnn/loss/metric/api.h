@@ -236,6 +236,26 @@ DLLEXPORT int LossMetric_trainer_get_learning_rate(const int id, void* trainer, 
     return ERR_OK;
 }
 
+DLLEXPORT int LossMetric_trainer_get_average_loss(const int id, void* trainer, double* loss)\
+{
+    auto iter = LossMetricRegistry.find(id);
+    if (iter == end(LossMetricRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMetricRegistry[id]->trainer_get_average_loss(trainer, loss);
+    return ERR_OK;
+}
+
+DLLEXPORT int LossMetric_trainer_get_average_test_loss(const int id, void* trainer, double* loss)\
+{
+    auto iter = LossMetricRegistry.find(id);
+    if (iter == end(LossMetricRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMetricRegistry[id]->trainer_get_average_test_loss(trainer, loss);
+    return ERR_OK;
+}
+
 DLLEXPORT int LossMetric_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)\
 {
     auto iter = LossMetricRegistry.find(id);
@@ -442,11 +462,11 @@ DLLEXPORT int LossMetric_trainer_train_one_step(const int id,
 
     try
     {
-        LossMetricRegistry[id]->trainer_train(trainer,
-                                              data_element_type,
-                                              data,
-                                              label_element_type,
-                                              labels);
+        LossMetricRegistry[id]->trainer_train_one_step(trainer,
+                                                       data_element_type,
+                                                       data,
+                                                       label_element_type,
+                                                       labels);
     }
     catch(dlib::cuda_error ce)
     {

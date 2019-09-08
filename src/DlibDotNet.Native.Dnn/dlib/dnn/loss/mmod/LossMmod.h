@@ -71,6 +71,8 @@ public:
     virtual void trainer_delete(void* trainer) override;
     virtual void trainer_set_learning_rate(void* trainer, const double lr) override;
     virtual void trainer_get_learning_rate(void* trainer, double* lr) override;
+    virtual void trainer_get_average_loss(void* trainer, double* loss) override;
+    virtual void trainer_get_average_test_loss(void* trainer, double* loss) override;
     virtual void trainer_set_min_learning_rate(void* trainer, const double lr) override;
     virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) override;
     virtual void trainer_be_verbose(void* trainer) override;

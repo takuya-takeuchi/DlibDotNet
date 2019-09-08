@@ -49,6 +49,8 @@ public:
     virtual void trainer_delete(void* trainer) = 0;
     virtual void trainer_set_learning_rate(void* trainer, const double lr) = 0;
     virtual void trainer_get_learning_rate(void* trainer, double* lr) = 0;
+    virtual void trainer_get_average_loss(void* trainer, double* loss) = 0;
+    virtual void trainer_get_average_test_loss(void* trainer, double* loss) = 0;
     virtual void trainer_set_min_learning_rate(void* trainer, const double lr) = 0;
     virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) = 0;
     virtual void trainer_be_verbose(void* trainer) = 0;
