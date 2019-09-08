@@ -154,7 +154,7 @@ int LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::layer_details_set_num_filters(void* layer, long num)
 {
-    auto ld = static_cast<NET::subnet_type::layer_details_type*>(layer);
+    auto ld = static_cast<typename NET::subnet_type::layer_details_type*>(layer);
     // ToDo: some network does not support
     // ld->set_num_filters(num);
 }
@@ -163,15 +163,15 @@ template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, mat
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::get_subnet(void* obj, void** subnet)
 {
     auto net = static_cast<NET*>(obj);
-    NET::subnet_type& sn = net->subnet();
+    typename NET::subnet_type& sn = net->subnet();
     *subnet = &sn;
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::subnet_get_layer_details(void* subnet)
 {
-    auto net = static_cast<NET::subnet_type*>(subnet);
-    NET::subnet_type::layer_details_type& layer_details = net->layer_details();
+    auto net = static_cast<typename NET::subnet_type*>(subnet);
+    typename NET::subnet_type::layer_details_type& layer_details = net->layer_details();
     return &layer_details;
 }
 
@@ -330,7 +330,7 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMEN
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::subnet_delete(void* subnet)
 {
-    auto sb = static_cast<NET::subnet_type*>(subnet);
+    auto sb = static_cast<typename NET::subnet_type*>(subnet);
     delete sb;
 }
 
@@ -338,7 +338,7 @@ template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, mat
 const dlib::tensor* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::subnet_get_output(void* subnet,
                                                                                                                          int* ret)
 {
-    auto net = static_cast<NET::subnet_type*>(subnet);
+    auto net = static_cast<typename NET::subnet_type*>(subnet);
     const dlib::tensor& tensor = net->get_output();
     *ret = ERR_OK;
     return &tensor;
