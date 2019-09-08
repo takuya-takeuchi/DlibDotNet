@@ -23,6 +23,11 @@ namespace DlibDotNet.Dnn
             return NativeMethods.LossMulticlassLogPerPixelRegistry_contains(id);
         }
 
+        public static int GetId(IntPtr builder)
+        {
+            return NativeMethods.LossBase_get_id(builder);
+        }
+
         #endregion
 
     }
