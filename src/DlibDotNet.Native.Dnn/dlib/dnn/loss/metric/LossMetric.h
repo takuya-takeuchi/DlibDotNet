@@ -127,6 +127,12 @@ DLLEXPORT LossMetricBase* LossMetric_##__NET__##_create()\
 {\
     return new LossMetric<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
 }\
+\
+DLLEXPORT void LossMetric_##__NET__##_delete(void* base)\
+{\
+    auto loss = static_cast<LossMetric<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
+    delete loss;\
+}\
 
 #pragma endregion template
 

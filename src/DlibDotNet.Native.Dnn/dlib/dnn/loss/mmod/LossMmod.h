@@ -129,6 +129,12 @@ DLLEXPORT LossMmodBase* LossMmod_##__NET__##_create()\
 {\
     return new LossMmod<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
 }\
+\
+DLLEXPORT void LossMmod_##__NET__##_delete(void* base)\
+{\
+    auto loss = static_cast<LossMmod<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
+    delete loss;\
+}\
 
 #pragma endregion template
 

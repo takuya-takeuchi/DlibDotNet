@@ -132,6 +132,12 @@ DLLEXPORT LossMulticlassLogBase* LossMulticlassLog_##__NET__##_create()\
 {\
     return new LossMulticlassLog<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
 }\
+\
+DLLEXPORT void LossMulticlassLog_##__NET__##_delete(void* base)\
+{\
+    auto loss = static_cast<LossMulticlassLog<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
+    delete loss;\
+}\
 
 #pragma endregion template
 

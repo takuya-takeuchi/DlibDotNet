@@ -170,6 +170,12 @@ DLLEXPORT LossMulticlassLogPerPixelBase* LossMulticlassLogPerPixel_##__NET__##_c
 {\
     return new __CLASS__<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
 }\
+\
+DLLEXPORT void LossMulticlassLogPerPixel_##__NET__##_delete(void* base)\
+{\
+    auto loss = static_cast<__CLASS__<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
+    delete loss;\
+}\
 
 #pragma endregion template
 
