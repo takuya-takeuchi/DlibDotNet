@@ -425,7 +425,7 @@ namespace DlibDotNet
             dst.ThrowIfDisposed(nameof(dst));
 
             var templateRows = (uint)src.TemplateRows;
-            var templateColumns = (uint)src.Columns;
+            var templateColumns = (uint)src.TemplateColumns;
             if (templateRows != dst.TemplateRows || templateColumns != dst.TemplateColumns)
                 throw new ArgumentException();
 
