@@ -238,7 +238,7 @@ namespace DlibDotNet
 
         public static Rectangle FlipRectLeftRight(Rectangle rect, Rectangle window)
         {
-            using(var rectNative = rect.ToNative())
+            using (var rectNative = rect.ToNative())
             using (var windowNative = window.ToNative())
             {
                 var ret = NativeMethods.flip_rect_left_right(rectNative.NativePtr, windowNative.NativePtr);
@@ -336,7 +336,7 @@ namespace DlibDotNet
         }
 
         public static void PyramidUp<T>(Matrix<T> image, PyramidDown pyramid, out Matrix<T> matrix)
-            where T: struct 
+            where T : struct
         {
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
@@ -393,6 +393,55 @@ namespace DlibDotNet
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{inputImage.ImageType} is not supported.");
+            }
+        }
+
+        public static Matrix<T> ResizeImage<T>(Matrix<T> matrix, uint row, uint column, InterpolationTypes interpolationTypes = InterpolationTypes.Bilinear)
+            where T : struct
+        {
+            if (matrix == null)
+                throw new ArgumentNullException(nameof(matrix));
+
+            matrix.ThrowIfDisposed(nameof(matrix));
+
+            var templateRows = (uint)matrix.TemplateRows;
+            var templateColumns = (uint)matrix.Columns;
+
+            var result = Matrix<T>.CreateTemplateParameterizeMatrix(templateRows, templateColumns);
+            result.SetSize((int)row, (int)column);
+
+            ResizeImage(matrix, result, interpolationTypes);
+
+            return result;
+        }
+
+        public static void ResizeImage<T>(Matrix<T> src, Matrix<T> dst, InterpolationTypes interpolationTypes = InterpolationTypes.Bilinear)
+            where T : struct
+        {
+            if (src == null)
+                throw new ArgumentNullException(nameof(src));
+
+            src.ThrowIfDisposed(nameof(src));
+            dst.ThrowIfDisposed(nameof(dst));
+
+            var templateRows = (uint)src.TemplateRows;
+            var templateColumns = (uint)src.Columns;
+            if (templateRows != dst.TemplateRows || templateColumns != dst.TemplateColumns)
+                throw new ArgumentException();
+
+            var inType = src.MatrixElementType.ToNativeMatrixElementType();
+            var ret = NativeMethods.resize_image_matrix(inType,
+                                                        src.NativePtr,
+                                                        templateRows,
+                                                        templateColumns,
+                                                        dst.NativePtr,
+                                                        interpolationTypes.ToNativeInterpolationTypes());
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(src.TemplateColumns)} or {nameof(src.TemplateRows)} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{src.MatrixElementType} is not supported.");
             }
         }
 
@@ -480,12 +529,12 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.transform_image(inType, 
+            var ret = NativeMethods.transform_image(inType,
                                                     inputImage.NativePtr,
-                                                    outType, 
+                                                    outType,
                                                     outputImage.NativePtr,
                                                     pointTransform.GetNativePointMappingTypes(),
-                                                    pointTransform.NativePtr, 
+                                                    pointTransform.NativePtr,
                                                     interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
