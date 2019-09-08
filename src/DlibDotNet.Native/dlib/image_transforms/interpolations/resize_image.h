@@ -13,18 +13,18 @@ using namespace dlib;
 using namespace std;
 
 #define resize_image_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
-auto& src = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix);\
-auto& dst = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(out_img);\
+auto& src = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(src_matrix);\
+auto& dst = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(dst_matrix);\
 switch(int_type)\
 {\
     case interpolation_type::NearestNeighbor:\
-        dlib::resize_image(src, dst, interpolate_nearest_neighbor());\
+        dlib::resize_image(src, dst, dlib::interpolate_nearest_neighbor());\
         break;\
     case interpolation_type::Bilinear:\
-        dlib::resize_image(src, dst, interpolate_bilinear());\
+        dlib::resize_image(src, dst, dlib::interpolate_bilinear());\
         break;\
     case interpolation_type::Quadratic:\
-        dlib::resize_image(src, dst, interpolate_quadratic());\
+        dlib::resize_image(src, dst, dlib::interpolate_quadratic());\
         break;\
 }\
 
