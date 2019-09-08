@@ -17,6 +17,10 @@ namespace DlibDotNet
         public static extern void LossMulticlassLogRegistry_remove(IntPtr builder);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool LossMulticlassLogRegistry_contains(int id);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMulticlassLog_anet_1000_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

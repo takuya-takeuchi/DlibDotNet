@@ -16,6 +16,10 @@ namespace DlibDotNet
         public static extern void LossMulticlassLogPerPixelRegistry_remove(IntPtr builder);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool LossMulticlassLogPerPixelRegistry_contains(int id);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMulticlassLogPerPixel_net_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

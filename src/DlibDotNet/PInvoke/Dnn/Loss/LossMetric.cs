@@ -16,6 +16,10 @@ namespace DlibDotNet
         public static extern void LossMetricRegistry_remove(IntPtr builder);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool LossMetricRegistry_contains(int id);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMetric_anet_type_create();
 
         #region Loss

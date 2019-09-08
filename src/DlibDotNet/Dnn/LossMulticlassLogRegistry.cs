@@ -18,6 +18,11 @@ namespace DlibDotNet.Dnn
             NativeMethods.LossMulticlassLogRegistry_remove(builder);
         }
 
+        public static bool Contains(int id)
+        {
+            return NativeMethods.LossMulticlassLogRegistry_contains(id);
+        }
+
         #endregion
 
     }

@@ -18,6 +18,11 @@ namespace DlibDotNet.Dnn
             NativeMethods.LossMmodRegistry_remove(builder);
         }
 
+        public static bool Contains(int id)
+        {
+            return NativeMethods.LossMmodRegistry_contains(id);
+        }
+
         #endregion
 
     }

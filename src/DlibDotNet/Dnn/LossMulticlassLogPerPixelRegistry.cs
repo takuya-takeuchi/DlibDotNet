@@ -18,6 +18,11 @@ namespace DlibDotNet.Dnn
             NativeMethods.LossMulticlassLogPerPixelRegistry_remove(builder);
         }
 
+        public static bool Contains(int id)
+        {
+            return NativeMethods.LossMulticlassLogPerPixelRegistry_contains(id);
+        }
+
         #endregion
 
     }

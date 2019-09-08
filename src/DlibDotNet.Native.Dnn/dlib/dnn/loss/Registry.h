@@ -33,6 +33,14 @@ DLLEXPORT void __CLASS__##Registry_remove(__CLASS__##Base* base)\
 {\
     __CLASS__##Registry.erase(base->get_id());\
 }\
+\
+DLLEXPORT bool __CLASS__##Registry_contains(const int id)\
+{\
+    auto iter = __CLASS__##Registry.find(id);\
+    if (iter == end(__CLASS__##Registry))\
+        return false;\
+    return true;\
+}\
 
 #pragma endregion template
 

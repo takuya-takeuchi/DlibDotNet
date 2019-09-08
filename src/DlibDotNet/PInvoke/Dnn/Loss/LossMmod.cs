@@ -7,13 +7,17 @@ namespace DlibDotNet
 
     internal sealed partial class NativeMethods
     {
-        
+
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool LossMmodRegistry_add(IntPtr builder);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void LossMmodRegistry_remove(IntPtr builder);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool LossMmodRegistry_contains(int id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMmod_net_type_1_create();
