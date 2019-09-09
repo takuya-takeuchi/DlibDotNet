@@ -7,11 +7,14 @@
 #include <vector>
 
 #include "LossMetric.h"
+#include "template.h"
 
 using namespace dlib;
 using namespace std;
 
 extern std::map<int, LossMetricBase*> LossMetricRegistry;
+
+MAKE_LOSSMETRIC_FUNC(anet_type, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_metric_train_label_type, 0)
 
 DLLEXPORT int LossMetric_new(const int id, void** ret)
 {

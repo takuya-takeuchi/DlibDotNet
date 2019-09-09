@@ -7,11 +7,17 @@
 #include <vector>
 
 #include "LossMulticlassLog.h"
+#include "template.h"
 
 using namespace dlib;
 using namespace std;
 
 extern std::map<int, LossMulticlassLogBase*> LossMulticlassLogRegistry;
+
+MAKE_LOSSMULTICLASSLOG_FUNC(net_type,       matrix_element_type::UInt8,    uint8_t,   matrix_element_type::UInt32, loss_multiclass_log_train_label_type, 0)
+MAKE_LOSSMULTICLASSLOG_FUNC(net_1000_type,  matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::UInt32, loss_multiclass_log_train_label_type, 1)
+MAKE_LOSSMULTICLASSLOG_FUNC(anet_1000_type, matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::UInt32, loss_multiclass_log_train_label_type, 2)
+MAKE_LOSSMULTICLASSLOG_FUNC(net_type2,      matrix_element_type::UInt8,    uint8_t,   matrix_element_type::UInt32, loss_multiclass_log_train_label_type, 3)
 
 DLLEXPORT int LossMulticlassLog_new(const int id, void** ret)
 {

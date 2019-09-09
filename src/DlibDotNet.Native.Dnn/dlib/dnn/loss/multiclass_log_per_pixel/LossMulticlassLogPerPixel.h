@@ -161,22 +161,4 @@ public:
     virtual int cloneAs(void* obj, const int id, void** ret) override;
 };
 
-extern std::map<int, LossMulticlassLogPerPixelBase*> LossMulticlassLogPerPixelRegistry;
-
-#pragma region template
-
-#define MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(__CLASS__, __NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__)\
-DLLEXPORT LossMulticlassLogPerPixelBase* LossMulticlassLogPerPixel_##__NET__##_create()\
-{\
-    return new __CLASS__<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
-}\
-\
-DLLEXPORT void LossMulticlassLogPerPixel_##__NET__##_delete(void* base)\
-{\
-    auto loss = static_cast<__CLASS__<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
-    delete loss;\
-}\
-
-#pragma endregion template
-
 #endif

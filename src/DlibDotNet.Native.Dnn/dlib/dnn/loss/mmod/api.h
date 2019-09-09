@@ -7,11 +7,17 @@
 #include <vector>
 
 #include "LossMmod.h"
+#include "template.h"
 
 using namespace dlib;
 using namespace std;
 
 extern std::map<int, LossMmodBase*> LossMmodRegistry;
+
+MAKE_LOSSMMOD_FUNC(net_type,   matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 0)
+MAKE_LOSSMMOD_FUNC(net_type_1, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 1)
+MAKE_LOSSMMOD_FUNC(net_type_2, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 2)
+MAKE_LOSSMMOD_FUNC(net_type_3, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 3)
 
 DLLEXPORT int LossMmod_new(const int id, void** ret)
 {

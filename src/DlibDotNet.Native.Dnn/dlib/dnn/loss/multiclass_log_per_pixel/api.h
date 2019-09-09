@@ -7,11 +7,17 @@
 #include <vector>
 
 #include "LossMulticlassLogPerPixel.h"
+#include "template.h"
 
 using namespace dlib;
 using namespace std;
 
 extern std::map<int, LossMulticlassLogPerPixelBase*> LossMulticlassLogPerPixelRegistry;
+
+MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixelNet,   net_type,    matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::Float, loss_multiclass_log_per_pixel_train_label_type, 0)
+MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixel,      anet_type,   matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::Float, loss_multiclass_log_per_pixel_train_label_type, 1)
+MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixelUBNet, ubnet_type,  matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::Float, loss_multiclass_log_per_pixel_train_label_type, 2)
+MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixel,      uanet_type,  matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::Float, loss_multiclass_log_per_pixel_train_label_type, 3)
 
 DLLEXPORT int LossMulticlassLogPerPixel_new(const int id, void** ret)
 {
