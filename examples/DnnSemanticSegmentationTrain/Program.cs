@@ -173,7 +173,7 @@ namespace DnnSemanticSegmentationTrain
                     }
 
                     // Make a copy of the network to use it for inference.
-                    using (var anet = bnet.CloneAs(0))
+                    using (var anet = bnet.CloneAs(3))
                     {
                         Console.WriteLine("Testing the network...");
 

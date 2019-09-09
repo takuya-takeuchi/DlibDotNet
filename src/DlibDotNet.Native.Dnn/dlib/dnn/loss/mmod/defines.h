@@ -43,8 +43,4 @@ using net_type_3 = loss_mmod<con<1,9,9,1,1,rcon5_3<rcon5_3<rcon5_3<downsampler_3
 
 #pragma endregion type definitions
 
-typedef std::vector<mmod_rect> out_type;
-typedef std::vector<mmod_rect> train_label_type;
-typedef std::vector<mmod_rect*> train_label_type_pointer;
-
 #endif

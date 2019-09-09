@@ -101,8 +101,4 @@ using net_type2 = loss_multiclass_log<
 
 #pragma endregion type definitions
 
-typedef unsigned long out_type;
-// typedef dlib::matrix<dlib::rgb_pixel> in_type;
-typedef unsigned long  train_label_type;
-
 #endif

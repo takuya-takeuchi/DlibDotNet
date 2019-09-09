@@ -174,7 +174,4 @@ using uanet_type = dlib::loss_multiclass_log_per_pixel<
 // ----------------------------------------------------------------------------------------
 #pragma endregion type definitions
 
-typedef dlib::matrix<uint16_t> out_type;
-typedef dlib::matrix<uint16_t> train_label_type;
-
 #endif
