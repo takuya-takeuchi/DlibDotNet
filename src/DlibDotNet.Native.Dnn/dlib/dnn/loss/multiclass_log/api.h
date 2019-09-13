@@ -59,6 +59,28 @@ DLLEXPORT int LossMulticlassLog_operator_matrixs(const int id,
                                                            ret);
 }
 
+DLLEXPORT int LossMulticlassLog_probability(const int id,
+                                            void* obj,
+                                            matrix_element_type element_type,
+                                            void* matrix_vector,
+                                            int templateRows,
+                                            int templateColumns,
+                                            size_t batch_size,
+                                            std::vector<float>** ret)
+{
+    auto iter = LossMulticlassLogRegistry.find(id);
+    if (iter == end(LossMulticlassLogRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMulticlassLogRegistry[id]->probability(obj,
+                                                      element_type,
+                                                      matrix_vector,
+                                                      templateRows,
+                                                      templateColumns,
+                                                      batch_size,
+                                                      ret);
+}
+
 DLLEXPORT int LossMulticlassLog_deserialize(const int id,
                                             const char* file_name,
                                             void** ret,

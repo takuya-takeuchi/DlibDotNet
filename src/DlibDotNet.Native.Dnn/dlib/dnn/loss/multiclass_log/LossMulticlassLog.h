@@ -45,6 +45,13 @@ public:
                                  int templateColumns,
                                  size_t batch_size,
                                  std::vector<loss_multiclass_log_out_type>** ret) override;
+    virtual int probability(void* obj,
+                            matrix_element_type element_type,
+                            void* matrix_vector,
+                            int templateRows,
+                            int templateColumns,
+                            size_t batch_size,
+                            std::vector<float>** ret) override;
     virtual int deserialize(const char* file_name,
                             void** ret,
                             std::string** error_message) override;
