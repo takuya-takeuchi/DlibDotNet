@@ -940,6 +940,10 @@ namespace DlibDotNet
 
         public static bool IsDnnSupportGui => NativeMethods.dnn_is_support_gui();
 
+        public static bool IsSupportCuda => NativeMethods.is_support_cuda();
+
+        public static bool IsDnnSupportCuda => NativeMethods.dnn_is_support_cuda();
+
         #endregion
 
     }

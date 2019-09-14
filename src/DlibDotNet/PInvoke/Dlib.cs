@@ -327,7 +327,14 @@ namespace DlibDotNet
 
             CudaError = 0x77000000,
 
-            CudaOutOfMemory = -(CudaError | 0x00000001),
+            // "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include\driver_types.h"
+            // 
+            // Any unhandled CUDA driver error is added to this value and returned via
+            // the runtime. Production releases of CUDA should not return such errors.
+            // \deprecated
+            // This error return is deprecated as of CUDA 4.1.
+            // cudaErrorApiFailureBase = 10000
+            CudaErrorApiFailureBase = -(CudaError | 10000),
 
             #endregion
 
@@ -347,6 +354,10 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool is_support_gui();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool is_support_cuda();
 
         #region assign_pixel
 

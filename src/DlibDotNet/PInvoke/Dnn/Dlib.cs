@@ -15,6 +15,10 @@ namespace DlibDotNet
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_is_support_gui();
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(is_support_cuda))]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool dnn_is_support_cuda();
+
         #region input
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
