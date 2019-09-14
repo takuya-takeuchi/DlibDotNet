@@ -128,6 +128,31 @@ namespace DlibDotNet
 
         #endregion
 
+        #region float
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_float_new1();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_float_new2(IntPtr size);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_float_new3([In] float[] data, IntPtr dataLength);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_float_getSize(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_float_getPointer(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern float stdvector_float_at(IntPtr vector, int index);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_float_delete(IntPtr vector);
+
+        #endregion
+
         #region double
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

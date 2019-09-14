@@ -92,6 +92,60 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::probability(void* obj,
+                                                                                                          matrix_element_type element_type,
+                                                                                                          void* matrix_vector,
+                                                                                                          int templateRows,
+                                                                                                          int templateColumns,
+                                                                                                          size_t batch_size,
+                                                                                                          std::vector<float>** ret)
+{
+    int error = ERR_OK;
+
+    try
+    {
+        switch(element_type)
+        {
+            case MATRIX_ELEMENT:
+                {
+                    auto& net = *(static_cast<NET*>(obj));
+                    auto& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(matrix_vector));
+                    std::vector<dlib::matrix<ELEMENT>> in_tmp;
+                    for (int i = 0; i< tmp.size(); i++)
+                    {
+                        dlib::matrix<ELEMENT>& mat = *tmp[i];
+                        in_tmp.push_back(mat);
+                    }
+
+	                softmax<typename NET::subnet_type> snet;
+	                snet.subnet() = net.subnet();
+	                auto p = mat(snet(in_tmp.begin(), in_tmp.end()));
+
+                    auto batch = p.nr();
+                    auto classes = p.nc();
+                    auto out_vec = new std::vector<float>(batch * classes);
+                    int index = 0;
+                    for (size_t i = 0; i < batch; ++i)
+                    for (size_t c = 0; c < classes; ++c)
+                        out_vec->at(index++) = p(i, c);
+
+                    *ret = out_vec;
+                }
+                break;
+            default:
+                error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;
+                break;
+        }
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, error);
+    }
+
+    return error;
+}
+
+template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::deserialize(const char* file_name,
                                                                                                           void** ret,
                                                                                                           std::string** error_message)

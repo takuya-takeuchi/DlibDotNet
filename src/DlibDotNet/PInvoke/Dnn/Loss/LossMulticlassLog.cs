@@ -51,6 +51,16 @@ namespace DlibDotNet
                                                                           out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLog_probability(int id,
+                                                                     IntPtr obj,
+                                                                     MatrixElementType element_type,
+                                                                     IntPtr matrix_vector,
+                                                                     int templateRows,
+                                                                     int templateColumns,
+                                                                     ulong batch_size,
+                                                                     out IntPtr ret);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLog_deserialize(int id,
                                                                      byte[] file_name,
                                                                      out IntPtr ret,

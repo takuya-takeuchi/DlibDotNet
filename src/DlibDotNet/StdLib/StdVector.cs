@@ -126,6 +126,8 @@ namespace DlibDotNet
                         return new StdVectorUInt32Imp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.Long:
                         return new StdVectorLongImp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.Float:
+                        return new StdVectorFloatImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.Double:
                         return new StdVectorDoubleImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.VectorDouble:
@@ -421,6 +423,64 @@ namespace DlibDotNet
                     return new long[0];
 
                 var dst = new long[size];
+                var elementPtr = this.GetElementPtr(ptr);
+                Marshal.Copy(elementPtr, dst, 0, dst.Length);
+                return dst;
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorFloatImp : StdVectorImp<float>
+        {
+
+            #region Methods
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_float_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_float_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<float> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.ToArray();
+                return NativeMethods.stdvector_float_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_float_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_float_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_float_getSize(ptr).ToInt32();
+            }
+
+            public override float[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new float[0];
+
+                var dst = new float[size];
                 var elementPtr = this.GetElementPtr(ptr);
                 Marshal.Copy(elementPtr, dst, 0, dst.Length);
                 return dst;

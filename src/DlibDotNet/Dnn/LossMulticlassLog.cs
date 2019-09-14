@@ -179,6 +179,66 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        public IEnumerable<float[]> Probability<T>(Matrix<T> image, ulong batchSize = 128)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            return this.Probability(new[] { image }, batchSize);
+        }
+
+        public IEnumerable<float[]> Probability<T>(IEnumerable<Matrix<T>> images, ulong batchSize = 128)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (!images.Any())
+                throw new ArgumentException();
+            if (images.Any(matrix => matrix == null))
+                throw new ArgumentException();
+
+            images.ThrowIfDisposed();
+
+            using (var vecIn = new StdVector<Matrix<T>>(images))
+            {
+                Matrix<T>.TryParse<T>(out var imageType);
+                var templateRows = images.First().TemplateRows;
+                var templateColumns = images.First().TemplateColumns;
+
+                var ret = NativeMethods.LossMulticlassLog_probability(this.NetworkType,
+                                                                      this.NativePtr,
+                                                                      imageType.ToNativeMatrixElementType(),
+                                                                      vecIn.NativePtr,
+                                                                      templateRows,
+                                                                      templateColumns,
+                                                                      batchSize,
+                                                                      out var vecOut);
+
+                using (var vector = new StdVector<float>(vecOut))
+                {
+                    Cuda.ThrowCudaException(ret);
+                    switch (ret)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{imageType} is not supported.");
+                    }
+
+                    var array = vector.ToArray();
+                    var batches = vecIn.Count;
+                    var classes = array.Length / batches;
+
+                    var probability = new List<float[]>(Enumerable.Range(0,vecIn.Count).Select<int, float[]>(i => null));
+                    for (var index = 0; index < batches; index++)
+                        probability[index] = array.Skip(index * classes).Take(classes).ToArray();
+
+                    return probability;
+                }
+            }
+        }
+
         public static void Serialize(LossMulticlassLog net, string path)
         {
             if (path == null)

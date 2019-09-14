@@ -170,7 +170,6 @@ using uanet_type = dlib::loss_multiclass_log_per_pixel<
                                dlib::relu<dlib::affine<dlib::con<64,7,7,2,2,
                                dlib::input<dlib::matrix<dlib::rgb_pixel>>
                                >>>>>>>>>>>>>>>>>>>>>>>>>;
-
 // ----------------------------------------------------------------------------------------
 #pragma endregion type definitions
 
