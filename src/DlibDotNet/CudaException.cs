@@ -75,6 +75,19 @@ namespace DlibDotNet
 
         #endregion
 
+        #region Methods
+
+        #region Overrids
+
+        public override string ToString()
+        {
+            return $"{typeof(CudaException).FullName}: {this.ErrorMessage}.";
+        }
+
+        #endregion
+
+        #endregion
+
     }
 
 }
