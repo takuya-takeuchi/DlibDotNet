@@ -39,11 +39,13 @@ namespace DlibDotNet.Dnn
             if (error == NativeMethods.ErrorType.OK)
                 return;
 
-            var tmp = -(int)error;
-            if ((tmp & (int) NativeMethods.ErrorType.CudaError) != (int) NativeMethods.ErrorType.CudaError)
+            var tmp = (int)error;
+            var max = (int)NativeMethods.ErrorType.CudaError;                // 0x77000000
+            var min = (int)NativeMethods.ErrorType.CudaErrorApiFailureBase;  // -(CudaError | 10000)
+            if (!(min <= tmp && tmp < -max))
                 return;
 
-            tmp -= (int)NativeMethods.ErrorType.CudaError;
+            tmp = -(tmp + (int)NativeMethods.ErrorType.CudaError);
 
             NativeMethods.dnn_cuda_cudaDriverGetVersion(out var driverVersion);
             NativeMethods.dnn_cuda_cudaRuntimeGetVersion(out var runtimeVersion);
