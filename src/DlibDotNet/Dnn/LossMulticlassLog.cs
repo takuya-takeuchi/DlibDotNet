@@ -230,7 +230,7 @@ namespace DlibDotNet.Dnn
                     var batches = vecIn.Count;
                     var classes = array.Length / batches;
 
-                    var probability = new List<float[]>(vecIn.Count);
+                    var probability = new List<float[]>(Enumerable.Range(0,vecIn.Count).Select<int, float[]>(i => null));
                     for (var index = 0; index < batches; index++)
                         probability[index] = array.Skip(index * classes).Take(classes).ToArray();
 
