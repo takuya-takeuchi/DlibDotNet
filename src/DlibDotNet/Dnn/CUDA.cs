@@ -1,4 +1,7 @@
-﻿namespace DlibDotNet.Dnn
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace DlibDotNet.Dnn
 {
 
     /// <summary>
@@ -44,7 +47,11 @@
 
             NativeMethods.dnn_cuda_cudaDriverGetVersion(out var driverVersion);
             NativeMethods.dnn_cuda_cudaRuntimeGetVersion(out var runtimeVersion);
-            throw new CudaException(tmp, NativeMethods.NativeDnnLibrary, driverVersion, runtimeVersion);
+            var namePtr = NativeMethods.dnn_cuda_cudaGetErrorName(tmp);
+            var name = namePtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(namePtr) : null;
+            var strPtr = NativeMethods.dnn_cuda_cudaGetErrorString(tmp);
+            var message = strPtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(strPtr) : null;
+            throw new CudaException(tmp, NativeMethods.NativeDnnLibrary, driverVersion, runtimeVersion, name, message);
         }
 
         #endregion

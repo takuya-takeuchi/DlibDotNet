@@ -48,4 +48,22 @@ DLLEXPORT bool cuda_cudaRuntimeGetVersion(int* version)
     return b;
 }
 
+DLLEXPORT const char* cuda_cudaGetErrorName(int code)
+{
+#ifdef DLIB_USE_CUDA
+    return ::cudaGetErrorName((::cudaError_t)code);
+#endif
+
+    return nullptr;
+}
+
+DLLEXPORT const char* cuda_cudaGetErrorString(int code)
+{
+#ifdef DLIB_USE_CUDA
+    return ::cudaGetErrorString((::cudaError_t)code);
+#endif
+
+    return nullptr;
+}
+
 #endif

@@ -11,12 +11,14 @@ namespace DlibDotNet
 
         #region Constructors
 
-        internal CudaException(int errorCode, string dllName, int driverVersion, int runtimeVersion)
+        internal CudaException(int errorCode, string dllName, int driverVersion, int runtimeVersion, string errorName, string errorMessage)
         {
             this.ErrorCode = errorCode;
             this.DllName = dllName;
             this.DriverVersion = driverVersion;
             this.RuntimeVersion = runtimeVersion;
+            this.ErrorName = errorName;
+            this.ErrorMessage = errorMessage;
         }
 
         #endregion
@@ -43,6 +45,22 @@ namespace DlibDotNet
         /// Gets the CUDA error code.
         /// </summary>
         public int ErrorCode
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the CUDA error name.
+        /// </summary>
+        public string ErrorName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the CUDA error message.
+        /// </summary>
+        public string ErrorMessage
         {
             get;
         }
