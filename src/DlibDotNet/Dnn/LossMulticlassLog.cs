@@ -111,6 +111,23 @@ namespace DlibDotNet.Dnn
             return new LossMulticlassLog(net, networkType);
         }
 
+        public string[] GetLabels()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMulticlassLog_get_label(this.NetworkType, this.NativePtr, out var label);
+            if (label == IntPtr.Zero)
+                return null;
+
+            using (var vector = new StdVector<StdString>(label))
+            {
+                var tmp = vector.ToArray();
+                var ret = tmp.Select(s => s.ToString()).ToArray();
+                foreach (var s in tmp) s.Dispose();
+                return ret;
+            }
+        }
+
         public Subnet GetSubnet()
         {
             this.ThrowIfDisposed();
@@ -126,6 +143,8 @@ namespace DlibDotNet.Dnn
 
         internal override void NetToXml(string filename)
         {
+            this.ThrowIfDisposed();
+
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
             NativeMethods.LossMulticlassLog_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
         }

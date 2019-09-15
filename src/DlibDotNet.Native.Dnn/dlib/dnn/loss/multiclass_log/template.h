@@ -12,7 +12,7 @@ extern std::map<int, LossMulticlassLogBase*> LossMulticlassLogRegistry;
 #define MAKE_LOSSMULTICLASSLOG_FUNC(__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__)\
 DLLEXPORT LossMulticlassLogBase* LossMulticlassLog_##__NET__##_create()\
 {\
-    return new LossMulticlassLog<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
+    return new LossMulticlassLog<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>(__NET__##_labels);\
 }\
 \
 DLLEXPORT void LossMulticlassLog_##__NET__##_delete(void* base)\
@@ -53,6 +53,18 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
 {
     auto n = static_cast<NET*>(net);
     delete n;
+}
+
+template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::get_label(void* obj,
+                                                                                                        std::vector<std::string*>** ret)
+{
+    int error = ERR_OK;
+    auto vec = new std::vector<std::string*>(this->_labels->size());
+    for (auto i = 0; i < this->_labels->size(); i++)
+        vec->at(i) = new std::string(this->_labels->at(i));
+    *ret = vec;
+    return error;
 }
 
 /*// NOTE\

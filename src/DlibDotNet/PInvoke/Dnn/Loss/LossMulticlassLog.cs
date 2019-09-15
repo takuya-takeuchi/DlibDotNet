@@ -41,6 +41,9 @@ namespace DlibDotNet
         public static extern void LossMulticlassLog_delete(int id, IntPtr obj);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLog_get_label(int id, IntPtr obj, out IntPtr label);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLog_operator_matrixs(int id,
                                                                           IntPtr obj,
                                                                           MatrixElementType element_type,

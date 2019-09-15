@@ -37,6 +37,18 @@ DLLEXPORT void LossMulticlassLog_delete(const int id, void* obj)
     return LossMulticlassLogRegistry[id]->destroy(obj);
 }
 
+DLLEXPORT int LossMulticlassLog_get_label(const int id,
+                                          void* obj,
+                                          std::vector<std::string*>** ret)
+{
+    auto iter = LossMulticlassLogRegistry.find(id);
+    if (iter == end(LossMulticlassLogRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMulticlassLogRegistry[id]->get_label(obj,
+                                                    ret);
+}
+
 DLLEXPORT int LossMulticlassLog_operator_matrixs(const int id,
                                                  void* obj,
                                                  matrix_element_type element_type,

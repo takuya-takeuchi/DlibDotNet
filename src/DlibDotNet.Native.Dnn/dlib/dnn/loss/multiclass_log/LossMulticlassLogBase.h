@@ -17,6 +17,8 @@ using namespace std;
 class LossMulticlassLogBase : public LossBase
 {
 public:
+    virtual int get_label(void* obj,
+                          std::vector<std::string*>** ret) = 0;
     virtual int operator_matrixs(void* obj,
                                  matrix_element_type element_type,
                                  void* matrix_vector,

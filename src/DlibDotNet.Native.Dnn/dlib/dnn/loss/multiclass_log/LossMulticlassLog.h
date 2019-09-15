@@ -20,6 +20,19 @@ template<typename NET,
 class LossMulticlassLog : public LossMulticlassLogBase
 {
 public:
+    LossMulticlassLog(const std::vector<const char *>* labels):
+        _labels(labels)
+    {
+    }
+
+    ~LossMulticlassLog()
+    {
+    }
+
+private:
+    const std::vector<const char *>* _labels;
+
+public:
     const int get_id() override
     {
         return ID;
@@ -38,6 +51,8 @@ public:
 public:
     virtual int create(void** ret) override;
     virtual void destroy(void* net) override;
+    virtual int get_label(void* obj,
+                          std::vector<std::string*>** ret) override;
     virtual int operator_matrixs(void* obj,
                                  matrix_element_type element_type,
                                  void* matrix_vector,
