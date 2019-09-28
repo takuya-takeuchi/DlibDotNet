@@ -152,31 +152,30 @@ namespace DlibDotNet.Dnn
 
             images.ThrowIfDisposed();
 
-            using (var vecIn = new StdVector<Matrix<T>>(images))
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
+
+            // vecOut is not std::vector<Matrix<float>*>* but std::vector<Matrix<float>>*.
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMetric_operator_matrixs(this.NetworkType,
+                                                                this.NativePtr,
+                                                                imageType.ToNativeMatrixElementType(),
+                                                                array,
+                                                                array.Length,
+                                                                templateRows,
+                                                                templateColumns,
+                                                                (uint)batchSize,
+                                                                out var vecOut);
+
+            Cuda.ThrowCudaException(ret);
+            switch (ret)
             {
-                Matrix<T>.TryParse<T>(out var imageType);
-                var templateRows = images.First().TemplateRows;
-                var templateColumns = images.First().TemplateColumns;
-
-                // vecOut is not std::vector<Matrix<float>*>* but std::vector<Matrix<float>>*.
-                var ret = NativeMethods.LossMetric_operator_matrixs(this.NetworkType,
-                                                                    this.NativePtr,
-                                                                    imageType.ToNativeMatrixElementType(),
-                                                                    vecIn.NativePtr,
-                                                                    templateRows,
-                                                                    templateColumns,
-                                                                    batchSize,
-                                                                    out var vecOut);
-
-                Cuda.ThrowCudaException(ret);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{imageType} is not supported.");
-                }
-
-                return new Output(vecOut);
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{imageType} is not supported.");
             }
+
+            return new Output(vecOut);
         }
 
         public static void Serialize(LossMetric net, string path)

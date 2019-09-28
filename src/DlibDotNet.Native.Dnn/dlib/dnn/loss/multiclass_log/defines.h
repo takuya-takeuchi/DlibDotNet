@@ -49,7 +49,7 @@ using residual = add_prev1<block<N,BN,1,tag1<SUBNET>>>;
 template <template <int,template<typename>class,int,typename> class block, int N, template<typename>class BN, typename SUBNET>
 using residual_down = add_prev2<avg_pool<2,2,2,2,skip1<tag2<block<N,BN,2,tag1<SUBNET>>>>>>;
 
-template <int N, template <typename> class BN, int stride, typename SUBNET> 
+template <int N, template <typename> class BN, int stride, typename SUBNET>
 using block  = BN<con<N,3,3,1,1,relu<BN<con<N,3,3,stride,stride,SUBNET>>>>>;
 
 
@@ -89,14 +89,14 @@ using anet_1000_type = loss_multiclass_log<fc<1000,avg_pool_everything<
                             >>>>>>>>>>>;
 
 // ----------------------------------------------------------------------------------------
-                            
+
 using net_type2 = loss_multiclass_log<
-                            fc<10,        
-                            relu<fc<84,   
-                            relu<fc<120,  
+                            fc<10,
+                            relu<fc<84,
+                            relu<fc<120,
                             max_pool<2,2,2,2,relu<con<16,5,5,1,1,
                             max_pool<2,2,2,2,relu<con<6,5,5,1,1,
-                            input<matrix<unsigned char>> 
+                            input<matrix<unsigned char>>
                             >>>>>>>>>>>>;
 
 static const std::vector<const char *>* net_type_labels = new std::vector<const char *>(

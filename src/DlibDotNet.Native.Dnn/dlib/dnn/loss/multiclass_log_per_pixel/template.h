@@ -25,17 +25,17 @@ DLLEXPORT void LossMulticlassLogPerPixel_##__NET__##_delete(void* base)\
 
 #pragma region template
 
-#define operator_template(net, __TYPE__, matrix_vector, batch_size, ret) \
+#define operator_template(net, __TYPE__, matrix_array, matrix_array_len, batch_size, ret) \
 do {\
-    std::vector<dlib::matrix<__TYPE__>*>& tmp = *(static_cast<std::vector<dlib::matrix<__TYPE__>*>*>(matrix_vector));\
+    auto tmp = static_cast<dlib::matrix<__TYPE__>**>(matrix_array);\
     std::vector<dlib::matrix<__TYPE__>> in_tmp;\
-    for (int i = 0; i< tmp.size(); i++)\
+    for (int i = 0; i< matrix_array_len; i++)\
     {\
         dlib::matrix<__TYPE__>& mat = *tmp[i];\
         in_tmp.push_back(mat);\
     }\
 \
-    std::vector<loss_multiclass_log_per_pixel_out_type> dets = net(in_tmp, batch_size);\
+    std::vector<loss_multiclass_log_per_pixel_out_type> dets = net->operator()(in_tmp, batch_size);\
     *ret = new std::vector<loss_multiclass_log_per_pixel_out_type>(dets);\
 } while (0)
 
@@ -59,11 +59,12 @@ void LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMEN
 // ret is not std::vector<loss_multiclass_log_per_pixel_out_type*>** but std::vector<loss_multiclass_log_per_pixel_out_type>**!! It is important!!*/
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::operator_matrixs(void* obj,
-                                                                                                                       matrix_element_type element_type,
-                                                                                                                       void* matrix_vector,
-                                                                                                                       int templateRows,
-                                                                                                                       int templateColumns,
-                                                                                                                       size_t batch_size,
+                                                                                                                       const matrix_element_type element_type,
+                                                                                                                       void* matrix_array,
+                                                                                                                       const int matrix_array_len,
+                                                                                                                       const int templateRows,
+                                                                                                                       const int templateColumns,
+                                                                                                                       const uint32_t batch_size,
                                                                                                                        std::vector<loss_multiclass_log_per_pixel_out_type>** ret)
 {
     int error = ERR_OK;
@@ -74,8 +75,8 @@ int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT
         {
             case MATRIX_ELEMENT:
                 {
-                    auto& net = *(static_cast<NET*>(obj));
-                    operator_template(net, ELEMENT, matrix_vector, batch_size, ret);
+                    auto net = static_cast<NET*>(obj);
+                    operator_template(net, ELEMENT, matrix_array, matrix_array_len, batch_size, ret);
                 }
                 break;
             default:
@@ -121,7 +122,7 @@ template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, mat
 int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::deserialize_proxy(proxy_deserialize* proxy,
                                                                                                                         void** ret,
                                                                                                                         std::string** error_message)
-{                                                                                                                       
+{
     int error = ERR_OK;
 
     try
@@ -307,7 +308,7 @@ void LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMEN
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_synchronization_file(void* trainer, 
+void LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_synchronization_file(void* trainer,
                                                                                                                                         const char* filename,
                                                                                                                                         const unsigned long second)
 {
@@ -417,7 +418,7 @@ int LossMulticlassLogPerPixelNet<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEM
     // clone to anet
     if (id != 1)
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-    
+
     auto& net = *static_cast<NET*>(obj);
     *ret = new anet_type(net);
     return ERR_OK;
@@ -431,7 +432,7 @@ int LossMulticlassLogPerPixelUBNet<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_EL
     // clone to uanet
     if (id != 3)
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
-    
+
     auto& net = *static_cast<NET*>(obj);
     *ret = new uanet_type(net);
     return ERR_OK;

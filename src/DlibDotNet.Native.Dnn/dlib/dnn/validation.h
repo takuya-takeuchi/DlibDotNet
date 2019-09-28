@@ -16,7 +16,7 @@ using namespace std;
 do {\
     std::vector<dlib::matrix<__TYPE__>*>& matvec_tmp = *(static_cast<std::vector<dlib::matrix<__TYPE__>*>*>(matrix_vector));\
     std::vector<dlib::matrix<__TYPE__>> in_matvec;\
-    for (int i = 0; i< matvec_tmp.size(); i++)\
+    for (size_t i = 0; i< matvec_tmp.size(); i++)\
     {\
         dlib::matrix<__TYPE__>& mat = *matvec_tmp[i];\
         in_matvec.push_back(mat);\
@@ -24,11 +24,11 @@ do {\
 \
     std::vector<std::vector<dlib::mmod_rect*>*>& tmp_dets = *(static_cast<std::vector<std::vector<dlib::mmod_rect*>*>*>(truth_dets));\
     std::vector<std::vector<dlib::mmod_rect>> in_dets;\
-    for (int i = 0; i< tmp_dets.size(); i++)\
+    for (size_t i = 0; i< tmp_dets.size(); i++)\
     {\
         std::vector<dlib::mmod_rect*>& v = *(tmp_dets[i]);\
         std::vector<dlib::mmod_rect> tmp_v;\
-        for (int j = 0; j < v.size(); j++)\
+        for (size_t j = 0; j < v.size(); j++)\
         {\
             mmod_rect& r = *(v[j]);\
             tmp_v.push_back(r);\

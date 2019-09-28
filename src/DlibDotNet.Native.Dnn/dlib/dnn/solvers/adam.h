@@ -8,9 +8,9 @@ using namespace dlib;
 using namespace std;
 
 DLLEXPORT adam* adam_new(float weight_decay,
-                         float momentum1, 
+                         float momentum1,
                          float momentum2)
-{                       
+{
     return new adam(weight_decay, momentum1, momentum2);
 }
 

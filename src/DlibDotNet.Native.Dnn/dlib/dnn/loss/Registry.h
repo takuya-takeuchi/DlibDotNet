@@ -7,9 +7,9 @@
 #include <vector>
 
 #include "metric/LossMetricBase.h"
-#include "mmod/LossMmodBase.h" 
-#include "multiclass_log/LossMulticlassLogBase.h" 
-#include "multiclass_log_per_pixel/LossMulticlassLogPerPixelBase.h" 
+#include "mmod/LossMmodBase.h"
+#include "multiclass_log/LossMulticlassLogBase.h"
+#include "multiclass_log_per_pixel/LossMulticlassLogPerPixelBase.h"
 
 using namespace dlib;
 using namespace std;

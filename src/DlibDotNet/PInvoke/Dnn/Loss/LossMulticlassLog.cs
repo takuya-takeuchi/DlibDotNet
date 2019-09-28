@@ -47,20 +47,22 @@ namespace DlibDotNet
         public static extern ErrorType LossMulticlassLog_operator_matrixs(int id,
                                                                           IntPtr obj,
                                                                           MatrixElementType element_type,
-                                                                          IntPtr matrix_vector,
+                                                                          IntPtr[] matrix_array,
+                                                                          int matrix_array_len,
                                                                           int templateRows,
                                                                           int templateColumns,
-                                                                          ulong batch_size,
+                                                                          uint batch_size,
                                                                           out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLog_probability(int id,
                                                                      IntPtr obj,
                                                                      MatrixElementType element_type,
-                                                                     IntPtr matrix_vector,
+                                                                     IntPtr[] matrix_array,
+                                                                     int matrix_array_len,
                                                                      int templateRows,
                                                                      int templateColumns,
-                                                                     ulong batch_size,
+                                                                     uint batch_size,
                                                                      out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

@@ -61,6 +61,11 @@ if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
 	endif()
 endif()
 
+# set parallel build
+if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+endif()
+
 
 # dlib project submodule 
 set(DLIB_IN_PROJECT_BUILD True)
