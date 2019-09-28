@@ -29,7 +29,7 @@ DLLEXPORT void LossMulticlassLog_##__NET__##_delete(void* base)\
 do {\
     std::vector<dlib::matrix<__TYPE__>*>& tmp = *(static_cast<std::vector<dlib::matrix<__TYPE__>*>*>(matrix_vector));\
     std::vector<dlib::matrix<__TYPE__>> in_tmp;\
-    for (int i = 0; i< tmp.size(); i++)\
+    for (size_t i = 0; i< tmp.size(); i++)\
     {\
         dlib::matrix<__TYPE__>& mat = *tmp[i];\
         in_tmp.push_back(mat);\
@@ -61,7 +61,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
 {
     int error = ERR_OK;
     auto vec = new std::vector<std::string*>(this->_labels->size());
-    for (auto i = 0; i < this->_labels->size(); i++)
+    for (size_t i = 0; i < this->_labels->size(); i++)
         vec->at(i) = new std::string(this->_labels->at(i));
     *ret = vec;
     return error;
@@ -123,7 +123,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
                     auto& net = *(static_cast<NET*>(obj));
                     auto& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(matrix_vector));
                     std::vector<dlib::matrix<ELEMENT>> in_tmp;
-                    for (int i = 0; i< tmp.size(); i++)
+                    for (size_t i = 0; i< tmp.size(); i++)
                     {
                         dlib::matrix<ELEMENT>& mat = *tmp[i];
                         in_tmp.push_back(mat);
@@ -137,8 +137,8 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
                     auto classes = p.nc();
                     auto out_vec = new std::vector<float>(batch * classes);
                     int index = 0;
-                    for (size_t i = 0; i < batch; ++i)
-                    for (size_t c = 0; c < classes; ++c)
+                    for (long i = 0; i < batch; ++i)
+                    for (long c = 0; c < classes; ++c)
                         out_vec->at(index++) = p(i, c);
 
                     *ret = out_vec;

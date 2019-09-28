@@ -29,7 +29,7 @@ DLLEXPORT void LossMmod_##__NET__##_delete(void* base)\
 do {\
     std::vector<dlib::matrix<__TYPE__>*>& tmp = *(static_cast<std::vector<dlib::matrix<__TYPE__>*>*>(matrix_vector));\
     std::vector<dlib::matrix<__TYPE__>> in_tmp;\
-    for (int i = 0; i< tmp.size(); i++)\
+    for (size_t i = 0; i< tmp.size(); i++)\
     {\
         dlib::matrix<__TYPE__>& mat = *tmp[i];\
         in_tmp.push_back(mat);\

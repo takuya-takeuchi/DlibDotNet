@@ -115,14 +115,14 @@ protected:
                  std::vector<LABEL_ELEMENT>& out_labels)
     {
         std::vector<dlib::matrix<ELEMENT>*>& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
-        for (int i = 0; i< tmp_data.size(); i++)
+        for (size_t i = 0; i< tmp_data.size(); i++)
         {
             dlib::matrix<ELEMENT>& mat = *tmp_data[i];
             out_data.push_back(mat);
         }
 
         std::vector<LABEL_ELEMENT>& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT>*>(labels));
-        for (int i = 0; i< tmp_label.size(); i++)
+        for (size_t i = 0; i< tmp_label.size(); i++)
             out_labels.push_back(tmp_label[i]);
     }
 };
