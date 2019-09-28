@@ -103,6 +103,11 @@ namespace DlibDotNet
                                                                                                IntPtr obj,
                                                                                                uint new_window_size);
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLog_get_loss_details(int id,
+                                                                          IntPtr obj,
+                                                                          out IntPtr loss_details);
+
         #region trainer
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

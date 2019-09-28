@@ -92,6 +92,11 @@ namespace DlibDotNet
                                                                                                        uint new_window_size);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_get_loss_details(int id,
+                                                                                  IntPtr obj,
+                                                                                  out IntPtr loss_details);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLogPerPixel_cloneAs(int id,
                                                                          IntPtr obj,
                                                                          int dst_id,

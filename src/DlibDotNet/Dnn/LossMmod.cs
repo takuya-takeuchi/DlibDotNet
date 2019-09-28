@@ -132,6 +132,14 @@ namespace DlibDotNet.Dnn
             return new LossMmod(net, networkType);
         }
 
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMmod_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
+        }
+
         public Subnet GetSubnet()
         {
             this.ThrowIfDisposed();
@@ -532,6 +540,33 @@ namespace DlibDotNet.Dnn
 
             #endregion
 
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMmod _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMmod parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
+
+            #endregion
+            
         }
 
         private sealed class Output : OutputLabels<IEnumerable<MModRect>>

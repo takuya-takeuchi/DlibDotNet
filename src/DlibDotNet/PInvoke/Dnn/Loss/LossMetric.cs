@@ -22,6 +22,9 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMetric_anet_type_create();
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMetric_metric_net_type_create();
+
         #region Loss
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -78,6 +81,11 @@ namespace DlibDotNet
         public static extern ErrorType LossMetric_set_all_bn_running_stats_window_sizes(int id,
                                                                                         IntPtr obj,
                                                                                         uint new_window_size);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMetric_get_loss_details(int id,
+                                                                   IntPtr obj,
+                                                                   out IntPtr loss_details);
 
         #region trainer
 
@@ -185,6 +193,13 @@ namespace DlibDotNet
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMetric_layer_details_set_num_filters(int id, IntPtr layer, long num);
+
+        #endregion
+
+        #region loss_details
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMetric_loss_details_get_distance_threshold(int id, IntPtr layer, out float distance_threshold);
 
         #endregion
 

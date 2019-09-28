@@ -414,6 +414,18 @@ DLLEXPORT int LossMulticlassLog_set_all_bn_running_stats_window_sizes(const int 
     return ERR_OK;
 }
 
+DLLEXPORT int LossMulticlassLog_get_loss_details(const int id,
+                                                 void* obj,
+                                                 void** loss_details)
+{
+    auto iter = LossMulticlassLogRegistry.find(id);
+    if (iter == end(LossMulticlassLogRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMulticlassLogRegistry[id]->get_loss_details(obj, loss_details);
+    return ERR_OK;
+}
+
 DLLEXPORT int LossMulticlassLog_subnet_delete(const int id, void* subnet)
 {
     auto iter = LossMulticlassLogRegistry.find(id);

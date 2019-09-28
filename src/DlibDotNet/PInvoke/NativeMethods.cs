@@ -37,7 +37,8 @@ namespace DlibDotNet
                 $"{NativeDnnLibrary}"
             });
 
-            foreach (var builder in new[] { LossMetric_anet_type_create() })
+            foreach (var builder in new[] { LossMetric_anet_type_create(),
+                                            LossMetric_metric_net_type_create() })
                 LossMetricRegistry_add(builder);
             foreach (var builder in new[] { LossMmod_net_type_create(),
                                             LossMmod_net_type_1_create(),

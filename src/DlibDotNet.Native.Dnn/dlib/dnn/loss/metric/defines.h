@@ -30,14 +30,16 @@ template <typename SUBNET> using alevel3 = ares<64,ares<64,ares<64,ares_down<64,
 template <typename SUBNET> using alevel4 = ares<32,ares<32,ares<32,SUBNET>>>;
 
 using anet_type = loss_metric<fc_no_bias<128,avg_pool_everything<
-                            alevel0<
-                            alevel1<
-                            alevel2<
-                            alevel3<
-                            alevel4<
-                            max_pool<3,3,2,2,relu<affine<con<32,7,7,2,2,
-                            input_rgb_image_sized<150>
-                            >>>>>>>>>>>>;
+                              alevel0<
+                              alevel1<
+                              alevel2<
+                              alevel3<
+                              alevel4<
+                              max_pool<3,3,2,2,relu<affine<con<32,7,7,2,2,
+                              input_rgb_image_sized<150>
+                              >>>>>>>>>>>>;
+
+using metric_net_type = loss_metric<fc<2,input<matrix<double,0,1 >>>>;
 #pragma endregion type definitions
 
 #endif

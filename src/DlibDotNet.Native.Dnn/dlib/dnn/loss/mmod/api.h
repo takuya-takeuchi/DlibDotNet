@@ -395,6 +395,18 @@ DLLEXPORT int LossMmod_set_all_bn_running_stats_window_sizes(const int id,
     return ERR_OK;
 }
 
+DLLEXPORT int LossMmod_get_loss_details(const int id,
+                                        void* obj,
+                                        void** loss_details)
+{
+    auto iter = LossMmodRegistry.find(id);
+    if (iter == end(LossMmodRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMmodRegistry[id]->get_loss_details(obj, loss_details);
+    return ERR_OK;
+}
+
 DLLEXPORT int LossMmod_subnet_delete(const int id, void* subnet)
 {
     auto iter = LossMmodRegistry.find(id);

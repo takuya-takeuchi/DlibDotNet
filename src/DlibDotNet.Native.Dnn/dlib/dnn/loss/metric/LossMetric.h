@@ -11,7 +11,7 @@
 using namespace dlib;
 using namespace std;
 
-template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 class LossMetric : public LossMetricBase
 {
 public:
@@ -65,6 +65,10 @@ public:
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) override;
 
 public:
+    virtual void get_loss_details(void* obj, void** loss_details) override;
+    virtual void loss_details_get_distance_threshold(void* loss_details, float* distance_threshold) override;
+
+public:
     virtual void* trainer_new(void* net) override;
     virtual void* trainer_new_sgd(void* net, sgd* sgd) override;
     virtual void trainer_delete(void* trainer) override;
@@ -103,13 +107,13 @@ public:
 protected:
     void convert(void* data,
                  void* labels,
-                 std::vector<dlib::matrix<ELEMENT>>& out_data,
+                 std::vector<dlib::matrix<ELEMENT, ROW, COLUMN>>& out_data,
                  std::vector<LABEL_ELEMENT>& out_labels)
     {
-        std::vector<dlib::matrix<ELEMENT>*>& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
+        std::vector<dlib::matrix<ELEMENT, ROW, COLUMN>*>& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT, ROW, COLUMN>*>*>(data));
         for (size_t i = 0; i< tmp_data.size(); i++)
         {
-            dlib::matrix<ELEMENT>& mat = *tmp_data[i];
+            dlib::matrix<ELEMENT, ROW, COLUMN>& mat = *tmp_data[i];
             out_data.push_back(mat);
         }
 
