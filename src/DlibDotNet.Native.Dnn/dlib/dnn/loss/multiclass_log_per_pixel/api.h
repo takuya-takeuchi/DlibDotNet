@@ -36,7 +36,7 @@ DLLEXPORT void LossMulticlassLogPerPixel_delete(const int id, void* obj)
 
     return LossMulticlassLogPerPixelRegistry[id]->destroy(obj);
 }
-    
+
 DLLEXPORT uint16_t LossMulticlassLogPerPixel_get_label_to_ignore()
 {
     return loss_multiclass_log_per_pixel_::label_to_ignore;
@@ -44,11 +44,12 @@ DLLEXPORT uint16_t LossMulticlassLogPerPixel_get_label_to_ignore()
 
 DLLEXPORT int LossMulticlassLogPerPixel_operator_matrixs(const int id,
                                                          void* obj,
-                                                         matrix_element_type element_type,
-                                                         void* matrix_vector,
-                                                         int templateRows,
-                                                         int templateColumns,
-                                                         size_t batch_size,
+                                                         const matrix_element_type element_type,
+                                                         void* matrix_array,
+                                                         const int matrix_array_len,
+                                                         const int templateRows,
+                                                         const int templateColumns,
+                                                         const uint32_t batch_size,
                                                          std::vector<loss_multiclass_log_per_pixel_out_type>** ret)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -57,7 +58,8 @@ DLLEXPORT int LossMulticlassLogPerPixel_operator_matrixs(const int id,
 
     return LossMulticlassLogPerPixelRegistry[id]->operator_matrixs(obj,
                                                                    element_type,
-                                                                   matrix_vector,
+                                                                   matrix_array,
+                                                                   matrix_array_len,
                                                                    templateRows,
                                                                    templateColumns,
                                                                    batch_size,
@@ -308,7 +310,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_be_verbose(const int id, void* t
 
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_synchronization_file(const int id,
-                                                                         void* trainer, 
+                                                                         void* trainer,
                                                                          const char* filename,
                                                                          const unsigned long second)
 {
@@ -320,7 +322,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_synchronization_file(const i
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_iterations_without_progress_threshold(const int id, 
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_iterations_without_progress_threshold(const int id,
                                                                                           void* trainer,
                                                                                           const unsigned long thresh)
 {

@@ -18,11 +18,12 @@ class LossMetricBase : public LossBase
 {
 public:
     virtual int operator_matrixs(void* obj,
-                                 matrix_element_type element_type,
-                                 void* matrix_vector,
-                                 int templateRows,
-                                 int templateColumns,
-                                 size_t batch_size,
+                                 const matrix_element_type element_type,
+                                 void* matrix_array,
+                                 const int matrix_array_len,
+                                 const int templateRows,
+                                 const int templateColumns,
+                                 const uint32_t batch_size,
                                  std::vector<loss_metric_out_type>** ret) = 0;
     virtual void input_tensor_to_output_tensor(void* obj,
                                                dlib::dpoint* p,

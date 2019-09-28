@@ -51,11 +51,12 @@ DLLEXPORT int LossMulticlassLog_get_label(const int id,
 
 DLLEXPORT int LossMulticlassLog_operator_matrixs(const int id,
                                                  void* obj,
-                                                 matrix_element_type element_type,
-                                                 void* matrix_vector,
-                                                 int templateRows,
-                                                 int templateColumns,
-                                                 size_t batch_size,
+                                                 const matrix_element_type element_type,
+                                                 void* matrix_array,
+                                                 const int matrix_array_len,
+                                                 const int templateRows,
+                                                 const int templateColumns,
+                                                 const uint32_t batch_size,
                                                  std::vector<loss_multiclass_log_out_type>** ret)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -64,7 +65,8 @@ DLLEXPORT int LossMulticlassLog_operator_matrixs(const int id,
 
     return LossMulticlassLogRegistry[id]->operator_matrixs(obj,
                                                            element_type,
-                                                           matrix_vector,
+                                                           matrix_array,
+                                                           matrix_array_len,
                                                            templateRows,
                                                            templateColumns,
                                                            batch_size,
@@ -73,11 +75,12 @@ DLLEXPORT int LossMulticlassLog_operator_matrixs(const int id,
 
 DLLEXPORT int LossMulticlassLog_probability(const int id,
                                             void* obj,
-                                            matrix_element_type element_type,
-                                            void* matrix_vector,
-                                            int templateRows,
-                                            int templateColumns,
-                                            size_t batch_size,
+                                            const matrix_element_type element_type,
+                                            void* matrix_array,
+                                            const int matrix_array_len,
+                                            const int templateRows,
+                                            const int templateColumns,
+                                            const uint32_t batch_size,
                                             std::vector<float>** ret)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -86,7 +89,8 @@ DLLEXPORT int LossMulticlassLog_probability(const int id,
 
     return LossMulticlassLogRegistry[id]->probability(obj,
                                                       element_type,
-                                                      matrix_vector,
+                                                      matrix_array,
+                                                      matrix_array_len,
                                                       templateRows,
                                                       templateColumns,
                                                       batch_size,
@@ -328,7 +332,7 @@ DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer)\
 
 
 DLLEXPORT int LossMulticlassLog_trainer_set_synchronization_file(const int id,
-                                                                 void* trainer, 
+                                                                 void* trainer,
                                                                  const char* filename,
                                                                  const unsigned long second)
 {
@@ -340,7 +344,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_synchronization_file(const int id,
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_iterations_without_progress_threshold(const int id, 
+DLLEXPORT int LossMulticlassLog_trainer_set_iterations_without_progress_threshold(const int id,
                                                                                   void* trainer,
                                                                                   const unsigned long thresh)
 {

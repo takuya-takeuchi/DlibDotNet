@@ -25,11 +25,11 @@ DLLEXPORT void LossMulticlassLog_##__NET__##_delete(void* base)\
 
 #pragma region template
 
-#define operator_template(net, __TYPE__, matrix_vector, batch_size, ret) \
+#define operator_template(net, __TYPE__, matrix_array, matrix_array_len, batch_size, ret) \
 do {\
-    std::vector<dlib::matrix<__TYPE__>*>& tmp = *(static_cast<std::vector<dlib::matrix<__TYPE__>*>*>(matrix_vector));\
+    auto tmp = static_cast<dlib::matrix<__TYPE__>**>(matrix_array);\
     std::vector<dlib::matrix<__TYPE__>> in_tmp;\
-    for (size_t i = 0; i< tmp.size(); i++)\
+    for (int i = 0; i< matrix_array_len; i++)\
     {\
         dlib::matrix<__TYPE__>& mat = *tmp[i];\
         in_tmp.push_back(mat);\
@@ -71,11 +71,12 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
 // ret is not std::vector<loss_multiclass_log_out_type*>** but std::vector<loss_multiclass_log_out_type>**!! It is important!!*/
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::operator_matrixs(void* obj,
-                                                                                                               matrix_element_type element_type,
-                                                                                                               void* matrix_vector,
-                                                                                                               int templateRows,
-                                                                                                               int templateColumns,
-                                                                                                               size_t batch_size,
+                                                                                                               const matrix_element_type element_type,
+                                                                                                               void* matrix_array,
+                                                                                                               const int matrix_array_len,
+                                                                                                               const int templateRows,
+                                                                                                               const int templateColumns,
+                                                                                                               const uint32_t batch_size,
                                                                                                                std::vector<loss_multiclass_log_out_type>** ret)
 {
     int error = ERR_OK;
@@ -87,7 +88,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
             case MATRIX_ELEMENT:
                 {
                     auto net = static_cast<NET*>(obj);
-                    operator_template(net, ELEMENT, matrix_vector, batch_size, ret);
+                    operator_template(net, ELEMENT, matrix_array, matrix_array_len, batch_size, ret);
                 }
                 break;
             default:
@@ -105,11 +106,12 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::probability(void* obj,
-                                                                                                          matrix_element_type element_type,
-                                                                                                          void* matrix_vector,
-                                                                                                          int templateRows,
-                                                                                                          int templateColumns,
-                                                                                                          size_t batch_size,
+                                                                                                          const matrix_element_type element_type,
+                                                                                                          void* matrix_array,
+                                                                                                          const int matrix_array_len,
+                                                                                                          const int templateRows,
+                                                                                                          const int templateColumns,
+                                                                                                          const uint32_t batch_size,
                                                                                                           std::vector<float>** ret)
 {
     int error = ERR_OK;
@@ -120,17 +122,17 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
         {
             case MATRIX_ELEMENT:
                 {
-                    auto& net = *(static_cast<NET*>(obj));
-                    auto& tmp = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(matrix_vector));
+                    auto net = static_cast<NET*>(obj);
+                    auto tmp = static_cast<dlib::matrix<ELEMENT>**>(matrix_array);
                     std::vector<dlib::matrix<ELEMENT>> in_tmp;
-                    for (size_t i = 0; i< tmp.size(); i++)
+                    for (int i = 0; i< matrix_array_len; i++)
                     {
                         dlib::matrix<ELEMENT>& mat = *tmp[i];
                         in_tmp.push_back(mat);
                     }
 
 	                softmax<typename NET::subnet_type> snet;
-	                snet.subnet() = net.subnet();
+	                snet.subnet() = net->subnet();
 	                auto p = mat(snet(in_tmp.begin(), in_tmp.end()));
 
                     auto batch = p.nr();
@@ -187,7 +189,7 @@ template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, mat
 int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::deserialize_proxy(proxy_deserialize* proxy,
                                                                                                                 void** ret,
                                                                                                                 std::string** error_message)
-{                                                                                                               
+{
     int error = ERR_OK;
 
     try
@@ -373,7 +375,7 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_synchronization_file(void* trainer, 
+void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_synchronization_file(void* trainer,
                                                                                                                                 const char* filename,
                                                                                                                                 const unsigned long second)
 {

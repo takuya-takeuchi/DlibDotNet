@@ -172,30 +172,29 @@ namespace DlibDotNet.Dnn
 
             images.ThrowIfDisposed();
 
-            using (var vecIn = new StdVector<Matrix<T>>(images))
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
+
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMulticlassLog_operator_matrixs(this.NetworkType,
+                                                                       this.NativePtr,
+                                                                       imageType.ToNativeMatrixElementType(),
+                                                                       array,
+                                                                       array.Length,
+                                                                       templateRows,
+                                                                       templateColumns,
+                                                                       (uint)batchSize,
+                                                                       out var vecOut);
+
+            Cuda.ThrowCudaException(ret);
+            switch (ret)
             {
-                Matrix<T>.TryParse<T>(out var imageType);
-                var templateRows = images.First().TemplateRows;
-                var templateColumns = images.First().TemplateColumns;
-
-                var ret = NativeMethods.LossMulticlassLog_operator_matrixs(this.NetworkType,
-                                                                           this.NativePtr,
-                                                                           imageType.ToNativeMatrixElementType(),
-                                                                           vecIn.NativePtr,
-                                                                           templateRows,
-                                                                           templateColumns,
-                                                                           batchSize,
-                                                                           out var vecOut);
-
-                Cuda.ThrowCudaException(ret);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{imageType} is not supported.");
-                }
-
-                return new Output(vecOut);
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{imageType} is not supported.");
             }
+
+            return new Output(vecOut);
         }
 
         public IEnumerable<float[]> Probability<T>(Matrix<T> image, ulong batchSize = 128)
@@ -221,40 +220,39 @@ namespace DlibDotNet.Dnn
 
             images.ThrowIfDisposed();
 
-            using (var vecIn = new StdVector<Matrix<T>>(images))
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
+
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMulticlassLog_probability(this.NetworkType,
+                                                                  this.NativePtr,
+                                                                  imageType.ToNativeMatrixElementType(),
+                                                                  array,
+                                                                  array.Length,
+                                                                  templateRows,
+                                                                  templateColumns,
+                                                                  (uint)batchSize,
+                                                                  out var vecOut);
+
+            using (var vector = new StdVector<float>(vecOut))
             {
-                Matrix<T>.TryParse<T>(out var imageType);
-                var templateRows = images.First().TemplateRows;
-                var templateColumns = images.First().TemplateColumns;
-
-                var ret = NativeMethods.LossMulticlassLog_probability(this.NetworkType,
-                                                                      this.NativePtr,
-                                                                      imageType.ToNativeMatrixElementType(),
-                                                                      vecIn.NativePtr,
-                                                                      templateRows,
-                                                                      templateColumns,
-                                                                      batchSize,
-                                                                      out var vecOut);
-
-                using (var vector = new StdVector<float>(vecOut))
+                Cuda.ThrowCudaException(ret);
+                switch (ret)
                 {
-                    Cuda.ThrowCudaException(ret);
-                    switch (ret)
-                    {
-                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                            throw new ArgumentException($"{imageType} is not supported.");
-                    }
-
-                    var array = vector.ToArray();
-                    var batches = vecIn.Count;
-                    var classes = array.Length / batches;
-
-                    var probability = new List<float[]>(Enumerable.Range(0,vecIn.Count).Select<int, float[]>(i => null));
-                    for (var index = 0; index < batches; index++)
-                        probability[index] = array.Skip(index * classes).Take(classes).ToArray();
-
-                    return probability;
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{imageType} is not supported.");
                 }
+
+                var probabilityArray = vector.ToArray();
+                var batches = probabilityArray.Length;
+                var classes = probabilityArray.Length / batches;
+
+                var probability = new List<float[]>(Enumerable.Range(0, probabilityArray.Length).Select<int, float[]>(i => null));
+                for (var index = 0; index < batches; index++)
+                    probability[index] = probabilityArray.Skip(index * classes).Take(classes).ToArray();
+
+                return probability;
             }
         }
 

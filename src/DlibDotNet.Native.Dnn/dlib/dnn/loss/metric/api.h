@@ -36,11 +36,12 @@ DLLEXPORT void LossMetric_delete(const int id, void* obj)
 
 DLLEXPORT int LossMetric_operator_matrixs(const int id,
                                           void* obj,
-                                          matrix_element_type element_type,
-                                          void* matrix_vector,
-                                          int templateRows,
-                                          int templateColumns,
-                                          size_t batch_size,
+                                          const matrix_element_type element_type,
+                                          void* matrix_array,
+                                          const int matrix_array_len,
+                                          const int templateRows,
+                                          const int templateColumns,
+                                          const uint32_t batch_size,
                                           std::vector<loss_metric_out_type>** ret)
 {
     auto iter = LossMetricRegistry.find(id);
@@ -49,7 +50,8 @@ DLLEXPORT int LossMetric_operator_matrixs(const int id,
 
     return LossMetricRegistry[id]->operator_matrixs(obj,
                                                     element_type,
-                                                    matrix_vector,
+                                                    matrix_array,
+                                                    matrix_array_len,
                                                     templateRows,
                                                     templateColumns,
                                                     batch_size,
@@ -291,7 +293,7 @@ DLLEXPORT int LossMetric_trainer_be_verbose(const int id, void* trainer)\
 
 
 DLLEXPORT int LossMetric_trainer_set_synchronization_file(const int id,
-                                                          void* trainer, 
+                                                          void* trainer,
                                                           const char* filename,
                                                           const unsigned long second)
 {
@@ -303,7 +305,7 @@ DLLEXPORT int LossMetric_trainer_set_synchronization_file(const int id,
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_set_iterations_without_progress_threshold(const int id, 
+DLLEXPORT int LossMetric_trainer_set_iterations_without_progress_threshold(const int id,
                                                                            void* trainer,
                                                                            const unsigned long thresh)
 {

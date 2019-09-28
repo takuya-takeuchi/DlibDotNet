@@ -35,11 +35,12 @@ public:
     virtual int create2(mmod_options* option, void** ret) override;
     virtual void destroy(void* net) override;
     virtual int operator_matrixs(void* obj,
-                                 matrix_element_type element_type,
-                                 void* matrix_vector,
-                                 int templateRows,
-                                 int templateColumns,
-                                 size_t batch_size,
+                                 const matrix_element_type element_type,
+                                 void* matrix_array,
+                                 const int matrix_array_len,
+                                 const int templateRows,
+                                 const int templateColumns,
+                                 const uint32_t batch_size,
                                  std::vector<loss_mmod_out_type>** ret) override;
     virtual int deserialize(const char* file_name,
                             void** ret,
@@ -76,7 +77,7 @@ public:
     virtual void trainer_set_min_learning_rate(void* trainer, const double lr) override;
     virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) override;
     virtual void trainer_be_verbose(void* trainer) override;
-    virtual void trainer_set_synchronization_file(void* trainer, 
+    virtual void trainer_set_synchronization_file(void* trainer,
                                            const char* filename,
                                            const unsigned long second) override;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
