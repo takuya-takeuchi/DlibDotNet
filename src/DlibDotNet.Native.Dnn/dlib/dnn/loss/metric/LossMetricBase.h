@@ -28,6 +28,9 @@ public:
     virtual void input_tensor_to_output_tensor(void* obj,
                                                dlib::dpoint* p,
                                                dlib::dpoint** ret) = 0;
+
+public:
+    virtual void loss_details_get_distance_threshold(void* loss_details, float* distance_threshold) = 0;
 };
 
 #endif

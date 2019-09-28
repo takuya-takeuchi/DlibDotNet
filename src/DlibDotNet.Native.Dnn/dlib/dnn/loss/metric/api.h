@@ -14,7 +14,8 @@ using namespace std;
 
 extern std::map<int, LossMetricBase*> LossMetricRegistry;
 
-MAKE_LOSSMETRIC_FUNC(anet_type, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_metric_train_label_type, 0)
+MAKE_LOSSMETRIC_FUNC(anet_type,       matrix_element_type::RgbPixel, rgb_pixel, 0, 0, matrix_element_type::UInt32, loss_metric_train_label_type, 0)
+MAKE_LOSSMETRIC_FUNC(metric_net_type, matrix_element_type::Double,   double,    0, 1, matrix_element_type::UInt32, loss_metric_train_label_type, 1)
 
 DLLEXPORT int LossMetric_new(const int id, void** ret)
 {
@@ -372,6 +373,30 @@ DLLEXPORT int LossMetric_set_all_bn_running_stats_window_sizes(const int id,
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
     LossMetricRegistry[id]->set_all_bn_running_stats_window_sizes(obj, new_window_size);
+    return ERR_OK;
+}
+
+DLLEXPORT int LossMetric_get_loss_details(const int id,
+                                          void* obj,
+                                          void** loss_details)
+{
+    auto iter = LossMetricRegistry.find(id);
+    if (iter == end(LossMetricRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMetricRegistry[id]->get_loss_details(obj, loss_details);
+    return ERR_OK;
+}
+
+DLLEXPORT int LossMetric_loss_details_get_distance_threshold(const int id,
+                                                             void* obj,
+                                                             float* distance_threshol)
+{
+    auto iter = LossMetricRegistry.find(id);
+    if (iter == end(LossMetricRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    LossMetricRegistry[id]->loss_details_get_distance_threshold(obj, distance_threshol);
     return ERR_OK;
 }
 

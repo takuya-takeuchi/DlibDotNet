@@ -128,6 +128,14 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMulticlassLog_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
+        }
+
         public Subnet GetSubnet()
         {
             this.ThrowIfDisposed();
@@ -571,6 +579,33 @@ namespace DlibDotNet.Dnn
             }
 
             #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMulticlassLog _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMulticlassLog parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
 
             #endregion
 

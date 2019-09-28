@@ -68,6 +68,78 @@ namespace DlibDotNet
             this.NativePtr = ptr;
             this._Indexer = this.CreateIndexer(type);
         }
+        
+        public Matrix(MatrixTemplateSizeParameter parameter)
+            : base(parameter.TemplateRows, parameter.TemplateColumns)
+        {
+            if (!TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+            if (parameter.TemplateRows < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateRows)}", $"{nameof(parameter.TemplateRows)} should be positive value.");
+            if (parameter.TemplateColumns < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateColumns)}", $"{nameof(parameter.TemplateColumns)} should be positive value.");
+            
+            var templateRows = parameter.TemplateRows;
+            var templateColumns = parameter.TemplateColumns;
+
+            var error = NativeMethods.matrix_new4(type.ToNativeMatrixElementType(),
+                                                  (uint)templateRows,
+                                                  (uint)templateColumns,
+                                                  out var ret);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"Input {type} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(templateRows)} or {nameof(templateRows)} is not supported.");
+            }
+
+            this.NativePtr = ret;
+            this._MatrixElementTypes = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+            this._Indexer = this.CreateIndexer(type);
+        }
+
+        public Matrix(MatrixTemplateSizeParameter parameter, TElement[] array)
+            : base(parameter.TemplateRows, parameter.TemplateColumns)
+        {
+            if (!TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+            if (array == null)
+                throw new ArgumentNullException(nameof(array));
+            if (parameter.TemplateRows < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateRows)}", $"{nameof(parameter.TemplateRows)} should be positive value.");
+            if (parameter.TemplateColumns < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateColumns)}", $"{nameof(parameter.TemplateColumns)} should be positive value.");
+            
+            var templateRows = parameter.TemplateRows;
+            var templateColumns = parameter.TemplateColumns;
+
+            using (var vector = new StdVector<TElement>(array))
+            {
+                var error = NativeMethods.matrix_new5(type.ToNativeMatrixElementType(),
+                                                      (uint)templateRows,
+                                                      (uint)templateColumns,
+                                                      vector.NativePtr,
+                                                      out var ret);
+                switch (error)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"Input {type} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(templateRows)} or {nameof(templateRows)} is not supported.");
+                }
+
+                this.NativePtr = ret;
+                this._MatrixElementTypes = type;
+                this._ElementType = type.ToNativeMatrixElementType();
+                this._Indexer = this.CreateIndexer(type);
+            }
+        }
 
         public Matrix(int row, int column)
         {
@@ -371,6 +443,7 @@ namespace DlibDotNet
             return new Matrix<TElement>(ret, tr, tc);
         }
 
+        [Obsolete("Use Matrix<TElement>(MatrixTemplateSizeParameter) constructor instead of this method")]
         public static Matrix<TElement> CreateTemplateParameterizeMatrix(uint templateRows, uint templateColumns)
         {
             if (!TryParse(typeof(TElement), out var type))

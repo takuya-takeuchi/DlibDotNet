@@ -42,6 +42,7 @@ public:
     virtual void net_to_xml(void* obj, const char* filename) = 0;
     virtual void operator_left_shift(void* obj, std::ostringstream* stream) = 0;
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) = 0;
+    virtual void get_loss_details(void* obj, void** loss_details) = 0;
 
 public:
     virtual void* trainer_new(void* net) = 0;

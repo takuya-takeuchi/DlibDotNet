@@ -110,6 +110,14 @@ namespace DlibDotNet.Dnn
             return new LossMetric(net, networkType);
         }
 
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMetric_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
+        }
+
         public Subnet GetSubnet()
         {
             this.ThrowIfDisposed();
@@ -490,6 +498,50 @@ namespace DlibDotNet.Dnn
             }
 
             #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMetric _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMetric parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public float GetDistanceThreshold()
+            {
+                this._Parent.ThrowIfDisposed();
+                var ret = NativeMethods.LossMetric_loss_details_get_distance_threshold(this._Parent.NetworkType, this.NativePtr, out var distanceThreshold);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this._Parent.NetworkType);
+                }
+
+                return distanceThreshold;
+            }
 
             #endregion
 

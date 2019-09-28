@@ -68,6 +68,7 @@ public:
     virtual void net_to_xml(void* obj, const char* filename) override;
     virtual void operator_left_shift(void* obj, std::ostringstream* stream) override;
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) override;
+    virtual void get_loss_details(void* obj, void** loss_details) override;
     virtual int cloneAs(void* obj, const int id, void** ret) override
     {
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;

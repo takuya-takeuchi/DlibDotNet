@@ -122,6 +122,14 @@ namespace DlibDotNet.Dnn
 
             return new LossMulticlassLogPerPixel(net, networkType);
         }
+        
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMulticlassLogPerPixel_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
+        }
 
         public Subnet GetSubnet()
         {
@@ -509,6 +517,33 @@ namespace DlibDotNet.Dnn
             }
 
             #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMulticlassLogPerPixel _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMulticlassLogPerPixel parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
 
             #endregion
 
