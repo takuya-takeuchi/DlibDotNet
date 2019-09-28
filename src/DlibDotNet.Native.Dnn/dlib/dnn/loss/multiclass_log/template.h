@@ -35,7 +35,7 @@ do {\
         in_tmp.push_back(mat);\
     }\
 \
-    std::vector<loss_multiclass_log_out_type> dets = net(in_tmp, batch_size);\
+    std::vector<loss_multiclass_log_out_type> dets = net->operator()(in_tmp, batch_size);\
     *ret = new std::vector<loss_multiclass_log_out_type>(dets);\
 } while (0)
 
@@ -86,7 +86,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
         {
             case MATRIX_ELEMENT:
                 {
-                    auto& net = *(static_cast<NET*>(obj));
+                    auto net = static_cast<NET*>(obj);
                     operator_template(net, ELEMENT, matrix_vector, batch_size, ret);
                 }
                 break;
