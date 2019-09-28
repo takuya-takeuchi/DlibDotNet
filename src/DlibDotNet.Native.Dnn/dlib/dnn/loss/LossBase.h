@@ -6,7 +6,7 @@
 #include <dlib/matrix.h>
 #include <vector>
 
-#include "../../common.h" 
+#include "../../common.h"
 
 using namespace dlib;
 using namespace std;
@@ -15,9 +15,9 @@ class LossBase
 {
 public:
     virtual const int get_id() = 0;
-    
+
     virtual const matrix_element_type get_data_type() = 0;
-    
+
     virtual const matrix_element_type get_label_type() = 0;
 
 public:
@@ -54,7 +54,7 @@ public:
     virtual void trainer_set_min_learning_rate(void* trainer, const double lr) = 0;
     virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) = 0;
     virtual void trainer_be_verbose(void* trainer) = 0;
-    virtual void trainer_set_synchronization_file(void* trainer, 
+    virtual void trainer_set_synchronization_file(void* trainer,
                                                   const char* filename,
                                                   const unsigned long second) = 0;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
