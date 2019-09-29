@@ -68,7 +68,7 @@ namespace DlibDotNet
             this.NativePtr = ptr;
             this._Indexer = this.CreateIndexer(type);
         }
-        
+
         public Matrix(MatrixTemplateSizeParameter parameter)
             : base(parameter.TemplateRows, parameter.TemplateColumns)
         {
@@ -80,7 +80,7 @@ namespace DlibDotNet
                 throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateRows)}", $"{nameof(parameter.TemplateRows)} should be positive value.");
             if (parameter.TemplateColumns < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateColumns)}", $"{nameof(parameter.TemplateColumns)} should be positive value.");
-            
+
             var templateRows = parameter.TemplateRows;
             var templateColumns = parameter.TemplateColumns;
 
@@ -115,9 +115,25 @@ namespace DlibDotNet
                 throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateRows)}", $"{nameof(parameter.TemplateRows)} should be positive value.");
             if (parameter.TemplateColumns < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(parameter.TemplateColumns)}", $"{nameof(parameter.TemplateColumns)} should be positive value.");
-            
+
             var templateRows = parameter.TemplateRows;
             var templateColumns = parameter.TemplateColumns;
+
+            if (templateRows * templateColumns != 0)
+            {
+                if (templateRows * templateColumns != array.Length)
+                    throw new ArgumentOutOfRangeException();
+            }
+            else if (templateRows != 0)
+            {
+                if (array.Length % templateRows != 0)
+                    throw new ArgumentOutOfRangeException();
+            }
+            else if (templateColumns != 0)
+            {
+                if (array.Length % templateColumns != 0)
+                    throw new ArgumentOutOfRangeException();
+            }
 
             using (var vector = new StdVector<TElement>(array))
             {

@@ -40,10 +40,33 @@ return m;
 #define matrix_new4_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 *ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();
 
+// std::initializer_list(const _Elem *, const _Elem *) is for only windows
+// dlib/matrix/matrix.h
 #define matrix_new5_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto v = static_cast<std::vector<__TYPE__>*>(vector);\
-std::initializer_list<__TYPE__> il(v->data(), v->data() + v->size());\
-*ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(il);
+auto mat = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>();\
+if (__ROWS__*__COLUMNS__ != 0)\
+{\
+    mat->set_size(__ROWS__, __COLUMNS__);\
+}\
+else if (__ROWS__!=0) \
+{\
+    if (v->size() != 0)\
+        mat->set_size(__ROWS__, v->size()/__ROWS__);\
+}\
+else if (__COLUMNS__!=0) \
+{\
+    if (v->size() != 0)\
+        mat->set_size(v->size()/__COLUMNS__, __COLUMNS__);\
+}\
+else if (v->size() != 0)\
+{\
+    mat->set_size(v->size(),1);\
+}\
+__TYPE__* d = &mat->operator()(0,0);\
+for (size_t index = 0; index < v->size(); index++)\
+    *d++ = v->operator[](index);\
+*ret = mat;\
 
 #define matrix_delete_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 delete ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix);
