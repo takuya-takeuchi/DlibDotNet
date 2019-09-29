@@ -241,7 +241,7 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT,
                                                                                                                       void** loss_details)
 {
     auto n = static_cast<NET*>(net);
-    NET::loss_details_type& ret = n->loss_details();
+    typename NET::loss_details_type& ret = n->loss_details();
     *loss_details = &ret;
 }
 
@@ -249,7 +249,7 @@ template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::loss_details_get_distance_threshold(void* loss_details,
                                                                                                                                          float* distance_threshold)
 {
-    auto ld = static_cast<NET::loss_details_type*>(loss_details);
+    auto ld = static_cast<typename NET::loss_details_type*>(loss_details);
     *distance_threshold = ld->get_distance_threshold();
 }
 

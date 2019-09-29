@@ -241,7 +241,7 @@ void LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMEN
                                                                                                                         void** loss_details)
 {
     auto n = static_cast<NET*>(net);
-    NET::loss_details_type& ret = n->loss_details();
+    typename NET::loss_details_type& ret = n->loss_details();
     *loss_details = &ret;
 }
 
