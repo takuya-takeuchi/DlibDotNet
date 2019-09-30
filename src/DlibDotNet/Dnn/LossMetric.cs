@@ -22,7 +22,7 @@ namespace DlibDotNet.Dnn
         public LossMetric(int networkType = 0)
         : base(networkType)
         {
-            var ret = NativeMethods.loss_metric_new(networkType, out var net);
+            var ret = NativeMethods.LossMetric_new(networkType, out var net);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
@@ -48,7 +48,7 @@ namespace DlibDotNet.Dnn
             {
                 this.ThrowIfDisposed();
 
-                return NativeMethods.loss_metric_num_layers(this.NetworkType);
+                return NativeMethods.LossMetric_get_num_layers(this.NetworkType);
             }
         }
 
@@ -60,18 +60,7 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            NativeMethods.loss_metric_clean(this.NetworkType);
-        }
-
-        public LossMetric CloneAs(int networkType)
-        {
-            this.ThrowIfDisposed();
-
-            var ret = NativeMethods.loss_metric_clone(this.NativePtr, this.NetworkType, networkType, out var net);
-            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
-                throw new NotSupportNetworkTypeException(networkType);
-
-            return new LossMetric(net, networkType);
+            NativeMethods.LossMetric_clean(this.NetworkType, this.NativePtr);
         }
 
         public static LossMetric Deserialize(string path, int networkType = 0)
@@ -82,10 +71,10 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.loss_metric_deserialize(str,
-                                                              networkType, 
-                                                              out var net,
-                                                              out var errorMessage);
+            var error = NativeMethods.LossMetric_deserialize(networkType,
+                                                             str,
+                                                             out var net,
+                                                             out var errorMessage);
             Cuda.ThrowCudaException(error);
             switch (error)
             {
@@ -105,10 +94,10 @@ namespace DlibDotNet.Dnn
 
             deserialize.ThrowIfDisposed();
 
-            var error = NativeMethods.loss_metric_deserialize_proxy(deserialize.NativePtr, 
-                                                                    networkType, 
-                                                                    out var net, 
-                                                                    out var errorMessage);
+            var error = NativeMethods.LossMetric_deserialize_proxy(networkType,
+                                                                   deserialize.NativePtr,
+                                                                   out var net, 
+                                                                   out var errorMessage);
             Cuda.ThrowCudaException(error);
             switch (error)
             {
@@ -119,6 +108,14 @@ namespace DlibDotNet.Dnn
             }
 
             return new LossMetric(net, networkType);
+        }
+
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMetric_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
         }
 
         public Subnet GetSubnet()
@@ -137,7 +134,7 @@ namespace DlibDotNet.Dnn
         internal override void NetToXml(string filename)
         {
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
-            NativeMethods.loss_metric_net_to_xml(this.NativePtr, this.NetworkType, fileNameByte);
+            NativeMethods.LossMetric_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
         }
 
         public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
@@ -163,31 +160,30 @@ namespace DlibDotNet.Dnn
 
             images.ThrowIfDisposed();
 
-            using (var vecIn = new StdVector<Matrix<T>>(images))
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
+
+            // vecOut is not std::vector<Matrix<float>*>* but std::vector<Matrix<float>>*.
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMetric_operator_matrixs(this.NetworkType,
+                                                                this.NativePtr,
+                                                                imageType.ToNativeMatrixElementType(),
+                                                                array,
+                                                                array.Length,
+                                                                templateRows,
+                                                                templateColumns,
+                                                                (uint)batchSize,
+                                                                out var vecOut);
+
+            Cuda.ThrowCudaException(ret);
+            switch (ret)
             {
-                Matrix<T>.TryParse<T>(out var imageType);
-                var templateRows = images.First().TemplateRows;
-                var templateColumns = images.First().TemplateColumns;
-
-                // vecOut is not std::vector<Matrix<float>*>* but std::vector<Matrix<float>>*.
-                var ret = NativeMethods.loss_metric_operator_matrixs(this.NativePtr,
-                                                                     this.NetworkType,
-                                                                     imageType.ToNativeMatrixElementType(),
-                                                                     vecIn.NativePtr,
-                                                                     templateRows,
-                                                                     templateColumns,
-                                                                     batchSize,
-                                                                     out var vecOut);
-
-                Cuda.ThrowCudaException(ret);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{imageType} is not supported.");
-                }
-
-                return new Output(vecOut);
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{imageType} is not supported.");
             }
+
+            return new Output(vecOut);
         }
 
         public static void Serialize(LossMetric net, string path)
@@ -200,7 +196,7 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error= NativeMethods.loss_metric_serialize(net.NativePtr, net.NetworkType, str, out var errorMessage);
+            var error= NativeMethods.LossMetric_serialize(net.NetworkType, net.NativePtr, str, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -225,12 +221,12 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = NativeMethods.dnn_trainer_loss_metric_test_one_step(trainer.NativePtr,
-                                                                              trainer.Type,
-                                                                              dataElementTypes.ToNativeMatrixElementType(),
-                                                                              dataVec.NativePtr,
-                                                                              NativeMethods.MatrixElementType.UInt32,
-                                                                              labelVec.NativePtr);
+                var ret = NativeMethods.LossMetric_trainer_test_one_step(trainer.Type,
+                                                                         trainer.NativePtr,
+                                                                         dataElementTypes.ToNativeMatrixElementType(),
+                                                                         dataVec.NativePtr,
+                                                                         NativeMethods.MatrixElementType.UInt32,
+                                                                         labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -268,12 +264,12 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = NativeMethods.dnn_trainer_loss_metric_train(trainer.NativePtr,
-                                                                      trainer.Type,
-                                                                      dataElementTypes.ToNativeMatrixElementType(),
-                                                                      dataVec.NativePtr,
-                                                                      NativeMethods.MatrixElementType.UInt32,
-                                                                      labelVec.NativePtr);
+                var ret = NativeMethods.LossMetric_trainer_train(trainer.Type,
+                                                                 trainer.NativePtr,
+                                                                 dataElementTypes.ToNativeMatrixElementType(),
+                                                                 dataVec.NativePtr,
+                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                 labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -311,12 +307,12 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = NativeMethods.dnn_trainer_loss_metric_train_one_step(trainer.NativePtr,
-                                                                               trainer.Type,
-                                                                               dataElementTypes.ToNativeMatrixElementType(),
-                                                                               dataVec.NativePtr,
-                                                                               NativeMethods.MatrixElementType.UInt32,
-                                                                               labelVec.NativePtr);
+                var ret = NativeMethods.LossMetric_trainer_train_one_step(trainer.Type,
+                                                                          trainer.NativePtr,
+                                                                          dataElementTypes.ToNativeMatrixElementType(),
+                                                                          dataVec.NativePtr,
+                                                                          NativeMethods.MatrixElementType.UInt32,
+                                                                          labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -341,7 +337,7 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.loss_metric_delete(this.NativePtr, this.NetworkType);
+            NativeMethods.LossMetric_delete(this.NetworkType, this.NativePtr);
         }
 
         public override string ToString()
@@ -353,7 +349,7 @@ namespace DlibDotNet.Dnn
             try
             {
                 ofstream = NativeMethods.ostringstream_new();
-                var ret = NativeMethods.loss_metric_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
+                var ret = NativeMethods.LossMetric_operator_left_shift(this.NetworkType, this.NativePtr, ofstream);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.OK:
@@ -404,7 +400,7 @@ namespace DlibDotNet.Dnn
 
                 this._Parent = parent;
 
-                var err = NativeMethods.loss_metric_subnet(parent.NativePtr, parent.NetworkType, out var ret);
+                var err = NativeMethods.LossMetric_subnet(parent.NetworkType, parent.NativePtr, out var ret);
                 this.NativePtr = ret;
             }
 
@@ -417,7 +413,7 @@ namespace DlibDotNet.Dnn
                 get
                 {
                     this._Parent.ThrowIfDisposed();
-                    var tensor = NativeMethods.loss_metric_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
+                    var tensor = NativeMethods.LossMetric_subnet_get_output(this._Parent.NetworkType, this.NativePtr, out var ret);
                     return new Tensor(tensor);
                 }
             }
@@ -429,8 +425,8 @@ namespace DlibDotNet.Dnn
             public LayerDetails GetLayerDetails()
             {
                 this._Parent.ThrowIfDisposed();
-                var ret = NativeMethods.loss_metric_subnet_get_layer_details(this.NativePtr, this._Parent.NetworkType, out _);
-                return new LayerDetails(this._Parent, ret);
+                var ret = NativeMethods.LossMetric_subnet_get_layer_details(this._Parent.NetworkType, this.NativePtr, out var value);
+                return new LayerDetails(this._Parent, value);
             }
 
             #region Overrids
@@ -442,7 +438,7 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                NativeMethods.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+                NativeMethods.LossMetric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion
@@ -481,7 +477,7 @@ namespace DlibDotNet.Dnn
             public void SetNumFilters(int num)
             {
                 this._Parent.ThrowIfDisposed();
-                var ret = NativeMethods.loss_metric_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+                var ret = NativeMethods.LossMetric_layer_details_set_num_filters(this._Parent.NetworkType, this.NativePtr, num);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -498,10 +494,54 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                //NativeMethods.loss_metric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+                //NativeMethods.LossMetric_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMetric _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMetric parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public float GetDistanceThreshold()
+            {
+                this._Parent.ThrowIfDisposed();
+                var ret = NativeMethods.LossMetric_loss_details_get_distance_threshold(this._Parent.NetworkType, this.NativePtr, out var distanceThreshold);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                        throw new NotSupportNetworkTypeException(this._Parent.NetworkType);
+                }
+
+                return distanceThreshold;
+            }
 
             #endregion
 

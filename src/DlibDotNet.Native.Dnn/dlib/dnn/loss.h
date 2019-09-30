@@ -18,10 +18,10 @@ DLLEXPORT mmod_options* mmod_options_new(const std::vector<std::vector<mmod_rect
 {
     const std::vector<std::vector<mmod_rect*>*>& tmp_boxes = *boxes;
     std::vector<std::vector<mmod_rect>> input;
-    for (auto i = 0; i < tmp_boxes.size(); i++)
+    for (size_t i = 0; i < tmp_boxes.size(); i++)
     {
         std::vector<mmod_rect> v;
-        for (auto j = 0; j < tmp_boxes[i]->size(); j++)
+        for (size_t j = 0; j < tmp_boxes[i]->size(); j++)
             v.push_back(*tmp_boxes[i]->at(j));
         input.push_back(v);
     }
@@ -38,7 +38,7 @@ DLLEXPORT std::vector<mmod_options::detector_window_details*>* mmod_options_get_
 {
     auto result = new std::vector<mmod_options::detector_window_details*>();
     const auto tmp = options->detector_windows;
-    for (auto i = 0; i < tmp.size(); i++)
+    for (size_t i = 0; i < tmp.size(); i++)
         result->push_back(new mmod_options::detector_window_details(tmp.at(i)));
 
     return result;
@@ -47,7 +47,7 @@ DLLEXPORT std::vector<mmod_options::detector_window_details*>* mmod_options_get_
 DLLEXPORT void mmod_options_set_detector_windows(mmod_options* options, std::vector<mmod_options::detector_window_details*>* value)
 {
     std::vector<mmod_options::detector_window_details> tmp;
-    for (auto i = 0; i < value->size(); i++)
+    for (size_t i = 0; i < value->size(); i++)
         tmp.push_back(*value->at(i));
 
     options->detector_windows = tmp;

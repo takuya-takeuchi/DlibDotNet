@@ -20,7 +20,9 @@ namespace DlibDotNet
 
             net.ThrowIfDisposed();
 
-            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_metric(net.NativePtr, net.NetworkType, newWindowSize);
+            var ret = NativeMethods.LossMetric_set_all_bn_running_stats_window_sizes(net.NetworkType,
+                                                                                     net.NativePtr,
+                                                                                     newWindowSize);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(net.NetworkType);
         }
@@ -32,7 +34,9 @@ namespace DlibDotNet
 
             net.ThrowIfDisposed();
 
-            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_mmod(net.NativePtr, net.NetworkType, newWindowSize);
+            var ret = NativeMethods.LossMmod_set_all_bn_running_stats_window_sizes(net.NetworkType,
+                                                                                   net.NativePtr,
+                                                                                   newWindowSize);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(net.NetworkType);
         }
@@ -44,9 +48,9 @@ namespace DlibDotNet
 
             net.ThrowIfDisposed();
 
-            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_multiclass_log(net.NativePtr,
-                                                                                              net.NetworkType,
-                                                                                              newWindowSize);
+            var ret = NativeMethods.LossMulticlassLog_set_all_bn_running_stats_window_sizes(net.NetworkType,
+                                                                                            net.NativePtr,
+                                                                                            newWindowSize);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(net.NetworkType);
         }
@@ -58,9 +62,9 @@ namespace DlibDotNet
 
             net.ThrowIfDisposed();
 
-            var ret = NativeMethods.set_all_bn_running_stats_window_sizes_loss_multiclass_log_per_pixel(net.NativePtr,
-                                                                                                        net.NetworkType,
-                                                                                                        newWindowSize);
+            var ret = NativeMethods.LossMulticlassLogPerPixel_set_all_bn_running_stats_window_sizes(net.NetworkType,
+                                                                                                    net.NativePtr,
+                                                                                                    newWindowSize);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(net.NetworkType);
         }

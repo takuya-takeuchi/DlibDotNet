@@ -136,7 +136,7 @@ using anet_type = dlib::loss_multiclass_log_per_pixel<
                             dlib::max_pool<3,3,2,2,dlib::relu<dlib::affine<dlib::con<64,7,7,2,2,
                             dlib::input<dlib::matrix<dlib::rgb_pixel>>
                             >>>>>>>>>>>>>>;
-                            
+
 // ----------------------------------------------------------------------------------------
 
 // training network type
@@ -170,11 +170,7 @@ using uanet_type = dlib::loss_multiclass_log_per_pixel<
                                dlib::relu<dlib::affine<dlib::con<64,7,7,2,2,
                                dlib::input<dlib::matrix<dlib::rgb_pixel>>
                                >>>>>>>>>>>>>>>>>>>>>>>>>;
-
 // ----------------------------------------------------------------------------------------
 #pragma endregion type definitions
-
-typedef dlib::matrix<uint16_t> out_type;
-typedef dlib::matrix<uint16_t> train_label_type;
 
 #endif

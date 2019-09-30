@@ -4,7 +4,7 @@ cmake_policy(SET CMP0054 NEW)
 
 set(PROJ_NAME DlibDotNetNativeDnn)
 
-project(${PROJ_NAME} VERSION 19.17.0)
+project(${PROJ_NAME} VERSION 19.18.0)
 
 # OS info
 message("-------------------------------------------------------")
@@ -22,9 +22,9 @@ message("-------------------------------------------------------")
 
 # Version info
 set(VERSION_MAJOR 19)
-set(VERSION_MINOR 17)
+set(VERSION_MINOR 18)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20190813)
+set(VERSION_DATE 20190928)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -57,8 +57,13 @@ if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
 
 	# C4146: unary minus operator applied to unsigned type, result still unsigned
 	if ("${CMAKE_SYSTEM_NAME}" STREQUAL "WindowsStore")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4146 /ZW /EHsc")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4146 /wd4996 /ZW /EHsc")
 	endif()
+endif()
+
+# set parallel build
+if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 endif()
 
 

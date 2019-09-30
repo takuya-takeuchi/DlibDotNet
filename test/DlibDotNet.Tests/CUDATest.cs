@@ -45,7 +45,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void GetDnnCudaDriverVersion()
         {
-            var ret = Dnn.Cuda.TryGetDriverVersion(out var version);
+            var ret = DlibDotNet.Dnn.Cuda.TryGetDriverVersion(out var version);
             if (ret)
             {
                 Console.WriteLine($"Version: {version}");
@@ -62,7 +62,7 @@ namespace DlibDotNet.Tests
         [TestMethod]
         public void GetDnnRuntimeVersion()
         {
-            var ret = Dnn.Cuda.TryGetRuntimeVersion(out var version);
+            var ret = DlibDotNet.Dnn.Cuda.TryGetRuntimeVersion(out var version);
             if (ret)
             {
                 Console.WriteLine($"Version: {version}");

@@ -15,6 +15,10 @@ namespace DlibDotNet
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_is_support_gui();
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(is_support_cuda))]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool dnn_is_support_cuda();
+
         #region input
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -59,30 +63,6 @@ namespace DlibDotNet
                                                                                            double scale,
                                                                                            IntPtr r,
                                                                                            out IntPtr rect);
-
-        #endregion
-
-        #region set_all_bn_running_stats_window_sizes
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_mmod(IntPtr obj,
-                                                                                       int type,
-                                                                                       uint new_window_size);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_metric(IntPtr obj,
-                                                                                         int type,
-                                                                                         uint new_window_size);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_multiclass_log(IntPtr obj,
-                                                                                                 int type,
-                                                                                                 uint new_window_size);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType set_all_bn_running_stats_window_sizes_loss_multiclass_log_per_pixel(IntPtr obj,
-                                                                                                           int type,
-                                                                                                           uint new_window_size);
 
         #endregion
 

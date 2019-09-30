@@ -48,6 +48,9 @@ namespace DlibDotNet
         public static extern ErrorType resize_image3(Array2DType inType, IntPtr inImg, double scaleSize);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType resize_image_matrix(MatrixElementType type, IntPtr matrix, uint templateRows, uint templateColumns, IntPtr out_matrix, InterpolationTypes interpolationTypes);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType resize_image_matrix_scale(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, double scaleSize);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

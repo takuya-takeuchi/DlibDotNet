@@ -9,62 +9,208 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ushort loss_multiclass_log_per_pixel_get_label_to_ignore();
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool LossMulticlassLogPerPixelRegistry_add(IntPtr builder);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_new(int type, out IntPtr net);
+        public static extern void LossMulticlassLogPerPixelRegistry_remove(IntPtr builder);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_per_pixel_delete(IntPtr obj, int type);
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool LossMulticlassLogPerPixelRegistry_contains(int id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_clone(IntPtr net, int src_type, int dst_type, out IntPtr new_net);
+        public static extern IntPtr LossMulticlassLogPerPixel_net_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_deserialize(byte[] fileName, 
-                                                                                 int type, 
-                                                                                 out IntPtr net,
-                                                                                 out IntPtr errorMessage);
+        public static extern IntPtr LossMulticlassLogPerPixel_anet_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_deserialize_proxy(IntPtr proxy_deserialize,
-                                                                                       int type, 
-                                                                                       out IntPtr net,
-                                                                                       out IntPtr errorMessage);
+        public static extern IntPtr LossMulticlassLogPerPixel_uanet_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_serialize(IntPtr obj,
-                                                                               int type, 
-                                                                               byte[] fileName,
-                                                                               out IntPtr errorMessage);
+        public static extern IntPtr LossMulticlassLogPerPixel_ubnet_type_create();
+
+        #region Loss
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_per_pixel_input_tensor_to_output_tensor(IntPtr net, int networkType, IntPtr p, out IntPtr ret);
+        public static extern ErrorType LossMulticlassLogPerPixel_new(int id, out IntPtr net);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_per_pixel_net_to_xml(IntPtr net, int networkType, byte[] fileName);
+        public static extern void LossMulticlassLogPerPixel_delete(int id, IntPtr obj);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern int loss_multiclass_log_per_pixel_num_layers(int type);
+        public static extern ushort LossMulticlassLogPerPixel_get_label_to_ignore();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_per_pixel_clean(int type);
+        public static extern ErrorType LossMulticlassLogPerPixel_operator_matrixs(int id,
+                                                                                  IntPtr obj,
+                                                                                  MatrixElementType element_type,
+                                                                                  IntPtr[] matrix_array,
+                                                                                  int matrix_array_len,
+                                                                                  int templateRows,
+                                                                                  int templateColumns,
+                                                                                  uint batch_size,
+                                                                                  out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_subnet(IntPtr net, int type, out IntPtr subnet);
+        public static extern ErrorType LossMulticlassLogPerPixel_deserialize(int id,
+                                                                             byte[] file_name,
+                                                                             out IntPtr ret,
+                                                                             out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_operator_left_shift(IntPtr obj, int type, IntPtr ofstream);
+        public static extern ErrorType LossMulticlassLogPerPixel_deserialize_proxy(int id,
+                                                                                   IntPtr proxy,
+                                                                                   out IntPtr ret,
+                                                                                   out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_operator_matrixs(IntPtr obj,
-                                                                                      int type,
-                                                                                      MatrixElementType element_type,
-                                                                                      IntPtr matrixs,
-                                                                                      int templateRows,
-                                                                                      int templateColumns,
-                                                                                      ulong batchSize,
-                                                                                      out IntPtr ret);
+        public static extern ErrorType LossMulticlassLogPerPixel_serialize(int id,
+                                                                           IntPtr obj,
+                                                                           byte[] file_name,
+                                                                           out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern int LossMulticlassLogPerPixel_get_num_layers(int id);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_clean(int id, IntPtr obj);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_input_tensor_to_output_tensor(int id, IntPtr obj, IntPtr p, out IntPtr ret);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_net_to_xml(int id, IntPtr obj, byte[] filename);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_operator_left_shift(int id, IntPtr trainer, IntPtr stream);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_set_all_bn_running_stats_window_sizes(int id,
+                                                                                                       IntPtr obj,
+                                                                                                       uint new_window_size);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_get_loss_details(int id,
+                                                                                  IntPtr obj,
+                                                                                  out IntPtr loss_details);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_cloneAs(int id,
+                                                                         IntPtr obj,
+                                                                         int dst_id,
+                                                                         out IntPtr ret);
+        #region trainer
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMulticlassLogPerPixel_trainer_new(int id, IntPtr net);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMulticlassLogPerPixel_trainer_new2(int id, IntPtr net, IntPtr sgd);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern void LossMulticlassLogPerPixel_trainer_delete(int id, IntPtr trainer);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_learning_rate(int id, IntPtr trainer, double lr);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_learning_rate(int id, IntPtr trainer, out double lr);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_average_loss(int id, IntPtr trainer, out double loss);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_average_test_loss(int id, IntPtr trainer, out double loss);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_min_learning_rate(int id, IntPtr trainer, double lr);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_mini_batch_size(int id, IntPtr trainer, uint size);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_be_verbose(int id, IntPtr trainer);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_synchronization_file(int id,
+                                                                                                  IntPtr trainer,
+                                                                                                  byte[] filename,
+                                                                                                  uint second);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_iterations_without_progress_threshold(int id,
+                                                                                                                   IntPtr trainer,
+                                                                                                                   uint thresh);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_set_test_iterations_without_progress_threshold(int id,
+                                                                                                                        IntPtr trainer,
+                                                                                                                        uint thresh);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_get_net(int id,
+                                                                                 IntPtr trainer,
+                                                                                 out IntPtr ret);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_operator_left_shift(int id,
+                                                                                             IntPtr trainer,
+                                                                                             IntPtr stream);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_test_one_step(int id,
+                                                                                       IntPtr trainer,
+                                                                                       MatrixElementType data_element_type,
+                                                                                       IntPtr data,
+                                                                                       MatrixElementType label_element_type,
+                                                                                       IntPtr labels);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_train(int id,
+                                                                               IntPtr trainer,
+                                                                               MatrixElementType data_element_type,
+                                                                               IntPtr data,
+                                                                               MatrixElementType label_element_type,
+                                                                               IntPtr labels);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_trainer_train_one_step(int id,
+                                                                                        IntPtr trainer,
+                                                                                        MatrixElementType data_element_type,
+                                                                                        IntPtr data,
+                                                                                        MatrixElementType label_element_type,
+                                                                                        IntPtr labels);
+
+        #endregion
+
+        #region subnet
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_subnet(int id, IntPtr obj, out IntPtr subnet);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_subnet_get_layer_details(int id, IntPtr subnet, out IntPtr ret);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMulticlassLogPerPixel_subnet_get_output(int id,
+                                                                                IntPtr subnet,
+                                                                                out int ret);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_subnet_delete(int id, IntPtr subnet);
+
+        #endregion
+
+        #region layer_details
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_layer_details_set_num_filters(int id, IntPtr layer, long num);
+
+        #endregion
+
+        #endregion
 
         #region output
 
@@ -76,97 +222,6 @@ namespace DlibDotNet
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern int dnn_output_stdvector_uint16_getSize(IntPtr vector);
-
-        #endregion
-
-        #region trainer
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr dnn_trainer_loss_multiclass_log_per_pixel_new(IntPtr net, int type);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr dnn_trainer_loss_multiclass_log_per_pixel_new_sgd(IntPtr net, int type, IntPtr sgd);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void dnn_trainer_loss_multiclass_log_per_pixel_delete(IntPtr trainer, int type);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void dnn_trainer_loss_multiclass_log_per_pixel_be_verbose(IntPtr trainer, int type);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void dnn_trainer_loss_multiclass_log_per_pixel_set_learning_rate(IntPtr trainer, int type, double lr);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_get_learning_rate(IntPtr trainer, int type, out double lr);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void dnn_trainer_loss_multiclass_log_per_pixel_set_min_learning_rate(IntPtr trainer, int type, double lr);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void dnn_trainer_loss_multiclass_log_per_pixel_set_mini_batch_size(IntPtr trainer, int type, uint size);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_synchronization_file(IntPtr trainer, int type, byte[] filename, uint second);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_test_one_step(IntPtr trainer,
-                                                                                               int type,
-                                                                                               MatrixElementType dataElementType,
-                                                                                               IntPtr data,
-                                                                                               MatrixElementType labelElementType,
-                                                                                               IntPtr label);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_train(IntPtr trainer,
-                                                                                       int type,
-                                                                                       MatrixElementType dataElementType,
-                                                                                       IntPtr data,
-                                                                                       MatrixElementType labelElementType,
-                                                                                       IntPtr label);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_train_one_step(IntPtr trainer,
-                                                                                                int type,
-                                                                                                MatrixElementType dataElementType,
-                                                                                                IntPtr data,
-                                                                                                MatrixElementType labelElementType,
-                                                                                                IntPtr label);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_iterations_without_progress_threshold(IntPtr trainer,
-                                                                                                                           int type,
-                                                                                                                           uint thresh);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_set_test_iterations_without_progress_threshold(IntPtr trainer,
-                                                                                                                                int type,
-                                                                                                                                uint thresh);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_get_net(IntPtr trainer, int type, out IntPtr ret);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType dnn_trainer_loss_multiclass_log_per_pixel_operator_left_shift(IntPtr trainer, int type, IntPtr stream);
-
-        #endregion
-
-        #region subnet
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr loss_multiclass_log_per_pixel_subnet_get_layer_details(IntPtr subnet, int type, out ErrorType ret);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void loss_multiclass_log_per_pixel_subnet_delete(int type, IntPtr subnet);
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr loss_multiclass_log_per_pixel_subnet_get_output(IntPtr subnet, int type, out ErrorType ret);
-
-        #endregion
-
-        #region layer_details
-
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType loss_multiclass_log_per_pixel_layer_details_set_num_filters(IntPtr layer, int type, int num);
 
         #endregion
 

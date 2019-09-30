@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9E3AD0D-91F4-48B4-9509-5C06B54C7374}"
 EndProject
@@ -126,6 +126,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatToArray2D", "examples\3rdparty\EmguCV\MatToArray2D\MatToArray2D.csproj", "{2038ED02-0AD2-4C87-8712-0E8ECDBA02C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatToMatrix", "examples\3rdparty\EmguCV\MatToMatrix\MatToMatrix.csproj", "{3446AF61-6A34-420E-9099-7D1BEE536762}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnMetricLearning", "examples\DnnMetricLearning\DnnMetricLearning.csproj", "{591D0E85-5A7C-42D1-84F2-596619021C92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -959,6 +961,22 @@ Global
 		{3446AF61-6A34-420E-9099-7D1BEE536762}.Release|x64.Build.0 = Release|Any CPU
 		{3446AF61-6A34-420E-9099-7D1BEE536762}.Release|x86.ActiveCfg = Release|Any CPU
 		{3446AF61-6A34-420E-9099-7D1BEE536762}.Release|x86.Build.0 = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|ARM.Build.0 = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|x64.Build.0 = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Debug|x86.Build.0 = Debug|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|ARM.ActiveCfg = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|ARM.Build.0 = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|x64.ActiveCfg = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|x64.Build.0 = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|x86.ActiveCfg = Release|Any CPU
+		{591D0E85-5A7C-42D1-84F2-596619021C92}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1021,6 +1039,7 @@ Global
 		{1C73A38D-1455-4C76-BF0B-48BAB9312FEC} = {608FA827-AFF0-4DB5-B302-4FC117A9879B}
 		{2038ED02-0AD2-4C87-8712-0E8ECDBA02C5} = {1C73A38D-1455-4C76-BF0B-48BAB9312FEC}
 		{3446AF61-6A34-420E-9099-7D1BEE536762} = {1C73A38D-1455-4C76-BF0B-48BAB9312FEC}
+		{591D0E85-5A7C-42D1-84F2-596619021C92} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}

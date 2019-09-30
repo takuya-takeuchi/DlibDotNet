@@ -22,7 +22,7 @@ namespace DlibDotNet.Dnn
         public LossMmod(int networkType = 0)
             : base(networkType)
         {
-            var ret = NativeMethods.loss_mmod_new(networkType, out var net);
+            var ret = NativeMethods.LossMmod_new(networkType, out var net);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
@@ -44,7 +44,7 @@ namespace DlibDotNet.Dnn
 
             options.ThrowIfDisposed();
 
-            var ret = NativeMethods.loss_mmod_new2(networkType, options.NativePtr, out var net);
+            var ret = NativeMethods.LossMmod_new2(networkType, options.NativePtr, out var net);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
@@ -70,7 +70,7 @@ namespace DlibDotNet.Dnn
             {
                 this.ThrowIfDisposed();
 
-                return NativeMethods.loss_mmod_num_layers(this.NetworkType);
+                return NativeMethods.LossMmod_get_num_layers(this.NetworkType);
             }
         }
 
@@ -82,18 +82,7 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            NativeMethods.loss_mmod_clean(this.NetworkType);
-        }
-
-        public LossMmod CloneAs(int networkType)
-        {
-            this.ThrowIfDisposed();
-
-            var ret = NativeMethods.loss_mmod_clone(this.NativePtr, this.NetworkType, networkType, out var net);
-            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
-                throw new NotSupportNetworkTypeException(networkType);
-
-            return new LossMmod(net, networkType);
+            NativeMethods.LossMmod_clean(this.NetworkType, this.NativePtr);
         }
 
         public static LossMmod Deserialize(string path, int networkType = 0)
@@ -104,10 +93,10 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.loss_mmod_deserialize(str,
-                                                            networkType,
-                                                            out var net,
-                                                            out var errorMessage);
+            var error = NativeMethods.LossMmod_deserialize(networkType,
+                                                           str,
+                                                           out var net,
+                                                           out var errorMessage);
             Cuda.ThrowCudaException(error);
             switch (error)
             {
@@ -127,10 +116,10 @@ namespace DlibDotNet.Dnn
 
             deserialize.ThrowIfDisposed();
 
-            var error = NativeMethods.loss_mmod_deserialize_proxy(deserialize.NativePtr,
-                                                                  networkType, 
-                                                                  out var net, 
-                                                                  out var errorMessage);
+            var error = NativeMethods.LossMmod_deserialize_proxy(networkType,
+                                                                 deserialize.NativePtr,
+                                                                 out var net, 
+                                                                 out var errorMessage);
             Cuda.ThrowCudaException(error);
             switch (error)
             {
@@ -141,6 +130,14 @@ namespace DlibDotNet.Dnn
             }
 
             return new LossMmod(net, networkType);
+        }
+
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMmod_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
         }
 
         public Subnet GetSubnet()
@@ -154,7 +151,7 @@ namespace DlibDotNet.Dnn
         {
             using (var np = p.ToNative())
             {
-                NativeMethods.loss_mmod_input_tensor_to_output_tensor(this.NativePtr, this.NetworkType, np.NativePtr, out var ret);
+                NativeMethods.LossMmod_input_tensor_to_output_tensor(this.NetworkType, this.NativePtr, np.NativePtr, out var ret);
                 return new DPoint(ret);
             }
         }
@@ -162,7 +159,7 @@ namespace DlibDotNet.Dnn
         internal override void NetToXml(string filename)
         {
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
-            NativeMethods.loss_mmod_net_to_xml(this.NativePtr, this.NetworkType, fileNameByte);
+            NativeMethods.LossMmod_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
         }
 
         public OutputLabels<IEnumerable<MModRect>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
@@ -187,32 +184,31 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentException();
 
             images.ThrowIfDisposed();
+            
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
 
-            using (var vecIn = new StdVector<Matrix<T>>(images))
+            // vecOut is not std::vector<std::vector<mmod_rect>*>* but std::vector<std::vector<mmod_rect>>*.
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMmod_operator_matrixs(this.NetworkType,
+                                                              this.NativePtr,
+                                                              imageType.ToNativeMatrixElementType(),
+                                                              array,
+                                                              array.Length,
+                                                              templateRows,
+                                                              templateColumns,
+                                                              (uint)batchSize,
+                                                              out var vecOut);
+
+            Cuda.ThrowCudaException(ret);
+            switch (ret)
             {
-                Matrix<T>.TryParse<T>(out var imageType);
-                var templateRows = images.First().TemplateRows;
-                var templateColumns = images.First().TemplateColumns;
-
-                // vecOut is not std::vector<std::vector<mmod_rect>*>* but std::vector<std::vector<mmod_rect>>*.
-                var ret = NativeMethods.loss_mmod_operator_matrixs(this.NativePtr,
-                                                                   this.NetworkType,
-                                                                   imageType.ToNativeMatrixElementType(),
-                                                                   vecIn.NativePtr,
-                                                                   templateRows,
-                                                                   templateColumns,
-                                                                   batchSize,
-                                                                   out var vecOut);
-
-                Cuda.ThrowCudaException(ret);
-                switch (ret)
-                {
-                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                        throw new ArgumentException($"{imageType} is not supported.");
-                }
-
-                return new Output(vecOut);
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{imageType} is not supported.");
             }
+
+            return new Output(vecOut);
         }
 
         public static void Serialize(LossMmod net, string path)
@@ -225,7 +221,7 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.loss_mmod_serialize(net.NativePtr, net.NetworkType, str, out var errorMessage);
+            var error = NativeMethods.LossMmod_serialize(net.NetworkType, net.NativePtr, str, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -252,12 +248,12 @@ namespace DlibDotNet.Dnn
             using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
             using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))
             {
-                var ret = NativeMethods.dnn_trainer_loss_mmod_test_one_step(trainer.NativePtr,
-                                                                            trainer.Type,
-                                                                            dataElementTypes.ToNativeMatrixElementType(),
-                                                                            dataVec.NativePtr,
-                                                                            NativeMethods.MatrixElementType.UInt32,
-                                                                            labelVec.NativePtr);
+                var ret = NativeMethods.LossMmod_trainer_test_one_step(trainer.Type,
+                                                                       trainer.NativePtr,
+                                                                       dataElementTypes.ToNativeMatrixElementType(),
+                                                                       dataVec.NativePtr,
+                                                                       NativeMethods.MatrixElementType.UInt32,
+                                                                       labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -297,12 +293,12 @@ namespace DlibDotNet.Dnn
             using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
             using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))
             {
-                var ret = NativeMethods.dnn_trainer_loss_mmod_train(trainer.NativePtr,
-                                                                    trainer.Type,
-                                                                    dataElementTypes.ToNativeMatrixElementType(),
-                                                                    dataVec.NativePtr,
-                                                                    NativeMethods.MatrixElementType.UInt32,
-                                                                    labelVec.NativePtr);
+                var ret = NativeMethods.LossMmod_trainer_train(trainer.Type,
+                                                               trainer.NativePtr,
+                                                               dataElementTypes.ToNativeMatrixElementType(),
+                                                               dataVec.NativePtr,
+                                                               NativeMethods.MatrixElementType.UInt32,
+                                                               labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -342,12 +338,12 @@ namespace DlibDotNet.Dnn
             using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
             using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))
             {
-                var ret = NativeMethods.dnn_trainer_loss_mmod_train_one_step(trainer.NativePtr,
-                                                                             trainer.Type,
-                                                                             dataElementTypes.ToNativeMatrixElementType(),
-                                                                             dataVec.NativePtr,
-                                                                             NativeMethods.MatrixElementType.UInt32,
-                                                                             labelVec.NativePtr);
+                var ret = NativeMethods.LossMmod_trainer_train_one_step(trainer.Type,
+                                                                        trainer.NativePtr,
+                                                                        dataElementTypes.ToNativeMatrixElementType(),
+                                                                        dataVec.NativePtr,
+                                                                        NativeMethods.MatrixElementType.UInt32,
+                                                                        labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -362,7 +358,7 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            NativeMethods.loss_mmod_input_layer(this.NativePtr, this.NetworkType, out var ret);
+            NativeMethods.LossMmod_get_input_layer(this.NetworkType, this.NativePtr, out var ret);
             layer.NativePtr = ret;
 
             return true;
@@ -380,7 +376,7 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.loss_mmod_delete(this.NativePtr, this.NetworkType);
+            NativeMethods.LossMmod_delete(this.NetworkType, this.NativePtr);
         }
 
         public override string ToString()
@@ -392,7 +388,7 @@ namespace DlibDotNet.Dnn
             try
             {
                 ofstream = NativeMethods.ostringstream_new();
-                var ret = NativeMethods.loss_mmod_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
+                var ret = NativeMethods.LossMmod_operator_left_shift(this.NetworkType, this.NativePtr, ofstream);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.OK:
@@ -443,7 +439,7 @@ namespace DlibDotNet.Dnn
 
                 this._Parent = parent;
 
-                var err = NativeMethods.loss_mmod_subnet(parent.NativePtr, parent.NetworkType, out var ret);
+                var err = NativeMethods.LossMmod_subnet(parent.NetworkType, parent.NativePtr, out var ret);
                 this.NativePtr = ret;
             }
 
@@ -456,7 +452,7 @@ namespace DlibDotNet.Dnn
                 get
                 {
                     this._Parent.ThrowIfDisposed();
-                    var tensor = NativeMethods.loss_mmod_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
+                    var tensor = NativeMethods.LossMmod_subnet_get_output(this._Parent.NetworkType, this.NativePtr, out var ret);
                     return new Tensor(tensor);
                 }
             }
@@ -468,8 +464,8 @@ namespace DlibDotNet.Dnn
             public LayerDetails GetLayerDetails()
             {
                 this._Parent.ThrowIfDisposed();
-                var ret = NativeMethods.loss_mmod_subnet_get_layer_details(this.NativePtr, this._Parent.NetworkType, out _);
-                return new LayerDetails(this._Parent, ret);
+                var ret = NativeMethods.LossMmod_subnet_get_layer_details(this._Parent.NetworkType, this.NativePtr, out var value);
+                return new LayerDetails(this._Parent, value);
             }
 
             #region Overrids
@@ -481,7 +477,7 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                NativeMethods.loss_mmod_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+                NativeMethods.LossMmod_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion
@@ -520,7 +516,7 @@ namespace DlibDotNet.Dnn
             public void SetNumFilters(int num)
             {
                 this._Parent.ThrowIfDisposed();
-                var ret = NativeMethods.loss_mmod_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+                var ret = NativeMethods.LossMmod_layer_details_set_num_filters(this._Parent.NetworkType, this.NativePtr, num);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -544,6 +540,33 @@ namespace DlibDotNet.Dnn
 
             #endregion
 
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMmod _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMmod parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
+
+            #endregion
+            
         }
 
         private sealed class Output : OutputLabels<IEnumerable<MModRect>>

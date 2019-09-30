@@ -23,7 +23,7 @@ namespace DlibDotNet.Dnn
         public LossMulticlassLog(int networkType = 0)
         : base(networkType)
         {
-            var ret = NativeMethods.loss_multiclass_log_new(networkType, out var net);
+            var ret = NativeMethods.LossMulticlassLog_new(networkType, out var net);
             if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                 throw new NotSupportNetworkTypeException(networkType);
 
@@ -49,7 +49,7 @@ namespace DlibDotNet.Dnn
             {
                 this.ThrowIfDisposed();
 
-                return NativeMethods.loss_multiclass_log_num_layers(this.NetworkType);
+                return NativeMethods.LossMulticlassLog_get_num_layers(this.NetworkType);
             }
         }
 
@@ -61,18 +61,7 @@ namespace DlibDotNet.Dnn
         {
             this.ThrowIfDisposed();
 
-            NativeMethods.loss_multiclass_log_clean(this.NetworkType);
-        }
-
-        public LossMulticlassLog CloneAs(int networkType)
-        {
-            this.ThrowIfDisposed();
-
-            var ret = NativeMethods.loss_multiclass_log_clone(this.NativePtr, this.NetworkType, networkType, out var net);
-            if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
-                throw new NotSupportNetworkTypeException(networkType);
-
-            return new LossMulticlassLog(net, networkType);
+            NativeMethods.LossMulticlassLog_clean(this.NetworkType, this.NativePtr);
         }
 
         public static LossMulticlassLog Deserialize(string path, int networkType = 0)
@@ -83,10 +72,10 @@ namespace DlibDotNet.Dnn
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.loss_multiclass_log_deserialize(str,
-                                                                      networkType,
-                                                                      out var net,
-                                                                      out var errorMessage);
+            var error = NativeMethods.LossMulticlassLog_deserialize(networkType,
+                                                                    str,
+                                                                    out var net,
+                                                                    out var errorMessage);
             Cuda.ThrowCudaException(error);
             switch (error)
             {
@@ -106,10 +95,10 @@ namespace DlibDotNet.Dnn
 
             deserialize.ThrowIfDisposed();
 
-            var error = NativeMethods.loss_multiclass_log_deserialize_proxy(deserialize.NativePtr,
-                                                                            networkType, 
-                                                                            out var net,
-                                                                            out var errorMessage);
+            var error = NativeMethods.LossMulticlassLog_deserialize_proxy(networkType,
+                                                                          deserialize.NativePtr,
+                                                                          out var net,
+                                                                          out var errorMessage);
             Cuda.ThrowCudaException(error);
             switch (error)
             {
@@ -120,6 +109,31 @@ namespace DlibDotNet.Dnn
             }
 
             return new LossMulticlassLog(net, networkType);
+        }
+
+        public string[] GetLabels()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMulticlassLog_get_label(this.NetworkType, this.NativePtr, out var label);
+            if (label == IntPtr.Zero)
+                return null;
+
+            using (var vector = new StdVector<StdString>(label))
+            {
+                var tmp = vector.ToArray();
+                var ret = tmp.Select(s => s.ToString()).ToArray();
+                foreach (var s in tmp) s.Dispose();
+                return ret;
+            }
+        }
+
+        public LossDetails GetLossDetails()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.LossMulticlassLog_get_loss_details(this.NetworkType, this.NativePtr, out var lossDetails);
+            return new LossDetails(this, lossDetails);
         }
 
         public Subnet GetSubnet()
@@ -137,8 +151,10 @@ namespace DlibDotNet.Dnn
 
         internal override void NetToXml(string filename)
         {
+            this.ThrowIfDisposed();
+
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
-            NativeMethods.loss_multiclass_log_net_to_xml(this.NativePtr, this.NetworkType, fileNameByte);
+            NativeMethods.LossMulticlassLog_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
         }
 
         public OutputLabels<OutputLabelType> Operator<T>(Matrix<T> image, ulong batchSize = 128)
@@ -164,21 +180,71 @@ namespace DlibDotNet.Dnn
 
             images.ThrowIfDisposed();
 
-            using (var vecIn = new StdVector<Matrix<T>>(images))
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
+
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMulticlassLog_operator_matrixs(this.NetworkType,
+                                                                       this.NativePtr,
+                                                                       imageType.ToNativeMatrixElementType(),
+                                                                       array,
+                                                                       array.Length,
+                                                                       templateRows,
+                                                                       templateColumns,
+                                                                       (uint)batchSize,
+                                                                       out var vecOut);
+
+            Cuda.ThrowCudaException(ret);
+            switch (ret)
             {
-                Matrix<T>.TryParse<T>(out var imageType);
-                var templateRows = images.First().TemplateRows;
-                var templateColumns = images.First().TemplateColumns;
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"{imageType} is not supported.");
+            }
 
-                var ret = NativeMethods.loss_multiclass_log_operator_matrixs(this.NativePtr,
-                                                                             this.NetworkType,
-                                                                             imageType.ToNativeMatrixElementType(),
-                                                                             vecIn.NativePtr,
-                                                                             templateRows,
-                                                                             templateColumns,
-                                                                             batchSize,
-                                                                             out var vecOut);
+            return new Output(vecOut);
+        }
 
+        public IEnumerable<float[]> Probability<T>(Matrix<T> image, ulong batchSize = 128)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            return this.Probability(new[] { image }, batchSize);
+        }
+
+        public IEnumerable<float[]> Probability<T>(IEnumerable<Matrix<T>> images, ulong batchSize = 128)
+            where T : struct
+        {
+            if (images == null)
+                throw new ArgumentNullException(nameof(images));
+            if (!images.Any())
+                throw new ArgumentException();
+            if (images.Any(matrix => matrix == null))
+                throw new ArgumentException();
+
+            images.ThrowIfDisposed();
+
+            Matrix<T>.TryParse<T>(out var imageType);
+            var templateRows = images.First().TemplateRows;
+            var templateColumns = images.First().TemplateColumns;
+
+            var array = images.Select(matrix => matrix.NativePtr).ToArray();
+            var ret = NativeMethods.LossMulticlassLog_probability(this.NetworkType,
+                                                                  this.NativePtr,
+                                                                  imageType.ToNativeMatrixElementType(),
+                                                                  array,
+                                                                  array.Length,
+                                                                  templateRows,
+                                                                  templateColumns,
+                                                                  (uint)batchSize,
+                                                                  out var vecOut);
+
+            using (var vector = new StdVector<float>(vecOut))
+            {
                 Cuda.ThrowCudaException(ret);
                 switch (ret)
                 {
@@ -186,7 +252,15 @@ namespace DlibDotNet.Dnn
                         throw new ArgumentException($"{imageType} is not supported.");
                 }
 
-                return new Output(vecOut);
+                var probabilityArray = vector.ToArray();
+                var batches = probabilityArray.Length;
+                var classes = probabilityArray.Length / batches;
+
+                var probability = new List<float[]>(Enumerable.Range(0, probabilityArray.Length).Select<int, float[]>(i => null));
+                for (var index = 0; index < batches; index++)
+                    probability[index] = probabilityArray.Skip(index * classes).Take(classes).ToArray();
+
+                return probability;
             }
         }
 
@@ -200,7 +274,7 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.loss_multiclass_log_serialize(net.NativePtr, net.NetworkType, str, out var errorMessage);
+            var error = NativeMethods.LossMulticlassLog_serialize(net.NetworkType, net.NativePtr, str, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -230,12 +304,12 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_test_one_step(trainer.NativePtr,
-                                                                                      trainer.Type,
-                                                                                      dataElementTypes.ToNativeMatrixElementType(),
-                                                                                      dataVec.NativePtr,
-                                                                                      NativeMethods.MatrixElementType.UInt32,
-                                                                                      labelVec.NativePtr);
+                var ret = NativeMethods.LossMulticlassLog_trainer_test_one_step(trainer.Type,
+                                                                                trainer.NativePtr,
+                                                                                dataElementTypes.ToNativeMatrixElementType(),
+                                                                                dataVec.NativePtr,
+                                                                                NativeMethods.MatrixElementType.UInt32,
+                                                                                labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -273,12 +347,12 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train(trainer.NativePtr,
-                                                                              trainer.Type,
-                                                                              dataElementTypes.ToNativeMatrixElementType(),
-                                                                              dataVec.NativePtr,
-                                                                              NativeMethods.MatrixElementType.UInt32,
-                                                                              labelVec.NativePtr);
+                var ret = NativeMethods.LossMulticlassLog_trainer_train(trainer.Type,
+                                                                        trainer.NativePtr,
+                                                                        dataElementTypes.ToNativeMatrixElementType(),
+                                                                        dataVec.NativePtr,
+                                                                        NativeMethods.MatrixElementType.UInt32,
+                                                                        labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -316,12 +390,12 @@ namespace DlibDotNet.Dnn
             using (var dataVec = new StdVector<Matrix<T>>(data))
             using (var labelVec = new StdVector<uint>(label))
             {
-                var ret = NativeMethods.dnn_trainer_loss_multiclass_log_train_one_step(trainer.NativePtr,
-                                                                                       trainer.Type,
-                                                                                       dataElementTypes.ToNativeMatrixElementType(),
-                                                                                       dataVec.NativePtr,
-                                                                                       NativeMethods.MatrixElementType.UInt32,
-                                                                                       labelVec.NativePtr);
+                var ret = NativeMethods.LossMulticlassLog_trainer_train_one_step(trainer.Type,
+                                                                                 trainer.NativePtr,
+                                                                                 dataElementTypes.ToNativeMatrixElementType(),
+                                                                                 dataVec.NativePtr,
+                                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                                 labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
                 switch (ret)
@@ -344,7 +418,7 @@ namespace DlibDotNet.Dnn
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.loss_multiclass_log_delete(this.NativePtr, this.NetworkType);
+            NativeMethods.LossMulticlassLog_delete(this.NetworkType, this.NativePtr);
         }
 
         public override string ToString()
@@ -356,7 +430,7 @@ namespace DlibDotNet.Dnn
             try
             {
                 ofstream = NativeMethods.ostringstream_new();
-                var ret = NativeMethods.loss_multiclass_log_operator_left_shift(this.NativePtr, this.NetworkType, ofstream);
+                var ret = NativeMethods.LossMulticlassLog_operator_left_shift(this.NetworkType, this.NativePtr, ofstream);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.OK:
@@ -407,7 +481,7 @@ namespace DlibDotNet.Dnn
 
                 this._Parent = parent;
 
-                var err = NativeMethods.loss_multiclass_log_subnet(parent.NativePtr, parent.NetworkType, out var ret);
+                var err = NativeMethods.LossMulticlassLog_subnet(parent.NetworkType, parent.NativePtr, out var ret);
                 this.NativePtr = ret;
             }
 
@@ -420,7 +494,7 @@ namespace DlibDotNet.Dnn
                 get
                 {
                     this._Parent.ThrowIfDisposed();
-                    var tensor = NativeMethods.loss_multiclass_log_subnet_get_output(this.NativePtr, this._Parent.NetworkType, out var ret);
+                    var tensor = NativeMethods.LossMulticlassLog_subnet_get_output(this._Parent.NetworkType, this.NativePtr, out var ret);
                     return new Tensor(tensor);
                 }
             }
@@ -432,8 +506,8 @@ namespace DlibDotNet.Dnn
             public LayerDetails GetLayerDetails()
             {
                 this._Parent.ThrowIfDisposed();
-                var ret = NativeMethods.loss_multiclass_log_subnet_get_layer_details(this.NativePtr, this._Parent.NetworkType, out _);
-                return new LayerDetails(this._Parent, ret);
+                var ret = NativeMethods.LossMulticlassLog_subnet_get_layer_details( this._Parent.NetworkType, this.NativePtr, out var value);
+                return new LayerDetails(this._Parent, value);
             }
 
             #region Overrids
@@ -445,7 +519,7 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                NativeMethods.loss_multiclass_log_subnet_delete(this._Parent.NetworkType, this.NativePtr);
+                NativeMethods.LossMulticlassLog_subnet_delete(this._Parent.NetworkType, this.NativePtr);
             }
 
             #endregion
@@ -484,7 +558,7 @@ namespace DlibDotNet.Dnn
             public void SetNumFilters(int num)
             {
                 this._Parent.ThrowIfDisposed();
-                var ret = NativeMethods.loss_multiclass_log_layer_details_set_num_filters(this.NativePtr, this._Parent.NetworkType, num);
+                var ret = NativeMethods.LossMulticlassLog_layer_details_set_num_filters(this._Parent.NetworkType, this.NativePtr, num);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -505,6 +579,33 @@ namespace DlibDotNet.Dnn
             }
 
             #endregion
+
+            #endregion
+
+        }
+
+        public sealed class LossDetails : DlibObject
+        {
+
+            #region Fields
+
+            private readonly LossMulticlassLog _Parent;
+
+            #endregion
+
+            #region Constructors
+
+            internal LossDetails(LossMulticlassLog parent, IntPtr ptr)
+                : base(false)
+            {
+                if (parent == null)
+                    throw new ArgumentNullException(nameof(parent));
+
+                parent.ThrowIfDisposed();
+
+                this._Parent = parent;
+                this.NativePtr = ptr;
+            }
 
             #endregion
 

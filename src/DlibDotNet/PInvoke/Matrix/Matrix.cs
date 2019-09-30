@@ -27,6 +27,13 @@ namespace DlibDotNet
                                                    out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType matrix_new5(MatrixElementType matrixElementType,
+                                                   uint templateRows,
+                                                   uint templateColumns,
+                                                   IntPtr vector,
+                                                   out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

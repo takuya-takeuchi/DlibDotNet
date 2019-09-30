@@ -250,6 +250,7 @@ DLLEXPORT void stdvector_stdvector_##__TYPENAME__##_copy(std::vector<std::vector
 MAKE_FUNC(int32_t, int32)
 MAKE_FUNC(uint32_t, uint32)
 MAKE_FUNC(int64_t, long)
+MAKE_FUNC(float, float)
 MAKE_FUNC(double, double)
 
 MAKE_FUNC_POINTER_WITH_DELETE(dlib::rectangle, rectangle)

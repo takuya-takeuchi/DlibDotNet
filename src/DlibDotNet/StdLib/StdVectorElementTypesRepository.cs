@@ -24,6 +24,7 @@ namespace DlibDotNet
                 new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
                 new { Type = typeof(uint),                                 ElementType = ElementTypes.UInt32 },
                 new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
+                new { Type = typeof(float),                                ElementType = ElementTypes.Float  },
                 new { Type = typeof(double),                               ElementType = ElementTypes.Double  },
                 new { Type = typeof(Rectangle),                            ElementType = ElementTypes.Rectangle },
                 new { Type = typeof(Point),                                ElementType = ElementTypes.Point },
@@ -62,6 +63,8 @@ namespace DlibDotNet
             UInt32,
 
             Long,
+
+            Float,
 
             Double,
 

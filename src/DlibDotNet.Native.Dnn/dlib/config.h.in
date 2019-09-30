@@ -28,4 +28,13 @@ DLLEXPORT bool is_support_gui()
 #endif
 }
 
+DLLEXPORT bool is_support_cuda()
+{
+#ifdef DLIB_USE_CUDA
+    return true;
+#else
+    return false;
+#endif
+}
+
 #endif
