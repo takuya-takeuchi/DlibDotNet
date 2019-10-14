@@ -2,6 +2,7 @@
 #define _CPP_SVM_FEATURE_RANKING_H_
 
 #include "../export.h"
+#include <dlib/svm.h>
 #include <dlib/svm/feature_ranking.h>
 #include "template.h"
 #include "../shared.h"
