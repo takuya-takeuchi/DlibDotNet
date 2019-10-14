@@ -24,12 +24,33 @@ $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target =
 $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
 #$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 32; RID = "$OperatingSystem-x86";   CUDA = 0   }
 
+#https://docs.nvidia.com/cuda/archive/9.2/cuda-installation-guide-mac-os-x/index.html
+#https://docs.nvidia.com/cuda/archive/10.0/cuda-installation-guide-mac-os-x/index.html
+#https://docs.nvidia.com/cuda/cuda-installation-guide-mac-os-x/index.html
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
+
 foreach($BuildTarget in $BuildTargets)
 {
    $platform = $BuildTarget.Platform
    $target = $BuildTarget.Target
    $architecture = $BuildTarget.Architecture
    $rid = $BuildTarget.RID
+   $cudaVersion = $BuildTarget.CUDA
+
+   if ($target -eq "cpu")
+   {
+      $option = ""
+   }
+   elseif ($target -eq "mkl")
+   {
+      $option = $IntelMKLDir
+   }
+   else
+   {
+      $option = $cudaVersion
+   }
 
    $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, $platform, $option)
    $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()

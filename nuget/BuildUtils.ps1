@@ -47,6 +47,15 @@ class Config
       101 = "CUDA_PATH_V10_1"
    }
 
+   $CudaVersionOSXHash =
+   @{
+      90 = "/Developer/NVIDIA/CUDA-9.0";
+      91 = "/Developer/NVIDIA/CUDA-9.1";
+      92 = "/Developer/NVIDIA/CUDA-9.2";
+      100 = "/Developer/NVIDIA/CUDA-10.0";
+      101 = "/Developer/NVIDIA/CUDA-10.1"
+   }
+
    $VisualStudio = "Visual Studio 15 2017"
    
    static $BuildLibraryWindowsHash = 
@@ -408,13 +417,24 @@ class Config
 
    [string] GetCUDAPath()
    {
-      # CUDA_PATH_V10_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0
-      # CUDA_PATH_V10_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1
-      # CUDA_PATH_V9_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0
-      # CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1
-      # CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2
-      $version = $this.CudaVersionHash[$this._CudaVersion]      
-      return [environment]::GetEnvironmentVariable($version, 'Machine')
+      if ($global:IsWindows)
+      {
+         # CUDA_PATH_V10_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0
+         # CUDA_PATH_V10_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1
+         # CUDA_PATH_V9_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0
+         # CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1
+         # CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2
+         $version = $this.CudaVersionHash[$this._CudaVersion]      
+         return [environment]::GetEnvironmentVariable($version, 'Machine')
+      }
+      elseif ($global:IsMacOS)
+      {
+         return $this.CudaVersionOSXHash[$this._CudaVersion]  
+      }
+      else
+      {
+         return ""
+      }
    }
 
    [string] GetAVXINSTRUCTIONS()
@@ -504,6 +524,40 @@ function ConfigCUDA([Config]$Config)
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
+   }
+   elseif ($global:IsMacOS)
+   {
+      $cudaPath = $Config.GetCUDAPath()
+      if (!(Test-Path $cudaPath))
+      {
+         Write-Host "Error: '${cudaPath}' does not found" -ForegroundColor Red
+         exit -1
+      }
+
+      $env:CUDA_PATH="${cudaPath}"
+      Write-Host "Info: CUDA_PATH: ${env:CUDA_PATH}" -ForegroundColor Green
+
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
+      cmake -D DLIB_USE_CUDA=ON `
+            -D DLIB_USE_BLAS=OFF `
+            -D DLIB_USE_LAPACK=OFF `
+            -D LIBPNG_IS_GOOD=OFF  `
+            -D PNG_FOUND=OFF `
+            -D PNG_LIBRARY_RELEASE="" `
+            -D PNG_LIBRARY_DEBUG="" `
+            -D PNG_PNG_INCLUDE_DIR="" `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+            -D CUDA_TOOLKIT_ROOT_DIR=${cudaPath} `
+            -D CUDA_NVCC_EXECUTABLE="${cudaPath}/bin/nvcc" `
+            -D CUDA_INCLUDE_DIRS="${cudaPath}/include" `
+            -D CUDA_CUDART_LIBRARY="${cudaPath}/lib" `
+            ..
+
    }
    else
    {
