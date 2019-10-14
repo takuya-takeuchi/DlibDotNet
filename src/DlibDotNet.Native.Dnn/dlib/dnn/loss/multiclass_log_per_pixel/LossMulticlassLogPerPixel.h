@@ -123,9 +123,12 @@ protected:
             out_data.push_back(mat);
         }
 
-        std::vector<LABEL_ELEMENT>& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT>*>(labels));
+        std::vector<LABEL_ELEMENT*>& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT*>*>(labels));
         for (size_t i = 0; i< tmp_label.size(); i++)
-            out_labels.push_back(tmp_label[i]);
+        {
+            auto& label = *tmp_label[i];
+            out_labels.push_back(label);
+        }
     }
 };
 
