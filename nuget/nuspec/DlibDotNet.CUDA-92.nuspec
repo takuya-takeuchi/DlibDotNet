@@ -33,6 +33,8 @@ Requirements: Visual C++ 2017 Redistributable Package, cublas64_92.dll, cudnn64_
     <file src="..\artifacts\cuda-92\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
     <file src="..\artifacts\cuda-92\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
     <file src="..\artifacts\cuda-92\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\cuda-92\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cuda-92\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
 
     <!--
     <file src="..\artifacts\cuda-92\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />

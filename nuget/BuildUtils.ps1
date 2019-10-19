@@ -349,6 +349,10 @@ class Config
       {
          $osname = $os
       }
+      elseif ($env:TARGETRID -ne "")
+      {
+         $osname = $env:TARGETRID
+      }
       else
       {
          $osname = $this.GetOSName()
