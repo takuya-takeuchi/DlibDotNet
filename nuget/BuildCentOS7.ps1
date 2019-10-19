@@ -30,11 +30,11 @@ $BuildSourceHash = [Config]::GetBinaryLibraryLinuxHash()
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
 # $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cpu";  Architecture = 32; Postfix = "/x86"; RID = "$OperatingSystem-x86";   CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 64; Postfix = "/x64"; RID = "$OperatingSystem-x64";   CUDA = 0   }
 # $BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "mkl";  Architecture = 32; Postfix = "/x86"; RID = "$OperatingSystem-x86";   CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 92  }
-#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 100 }
-#$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 101 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 92  }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 100 }
+$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "cuda"; Architecture = 64; Postfix = "";     RID = "$OperatingSystem-x64";   CUDA = 101 }
 #$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "arm";  Architecture = 64; Postfix = "64";   RID = "$OperatingSystem-arm64"; CUDA = 0   }
 #$BuildTargets += New-Object PSObject -Property @{ Platform = "desktop"; Target = "arm";  Architecture = 32; Postfix = "";     RID = "$OperatingSystem-arm";   CUDA = 0   }
 
