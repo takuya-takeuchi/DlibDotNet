@@ -6,5 +6,5 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 RUN yum update -y && yum install -y \
     libX11-devel \
     lapack-devel \
-    openblas-devell \
+    openblas-devel \
  && yum clean all
