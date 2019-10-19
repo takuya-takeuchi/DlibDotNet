@@ -22,4 +22,5 @@ groupmod -g $GROUP_ID $NON_ROOT_USER
 export HOME=/home/$NON_ROOT_USER
 
 cd ${DDNROOT}/src/${Source}
+export TARGETRID=centos
 exec  /usr/local/bin/gosu $NON_ROOT_USER pwsh Build.ps1 ${CONFIG} ${TARGET} ${ARCH} ${PLATFORM} ${OPTION}
