@@ -126,6 +126,10 @@ function RunTest($BuildTargets)
             }
          }
       }
+      else
+      {
+         $dotnetPath = "dotnet"
+      }
 
       & ${dotnetPath} test -c Release -r "$TestDir" -p:RuntimeIdentifier=$RuntimeIdentifier --logger trx
       if ($lastexitcode -eq 0) {
