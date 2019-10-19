@@ -8,5 +8,3 @@ RUN yum update -y && yum install -y \
     lapack-devel \
     openblas-devell \
  && yum clean all
-
-ENV TARGETRID centos
