@@ -28,6 +28,11 @@ DLLEXPORT double rand_get_random_double(dlib::rand* obj)
     return obj->get_random_double();
 }
 
+DLLEXPORT unsigned char rand_get_random_8bit_number(dlib::rand* obj)
+{
+    return obj->get_random_8bit_number();
+}
+
 DLLEXPORT uint32_t rand_get_random_32bit_number(dlib::rand* obj)
 {
     return obj->get_random_32bit_number();

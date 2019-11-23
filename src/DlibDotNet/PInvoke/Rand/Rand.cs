@@ -21,6 +21,9 @@ namespace DlibDotNet
         public static extern double rand_get_random_double(IntPtr rand);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern byte rand_get_random_8bit_number(IntPtr rand);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern uint rand_get_random_32bit_number(IntPtr rand);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

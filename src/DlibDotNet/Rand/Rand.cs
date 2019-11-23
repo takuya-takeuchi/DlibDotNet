@@ -29,6 +29,12 @@ namespace DlibDotNet
             return NativeMethods.rand_get_random_double(this.NativePtr);
         }
 
+        public byte GetRandom8BitNumber()
+        {
+            this.ThrowIfDisposed();
+            return NativeMethods.rand_get_random_8bit_number(this.NativePtr);
+        }
+
         public uint GetRandom32BitNumber()
         {
             this.ThrowIfDisposed();
