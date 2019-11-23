@@ -55,6 +55,16 @@ namespace DlibDotNet
 
         #region Rectangle
 
+        public static Point Center(Rectangle rectangle)
+        {
+            return rectangle.Center;
+        }
+
+        public static DPoint Center(DRectangle rectangle)
+        {
+            return rectangle.Center;
+        }
+
         public static Rectangle CenteredRect(int x, int y, uint width, uint height)
         {
             return Rectangle.CenteredRect(x, y, width, height);
