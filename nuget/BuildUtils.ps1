@@ -345,11 +345,11 @@ class Config
 
    [string] GetBuildDirectoryName([string]$os="")
    {
-      if ($os)
+      if (![string]::IsNullOrEmpty($os))
       {
          $osname = $os
       }
-      elseif ($env:TARGETRID -ne "")
+      elseif (![string]::IsNullOrEmpty($env:TARGETRID))
       {
          $osname = $env:TARGETRID
       }
