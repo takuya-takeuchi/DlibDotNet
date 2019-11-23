@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DlibDotNet\DlibDotNet.csproj" />
+    <ProjectReference Include="..\PascalVOC2012\PascalVOC2012.csproj" />
   </ItemGroup>
 
 </Project>

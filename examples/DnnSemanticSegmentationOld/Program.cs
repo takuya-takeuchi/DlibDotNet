@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using DlibDotNet;
 using DlibDotNet.Dnn;
-using DnnSemanticSegmentation;
 
 namespace DnnSemanticSegmentationOld
 {
@@ -86,19 +85,6 @@ namespace DnnSemanticSegmentationOld
             }
         }
 
-        // Given an index in the range [0, 20], find the corresponding PASCAL VOC2012 class
-        // (e.g., 'dog').
-        private static Voc2012Class FindVoc2012Class(ushort indexLabel)
-        {
-            return Common.FindVoc2012Class(@class => @class.Index == indexLabel);
-        }
-
-        // Convert an index in the range [0, 20] to a corresponding RGB class label.
-        private static RgbPixel IndexLabelToRgbLabel(ushort indexLabel)
-        {
-            return FindVoc2012Class(indexLabel).RgbLabel;
-        }
-
         // Convert an image containing indexes in the range [0, 20] to a corresponding
         // image containing RGB class labels.
         private static Matrix<RgbPixel> IndexLabelImageToRgbLabelImage(Matrix<ushort> indexLabelImage)
@@ -109,7 +95,7 @@ namespace DnnSemanticSegmentationOld
             var rgbLabelImage = new Matrix<RgbPixel>(nr, nc);
             for (var r = 0; r < nr; ++r)
                 for (var c = 0; c < nc; ++c)
-                    rgbLabelImage[r, c] = IndexLabelToRgbLabel(indexLabelImage[r, c]);
+                    rgbLabelImage[r, c] = PascalVOC2012.IndexLabelToRgbLabel(indexLabelImage[r, c]);
 
             return rgbLabelImage;
         }
@@ -120,7 +106,7 @@ namespace DnnSemanticSegmentationOld
             var nr = indexLabelImage.Rows;
             var nc = indexLabelImage.Columns;
 
-            var counters = new uint[Common.ClassCount];
+            var counters = new uint[PascalVOC2012.ClassCount];
             for (var r = 0; r < nr; ++r)
                 for (var c = 0; c < nc; ++c)
                 {
@@ -131,7 +117,7 @@ namespace DnnSemanticSegmentationOld
             var maxValue = counters.ToList().GetRange(1, counters.Length - 1).Max();
             var mostProminentIndexLabel = counters.ToList().FindIndex(1, counters.Length - 1, u => u == maxValue);
 
-            return FindVoc2012Class((ushort)mostProminentIndexLabel).ClassLabel;
+            return PascalVOC2012.FindVoc2012Class((ushort)mostProminentIndexLabel).ClassLabel;
         }
 
     }

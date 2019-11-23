@@ -45,7 +45,7 @@ namespace DnnSemanticSegmentationTrainOld
 
                 Console.WriteLine("\nSCANNING PASCAL VOC2012 DATASET\n");
 
-                var listing = GetPascalVoc2012TrainListing(args[0]).ToArray();
+                var listing = PascalVOC2012.GetPascalVoc2012TrainListing(args[0]).ToArray();
                 Console.WriteLine($"images in dataset: {listing.Length}");
                 if (listing.Length == 0)
                 {
@@ -101,7 +101,7 @@ namespace DnnSemanticSegmentationTrainOld
                                             // Convert the indexes to RGB values.
                                             using (var indexLabelImage = new Matrix<ushort>())
                                             {
-                                                RgbLabelImageToIndexLabelImage(rgbLabelImage, indexLabelImage);
+                                                PascalVOC2012.RgbLabelImageToIndexLabelImage(rgbLabelImage, indexLabelImage);
 
                                                 // Randomly pick a part of the image.
                                                 var temp = new TrainingSample();
@@ -169,8 +169,8 @@ namespace DnnSemanticSegmentationTrainOld
                         Console.WriteLine("Testing the network...");
 
                         // Find the accuracy of the newly trained network on both the training and the validation sets.
-                        Console.WriteLine($"train accuracy  :  {CalculateAccuracy(anet, GetPascalVoc2012TrainListing(args[0]))}");
-                        Console.WriteLine($"val accuracy    :  {CalculateAccuracy(anet, GetPascalVoc2012ValListing(args[0]))}");
+                        Console.WriteLine($"train accuracy  :  {CalculateAccuracy(anet, PascalVOC2012.GetPascalVoc2012TrainListing(args[0]))}");
+                        Console.WriteLine($"val accuracy    :  {CalculateAccuracy(anet, PascalVOC2012.GetPascalVoc2012ValListing(args[0]))}");
                     }
                 }
             }
@@ -208,7 +208,7 @@ namespace DnnSemanticSegmentationTrainOld
                             // Convert the indexes to RGB values.
                             using (var indexLabelImage = new Matrix<ushort>())
                             {
-                                RgbLabelImageToIndexLabelImage(rgbLabelImage, indexLabelImage);
+                                PascalVOC2012.RgbLabelImageToIndexLabelImage(rgbLabelImage, indexLabelImage);
 
                                 // Crop the net output to be exactly the same size as the input.
                                 using (var chipDims = new ChipDims((uint)inputImage.Rows, (uint)inputImage.Columns))
@@ -247,62 +247,7 @@ namespace DnnSemanticSegmentationTrainOld
             // Return the accuracy estimate.
             return numRight / (double)(numRight + numWrong);
         }
-
-        // The PASCAL VOC2012 dataset contains 20 ground-truth classes + background.  Each class
-        // is represented using an RGB color value.  We associate each class also to an index in the
-        // range [0, 20], used internally by the network.  To convert the ground-truth data to
-        // something that the network can efficiently digest, we need to be able to map the RGB
-        // values to the corresponding indexes.
-        // Given an RGB representation, find the corresponding PASCAL VOC2012 class
-        // (e.g., 'dog').
-        private static Voc2012Class FindVoc2012Class(RgbPixel rgbLabel)
-        {
-            return Common.FindVoc2012Class(@class => rgbLabel == @class.RgbLabel);
-        }
-
-        // Read the list of image files belong to the "train" set of the PASCAL VOC2012 data.
-        private static IEnumerable<ImageInfo> GetPascalVoc2012TrainListing(string voc2012Folder)
-        {
-            return GetPascalVoc2012Listing(voc2012Folder, "train");
-        }
-
-        // Read the list of image files belong to the "val" set of the PASCAL VOC2012 data.
-        private static IEnumerable<ImageInfo> GetPascalVoc2012ValListing(string voc2012Folder)
-        {
-            return GetPascalVoc2012Listing(voc2012Folder, "val");
-        }
-
-        // Read the list of image files belonging to either the "train", "trainval", or "val" set
-        // of the PASCAL VOC2012 data.
-        private static IEnumerable<ImageInfo> GetPascalVoc2012Listing(string voc2012Folder,
-                                                                      string file = "train" // "train", "trainval", or "val"
-        )
-        {
-            var tst = Path.Combine(voc2012Folder, "ImageSets", "Segmentation", $"{file}.txt");
-            var results = new List<ImageInfo>();
-
-            using (var fs = new FileStream(tst, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var sr = new StreamReader(fs))
-            {
-                while (!sr.EndOfStream)
-                {
-                    var basename = sr.ReadLine();
-                    if (string.IsNullOrEmpty(basename))
-                        continue;
-
-                    var imageInfo = new ImageInfo
-                    {
-                        ImageFilename = Path.Combine(voc2012Folder, "JPEGImages", $"{basename}.jpg"),
-                        LabelFilename = Path.Combine(voc2012Folder, "SegmentationClass", $"{basename}.png")
-                    };
-
-                    results.Add(imageInfo);
-                }
-            }
-
-            return results;
-        }
-
+        
         private static Rectangle MakeRandomCroppingRectResNet(Matrix<RgbPixel> img, Rand rnd)
         {
             // figure out what rectangle we want to crop from the image
@@ -347,26 +292,6 @@ namespace DnnSemanticSegmentationTrainOld
                 // And then randomly adjust the colors.
                 Dlib.ApplyRandomColorOffset(crop.InputImage, rnd);
             }
-        }
-
-        // Convert an RGB class label to an index in the range [0, 20].
-        private static ushort RgbLabelToIndexLabel(RgbPixel rgbLabel)
-        {
-            return FindVoc2012Class(rgbLabel).Index;
-        }
-
-        // Convert an image containing RGB class labels to a corresponding
-        // image containing indexes in the range [0, 20].
-        private static void RgbLabelImageToIndexLabelImage(Matrix<RgbPixel> rgbLabelImage, Matrix<ushort> indexLabelImage)
-        {
-            var nr = rgbLabelImage.Rows;
-            var nc = rgbLabelImage.Columns;
-
-            indexLabelImage.SetSize(nr, nc);
-
-            for (var r = 0; r < nr; ++r)
-                for (var c = 0; c < nc; ++c)
-                    indexLabelImage[r, c] = RgbLabelToIndexLabel(rgbLabelImage[r, c]);
         }
 
         #endregion
