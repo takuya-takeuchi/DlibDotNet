@@ -17,11 +17,20 @@ using namespace std;
 #define draw_line_template(__TYPE__, error, type, ...) \
 dlib::draw_line(*((array2d<__TYPE__>*)image), *p1, *p2, *((__TYPE__*)p));
 
+#define draw_line_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+dlib::draw_line(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image), *p1, *p2, *((__TYPE__*)p));
+
 #define draw_rectangle_template(__TYPE__, error, type, ...) \
 dlib::draw_rectangle(*((array2d<__TYPE__>*)image), *rect, *((__TYPE__*)p), thickness);
 
+#define draw_rectangle_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+dlib::draw_rectangle(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image), *rect, *((__TYPE__*)p), thickness);
+
 #define fill_rect_template(__TYPE__, error, type, ...) \
 dlib::fill_rect(*((array2d<__TYPE__>*)image), *rect, *((__TYPE__*)p));
+
+#define fill_rect_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+dlib::fill_rect(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image), *rect, *((__TYPE__*)p));
 
 #define tile_images_template(__TYPE__, error, type, ...) \
 auto& img = *((dlib::array<dlib::array2d<__TYPE__>>*)images);\
@@ -44,7 +53,7 @@ DLLEXPORT int draw_line(array2d_type type,
                         dlib::point* p1,
                         dlib::point* p2,
                         void* p)
- {
+{
     int error = ERR_OK;
 
     array2d_template(type,
@@ -56,16 +65,37 @@ DLLEXPORT int draw_line(array2d_type type,
                      p);
 
     return error;
- }
+}
 
- DLLEXPORT int draw_rectangle(array2d_type type,
-                              void* image,
-                              dlib::rectangle* rect,
-                              void* p,
-                              unsigned int thickness)
- {
+DLLEXPORT int draw_line_matrix(matrix_element_type type,
+                               void* image,
+                               dlib::point* p1,
+                               dlib::point* p2,
+                               void* p)
+{
     int error = ERR_OK;
+    
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    draw_line_matrix_template,
+                    0,
+                    0,
+                    image,
+                    p1,
+                    p2,
+                    p);
 
+    return error;
+}
+
+DLLEXPORT int draw_rectangle(array2d_type type,
+                             void* image,
+                             dlib::rectangle* rect,
+                             void* p,
+                             unsigned int thickness)
+{
+    int error = ERR_OK;
     array2d_template(type,
                      error,
                      draw_rectangle_template,
@@ -73,9 +103,30 @@ DLLEXPORT int draw_line(array2d_type type,
                      rect,
                      p,
                      thickness);
+    return error;
+}
+
+DLLEXPORT int draw_rectangle_matrix(matrix_element_type type,
+                                    void* image,
+                                    dlib::rectangle* rect,
+                                    void* p,
+                                    unsigned int thickness)
+{
+    int error = ERR_OK;
+    
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    draw_rectangle_matrix_template,
+                    0,
+                    0,
+                    image,
+                    rect,
+                    p,
+                    thickness);
 
     return error;
- }
+}
 
 DLLEXPORT int fill_rect(array2d_type type,
                         void* image,
@@ -90,6 +141,26 @@ DLLEXPORT int fill_rect(array2d_type type,
                      image,
                      rect,
                      p);
+
+    return error;
+}
+
+DLLEXPORT int fill_rect_matrix(matrix_element_type type,
+                               void* image,
+                               dlib::rectangle* rect,
+                               void* p)
+{
+    int error = ERR_OK;
+    
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    fill_rect_matrix_template,
+                    0,
+                    0,
+                    image,
+                    rect,
+                    p);
 
     return error;
 }
