@@ -14,11 +14,6 @@ using namespace std;
 
 extern std::map<int, LossMulticlassLogPerPixelBase*> LossMulticlassLogPerPixelRegistry;
 
-MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixelNet,   net_type,    matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::UInt16, loss_multiclass_log_per_pixel_train_label_type, 0)
-MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixel,      anet_type,   matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::UInt16, loss_multiclass_log_per_pixel_train_label_type, 1)
-MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixelUBNet, ubnet_type,  matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::UInt16, loss_multiclass_log_per_pixel_train_label_type, 2)
-MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(LossMulticlassLogPerPixel,      uanet_type,  matrix_element_type::RgbPixel, rgb_pixel, matrix_element_type::UInt16, loss_multiclass_log_per_pixel_train_label_type, 3)
-
 DLLEXPORT int LossMulticlassLogPerPixel_new(const int id, void** ret)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -92,6 +87,24 @@ DLLEXPORT int LossMulticlassLogPerPixel_deserialize_proxy(const int id,
     return LossMulticlassLogPerPixelRegistry[id]->deserialize_proxy(proxy,
                                                                     ret,
                                                                     error_message);
+}
+
+DLLEXPORT int LossMulticlassLogPerPixel_deserialize_proxy_map(const int id,
+                                                              proxy_deserialize* proxy,
+                                                              std::string*** keys,
+                                                              void** values,
+                                                              int* size,
+                                                              std::string** error_message)
+{
+    auto iter = LossMulticlassLogPerPixelRegistry.find(id);
+    if (iter == end(LossMulticlassLogPerPixelRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMulticlassLogPerPixelRegistry[id]->deserialize_proxy_map(proxy,
+                                                                        keys,
+                                                                        values,
+                                                                        size,
+                                                                        error_message);
 }
 
 DLLEXPORT int LossMulticlassLogPerPixel_serialize(const int id,

@@ -31,6 +31,12 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMulticlassLogPerPixel_ubnet_type_create();
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMulticlassLogPerPixel_seg_bnet_type_create();
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMulticlassLogPerPixel_seg_anet_type_create();
+
         #region Loss
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -64,6 +70,14 @@ namespace DlibDotNet
                                                                                    IntPtr proxy,
                                                                                    out IntPtr ret,
                                                                                    out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_deserialize_proxy_map(int id,
+                                                                                       IntPtr proxy,
+                                                                                       out IntPtr keys,
+                                                                                       out IntPtr values,
+                                                                                       out int size,
+                                                                                       out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLogPerPixel_serialize(int id,

@@ -20,6 +20,9 @@ namespace DlibDotNet
         public static extern bool LossMmodRegistry_contains(int id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMmod_net_type_create();
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMmod_net_type_1_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -29,7 +32,10 @@ namespace DlibDotNet
         public static extern IntPtr LossMmod_net_type_3_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr LossMmod_net_type_create();
+        public static extern IntPtr LossMmod_det_bnet_type_create();
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMmod_det_anet_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dnn_output_stdvector_mmod_rect_getItem(IntPtr vector, int index);

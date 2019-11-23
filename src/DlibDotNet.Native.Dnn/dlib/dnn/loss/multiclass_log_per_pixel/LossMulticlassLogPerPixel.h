@@ -52,6 +52,11 @@ public:
     virtual int deserialize_proxy(proxy_deserialize* proxy,
                                   void** ret,
                                   std::string** error_message) override;
+    virtual int deserialize_proxy_map(proxy_deserialize* proxy,
+                                      std::string*** keys,
+                                      void** values,
+                                      int* size,
+                                      std::string** error_message) override;
     virtual int serialize(void* obj,
                           const char* file_name,
                           std::string** error_message) override;

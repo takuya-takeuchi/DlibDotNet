@@ -3,21 +3,21 @@
 
 #include "LossMulticlassLogPerPixel.h"
 #include "defines.h"
-#include "defines.h"
+#include <stdio.h>
 
 extern std::map<int, LossMulticlassLogPerPixelBase*> LossMulticlassLogPerPixelRegistry;
 
 #pragma region template
 
-#define MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(__CLASS__, __NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__)\
+#define MAKE_LOSSMULTICLASSLOGPERPIXEL_FUNC(__CLASS__, __NAMESPACE__, __NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__)\
 DLLEXPORT LossMulticlassLogPerPixelBase* LossMulticlassLogPerPixel_##__NET__##_create()\
 {\
-    return new __CLASS__<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
+    return new __CLASS__<__NAMESPACE__::__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>();\
 }\
 \
 DLLEXPORT void LossMulticlassLogPerPixel_##__NET__##_delete(void* base)\
 {\
-    auto loss = static_cast<__CLASS__<__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
+    auto loss = static_cast<__CLASS__<__NAMESPACE__::__NET__, __MATRIX_ELEMENT__, __ELEMENT__, __LABEL_MATRIX_ELEMENT__, __LABEL_ELEMENT__, __ID__>*>(base);\
     delete loss;\
 }\
 
@@ -131,6 +131,49 @@ int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT
         auto net = new NET();
         p >> (*net);
         *ret = net;
+    }
+    catch (serialization_error& e)
+    {
+        error = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, error);
+    }
+
+    return error;
+}
+
+template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::deserialize_proxy_map(proxy_deserialize* proxy,
+                                                                                                                            std::string*** keys,
+                                                                                                                            void** values,
+                                                                                                                            int* size,
+                                                                                                                            std::string** error_message)
+{
+    int error = ERR_OK;
+
+    try
+    {
+        auto& p = *static_cast<proxy_deserialize*>(proxy);
+        std::map<std::string, NET> dictionary;
+        p >> dictionary;
+
+        const auto tmp_size = dictionary.size();
+        auto tmp_keys = (std::string**)malloc(sizeof(std::string*) * tmp_size);
+        auto tmp_values = (NET**)malloc(sizeof(NET*) * tmp_size);
+
+        int index = 0;
+        for( auto i = dictionary.begin(); i != dictionary.end() ; ++i, ++index )
+        {
+            tmp_keys[index] = new std::string(i->first);
+            tmp_values[index] = new NET(i->second);
+        }
+
+        *keys = tmp_keys;
+        *values = tmp_values;
+        *size = tmp_size;
     }
     catch (serialization_error& e)
     {
@@ -429,7 +472,7 @@ int LossMulticlassLogPerPixelNet<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEM
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
     auto& net = *static_cast<NET*>(obj);
-    *ret = new anet_type(net);
+    *ret = new net::anet_type(net);
     return ERR_OK;
 }
 
@@ -443,7 +486,7 @@ int LossMulticlassLogPerPixelUBNet<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_EL
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
     auto& net = *static_cast<NET*>(obj);
-    *ret = new uanet_type(net);
+    *ret = new unet::uanet_type(net);
     return ERR_OK;
 }
 

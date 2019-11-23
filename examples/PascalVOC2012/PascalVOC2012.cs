@@ -99,6 +99,11 @@ namespace DlibDotNet
             return FindVoc2012Class(@class => @class.Index == indexLabel);
         }
 
+        public static Voc2012Class FindVoc2012Class(string instanceLabel)
+        {
+            return FindVoc2012Class(@class => @class.ClassLabel == instanceLabel);
+        }
+
         // The PASCAL VOC2012 dataset contains 20 ground-truth classes + background.  Each class
         // is represented using an RGB color value.  We associate each class also to an index in the
         // range [0, 20], used internally by the network.  To convert the ground-truth data to
