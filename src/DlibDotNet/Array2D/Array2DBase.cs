@@ -24,6 +24,11 @@ namespace DlibDotNet
             get;
         }
 
+
+        public abstract System.IntPtr Data
+        {
+            get;
+        }
         public abstract int Size
         {
             get;
