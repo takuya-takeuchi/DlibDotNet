@@ -17,6 +17,9 @@ ret = new dlib::array2d<__TYPE__>();
 #define array2d_new1_template(__TYPE__, error, type, ...) \
 ret = new dlib::array2d<__TYPE__>(rows, cols);
 
+#define array2d_data_raw_template(__TYPE__, error, type, ...) \
+ret = (void*)((array2d<__TYPE__>*)array)->begin();
+
 #define array2d_delete_template(__TYPE__, error, type, ...) \
 delete ((dlib::array2d<__TYPE__>*)array);
 
@@ -155,6 +158,19 @@ DLLEXPORT void* array2d_new1(array2d_type type, int rows, int cols)
                      array2d_new1_template,
                      rows,
                      cols,
+                     ret);
+
+    return ret;
+}
+
+DLLEXPORT void* array2d_data_raw(array2d_type type, void* array) {
+    int error = ERR_OK;
+    void* ret = nullptr;
+
+    array2d_template(type,
+                     error,
+                     array2d_data_raw_template,
+                     array,
                      ret);
 
     return ret;
