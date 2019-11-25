@@ -137,6 +137,15 @@ namespace DlibDotNet
             }
         }
 
+        public override IntPtr Data
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return NativeMethods.array2d_data_raw(this._Array2DType, this.NativePtr);
+            }
+        }
+
         public Row<TElement> this[int row]
         {
             get

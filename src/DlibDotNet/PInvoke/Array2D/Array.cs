@@ -32,6 +32,9 @@ namespace DlibDotNet
         public static extern bool array2d_size(Array2DType type, IntPtr array, out int ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr array2d_data_raw(Array2DType type, IntPtr array);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool array2d_set_size(Array2DType type, IntPtr array, int rows, int cols);
 
