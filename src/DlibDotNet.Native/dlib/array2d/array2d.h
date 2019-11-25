@@ -18,7 +18,7 @@ ret = new dlib::array2d<__TYPE__>();
 ret = new dlib::array2d<__TYPE__>(rows, cols);
 
 #define array2d_data_raw_template(__TYPE__, error, type, ...) \
-ret = &(((array2d<__TYPE__>*)array)->[0][0]);
+ret = (void*)((array2d<__TYPE__>*)array)->begin();
 
 #define array2d_delete_template(__TYPE__, error, type, ...) \
 delete ((dlib::array2d<__TYPE__>*)array);
