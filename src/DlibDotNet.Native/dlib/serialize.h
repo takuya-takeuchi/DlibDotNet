@@ -16,4 +16,14 @@ DLLEXPORT void proxy_deserialize_delete(proxy_deserialize* deserialize)
     delete deserialize;
 }
 
+DLLEXPORT proxy_serialize* proxy_serialize_new(const char* file_name)
+{
+    return new proxy_serialize(file_name);
+}
+
+DLLEXPORT void proxy_serialize_delete(proxy_serialize* serialize)
+{
+    delete serialize;
+}
+
 #endif
