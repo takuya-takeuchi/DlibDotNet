@@ -23,6 +23,16 @@ namespace DlibDotNet
 
         #region Methods
 
+        public long GetIntegerInRange(long begin, long end)
+        {
+            this.ThrowIfDisposed();
+
+            if (!(begin <= end))
+                throw new ArgumentOutOfRangeException();
+
+            return NativeMethods.rand_get_integer_in_range(this.NativePtr, begin, end);
+        }
+
         public double GetRandomDouble()
         {
             this.ThrowIfDisposed();
