@@ -173,12 +173,11 @@ namespace DlibDotNet.ImageTransforms
 
         #region Methods
 
-        public void Operator<T>(
-            uint numCrops,
-            IEnumerable<Matrix<T>> images,
-            IEnumerable<IEnumerable<MModRect>> rects,
-            out IEnumerable<Matrix<T>> crops,
-            out IEnumerable<IEnumerable<MModRect>> cropRects)
+        public void Operator<T>(uint numCrops,
+                                IEnumerable<Matrix<T>> images,
+                                IEnumerable<IEnumerable<MModRect>> rects,
+                                out IEnumerable<Matrix<T>> crops,
+                                out IEnumerable<IEnumerable<MModRect>> cropRects)
             where T : struct
         {
             if (images == null)
@@ -216,6 +215,39 @@ namespace DlibDotNet.ImageTransforms
 
                 crops = outCrops.ToArray();
                 cropRects = outCropRects.ToArray().Select(box => box.ToArray()).ToList();
+            }
+        }
+
+        public void Operator<T>(Matrix<T> image,
+                                IEnumerable<MModRect> rects,
+                                out Matrix<T> crop,
+                                out IEnumerable<MModRect> cropRects)
+            where T : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (rects == null)
+                throw new ArgumentNullException(nameof(rects));
+
+            image.ThrowIfDisposed();
+            rects.ThrowIfDisposed();
+
+            using (var matrix = new Matrix<T>())
+            using (var inRects = new StdVector<MModRect>(rects))
+            using (var outCropRects = new StdVector<MModRect>())
+            {
+                var type = matrix.MatrixElementType.ToNativeMatrixElementType();
+                var ret = NativeMethods.random_cropper_operator2(this.NativePtr,
+                                                                 type,
+                                                                 image.NativePtr,
+                                                                 inRects.NativePtr,
+                                                                 out var outCrop,
+                                                                 outCropRects.NativePtr);
+                if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
+                    throw new ArgumentException($"{type} is not supported.");
+
+                crop = new Matrix<T>(outCrop, image.TemplateRows, image.TemplateColumns);
+                cropRects = outCropRects.ToArray();
             }
         }
 
