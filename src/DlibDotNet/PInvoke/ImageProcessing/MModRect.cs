@@ -12,6 +12,9 @@ namespace DlibDotNet
         public static extern IntPtr mmod_rect_new();
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr mmod_rect_new2(IntPtr rectangle);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool mmod_rect_get_ignore(IntPtr mmod, out bool ignore);
 
