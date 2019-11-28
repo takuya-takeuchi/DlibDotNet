@@ -245,6 +245,8 @@ namespace DlibDotNet
 
             GeneralInvalidParameter = -(GeneralError | 0x00000004),
 
+            GeneralNotSupport       = -(GeneralError | 0x00000005),
+
             #endregion
 
             #region Array2D

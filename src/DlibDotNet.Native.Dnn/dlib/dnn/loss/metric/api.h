@@ -185,8 +185,8 @@ DLLEXPORT int LossMetric_input_tensor_to_output_tensor(const int id, void* obj, 
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMetricRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
-    return ERR_OK;
+    // LossMetricRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
 DLLEXPORT int LossMetric_net_to_xml(const int id, void* obj, const char* filename)\

@@ -223,8 +223,8 @@ DLLEXPORT int LossMulticlassLog_input_tensor_to_output_tensor(const int id, void
     if (iter == end(LossMulticlassLogRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
-    return ERR_OK;
+    // LossMulticlassLogRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
 DLLEXPORT int LossMulticlassLog_net_to_xml(const int id, void* obj, const char* filename)\

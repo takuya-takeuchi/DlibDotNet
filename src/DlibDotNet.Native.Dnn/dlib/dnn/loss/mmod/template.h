@@ -254,9 +254,9 @@ void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT,
                                                                                                                     dlib::dpoint* p,
                                                                                                                     dlib::dpoint** ret)
 {
-    // auto& net = *static_cast<NET*>(obj);
-    // auto rp = dlib::input_tensor_to_output_tensor(net, *p);
-    // *ret = new dlib::dpoint(rp);
+    auto& net = *static_cast<NET*>(obj);
+    auto rp = dlib::input_tensor_to_output_tensor(net, *p);
+    *ret = new dlib::dpoint(rp);
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
