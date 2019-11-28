@@ -35,6 +35,11 @@ public:
                                       void** values,
                                       int* size,
                                       std::string** error_message) = 0;
+    virtual int serialize_proxy_map(proxy_serialize* proxy,
+                                    std::string** keys,
+                                    void* values,
+                                    int size,
+                                    std::string** error_message) = 0;
 };
 
 #endif

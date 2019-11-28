@@ -94,8 +94,9 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLogPerPixel_serialize_proxy_map(IntPtr proxy,
                                                                                      int id,
-                                                                                     IntPtr keys,
-                                                                                     IntPtr values,
+                                                                                     IntPtr[] keys,
+                                                                                     IntPtr[] values,
+                                                                                     int size,
                                                                                      out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

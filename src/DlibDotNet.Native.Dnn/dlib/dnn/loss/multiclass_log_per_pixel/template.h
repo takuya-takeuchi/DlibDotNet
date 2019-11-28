@@ -236,6 +236,45 @@ int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::serialize_proxy_map(proxy_serialize* proxy,
+                                                                                                                          std::string** keys,
+                                                                                                                          void* values,
+                                                                                                                          int size,
+                                                                                                                          std::string** error_message)
+{
+    int error = ERR_OK;
+
+    try
+    {
+        auto& p = *static_cast<proxy_serialize*>(proxy);
+        auto tmp_values = static_cast<NET**>(values);
+
+        std::map<std::string, NET> dictionary;
+
+        int index = 0;
+        for( auto i = 0; i < size ; ++i )
+        {
+            auto& k = *keys[i];
+            auto& v = *tmp_values[i];
+            dictionary.emplace(k, v);
+        }
+
+        p << dictionary;
+    }
+    catch (serialization_error& e)
+    {
+        error = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, error);
+    }
+
+    return error;
+}
+
+template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLogPerPixel<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::get_num_layers()
 {
     return NET::num_layers;

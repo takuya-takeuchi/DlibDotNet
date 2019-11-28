@@ -63,6 +63,11 @@ public:
     virtual int serialize_proxy(proxy_serialize* proxy,
                                 void* obj,
                                 std::string** error_message) override;
+    virtual int serialize_proxy_map(proxy_serialize* proxy,
+                                    std::string** keys,
+                                    void* values,
+                                    int size,
+                                    std::string** error_message) override;
     virtual int get_num_layers() override;
     virtual void layer_details_set_num_filters(void* layer, long num) override;
     virtual void get_subnet(void* obj, void** subnet) override;

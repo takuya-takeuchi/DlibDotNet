@@ -135,6 +135,24 @@ DLLEXPORT int LossMulticlassLogPerPixel_serialize_proxy(const int id,
                                                                   error_message);
 }
 
+DLLEXPORT int LossMulticlassLogPerPixel_serialize_proxy_map(const int id,
+                                                            proxy_serialize* proxy,
+                                                            std::string** keys,
+                                                            void* values,
+                                                            int size,
+                                                            std::string** error_message)
+{
+    auto iter = LossMulticlassLogPerPixelRegistry.find(id);
+    if (iter == end(LossMulticlassLogPerPixelRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMulticlassLogPerPixelRegistry[id]->serialize_proxy_map(proxy,
+                                                                      keys,
+                                                                      values,
+                                                                      size,
+                                                                      error_message);
+}
+
 DLLEXPORT int LossMulticlassLogPerPixel_get_num_layers(const int id)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
