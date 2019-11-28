@@ -35,7 +35,7 @@ namespace DlibDotNet
         {
             var type = typeof(T);
             if (!SupportTypes.TryGetValue(type, out var bridge))
-                throw new NotSupportedException();
+                throw new NotSupportedException($"{type.FullName} is not supported.");
 
             return (ContainerBridge<T>)bridge;
         }
