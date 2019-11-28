@@ -16,13 +16,16 @@ DLLEXPORT mmod_options* mmod_options_new(const std::vector<std::vector<mmod_rect
                                          const unsigned long min_target_size,
                                          const double min_detector_window_overlap_iou = 0.75)
 {
-    const std::vector<std::vector<mmod_rect*>*>& tmp_boxes = *boxes;
+    const auto& tmp_boxes = *boxes;
     std::vector<std::vector<mmod_rect>> input;
     for (size_t i = 0; i < tmp_boxes.size(); i++)
     {
         std::vector<mmod_rect> v;
         for (size_t j = 0; j < tmp_boxes[i]->size(); j++)
-            v.push_back(*tmp_boxes[i]->at(j));
+        {
+            auto& b = *(tmp_boxes[i]->at(j));
+            v.push_back(b);
+        }
         input.push_back(v);
     }
 

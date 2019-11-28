@@ -18,6 +18,15 @@ namespace DlibDotNet.Dnn
                            uint minTargetSize,
                            double minDetectorWindowOverlapIou = 0.75)
         {
+            if (!((0 < minTargetSize && minTargetSize <= targetSize)))
+                throw new ArgumentOutOfRangeException($"{nameof(minTargetSize)} should be greater than {nameof(minTargetSize)} and less than or equal to {nameof(targetSize)}.");
+            if (!(0.5 < minDetectorWindowOverlapIou && minDetectorWindowOverlapIou < 1))
+                throw new ArgumentOutOfRangeException($"{nameof(minDetectorWindowOverlapIou)} should be greater than 0.5 and less than 1.0.");
+
+            var boxCount = boxes.Sum(rects => rects.Count(rect => !rect.Ignore));
+            if (boxCount == 0)
+                throw new ArgumentException($"{nameof(boxes)} has no element or only contains ignored boxes.", nameof(boxes));
+
             using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(boxes.Select(b => new StdVector<MModRect>(b))))
             using (var rects = new StdVector<StdVector<MModRect>>(disposer.Collection))
             using (new EnumerableDisposer<StdVector<MModRect>>(rects))
