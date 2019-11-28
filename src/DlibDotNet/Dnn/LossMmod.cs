@@ -231,6 +231,25 @@ namespace DlibDotNet.Dnn
             }
         }
 
+        public static void Serialize(ProxySerialize serialize, LossMmod net)
+        {
+            if (serialize == null)
+                throw new ArgumentNullException(nameof(serialize));
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var error = NativeMethods.LossMmod_serialize_proxy(serialize.NativePtr, net.NetworkType, net.NativePtr, out var errorMessage);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(net.NetworkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+        }
+
         public static void TestOneStep<T>(DnnTrainer<LossMmod> trainer, IEnumerable<Matrix<T>> data, IEnumerable<IEnumerable<MModRect>> label)
             where T : struct
         {

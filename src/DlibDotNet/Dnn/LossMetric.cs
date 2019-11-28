@@ -205,6 +205,25 @@ namespace DlibDotNet.Dnn
                     throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
             }
         }
+        
+        public static void Serialize(ProxySerialize serialize, LossMetric net)
+        {
+            if (serialize == null)
+                throw new ArgumentNullException(nameof(serialize));
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var error = NativeMethods.LossMetric_serialize_proxy(serialize.NativePtr, net.NetworkType, net.NativePtr, out var errorMessage);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(net.NetworkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+        }
 
         public static void TestOneStep<T>(DnnTrainer<LossMetric> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
             where T : struct

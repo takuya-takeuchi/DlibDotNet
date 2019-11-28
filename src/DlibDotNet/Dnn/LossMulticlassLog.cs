@@ -283,6 +283,25 @@ namespace DlibDotNet.Dnn
                     throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
             }
         }
+        
+        public static void Serialize(ProxySerialize serialize, LossMulticlassLog net)
+        {
+            if (serialize == null)
+                throw new ArgumentNullException(nameof(serialize));
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var error = NativeMethods.LossMulticlassLog_serialize_proxy(serialize.NativePtr, net.NetworkType, net.NativePtr, out var errorMessage);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(net.NetworkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+        }
 
         public override bool TryGetInputLayer<T>(T layer)
         {

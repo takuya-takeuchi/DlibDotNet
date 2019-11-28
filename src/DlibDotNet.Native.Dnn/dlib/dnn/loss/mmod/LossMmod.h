@@ -51,6 +51,9 @@ public:
     virtual int serialize(void* obj,
                           const char* file_name,
                           std::string** error_message) override;
+    virtual int serialize_proxy(proxy_serialize* proxy,
+                                void* obj,
+                                std::string** error_message) override;
     virtual int get_input_layer(void* obj, void** ret) override;
     virtual int get_num_layers() override;
     virtual void layer_details_set_num_filters(void* layer, long num) override;

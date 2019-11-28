@@ -114,6 +114,20 @@ DLLEXPORT int LossMmod_serialize(const int id,
                                            error_message);
 }
 
+DLLEXPORT int LossMmod_serialize_proxy(const int id,
+                                       proxy_serialize* proxy,
+                                       void* obj,
+                                       std::string** error_message)
+{
+    auto iter = LossMmodRegistry.find(id);
+    if (iter == end(LossMmodRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMmodRegistry[id]->serialize_proxy(proxy,
+                                                 obj,
+                                                 error_message);
+}
+
 DLLEXPORT int LossMmod_get_input_layer(const int id, void* obj, void** ret)
 {
     auto iter = LossMmodRegistry.find(id);

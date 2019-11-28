@@ -84,6 +84,12 @@ namespace DlibDotNet
                                                           out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMmod_serialize_proxy(IntPtr proxy,
+                                                                int id,
+                                                                IntPtr obj,
+                                                                out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_get_input_layer(int id, IntPtr obj, out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

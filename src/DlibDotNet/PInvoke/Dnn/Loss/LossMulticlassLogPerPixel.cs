@@ -86,6 +86,19 @@ namespace DlibDotNet
                                                                            out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_serialize_proxy(IntPtr proxy,
+                                                                                 int id,
+                                                                                 IntPtr obj,
+                                                                                 out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLogPerPixel_serialize_proxy_map(IntPtr proxy,
+                                                                                     int id,
+                                                                                     IntPtr keys,
+                                                                                     IntPtr values,
+                                                                                     out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern int LossMulticlassLogPerPixel_get_num_layers(int id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
