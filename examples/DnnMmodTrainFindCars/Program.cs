@@ -257,8 +257,8 @@ namespace DnnMmodTrainFindCars
 
 
 
-                                IEnumerable<Matrix<RgbPixel>> mini_batch_samples;
-                                IEnumerable<IEnumerable<MModRect>> mini_batch_labels;
+                                IEnumerable<Matrix<RgbPixel>> miniBatchSamples;
+                                IEnumerable<IEnumerable<MModRect>> miniBatchLabels;
                                 using (var cropper = new RandomCropper())
                                 {
                                     cropper.SetSeed(0);
@@ -280,10 +280,10 @@ namespace DnnMmodTrainFindCars
                                             // Every 30 mini-batches we do a testing mini-batch.  
                                             if (cnt % 30 != 0 || !imagesTest.Any())
                                             {
-                                                cropper.Operator(87, imagesTrain, boxesTrain, out mini_batch_samples, out mini_batch_labels);
+                                                cropper.Operator(87, imagesTrain, boxesTrain, out miniBatchSamples, out miniBatchLabels);
                                                 // We can also randomly jitter the colors and that often helps a detector
                                                 // generalize better to new images.
-                                                foreach (var img in mini_batch_samples)
+                                                foreach (var img in miniBatchSamples)
                                                     Dlib.DisturbColors(img, rnd);
 
                                                 // It's a good idea to, at least once, put code here that displays the images
@@ -297,23 +297,23 @@ namespace DnnMmodTrainFindCars
                                                 // An easy way to do this is to create a dlib::image_window to display the
                                                 // images and boxes.
 
-                                                LossMmod.TrainOneStep(trainer, mini_batch_samples, mini_batch_labels);
+                                                LossMmod.TrainOneStep(trainer, miniBatchSamples, miniBatchLabels);
 
-                                                mini_batch_samples.DisposeElement();
-                                                mini_batch_labels.DisposeElement();
+                                                miniBatchSamples.DisposeElement();
+                                                miniBatchLabels.DisposeElement();
                                             }
                                             else
                                             {
-                                                cropper.Operator(87, imagesTest, boxesTest, out mini_batch_samples, out mini_batch_labels);
+                                                cropper.Operator(87, imagesTest, boxesTest, out miniBatchSamples, out miniBatchLabels);
                                                 // We can also randomly jitter the colors and that often helps a detector
                                                 // generalize better to new images.
-                                                foreach (var img in mini_batch_samples)
+                                                foreach (var img in miniBatchSamples)
                                                     Dlib.DisturbColors(img, rnd);
 
-                                                LossMmod.TestOneStep(trainer, mini_batch_samples, mini_batch_labels);
+                                                LossMmod.TestOneStep(trainer, miniBatchSamples, miniBatchLabels);
 
-                                                mini_batch_samples.DisposeElement();
-                                                mini_batch_labels.DisposeElement();
+                                                miniBatchSamples.DisposeElement();
+                                                miniBatchLabels.DisposeElement();
                                             }
                                             ++cnt;
                                         }
