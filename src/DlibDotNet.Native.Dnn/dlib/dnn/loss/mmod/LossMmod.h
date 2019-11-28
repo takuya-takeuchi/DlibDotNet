@@ -11,7 +11,13 @@
 using namespace dlib;
 using namespace std;
 
-template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+template<typename NET,
+         matrix_element_type MATRIX_ELEMENT,
+         typename ELEMENT,
+         matrix_element_type LABEL_MATRIX_ELEMENT,
+         typename LABEL_ELEMENT,
+         typename LABEL_ELEMENT_POINTER,
+         int ID>
 class LossMmod : public LossMmodBase
 {
 public:
@@ -112,16 +118,25 @@ protected:
                  std::vector<dlib::matrix<ELEMENT>>& out_data,
                  std::vector<LABEL_ELEMENT>& out_labels)
     {
-        std::vector<dlib::matrix<ELEMENT>*>& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
-        for (size_t i = 0; i< tmp_data.size(); i++)
+        auto& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
+        for (size_t i = 0; i < tmp_data.size(); i++)
         {
             dlib::matrix<ELEMENT>& mat = *tmp_data[i];
             out_data.push_back(mat);
         }
 
-        std::vector<LABEL_ELEMENT>& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT>*>(labels));
-        for (size_t i = 0; i< tmp_label.size(); i++)
-            out_labels.push_back(tmp_label[i]);
+        auto& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT_POINTER*>*>(labels));
+        for (size_t i = 0; i < tmp_label.size(); i++)
+        {
+            auto& v = *(tmp_label[i]);
+            LABEL_ELEMENT tmp_v;
+            for (size_t j = 0; j < v.size(); j++)
+            {
+                auto& r = *(v[j]);
+                tmp_v.push_back(r);
+            }
+            out_labels.push_back(tmp_v);
+        }
     }
 };
 

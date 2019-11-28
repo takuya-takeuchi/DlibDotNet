@@ -14,12 +14,12 @@ using namespace std;
 
 extern std::map<int, LossMmodBase*> LossMmodRegistry;
 
-MAKE_LOSSMMOD_FUNC(net0,                 net_type,      matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 0)
-MAKE_LOSSMMOD_FUNC(net1,                 net_type_1,    matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 1)
-MAKE_LOSSMMOD_FUNC(net2,                 net_type_2,    matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 2)
-MAKE_LOSSMMOD_FUNC(net3,                 net_type_3,    matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 3)
-MAKE_LOSSMMOD_FUNC(instance_segmentaion, det_bnet_type, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 4)
-MAKE_LOSSMMOD_FUNC(instance_segmentaion, det_anet_type, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, 5)
+MAKE_LOSSMMOD_FUNC(net0,                 net_type,      matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, loss_mmod_train_label_type_pointer, 0)
+MAKE_LOSSMMOD_FUNC(net1,                 net_type_1,    matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, loss_mmod_train_label_type_pointer, 1)
+MAKE_LOSSMMOD_FUNC(net2,                 net_type_2,    matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, loss_mmod_train_label_type_pointer, 2)
+MAKE_LOSSMMOD_FUNC(net3,                 net_type_3,    matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, loss_mmod_train_label_type_pointer, 3)
+MAKE_LOSSMMOD_FUNC(instance_segmentaion, det_bnet_type, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, loss_mmod_train_label_type_pointer, 4)
+MAKE_LOSSMMOD_FUNC(instance_segmentaion, det_anet_type, matrix_element_type::RgbPixel,    rgb_pixel,   matrix_element_type::UInt32, loss_mmod_train_label_type, loss_mmod_train_label_type_pointer, 5)
 
 DLLEXPORT int LossMmod_new(const int id, void** ret)
 {
