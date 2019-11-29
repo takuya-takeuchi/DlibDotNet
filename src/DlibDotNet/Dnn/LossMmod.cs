@@ -259,6 +259,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
@@ -302,6 +304,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             trainer.ThrowIfDisposed();
 
@@ -347,12 +351,14 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             trainer.ThrowIfDisposed();
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
-            using (var dataVec = new StdVector<Matrix<T>>(data))
+            using (var dataVec = new StdVector<Matrix<T>>(data.ToArray()))
             using (var disposer = new EnumerableDisposer<StdVector<MModRect>>(label.Select(r => new StdVector<MModRect>(r))))
             using (var labelVec = new StdVector<StdVector<MModRect>>(disposer.Collection))
             using (new EnumerableDisposer<StdVector<MModRect>>(labelVec))

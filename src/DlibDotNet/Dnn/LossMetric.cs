@@ -234,6 +234,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
@@ -275,6 +277,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             trainer.ThrowIfDisposed();
 
@@ -318,6 +322,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             trainer.ThrowIfDisposed();
 
