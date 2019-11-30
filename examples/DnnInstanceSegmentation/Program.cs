@@ -160,7 +160,7 @@ namespace DnnInstanceSegmentation
                         }
                     }
 
-                    foreach (var kvp in segNetsByClass) 
+                    foreach (var kvp in segNetsByClass)
                         kvp.Value.Dispose();
                 }
             }

@@ -96,7 +96,7 @@ namespace DnnSemanticSegmentationTrainOld
                                     using (var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(imageInfo.ImageFilename))
                                     {
                                         // Load the ground-truth (RGB) labels.
-                                        using (var rgbLabelImage = Dlib.LoadImageAsMatrix<RgbPixel>(imageInfo.LabelFilename))
+                                        using (var rgbLabelImage = Dlib.LoadImageAsMatrix<RgbPixel>(imageInfo.ClassLabelFilename))
                                         {
                                             // Convert the indexes to RGB values.
                                             using (var indexLabelImage = new Matrix<ushort>())
@@ -197,7 +197,7 @@ namespace DnnSemanticSegmentationTrainOld
                 using (var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(imageInfo.ImageFilename))
                 {
                     // Load the ground-truth (RGB) labels.;
-                    using (var rgbLabelImage = Dlib.LoadImageAsMatrix<RgbPixel>(imageInfo.LabelFilename))
+                    using (var rgbLabelImage = Dlib.LoadImageAsMatrix<RgbPixel>(imageInfo.ClassLabelFilename))
                     {
                         // Create predictions for each pixel. At this point, the type of each prediction
                         // is an index (a value between 0 and 20). Note that the net may return an image

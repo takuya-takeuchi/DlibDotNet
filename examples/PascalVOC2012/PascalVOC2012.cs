@@ -81,7 +81,7 @@ namespace DlibDotNet
                     var imageInfo = new ImageInfo
                     {
                         ImageFilename = Path.Combine(voc2012Folder, "JPEGImages", $"{basename}.jpg"),
-                        LabelFilename = Path.Combine(voc2012Folder, "SegmentationClass", $"{basename}.png"),
+                        ClassLabelFilename = Path.Combine(voc2012Folder, "SegmentationClass", $"{basename}.png"),
                         InstanceLabelFilename = Path.Combine(voc2012Folder, "SegmentationObject", $"{basename}.png")
                     };
 

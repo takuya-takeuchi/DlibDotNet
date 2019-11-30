@@ -12,7 +12,7 @@
             set;
         }
 
-        public string LabelFilename
+        public string ClassLabelFilename
         {
             get;
             set;
