@@ -130,8 +130,8 @@ DLLEXPORT int LossMetric_layer_details_set_num_filters(const int id, void* layer
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMetricRegistry[id]->layer_details_set_num_filters(layer, num);
-    return ERR_OK;
+    // LossMetricRegistry[id]->layer_details_set_num_filters(layer, num);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
 DLLEXPORT int LossMetric_subnet(const int id, void* obj, void** subnet)

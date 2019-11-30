@@ -149,7 +149,7 @@ namespace DnnInstanceSegmentationTrain
                 using (var proxy = new ProxySerialize(InstanceSegmentationNetFilename))
                 {
                     LossMmod.Serialize(proxy, detNet);
-                    segNetsByClass.Serialize(proxy, 5);
+                    segNetsByClass.Serialize(proxy, 4);
                 }
             }
             catch (Exception e)
@@ -431,7 +431,7 @@ namespace DnnInstanceSegmentationTrain
 
             var synchronizationFileName = $"pascal_voc2012_seg_trainer_state_file{(classLabel.Length == 0 ? "" : $"_{classLabel}")}.dat";
 
-            var segNet = new LossMulticlassLogPerPixel(5);
+            var segNet = new LossMulticlassLogPerPixel(4);
             using (var sgd = new Sgd((float)weightDecay, (float)momentum))
             using (var segTrainer = new DnnTrainer<LossMulticlassLogPerPixel>(segNet, sgd))
             {
@@ -611,7 +611,7 @@ namespace DnnInstanceSegmentationTrain
             {
                 options.OverlapsIgnore = testBoxOverlap;
 
-                var detNet = new LossMmod(options, 5);
+                var detNet = new LossMmod(options, 4);
                 detNet.GetSubnet().GetLayerDetails().SetNumFilters(options.DetectorWindows.Count());
 
                 using (var data = new Pipe<DetTrainingSample>(200))

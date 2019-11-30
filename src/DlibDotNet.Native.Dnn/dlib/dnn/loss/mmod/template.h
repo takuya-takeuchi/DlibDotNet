@@ -222,8 +222,7 @@ template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, mat
 void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, LABEL_ELEMENT_POINTER, ID>::layer_details_set_num_filters(void* layer, long num)
 {
     auto ld = static_cast<typename NET::subnet_type::layer_details_type*>(layer);
-    // ToDo: some network does not support
-    // ld->set_num_filters(num);
+    ld->set_num_filters(num);
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, typename LABEL_ELEMENT_POINTER, int ID>

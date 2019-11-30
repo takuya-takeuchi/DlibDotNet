@@ -505,6 +505,8 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.LossMetric_layer_details_set_num_filters(this._Parent.NetworkType, this.NativePtr, num);
                 switch (ret)
                 {
+                    case NativeMethods.ErrorType.GeneralNotSupport:
+                        throw new NotSupportedException();
                     case NativeMethods.ErrorType.DnnNotSupportNetworkType:
                         throw new NotSupportNetworkTypeException(this._Parent.NetworkType);
                 }

@@ -168,8 +168,8 @@ DLLEXPORT int LossMulticlassLog_layer_details_set_num_filters(const int id, void
     if (iter == end(LossMulticlassLogRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogRegistry[id]->layer_details_set_num_filters(layer, num);
-    return ERR_OK;
+    // LossMulticlassLogRegistry[id]->layer_details_set_num_filters(layer, num);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
 DLLEXPORT int LossMulticlassLog_subnet(const int id, void* obj, void** subnet)
