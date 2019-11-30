@@ -6,13 +6,13 @@ namespace DlibDotNet.Tests.StdLib.Vector
 {
 
     [TestClass]
-    public class StdVectorOfPointTest : TestBase
+    public class StdVectorOfDPointTest : TestBase
     {
 
         [TestMethod]
         public void Create()
         {
-            var vector = new StdVector<Point>();
+            var vector = new StdVector<DPoint>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -20,7 +20,7 @@ namespace DlibDotNet.Tests.StdLib.Vector
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVector<Point>(size);
+            var vector = new StdVector<DPoint>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -28,8 +28,8 @@ namespace DlibDotNet.Tests.StdLib.Vector
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => new Point(i, i));
-            var vector = new StdVector<Point>(source);
+            var source = Enumerable.Range(0, size).Select(i => new DPoint(i, i));
+            var vector = new StdVector<DPoint>(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
             for (var i = 0; i < size; i++)
@@ -37,6 +37,25 @@ namespace DlibDotNet.Tests.StdLib.Vector
                 Assert.AreEqual(ret[i].X, i);
                 Assert.AreEqual(ret[i].Y, i);
             }
+            this.DisposeAndCheckDisposedState(vector);
+        }
+
+        [TestMethod]
+        public void CopyTo()
+        {
+            const int size = 10;
+            var source = Enumerable.Range(0, size).Select(i => new DPoint(i, i));
+            var vector = new StdVector<DPoint>(source);
+            Assert.AreEqual(vector.Size, size);
+            var ret = new DPoint[15];
+            vector.CopyTo(ret, 5);
+
+            for (var i = 0; i < size; i++)
+            {
+                Assert.AreEqual(ret[i + 5].X, i);
+                Assert.AreEqual(ret[i + 5].Y, i);
+            }
+
             this.DisposeAndCheckDisposedState(vector);
         }
 

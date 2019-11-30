@@ -6,13 +6,13 @@ namespace DlibDotNet.Tests.StdLib.Vector
 {
 
     [TestClass]
-    public class StdVectorOfInt32Test : TestBase
+    public class StdVectorOfDoubleTest : TestBase
     {
 
         [TestMethod]
         public void Create()
         {
-            var vector = new StdVector<int>();
+            var vector = new StdVector<double>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -20,7 +20,7 @@ namespace DlibDotNet.Tests.StdLib.Vector
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVector<int>(size);
+            var vector = new StdVector<double>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -28,8 +28,8 @@ namespace DlibDotNet.Tests.StdLib.Vector
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).ToArray();
-            var vector = new StdVector<int>(source);
+            var source = Enumerable.Range(0, size).Select(i => (double)i).ToArray();
+            var vector = new StdVector<double>(source);
             Assert.AreEqual(vector.Size, size);
             var ret = vector.ToArray();
             for (var i = 0; i < size; i++)
@@ -41,10 +41,10 @@ namespace DlibDotNet.Tests.StdLib.Vector
         public void CopyTo()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).ToArray();
-            var vector = new StdVector<int>(source);
+            var source = Enumerable.Range(0, size).Select(i => (double)i).ToArray();
+            var vector = new StdVector<double>(source);
             Assert.AreEqual(vector.Size, size);
-            var ret = new int[15];
+            var ret = new double[15];
             vector.CopyTo(ret, 5);
 
             for (var i = 0; i < size; i++)

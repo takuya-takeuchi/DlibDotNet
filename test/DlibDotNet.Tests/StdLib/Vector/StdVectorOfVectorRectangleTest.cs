@@ -49,6 +49,33 @@ namespace DlibDotNet.Tests.StdLib.Vector
                 s.Dispose();
         }
 
+        [TestMethod]
+        public void CopyTo()
+        {
+            const int size = 10;
+            var source = Enumerable.Range(0, size).Select(j => new StdVector<Rectangle>(Enumerable.Range(0, size).Select(i => new Rectangle(i, i, i, i))));
+            var vector = new StdVector<StdVector<Rectangle>>(source);
+            Assert.AreEqual(vector.Size, size);
+            var ret = new StdVector<Rectangle>[15];
+            vector.CopyTo(ret, 5);
+
+            for (var j = 0; j < size; j++)
+            {
+                var tmp = ret[j + 5].ToArray();
+                for (var i = 0; i < size; i++)
+                {
+                    Assert.AreEqual(tmp[i].Left, i);
+                    Assert.AreEqual(tmp[i].Top, i);
+                    Assert.AreEqual(tmp[i].Right, i);
+                    Assert.AreEqual(tmp[i].Bottom, i);
+                }
+            }
+
+            this.DisposeAndCheckDisposedState(vector);
+            foreach (var s in source)
+                s.Dispose();
+        }
+
     }
 
 }

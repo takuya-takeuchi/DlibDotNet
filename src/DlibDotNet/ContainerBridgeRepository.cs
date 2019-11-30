@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace DlibDotNet
@@ -9,7 +10,7 @@ namespace DlibDotNet
 
         #region Fields
 
-        private static readonly Dictionary<Type, IContainerBridge> SupportTypes = new Dictionary<Type, IContainerBridge>();
+        private static readonly ConcurrentDictionary<Type, IContainerBridge> SupportTypes = new ConcurrentDictionary<Type, IContainerBridge>();
 
         #endregion
 
@@ -23,7 +24,7 @@ namespace DlibDotNet
             var type = typeof(T);
             if (!SupportTypes.ContainsKey(type))
             {
-                SupportTypes.Add(type, bridge);
+                SupportTypes.AddOrUpdate(type, bridge, (key, value) => value);
             }
             else
             {

@@ -37,6 +37,22 @@ namespace DlibDotNet.Tests.StdLib.Vector
             this.DisposeAndCheckDisposedState(vector);
         }
 
+        [TestMethod]
+        public void CopyTo()
+        {
+            const int size = 10;
+            var source = Enumerable.Range(0, size).Select(i => (uint)i).ToArray();
+            var vector = new StdVector<uint>(source);
+            Assert.AreEqual(vector.Size, size);
+            var ret = new uint[15];
+            vector.CopyTo(ret, 5);
+
+            for (var i = 0; i < size; i++)
+                Assert.AreEqual(ret[i + 5], (uint)i);
+
+            this.DisposeAndCheckDisposedState(vector);
+        }
+
     }
 
 }
