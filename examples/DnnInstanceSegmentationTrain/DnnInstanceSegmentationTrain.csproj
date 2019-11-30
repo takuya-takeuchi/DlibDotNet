@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Authors>Takuya Takeuchi</Authors>
+    <Description>Sample of DlibDotNet</Description>
+    <Company />
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DlibDotNet\DlibDotNet.csproj" />
+    <ProjectReference Include="..\PascalVOC2012\PascalVOC2012.csproj" />
+  </ItemGroup>
+
+</Project>
