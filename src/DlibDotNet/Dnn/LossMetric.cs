@@ -215,7 +215,7 @@ namespace DlibDotNet.Dnn
 
             net.ThrowIfDisposed();
 
-            var error = NativeMethods.LossMetric_serialize_proxy(serialize.NativePtr, net.NetworkType, net.NativePtr, out var errorMessage);
+            var error = NativeMethods.LossMetric_serialize_proxy(net.NetworkType, serialize.NativePtr, net.NativePtr, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:

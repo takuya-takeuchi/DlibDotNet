@@ -34,8 +34,8 @@ namespace DlibDotNet.Extensions
                 }
 
                 var keysArray = keys.Select(s => s.NativePtr).ToArray();
-                var error = NativeMethods.LossMulticlassLogPerPixel_serialize_proxy_map(serialize.NativePtr,
-                                                                                        networkType,
+                var error = NativeMethods.LossMulticlassLogPerPixel_serialize_proxy_map(networkType,
+                                                                                        serialize.NativePtr,
                                                                                         keysArray,
                                                                                         values,
                                                                                         maps.Count,

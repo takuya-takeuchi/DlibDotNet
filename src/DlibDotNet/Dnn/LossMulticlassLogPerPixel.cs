@@ -231,8 +231,8 @@ namespace DlibDotNet.Dnn
 
             net.ThrowIfDisposed();
 
-            var error = NativeMethods.LossMulticlassLogPerPixel_serialize_proxy(serialize.NativePtr,
-                                                                                net.NetworkType, 
+            var error = NativeMethods.LossMulticlassLogPerPixel_serialize_proxy(net.NetworkType,
+                                                                                serialize.NativePtr,
                                                                                 net.NativePtr,
                                                                                 out var errorMessage);
             switch (error)
