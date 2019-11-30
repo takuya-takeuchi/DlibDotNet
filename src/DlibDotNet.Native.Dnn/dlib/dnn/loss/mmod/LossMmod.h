@@ -119,6 +119,7 @@ protected:
                  std::vector<LABEL_ELEMENT>& out_labels)
     {
         auto& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
+        out_data.reserve(tmp_data.size());
         for (size_t i = 0; i < tmp_data.size(); i++)
         {
             dlib::matrix<ELEMENT>& mat = *tmp_data[i];
@@ -126,10 +127,12 @@ protected:
         }
 
         auto& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT_POINTER*>*>(labels));
+        out_labels.reserve(tmp_label.size());
         for (size_t i = 0; i < tmp_label.size(); i++)
         {
             auto& v = *(tmp_label[i]);
             LABEL_ELEMENT tmp_v;
+            tmp_v.reserve(v.size());
             for (size_t j = 0; j < v.size(); j++)
             {
                 auto& r = *(v[j]);
