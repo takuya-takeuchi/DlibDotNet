@@ -1,6 +1,9 @@
 FROM centos:7
 LABEL maintainer "Takuya Takeuchi <takuya.takeuchi.dev@gmail.com>"
 
+RUN yum update -y && yum install -y \
+    ca-certificates
+    
 # install mkl
 # https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-yum-repo
 RUN yum-config-manager --add-repo https://yum.repos.intel.com/mkl/setup/intel-mkl.repo
