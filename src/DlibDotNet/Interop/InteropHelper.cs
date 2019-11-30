@@ -7,51 +7,91 @@ namespace DlibDotNet.Interop
     internal static class InteropHelper
     {
 
-        public static unsafe void Copy(IntPtr ptrSource, uint[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, uint[] dest, uint elements)
         {
-            fixed (uint* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, uint[] dest, int startIndex, uint elements)
+        {
+            fixed (uint* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * sizeof(uint)));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, ushort[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, ushort[] dest, uint elements)
         {
-            fixed (ushort* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, ushort[] dest, int startIndex, uint elements)
+        {
+            fixed (ushort* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * sizeof(ushort)));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, sbyte[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, sbyte[] dest, uint elements)
         {
-            fixed (sbyte* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, sbyte[] dest, int startIndex, uint elements)
+        {
+            fixed (sbyte* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * sizeof(sbyte)));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, ulong[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, ulong[] dest, uint elements)
         {
-            fixed (ulong* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, ulong[] dest, int startIndex, uint elements)
+        {
+            fixed (ulong* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * sizeof(ulong)));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, RgbPixel[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, RgbPixel[] dest, uint elements)
         {
-            fixed (RgbPixel* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, RgbPixel[] dest, int startIndex, uint elements)
+        {
+            fixed (RgbPixel* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<RgbPixel>()));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, BgrPixel[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, BgrPixel[] dest, uint elements)
         {
-            fixed (BgrPixel* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, BgrPixel[] dest, int startIndex, uint elements)
+        {
+            fixed (BgrPixel* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<BgrPixel>()));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, RgbAlphaPixel[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, RgbAlphaPixel[] dest, uint elements)
         {
-            fixed (RgbAlphaPixel* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, RgbAlphaPixel[] dest, int startIndex, uint elements)
+        {
+            fixed (RgbAlphaPixel* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<RgbAlphaPixel>()));
         }
 
-        public static unsafe void Copy(IntPtr ptrSource, HsiPixel[] dest, uint elements)
+        public static void Copy(IntPtr ptrSource, HsiPixel[] dest, uint elements)
         {
-            fixed (HsiPixel* ptrDest = &dest[0])
+            Copy(ptrSource, dest, 0, elements);
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, HsiPixel[] dest, int startIndex, uint elements)
+        {
+            fixed (HsiPixel* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<HsiPixel>()));
         }
 
