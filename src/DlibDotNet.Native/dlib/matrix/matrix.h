@@ -135,7 +135,7 @@ auto tmp = -m;\
 *ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);
 
 #define matrix_operator_invert_template(__TYPE__, error, __ELEMENT_TYPE__, ...) \
-*ret = new dlib::matrix<__TYPE__>(inv(*(static_cast<dlib::matrix<__TYPE__>*>(matrix))));
+*ret = new dlib::matrix<__TYPE__>(dlib::inv(*(static_cast<dlib::matrix<__TYPE__>*>(matrix))));
 
 
 #define matrix_operator_left_shift_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
