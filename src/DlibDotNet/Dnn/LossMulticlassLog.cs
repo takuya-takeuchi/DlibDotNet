@@ -74,6 +74,7 @@ namespace DlibDotNet.Dnn
             var str = Dlib.Encoding.GetBytes(path);
             var error = NativeMethods.LossMulticlassLog_deserialize(networkType,
                                                                     str,
+                                                                    str.Length,
                                                                     out var net,
                                                                     out var errorMessage);
             Cuda.ThrowCudaException(error);
@@ -154,7 +155,7 @@ namespace DlibDotNet.Dnn
             this.ThrowIfDisposed();
 
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
-            NativeMethods.LossMulticlassLog_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
+            NativeMethods.LossMulticlassLog_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte, fileNameByte.Length);
         }
 
         public OutputLabels<OutputLabelType> Operator<T>(Matrix<T> image, ulong batchSize = 128)
@@ -274,7 +275,7 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.LossMulticlassLog_serialize(net.NetworkType, net.NativePtr, str, out var errorMessage);
+            var error = NativeMethods.LossMulticlassLog_serialize(net.NetworkType, net.NativePtr, str, str.Length, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:

@@ -132,9 +132,10 @@ DLLEXPORT void mmod_options_set_vbbr_lambda(mmod_options* options, double value)
 
 DLLEXPORT mmod_options::detector_window_details* detector_window_details_new(const unsigned long w,
                                                                              const unsigned long h,
-                                                                             const char* label)
+                                                                             const char* label,
+                                                                             const int label_length)
 {
-    const std::string l(label);
+    const std::string l(label, label_length);
     return new mmod_options::detector_window_details(w, h, l);
 }
 

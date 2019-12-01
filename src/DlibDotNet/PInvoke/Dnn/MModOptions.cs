@@ -69,7 +69,7 @@ namespace DlibDotNet
         #region detector_window_details
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr detector_window_details_new(uint w, uint h, byte[] label);
+        public static extern IntPtr detector_window_details_new(uint w, uint h, byte[] label, int labelLength);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern void detector_window_details_delete(IntPtr details);

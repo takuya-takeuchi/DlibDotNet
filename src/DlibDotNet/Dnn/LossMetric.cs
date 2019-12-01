@@ -73,6 +73,7 @@ namespace DlibDotNet.Dnn
             var str = Dlib.Encoding.GetBytes(path);
             var error = NativeMethods.LossMetric_deserialize(networkType,
                                                              str,
+                                                             str.Length,
                                                              out var net,
                                                              out var errorMessage);
             Cuda.ThrowCudaException(error);
@@ -134,7 +135,7 @@ namespace DlibDotNet.Dnn
         internal override void NetToXml(string filename)
         {
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
-            NativeMethods.LossMetric_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
+            NativeMethods.LossMetric_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte, fileNameByte.Length);
         }
 
         public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
@@ -196,7 +197,7 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error= NativeMethods.LossMetric_serialize(net.NetworkType, net.NativePtr, str, out var errorMessage);
+            var error= NativeMethods.LossMetric_serialize(net.NetworkType, net.NativePtr, str, str.Length, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:

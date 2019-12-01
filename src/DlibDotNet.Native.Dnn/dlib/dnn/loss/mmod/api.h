@@ -74,6 +74,7 @@ DLLEXPORT int LossMmod_operator_matrixs(const int id,
 
 DLLEXPORT int LossMmod_deserialize(const int id,
                                    const char* file_name,
+                                   const int file_name_length,
                                    void** ret,
                                    std::string** error_message)
 {
@@ -82,6 +83,7 @@ DLLEXPORT int LossMmod_deserialize(const int id,
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
     return LossMmodRegistry[id]->deserialize(file_name,
+                                             file_name_length,
                                              ret,
                                              error_message);
 }
@@ -103,6 +105,7 @@ DLLEXPORT int LossMmod_deserialize_proxy(const int id,
 DLLEXPORT int LossMmod_serialize(const int id,
                                  void* obj,
                                  const char* file_name,
+                                 const int file_name_length,
                                  std::string** error_message)
 {
     auto iter = LossMmodRegistry.find(id);
@@ -111,6 +114,7 @@ DLLEXPORT int LossMmod_serialize(const int id,
 
     return LossMmodRegistry[id]->serialize(obj,
                                            file_name,
+                                           file_name_length,
                                            error_message);
 }
 
@@ -210,13 +214,16 @@ DLLEXPORT int LossMmod_input_tensor_to_output_tensor(const int id, void* obj, dl
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_net_to_xml(const int id, void* obj, const char* filename)
+DLLEXPORT int LossMmod_net_to_xml(const int id,
+                                  void* obj,
+                                  const char* filename,
+                                  const int file_name_length)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->net_to_xml(obj, filename);
+    LossMmodRegistry[id]->net_to_xml(obj, filename, file_name_length);
     return ERR_OK;
 }
 
@@ -277,7 +284,7 @@ DLLEXPORT int LossMmod_trainer_get_learning_rate(const int id, void* trainer, do
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_get_average_loss(const int id, void* trainer, double* loss)\
+DLLEXPORT int LossMmod_trainer_get_average_loss(const int id, void* trainer, double* loss)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
@@ -287,7 +294,7 @@ DLLEXPORT int LossMmod_trainer_get_average_loss(const int id, void* trainer, dou
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_get_average_test_loss(const int id, void* trainer, double* loss)\
+DLLEXPORT int LossMmod_trainer_get_average_test_loss(const int id, void* trainer, double* loss)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
@@ -329,15 +336,16 @@ DLLEXPORT int LossMmod_trainer_be_verbose(const int id, void* trainer)
 
 
 DLLEXPORT int LossMmod_trainer_set_synchronization_file(const int id,
-                                                          void* trainer,
-                                                          const char* filename,
-                                                          const unsigned long second)
+                                                        void* trainer,
+                                                        const char* filename,
+                                                        const int filename_length,
+                                                        const unsigned long second)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_synchronization_file(trainer, filename, second);
+    LossMmodRegistry[id]->trainer_set_synchronization_file(trainer, filename, filename_length, second);
     return ERR_OK;
 }
 

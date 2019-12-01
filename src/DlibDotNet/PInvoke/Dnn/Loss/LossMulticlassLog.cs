@@ -68,6 +68,7 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLog_deserialize(int id,
                                                                      byte[] file_name,
+                                                                     int file_name_length,
                                                                      out IntPtr ret,
                                                                      out IntPtr error_message);
 
@@ -81,6 +82,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMulticlassLog_serialize(int id,
                                                                    IntPtr obj,
                                                                    byte[] file_name,
+                                                                   int file_name_length,
                                                                    out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -99,7 +101,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMulticlassLog_input_tensor_to_output_tensor(int id, IntPtr obj, IntPtr p, out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMulticlassLog_net_to_xml(int id, IntPtr obj, byte[] filename);
+        public static extern ErrorType LossMulticlassLog_net_to_xml(int id, IntPtr obj, byte[] filename, int filenameLength);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLog_operator_left_shift(int id, IntPtr trainer, IntPtr stream);
@@ -150,6 +152,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMulticlassLog_trainer_set_synchronization_file(int id,
                                                                                           IntPtr trainer,
                                                                                           byte[] filename,
+                                                                                          int filenameLength,
                                                                                           uint second);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

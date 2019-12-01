@@ -70,6 +70,7 @@ public:
                             const uint32_t batch_size,
                             std::vector<float>** ret) override;
     virtual int deserialize(const char* file_name,
+                            const int file_name_length,
                             void** ret,
                             std::string** error_message) override;
     virtual int deserialize_proxy(proxy_deserialize* proxy,
@@ -77,6 +78,7 @@ public:
                                   std::string** error_message) override;
     virtual int serialize(void* obj,
                           const char* file_name,
+                          const int file_name_length,
                           std::string** error_message) override;
     virtual int serialize_proxy(proxy_serialize* proxy,
                                 void* obj,
@@ -91,7 +93,7 @@ public:
     virtual void input_tensor_to_output_tensor(void* obj,
                                                dlib::dpoint* p,
                                                dlib::dpoint** ret) override;
-    virtual void net_to_xml(void* obj, const char* filename) override;
+    virtual void net_to_xml(void* obj, const char* filename, const int file_name_length) override;
     virtual void operator_left_shift(void* obj, std::ostringstream* stream) override;
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) override;
     virtual void get_loss_details(void* obj, void** loss_details) override;
@@ -109,6 +111,7 @@ public:
     virtual void trainer_be_verbose(void* trainer) override;
     virtual void trainer_set_synchronization_file(void* trainer,
                                                   const char* filename,
+                                                  const int filename_length,
                                                   const unsigned long second) override;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
                                                                    const unsigned long thresh) override;

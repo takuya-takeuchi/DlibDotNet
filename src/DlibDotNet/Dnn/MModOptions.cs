@@ -206,7 +206,7 @@ namespace DlibDotNet.Dnn
                                          string label = null)
             {
                 var str = Dlib.Encoding.GetBytes(label ?? "");
-                this.NativePtr = NativeMethods.detector_window_details_new(width, height, str);
+                this.NativePtr = NativeMethods.detector_window_details_new(width, height, str, str.Length);
             }
 
             #endregion

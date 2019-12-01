@@ -161,6 +161,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::deserialize(const char* file_name,
+                                                                                                          const int file_name_length,
                                                                                                           void** ret,
                                                                                                           std::string** error_message)
 {
@@ -169,7 +170,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
     try
     {
         auto net = new NET();
-        dlib::deserialize(file_name) >> (*net);
+        dlib::deserialize(std::string(file_name, file_name_length)) >> (*net);
         *ret = net;
     }
     catch (serialization_error& e)
@@ -215,6 +216,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::serialize(void* obj,
                                                                                                         const char* file_name,
+                                                                                                        const int file_name_length,
                                                                                                         std::string** error_message)
 {
     int error = ERR_OK;
@@ -222,7 +224,7 @@ int LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_
     try
     {
         auto net = static_cast<NET*>(obj);
-        dlib::serialize(file_name) << (*net);
+        dlib::serialize(std::string(file_name, file_name_length)) << (*net);
     }
     catch (serialization_error& e)
     {
@@ -307,9 +309,9 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::net_to_xml(void* obj, const char* filename)
+void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::net_to_xml(void* obj, const char* filename, const int file_name_length)
 {
-    std::string str(filename);
+    std::string str(filename, file_name_length);
     auto& net = *static_cast<NET*>(obj);
     dlib::net_to_xml(net, str);
 }
@@ -412,10 +414,11 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_synchronization_file(void* trainer,
                                                                                                                                 const char* filename,
+                                                                                                                                const int filename_length,
                                                                                                                                 const unsigned long second)
 {
     auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_synchronization_file(filename, std::chrono::seconds(second));
+    t->set_synchronization_file(std::string(filename, filename_length), std::chrono::seconds(second));
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
