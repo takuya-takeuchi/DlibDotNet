@@ -1069,6 +1069,8 @@ namespace DlibDotNet.Tests.Array2D
                     return Dlib.LoadImage<RgbAlphaPixel>(filepath);
                 case ImageTypes.HsiPixel:
                     return Dlib.LoadImage<HsiPixel>(filepath);
+                case ImageTypes.BgrPixel:
+                    return Dlib.LoadImage<BgrPixel>(filepath);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }
