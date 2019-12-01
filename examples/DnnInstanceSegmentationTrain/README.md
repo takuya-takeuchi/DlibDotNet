@@ -38,29 +38,84 @@ But you can understand what this program works.
 cd <DnnInstanceSegmentationTrain_dir> 
 dotnet run --configuration Release -- <VOC2012_dir> <detBatchSize> <segBatchSize> 
  
-mini-batch size: 10 
- 
-SCANNING PASCAL VOC2012 DATASET 
- 
-images in dataset: 1464 
- 
-dnn_trainer details: 
-  net_type::num_layers:  239 
-  net size: 153.279MB 
-  net architecture hash: ca957805a9e35b40ff4481384dc5d66e 
-  loss: loss_multiclass_log_per_pixel 
-  synchronization file:                       pascal_voc2012_trainer_state_file.dat 
-  trainer.get_solvers()[0]:                   sgd: weight_decay=0.0001, momentum=0.9 
-  learning rate:                              0.1 
-  learning rate shrink factor:                0.1 
-  min learning rate:                          1e-05 
-  iterations without progress threshold:      5000 
-  test iterations without progress threshold: 500 
- 
-step#: 3535  learning rate: 0.1   average loss: 0.796554     steps without apparent progress: 341 
-Saved state to pascal_voc2012_trainer_state_file.dat 
-saving network 
-Testing the network... 
-train accuracy  :  0.7273497658274 
-val accuracy    :  0.723289723139368 
+SCANNING PASCAL VOC2012 DATASET
+
+images in entire dataset: 1464
+det mini-batch size: 8
+seg mini-batch size: 60
+desired classlabels: bicycle car cat
+
+Extracting all truth instances... Done!
+
+images in dataset filtered by class: 311
+images in dataset after ignoring some truth boxes: 262
+
+Training detector network:
+dnn_trainer details:
+  net_type::num_layers:  21
+  net size: 0.00196838MB
+  net architecture hash: 201e30c7fcafacc7a7b129480b930f4a
+  loss: loss_mmod        (detector_windows:(bicycle:70x52,70x32,52x70;car:70x39,70x68,88x30;cat:70x61,73x30,51x70), loss per FA:1, loss per miss:1, truth match IOU thresh:0.5, use_bounding_box_regression:0, overlaps_nms:(0.613008,0.928147), overlaps_ignore:(0.5,0.9))
+  synchronization file:                       pascal_voc2012_det_trainer_state_file.dat
+  trainer.get_solvers()[0]:                   sgd: weight_decay=0.0001, momentum=0.9
+  learning rate:                              0.1
+  learning rate shrink factor:                0.1
+  min learning rate:                          1e-05
+  iterations without progress threshold:      5000
+  test iterations without progress threshold: 500
+
+step#: 0     learning rate: 0.1   average loss: 0            steps without apparent progress: 0
+Saved state to pascal_voc2012_det_trainer_state_file.dat
+
+Training segmentation network for class bicycle:
+dnn_trainer details:
+  net_type::num_layers:  239
+  net size: 0.0164766MB
+  net architecture hash: ba3432c6a6f8c9b5a333a05b2fed119e
+  loss: loss_multiclass_log_per_pixel
+  synchronization file:                       pascal_voc2012_seg_trainer_state_file_bicycle.dat
+  trainer.get_solvers()[0]:                   sgd: weight_decay=0.0001, momentum=0.9
+  learning rate:                              0.1
+  learning rate shrink factor:                0.1
+  min learning rate:                          1e-05
+  iterations without progress threshold:      2000
+  test iterations without progress threshold: 500
+
+step#: 0     learning rate: 0.1   average loss: 0            steps without apparent progress: 0
+Saved state to pascal_voc2012_seg_trainer_state_file_bicycle.dat
+
+Training segmentation network for class car:
+dnn_trainer details:
+  net_type::num_layers:  239
+  net size: 0.0164766MB
+  net architecture hash: ba3432c6a6f8c9b5a333a05b2fed119e
+  loss: loss_multiclass_log_per_pixel
+  synchronization file:                       pascal_voc2012_seg_trainer_state_file_car.dat
+  trainer.get_solvers()[0]:                   sgd: weight_decay=0.0001, momentum=0.9
+  learning rate:                              0.1
+  learning rate shrink factor:                0.1
+  min learning rate:                          1e-05
+  iterations without progress threshold:      2000
+  test iterations without progress threshold: 500
+
+step#: 0     learning rate: 0.1   average loss: 0            steps without apparent progress: 0
+Saved state to pascal_voc2012_seg_trainer_state_file_car.dat
+
+Training segmentation network for class cat:
+dnn_trainer details:
+  net_type::num_layers:  239
+  net size: 0.0164766MB
+  net architecture hash: ba3432c6a6f8c9b5a333a05b2fed119e
+  loss: loss_multiclass_log_per_pixel
+  synchronization file:                       pascal_voc2012_seg_trainer_state_file_cat.dat
+  trainer.get_solvers()[0]:                   sgd: weight_decay=0.0001, momentum=0.9
+  learning rate:                              0.1
+  learning rate shrink factor:                0.1
+  min learning rate:                          1e-05
+  iterations without progress threshold:      2000
+  test iterations without progress threshold: 500
+
+step#: 0     learning rate: 0.1   average loss: 0            steps without apparent progress: 0
+Saved state to pascal_voc2012_seg_trainer_state_file_cat.dat
+Saving networks
 ````
