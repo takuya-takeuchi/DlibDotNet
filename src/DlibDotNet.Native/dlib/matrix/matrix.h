@@ -134,10 +134,8 @@ dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *(static_cast<dlib::matrix<__
 auto tmp = -m;\
 *ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);
 
-#define matrix_operator_invert_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
-dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>& m = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix));\
-auto tmp = inv(m);\
-*ret = new dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>(tmp);
+#define matrix_operator_invert_template(__TYPE__, error, __ELEMENT_TYPE__, ...) \
+*ret = new dlib::matrix<__TYPE__>(inv(*(static_cast<dlib::matrix<__TYPE__>*>(matrix))));
 
 
 #define matrix_operator_left_shift_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
@@ -770,14 +768,11 @@ DLLEXPORT int matrix_operator_invert(matrix_element_type type,
 {
     int error = ERR_OK;
 
-    matrix_numeric_template(type,
-                            error,
-                            matrix_template_size_template,
-                            matrix_operator_invert_template,
-                            templateRows,
-                            templateColumns,
-                            matrix,
-                            ret);
+    matrix_nosize_decimal_template(type,
+                                  error,
+                                  matrix_operator_invert_template,
+                                  matrix,
+                                  ret);
 
     return error;
 }
