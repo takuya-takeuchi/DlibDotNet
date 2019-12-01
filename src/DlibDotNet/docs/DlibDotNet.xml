@@ -562,6 +562,16 @@
             Gets the CUDA error code.
             </summary>
         </member>
+        <member name="P:DlibDotNet.CudaException.ErrorName">
+            <summary>
+            Gets the CUDA error name.
+            </summary>
+        </member>
+        <member name="P:DlibDotNet.CudaException.ErrorMessage">
+            <summary>
+            Gets the CUDA error message.
+            </summary>
+        </member>
         <member name="P:DlibDotNet.CudaException.RuntimeVersion">
             <summary>
             Gets the CUDA runtime version.
@@ -1650,6 +1660,23 @@
             <exception cref="T:System.IO.FileNotFoundException"><paramref name="path"/> is not found.</exception>
         </member>
         <member name="M:DlibDotNet.ProxyDeserialize.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:DlibDotNet.ProxySerialize">
+            <summary>
+            Serialize continuous objects to file.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ProxySerialize.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.ProxySerialize"/> class with the specified file path contains serialized data.
+            </summary>
+            <param name="path">The file path contains serialized data.</param>
+            <exception cref="T:System.IO.FileNotFoundException"><paramref name="path"/> is not found.</exception>
+        </member>
+        <member name="M:DlibDotNet.ProxySerialize.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

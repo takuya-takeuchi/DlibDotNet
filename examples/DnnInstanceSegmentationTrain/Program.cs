@@ -470,53 +470,56 @@ namespace DnnInstanceSegmentationTrain
                                     var info = truthImage.Info;
 
                                     // Load the input image.
-                                    var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(info.ImageFilename);
-
-                                    // Load the ground-truth (RGB) instance labels.
-                                    var rgbLabelImage = Dlib.LoadImageAsMatrix<RgbPixel>(info.InstanceLabelFilename);
-
-                                    // Pick a random training instance.
-                                    var truthInstance = imageTruths[(int)(rnd.GetRandom32BitNumber() % imageTruths.Count)];
-                                    var truthRect = truthInstance.MmodRect.Rect;
-                                    var croppingRect = GetCroppingRect(truthRect);
-
-                                    // Pick a random crop around the instance.
-                                    var maxXTranslateAmount = (long)(truthRect.Width / 10.0);
-                                    var maxYTranslateAmount = (long)(truthRect.Height / 10.0);
-
-                                    var randomTranslate = new Point(
-                                        (int)rnd.GetIntegerInRange(-maxXTranslateAmount, maxXTranslateAmount + 1),
-                                        (int)rnd.GetIntegerInRange(-maxYTranslateAmount, maxYTranslateAmount + 1)
-                                    );
-
-                                    var randomRect = new Rectangle(
-                                        croppingRect.Left + randomTranslate.X,
-                                        croppingRect.Top + randomTranslate.Y,
-                                        croppingRect.Right + randomTranslate.X,
-                                        croppingRect.Bottom + randomTranslate.Y
-                                    );
-
-                                    // Crop the input image.
-                                    using (var chipDims = new ChipDims(SegDim, SegDim))
-                                    using (var chipDetails = new ChipDetails(randomRect, chipDims))
+                                    using (var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(info.ImageFilename))
                                     {
-                                        var tempInputImage = Dlib.ExtractImageChip<RgbPixel>(inputImage, chipDetails, InterpolationTypes.Bilinear);
-                                        var temp = new SegTrainingSample
+                                        // Load the ground-truth (RGB) instance labels.
+                                        using (var rgbLabelImage = Dlib.LoadImageAsMatrix<RgbPixel>(info.InstanceLabelFilename))
                                         {
-                                            InputImage = tempInputImage
-                                        };
-                                        Dlib.DisturbColors(temp.InputImage, rnd);
+                                            // Pick a random training instance.
+                                            var truthInstance = imageTruths[(int)(rnd.GetRandom32BitNumber() % imageTruths.Count)];
+                                            var truthRect = truthInstance.MmodRect.Rect;
+                                            var croppingRect = GetCroppingRect(truthRect);
 
-                                        // Crop the labels correspondingly. However, note that here bilinear
-                                        // interpolation would make absolutely no sense - you wouldn't say that
-                                        // a bicycle is half-way between an aeroplane and a bird, would you?
-                                        var rgbLabelChip = Dlib.ExtractImageChip<RgbPixel>(rgbLabelImage, chipDetails, InterpolationTypes.NearestNeighbor);
+                                            // Pick a random crop around the instance.
+                                            var maxXTranslateAmount = (long)(truthRect.Width / 10.0);
+                                            var maxYTranslateAmount = (long)(truthRect.Height / 10.0);
 
-                                        // Clear pixels not related to the current instance.
-                                        temp.LabelImage = KeepOnlyCurrentInstance(rgbLabelChip, truthInstance.RgbLabel);
+                                            var randomTranslate = new Point(
+                                                (int)rnd.GetIntegerInRange(-maxXTranslateAmount, maxXTranslateAmount + 1),
+                                                (int)rnd.GetIntegerInRange(-maxYTranslateAmount, maxYTranslateAmount + 1)
+                                            );
 
-                                        // Push the result to be used by the trainer.
-                                        data.Enqueue(temp);
+                                            var randomRect = new Rectangle(
+                                                croppingRect.Left + randomTranslate.X,
+                                                croppingRect.Top + randomTranslate.Y,
+                                                croppingRect.Right + randomTranslate.X,
+                                                croppingRect.Bottom + randomTranslate.Y
+                                            );
+
+                                            // Crop the input image.
+                                            using (var chipDims = new ChipDims(SegDim, SegDim))
+                                            using (var chipDetails = new ChipDetails(randomRect, chipDims))
+                                            {
+                                                var tempInputImage = Dlib.ExtractImageChip<RgbPixel>(inputImage, chipDetails, InterpolationTypes.Bilinear);
+                                                var temp = new SegTrainingSample
+                                                {
+                                                    InputImage = tempInputImage
+                                                };
+                                                Dlib.DisturbColors(temp.InputImage, rnd);
+
+                                                // Crop the labels correspondingly. However, note that here bilinear
+                                                // interpolation would make absolutely no sense - you wouldn't say that
+                                                // a bicycle is half-way between an aeroplane and a bird, would you?
+                                                using (var rgbLabelChip = Dlib.ExtractImageChip<RgbPixel>(rgbLabelImage, chipDetails, InterpolationTypes.NearestNeighbor))
+                                                {
+                                                    // Clear pixels not related to the current instance.
+                                                    temp.LabelImage = KeepOnlyCurrentInstance(rgbLabelChip, truthInstance.RgbLabel);
+                                                }
+
+                                                // Push the result to be used by the trainer.
+                                                data.Enqueue(temp);
+                                            }
+                                        }
                                     }
                                 }
                                 else
@@ -550,11 +553,6 @@ namespace DnnInstanceSegmentationTrain
                         // We will run until the learning rate has dropped by a factor of 1e-4.
                         while (segTrainer.GetLearningRate() >= 1e-4)
                         {
-                            samples.DisposeElement();
-                            labels.DisposeElement();
-                            samples.Clear();
-                            labels.Clear();
-
                             samples.Capacity = (int)segMiniBatchSize;
                             labels.Capacity = (int)segMiniBatchSize;
 
@@ -570,6 +568,11 @@ namespace DnnInstanceSegmentationTrain
                             }
 
                             LossMulticlassLogPerPixel.TrainOneStep(segTrainer, samples, labels);
+
+                            samples.DisposeElement();
+                            labels.DisposeElement();
+                            samples.Clear();
+                            labels.Clear();
                         }
                     }
                     catch (Exception)
@@ -636,22 +639,23 @@ namespace DnnInstanceSegmentationTrain
                                 var truthImage = truthImages[(int)randomIndex];
 
                                 // Load the input image.
-                                var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(truthImage.Info.ImageFilename);
-
-                                // Get a random crop of the input.
-                                var mmodRects = ExtractMmodRects(truthImage.TruthInstances);
-                                cropper.Operator(inputImage, mmodRects, out var tmpInputImage, out var tmpMmodRects);
-
-                                var temp = new DetTrainingSample
+                                using (var inputImage = Dlib.LoadImageAsMatrix<RgbPixel>(truthImage.Info.ImageFilename))
                                 {
-                                    InputImage = tmpInputImage,
-                                    MmodRects = new StdVector<MModRect>(tmpMmodRects)
-                                };
+                                    // Get a random crop of the input.
+                                    var mmodRects = ExtractMmodRects(truthImage.TruthInstances);
+                                    cropper.Operator(inputImage, mmodRects, out var tmpInputImage, out var tmpMmodRects);
 
-                                Dlib.DisturbColors(temp.InputImage, rnd);
+                                    var temp = new DetTrainingSample
+                                    {
+                                        InputImage = tmpInputImage,
+                                        MmodRects = new StdVector<MModRect>(tmpMmodRects)
+                                    };
 
-                                // Push the result to be used by the trainer.
-                                data.Enqueue(temp);
+                                    Dlib.DisturbColors(temp.InputImage, rnd);
+
+                                    // Push the result to be used by the trainer.
+                                    data.Enqueue(temp);
+                                }
                             }
                         }
 
@@ -694,11 +698,6 @@ namespace DnnInstanceSegmentationTrain
                             // We will run until the learning rate becomes small enough.
                             while (detTrainer.GetLearningRate() >= 1e-4)
                             {
-                                samples.DisposeElement();
-                                labels.DisposeElement();
-                                samples.Clear();
-                                labels.Clear();
-
                                 samples.Capacity = (int)detMiniBatchSize;
                                 labels.Capacity = (int)detMiniBatchSize;
 
@@ -709,9 +708,18 @@ namespace DnnInstanceSegmentationTrain
 
                                     samples.Add(temp.InputImage);
                                     labels.Add(new List<MModRect>(temp.MmodRects.ToArray()));
+
+                                    // Dispose StdVector<MModRect> rather than elements
+                                    temp.MmodRects.Dispose();
+                                    temp.Dispose();
                                 }
 
                                 LossMmod.TrainOneStep(detTrainer, samples, labels);
+
+                                samples.DisposeElement();
+                                labels.DisposeElement();
+                                samples.Clear();
+                                labels.Clear();
                             }
                         }
                         catch (Exception)
