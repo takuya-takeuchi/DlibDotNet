@@ -23,7 +23,7 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
             var str = Dlib.Encoding.GetBytes(name ?? "");
-            NativeMethods.label_set_text(this.NativePtr, str);
+            NativeMethods.label_set_text(this.NativePtr, str, str.Length);
         }
 
         #region Overrids

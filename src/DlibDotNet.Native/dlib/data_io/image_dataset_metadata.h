@@ -59,25 +59,27 @@ DLLEXPORT double image_dataset_metadata_box_get_detection_score(image_dataset_me
 
 #pragma region parts
 
-DLLEXPORT bool image_dataset_metadata_box_get_parts_get_value(image_dataset_metadata::box* box, const char* key, dlib::point** result)
+DLLEXPORT bool image_dataset_metadata_box_get_parts_get_value(image_dataset_metadata::box* box, const char* key, const int key_length, dlib::point** result)
 {
     std::map<std::string,point>& m = box->parts;
-    if (m.find(key) == m.end())
+    std::string k(key, key_length);
+    if (m.find(k) == m.end())
     {
         return false;
     }
     else
     {
-        *result = new dlib::point(m[key]);
+        *result = new dlib::point(m[k]);
         return true;
     }
 }
 
-DLLEXPORT void image_dataset_metadata_box_get_parts_set_value(image_dataset_metadata::box* box, const char* key, dlib::point* value)
+DLLEXPORT void image_dataset_metadata_box_get_parts_set_value(image_dataset_metadata::box* box, const char* key, const int key_length, dlib::point* value)
 {
     std::map<std::string,dlib::point>& m = box->parts;
     dlib::point p(*value);
-    m[key] = p;
+    std::string k(key, key_length);
+    m[k] = p;
 }
 
 DLLEXPORT void image_dataset_metadata_box_parts_clear(image_dataset_metadata::box* box)
@@ -138,9 +140,9 @@ DLLEXPORT std::string* image_dataset_metadata_box_get_label(image_dataset_metada
     return new std::string(box->label);
 }
 
-DLLEXPORT void image_dataset_metadata_box_set_label(image_dataset_metadata::box* box, const char* value)
+DLLEXPORT void image_dataset_metadata_box_set_label(image_dataset_metadata::box* box, const char* value, const int value_length)
 {
-    box->label = std::string(value);
+    box->label = std::string(value, value_length);
 }
 
 DLLEXPORT bool image_dataset_metadata_box_get_occluded(image_dataset_metadata::box* box)
@@ -202,9 +204,9 @@ DLLEXPORT std::string* image_dataset_metadata_dataset_get_comment(image_dataset_
     return new std::string(dataset->comment);
 }
 
-DLLEXPORT void image_dataset_metadata_dataset_set_comment(image_dataset_metadata::dataset* dataset, const char* value)
+DLLEXPORT void image_dataset_metadata_dataset_set_comment(image_dataset_metadata::dataset* dataset, const char* value, const int value_length)
 {
-    dataset->comment = std::string(value);
+    dataset->comment = std::string(value, value_length);
 }
 
 #pragma region images
@@ -251,9 +253,9 @@ DLLEXPORT std::string* image_dataset_metadata_dataset_get_name(image_dataset_met
     return new std::string(dataset->name);
 }
 
-DLLEXPORT void image_dataset_metadata_dataset_set_name(image_dataset_metadata::dataset* dataset, const char* value)
+DLLEXPORT void image_dataset_metadata_dataset_set_name(image_dataset_metadata::dataset* dataset, const char* value, const int value_length)
 {
-    dataset->name = std::string(value);
+    dataset->name = std::string(value, value_length);
 }
 
 DLLEXPORT void image_dataset_metadata_dataset_delete(image_dataset_metadata::dataset* dataset)
@@ -265,9 +267,10 @@ DLLEXPORT void image_dataset_metadata_dataset_delete(image_dataset_metadata::dat
 
 #pragma region image
 
-DLLEXPORT image_dataset_metadata::image* image_dataset_metadata_image_new(const char* filename)
+DLLEXPORT image_dataset_metadata::image* image_dataset_metadata_image_new(const char* filename, const int filename_length)
 {
-    return new image_dataset_metadata::image(filename);
+    std::string str(filename, filename_length);
+    return new image_dataset_metadata::image(str);
 }
 
 DLLEXPORT image_dataset_metadata::image* image_dataset_metadata_image_new2()
@@ -314,9 +317,9 @@ DLLEXPORT std::string* image_dataset_metadata_image_get_filename(image_dataset_m
     return new std::string(image->filename);
 }
 
-DLLEXPORT void image_dataset_metadata_image_set_filename(image_dataset_metadata::image* image, const char* value)
+DLLEXPORT void image_dataset_metadata_image_set_filename(image_dataset_metadata::image* image, const char* value, const int value_length)
 {
-    image->filename = std::string(value);
+    image->filename = std::string(value, value_length);
 }
 
 DLLEXPORT void image_dataset_metadata_image_delete(image_dataset_metadata::image* image)
@@ -326,12 +329,12 @@ DLLEXPORT void image_dataset_metadata_image_delete(image_dataset_metadata::image
 
 #pragma endregion image
 
-DLLEXPORT int load_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename)
+DLLEXPORT int load_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename, const int filename_length)
 {
     int err = ERR_OK;
 
     image_dataset_metadata::dataset& in_meta = *meta;
-    std::string in_filename(filename);
+    std::string in_filename(filename, filename_length);
     try
     {    
         dlib::image_dataset_metadata::load_image_dataset_metadata(in_meta, filename);
@@ -344,12 +347,12 @@ DLLEXPORT int load_image_dataset_metadata(image_dataset_metadata::dataset* meta,
     return err;
 }
 
-DLLEXPORT int save_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename)
+DLLEXPORT int save_image_dataset_metadata(image_dataset_metadata::dataset* meta, const char* filename, const int filename_length)
 {
     int err = ERR_OK;
 
     const image_dataset_metadata::dataset& in_meta = *meta;
-    std::string in_filename(filename);
+    std::string in_filename(filename, filename_length);
     try
     {
         dlib::image_dataset_metadata::save_image_dataset_metadata(in_meta, filename);

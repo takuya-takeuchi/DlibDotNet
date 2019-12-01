@@ -402,6 +402,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType object_detector_scan_fhog_pyramid_deserialize(byte[] fileName,
+                                                                                     int filepathLength,
                                                                                      PyramidType pyramidType,
                                                                                      uint pyramidRate,
                                                                                      FHogFeatureExtractorType featureExtractorType,
@@ -419,6 +420,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType object_detector_scan_fhog_pyramid_serialize(byte[] fileName,
+                                                                                   int filepathLength,
                                                                                    PyramidType pyramidType,
                                                                                    uint pyramidRate,
                                                                                    FHogFeatureExtractorType featureExtractorType,

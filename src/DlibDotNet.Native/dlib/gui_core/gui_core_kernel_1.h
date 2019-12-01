@@ -45,9 +45,9 @@ DLLEXPORT void base_window_set_size(base_window* window, const long width, const
 	window->set_size(width, height);
 }
 
-DLLEXPORT void base_window_set_title(base_window* window, const char* title)
+DLLEXPORT void base_window_set_title(base_window* window, const char* title, const int title_length)
 {
-	window->set_title(title);
+	window->set_title(std::string(title, title_length));
 }
 
 DLLEXPORT void base_window_wait_until_closed(base_window* window)

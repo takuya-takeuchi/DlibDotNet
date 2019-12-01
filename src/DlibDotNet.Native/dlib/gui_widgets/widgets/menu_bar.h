@@ -26,9 +26,9 @@ DLLEXPORT void menu_bar_set_number_of_menus(menu_bar* menubar, unsigned long num
     menubar->set_number_of_menus(num);
 }
 
-DLLEXPORT void menu_bar_set_menu_name(menu_bar* menubar, unsigned long idx, const char* name, char underline_ch)
+DLLEXPORT void menu_bar_set_menu_name(menu_bar* menubar, unsigned long idx, const char* name, const int name_length, char underline_ch)
 {
-    menubar->set_menu_name(idx, std::string(name), underline_ch);
+    menubar->set_menu_name(idx, std::string(name, name_length), underline_ch);
 }
 
 DLLEXPORT popup_menu* menu_bar_menu(menu_bar* menubar, unsigned long idx)

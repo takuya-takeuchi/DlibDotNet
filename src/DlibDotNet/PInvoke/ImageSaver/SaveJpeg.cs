@@ -9,10 +9,16 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType save_jpeg(Array2DType type, IntPtr array, byte[] path, int quality);
+        public static extern ErrorType save_jpeg(Array2DType type, IntPtr array, byte[] path, int pathLength, int quality);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType save_jpeg_matrix(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumn, byte[] path, int quality);
+        public static extern ErrorType save_jpeg_matrix(MatrixElementType type,
+                                                        IntPtr matrix, 
+                                                        int templateRows,
+                                                        int templateColumn,
+                                                        byte[] path,
+                                                        int pathLength,
+                                                        int quality);
 
     }
 

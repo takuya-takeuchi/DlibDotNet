@@ -9,10 +9,10 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr menu_item_text_new(byte[] str, IntPtr drawable_window, IntPtr event_handler, char hk);
+        public static extern IntPtr menu_item_text_new(byte[] str, int strLength, IntPtr drawable_window, IntPtr event_handler, char hk);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr menu_item_text_new(byte[] str, IntPtr mediator, char hk);
+        public static extern IntPtr menu_item_text_new(byte[] str, int strLength, IntPtr mediator, char hk);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void menu_item_text_delete(IntPtr ptr);

@@ -24,7 +24,7 @@ namespace DlibDotNet
         public static extern void base_window_set_size(IntPtr window, int width, int height);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void base_window_set_title(IntPtr window, byte[] title);
+        public static extern void base_window_set_title(IntPtr window, byte[] title, int titleLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void base_window_wait_until_closed(IntPtr window);

@@ -5,9 +5,9 @@
 #include <dlib/logger.h>
 #include "../shared.h"
 
-DLLEXPORT dlib::logger* logger_new(const char* name)
+DLLEXPORT dlib::logger* logger_new(const char* name, const int name_length)
 {
-    return new dlib::logger(std::string(name));
+    return new dlib::logger(std::string(name, name_length));
 }
 
 DLLEXPORT void logger_delete(dlib::logger* logger)
@@ -46,35 +46,35 @@ DLLEXPORT void logger_set_level(dlib::logger* logger, log_level level)
     }
 }
 
-DLLEXPORT void logger_operator_left_shift(dlib::logger* logger, log_level level, const char* message)
+DLLEXPORT void logger_operator_left_shift(dlib::logger* logger, log_level level, const char* message, const int message_length)
 {
     auto& l = *logger;
 
     switch(level)
     {
         case log_level::All:
-            l << dlib::LALL << std::string(message);
+            l << dlib::LALL << std::string(message, message_length);
             break;
         case log_level::None:
-            l << dlib::LNONE << std::string(message);
+            l << dlib::LNONE << std::string(message, message_length);
             break;
         case log_level::Trace:
-            l << dlib::LTRACE << std::string(message);
+            l << dlib::LTRACE << std::string(message, message_length);
             break;
         case log_level::Debug:
-            l << dlib::LDEBUG << std::string(message);
+            l << dlib::LDEBUG << std::string(message, message_length);
             break;
         case log_level::Info:
-            l << dlib::LINFO << std::string(message);
+            l << dlib::LINFO << std::string(message, message_length);
             break;
         case log_level::Warn:
-            l << dlib::LWARN << std::string(message);
+            l << dlib::LWARN << std::string(message, message_length);
             break;
         case log_level::Error:
-            l << dlib::LERROR << std::string(message);
+            l << dlib::LERROR << std::string(message, message_length);
             break;
         case log_level::Fatal:
-            l << dlib::LFATAL << std::string(message);
+            l << dlib::LFATAL << std::string(message, message_length);
             break;
     }
 }

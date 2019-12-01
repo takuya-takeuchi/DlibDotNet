@@ -36,7 +36,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var str = Dlib.Encoding.GetBytes(value ?? "");
-                NativeMethods.image_dataset_metadata_dataset_set_comment(this.NativePtr, str);
+                NativeMethods.image_dataset_metadata_dataset_set_comment(this.NativePtr, str, str.Length);
             }
         }
 
@@ -54,7 +54,7 @@ namespace DlibDotNet.ImageDatasetMetadata
             {
                 this.ThrowIfDisposed();
                 var str = Dlib.Encoding.GetBytes(value ?? "");
-                NativeMethods.image_dataset_metadata_dataset_set_name(this.NativePtr, str);
+                NativeMethods.image_dataset_metadata_dataset_set_name(this.NativePtr, str, str.Length);
             }
         }
 

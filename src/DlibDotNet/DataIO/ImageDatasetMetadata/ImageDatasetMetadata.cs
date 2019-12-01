@@ -25,7 +25,7 @@ namespace DlibDotNet
                 var str = Encoding.GetBytes(filename);
 
                 var dataset = new Dataset();
-                var ret = NativeMethods.load_image_dataset_metadata(dataset.NativePtr, str);
+                var ret = NativeMethods.load_image_dataset_metadata(dataset.NativePtr, str, str.Length);
                 if (ret == NativeMethods.ErrorType.GeneralFileIOError)
                     throw new IOException($"Failed to load {filename}");
 
@@ -43,7 +43,7 @@ namespace DlibDotNet
 
                 var str = Encoding.GetBytes(filename);
 
-                var ret = NativeMethods.save_image_dataset_metadata(dataset.NativePtr, str);
+                var ret = NativeMethods.save_image_dataset_metadata(dataset.NativePtr, str, str.Length);
                 if (ret == NativeMethods.ErrorType.GeneralFileIOError)
                     throw new IOException($"Failed to save or load {filename}");
             }

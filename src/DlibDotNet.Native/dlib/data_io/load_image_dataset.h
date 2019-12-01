@@ -19,7 +19,7 @@ do {\
     dlib::array<array2d<__TYPE__>> tmp_images;\
     std::vector<std::vector<__TYPE_OUT__>> tmp_locs;\
 \
-    dlib::load_image_dataset(tmp_images, tmp_locs, filename);\
+    dlib::load_image_dataset(tmp_images, tmp_locs, std::string(filename, filename_length));\
 \
     array_copy2(__TYPE__, tmp_images, images);\
     std::vector<std::vector<__TYPE_OUT__*>*>* ret_locs = static_cast<std::vector<std::vector<__TYPE_OUT__*>*>*>(object_locations);\
@@ -43,7 +43,7 @@ load_image_dataset_array_template_sub(__TYPE__, error, type, dlib::full_object_d
 do {\
     std::vector<matrix<__TYPE__>> tmp_images;\
     std::vector<std::vector<__TYPE_OUT__>> tmp_locs;\
-    dlib::load_image_dataset(tmp_images, tmp_locs, filename);\
+    dlib::load_image_dataset(tmp_images, tmp_locs, std::string(filename, filename_length));\
     std::vector<matrix<__TYPE__>*>* ret_images = static_cast<std::vector<matrix<__TYPE__>*>*>(images);\
     for (int i = 0; i < tmp_images.size(); i++)\
     {\
@@ -75,7 +75,8 @@ load_image_dataset_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __C
 DLLEXPORT int load_image_dataset_array_full_object_detection(array2d_type type,
                                                              void* images,
                                                              void* object_locations,
-                                                             const char* filename)
+                                                             const char* filename,
+                                                             const int filename_length)
 {
     int error = ERR_OK;
 
@@ -84,7 +85,8 @@ DLLEXPORT int load_image_dataset_array_full_object_detection(array2d_type type,
                               load_image_dataset_array_full_object_detection_template,
                               images,
                               object_locations,
-                              filename);
+                              filename,
+                              filename_length);
 
     return error;
 }
@@ -92,7 +94,8 @@ DLLEXPORT int load_image_dataset_array_full_object_detection(array2d_type type,
 DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
                                            void* images,
                                            void* object_locations,
-                                           const char* filename)
+                                           const char* filename,
+                                           const int filename_length)
 {
     int error = ERR_OK;
 
@@ -104,7 +107,8 @@ DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
                              0,
                              images,
                              object_locations,
-                             filename);
+                             filename,
+                             filename_length);
 
     return error;
 }
@@ -112,7 +116,8 @@ DLLEXPORT int load_image_dataset_mmod_rect(matrix_element_type type,
 DLLEXPORT int load_image_dataset_rectangle(matrix_element_type type,
                                            void* images,
                                            void* object_locations,
-                                           const char* filename)
+                                           const char* filename,
+                                           const int filename_length)
 {
     int error = ERR_OK;
 
@@ -124,7 +129,8 @@ DLLEXPORT int load_image_dataset_rectangle(matrix_element_type type,
                              0,
                              images,
                              object_locations,
-                             filename);
+                             filename,
+                             filename_length);
 
     return error;
 }

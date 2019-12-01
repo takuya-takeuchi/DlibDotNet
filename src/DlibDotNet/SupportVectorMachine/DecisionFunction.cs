@@ -46,6 +46,7 @@ namespace DlibDotNet
 
             var str = Dlib.Encoding.GetBytes(path);
             var error = NativeMethods.deserialize_decision_function(str,
+                                                                    str.Length,
                                                                     kernelType.ToNativeKernelType(),
                                                                     sampleType.ToNativeMatrixElementType(),
                                                                     templateRows,
@@ -84,6 +85,7 @@ namespace DlibDotNet
                                                                 function._Parameter.TemplateColumns,
                                                                 function.NativePtr,
                                                                 str,
+                                                                str.Length,
                                                                 out var errorMessage);
 
             switch (ret)

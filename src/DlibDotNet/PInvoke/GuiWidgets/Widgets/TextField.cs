@@ -28,7 +28,7 @@ namespace DlibDotNet
         public static extern void text_field_give_input_focus(IntPtr text_field);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void text_field_set_text(IntPtr text_field, byte[] text);
+        public static extern void text_field_set_text(IntPtr text_field, byte[] text, int textLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void text_field_set_width(IntPtr text_field, uint width);

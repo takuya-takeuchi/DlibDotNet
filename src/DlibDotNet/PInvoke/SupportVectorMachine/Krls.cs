@@ -91,11 +91,13 @@ namespace DlibDotNet
                                                       int templateRows,
                                                       int templateColumns,
                                                       IntPtr obj, 
-                                                      byte[] filName,
+                                                      byte[] fileName,
+                                                      int fileNameLength,
                                                       out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType deserialize_krls(byte[] filName,
+        public static extern ErrorType deserialize_krls(byte[] fileName,
+                                                        int fileNameLength,
                                                         SvmKernelType kernelType,
                                                         MatrixElementType matrixElementType,
                                                         int templateRows,

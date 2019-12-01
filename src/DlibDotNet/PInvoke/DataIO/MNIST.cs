@@ -10,6 +10,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void load_mnist_dataset(byte[] folderPath,
+                                                     int folderPathLength,
                                                      out IntPtr training_images,
                                                      out IntPtr training_labels,
                                                      out IntPtr testing_images,

@@ -33,7 +33,8 @@ namespace DlibDotNet
                 var ret = NativeMethods.load_image_dataset_array_full_object_detection(type.ToNativeArray2DType(),
                                                                                        images.NativePtr,
                                                                                        retBoxes.NativePtr,
-                                                                                       str);
+                                                                                       str,
+                                                                                       str.Length);
                 if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
@@ -57,7 +58,7 @@ namespace DlibDotNet
             using (new EnumerableDisposer<StdVector<MModRect>>(retBoxes))
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                var ret = NativeMethods.load_image_dataset_mmod_rect(type, retImages.NativePtr, retBoxes.NativePtr, str);
+                var ret = NativeMethods.load_image_dataset_mmod_rect(type, retImages.NativePtr, retBoxes.NativePtr, str, str.Length);
                 if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 
@@ -82,7 +83,7 @@ namespace DlibDotNet
             using (new EnumerableDisposer<StdVector<Rectangle>>(retBoxes))
             {
                 var type = matrix.MatrixElementType.ToNativeMatrixElementType();
-                var ret = NativeMethods.load_image_dataset_rectangle(type, retImages.NativePtr, retBoxes.NativePtr, str);
+                var ret = NativeMethods.load_image_dataset_rectangle(type, retImages.NativePtr, retBoxes.NativePtr, str, str.Length);
                 if (ret == NativeMethods.ErrorType.MatrixElementTypeNotSupport)
                     throw new ArgumentException($"{type} is not supported.");
 

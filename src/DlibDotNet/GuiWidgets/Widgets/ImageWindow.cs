@@ -36,7 +36,7 @@ namespace DlibDotNet
             image.ThrowIfDisposed(nameof(image));
 
             var str = Dlib.Encoding.GetBytes(title);
-            this.NativePtr = NativeMethods.image_window_new_array2d2(image.ImageType.ToNativeArray2DType(), image.NativePtr, str);
+            this.NativePtr = NativeMethods.image_window_new_array2d2(image.ImageType.ToNativeArray2DType(), image.NativePtr, str, str.Length);
         }
 
         public ImageWindow(MatrixBase matrix)
@@ -61,7 +61,7 @@ namespace DlibDotNet
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
             var str = Dlib.Encoding.GetBytes(title);
-            this.NativePtr = NativeMethods.image_window_new_matrix2(type, matrix.NativePtr, str);
+            this.NativePtr = NativeMethods.image_window_new_matrix2(type, matrix.NativePtr, str, str.Length);
         }
 
         public ImageWindow(MatrixOp matrix)
@@ -109,9 +109,9 @@ namespace DlibDotNet
             var et = matrix.ElementType;
             var ptr = matrix.NativePtr;
             if (tr == -1 && matrix.TemplateColumns == -1)
-                err = NativeMethods.image_window_new_matrix_op2(et, matrix.Array2DType, ptr, str, out ret);
+                err = NativeMethods.image_window_new_matrix_op2(et, matrix.Array2DType, ptr, str, str.Length, out ret);
             else
-                err = NativeMethods.image_window_new_matrix_op4(et, matrix.MatrixElementType, ptr, tr, tc, str, out ret);
+                err = NativeMethods.image_window_new_matrix_op4(et, matrix.MatrixElementType, ptr, tr, tc, str, str.Length, out ret);
 
             switch (err)
             {

@@ -24,7 +24,7 @@ namespace DlibDotNet
             {
                 this.ThrowIfDisposed();
                 var title = Dlib.Encoding.GetBytes(value ?? "");
-                NativeMethods.base_window_set_title(this.NativePtr, title);
+                NativeMethods.base_window_set_title(this.NativePtr, title, title.Length);
             }
         }
 

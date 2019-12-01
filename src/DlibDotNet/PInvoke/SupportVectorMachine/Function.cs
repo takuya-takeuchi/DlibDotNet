@@ -21,11 +21,13 @@ namespace DlibDotNet
                                                                    int templateRows,
                                                                    int templateColumns,
                                                                    IntPtr function, 
-                                                                   byte[] filName,
+                                                                   byte[] fileName,
+                                                                   int fileNameLength,
                                                                    out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType deserialize_decision_function(byte[] filName,
+        public static extern ErrorType deserialize_decision_function(byte[] fileName,
+                                                                     int fileNameLength,
                                                                      SvmKernelType kernelType,
                                                                      MatrixElementType matrixElementType,
                                                                      int templateRows,

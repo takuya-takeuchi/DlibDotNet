@@ -29,7 +29,8 @@ namespace DlibDotNet
 
             var str = Encoding.GetBytes(folderPath);
 
-            NativeMethods.load_mnist_dataset(str, 
+            NativeMethods.load_mnist_dataset(str,
+                                             str.Length,
                                              out var retTrainingImages,
                                              out var retTrainingLabels, 
                                              out var retTestingImages,

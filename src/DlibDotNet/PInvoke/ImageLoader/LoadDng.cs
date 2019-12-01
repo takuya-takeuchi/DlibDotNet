@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType load_dng(Array2DType type, IntPtr array, byte[] path, out IntPtr error_message);
+        public static extern ErrorType load_dng(Array2DType type, IntPtr array, byte[] path, int pathLength, out IntPtr error_message);
 
     }
 

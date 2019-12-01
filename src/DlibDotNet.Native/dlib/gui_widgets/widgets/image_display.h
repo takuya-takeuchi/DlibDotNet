@@ -75,9 +75,9 @@ DLLEXPORT void image_display_set_default_overlay_rect_color(image_display* displ
     display->set_default_overlay_rect_color(color);
 }
 
-DLLEXPORT void image_display_set_default_overlay_rect_label(image_display* display, const char* label)
+DLLEXPORT void image_display_set_default_overlay_rect_label(image_display* display, const char* label, const int label_length)
 {
-    display->set_default_overlay_rect_label(std::string(label));
+    display->set_default_overlay_rect_label(std::string(label, label_length));
 }
 
 DLLEXPORT void image_display_add_overlay(image_display* display, std::vector<image_display::overlay_rect*>* rects)
@@ -110,9 +110,9 @@ DLLEXPORT std::string* image_display_get_default_overlay_rect_label(image_displa
     return new std::string(str);
 }
 
-DLLEXPORT void image_display_add_labelable_part_name(image_display* display, const char* name)
+DLLEXPORT void image_display_add_labelable_part_name(image_display* display, const char* name, const int name_length)
 {
-    display->add_labelable_part_name(std::string(name));
+    display->add_labelable_part_name(std::string(name, name_length));
 }
 
 #pragma region overlay_rect
@@ -152,9 +152,9 @@ DLLEXPORT std::string* image_display_overlay_rect_get_label(image_display::overl
     return new std::string(overlayRect->label);
 }
 
-DLLEXPORT void image_display_overlay_rect_set_label(image_display::overlay_rect* overlayRect, const char* value)
+DLLEXPORT void image_display_overlay_rect_set_label(image_display::overlay_rect* overlayRect, const char* value, const int value_length)
 {
-    overlayRect->label = std::string(value);
+    overlayRect->label = std::string(value, value_length);
 }
 
 DLLEXPORT dlib::rectangle* image_display_overlay_rect_get_rect(image_display::overlay_rect* overlayRect)
@@ -194,25 +194,33 @@ DLLEXPORT void image_display_overlay_rect_get_parts_get_all(image_display::overl
     }
 }
 
-DLLEXPORT bool image_display_overlay_rect_get_parts_get_value(image_display::overlay_rect* overlayRect, const char* key, dlib::point** result)
+DLLEXPORT bool image_display_overlay_rect_get_parts_get_value(image_display::overlay_rect* overlayRect,
+                                                              const char* key,
+                                                              const int key_length,
+                                                              dlib::point** result)
 {
     std::map<std::string,point>& m = overlayRect->parts;
-    if (m.find(key) == m.end())
+    std::string k(key, key_length);
+    if (m.find(k) == m.end())
     {
         return false;
     }
     else
     {
-        *result = new dlib::point(m[key]);
+        *result = new dlib::point(m[k]);
         return true;
     }
 }
 
-DLLEXPORT void image_display_overlay_rect_get_parts_set_value(image_display::overlay_rect* overlayRect, const char* key, dlib::point* value)
+DLLEXPORT void image_display_overlay_rect_get_parts_set_value(image_display::overlay_rect* overlayRect,
+                                                              const char* key,
+                                                              const int key_length,
+                                                              dlib::point* value)
 {
     std::map<std::string,dlib::point>& m = overlayRect->parts;
     dlib::point p(*value);
-    m[key] = p;
+    std::string k(key, key_length);
+    m[k] = p;
 }
 
 DLLEXPORT int image_display_overlay_rect_get_parts_get_size(image_display::overlay_rect* overlayRect)

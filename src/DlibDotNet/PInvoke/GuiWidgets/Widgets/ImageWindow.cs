@@ -18,19 +18,19 @@ namespace DlibDotNet
         public static extern IntPtr image_window_new_array2d1(Array2DType type, IntPtr image);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr image_window_new_array2d2(Array2DType type, IntPtr image, byte[] title);
+        public static extern IntPtr image_window_new_array2d2(Array2DType type, IntPtr image, byte[] title, int titleLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr image_window_new_matrix1(MatrixElementType type, IntPtr image);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr image_window_new_matrix2(MatrixElementType type, IntPtr image, byte[] title);
+        public static extern IntPtr image_window_new_matrix2(MatrixElementType type, IntPtr image, byte[] title, int titleLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_new_matrix_op1(ElementType matrixElementType, Array2DType type, IntPtr image, out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType image_window_new_matrix_op2(ElementType matrixElementType, Array2DType type, IntPtr image, byte[] title, out IntPtr ret);
+        public static extern ErrorType image_window_new_matrix_op2(ElementType matrixElementType, Array2DType type, IntPtr image, byte[] title, int titleLength, out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_new_matrix_op3(ElementType etype,
@@ -47,6 +47,7 @@ namespace DlibDotNet
                                                                    int templateRows,
                                                                    int templateColumns,
                                                                    byte[] title,
+                                                                   int titleLength,
                                                                    out IntPtr ret);
 
         #region image_window_add_overlay

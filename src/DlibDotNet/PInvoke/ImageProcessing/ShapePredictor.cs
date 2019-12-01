@@ -18,10 +18,10 @@ namespace DlibDotNet
         public static extern uint shape_predictor_num_features(IntPtr predictor);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType serialize_shape_predictor(IntPtr predictor, byte[] filName, out IntPtr errorMessage);
+        public static extern ErrorType serialize_shape_predictor(IntPtr predictor, byte[] filName, int filNameLength, out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType deserialize_shape_predictor(byte[] filName, out IntPtr predictor, out IntPtr errorMessage);
+        public static extern ErrorType deserialize_shape_predictor(byte[] filName, int fileNameLength, out IntPtr predictor, out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType deserialize_shape_predictor_proxy(IntPtr proxy_deserialize, 

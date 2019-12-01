@@ -121,6 +121,7 @@ namespace DlibDotNet
 
             var str = Dlib.Encoding.GetBytes(path);
             var error = NativeMethods.deserialize_krls(str,
+                                                       str.Length,
                                                        krls.Parameter.KernelType.ToNativeKernelType(),
                                                        krls.Parameter.SampleType.ToNativeMatrixElementType(),
                                                        krls.Parameter.TemplateRows,
@@ -181,6 +182,7 @@ namespace DlibDotNet
                                                    krls._Parameter.TemplateColumns,
                                                    krls.NativePtr,
                                                    str,
+                                                   str.Length,
                                                    out var errorMessage);
 
             switch (ret)

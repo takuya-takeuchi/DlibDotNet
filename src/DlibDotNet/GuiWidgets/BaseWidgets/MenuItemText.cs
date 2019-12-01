@@ -25,7 +25,7 @@ namespace DlibDotNet
             mediator.ThrowIfDisposed();
 
             var s = Dlib.Encoding.GetBytes(str ?? "");
-            this.NativePtr = NativeMethods.menu_item_text_new(s, mediator.NativePtr, hk);
+            this.NativePtr = NativeMethods.menu_item_text_new(s, s.Length, mediator.NativePtr, hk);
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace DlibDotNet
                 throw new FileNotFoundException($"{path} is not found", path);
 
             var str = Dlib.Encoding.GetBytes(path);
-            this.NativePtr = NativeMethods.proxy_serialize_new(str);
+            this.NativePtr = NativeMethods.proxy_serialize_new(str, str.Length);
         }
 
         #endregion

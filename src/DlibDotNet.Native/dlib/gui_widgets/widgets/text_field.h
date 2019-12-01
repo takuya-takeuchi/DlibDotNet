@@ -28,9 +28,9 @@ DLLEXPORT void text_field_get_text(text_field* text_field, std::string** text)
     *text = new std::string(text_field->text());
 }
 
-DLLEXPORT void text_field_set_text(text_field* text_field, const char* text)
+DLLEXPORT void text_field_set_text(text_field* text_field, const char* text, const int text_length)
 {
-    text_field->set_text(std::string(text));
+    text_field->set_text(std::string(text, text_length));
 }
 
 DLLEXPORT void text_field_set_width(text_field* text_field, const unsigned long width)

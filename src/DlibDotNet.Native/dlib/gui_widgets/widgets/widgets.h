@@ -16,9 +16,9 @@ using namespace std;
 
 #pragma region XXX_box
 
-DLLEXPORT void message_box(const char* title, const char* message)
+DLLEXPORT void message_box(const char* title, const int title_length, const char* message, const int message_length)
 {
-    dlib::message_box(std::string(title), std::string(message));
+    dlib::message_box(std::string(title, title_length), std::string(message, message_length));
 }
 
 DLLEXPORT void save_file_box(string_action_mediator* mediator)

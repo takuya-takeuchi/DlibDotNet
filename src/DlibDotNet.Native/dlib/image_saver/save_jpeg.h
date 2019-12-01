@@ -16,15 +16,15 @@ using namespace std;
 #pragma region template
 
 #define save_jpeg_array2d_template(__TYPE__, error, type, ...) \
-dlib::save_jpeg(*((array2d<__TYPE__>*)image), file_name, quality);
+dlib::save_jpeg(*((array2d<__TYPE__>*)image), std::string(file_name, file_name_length), quality);
 
 #define save_jpeg_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& mat = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(matrix));\
-dlib::save_jpeg(mat, file_name, quality);\
+dlib::save_jpeg(mat, std::string(file_name, file_name_length), quality);\
 
 #pragma endregion template
 
-DLLEXPORT int save_jpeg(array2d_type type, void* image, const char* file_name, int quality)
+DLLEXPORT int save_jpeg(array2d_type type, void* image, const char* file_name, const int file_name_length, int quality)
 {
     int error = ERR_OK;
 
@@ -33,12 +33,19 @@ DLLEXPORT int save_jpeg(array2d_type type, void* image, const char* file_name, i
                      save_jpeg_array2d_template,
                      image,
                      file_name,
+                     file_name_length,
                      quality);
 
     return error;
 }
 
-DLLEXPORT int save_jpeg_matrix(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, const char* file_name, int quality)
+DLLEXPORT int save_jpeg_matrix(matrix_element_type type,
+                               void* matrix,
+                               const int templateRows,
+                               const int templateColumns,
+                               const char* file_name,
+                               const int file_name_length,
+                               int quality)
 {
     int error = ERR_OK;
 
@@ -50,6 +57,7 @@ DLLEXPORT int save_jpeg_matrix(matrix_element_type type, void* matrix, const int
                     templateColumns,
                     matrix,
                     file_name,
+                    file_name_length,
                     quality);
 
     return error;

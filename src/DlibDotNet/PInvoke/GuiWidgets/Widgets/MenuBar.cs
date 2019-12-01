@@ -18,7 +18,7 @@ namespace DlibDotNet
         public static extern void menu_bar_set_number_of_menus(IntPtr menubar, uint num);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void menu_bar_set_menu_name(IntPtr menubar, uint idx, byte[] name, char underline_ch);
+        public static extern void menu_bar_set_menu_name(IntPtr menubar, uint idx, byte[] name, int nameLength, char underline_ch);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr menu_bar_menu(IntPtr menubar, uint idx);

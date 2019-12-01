@@ -6,11 +6,12 @@
 #include "../shared.h"
 
 DLLEXPORT std::string* wrap_string_char(const char* str,
+                                        const int str_length,
                                         const unsigned long first_pad = 0,
                                         const unsigned long rest_pad = 0,
                                         const unsigned long max_per_line = 79)
 {
-    std::basic_string<char> ret = dlib::wrap_string(str, first_pad, rest_pad, max_per_line);
+    std::basic_string<char> ret = dlib::wrap_string(std::string(str, str_length), first_pad, rest_pad, max_per_line);
     return new std::string(ret);
 }
 

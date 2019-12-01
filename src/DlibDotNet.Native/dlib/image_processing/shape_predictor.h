@@ -45,13 +45,15 @@ DLLEXPORT void shape_predictor_delete(shape_predictor* obj)
 
 DLLEXPORT int serialize_shape_predictor(shape_predictor* predictor,
                                         const char* file_name,
+                                        const int file_name_length,
                                         std::string** error_message)
 {
     int err = ERR_OK;
 
     try
     {
-        dlib::serialize(file_name) << (*predictor);
+        std::string str(file_name, file_name_length);
+        dlib::serialize(str) << (*predictor);
     }
     catch (serialization_error& e)
     {
@@ -63,6 +65,7 @@ DLLEXPORT int serialize_shape_predictor(shape_predictor* predictor,
 }
 
 DLLEXPORT int deserialize_shape_predictor(const char* file_name,
+                                          const int file_name_length,
                                           shape_predictor** ret,
                                           std::string** error_message)
 {
@@ -71,8 +74,9 @@ DLLEXPORT int deserialize_shape_predictor(const char* file_name,
 
     try
     {
+        std::string str(file_name, file_name_length);
         shape_predictor* predictor = new shape_predictor();
-        dlib::deserialize(file_name) >> (*predictor);
+        dlib::deserialize(str) >> (*predictor);
         *ret = predictor;
     }
     catch (serialization_error& e)

@@ -71,7 +71,7 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            this._Imp.Deserialize(str);
+            this._Imp.Deserialize(str, str.Length);
         }
 
         internal Matrix<byte> DrawFHog(uint weightIndex = 0, int cellDrawSize = 15)
@@ -101,7 +101,7 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            this._Imp.Serialize(str);
+            this._Imp.Serialize(str, str.Length);
         }
 
         public Matrix<double> TestObjectDetectionFunction<U>(IEnumerable<Matrix<U>> images, IEnumerable<IEnumerable<Rectangle>> objects)
@@ -159,14 +159,14 @@ namespace DlibDotNet
 
             #region Methods
 
-            public abstract void Deserialize(byte[] filepath);
+            public abstract void Deserialize(byte[] filepath, int filepathLength);
 
             public abstract Matrix<byte> DrawFHog(uint weightIndex = 0, int cellDrawSize = 15);
 
             public abstract IEnumerable<Rectangle> Operator<U>(Matrix<U> image)
                 where U : struct;
 
-            public abstract void Serialize(byte[] filepath);
+            public abstract void Serialize(byte[] filepath, int filepathLength);
 
             public abstract Matrix<double> TestObjectDetectionFunction<U>(IEnumerable<Matrix<U>> images, IEnumerable<IEnumerable<Rectangle>> objects)
                 where U : struct;
@@ -227,9 +227,10 @@ namespace DlibDotNet
 
             #region Overrids
 
-            public override void Deserialize(byte[] filepath)
+            public override void Deserialize(byte[] filepath, int filepathLength)
             {
                 var ret = NativeMethods.object_detector_scan_fhog_pyramid_deserialize(filepath,
+                                                                                      filepathLength,
                                                                                       this._PyramidType,
                                                                                       this._PyramidRate,
                                                                                       this._FeatureExtractorType,
@@ -293,9 +294,10 @@ namespace DlibDotNet
                     return tmp.ToArray();
             }
 
-            public override void Serialize(byte[] filepath)
+            public override void Serialize(byte[] filepath, int filepathLength)
             {
                 var ret = NativeMethods.object_detector_scan_fhog_pyramid_serialize(filepath,
+                                                                                    filepathLength,
                                                                                     this._PyramidType,
                                                                                     this._PyramidRate,
                                                                                     this._FeatureExtractorType,
