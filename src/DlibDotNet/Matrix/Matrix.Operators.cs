@@ -97,6 +97,32 @@ namespace DlibDotNet
             return new Matrix<TElement>(ptr, templateRows, templateColumns);
         }
 
+        public Matrix<TElement> Inverse()
+        {
+            
+            this.ThrowIfDisposed();
+
+            var templateRows = this.TemplateRows;
+            var templateColumns = this.TemplateColumns;
+
+            var type = this._MatrixElementTypes.ToNativeMatrixElementType();
+            var ret = NativeMethods.matrix_operator_invert(type,
+                                                           this.NativePtr,
+                                                           templateRows,
+                                                           templateColumns,
+                                                           out var ptr);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                    throw new ArgumentException($"Input {this._MatrixElementTypes} is not supported.");
+                case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                    throw new ArgumentException($"{nameof(TemplateColumns)} or {nameof(TemplateRows)} is not supported.");
+            }
+
+            return new Matrix<TElement>(ptr, templateRows, templateColumns);
+        }
+
+
         public static Matrix<TElement> operator -(Matrix<TElement> lhs, Matrix<TElement> rhs)
         {
             if (lhs == null)

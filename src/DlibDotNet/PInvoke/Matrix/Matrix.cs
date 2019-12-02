@@ -142,6 +142,13 @@ namespace DlibDotNet
                                                                 out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType matrix_operator_invert(MatrixElementType matrixElementType,
+                                                              IntPtr matrix,
+                                                              int templateRows,
+                                                              int templateColumns,
+                                                              out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_operator_subtract(MatrixElementType matrixElementType,
                                                                 IntPtr lhs,
                                                                 IntPtr rhs,
