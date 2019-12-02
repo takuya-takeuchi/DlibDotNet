@@ -83,7 +83,7 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.frontal_face_detector_delete(this.NativePtr);
+            NativeMethods.image_gradients_delete(this.NativePtr);
         }
 
         #endregion
