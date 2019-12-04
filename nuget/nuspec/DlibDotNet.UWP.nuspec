@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.UWP</id>
-    <version>19.18.0.20190928</version>
+    <version>19.18.0.20191202</version>
     <title>DlibDotNet for UWP</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
