@@ -47,6 +47,7 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMetric_deserialize(int id,
                                                               byte[] file_name,
+                                                              int file_name_length,
                                                               out IntPtr ret,
                                                               out IntPtr error_message);
 
@@ -60,7 +61,14 @@ namespace DlibDotNet
         public static extern ErrorType LossMetric_serialize(int id,
                                                             IntPtr obj,
                                                             byte[] file_name,
+                                                            int file_name_length,
                                                             out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMetric_serialize_proxy(int id,
+                                                             　   IntPtr proxy,
+                                                             　   IntPtr obj,
+                                                                  out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern int LossMetric_get_num_layers(int id);
@@ -72,7 +80,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMetric_input_tensor_to_output_tensor(int id, IntPtr obj, IntPtr p, out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMetric_net_to_xml(int id, IntPtr obj, byte[] filename);
+        public static extern ErrorType LossMetric_net_to_xml(int id, IntPtr obj, byte[] filename, int filenameLength);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMetric_operator_left_shift(int id, IntPtr trainer, IntPtr stream);
@@ -123,6 +131,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMetric_trainer_set_synchronization_file(int id,
                                                                                    IntPtr trainer,
                                                                                    byte[] filename,
+                                                                                   int filenameLength,
                                                                                    uint second);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

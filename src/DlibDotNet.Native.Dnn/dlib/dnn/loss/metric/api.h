@@ -60,15 +60,17 @@ DLLEXPORT int LossMetric_operator_matrixs(const int id,
 }
 
 DLLEXPORT int LossMetric_deserialize(const int id,
-                                            const char* file_name,
-                                            void** ret,
-                                            std::string** error_message)
+                                     const char* file_name,
+                                     const int file_name_length,
+                                     void** ret,
+                                     std::string** error_message)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
     return LossMetricRegistry[id]->deserialize(file_name,
+                                               file_name_length,
                                                ret,
                                                error_message);
 }
@@ -88,9 +90,10 @@ DLLEXPORT int LossMetric_deserialize_proxy(const int id,
 }
 
 DLLEXPORT int LossMetric_serialize(const int id,
-                                          void* obj,
-                                          const char* file_name,
-                                          std::string** error_message)
+                                   void* obj,
+                                   const char* file_name,
+                                   const int file_name_length,
+                                   std::string** error_message)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -98,7 +101,22 @@ DLLEXPORT int LossMetric_serialize(const int id,
 
     return LossMetricRegistry[id]->serialize(obj,
                                              file_name,
+                                             file_name_length,
                                              error_message);
+}
+
+DLLEXPORT int LossMetric_serialize_proxy(const int id,
+                                         proxy_serialize* proxy,
+                                         void* obj,
+                                         std::string** error_message)
+{
+    auto iter = LossMetricRegistry.find(id);
+    if (iter == end(LossMetricRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMetricRegistry[id]->serialize_proxy(proxy,
+                                                   obj,
+                                                   error_message);
 }
 
 DLLEXPORT int LossMetric_get_num_layers(const int id)
@@ -116,8 +134,8 @@ DLLEXPORT int LossMetric_layer_details_set_num_filters(const int id, void* layer
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMetricRegistry[id]->layer_details_set_num_filters(layer, num);
-    return ERR_OK;
+    // LossMetricRegistry[id]->layer_details_set_num_filters(layer, num);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
 DLLEXPORT int LossMetric_subnet(const int id, void* obj, void** subnet)
@@ -165,27 +183,27 @@ DLLEXPORT int LossMetric_clean(const int id, void* obj)
 }
 
 // fc_ does not have input_tensor_to_output_tensor
-DLLEXPORT int LossMetric_input_tensor_to_output_tensor(const int id, void* obj, dlib::dpoint* p, dlib::dpoint** ret)\
+DLLEXPORT int LossMetric_input_tensor_to_output_tensor(const int id, void* obj, dlib::dpoint* p, dlib::dpoint** ret)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMetricRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
-    return ERR_OK;
+    // LossMetricRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
-DLLEXPORT int LossMetric_net_to_xml(const int id, void* obj, const char* filename)\
+DLLEXPORT int LossMetric_net_to_xml(const int id, void* obj, const char* filename, const int file_name_length)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMetricRegistry[id]->net_to_xml(obj, filename);
+    LossMetricRegistry[id]->net_to_xml(obj, filename, file_name_length);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_operator_left_shift(const int id, void* trainer, std::ostringstream* stream)\
+DLLEXPORT int LossMetric_operator_left_shift(const int id, void* trainer, std::ostringstream* stream)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -222,7 +240,7 @@ DLLEXPORT void LossMetric_trainer_delete(const int id, void* trainer)
     LossMetricRegistry[id]->trainer_delete(trainer);
 }
 
-DLLEXPORT int LossMetric_trainer_set_learning_rate(const int id, void* trainer, const double lr)\
+DLLEXPORT int LossMetric_trainer_set_learning_rate(const int id, void* trainer, const double lr)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -232,7 +250,7 @@ DLLEXPORT int LossMetric_trainer_set_learning_rate(const int id, void* trainer, 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_get_learning_rate(const int id, void* trainer, double* lr)\
+DLLEXPORT int LossMetric_trainer_get_learning_rate(const int id, void* trainer, double* lr)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -242,7 +260,7 @@ DLLEXPORT int LossMetric_trainer_get_learning_rate(const int id, void* trainer, 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_get_average_loss(const int id, void* trainer, double* loss)\
+DLLEXPORT int LossMetric_trainer_get_average_loss(const int id, void* trainer, double* loss)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -252,7 +270,7 @@ DLLEXPORT int LossMetric_trainer_get_average_loss(const int id, void* trainer, d
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_get_average_test_loss(const int id, void* trainer, double* loss)\
+DLLEXPORT int LossMetric_trainer_get_average_test_loss(const int id, void* trainer, double* loss)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -262,7 +280,7 @@ DLLEXPORT int LossMetric_trainer_get_average_test_loss(const int id, void* train
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)\
+DLLEXPORT int LossMetric_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -272,7 +290,7 @@ DLLEXPORT int LossMetric_trainer_set_min_learning_rate(const int id, void* train
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_set_mini_batch_size(const int id, void* trainer, const unsigned long size)\
+DLLEXPORT int LossMetric_trainer_set_mini_batch_size(const int id, void* trainer, const unsigned long size)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -282,7 +300,7 @@ DLLEXPORT int LossMetric_trainer_set_mini_batch_size(const int id, void* trainer
     return ERR_OK;
 }
 
-DLLEXPORT int LossMetric_trainer_be_verbose(const int id, void* trainer)\
+DLLEXPORT int LossMetric_trainer_be_verbose(const int id, void* trainer)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
@@ -296,13 +314,14 @@ DLLEXPORT int LossMetric_trainer_be_verbose(const int id, void* trainer)\
 DLLEXPORT int LossMetric_trainer_set_synchronization_file(const int id,
                                                           void* trainer,
                                                           const char* filename,
+                                                          const int filename_length,
                                                           const unsigned long second)
 {
     auto iter = LossMetricRegistry.find(id);
     if (iter == end(LossMetricRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMetricRegistry[id]->trainer_set_synchronization_file(trainer, filename, second);
+    LossMetricRegistry[id]->trainer_set_synchronization_file(trainer, filename, filename_length, second);
     return ERR_OK;
 }
 

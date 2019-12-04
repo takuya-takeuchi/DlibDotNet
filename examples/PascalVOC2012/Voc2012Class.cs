@@ -1,8 +1,11 @@
-﻿using DlibDotNet;
-
-namespace DnnSemanticSegmentation
+﻿namespace DlibDotNet
 {
 
+    // The PASCAL VOC2012 dataset contains 20 ground-truth classes + background.  Each class
+    // is represented using an RGB color value.  We associate each class also to an index in the
+    // range [0, 20], used internally by the network. To convert the ground-truth data to
+    // something that the network can efficiently digest, we need to be able to map the RGB
+    // values to the corresponding indexes.
     public class Voc2012Class
     {
 

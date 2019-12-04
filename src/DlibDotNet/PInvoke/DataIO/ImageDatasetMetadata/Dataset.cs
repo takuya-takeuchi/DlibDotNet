@@ -15,7 +15,7 @@ namespace DlibDotNet
         public static extern IntPtr image_dataset_metadata_dataset_get_comment(IntPtr dataset);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void image_dataset_metadata_dataset_set_comment(IntPtr dataset, byte[] comment);
+        public static extern void image_dataset_metadata_dataset_set_comment(IntPtr dataset, byte[] comment, int commentLength);
 
         #region images
 
@@ -43,7 +43,7 @@ namespace DlibDotNet
         public static extern IntPtr image_dataset_metadata_dataset_get_name(IntPtr dataset);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void image_dataset_metadata_dataset_set_name(IntPtr dataset, byte[] name);
+        public static extern void image_dataset_metadata_dataset_set_name(IntPtr dataset, byte[] name, int nameLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void image_dataset_metadata_dataset_delete(IntPtr dataset);

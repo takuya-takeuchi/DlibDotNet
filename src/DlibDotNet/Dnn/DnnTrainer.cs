@@ -369,7 +369,7 @@ namespace DlibDotNet.Dnn
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Dlib.Encoding.GetBytes(filename);
-                var ret = NativeMethods.LossMetric_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, second);
+                var ret = NativeMethods.LossMetric_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, str.Length, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
@@ -492,7 +492,7 @@ namespace DlibDotNet.Dnn
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Dlib.Encoding.GetBytes(filename);
-                var ret = NativeMethods.LossMmod_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, second);
+                var ret = NativeMethods.LossMmod_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, str.Length, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
@@ -615,7 +615,7 @@ namespace DlibDotNet.Dnn
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Dlib.Encoding.GetBytes(filename);
-                var ret = NativeMethods.LossMulticlassLog_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, second);
+                var ret = NativeMethods.LossMulticlassLog_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, str.Length, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }
@@ -738,7 +738,7 @@ namespace DlibDotNet.Dnn
             public override void SetSynchronizationFile(string filename, uint second = 900)
             {
                 var str = Dlib.Encoding.GetBytes(filename);
-                var ret = NativeMethods.LossMulticlassLogPerPixel_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, second);
+                var ret = NativeMethods.LossMulticlassLogPerPixel_trainer_set_synchronization_file(this.NetworkType, this.NativePtr, str, str.Length, second);
                 if (ret == NativeMethods.ErrorType.DnnNotSupportNetworkType)
                     throw new NotSupportNetworkTypeException(this.NetworkType);
             }

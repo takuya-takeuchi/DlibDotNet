@@ -46,6 +46,12 @@ DLLEXPORT mmod_rect* mmod_rect_new()
     return new mmod_rect();
 }
 
+DLLEXPORT mmod_rect* mmod_rect_new2(dlib::rectangle* rectangle)
+{
+    const auto& r = *rectangle;
+    return new mmod_rect(r);
+}
+
 DLLEXPORT double mmod_rect_get_detection_confidence(mmod_rect* mmod, double* confidence)
 {
     *confidence = mmod->detection_confidence;

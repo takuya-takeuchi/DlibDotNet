@@ -90,14 +90,13 @@ using anet_1000_type = loss_multiclass_log<fc<1000,avg_pool_everything<
 
 // ----------------------------------------------------------------------------------------
 
-using net_type2 = loss_multiclass_log<
-                            fc<10,
-                            relu<fc<84,
-                            relu<fc<120,
-                            max_pool<2,2,2,2,relu<con<16,5,5,1,1,
-                            max_pool<2,2,2,2,relu<con<6,5,5,1,1,
-                            input<matrix<unsigned char>>
-                            >>>>>>>>>>>>;
+using net_type2 = loss_multiclass_log<fc<10,
+                                      relu<fc<84,
+                                      relu<fc<120,
+                                      max_pool<2,2,2,2,relu<con<16,5,5,1,1,
+                                      max_pool<2,2,2,2,relu<con<6,5,5,1,1,
+                                      input<matrix<unsigned char>>
+                                      >>>>>>>>>>>>;
 
 static const std::vector<const char *>* net_type_labels = new std::vector<const char *>(
 {

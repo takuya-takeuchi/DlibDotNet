@@ -27,6 +27,8 @@ namespace DlibDotNet
             this.Param = null;
             this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create();
+
+            ContainerBridgeRepository.Add(new StdVectorContainerBridge());
         }
 
         public StdVector(IParameter param = null)
@@ -240,6 +242,8 @@ namespace DlibDotNet
 
             #region Methods
 
+            public abstract void CopyTo(IntPtr ptr, T[] array, int arrayIndex);
+
             public abstract IntPtr Create();
 
             public abstract IntPtr Create(int size);
@@ -262,6 +266,16 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, int[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var elementPtr = this.GetElementPtr(ptr);
+                Marshal.Copy(elementPtr, array, arrayIndex, size);
+            }
 
             public override IntPtr Create()
             {
@@ -321,6 +335,16 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, uint[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var elementPtr = this.GetElementPtr(ptr);
+                Interop.InteropHelper.Copy(elementPtr, array, arrayIndex, (uint)size);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_uint32_new1();
@@ -378,6 +402,16 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, long[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var elementPtr = this.GetElementPtr(ptr);
+                Marshal.Copy(elementPtr, array, arrayIndex, size);
+            }
 
             public override IntPtr Create()
             {
@@ -437,6 +471,16 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, float[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var elementPtr = this.GetElementPtr(ptr);
+                Marshal.Copy(elementPtr, array, arrayIndex, size);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_float_new1();
@@ -494,6 +538,16 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, double[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var elementPtr = this.GetElementPtr(ptr);
+                Marshal.Copy(elementPtr, array, arrayIndex, size);
+            }
 
             public override IntPtr Create()
             {
@@ -553,6 +607,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, ChipDetails[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_chip_details_copy(ptr, dst);
+                var tmp = dst.Select(p => new ChipDetails(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_chip_details_new1();
@@ -609,6 +675,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, StdString[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_string_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdString(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -667,6 +745,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, FullObjectDetection[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_full_object_detection_copy(ptr, dst);
+                var tmp = dst.Select(p => new FullObjectDetection(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_full_object_detection_new1();
@@ -723,6 +813,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, RectDetection[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_rect_detection_copy(ptr, dst);
+                var tmp = dst.Select(p => new RectDetection(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -781,6 +883,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, ImageWindow.OverlayLine[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_image_window_overlay_line_copy(ptr, dst);
+                var tmp = dst.Select(p => new ImageWindow.OverlayLine(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_image_window_overlay_line_new1();
@@ -837,6 +951,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, ImageDatasetMetadata.Image[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_image_dataset_metadata_image_copy(ptr, dst);
+                var tmp = dst.Select(p => new ImageDatasetMetadata.Image(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -895,6 +1021,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, ImageDatasetMetadata.Box[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_image_dataset_metadata_box_copy(ptr, dst);
+                var tmp = dst.Select(p => new ImageDatasetMetadata.Box(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_image_dataset_metadata_box_new1();
@@ -951,6 +1089,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, MModRect[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_mmod_rect_copy(ptr, dst);
+                var tmp = dst.Select(p => new MModRect(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1009,6 +1159,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, SurfPoint[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_surf_point_copy(ptr, dst);
+                var tmp = dst.Select(p => new SurfPoint(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_surf_point_new1();
@@ -1065,6 +1227,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, SamplePair[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_sample_pair_copy(ptr, dst);
+                var tmp = dst.Select(p => new SamplePair(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1150,6 +1324,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, Matrix<TElement>[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_matrix_copy(ptr, dst);
+                var tmp = dst.Select(p => new Matrix<TElement>(p, this._TemplateRows, this._TemplateColumns)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_matrix_new1(this._NativeType, this._TemplateRows, this._TemplateColumns);
@@ -1207,6 +1393,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, PerspectiveWindow.OverlayDot[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_perspective_window_overlay_dot_copy(ptr, dst);
+                var tmp = dst.Select(p => new PerspectiveWindow.OverlayDot(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_perspective_window_overlay_dot_new1();
@@ -1263,6 +1461,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, Rectangle[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_rectangle_copy(ptr, dst);
+                var tmp = dst.Select(p => new Rectangle(p, false)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1330,6 +1540,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, Point[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_point_copy(ptr, dst);
+                var tmp = dst.Select(p => new Point(p, false)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_point_new1();
@@ -1395,6 +1617,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, DPoint[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_dpoint_copy(ptr, dst);
+                var tmp = dst.Select(p => new DPoint(p, false)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1462,6 +1696,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, Vector<double>[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_vector_double_copy(ptr, dst);
+                var tmp = dst.Select(p => new Vector<double>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_vector_double_new1();
@@ -1518,6 +1764,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, StdVector<double>[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_stdvector_double_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdVector<double>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1576,6 +1834,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, StdVector<Rectangle>[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_stdvector_rectangle_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdVector<Rectangle>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_stdvector_rectangle_new1();
@@ -1632,6 +1902,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, StdVector<MModRect>[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_stdvector_mmod_rect_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdVector<MModRect>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1690,6 +1972,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, StdVector<FullObjectDetection>[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_stdvector_full_object_detection_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdVector<FullObjectDetection>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_stdvector_full_object_detection_new1();
@@ -1747,6 +2041,18 @@ namespace DlibDotNet
 
             #region Methods
 
+            public override void CopyTo(IntPtr ptr, MModOptions.DetectorWindowDetails[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_mmod_options_detector_window_details_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdVector<MModOptions.DetectorWindowDetails>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
+
             public override IntPtr Create()
             {
                 return NativeMethods.stdvector_mmod_options_detector_window_details_new1();
@@ -1803,6 +2109,18 @@ namespace DlibDotNet
         {
 
             #region Methods
+
+            public override void CopyTo(IntPtr ptr, ImageDisplay.OverlayRect[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var dst = new IntPtr[size];
+                NativeMethods.stdvector_image_display_overlay_rect_copy(ptr, dst);
+                var tmp = dst.Select(p => new StdVector<ImageDisplay.OverlayRect>(p)).ToArray();
+                Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+            }
 
             public override IntPtr Create()
             {
@@ -1891,7 +2209,16 @@ namespace DlibDotNet
 
         public void CopyTo(TItem[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null) 
+                throw new ArgumentNullException(nameof(array));
+            if (arrayIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), $"{nameof(arrayIndex)} is less than 0.");
+            var size = array.Length - arrayIndex;
+            if (size > this.Size)
+                throw new ArgumentException($"The number of elements in the source StdVector<T> is greater than the available space from {nameof(arrayIndex)} to the end of the destination array.");
+
+            this.ThrowIfDisposed();
+            this._Imp.CopyTo(this.NativePtr, array, arrayIndex);
         }
 
         public bool Remove(TItem item)
@@ -1901,10 +2228,7 @@ namespace DlibDotNet
 
         public int Count => this.Size;
 
-        public bool IsReadOnly
-        {
-            get;
-        }
+        public bool IsReadOnly => false;
 
         public int IndexOf(TItem item)
         {
@@ -1928,6 +2252,29 @@ namespace DlibDotNet
         }
 
         #endregion
+        
+        private sealed class StdVectorContainerBridge : ContainerBridge<StdVector<TItem>>
+        {
+
+            #region Methods
+
+            #region Overrids
+
+            public override StdVector<TItem> Create(IntPtr ptr, IParameter parameter = null)
+            {
+                return new StdVector<TItem>(ptr, parameter);
+            }
+
+            public override IntPtr GetPtr(StdVector<TItem> item)
+            {
+                return item.NativePtr;
+            }
+
+            #endregion
+
+            #endregion
+
+        }
 
     }
 

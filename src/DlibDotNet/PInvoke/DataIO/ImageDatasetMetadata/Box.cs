@@ -58,7 +58,7 @@ namespace DlibDotNet
         public static extern IntPtr image_dataset_metadata_box_get_label(IntPtr dataset);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void image_dataset_metadata_box_set_label(IntPtr dataset, byte[] label);
+        public static extern void image_dataset_metadata_box_set_label(IntPtr dataset, byte[] label, int labelLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -74,10 +74,10 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool image_dataset_metadata_box_get_parts_get_value(IntPtr box, byte[] key, out IntPtr result);
+        public static extern bool image_dataset_metadata_box_get_parts_get_value(IntPtr box, byte[] key, int keyLength, out IntPtr result);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void image_dataset_metadata_box_get_parts_set_value(IntPtr box, byte[] key, IntPtr value);
+        public static extern void image_dataset_metadata_box_get_parts_set_value(IntPtr box, byte[] key, int keyLength, IntPtr value);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int image_dataset_metadata_box_get_parts_get_size(IntPtr overlayRect);

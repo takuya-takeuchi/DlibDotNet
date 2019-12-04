@@ -59,6 +59,7 @@ namespace DlibDotNet
 
             var str = Dlib.Encoding.GetBytes(path);
             var ret = NativeMethods.deserialize_shape_predictor(str,
+                                                                str.Length,
                                                                 out var predictor,
                                                                 out var errorMessage);
 
@@ -207,6 +208,7 @@ namespace DlibDotNet
             var str = Dlib.Encoding.GetBytes(path);
             var ret = NativeMethods.serialize_shape_predictor(predictor.NativePtr,
                                                               str,
+                                                              str.Length,
                                                               out var errorMessage);
 
             switch (ret)

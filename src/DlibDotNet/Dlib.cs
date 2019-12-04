@@ -253,7 +253,7 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_bmp(array2DType, image.NativePtr, str, out var errorMessage);
+            var ret = NativeMethods.load_bmp(array2DType, image.NativePtr, str, str.Length, out var errorMessage);
             switch (ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
@@ -288,7 +288,7 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_dng(array2DType, image.NativePtr, str, out var errorMessage);
+            var ret = NativeMethods.load_dng(array2DType, image.NativePtr, str, str.Length, out var errorMessage);
             switch (ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
@@ -323,7 +323,7 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_image(array2DType, image.NativePtr, str, out var errorMessage);
+            var ret = NativeMethods.load_image(array2DType, image.NativePtr, str, str.Length, out var errorMessage);
             switch(ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
@@ -359,7 +359,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var matrixElementType = type.ToNativeMatrixElementType();
-            var ret = NativeMethods.load_image_matrix(matrixElementType, str, out var matrix, out var errorMessage);
+            var ret = NativeMethods.load_image_matrix(matrixElementType, str, str.Length, out var matrix, out var errorMessage);
             switch (ret)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
@@ -394,7 +394,7 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_jpeg(array2DType, image.NativePtr, str, out var errorMessage);
+            var ret = NativeMethods.load_jpeg(array2DType, image.NativePtr, str, str.Length, out var errorMessage);
             switch (ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
@@ -429,7 +429,7 @@ namespace DlibDotNet
             var image = new Array2D<T>();
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.load_png(array2DType, image.NativePtr, str, out var errorMessage);
+            var ret = NativeMethods.load_png(array2DType, image.NativePtr, str, str.Length, out var errorMessage);
             switch (ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
@@ -670,7 +670,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.save_bmp(array2DType, image.NativePtr, str);
+            var ret = NativeMethods.save_bmp(array2DType, image.NativePtr, str, str.Length);
             if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
@@ -703,7 +703,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = NativeMethods.save_bmp_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+            var ret = NativeMethods.save_bmp_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, str.Length);
             switch (ret)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
@@ -739,7 +739,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.save_dng(array2DType, image.NativePtr, str);
+            var ret = NativeMethods.save_dng(array2DType, image.NativePtr, str, str.Length);
             if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
@@ -772,7 +772,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = NativeMethods.save_dng_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+            var ret = NativeMethods.save_dng_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, str.Length);
             switch (ret)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
@@ -812,7 +812,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.save_jpeg(array2DType, image.NativePtr, str, quality);
+            var ret = NativeMethods.save_jpeg(array2DType, image.NativePtr, str, str.Length, quality);
             if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
@@ -849,7 +849,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = NativeMethods.save_jpeg_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, quality);
+            var ret = NativeMethods.save_jpeg_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, str.Length, quality);
             switch (ret)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
@@ -883,7 +883,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var array2DType = image.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.save_png(array2DType, image.NativePtr, str);
+            var ret = NativeMethods.save_png(array2DType, image.NativePtr, str, str.Length);
             if (ret == NativeMethods.ErrorType.Array2DTypeTypeNotSupport)
                 throw new ArgumentException($"{image.ImageType} is not supported.");
         }
@@ -914,7 +914,7 @@ namespace DlibDotNet
             var str = Encoding.GetBytes(path);
 
             var matrixElementType = matrix.MatrixElementType.ToNativeMatrixElementType();
-            var ret = NativeMethods.save_png_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str);
+            var ret = NativeMethods.save_png_matrix(matrixElementType, matrix.NativePtr, matrix.TemplateRows, matrix.TemplateColumns, str, str.Length);
             switch (ret)
             {
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:

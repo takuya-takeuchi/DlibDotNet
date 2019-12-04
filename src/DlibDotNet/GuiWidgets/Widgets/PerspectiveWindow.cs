@@ -36,7 +36,7 @@ namespace DlibDotNet
 
             var str = Dlib.Encoding.GetBytes(title);
             using (var vector = new StdVector<Vector<double>>(points))
-                this.NativePtr = NativeMethods.perspective_window_new3(vector.NativePtr, str);
+                this.NativePtr = NativeMethods.perspective_window_new3(vector.NativePtr, str, str.Length);
         }
 
         #endregion

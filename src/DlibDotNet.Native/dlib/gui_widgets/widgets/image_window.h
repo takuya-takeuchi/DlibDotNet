@@ -24,7 +24,7 @@ using namespace std;
 ret = new image_window(*((dlib::matrix_op<ELEMENT<array2d<__TYPE__>>>*)image));\
 
 #define image_window_new_matrix_op_template2(__TYPE__, error, type, ...) \
-ret = new image_window(*((matrix_op<ELEMENT<array2d<__TYPE__>>>*)image), title);\
+ret = new image_window(*((matrix_op<ELEMENT<array2d<__TYPE__>>>*)image), std::string(title, title_length));\
 
 #define image_window_new_matrix_op_template3(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(img);\
@@ -32,7 +32,7 @@ ret = new image_window(op);\
 
 #define image_window_new_matrix_op_template4(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& op = *static_cast<matrix_op<ELEMENT<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(img);\
-ret = new image_window(op, title);\
+ret = new image_window(op, std::string(title, title_length));\
 
 #define image_window_set_image_array2d_template(__TYPE__, error, type, ...) \
 window->set_image(*((dlib::array2d<__TYPE__>*)image));
@@ -71,13 +71,13 @@ DLLEXPORT image_window* image_window_new()
 ret = new image_window(*((array2d<__TYPE__>*)image));
 
 #define image_window_new_array2d2_template(__TYPE__, error, type, ...) \
-ret = new image_window(*((array2d<__TYPE__>*)image), title);
+ret = new image_window(*((array2d<__TYPE__>*)image), std::string(title, title_length));
 
 #define image_window_new_matrix1_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 ret = new image_window(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image));
 
 #define image_window_new_matrix2_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
-ret = new image_window(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image), title);
+ret = new image_window(*((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)image), std::string(title, title_length));
 
 DLLEXPORT image_window* image_window_new_array2d1(array2d_type type, void* image)
 {
@@ -93,7 +93,7 @@ DLLEXPORT image_window* image_window_new_array2d1(array2d_type type, void* image
     return ret;
 }
 
-DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image, const char* title)
+DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image, const char* title, const int title_length)
 {
     int error = ERR_OK;
     image_window* ret = nullptr;
@@ -102,6 +102,8 @@ DLLEXPORT image_window* image_window_new_array2d2(array2d_type type, void* image
                      error,
                      image_window_new_array2d2_template,
                      image,
+                     title,
+                     title_length,
                      ret);
 
     return ret;
@@ -124,7 +126,7 @@ DLLEXPORT image_window* image_window_new_matrix1(matrix_element_type type, void*
     return ret;
 }
 
-DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void* image, const char* title)
+DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void* image, const char* title, const int title_length)
 {
     int error = ERR_OK;
     image_window* ret = nullptr;
@@ -136,6 +138,8 @@ DLLEXPORT image_window* image_window_new_matrix2(matrix_element_type type, void*
                     0,
                     0,
                     image,
+                    title,
+                    title_length,
                     ret);
 
     return ret;
@@ -176,7 +180,7 @@ DLLEXPORT int image_window_new_matrix_op1(element_type etype, array2d_type type,
     return error;
 }
 
-DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title, void** result)
+DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type, void* image, const char* title, const int title_length, void** result)
 {
     int error = ERR_OK;
     void* ret = nullptr;
@@ -190,6 +194,7 @@ DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type,
                              image_window_new_matrix_op_template2,
                              image,
                              title,
+                             title_length,
                              ret);
             #undef ELEMENT
             break;
@@ -200,6 +205,7 @@ DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type,
                              image_window_new_matrix_op_template2,
                              image,
                              title,
+                             title_length,
                              ret);
             #undef ELEMENT
             break;
@@ -265,6 +271,7 @@ DLLEXPORT int image_window_new_matrix_op4(element_type etype,
                                           const int templateRows,
                                           const int templateColumns,
                                           const char* title,
+                                          const int title_length,
                                           void** result)
 {
     int error = ERR_OK;
@@ -282,6 +289,7 @@ DLLEXPORT int image_window_new_matrix_op4(element_type etype,
                             templateColumns,
                             img,
                             title,
+                            title_length,
                             ret);
             #undef ELEMENT
             break;
@@ -295,6 +303,7 @@ DLLEXPORT int image_window_new_matrix_op4(element_type etype,
                             templateColumns,
                             img,
                             title,
+                            title_length,
                             ret);
             #undef ELEMENT
             break;

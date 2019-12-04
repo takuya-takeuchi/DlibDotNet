@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr image_dataset_metadata_image_new(byte[] filename);
+        public static extern IntPtr image_dataset_metadata_image_new(byte[] filename, int filenameLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr image_dataset_metadata_image_new2();
@@ -37,7 +37,7 @@ namespace DlibDotNet
         public static extern IntPtr image_dataset_metadata_image_get_filename(IntPtr image);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void image_dataset_metadata_image_set_filename(IntPtr image, byte[] filename);
+        public static extern void image_dataset_metadata_image_set_filename(IntPtr image, byte[] filename, int filenameLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void image_dataset_metadata_image_delete(IntPtr image);

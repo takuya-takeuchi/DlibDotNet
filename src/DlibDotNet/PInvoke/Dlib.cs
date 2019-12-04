@@ -245,6 +245,8 @@ namespace DlibDotNet
 
             GeneralInvalidParameter = -(GeneralError | 0x00000004),
 
+            GeneralNotSupport       = -(GeneralError | 0x00000005),
+
             #endregion
 
             #region Array2D
@@ -400,6 +402,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType object_detector_scan_fhog_pyramid_deserialize(byte[] fileName,
+                                                                                     int filepathLength,
                                                                                      PyramidType pyramidType,
                                                                                      uint pyramidRate,
                                                                                      FHogFeatureExtractorType featureExtractorType,
@@ -417,6 +420,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType object_detector_scan_fhog_pyramid_serialize(byte[] fileName,
+                                                                                   int filepathLength,
                                                                                    PyramidType pyramidType,
                                                                                    uint pyramidRate,
                                                                                    FHogFeatureExtractorType featureExtractorType,

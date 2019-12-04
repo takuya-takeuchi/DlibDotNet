@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr proxy_deserialize_new(byte[] fileName);
+        public static extern IntPtr proxy_deserialize_new(byte[] fileName, int fileNameLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void proxy_deserialize_delete(IntPtr deserialize);

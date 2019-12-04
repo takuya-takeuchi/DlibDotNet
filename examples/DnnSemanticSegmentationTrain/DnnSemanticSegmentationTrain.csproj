@@ -10,15 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\DnnSemanticSegmentationTrainOld\ImageInfo.cs" Link="ImageInfo.cs" />
     <Compile Include="..\DnnSemanticSegmentationTrainOld\TrainingSample.cs" Link="TrainingSample.cs" />
     <Compile Include="..\DnnSemanticSegmentationTrainOld\TrainingSampleContainerBridge.cs" Link="TrainingSampleContainerBridge.cs" />
-    <Compile Include="..\DnnSemanticSegmentation\Common.cs" Link="Common.cs" />
-    <Compile Include="..\DnnSemanticSegmentation\Voc2012Class.cs" Link="Voc2012Class.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DlibDotNet\DlibDotNet.csproj" />
+    <ProjectReference Include="..\PascalVOC2012\PascalVOC2012.csproj" />
   </ItemGroup>
 
 </Project>

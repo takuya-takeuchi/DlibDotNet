@@ -18,14 +18,14 @@ kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel
 
 #define serialize_decision_function_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
 auto& df = *static_cast<dlib::decision_function<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(function);\
-dlib::serialize(file_name) << df;
+dlib::serialize(std::string(file_name, file_name_length)) << df;
 
 #define serialize_decision_function_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, serialize_decision_function_template_sub, __VA_ARGS__)
 
 #define deserialize_decision_function_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
 auto df = new dlib::decision_function<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>();\
-dlib::deserialize(file_name) >> *df;\
+dlib::deserialize(std::string(file_name, file_name_length)) >> *df;\
 *ret = df;
 
 #define deserialize_decision_function_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
@@ -57,6 +57,7 @@ DLLEXPORT int serialize_decision_function(svm_kernel_type kernel_type,
                                           const int templateColumns,
                                           void* function,
                                           const char* file_name,
+                                          const int file_name_length,
                                           std::string** error_message)
 {
     int error = ERR_OK;
@@ -71,7 +72,8 @@ DLLEXPORT int serialize_decision_function(svm_kernel_type kernel_type,
                                 templateColumns,
                                 kernel_type,
                                 function,
-                                file_name);
+                                file_name,
+                                file_name_length);
     }
     catch (serialization_error& e)
     {
@@ -83,6 +85,7 @@ DLLEXPORT int serialize_decision_function(svm_kernel_type kernel_type,
 }
 
 DLLEXPORT int deserialize_decision_function(const char* file_name,
+                                            const int file_name_length,
                                             svm_kernel_type kernel_type,
                                             matrix_element_type type,
                                             const int templateRows,
@@ -103,6 +106,7 @@ DLLEXPORT int deserialize_decision_function(const char* file_name,
                                 templateColumns,
                                 kernel_type,
                                 file_name,
+                                file_name_length,
                                 ret);
     }
     catch (serialization_error& e)

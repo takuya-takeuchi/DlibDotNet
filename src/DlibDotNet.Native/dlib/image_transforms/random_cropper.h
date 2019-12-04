@@ -50,6 +50,28 @@ for (int j = 0; j < tmp_ret_images.size(); j++)\
     out_rects.push_back(tmp_v);\
 }\
 
+#define random_cropper_operator2_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto& c = *cropper;\
+auto& in_images = *(static_cast<matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(image));\
+std::vector<mmod_rect> in_rects;\
+std::vector<mmod_rect*>& tmp_rects = *(static_cast<std::vector<mmod_rect*>*>(rects));\
+auto tmp_ret_images = new matrix<__TYPE__, __ROWS__, __COLUMNS__>();\
+auto& out_ret_images = *tmp_ret_images;\
+std::vector<mmod_rect> tmp_ret_rects;\
+auto& out_rects = *(static_cast<std::vector<mmod_rect*>*>(crop_rects));\
+for (int j = 0; j < tmp_rects.size(); j++)\
+{\
+    auto& m = *(tmp_rects[j]);\
+    in_rects.push_back(m);\
+}\
+c(in_images, in_rects, out_ret_images, tmp_ret_rects);\
+*crop = tmp_ret_images;\
+for (int j = 0; j < tmp_ret_rects.size(); j++)\
+{\
+    auto& v = tmp_ret_rects[j];\
+    out_rects.push_back(new mmod_rect(v));\
+}\
+
 #pragma endregion template
 
 DLLEXPORT random_cropper* random_cropper_new()
@@ -167,6 +189,30 @@ DLLEXPORT int random_cropper_operator(random_cropper* cropper,
                              images,
                              rects,
                              crops,
+                             crop_rects);
+
+    return error;
+}
+
+DLLEXPORT int random_cropper_operator2(random_cropper* cropper,
+                                       matrix_element_type type,
+                                       void* image,
+                                       void* rects,
+                                       void** crop,
+                                       void* crop_rects)
+{
+    int error = ERR_OK;
+
+    matrix_nonalpha_template(type,
+                             error,
+                             matrix_template_size_template,
+                             random_cropper_operator2_template,
+                             0,
+                             0,
+                             cropper,
+                             image,
+                             rects,
+                             crop,
                              crop_rects);
 
     return error;

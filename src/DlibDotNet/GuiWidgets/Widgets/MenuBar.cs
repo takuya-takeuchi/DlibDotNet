@@ -36,7 +36,7 @@ namespace DlibDotNet
         {
             this.ThrowIfDisposed();
             var str = Dlib.Encoding.GetBytes(name ?? "");
-            NativeMethods.menu_bar_set_menu_name(this.NativePtr, index, str, underline);
+            NativeMethods.menu_bar_set_menu_name(this.NativePtr, index, str, str.Length, underline);
         }
 
         #region Overrids

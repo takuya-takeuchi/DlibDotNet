@@ -23,10 +23,26 @@ namespace DlibDotNet
 
         #region Methods
 
+        public long GetIntegerInRange(long begin, long end)
+        {
+            this.ThrowIfDisposed();
+
+            if (!(begin <= end))
+                throw new ArgumentOutOfRangeException();
+
+            return NativeMethods.rand_get_integer_in_range(this.NativePtr, begin, end);
+        }
+
         public double GetRandomDouble()
         {
             this.ThrowIfDisposed();
             return NativeMethods.rand_get_random_double(this.NativePtr);
+        }
+
+        public byte GetRandom8BitNumber()
+        {
+            this.ThrowIfDisposed();
+            return NativeMethods.rand_get_random_8bit_number(this.NativePtr);
         }
 
         public uint GetRandom32BitNumber()

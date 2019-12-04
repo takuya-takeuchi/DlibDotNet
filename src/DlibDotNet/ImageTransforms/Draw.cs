@@ -315,6 +315,308 @@ namespace DlibDotNet
             }
         }
 
+        public static void DrawLine(Matrix<RgbPixel> image, Point p1, Point p2)
+        {
+            DrawLine(image, p1, p2, new RgbPixel());
+        }
+
+        public static void DrawLine(Matrix<byte> image, Point p1, Point p2, byte color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.UInt8,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<ushort> image, Point p1, Point p2, ushort color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.UInt16,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<uint> image, Point p1, Point p2, uint color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.UInt32,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<sbyte> image, Point p1, Point p2, sbyte color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.Int8,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<short> image, Point p1, Point p2, short color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.Int16,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<int> image, Point p1, Point p2, int color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.Int32,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<float> image, Point p1, Point p2, float color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.Float,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<double> image, Point p1, Point p2, double color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.Double,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<RgbPixel> image, Point p1, Point p2, RgbPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.RgbPixel,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<RgbAlphaPixel> image, Point p1, Point p2, RgbAlphaPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.RgbAlphaPixel,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawLine(Matrix<HsiPixel> image, Point p1, Point p2, HsiPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.HsiPixel,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
         #endregion
 
         #region DrawRectangle(Array2D<T> image, Rectangle rect, pixelType color, uint thickness)
@@ -560,6 +862,248 @@ namespace DlibDotNet
                 }
             }
         }
+        
+        public static void DrawRectangle(Matrix<byte> image, Rectangle rect, byte color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.UInt8,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<ushort> image, Rectangle rect, ushort color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.UInt16,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<uint> image, Rectangle rect, uint color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.UInt32,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<sbyte> image, Rectangle rect, sbyte color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.Int8,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<short> image, Rectangle rect, short color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.Int16,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<int> image, Rectangle rect, int color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.UInt32,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<float> image, Rectangle rect, float color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.Float,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<double> image, Rectangle rect, double color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.Double,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<RgbPixel> image, Rectangle rect, RgbPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.RgbPixel,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<RgbAlphaPixel> image, Rectangle rect, RgbAlphaPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.RgbAlphaPixel,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<HsiPixel> image, Rectangle rect, HsiPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.HsiPixel,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
 
         #endregion
 
@@ -788,6 +1332,237 @@ namespace DlibDotNet
                                                   image.NativePtr,
                                                   native.NativePtr,
                                                   ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<byte> image, Rectangle rect, byte color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.UInt8,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<ushort> image, Rectangle rect, ushort color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.UInt16,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<uint> image, Rectangle rect, uint color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.UInt32,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<sbyte> image, Rectangle rect, sbyte color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.Int8,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<short> image, Rectangle rect, short color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.Int16,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<int> image, Rectangle rect, int color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.UInt32,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<float> image, Rectangle rect, float color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.Float,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<double> image, Rectangle rect, double color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.Double,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<RgbPixel> image, Rectangle rect, RgbPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.RgbPixel,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<RgbAlphaPixel> image, Rectangle rect, RgbAlphaPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.RgbAlphaPixel,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<HsiPixel> image, Rectangle rect, HsiPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.HsiPixel,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:

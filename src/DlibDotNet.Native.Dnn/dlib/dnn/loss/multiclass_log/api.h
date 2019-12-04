@@ -99,6 +99,7 @@ DLLEXPORT int LossMulticlassLog_probability(const int id,
 
 DLLEXPORT int LossMulticlassLog_deserialize(const int id,
                                             const char* file_name,
+                                            const int file_name_length,
                                             void** ret,
                                             std::string** error_message)
 {
@@ -107,6 +108,7 @@ DLLEXPORT int LossMulticlassLog_deserialize(const int id,
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
     return LossMulticlassLogRegistry[id]->deserialize(file_name,
+                                                      file_name_length,
                                                       ret,
                                                       error_message);
 }
@@ -128,6 +130,7 @@ DLLEXPORT int LossMulticlassLog_deserialize_proxy(const int id,
 DLLEXPORT int LossMulticlassLog_serialize(const int id,
                                           void* obj,
                                           const char* file_name,
+                                          const int file_name_length,
                                           std::string** error_message)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -136,7 +139,22 @@ DLLEXPORT int LossMulticlassLog_serialize(const int id,
 
     return LossMulticlassLogRegistry[id]->serialize(obj,
                                                     file_name,
+                                                    file_name_length,
                                                     error_message);
+}
+
+DLLEXPORT int LossMulticlassLog_serialize_proxy(const int id,
+                                                proxy_serialize* proxy,
+                                                void* obj,
+                                                std::string** error_message)
+{
+    auto iter = LossMulticlassLogRegistry.find(id);
+    if (iter == end(LossMulticlassLogRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMulticlassLogRegistry[id]->serialize_proxy(proxy,
+                                                          obj,
+                                                          error_message);
 }
 
 DLLEXPORT int LossMulticlassLog_get_num_layers(const int id)
@@ -154,8 +172,8 @@ DLLEXPORT int LossMulticlassLog_layer_details_set_num_filters(const int id, void
     if (iter == end(LossMulticlassLogRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogRegistry[id]->layer_details_set_num_filters(layer, num);
-    return ERR_OK;
+    // LossMulticlassLogRegistry[id]->layer_details_set_num_filters(layer, num);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
 DLLEXPORT int LossMulticlassLog_subnet(const int id, void* obj, void** subnet)
@@ -203,27 +221,30 @@ DLLEXPORT int LossMulticlassLog_clean(const int id, void* obj)
 }
 
 // fc_ does not have input_tensor_to_output_tensor
-DLLEXPORT int LossMulticlassLog_input_tensor_to_output_tensor(const int id, void* obj, dlib::dpoint* p, dlib::dpoint** ret)\
+DLLEXPORT int LossMulticlassLog_input_tensor_to_output_tensor(const int id, void* obj, dlib::dpoint* p, dlib::dpoint** ret)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
-    return ERR_OK;
+    // LossMulticlassLogRegistry[id]->input_tensor_to_output_tensor(obj, p, ret);
+    return ERR_GENERAL_NOT_SUPPORT;
 }
 
-DLLEXPORT int LossMulticlassLog_net_to_xml(const int id, void* obj, const char* filename)\
+DLLEXPORT int LossMulticlassLog_net_to_xml(const int id,
+                                           void* obj,
+                                           const char* filename,
+                                           const int file_name_length)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogRegistry[id]->net_to_xml(obj, filename);
+    LossMulticlassLogRegistry[id]->net_to_xml(obj, filename, file_name_length);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_operator_left_shift(const int id, void* trainer, std::ostringstream* stream)\
+DLLEXPORT int LossMulticlassLog_operator_left_shift(const int id, void* trainer, std::ostringstream* stream)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -260,7 +281,7 @@ DLLEXPORT void LossMulticlassLog_trainer_delete(const int id, void* trainer)
     LossMulticlassLogRegistry[id]->trainer_delete(trainer);
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_learning_rate(const int id, void* trainer, const double lr)\
+DLLEXPORT int LossMulticlassLog_trainer_set_learning_rate(const int id, void* trainer, const double lr)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -270,7 +291,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_learning_rate(const int id, void* tr
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_get_learning_rate(const int id, void* trainer, double* lr)\
+DLLEXPORT int LossMulticlassLog_trainer_get_learning_rate(const int id, void* trainer, double* lr)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -280,7 +301,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_learning_rate(const int id, void* tr
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_get_average_loss(const int id, void* trainer, double* loss)\
+DLLEXPORT int LossMulticlassLog_trainer_get_average_loss(const int id, void* trainer, double* loss)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -290,7 +311,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_average_loss(const int id, void* tra
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_get_average_test_loss(const int id, void* trainer, double* loss)\
+DLLEXPORT int LossMulticlassLog_trainer_get_average_test_loss(const int id, void* trainer, double* loss)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -300,7 +321,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_average_test_loss(const int id, void
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)\
+DLLEXPORT int LossMulticlassLog_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -310,7 +331,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_min_learning_rate(const int id, void
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_mini_batch_size(const int id, void* trainer, const unsigned long size)\
+DLLEXPORT int LossMulticlassLog_trainer_set_mini_batch_size(const int id, void* trainer, const unsigned long size)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -320,7 +341,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_mini_batch_size(const int id, void* 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer)\
+DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -334,13 +355,14 @@ DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer)\
 DLLEXPORT int LossMulticlassLog_trainer_set_synchronization_file(const int id,
                                                                  void* trainer,
                                                                  const char* filename,
+                                                                 const int filename_length,
                                                                  const unsigned long second)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogRegistry[id]->trainer_set_synchronization_file(trainer, filename, second);
+    LossMulticlassLogRegistry[id]->trainer_set_synchronization_file(trainer, filename, filename_length, second);
     return ERR_OK;
 }
 

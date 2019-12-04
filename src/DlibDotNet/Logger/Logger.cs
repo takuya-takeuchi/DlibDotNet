@@ -12,7 +12,7 @@ namespace DlibDotNet
         public Logger(string name)
         {
             var nameByte = Dlib.Encoding.GetBytes(name ?? "");
-            this.NativePtr = NativeMethods.logger_new(nameByte);
+            this.NativePtr = NativeMethods.logger_new(nameByte, nameByte.Length);
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var messageByte = Dlib.Encoding.GetBytes(message ?? "");
-            NativeMethods.logger_operator_left_shift(this.NativePtr, level, messageByte);
+            NativeMethods.logger_operator_left_shift(this.NativePtr, level, messageByte, messageByte.Length);
         }
 
         #region Overrids

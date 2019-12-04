@@ -365,6 +365,11 @@ namespace DlibDotNet
             return new DRectangle(val);
         }
 
+        public static implicit operator MModRect(Rectangle val)
+        {
+            return new MModRect(val);
+        }
+
         #endregion
 
         #endregion

@@ -15,7 +15,7 @@ namespace DlibDotNet
         public static extern void label_delete(IntPtr ptr);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void label_set_text(IntPtr ptr, byte[] text);
+        public static extern void label_set_text(IntPtr ptr, byte[] text, int textLength);
 
     }
 

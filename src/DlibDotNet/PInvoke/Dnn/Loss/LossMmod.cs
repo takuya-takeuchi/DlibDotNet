@@ -20,6 +20,9 @@ namespace DlibDotNet
         public static extern bool LossMmodRegistry_contains(int id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMmod_net_type_create();
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr LossMmod_net_type_1_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
@@ -29,7 +32,10 @@ namespace DlibDotNet
         public static extern IntPtr LossMmod_net_type_3_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr LossMmod_net_type_create();
+        public static extern IntPtr LossMmod_det_bnet_type_create();
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr LossMmod_det_anet_type_create();
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dnn_output_stdvector_mmod_rect_getItem(IntPtr vector, int index);
@@ -62,6 +68,7 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_deserialize(int id,
                                                             byte[] file_name,
+                                                            int file_name_length,
                                                             out IntPtr ret,
                                                             out IntPtr error_message);
 
@@ -75,7 +82,14 @@ namespace DlibDotNet
         public static extern ErrorType LossMmod_serialize(int id,
                                                           IntPtr obj,
                                                           byte[] file_name,
+                                                          int file_name_length,
                                                           out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMmod_serialize_proxy(int id,
+                                                                IntPtr proxy,
+                                                                IntPtr obj,
+                                                                out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_get_input_layer(int id, IntPtr obj, out IntPtr ret);
@@ -90,7 +104,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMmod_input_tensor_to_output_tensor(int id, IntPtr obj, IntPtr p, out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_net_to_xml(int id, IntPtr obj, byte[] filename);
+        public static extern ErrorType LossMmod_net_to_xml(int id, IntPtr obj, byte[] filename, int filenameLength);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_operator_left_shift(int id, IntPtr trainer, IntPtr stream);
@@ -141,6 +155,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMmod_trainer_set_synchronization_file(int id,
                                                                                  IntPtr trainer,
                                                                                  byte[] filename,
+                                                                                 int filenameLength,
                                                                                  uint second);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]

@@ -14,6 +14,12 @@ namespace DlibDotNet
             this.NativePtr = NativeMethods.mmod_rect_new();
         }
 
+        public MModRect(Rectangle rectangle)
+        {
+            using(var native = rectangle.ToNative())
+                this.NativePtr = NativeMethods.mmod_rect_new2(native.NativePtr);
+        }
+
         internal MModRect(IntPtr ptr, bool isEnabledDispose = true) :
             base(isEnabledDispose)
         {

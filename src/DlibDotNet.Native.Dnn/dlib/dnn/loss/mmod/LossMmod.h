@@ -11,7 +11,13 @@
 using namespace dlib;
 using namespace std;
 
-template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
+template<typename NET,
+         matrix_element_type MATRIX_ELEMENT,
+         typename ELEMENT,
+         matrix_element_type LABEL_MATRIX_ELEMENT,
+         typename LABEL_ELEMENT,
+         typename LABEL_ELEMENT_POINTER,
+         int ID>
 class LossMmod : public LossMmodBase
 {
 public:
@@ -43,6 +49,7 @@ public:
                                  const uint32_t batch_size,
                                  std::vector<loss_mmod_out_type>** ret) override;
     virtual int deserialize(const char* file_name,
+                            const int file_name_length,
                             void** ret,
                             std::string** error_message) override;
     virtual int deserialize_proxy(proxy_deserialize* proxy,
@@ -50,7 +57,11 @@ public:
                                   std::string** error_message) override;
     virtual int serialize(void* obj,
                           const char* file_name,
+                          const int file_name_length,
                           std::string** error_message) override;
+    virtual int serialize_proxy(proxy_serialize* proxy,
+                                void* obj,
+                                std::string** error_message) override;
     virtual int get_input_layer(void* obj, void** ret) override;
     virtual int get_num_layers() override;
     virtual void layer_details_set_num_filters(void* layer, long num) override;
@@ -62,7 +73,7 @@ public:
     virtual void input_tensor_to_output_tensor(void* obj,
                                                dlib::dpoint* p,
                                                dlib::dpoint** ret) override;
-    virtual void net_to_xml(void* obj, const char* filename) override;
+    virtual void net_to_xml(void* obj, const char* filename, const int file_name_length) override;
     virtual void operator_left_shift(void* obj, std::ostringstream* stream) override;
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) override;
     virtual void get_loss_details(void* obj, void** loss_details) override;
@@ -79,8 +90,9 @@ public:
     virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) override;
     virtual void trainer_be_verbose(void* trainer) override;
     virtual void trainer_set_synchronization_file(void* trainer,
-                                           const char* filename,
-                                           const unsigned long second) override;
+                                                  const char* filename,
+                                                  const int filename_length,
+                                                  const unsigned long second) override;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
                                                             const unsigned long thresh) override;
     virtual void trainer_set_test_iterations_without_progress_threshold(void* trainer,
@@ -109,16 +121,28 @@ protected:
                  std::vector<dlib::matrix<ELEMENT>>& out_data,
                  std::vector<LABEL_ELEMENT>& out_labels)
     {
-        std::vector<dlib::matrix<ELEMENT>*>& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
-        for (size_t i = 0; i< tmp_data.size(); i++)
+        auto& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
+        out_data.reserve(tmp_data.size());
+        for (size_t i = 0; i < tmp_data.size(); i++)
         {
             dlib::matrix<ELEMENT>& mat = *tmp_data[i];
             out_data.push_back(mat);
         }
 
-        std::vector<LABEL_ELEMENT>& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT>*>(labels));
-        for (size_t i = 0; i< tmp_label.size(); i++)
-            out_labels.push_back(tmp_label[i]);
+        auto& tmp_label = *(static_cast<std::vector<LABEL_ELEMENT_POINTER*>*>(labels));
+        out_labels.reserve(tmp_label.size());
+        for (size_t i = 0; i < tmp_label.size(); i++)
+        {
+            auto& v = *(tmp_label[i]);
+            LABEL_ELEMENT tmp_v;
+            tmp_v.reserve(v.size());
+            for (size_t j = 0; j < v.size(); j++)
+            {
+                auto& r = *(v[j]);
+                tmp_v.push_back(r);
+            }
+            out_labels.push_back(tmp_v);
+        }
     }
 };
 

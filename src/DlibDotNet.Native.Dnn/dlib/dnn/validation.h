@@ -70,7 +70,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
         {
             case 0:
                 {
-                    net_type& net = *(static_cast<net_type*>(detector));
+                    auto& net = *(static_cast<net0::net_type*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -104,7 +104,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                 break;
             case 1:
                 {
-                    net_type_1& net = *(static_cast<net_type_1*>(detector));
+                    auto& net = *(static_cast<net1::net_type_1*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -138,7 +138,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                 break;
             case 2:
                 {
-                    net_type_2& net = *(static_cast<net_type_2*>(detector));
+                    auto& net = *(static_cast<net2::net_type_2*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:
@@ -172,7 +172,7 @@ DLLEXPORT int test_object_detection_function_net(const int type,
                 break;
             case 3:
                 {
-                    net_type_3& net = *(static_cast<net_type_3*>(detector));
+                    auto& net = *(static_cast<net3::net_type_3*>(detector));
                     switch(element_type)
                     {
                         case matrix_element_type::RgbPixel:

@@ -12,16 +12,20 @@ using namespace std;
 #pragma region template
 
 #define load_image_template(__TYPE__, error, type, ...) \
-dlib::load_image(*((array2d<__TYPE__>*)image), file_name);
+dlib::load_image(*((array2d<__TYPE__>*)image), std::string(file_name, file_name_length));
 
 #define load_image_matrix_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto tmp = new dlib::matrix<__TYPE__>();\
-dlib::load_image(*tmp, file_name);\
+dlib::load_image(*tmp, std::string(file_name, file_name_length));\
 *matrix = tmp;
 
 #pragma endregion template
 
-DLLEXPORT int load_image(array2d_type type, void* image, const char* file_name, std::string** error_message)
+DLLEXPORT int load_image(array2d_type type,
+                         void* image,
+                         const char* file_name,
+                         const int file_name_length,
+                         std::string** error_message)
 {
     int error = ERR_OK;
 
@@ -31,7 +35,8 @@ DLLEXPORT int load_image(array2d_type type, void* image, const char* file_name, 
                          error,
                          load_image_template,
                          image,
-                         file_name);
+                         file_name,
+                         file_name_length);
     }
     catch(dlib::image_load_error& e)
     {
@@ -42,7 +47,11 @@ DLLEXPORT int load_image(array2d_type type, void* image, const char* file_name, 
     return error;
 }
 
-DLLEXPORT int load_image_matrix(matrix_element_type type, const char* file_name, void** matrix, std::string** error_message)
+DLLEXPORT int load_image_matrix(matrix_element_type type,
+                                const char* file_name,
+                                const int file_name_length,
+                                void** matrix,
+                                std::string** error_message)
 {
     int error = ERR_OK;
 
@@ -56,7 +65,8 @@ DLLEXPORT int load_image_matrix(matrix_element_type type, const char* file_name,
                         0,
                         0,
                         matrix,
-                        file_name);
+                        file_name,
+                        file_name_length);
     }
     catch(dlib::image_load_error& e)
     {

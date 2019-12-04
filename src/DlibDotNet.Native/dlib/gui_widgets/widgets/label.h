@@ -21,9 +21,9 @@ DLLEXPORT void label_delete(label* label)
     delete label;
 }
 
-DLLEXPORT void label_set_text(label* label, const char* text)
+DLLEXPORT void label_set_text(label* label, const char* text, const int text_length)
 {
-    label->set_text(std::string(text));
+    label->set_text(std::string(text, text_length));
 }
 
 #endif

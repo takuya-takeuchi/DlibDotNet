@@ -13,7 +13,7 @@ namespace DlibDotNet
         {
             var t = Encoding.GetBytes(title ?? "");
             var m = Encoding.GetBytes(message ?? "");
-            NativeMethods.message_box(t, m);
+            NativeMethods.message_box(t, t.Length, m, m.Length);
         }
 
         public static void SaveFileBox(StringActionMediator mediator)

@@ -12,11 +12,15 @@ using namespace std;
 #pragma region template
 
 #define load_bmp_template(__TYPE__, error, type, ...) \
-dlib::load_bmp(*((array2d<__TYPE__>*)image), file_name);
+dlib::load_bmp(*((array2d<__TYPE__>*)image), std::string(file_name, file_name_length));
 
 #pragma endregion template
 
-DLLEXPORT int load_bmp(array2d_type type, void* image, const char* file_name, std::string** error_message)
+DLLEXPORT int load_bmp(array2d_type type,
+                       void* image,
+                       const char* file_name,
+                       const int file_name_length,
+                       std::string** error_message)
 {
     int error = ERR_OK;
 
@@ -26,7 +30,8 @@ DLLEXPORT int load_bmp(array2d_type type, void* image, const char* file_name, st
                          error,
                          load_bmp_template,
                          image,
-                         file_name);
+                         file_name,
+                         file_name_length);
     }
     catch(dlib::image_load_error& e)
     {

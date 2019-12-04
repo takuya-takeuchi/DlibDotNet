@@ -73,6 +73,7 @@ namespace DlibDotNet.Dnn
             var str = Dlib.Encoding.GetBytes(path);
             var error = NativeMethods.LossMetric_deserialize(networkType,
                                                              str,
+                                                             str.Length,
                                                              out var net,
                                                              out var errorMessage);
             Cuda.ThrowCudaException(error);
@@ -134,7 +135,7 @@ namespace DlibDotNet.Dnn
         internal override void NetToXml(string filename)
         {
             var fileNameByte = Dlib.Encoding.GetBytes(filename);
-            NativeMethods.LossMetric_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte);
+            NativeMethods.LossMetric_net_to_xml(this.NetworkType, this.NativePtr, fileNameByte, fileNameByte.Length);
         }
 
         public OutputLabels<Matrix<float>> Operator<T>(Matrix<T> image, ulong batchSize = 128)
@@ -196,7 +197,26 @@ namespace DlibDotNet.Dnn
             net.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error= NativeMethods.LossMetric_serialize(net.NetworkType, net.NativePtr, str, out var errorMessage);
+            var error= NativeMethods.LossMetric_serialize(net.NetworkType, net.NativePtr, str, str.Length, out var errorMessage);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(net.NetworkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+        }
+        
+        public static void Serialize(ProxySerialize serialize, LossMetric net)
+        {
+            if (serialize == null)
+                throw new ArgumentNullException(nameof(serialize));
+            if (net == null)
+                throw new ArgumentNullException(nameof(net));
+
+            net.ThrowIfDisposed();
+
+            var error = NativeMethods.LossMetric_serialize_proxy(net.NetworkType, serialize.NativePtr, net.NativePtr, out var errorMessage);
             switch (error)
             {
                 case NativeMethods.ErrorType.DnnNotSupportNetworkType:
@@ -215,6 +235,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
@@ -256,6 +278,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             trainer.ThrowIfDisposed();
 
@@ -299,6 +323,8 @@ namespace DlibDotNet.Dnn
                 throw new ArgumentNullException(nameof(data));
             if (label == null)
                 throw new ArgumentNullException(nameof(label));
+            if (data.Count() != label.Count())
+                throw new ArgumentException($"The count of {nameof(data)} must equal to {nameof(label)}'s.");
 
             trainer.ThrowIfDisposed();
 
@@ -480,6 +506,8 @@ namespace DlibDotNet.Dnn
                 var ret = NativeMethods.LossMetric_layer_details_set_num_filters(this._Parent.NetworkType, this.NativePtr, num);
                 switch (ret)
                 {
+                    case NativeMethods.ErrorType.GeneralNotSupport:
+                        throw new NotSupportedException();
                     case NativeMethods.ErrorType.DnnNotSupportNetworkType:
                         throw new NotSupportNetworkTypeException(this._Parent.NetworkType);
                 }

@@ -75,7 +75,15 @@ namespace DlibDotNet
                                                                IntPtr rects,
                                                                IntPtr crops,
                                                                IntPtr cropRects);
-        
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType random_cropper_operator2(IntPtr cropper,
+                                                                MatrixElementType type,
+                                                                IntPtr image,
+                                                                IntPtr rects,
+                                                                out IntPtr crop,
+                                                                IntPtr cropRects);
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void random_cropper_operator_left_shift(IntPtr obj, IntPtr ofstream);
 

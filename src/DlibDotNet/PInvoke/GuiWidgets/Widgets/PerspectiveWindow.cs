@@ -15,7 +15,7 @@ namespace DlibDotNet
         public static extern IntPtr perspective_window_new2(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr perspective_window_new3(IntPtr vector, byte[] title);
+        public static extern IntPtr perspective_window_new3(IntPtr vector, byte[] title, int titleLength);
 
         #region add_overlay(vector<double>, vector<double>, pixel_color)
 

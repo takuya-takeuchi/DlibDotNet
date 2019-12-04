@@ -29,6 +29,17 @@ public:
                                                dlib::dpoint* p,
                                                dlib::dpoint** ret) = 0;
     virtual int cloneAs(void* obj, const int id, void** ret) = 0;
+    
+    virtual int deserialize_proxy_map(proxy_deserialize* proxy,
+                                      std::string*** keys,
+                                      void** values,
+                                      int* size,
+                                      std::string** error_message) = 0;
+    virtual int serialize_proxy_map(proxy_serialize* proxy,
+                                    std::string** keys,
+                                    void* values,
+                                    int size,
+                                    std::string** error_message) = 0;
 };
 
 #endif

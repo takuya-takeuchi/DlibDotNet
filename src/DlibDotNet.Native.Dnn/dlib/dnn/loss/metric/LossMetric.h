@@ -42,6 +42,7 @@ public:
                                  const uint32_t batch_size,
                                  std::vector<loss_metric_out_type>** ret) override;
     virtual int deserialize(const char* file_name,
+                            const int file_name_length,
                             void** ret,
                             std::string** error_message) override;
     virtual int deserialize_proxy(proxy_deserialize* proxy,
@@ -49,7 +50,11 @@ public:
                                   std::string** error_message) override;
     virtual int serialize(void* obj,
                           const char* file_name,
+                          const int file_name_length,
                           std::string** error_message) override;
+    virtual int serialize_proxy(proxy_serialize* proxy,
+                                void* obj,
+                                std::string** error_message) override;
     virtual int get_num_layers() override;
     virtual void layer_details_set_num_filters(void* layer, long num) override;
     virtual void get_subnet(void* obj, void** subnet) override;
@@ -60,7 +65,7 @@ public:
     virtual void input_tensor_to_output_tensor(void* obj,
                                                dlib::dpoint* p,
                                                dlib::dpoint** ret) override;
-    virtual void net_to_xml(void* obj, const char* filename) override;
+    virtual void net_to_xml(void* obj, const char* filename, const int file_name_length) override;
     virtual void operator_left_shift(void* obj, std::ostringstream* stream) override;
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) override;
 
@@ -80,8 +85,9 @@ public:
     virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) override;
     virtual void trainer_be_verbose(void* trainer) override;
     virtual void trainer_set_synchronization_file(void* trainer,
-                                           const char* filename,
-                                           const unsigned long second) override;
+                                                  const char* filename,
+                                                  const int filename_length,
+                                                  const unsigned long second) override;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
                                                             const unsigned long thresh) override;
     virtual void trainer_set_test_iterations_without_progress_threshold(void* trainer,

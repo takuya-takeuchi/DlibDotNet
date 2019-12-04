@@ -28,7 +28,7 @@ namespace DlibDotNet
         #endregion
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void message_box(byte[] title, byte[] message);
+        public static extern void message_box(byte[] title, int titleLength, byte[] message, int messageLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void save_file_box(IntPtr stringActionMediator);

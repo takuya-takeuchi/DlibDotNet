@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet</id>
-    <version>19.18.0.20190928</version>
+    <version>19.18.0.20191202</version>
     <title>DlibDotNet</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -35,6 +35,8 @@ Requirements: Visual C++ 2017 Redistributable Package</description>
     <file src="..\artifacts\cpu\runtimes\win-x86\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x86\native\DlibDotNetNativeDnn.dll" />
     <file src="..\artifacts\cpu\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
     <file src="..\artifacts\cpu\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\cpu\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cpu\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
     <!-- <file src="..\artifacts\cpu\runtimes\linux-x86\native\libDlibDotNetNative.so" target="runtimes\linux-x86\native\libDlibDotNetNative.so" />
     <file src="..\artifacts\cpu\runtimes\linux-x86\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x86\native\libDlibDotNetNativeDnn.so" /> -->
     <file src="..\artifacts\cpu\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />

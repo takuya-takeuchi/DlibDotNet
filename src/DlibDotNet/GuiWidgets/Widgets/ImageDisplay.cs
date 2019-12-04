@@ -31,7 +31,7 @@ namespace DlibDotNet
                 throw new ArgumentNullException(nameof(name));
 
             var str = Dlib.Encoding.GetBytes(name);
-            NativeMethods.image_display_add_labelable_part_name(this.NativePtr, str);
+            NativeMethods.image_display_add_labelable_part_name(this.NativePtr, str, str.Length);
         }
 
         public void AddOverlay(IEnumerable<OverlayRect> rects)
@@ -128,7 +128,7 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
 
             var labelStr = Dlib.Encoding.GetBytes(label ?? "");
-            NativeMethods.image_display_set_default_overlay_rect_label(this.NativePtr, labelStr);
+            NativeMethods.image_display_set_default_overlay_rect_label(this.NativePtr, labelStr, labelStr.Length);
         }
 
         #region Overrids
@@ -212,7 +212,7 @@ namespace DlibDotNet
                 {
                     this.ThrowIfDisposed();
                     var str = Dlib.Encoding.GetBytes(value ?? "");
-                    NativeMethods.image_display_overlay_rect_set_label(this.NativePtr, str);
+                    NativeMethods.image_display_overlay_rect_set_label(this.NativePtr, str, str.Length);
                 }
             }
 
@@ -303,7 +303,7 @@ namespace DlibDotNet
 
                         var str = Dlib.Encoding.GetBytes(key ?? "");
                         var native = this.Parent.NativePtr;
-                        if (!NativeMethods.image_display_overlay_rect_get_parts_get_value(native, str, out var p))
+                        if (!NativeMethods.image_display_overlay_rect_get_parts_get_value(native, str, str.Length, out var p))
                             throw new KeyNotFoundException();
 
                         return new Point(p);
@@ -315,7 +315,7 @@ namespace DlibDotNet
                         var str = Dlib.Encoding.GetBytes(key ?? "");
                         var native = this.Parent.NativePtr;
                         using (var pp = value.ToNative())
-                            NativeMethods.image_display_overlay_rect_get_parts_set_value(native, str, pp.NativePtr);
+                            NativeMethods.image_display_overlay_rect_get_parts_set_value(native, str, str.Length, pp.NativePtr);
                     }
                 }
 

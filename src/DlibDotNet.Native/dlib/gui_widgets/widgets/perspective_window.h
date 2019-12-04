@@ -42,7 +42,7 @@ DLLEXPORT perspective_window* perspective_window_new2(std::vector<dlib::vector<d
 	return new perspective_window(tmp);
 }
 
-DLLEXPORT perspective_window* perspective_window_new3(std::vector<dlib::vector<double>*>* point_cloud, const char* title)
+DLLEXPORT perspective_window* perspective_window_new3(std::vector<dlib::vector<double>*>* point_cloud, const char* title, const int title_length)
 {
     std::vector<dlib::vector<double>*>& vector = *(static_cast<std::vector<dlib::vector<double>*>*>(point_cloud));
     std::vector<dlib::vector<double>> tmp;
@@ -52,7 +52,7 @@ DLLEXPORT perspective_window* perspective_window_new3(std::vector<dlib::vector<d
         tmp.push_back(p);
     }
 
-	return new perspective_window(tmp, title);
+	return new perspective_window(tmp, std::string(title, title_length));
 }
 
 DLLEXPORT void perspective_window_delete(perspective_window* window)

@@ -11,10 +11,11 @@
 #include "../action_mediator.h"
 
 DLLEXPORT dlib::menu_item_text* menu_item_text_new(const char* str,
+                                                   const int str_length,
                                                    void_action_mediator* mediator,
                                                    char hk)
 {
-    const std::string s(str);
+    const std::string s(str, str_length);
     return new dlib::menu_item_text(s, *mediator, &void_action_mediator::on_action_handler, hk);
 }
 

@@ -24,6 +24,7 @@ public:
     virtual int create(void** ret) = 0;
     virtual void destroy(void* net) = 0;
     virtual int deserialize(const char* file_name,
+                            const int file_name_length,
                             void** ret,
                             std::string** error_message) = 0;
     virtual int deserialize_proxy(proxy_deserialize* proxy,
@@ -31,7 +32,11 @@ public:
                                   std::string** error_message) = 0;
     virtual int serialize(void* obj,
                           const char* file_name,
+                          const int file_name_length,
                           std::string** error_message) = 0;
+    virtual int serialize_proxy(proxy_serialize* proxy,
+                                void* obj,
+                                std::string** error_message) = 0;
     virtual int get_num_layers() = 0;
     virtual void layer_details_set_num_filters(void* layer, long num) = 0;
     virtual void get_subnet(void* obj, void** subnet) = 0;
@@ -39,7 +44,7 @@ public:
     virtual const dlib::tensor* subnet_get_output(void* subnet, int* ret) = 0;
     virtual void subnet_delete(void* subnet) = 0;
     virtual void clean(void* obj) = 0;
-    virtual void net_to_xml(void* obj, const char* filename) = 0;
+    virtual void net_to_xml(void* obj, const char* filename, const int file_name_length) = 0;
     virtual void operator_left_shift(void* obj, std::ostringstream* stream) = 0;
     virtual void set_all_bn_running_stats_window_sizes(void* obj, unsigned long new_window_size) = 0;
     virtual void get_loss_details(void* obj, void** loss_details) = 0;
@@ -57,6 +62,7 @@ public:
     virtual void trainer_be_verbose(void* trainer) = 0;
     virtual void trainer_set_synchronization_file(void* trainer,
                                                   const char* filename,
+                                                  const int filename_length,
                                                   const unsigned long second) = 0;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
                                                                    const unsigned long thresh) = 0;

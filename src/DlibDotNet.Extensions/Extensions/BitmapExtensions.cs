@@ -40,10 +40,7 @@ namespace DlibDotNet.Extensions
             };
             OptimumConvertImageInfos[PixelFormat.Format24bppRgb] = new[]
             {
-                new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbPixel, RgbReverse = true }
-            };
-            OptimumConvertImageInfos[PixelFormat.Format24bppRgb] = new[]
-            {
+                new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbPixel, RgbReverse = true },
                 new ConvertInfo<ImageTypes>{ Type = ImageTypes.BgrPixel, RgbReverse = false }
             };
             OptimumConvertImageInfos[PixelFormat.Format32bppArgb] = new[]
