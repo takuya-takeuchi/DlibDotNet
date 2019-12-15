@@ -218,6 +218,8 @@ enum struct svm_trainer_type : int
 
     C,
 
+    Nu,
+
 };
 
 enum struct normalizer_type : int

@@ -258,6 +258,8 @@ namespace DlibDotNet
 
             C,
 
+            Nu,
+
         }
 
         internal enum NormalizerType

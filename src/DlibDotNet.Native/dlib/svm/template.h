@@ -3,6 +3,7 @@
 
 #include "../export.h"
 #include <dlib/svm/svm_c_trainer.h>
+#include <dlib/svm/svm_nu_trainer.h>
 #include <dlib/svm/kernel.h>
 #include <dlib/svm/sparse_kernel.h>
 #include "../template.h"
@@ -264,6 +265,11 @@ switch(trainer_type)\
     case svm_trainer_type::C:\
         {\
             __TRAINER_FUNC__(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, dlib::svm_c_trainer, __VA_ARGS__);\
+        }\
+        break;\
+    case svm_trainer_type::Nu:\
+        {\
+            __TRAINER_FUNC__(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, dlib::svm_nu_trainer, __VA_ARGS__);\
         }\
         break;\
     default:\

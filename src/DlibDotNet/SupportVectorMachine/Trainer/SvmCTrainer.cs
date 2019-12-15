@@ -15,7 +15,7 @@ namespace DlibDotNet
 
         private readonly KernelBaseParameter _Parameter;
 
-        private readonly Bridge<TScalar> _Bridge;
+        private readonly Imp<TScalar> _Imp;
 
         #endregion
 
@@ -42,12 +42,12 @@ namespace DlibDotNet
                     throw new ArgumentException($"{this._Parameter.KernelType} is not supported.");
             }
 
-            this._Bridge = CreateBridge(this._Parameter);
+            this._Imp = CreateImp(this._Parameter);
             this.NativePtr = ret;
         }
 
         public SvmCTrainer(TKernel kernelBase,
-                           float c)
+                           TScalar c)
         {
             if (kernelBase == null)
                 throw new ArgumentNullException(nameof(kernelBase));
@@ -55,21 +55,8 @@ namespace DlibDotNet
             kernelBase.ThrowIfDisposed();
 
             this._Parameter = new KernelBaseParameter(kernelBase.KernelType, kernelBase.SampleType, 0, 0);
-            var error = NativeMethods.svm_c_trainer_new2(kernelBase.KernelType.ToNativeKernelType(),
-                                                         kernelBase.SampleType.ToNativeMatrixElementType(),
-                                                         kernelBase.NativePtr,
-                                                         c,
-                                                         out var ret);
-            switch (error)
-            {
-                case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
-                    throw new ArgumentException($"{this._Parameter.SampleType} is not supported.");
-                case NativeMethods.ErrorType.SvmKernelNotSupport:
-                    throw new ArgumentException($"{this._Parameter.KernelType} is not supported.");
-            }
-
-            this._Bridge = CreateBridge(this._Parameter);
-            this.NativePtr = ret;
+            this._Imp = CreateImp(this._Parameter);
+            this.NativePtr = this._Imp.Create(kernelBase.NativePtr, c);
         }
 
         #endregion
@@ -81,10 +68,10 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                var ret = NativeMethods.svm_c_trainer_get_cache_size_double(this._Parameter.KernelType.ToNativeKernelType(),
-                                                                            this._Parameter.SampleType.ToNativeMatrixElementType(),
-                                                                            this.NativePtr,
-                                                                            out var cacheSize);
+                var ret = NativeMethods.svm_c_trainer_get_cache_size(this._Parameter.KernelType.ToNativeKernelType(),
+                                                                     this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                     this.NativePtr,
+                                                                     out var cacheSize);
                 return cacheSize;
             }
             set
@@ -94,10 +81,10 @@ namespace DlibDotNet
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException($"{nameof(value)} must be greater than 0.");
 
-                var ret = NativeMethods.svm_c_trainer_set_cache_size_double(this._Parameter.KernelType.ToNativeKernelType(),
-                                                                            this._Parameter.SampleType.ToNativeMatrixElementType(),
-                                                                            this.NativePtr,
-                                                                            value);
+                var ret = NativeMethods.svm_c_trainer_set_cache_size(this._Parameter.KernelType.ToNativeKernelType(),
+                                                                     this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                     this.NativePtr,
+                                                                     value);
             }
         }
 
@@ -106,13 +93,13 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                this._Bridge.GetCClass1(this.NativePtr, out var value);
+                this._Imp.GetCClass1(this.NativePtr, out var value);
                 return value;
             }
             set
             {
                 this.ThrowIfDisposed();
-                this._Bridge.SetCClass1(this.NativePtr, value);
+                this._Imp.SetCClass1(this.NativePtr, value);
             }
         }
 
@@ -121,13 +108,28 @@ namespace DlibDotNet
             get
             {
                 this.ThrowIfDisposed();
-                this._Bridge.GetCClass2(this.NativePtr, out var value);
+                this._Imp.GetCClass2(this.NativePtr, out var value);
                 return value;
             }
             set
             {
                 this.ThrowIfDisposed();
-                this._Bridge.SetCClass2(this.NativePtr, value);
+                this._Imp.SetCClass2(this.NativePtr, value);
+            }
+        }
+        
+        public TScalar Epsilon
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                this._Imp.GetEpsilon(this.NativePtr, out var value);
+                return value;
+            }
+            set
+            {
+                this.ThrowIfDisposed();
+                this._Imp.SetEpsilon(this.NativePtr, value);
             }
         }
 
@@ -170,7 +172,7 @@ namespace DlibDotNet
         public void SetC(TScalar c)
         {
             this.ThrowIfDisposed();
-            this._Bridge.SetC(this.NativePtr, c);
+            this._Imp.SetC(this.NativePtr, c);
         }
 
         public DecisionFunction<TScalar, TKernel> Train(IEnumerable<Matrix<TScalar>> x, IEnumerable<TScalar> y)
@@ -183,7 +185,18 @@ namespace DlibDotNet
             this.ThrowIfDisposed();
             x.ThrowIfDisposed();
 
-            return this._Bridge.Train(this.NativePtr, x, y);
+            using (var vectorX = new StdVector<Matrix<TScalar>>(x))
+            using (var vectorY = new StdVector<TScalar>(y))
+            {
+                var err = NativeMethods.svm_c_trainer_train(this.Parameter.KernelType.ToNativeKernelType(),
+                                                            this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                            this.NativePtr,
+                                                            vectorX.NativePtr,
+                                                            vectorY.NativePtr,
+                                                            out var ret);
+
+                return new DecisionFunction<TScalar, TKernel>(ret, this.Parameter);
+            }
         }
 
         #region Overrides 
@@ -209,14 +222,14 @@ namespace DlibDotNet
 
         #region Helpers
 
-        private static Bridge<TScalar> CreateBridge(KernelBaseParameter parameter)
+        private static Imp<TScalar> CreateImp(KernelBaseParameter parameter)
         {
             switch (parameter.SampleType)
             {
                 case MatrixElementTypes.Float:
-                    return new FloatBridge(parameter) as Bridge<TScalar>;
+                    return new FloatImp(parameter) as Imp<TScalar>;
                 case MatrixElementTypes.Double:
-                    return new DoubleBridge(parameter) as Bridge<TScalar>;
+                    return new DoubleImp(parameter) as Imp<TScalar>;
                 default:
                     throw new NotSupportedException();
             }
@@ -226,13 +239,13 @@ namespace DlibDotNet
 
         #endregion
 
-        private abstract class Bridge<T>
+        private abstract class Imp<T>
             where T : struct
         {
 
             #region Constructors
 
-            protected Bridge(KernelBaseParameter parameter)
+            protected Imp(KernelBaseParameter parameter)
             {
                 this.Parameter = parameter;
             }
@@ -250,6 +263,8 @@ namespace DlibDotNet
 
             #region Methods
 
+            public abstract IntPtr Create(IntPtr kernel, T c);
+
             public abstract void SetC(IntPtr trainer, T c);
 
             public abstract void SetCClass1(IntPtr trainer, T cClass1);
@@ -264,18 +279,16 @@ namespace DlibDotNet
 
             public abstract void GetEpsilon(IntPtr trainer, out T cClass2);
 
-            public abstract DecisionFunction<T, TKernel> Train(IntPtr trainer, IEnumerable<Matrix<T>> x, IEnumerable<T> y);
-
             #endregion
 
         }
 
-        private sealed class DoubleBridge : Bridge<double>
+        private sealed class DoubleImp : Imp<double>
         {
 
             #region Constructors
 
-            public DoubleBridge(KernelBaseParameter parameter) :
+            public DoubleImp(KernelBaseParameter parameter) :
                 base(parameter)
             {
             }
@@ -283,6 +296,24 @@ namespace DlibDotNet
             #endregion
 
             #region Methods
+
+            public override IntPtr Create(IntPtr kernel, double c)
+            {
+                var error = NativeMethods.svm_c_trainer_new2_double(this.Parameter.KernelType.ToNativeKernelType(),
+                                                                    this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                    kernel,
+                                                                    c,
+                                                                    out var ret);
+                switch (error)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{this.Parameter.SampleType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{this.Parameter.KernelType} is not supported.");
+                }
+
+                return ret;
+            }
 
             public override void SetC(IntPtr trainer, double c)
             {
@@ -352,31 +383,16 @@ namespace DlibDotNet
                                                                          out epsilon);
             }
 
-            public override DecisionFunction<double, TKernel> Train(IntPtr trainer, IEnumerable<Matrix<double>> x, IEnumerable<double> y)
-            {
-                using (var vectorX = new StdVector<Matrix<double>>(x))
-                using (var vectorY = new StdVector<double>(y))
-                {
-                    var err = NativeMethods.svm_c_trainer_train_double(this.Parameter.KernelType.ToNativeKernelType(),
-                                                                       this.Parameter.SampleType.ToNativeMatrixElementType(),
-                                                                       trainer,
-                                                                       vectorX.NativePtr,
-                                                                       vectorY.NativePtr,
-                                                                       out var ret);
-                    return new DecisionFunction<double, TKernel>(ret, this.Parameter);
-                }
-            }
-
             #endregion
 
         }
 
-        private sealed class FloatBridge : Bridge<float>
+        private sealed class FloatImp : Imp<float>
         {
 
             #region Constructors
 
-            public FloatBridge(KernelBaseParameter parameter) :
+            public FloatImp(KernelBaseParameter parameter) :
                 base(parameter)
             {
             }
@@ -384,6 +400,24 @@ namespace DlibDotNet
             #endregion
 
             #region Methods
+
+            public override IntPtr Create(IntPtr kernel, float c)
+            {
+                var error = NativeMethods.svm_c_trainer_new2_float(this.Parameter.KernelType.ToNativeKernelType(),
+                                                                   this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                   kernel,
+                                                                   c,
+                                                                   out var ret);
+                switch (error)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{this.Parameter.SampleType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{this.Parameter.KernelType} is not supported.");
+                }
+
+                return ret;
+            }
 
             public override void SetC(IntPtr trainer, float c)
             {
@@ -451,21 +485,6 @@ namespace DlibDotNet
                                                                         this.Parameter.SampleType.ToNativeMatrixElementType(),
                                                                         trainer,
                                                                         out epsilon);
-            }
-
-            public override DecisionFunction<float, TKernel> Train(IntPtr trainer, IEnumerable<Matrix<float>> x, IEnumerable<float> y)
-            {
-                using (var vectorX = new StdVector<Matrix<float>>(x))
-                using (var vectorY = new StdVector<float>(y))
-                {
-                    var err = NativeMethods.svm_c_trainer_train_float(this.Parameter.KernelType.ToNativeKernelType(),
-                                                                      this.Parameter.SampleType.ToNativeMatrixElementType(),
-                                                                      trainer,
-                                                                      vectorX.NativePtr,
-                                                                      vectorY.NativePtr,
-                                                                      out var ret);
-                    return new DecisionFunction<float, TKernel>(ret, this.Parameter);
-                }
             }
 
             #endregion

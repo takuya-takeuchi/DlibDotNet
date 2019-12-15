@@ -1877,6 +1877,11 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.SvmNuTrainer`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.CustomMultithreadedObject.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.

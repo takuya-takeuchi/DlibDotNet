@@ -21,6 +21,7 @@ namespace DlibDotNet
             var elementTypes = new[]
             {
                 new { Type = typeof(SvmCTrainer<,>),              TrainerType = NativeMethods.SvmTrainerType.C                 },
+                new { Type = typeof(SvmNuTrainer<,>),             TrainerType = NativeMethods.SvmTrainerType.Nu                },
             };
 
             foreach (var type in elementTypes)

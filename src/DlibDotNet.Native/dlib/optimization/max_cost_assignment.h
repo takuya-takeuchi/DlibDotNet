@@ -1,5 +1,5 @@
-#ifndef _CPP_MAX_COST_ASSIGNMENT_H_
-#define _CPP_MAX_COST_ASSIGNMENT_H_
+#ifndef _CPP_OPTIMIZATION_MAX_COST_ASSIGNMENT_H_
+#define _CPP_OPTIMIZATION_MAX_COST_ASSIGNMENT_H_
 
 #include "../export.h"
 #include <dlib/matrix.h>

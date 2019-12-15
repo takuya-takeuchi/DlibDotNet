@@ -1,5 +1,5 @@
-#ifndef _CPP_SVM_TRAINER_SVMCTRAINER_H_
-#define _CPP_SVM_TRAINER_SVMCTRAINER_H_
+#ifndef _CPP_SVM_TRAINER_SVM_C_TRAINER_H_
+#define _CPP_SVM_TRAINER_SVM_C_TRAINER_H_
 
 #include "../../export.h"
 #include <dlib/svm/svm_c_trainer.h>
@@ -120,6 +120,26 @@ const auto r = t->train(dst_x, dst_y);\
 kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, svm_c_trainer_train_template_sub, __VA_ARGS__)
 
 #define MAKE_FUNC(__TYPE__, __TYPENAME__)\
+DLLEXPORT int svm_c_trainer_new2_##__TYPENAME__(const svm_kernel_type kernel_type,\
+                                                const matrix_element_type type,\
+                                                void* kernel,\
+                                                const __TYPE__ c,\
+                                                void** ret)\
+{\
+    int error = ERR_OK;\
+\
+    matrix_decimal_template(type,\
+                            error,\
+                            matrix_template_size00_template,\
+                            svm_c_trainer_new_template2,\
+                            kernel_type,\
+                            kernel,\
+                            c,\
+                            ret);\
+\
+    return error;\
+}\
+\
 DLLEXPORT int svm_c_trainer_set_c_##__TYPENAME__(const svm_kernel_type kernel_type,\
                                                  const matrix_element_type type,\
                                                  void* trainer,\
@@ -245,27 +265,6 @@ DLLEXPORT int svm_c_trainer_get_epsilon_##__TYPENAME__(const svm_kernel_type ker
 \
     return error;\
 }\
-DLLEXPORT int svm_c_trainer_train_##__TYPENAME__(const svm_kernel_type kernel_type,\
-                                                 const matrix_element_type type,\
-                                                 void* trainer,\
-                                                 void* x,\
-                                                 void* y,\
-                                                 void** ret)\
-{\
-    int error = ERR_OK;\
-\
-    matrix_decimal_template(type,\
-                            error,\
-                            matrix_template_size00_template,\
-                            svm_c_trainer_train_template,\
-                            kernel_type,\
-                            trainer,\
-                            x,\
-                            y,\
-                            ret);\
-\
-    return error;\
-}\
 
 #pragma endregion
 
@@ -280,26 +279,6 @@ DLLEXPORT int svm_c_trainer_new(const svm_kernel_type kernel_type,
                             matrix_template_size00_template,
                             svm_c_trainer_new_template,
                             kernel_type,
-                            ret);
-
-    return error;
-}
-
-DLLEXPORT int svm_c_trainer_new2(const svm_kernel_type kernel_type,
-                                 const matrix_element_type type,
-                                 void* kernel,
-                                 const float c,
-                                 void** ret)
-{
-    int error = ERR_OK;
-    
-    matrix_decimal_template(type,
-                            error,
-                            matrix_template_size00_template,
-                            svm_c_trainer_new_template2,
-                            kernel_type,
-                            kernel,
-                            c,
                             ret);
 
     return error;
@@ -386,6 +365,28 @@ DLLEXPORT int svm_c_trainer_get_kernel(const svm_kernel_type kernel_type,
                             svm_c_trainer_get_kernel_template,
                             kernel_type,
                             trainer,
+                            ret);
+
+    return error;
+}
+
+DLLEXPORT int svm_c_trainer_train(const svm_kernel_type kernel_type,
+                                  const matrix_element_type type,
+                                  void* trainer,
+                                  void* x,
+                                  void* y,
+                                  void** ret)
+{
+    int error = ERR_OK;
+
+    matrix_decimal_template(type,
+                            error,
+                            matrix_template_size00_template,
+                            svm_c_trainer_train_template,
+                            kernel_type,
+                            trainer,
+                            x,
+                            y,
                             ret);
 
     return error;
