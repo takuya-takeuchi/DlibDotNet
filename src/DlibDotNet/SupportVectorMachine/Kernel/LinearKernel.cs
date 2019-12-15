@@ -21,7 +21,7 @@ namespace DlibDotNet
         public LinearKernel(int templateRow = 0, int templateColumn = 0) :
             base(SvmKernelType.Linear, templateRow, templateColumn)
         {
-            if (!KernelTypesRepository.SupportTypes.TryGetValue(typeof(TScalar), out _))
+            if (!KernelTypesRepository.ElementTypes.TryGetValue(typeof(TScalar), out _))
                 throw new NotSupportedException();
 
             if (!Matrix<TScalar>.TryParse<TScalar>(out var type))

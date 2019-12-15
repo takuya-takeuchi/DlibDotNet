@@ -184,7 +184,48 @@ enum struct svm_kernel_type : int
 
     RadialBasis,
 
-    Sigmoid
+    Sigmoid,
+
+    SparseHistogramIntersection,
+
+    SparseLinear,
+
+    SparsePolynomial,
+
+    SparseRadialBasis,
+
+    SparseSigmoid
+
+};
+
+enum struct svm_function_type : int
+{
+
+    Decision,
+
+    ProbabilisticDecision,
+
+    Distance,
+
+    Projection,
+
+    MulticlassLinearDecision
+
+};
+
+enum struct svm_trainer_type : int
+{
+
+    C,
+
+};
+
+enum struct normalizer_type : int
+{
+
+    Vector,
+
+    VectorPca
 
 };
 
@@ -241,6 +282,8 @@ typedef struct
 // svm
 #define ERR_SVM_ERROR                                                     0x75000000
 #define ERR_SVM_KERNEL_NOT_SUPPORT                      -(ERR_SVM_ERROR | 0x00000001)
+#define ERR_SVM_FUNCTION_NOT_SUPPORT                    -(ERR_SVM_ERROR | 0x00000002)
+#define ERR_SVM_TRAINER_NOT_SUPPORT                     -(ERR_SVM_ERROR | 0x00000003)
 
 // General
 #define ERR_GENERAL_ERROR                                                 0x76000000
@@ -354,6 +397,7 @@ do {\
 
 #define vector_value_to_value(__TYPE__, src, dst) \
 auto& tmp_src = *static_cast<std::vector<__TYPE__>*>(src);\
+dst.reserve(tmp_src.size());\
 for (int index = 0; index < tmp_src.size(); index++)\
 {\
     __TYPE__ tmp = tmp_src.at(index);\
@@ -363,6 +407,7 @@ for (int index = 0; index < tmp_src.size(); index++)\
 #define vector_pointer_to_value(__TYPE__, src, dst) \
 do {\
     std::vector<__TYPE__*>& tmp_src = *static_cast<std::vector<__TYPE__*>*>(src);\
+    dst.reserve(tmp_src.size());\
     for (int index = 0; index < tmp_src.size(); index++)\
     {\
         __TYPE__& tmp = *tmp_src.at(index);\
@@ -373,10 +418,12 @@ do {\
 #define vector_vector_pointer_to_value(__TYPE__, src, dst) \
 do {\
     std::vector<std::vector<__TYPE__*>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__*>*>*>(src);\
+    dst.reserve(tmp_src.size());\
     for (int j = 0 ; j < tmp_src.size(); j++)\
     {\
         auto tmpVector = tmp_src.at(j);\
         std::vector<__TYPE__> vector;\
+        vector.reserve(tmpVector->size());\
         for (int i = 0 ; i < tmpVector->size(); i++)\
         {\
             __TYPE__& o = *(tmpVector->at(i));\
@@ -389,10 +436,12 @@ do {\
 #define vector_vector_valueType_to_value(__TYPE__, src, dst) \
 do {\
     std::vector<std::vector<__TYPE__>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__>*>*>(src);\
+    dst.reserve(tmp_src.size());\
     for (int j = 0 ; j < tmp_src.size(); j++)\
     {\
         auto tmpVector = tmp_src.at(j);\
         std::vector<__TYPE__> vector;\
+        vector.reserve(tmpVector->size());\
         for (int i = 0 ; i < tmpVector->size(); i++)\
         {\
             __TYPE__ o = tmpVector->at(i);\

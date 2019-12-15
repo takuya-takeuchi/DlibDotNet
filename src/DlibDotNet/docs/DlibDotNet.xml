@@ -1782,6 +1782,16 @@
             64-bit floating-point values.
             </summary>
         </member>
+        <member name="M:DlibDotNet.VectorNormalizer`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.RunningStats`1"/> class.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.VectorNormalizer`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.StdString.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
@@ -1793,6 +1803,21 @@
             </summary>
         </member>
         <member name="M:DlibDotNet.DecisionFunction`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.NormalizedFunction`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ProbabilisticDecisionFunction`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.ProjectionFunction`2.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>
@@ -1837,7 +1862,17 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.ReducedDecisionFunctionTrainer2`3.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.StructuralObjectDetectionTrainer`1.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.SvmCTrainer`2.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
             </summary>

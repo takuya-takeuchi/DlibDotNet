@@ -45,7 +45,7 @@ namespace DlibDotNet
 
             this.NativePtr = ret;
         }
-
+        
         internal RadialBasisKernel(IntPtr ptr, int templateRow, int templateColumn, bool isEnabledDispose = true) :
             base(SvmKernelType.RadialBasis, templateRow, templateColumn, isEnabledDispose)
         {

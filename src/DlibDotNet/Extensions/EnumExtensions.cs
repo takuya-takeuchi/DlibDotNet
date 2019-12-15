@@ -227,6 +227,19 @@ namespace DlibDotNet.Extensions
             }
         }
 
+        internal static NativeMethods.NormalizerType ToNativeNormalizerType(this NormalizerType normalizerType)
+        {
+            switch (normalizerType)
+            {
+                case NormalizerType.Vector:
+                    return NativeMethods.NormalizerType.Vector;
+                case NormalizerType.VectorPca:
+                    return NativeMethods.NormalizerType.VectorPca;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(normalizerType), normalizerType, null);
+            }
+        }
+
     }
 
 }

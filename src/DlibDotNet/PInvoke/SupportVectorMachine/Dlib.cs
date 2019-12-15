@@ -9,6 +9,30 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType cross_validate_trainer_svm_trainer(SvmKernelType kernelType,
+                                                                          MatrixElementType type,
+                                                                          SvmTrainerType trainerType,
+                                                                          IntPtr trainer,
+                                                                          int templateRows,
+                                                                          int templateColumns,
+                                                                          IntPtr x,
+                                                                          IntPtr y,
+                                                                          int folds,
+                                                                          out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType cross_validate_trainer_reduced_decision_function_trainer2(SvmKernelType kernelType,
+                                                                                                 MatrixElementType type,
+                                                                                                 SvmTrainerType trainerType,
+                                                                                                 IntPtr trainer,
+                                                                                                 int templateRows,
+                                                                                                 int templateColumns,
+                                                                                                 IntPtr x,
+                                                                                                 IntPtr y,
+                                                                                                 int folds,
+                                                                                                 out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType nearest_center(MatrixElementType type,
                                                       int templateRows,
                                                       int templateColumns,
@@ -45,6 +69,36 @@ namespace DlibDotNet
                                                      IntPtr samples,
                                                      IntPtr labels,
                                                      out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType randomize_samples_pointer(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType randomize_samples_value(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType train_probabilistic_decision_function_svm_trainer(SvmKernelType kernelType,
+                                                                                         MatrixElementType type,
+                                                                                         SvmTrainerType trainerType,
+                                                                                         IntPtr trainer,
+                                                                                         int templateRows,
+                                                                                         int templateColumns,
+                                                                                         IntPtr x,
+                                                                                         IntPtr y,
+                                                                                         int folds,
+                                                                                         out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType train_probabilistic_decision_function_reduced_decision_function_trainer2(SvmKernelType kernelType,
+                                                                                                                MatrixElementType type,
+                                                                                                                SvmTrainerType trainerType,
+                                                                                                                IntPtr trainer,
+                                                                                                                int templateRows,
+                                                                                                                int templateColumns,
+                                                                                                                IntPtr x,
+                                                                                                                IntPtr y,
+                                                                                                                int folds,
+                                                                                                                out IntPtr ret);
 
     }
 

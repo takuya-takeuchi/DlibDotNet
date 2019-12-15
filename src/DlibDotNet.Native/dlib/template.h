@@ -239,7 +239,6 @@ switch(type)\
         break;\
 }
 
-
 #define matrix_numericrgbbgr_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 switch(type)\
 {\
@@ -1040,6 +1039,7 @@ switch(type)\
 if (__ROWS__ == 0 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }\
 else if (__ROWS__ == 0 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 0, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 1 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 1, 1, __VA_ARGS__); }\
+else if (__ROWS__ == 1 && __COLUMNS__ == 2) { __SUB_FUNC__(__TYPE__, error, type, 1, 2, __VA_ARGS__); }\
 else if (__ROWS__ == 1 && __COLUMNS__ == 3) { __SUB_FUNC__(__TYPE__, error, type, 1, 3, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 1) { __SUB_FUNC__(__TYPE__, error, type, 2, 1, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 2) { __SUB_FUNC__(__TYPE__, error, type, 2, 2, __VA_ARGS__); }\
@@ -1090,6 +1090,9 @@ else if (__ROWS__ == 2 && __COLUMNS__ == 0) { __SUB_FUNC__(__TYPE__, error, type
 else if (__ROWS__ == 0 && __COLUMNS__ == 2) { __SUB_FUNC__(__TYPE__, error, type, 0, 2, __VA_ARGS__); }\
 else if (__ROWS__ == 2 && __COLUMNS__ == 2) { __SUB_FUNC__(__TYPE__, error, type, 2, 2, __VA_ARGS__); }\
 else { error = ERR_MATRIX_ELEMENT_TEMPLATE_SIZE_NOT_SUPPORT; }
+
+#define matrix_template_size00_template(__TYPE__, error, type, __SUB_FUNC__, ...) \
+{ __SUB_FUNC__(__TYPE__, error, type, 0, 0, __VA_ARGS__); }
 
 #define matrix_template_size_asm_template(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 if (__ROWS__ == 0 && __COLUMNS__ == 0)\
