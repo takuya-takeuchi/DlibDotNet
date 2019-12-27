@@ -212,6 +212,7 @@ namespace DlibDotNet.Extensions
                 case MatrixElementTypes.BgrPixel:
                     // Dlib RgbPixel data
                     // R,G,B,R,G,B,...
+                    rgbReverse = false;
                     format = PixelFormats.Bgr24;
                     channels = 3;
                     break;
