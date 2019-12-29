@@ -10,11 +10,9 @@ namespace DlibDotNet
 
         #region Methods
 
-        private static void CopyFromHeapMemory(IntPtr ptr, int count, out long[] array)
+        public static void SRand(uint seed)
         {
-            array = new long[count];
-            Marshal.Copy(ptr, array, 0, count);
-            //Native.stdlib_free(ptr);
+            NativeMethods.stdlib_srand(seed);
         }
 
         #endregion

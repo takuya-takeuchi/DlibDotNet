@@ -17,6 +17,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdlib_malloc(IntPtr size);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdlib_srand(uint seed);
+
         #endregion
 
         #region string

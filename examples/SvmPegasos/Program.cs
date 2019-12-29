@@ -59,7 +59,7 @@ namespace SvmPegasos
                 center.Assign(new[] { 20d, 20d });
 
                 // Now let's go into a loop and randomly generate 1000 samples.
-                //srand(time(0));
+                Dlib.SRand((uint)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds);
                 for (var i = 0; i < 10000; ++i)
                 {
                     // Make a random sample vector.
