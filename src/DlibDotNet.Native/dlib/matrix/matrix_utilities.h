@@ -393,6 +393,16 @@ DLLEXPORT int matrix_mean(matrix_element_type dst_type, void* matrix, int templa
     return error;
 }
 
+DLLEXPORT int matrix_randm(int nr, int nc, void** ret)
+{
+    int error = ERR_OK;
+
+    auto m = dlib::randm(nr, nc);
+    *ret = new dlib::matrix<double>(m);
+
+    return error;
+}
+
 DLLEXPORT int matrix_trans(matrix_element_type type, void* matrix, int templateRows, int templateColumns, void** ret)
 {
     int error = ERR_OK;

@@ -277,4 +277,17 @@ switch(trainer_type)\
         break;\
 }
 
+#define svm_batch_trainer_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, trainer_type, __TRAINER_FUNC__, ...) \
+switch(trainer_type)\
+{\
+    case svm_batch_trainer_type::Pegasos:\
+        {\
+            __TRAINER_FUNC__(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, dlib::svm_pegasos, __VA_ARGS__);\
+        }\
+        break;\
+    default:\
+        error = ERR_SVM_BATCH_TRAINER_NOT_SUPPORT;\
+        break;\
+}
+
 #endif

@@ -21,6 +21,18 @@ namespace DlibDotNet
                                                                           out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType cross_validate_trainer_batch_trainer(SvmKernelType kernelType,
+                                                                            MatrixElementType type,
+                                                                            SvmBatchTrainerType trainerType,
+                                                                            IntPtr trainer,
+                                                                            int templateRows,
+                                                                            int templateColumns,
+                                                                            IntPtr x,
+                                                                            IntPtr y,
+                                                                            int folds,
+                                                                            out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType cross_validate_trainer_reduced_decision_function_trainer2(SvmKernelType kernelType,
                                                                                                  MatrixElementType type,
                                                                                                  SvmTrainerType trainerType,
@@ -87,18 +99,6 @@ namespace DlibDotNet
                                                                                          IntPtr y,
                                                                                          int folds,
                                                                                          out IntPtr ret);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType train_probabilistic_decision_function_reduced_decision_function_trainer2(SvmKernelType kernelType,
-                                                                                                                MatrixElementType type,
-                                                                                                                SvmTrainerType trainerType,
-                                                                                                                IntPtr trainer,
-                                                                                                                int templateRows,
-                                                                                                                int templateColumns,
-                                                                                                                IntPtr x,
-                                                                                                                IntPtr y,
-                                                                                                                int folds,
-                                                                                                                out IntPtr ret);
 
     }
 

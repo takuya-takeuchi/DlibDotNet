@@ -15,6 +15,8 @@ namespace DlibDotNet
 
         private readonly KernelBaseParameter _Parameter;
 
+        private readonly Bridge<TScalar> _Bridge;
+
         #endregion
 
         #region Constructors
@@ -25,6 +27,7 @@ namespace DlibDotNet
             base(isEnabledDispose)
         {
             this._Parameter = parameter;
+            this._Bridge = CreateBridge(parameter);
             this.NativePtr = ptr;
         }
 
@@ -67,6 +70,16 @@ namespace DlibDotNet
             }
 
             return new DecisionFunction<TScalar, TKernel>(ret, param);
+        }
+
+        public TScalar Operator(Matrix<TScalar> sample)
+        {
+            if (sample == null)
+                throw new ArgumentNullException(nameof(sample));
+
+            sample.ThrowIfDisposed();
+
+            return this._Bridge.Operator(this.NativePtr, sample);
         }
 
         public static void Serialize(DecisionFunction<TScalar, TKernel> function, string path)
@@ -122,7 +135,136 @@ namespace DlibDotNet
 
         #endregion
 
+        #region Helpers
+
+        private static Bridge<TScalar> CreateBridge(KernelBaseParameter parameter)
+        {
+            switch (parameter.SampleType)
+            {
+                case MatrixElementTypes.Float:
+                    return new FloatBridge(parameter) as Bridge<TScalar>;
+                case MatrixElementTypes.Double:
+                    return new DoubleBridge(parameter) as Bridge<TScalar>;
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
         #endregion
+
+        #endregion
+
+        private abstract class Bridge<T>
+            where T : struct
+        {
+
+            #region Constructors
+
+            protected Bridge(KernelBaseParameter parameter)
+            {
+                this.Parameter = parameter;
+            }
+
+            #endregion
+
+            #region Properties
+
+            protected KernelBaseParameter Parameter
+            {
+                get;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public abstract T Operator(IntPtr function, Matrix<T> x);
+            
+            #endregion
+
+        }
+
+        private sealed class FloatBridge : Bridge<float>
+        {
+
+            #region Constructors
+
+            public FloatBridge(KernelBaseParameter parameter) :
+                base(parameter)
+            {
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override float Operator(IntPtr function, Matrix<float> x)
+            {
+                var err = NativeMethods.decision_function_operator_float(this.Parameter.KernelType.ToNativeKernelType(),
+                                                                         this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                         this.Parameter.TemplateRows,
+                                                                         this.Parameter.TemplateColumns,
+                                                                         function,
+                                                                         x.NativePtr,
+                                                                         out var ret);
+
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{this.Parameter.SampleType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(this.Parameter.TemplateColumns)} or {nameof(this.Parameter.TemplateRows)} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{this.Parameter.KernelType} is not supported.");
+                }
+
+                return ret;
+            }
+
+            #endregion
+
+        }
+
+        private sealed class DoubleBridge : Bridge<double>
+        {
+
+            #region Constructors
+
+            public DoubleBridge(KernelBaseParameter parameter) :
+                base(parameter)
+            {
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override double Operator(IntPtr function, Matrix<double> x)
+            {
+                var err = NativeMethods.decision_function_operator_double(this.Parameter.KernelType.ToNativeKernelType(),
+                                                                          this.Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                          this.Parameter.TemplateRows,
+                                                                          this.Parameter.TemplateColumns,
+                                                                          function,
+                                                                          x.NativePtr,
+                                                                          out var ret);
+
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{this.Parameter.SampleType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(this.Parameter.TemplateColumns)} or {nameof(this.Parameter.TemplateRows)} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{this.Parameter.KernelType} is not supported.");
+                }
+
+                return ret;
+            }
+
+            #endregion
+
+        }
 
     }
 

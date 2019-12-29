@@ -860,6 +860,20 @@ namespace DlibDotNet
             return new Matrix<T>(value, matrix.TemplateRows, matrix.TemplateColumns);
         }
 
+        public static Matrix<double> RandM(int row, int column)
+        {
+            if (!(row >= 0))
+                throw new ArgumentOutOfRangeException($"{nameof(row)} must be greater than or equal to 0.");
+            if (!(column >= 0))
+                throw new ArgumentOutOfRangeException($"{nameof(column)} must be greater than or equal to 0.");
+
+            var err = NativeMethods.matrix_randm(row,
+                                                 column,
+                                                 out var ret);
+
+            return new Matrix<double>(ret);
+        }
+
         public static MatrixOp Trans(MatrixBase matrix)
         {
             if (matrix == null)

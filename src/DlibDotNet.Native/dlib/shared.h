@@ -218,7 +218,14 @@ enum struct svm_trainer_type : int
 
     C,
 
-    Nu,
+    Nu
+
+};
+
+enum struct svm_batch_trainer_type : int
+{
+
+    Pegasos
 
 };
 
@@ -286,6 +293,7 @@ typedef struct
 #define ERR_SVM_KERNEL_NOT_SUPPORT                      -(ERR_SVM_ERROR | 0x00000001)
 #define ERR_SVM_FUNCTION_NOT_SUPPORT                    -(ERR_SVM_ERROR | 0x00000002)
 #define ERR_SVM_TRAINER_NOT_SUPPORT                     -(ERR_SVM_ERROR | 0x00000003)
+#define ERR_SVM_BATCH_TRAINER_NOT_SUPPORT               -(ERR_SVM_ERROR | 0x00000004)
 
 // General
 #define ERR_GENERAL_ERROR                                                 0x76000000

@@ -33,6 +33,14 @@ dlib::deserialize(std::string(file_name, file_name_length)) >> *df;\
 #define deserialize_decision_function_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, deserialize_decision_function_template_sub, __VA_ARGS__)
 
+#define decision_function_operator_template_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
+auto df = static_cast<dlib::decision_function<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>*>(function);\
+const auto& m = *static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(sample);\
+*ret = df->operator()(m);
+
+#define decision_function_operator_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+kernel_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, decision_function_operator_template_sub, __VA_ARGS__)
+
 #pragma endregion decision_function
 
 #pragma region probabilistic_decision_function
@@ -171,7 +179,32 @@ DLLEXPORT int deserialize_##__FUNCTION_NAME__(const char* file_name,\
     }\
 \
     return error;\
-}
+}\
+
+#define MAKE_FUNCTION2_FUNC(__FUNCTION_NAME__, __TYPE__, __TYPENAME__)\
+DLLEXPORT int __FUNCTION_NAME__##_operator_##__TYPENAME__(svm_kernel_type kernel_type,\
+                                                          matrix_element_type type,\
+                                                          const int templateRows,\
+                                                          const int templateColumns,\
+                                                          void* function,\
+                                                          void* sample,\
+                                                          __TYPE__* ret)\
+{\
+    int error = ERR_OK;\
+    \
+    matrix_decimal_template(type,\
+                            error,\
+                            matrix_template_size_column1or0_template,\
+                            __FUNCTION_NAME__##_operator_template,\
+                            templateRows,\
+                            templateColumns,\
+                            kernel_type,\
+                            function,\
+                            sample,\
+                            ret);\
+    \
+    return error;\
+}\
 
 #pragma endregion function
 
@@ -401,6 +434,8 @@ DLLEXPORT int normalized_function_operator_##__TYPENAME__(const svm_kernel_type 
 #pragma region function
 
 MAKE_FUNCTION_FUNC(decision_function)
+MAKE_FUNCTION2_FUNC(decision_function, double, double)
+MAKE_FUNCTION2_FUNC(decision_function, float, float)
 MAKE_FUNCTION_FUNC(probabilistic_decision_function)
 MAKE_FUNCTION_FUNC(projection_function)
 
@@ -731,14 +766,14 @@ DLLEXPORT int normalized_function_serialize(const svm_kernel_type kernel_type,
     return error;
 }
 
-MAKE_NORMALIZED_FUNCTION_FUNC(int8_t, int8_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(uint8_t, uint8_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(int16_t, int16_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(uint16_t, uint16_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(int32_t, int32_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(uint32_t, uint32_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(int64_t, int64_t)
-MAKE_NORMALIZED_FUNCTION_FUNC(uint64_t, uint64_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(int8_t, int8_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(uint8_t, uint8_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(int16_t, int16_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(uint16_t, uint16_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(int32_t, int32_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(uint32_t, uint32_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(int64_t, int64_t)
+// MAKE_NORMALIZED_FUNCTION_FUNC(uint64_t, uint64_t)
 MAKE_NORMALIZED_FUNCTION_FUNC(double, double)
 MAKE_NORMALIZED_FUNCTION_FUNC(float, float)
 

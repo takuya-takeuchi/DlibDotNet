@@ -88,8 +88,6 @@ DLLEXPORT int reduced_decision_function_trainer2_train_##__TYPENAME__(const svm_
 
 #pragma endregion
 
-#pragma region reduced_decision_function_trainer2
-
 DLLEXPORT int reduced2(const svm_kernel_type kernel_type,
                        const matrix_element_type type,
                        const int templateRows,
@@ -167,7 +165,5 @@ DLLEXPORT void reduced_decision_function_trainer2_delete(const svm_kernel_type k
 }
 
 MAKE_REDUCED_DECISION_FUNCTION_TRAINER2_FUNC(double, double)
-
-#pragma endregion reduced_decision_function_trainer2
 
 #endif

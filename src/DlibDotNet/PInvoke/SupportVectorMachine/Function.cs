@@ -37,8 +37,34 @@ namespace DlibDotNet
                                                                      out IntPtr function, 
                                                                      out IntPtr errorMessage);
 
-        #endregion
+        #region double
         
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType decision_function_operator_double(SvmKernelType kernelType,
+                                                                         MatrixElementType type,
+                                                                         int templateRows,
+                                                                         int templateColumns,
+                                                                         IntPtr function,
+                                                                         IntPtr sample,
+                                                                         out double ret);
+
+        #endregion
+
+        #region float
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType decision_function_operator_float(SvmKernelType kernelType,
+                                                                        MatrixElementType type,
+                                                                        int templateRows,
+                                                                        int templateColumns,
+                                                                        IntPtr function,
+                                                                        IntPtr sample,
+                                                                        out float ret);
+
+        #endregion
+
+        #endregion
+
         #region probabilistic_decision_function
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

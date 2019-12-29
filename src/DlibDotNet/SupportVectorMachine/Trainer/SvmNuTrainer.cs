@@ -140,7 +140,6 @@ namespace DlibDotNet
 
                 if (value == null)
                     throw new ArgumentNullException();
-                value.ThrowIfDisposed();
 
                 var error = NativeMethods.svm_nu_trainer_set_kernel(this._Parameter.KernelType.ToNativeKernelType(),
                                                                     this._Parameter.SampleType.ToNativeMatrixElementType(),

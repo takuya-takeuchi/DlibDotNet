@@ -262,6 +262,13 @@ namespace DlibDotNet
 
         }
 
+        internal enum SvmBatchTrainerType
+        {
+
+            Pegasos,
+
+        }
+
         internal enum NormalizerType
         {
 
@@ -385,13 +392,15 @@ namespace DlibDotNet
 
             #region Svm
 
-            SvmError              =              0x75000000,
+            SvmError                  =              0x75000000,
+                                      
+            SvmKernelNotSupport       = -(SvmError | 0x00000001),
+                                      
+            SvmFunctionNotSupport     = -(SvmError | 0x00000002),
+                                      
+            SvmTrainerNotSupport      = -(SvmError | 0x00000003),
 
-            SvmKernelNotSupport   = -(SvmError | 0x00000001),
-
-            SvmFunctionNotSupport = -(SvmError | 0x00000002),
-
-            SvmTrainerNotSupport  = -(SvmError | 0x00000003),
+            SvmBatchTrainerNotSupport = -(SvmError | 0x00000004),
 
             #endregion
 

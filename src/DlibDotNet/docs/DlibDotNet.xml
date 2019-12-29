@@ -1862,6 +1862,16 @@
             Releases all unmanaged resources.
             </summary>
         </member>
+        <member name="M:DlibDotNet.SvmPegasos`2.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:DlibDotNet.BatchTrainer`3.DisposeUnmanaged">
+            <summary>
+            Releases all unmanaged resources.
+            </summary>
+        </member>
         <member name="M:DlibDotNet.ReducedDecisionFunctionTrainer2`3.DisposeUnmanaged">
             <summary>
             Releases all unmanaged resources.
