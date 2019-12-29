@@ -76,7 +76,7 @@ std::vector<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>> dst_x;\
 std::vector<__TYPE__> dst_y;\
 convert_sample_and_labels(__TYPE__, __ROWS__, __COLUMNS__, x, y, dst_x, dst_y)\
 auto r = dlib::train_probabilistic_decision_function(t, dst_x, dst_y, folds);\
-*ret = new dlib::matrix<double, 1, 2>(r);
+*ret = new dlib::probabilistic_decision_function<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>(r);
 
 #define train_probabilistic_decision_function_reduced_decision_function_trainer2_template_trainer_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
 svm_trainer_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, trainer_type, train_probabilistic_decision_function_reduced_decision_function_trainer2_template_sub, __VA_ARGS__)
@@ -234,7 +234,7 @@ DLLEXPORT int train_probabilistic_decision_function_reduced_decision_function_tr
     matrix_double_template(type,
                            error,
                            matrix_template_size00_template,
-                           cross_validate_trainer_reduced_decision_function_trainer2_template,
+                           train_probabilistic_decision_function_reduced_decision_function_trainer2_template,
                            kernel_type,
                            trainer_type,
                            trainer,

@@ -181,8 +181,8 @@ namespace SvmC
                         var learnedProbabilisticFunction = new NormalizedFunction<double, ProbabilisticDecisionFunction<double, RadialBasisKernel<double, Matrix<double>>>>();
                         learnedProbabilisticFunction.Normalizer = normalizer;
                         using (var function = Dlib.TrainProbabilisticDecisionFunction<double,
-                            RadialBasisKernel<double, Matrix<double>>,
-                            SvmNuTrainer<double, RadialBasisKernel<double, Matrix<double>>>>(trainer, samples, labels, 3))
+                                                                                      RadialBasisKernel<double, Matrix<double>>,
+                                                                                      SvmNuTrainer<double, RadialBasisKernel<double, Matrix<double>>>>(trainer, samples, labels, 3))
                         {
                             learnedProbabilisticFunction.Function = function;
 
