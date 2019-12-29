@@ -63,7 +63,7 @@ DLLEXPORT bool op_heatmap_nc(array2d_type type, void* img, int* ret)
 }
 
 DLLEXPORT bool op_heatmap_nc_matrix(matrix_element_type type, void* img, const int templateRows, const int templateColumns, int* ret)
-{    
+{
     int error = ERR_OK;
 
     #define OP op_heatmap

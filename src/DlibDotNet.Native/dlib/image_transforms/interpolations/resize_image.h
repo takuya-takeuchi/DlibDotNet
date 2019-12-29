@@ -39,7 +39,7 @@ DLLEXPORT int resize_image_matrix(const matrix_element_type matrix_type,
 
     auto type = matrix_type;
     auto subtype = matrix_type;
-    
+
     matrix_numericrgbbgr_inout_in_template(type,
                                            error,
                                            matrix_inout_out_template,
@@ -51,7 +51,7 @@ DLLEXPORT int resize_image_matrix(const matrix_element_type matrix_type,
                                            src_matrix,
                                            dst_matrix,
                                            int_type);
-    
+
     return error;
 }
 

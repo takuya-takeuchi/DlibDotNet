@@ -42,7 +42,7 @@ DLLEXPORT int spectral_cluster(svm_kernel_type kernel_type,
                                std::vector<unsigned long>** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,

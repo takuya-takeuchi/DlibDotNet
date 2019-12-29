@@ -79,10 +79,10 @@ auto r = dlib::train_probabilistic_decision_function(t, dst_x, dst_y, folds);\
 *ret = new dlib::matrix<double, 1, 2>(r);
 
 #define train_probabilistic_decision_function_reduced_decision_function_trainer2_template_trainer_sub(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, ...) \
-svm_trainer_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, trainer_type, train_probabilistic_decision_function_reduced_decision_function_trainer2_template_sub, __VA_ARGS__) 
+svm_trainer_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, KERNEL, trainer_type, train_probabilistic_decision_function_reduced_decision_function_trainer2_template_sub, __VA_ARGS__)
 
 #define train_probabilistic_decision_function_reduced_decision_function_trainer2_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
-kernel_no_histgram_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, train_probabilistic_decision_function_reduced_decision_function_trainer2_template_trainer_sub, __VA_ARGS__) 
+kernel_no_histgram_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, kernel_type, train_probabilistic_decision_function_reduced_decision_function_trainer2_template_trainer_sub, __VA_ARGS__)
 
 #pragma endregion
 
@@ -98,7 +98,7 @@ DLLEXPORT int cross_validate_trainer_svm_trainer(const svm_kernel_type kernel_ty
                                                  void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,
@@ -126,7 +126,7 @@ DLLEXPORT int cross_validate_trainer_batch_trainer(const svm_kernel_type kernel_
                                                    void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_double_template(type,
                            error,
                            matrix_template_size00_template,
@@ -154,7 +154,7 @@ DLLEXPORT int cross_validate_trainer_reduced_decision_function_trainer2(const sv
                                                                         void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_double_template(type,
                            error,
                            matrix_template_size00_template,
@@ -173,7 +173,7 @@ DLLEXPORT int cross_validate_trainer_reduced_decision_function_trainer2(const sv
 DLLEXPORT int randomize_samples_pointer(void* vector)
 {
     int error = ERR_OK;
-    
+
     auto& v = *static_cast<std::vector<void*>*>(vector);
     dlib::randomize_samples(v);
 
@@ -183,7 +183,7 @@ DLLEXPORT int randomize_samples_pointer(void* vector)
 DLLEXPORT int randomize_samples_value(void* vector)
 {
     int error = ERR_OK;
-    
+
     auto& v = *static_cast<std::vector<int>*>(vector);
     dlib::randomize_samples(v);
 
@@ -202,7 +202,7 @@ DLLEXPORT int train_probabilistic_decision_function_svm_trainer(const svm_kernel
                                                                 void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,
@@ -217,33 +217,33 @@ DLLEXPORT int train_probabilistic_decision_function_svm_trainer(const svm_kernel
 
     return error;
 }
- 
-DLLEXPORT int train_probabilistic_decision_function_reduced_decision_function_trainer2(const svm_kernel_type kernel_type, 
-                                                                                       const matrix_element_type type, 
-                                                                                       const svm_trainer_type trainer_type, 
-                                                                                       void* trainer, 
-                                                                                       const int32_t templateRows, 
-                                                                                       const int32_t templateColumns, 
-                                                                                       void* x, 
-                                                                                       void* y, 
-                                                                                       const int32_t folds, 
-                                                                                       void** ret) 
-{ 
-    int error = ERR_OK; 
-     
-    matrix_double_template(type, 
-                           error, 
-                           matrix_template_size00_template, 
-                           cross_validate_trainer_reduced_decision_function_trainer2_template, 
-                           kernel_type, 
-                           trainer_type, 
-                           trainer, 
-                           x, 
-                           y, 
-                           folds, 
-                           ret); 
- 
-    return error; 
+
+DLLEXPORT int train_probabilistic_decision_function_reduced_decision_function_trainer2(const svm_kernel_type kernel_type,
+                                                                                       const matrix_element_type type,
+                                                                                       const svm_trainer_type trainer_type,
+                                                                                       void* trainer,
+                                                                                       const int32_t templateRows,
+                                                                                       const int32_t templateColumns,
+                                                                                       void* x,
+                                                                                       void* y,
+                                                                                       const int32_t folds,
+                                                                                       void** ret)
+{
+    int error = ERR_OK;
+
+    matrix_double_template(type,
+                           error,
+                           matrix_template_size00_template,
+                           cross_validate_trainer_reduced_decision_function_trainer2_template,
+                           kernel_type,
+                           trainer_type,
+                           trainer,
+                           x,
+                           y,
+                           folds,
+                           ret);
+
+    return error;
 }
 
 #endif

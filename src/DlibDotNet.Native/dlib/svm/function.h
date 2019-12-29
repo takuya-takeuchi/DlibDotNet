@@ -451,7 +451,7 @@ DLLEXPORT void* normalized_function_new(const svm_kernel_type kernel_type,
 {
     int error = ERR_OK;
     void* ret = nullptr;
-    
+
     if (function_type == svm_function_type::MulticlassLinearDecision)
     {
         matrix_decimal_template(type,
@@ -488,7 +488,7 @@ DLLEXPORT void normalized_function_delete(const svm_kernel_type kernel_type,
                                           void* function)
 {
     int error = ERR_OK;
-    
+
     if (function_type == svm_function_type::MulticlassLinearDecision)
     {
         matrix_decimal_template(type,
@@ -524,7 +524,7 @@ DLLEXPORT int normalized_function_get_normalizer(const svm_kernel_type kernel_ty
                                                  void** ret)
 {
     int error = ERR_OK;
-    
+
     if (function_type == svm_function_type::MulticlassLinearDecision)
     {
         matrix_decimal_template(type,
@@ -563,7 +563,7 @@ DLLEXPORT int normalized_function_set_normalizer(const svm_kernel_type kernel_ty
                                                  void* normalizer)
 {
     int error = ERR_OK;
-    
+
     if (function_type == svm_function_type::MulticlassLinearDecision)
     {
         matrix_decimal_template(type,
@@ -603,7 +603,7 @@ DLLEXPORT int normalized_function_get_function(const svm_kernel_type kernel_type
                                                void** ret)
 {
     int error = ERR_OK;
-    
+
     if (function_type == svm_function_type::MulticlassLinearDecision)
     {
         matrix_decimal_template(type,
@@ -643,7 +643,7 @@ DLLEXPORT int normalized_function_set_function(const svm_kernel_type kernel_type
                                                void* sub_function)
 {
     int error = ERR_OK;
-    
+
     if (function_type == svm_function_type::MulticlassLinearDecision)
     {
         matrix_decimal_template(type,

@@ -77,7 +77,7 @@ DLLEXPORT int extract_fhog_features(array2d_type img_type,
                      cell_size,
                      filter_rows_padding,
                      filter_cols_padding);
-    
+
     return error;
 }
 
@@ -102,7 +102,7 @@ DLLEXPORT int extract_fhog_features2(array2d_type img_type,
                      filter_rows_padding,
                      filter_cols_padding,
                      hog);
-    
+
     return error;
 }
 
@@ -129,7 +129,7 @@ DLLEXPORT int extract_fhog_features_array(array2d_type img_type,
                               cell_size,
                               filter_rows_padding,
                               filter_cols_padding);
-    
+
     return error;
 }
 

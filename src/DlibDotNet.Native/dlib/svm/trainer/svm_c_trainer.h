@@ -273,7 +273,7 @@ DLLEXPORT int svm_c_trainer_new(const svm_kernel_type kernel_type,
                                 void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,
@@ -289,7 +289,7 @@ DLLEXPORT void svm_c_trainer_delete(const svm_kernel_type kernel_type,
                                     void* trainer)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,
@@ -340,7 +340,7 @@ DLLEXPORT int svm_c_trainer_set_kernel(const svm_kernel_type kernel_type,
                                        void* kernel)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,
@@ -358,7 +358,7 @@ DLLEXPORT int svm_c_trainer_get_kernel(const svm_kernel_type kernel_type,
                                        void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,

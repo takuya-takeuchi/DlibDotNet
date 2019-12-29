@@ -184,7 +184,7 @@ DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type,
 {
     int error = ERR_OK;
     void* ret = nullptr;
-    
+
     switch(etype)
     {
         case element_type::OpHeatmap:
@@ -213,7 +213,7 @@ DLLEXPORT int image_window_new_matrix_op2(element_type etype, array2d_type type,
             error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     *result = ret;
 
     return error;
@@ -228,7 +228,7 @@ DLLEXPORT int image_window_new_matrix_op3(element_type etype,
 {
     int error = ERR_OK;
     void* ret = nullptr;
-    
+
     switch(etype)
     {
         case element_type::OpHeatmap:
@@ -259,7 +259,7 @@ DLLEXPORT int image_window_new_matrix_op3(element_type etype,
             error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     *result = ret;
 
     return error;
@@ -311,7 +311,7 @@ DLLEXPORT int image_window_new_matrix_op4(element_type etype,
             error = ERR_MATRIX_OP_TYPE_NOT_SUPPORT;
             break;
     }
-    
+
     *result = ret;
 
     return error;
@@ -360,7 +360,7 @@ DLLEXPORT int image_window_add_overlay2(image_window* window, std::vector<rectan
                      type,
                      p,
                      rects);
-    
+
     return error;
 }
 
@@ -413,7 +413,7 @@ DLLEXPORT int image_window_add_overlay6(image_window* window, dlib::rectangle* r
                      p,
                      r,
                      l);
-    
+
     return error;
 }
 
@@ -511,7 +511,7 @@ DLLEXPORT int image_window_set_image_matrix_op_matrix(image_window* window,
     switch(etype)
     {
         case element_type::OpJoinRows:
-            #define ELEMENT dlib::op_join_rows        
+            #define ELEMENT dlib::op_join_rows
             matrix_template(type,
                             error,
                             matrix_template_size_template,

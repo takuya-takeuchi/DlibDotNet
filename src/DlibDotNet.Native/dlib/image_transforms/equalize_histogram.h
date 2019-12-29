@@ -53,7 +53,7 @@ DLLEXPORT int equalize_histogram_array2d_2(array2d_type in_type, void* in_img, a
                                          subtype,
                                          in_img,
                                          out_img);
-    
+
     return error;
 }
 

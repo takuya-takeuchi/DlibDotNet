@@ -13,33 +13,33 @@
 #include "../shared.h"
 
 DLLEXPORT int drawable_get_bottom(dlib::drawable* drawable)
-{ 
-    return drawable->bottom(); 
+{
+    return drawable->bottom();
 }
 
 DLLEXPORT int drawable_get_top(dlib::drawable* drawable)
-{ 
-    return drawable->top(); 
+{
+    return drawable->top();
 }
 
 DLLEXPORT int drawable_get_left(dlib::drawable* drawable)
-{ 
-    return drawable->left(); 
+{
+    return drawable->left();
 }
 
 DLLEXPORT int drawable_get_right(dlib::drawable* drawable)
-{ 
-    return drawable->right(); 
+{
+    return drawable->right();
 }
 
 DLLEXPORT int drawable_get_width(dlib::drawable* drawable)
-{ 
-    return drawable->width(); 
+{
+    return drawable->width();
 }
 
 DLLEXPORT int drawable_get_height(dlib::drawable* drawable)
-{ 
-    return drawable->height(); 
+{
+    return drawable->height();
 }
 
 DLLEXPORT void drawable_set_pos(dlib::drawable* drawable, int x, int y)

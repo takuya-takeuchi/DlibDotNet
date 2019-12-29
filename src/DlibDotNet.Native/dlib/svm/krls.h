@@ -136,7 +136,7 @@ DLLEXPORT int krls_new(svm_kernel_type kernel_type,
                        void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -159,7 +159,7 @@ DLLEXPORT void krls_delete(svm_kernel_type kernel_type,
                            void* obj)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -178,7 +178,7 @@ DLLEXPORT int krls_get_kernel(svm_kernel_type kernel_type,
                               void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -200,7 +200,7 @@ DLLEXPORT int krls_dictionary_size(svm_kernel_type kernel_type,
                                    unsigned long* ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,

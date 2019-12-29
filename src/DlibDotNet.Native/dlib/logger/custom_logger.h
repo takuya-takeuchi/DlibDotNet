@@ -26,7 +26,7 @@ public:
              const dlib::log_level& ll,
              const dlib::uint64 thread_id,
              const char* message_to_log)
-    {        
+    {
         if (this->m_log_func)
         {
             auto plogger_name = new std::string(logger_name);

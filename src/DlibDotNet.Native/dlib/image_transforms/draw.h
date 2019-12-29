@@ -74,7 +74,7 @@ DLLEXPORT int draw_line_matrix(matrix_element_type type,
                                void* p)
 {
     int error = ERR_OK;
-    
+
     matrix_template(type,
                     error,
                     matrix_template_size_template,
@@ -113,7 +113,7 @@ DLLEXPORT int draw_rectangle_matrix(matrix_element_type type,
                                     unsigned int thickness)
 {
     int error = ERR_OK;
-    
+
     matrix_template(type,
                     error,
                     matrix_template_size_template,
@@ -151,7 +151,7 @@ DLLEXPORT int fill_rect_matrix(matrix_element_type type,
                                void* p)
 {
     int error = ERR_OK;
-    
+
     matrix_template(type,
                     error,
                     matrix_template_size_template,

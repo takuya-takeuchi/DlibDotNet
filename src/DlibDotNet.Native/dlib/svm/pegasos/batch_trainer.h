@@ -197,7 +197,7 @@ DLLEXPORT int batch_trainer_new(const svm_kernel_type kernel_type,
                                 void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,
@@ -215,7 +215,7 @@ DLLEXPORT void batch_trainer_delete(const svm_kernel_type kernel_type,
                                     void* trainer)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size00_template,

@@ -52,7 +52,7 @@ DLLEXPORT correlation_tracker* correlation_tracker_new(
 DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, array2d_type type, void* img, dlib::drectangle* p)
 {
     int error = ERR_OK;
-    
+
     array2d_nonalpha_template(type,
                               error,
                               correlation_tracker_start_track_template,
@@ -75,7 +75,7 @@ DLLEXPORT int correlation_tracker_update_noscale(correlation_tracker* tracker,
                                                  double* confident)
 {
     int error = ERR_OK;
-    
+
     array2d_nonalpha_template(type,
                               error,
                               correlation_tracker_update_noscale_template,
@@ -92,7 +92,7 @@ DLLEXPORT int correlation_tracker_update_noscale2(correlation_tracker* tracker,
                                                   double* confident)
 {
     int error = ERR_OK;
-    
+
     array2d_nonalpha_template(type,
                               error,
                               correlation_tracker_update_noscale2_template,
@@ -109,7 +109,7 @@ DLLEXPORT int correlation_tracker_update(correlation_tracker* tracker,
                                          double* confident)
 {
     int error = ERR_OK;
-    
+
     array2d_nonalpha_template(type,
                               error,
                               correlation_tracker_update_template,
@@ -126,7 +126,7 @@ DLLEXPORT int correlation_tracker_update2(correlation_tracker* tracker,
                                           double* confident)
 {
     int error = ERR_OK;
-    
+
     array2d_nonalpha_template(type,
                               error,
                               correlation_tracker_update2_template,
