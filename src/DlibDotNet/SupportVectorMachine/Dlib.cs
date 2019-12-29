@@ -598,16 +598,16 @@ namespace DlibDotNet
             using (var xVector = new StdVector<Matrix<TScalar>>(x))
             using (var yVector = new StdVector<TScalar>(y))
             {
-                var err = NativeMethods.train_probabilistic_decision_function_svm_trainer(svmKernelType.ToNativeKernelType(),
-                                                                                          sampleType.ToNativeMatrixElementType(),
-                                                                                          svmTrainerType,
-                                                                                          trainer.NativePtr,
-                                                                                          parameter.TemplateRows,
-                                                                                          parameter.TemplateColumns,
-                                                                                          xVector.NativePtr,
-                                                                                          yVector.NativePtr,
-                                                                                          folds,
-                                                                                          out var ret);
+                var err = NativeMethods.train_probabilistic_decision_function_reduced_decision_function_trainer2(svmKernelType.ToNativeKernelType(),
+                                                                                                                 sampleType.ToNativeMatrixElementType(),
+                                                                                                                 svmTrainerType,
+                                                                                                                 trainer.NativePtr,
+                                                                                                                 parameter.TemplateRows,
+                                                                                                                 parameter.TemplateColumns,
+                                                                                                                 xVector.NativePtr,
+                                                                                                                 yVector.NativePtr,
+                                                                                                                 folds,
+                                                                                                                 out var ret);
                 switch (err)
                 {
                     case NativeMethods.ErrorType.SvmTrainerNotSupport:
