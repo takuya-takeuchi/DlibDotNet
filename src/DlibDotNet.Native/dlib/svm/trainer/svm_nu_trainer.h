@@ -2,6 +2,7 @@
 #define _CPP_SVM_TRAINER_SVM_NU_TRAINER_H_
 
 #include "../../export.h"
+#include <dlib/svm.h>
 #include <dlib/svm/svm_nu_trainer.h>
 #include "../template.h"
 #include "../../template.h"

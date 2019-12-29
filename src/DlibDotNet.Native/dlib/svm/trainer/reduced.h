@@ -2,6 +2,7 @@
 #define _CPP_SVM_TRAINER_REDUCED_H_
 
 #include "../../export.h"
+#include <dlib/svm.h>
 #include <dlib/svm/reduced.h>
 #include "../template.h"
 #include "../../shared.h"
