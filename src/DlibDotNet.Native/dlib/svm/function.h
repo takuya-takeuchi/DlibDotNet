@@ -244,7 +244,7 @@ kernel_linear_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__,
 auto f = static_cast<dlib::normalized_function<FUNC<KERNEL<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>>>>*>(function);\
 switch(normalizer_type)\
 {\
-    case normalizer_type::Vector:\
+    case ::normalizer_type::Vector:\
         {\
             const auto& tmp_normalizer = *static_cast<dlib::vector_normalizer<dlib::matrix<__TYPE__>>*>(normalizer);\
             f->normalizer = tmp_normalizer;\
@@ -559,7 +559,7 @@ DLLEXPORT int normalized_function_set_normalizer(const svm_kernel_type kernel_ty
                                                  const int templateColumns,
                                                  const svm_function_type function_type,
                                                  void* function,
-                                                 const normalizer_type normalizer_type,
+                                                 const ::normalizer_type normalizer_type,
                                                  void* normalizer)
 {
     int error = ERR_OK;
