@@ -48,12 +48,15 @@ namespace DlibDotNet
         private Rectangle InvokeGetGradient(Array2DBase image, Array2D<float> gradient, Func<IntPtr, NativeMethods.Array2DType, IntPtr, IntPtr, IntPtr, NativeMethods.ErrorType> gradientMethod)
         {
             this.ThrowIfDisposed();
-
+            
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
 
             if (gradient == null)
-                throw new ArgumentNullException(nameof(image));
+                throw new ArgumentNullException(nameof(gradient));
+
+            image.ThrowIfDisposed();
+            gradient.ThrowIfDisposed();
 
             using(var rect = new Rectangle.NativeRectangle())
             {
