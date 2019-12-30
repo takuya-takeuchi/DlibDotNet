@@ -238,54 +238,6 @@ enum struct normalizer_type : int
 
 };
 
-typedef struct
-{
-    // uint8_t
-    uint8_t uint8_t_start;
-    uint8_t uint8_t_inc;
-    uint8_t uint8_t_end;
-    bool use_uint8_t_inc;
-
-    // uint16_t
-    uint16_t uint16_t_start;
-    uint16_t uint16_t_inc;
-    uint16_t uint16_t_end;
-    bool use_uint16_t_inc;
-
-    // int8_t
-    int8_t int8_t_start;
-    int8_t int8_t_inc;
-    int8_t int8_t_end;
-    bool use_int8_t_inc;
-
-    // int16_t
-    int16_t int16_t_start;
-    int16_t int16_t_inc;
-    int16_t int16_t_end;
-    bool use_int16_t_inc;
-
-    // int32_t
-    int32_t int32_t_start;
-    int32_t int32_t_inc;
-    int32_t int32_t_end;
-    bool use_int32_t_inc;
-
-    // float
-    float float_start;
-    float float_inc;
-    float float_end;
-    bool use_float_inc;
-
-    // double
-    double double_start;
-    double double_inc;
-    double double_end;
-    bool use_double_inc;
-
-    bool use_num;
-    int num;
-} matrix_range_exp_create_param;
-
 #define ERR_OK                                                            0x00000000
 
 // svm
