@@ -194,7 +194,7 @@ namespace DlibDotNet.Extensions
 
             var width = matrix.Columns;
             var height = matrix.Rows;
-            bool rgbReverse;
+            bool rgbReverse = false;
             PixelFormat format;
             int channels;
 
