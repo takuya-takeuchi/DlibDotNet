@@ -254,10 +254,10 @@ namespace DlibDotNet.Dnn
                 }
 
                 var probabilityArray = vector.ToArray();
-                var batches = probabilityArray.Length;
+                var batches = (int)batchSize;
                 var classes = probabilityArray.Length / batches;
 
-                var probability = new List<float[]>(Enumerable.Range(0, probabilityArray.Length).Select<int, float[]>(i => null));
+                var probability = new List<float[]>(Enumerable.Range(0, batches).Select<int, float[]>(i => null));
                 for (var index = 0; index < batches; index++)
                     probability[index] = probabilityArray.Skip(index * classes).Take(classes).ToArray();
 
