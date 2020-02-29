@@ -476,7 +476,7 @@ DLLEXPORT int flip_image_left_right2(array2d_type in_type, void* in_img, array2d
                               in_img,
                               out_img);
     #undef FUNCTION
-    
+
     return error;
 }
 
@@ -562,7 +562,7 @@ DLLEXPORT int pyramid_up_pyramid_matrix(const pyramid_type pyramid_type,
         case ::pyramid_type::Down:
             {
                 #define PYRAMID_TYPE pyramid_down
-                {                    
+                {
                     matrix_template(type,
                                     error,
                                     matrix_template_size_template,
@@ -601,7 +601,7 @@ DLLEXPORT int resize_image(array2d_type in_type, void* in_img, array2d_type out_
                               in_img,
                               out_img);
     #undef FUNCTION
-    
+
     return error;
 }
 
@@ -622,7 +622,7 @@ DLLEXPORT int resize_image2(array2d_type in_type, void* in_img, array2d_type out
                                          out_img,
                                          int_type);
     #undef FUNCTION
-    
+
     return error;
 }
 
@@ -698,7 +698,7 @@ DLLEXPORT int rotate_image2(array2d_type in_type, void* in_img, array2d_type out
                                          angle,
                                          int_type);
     #undef FUNCTION
-    
+
     return error;
 }
 
@@ -727,7 +727,7 @@ DLLEXPORT int transform_image(array2d_type in_type,
                                          mapping_obj,
                                          int_type,
                                          out_img);
-    
+
     return error;
 }
 
@@ -898,7 +898,7 @@ DLLEXPORT int extract_image_chips(array2d_type img_type, void* in_img, std::vect
                                          in_img,
                                          chips,
                                          array);
-    
+
     return error;
 }
 
@@ -924,7 +924,7 @@ DLLEXPORT int extract_image_chips_matrix(matrix_element_type img_type, void* in_
                                       in_img,
                                       chips,
                                       array);
-    
+
     return error;
 }
 
@@ -947,7 +947,7 @@ DLLEXPORT int extract_image_chip(array2d_type img_type,
                                        in_img,
                                        chip_location,
                                        out_chip);
-    
+
     return error;
 }
 

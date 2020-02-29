@@ -245,7 +245,7 @@ DLLEXPORT int kkmeans_new(svm_kernel_type kernel_type,
                           void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -266,7 +266,7 @@ DLLEXPORT void kkmeans_delete(svm_kernel_type kernel_type,
                               void* kkmeans)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -285,7 +285,7 @@ DLLEXPORT int kkmeans_get_kernel(svm_kernel_type kernel_type,
                                  void** ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -307,7 +307,7 @@ DLLEXPORT int kkmeans_set_number_of_centers(svm_kernel_type kernel_type,
                                             unsigned long num)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -329,7 +329,7 @@ DLLEXPORT int kkmeans_get_number_of_centers(svm_kernel_type kernel_type,
                                             unsigned long* num)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -351,7 +351,7 @@ DLLEXPORT int kkmeans_set_kcentroid(svm_kernel_type kernel_type,
                                     void* kcentroid)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -374,7 +374,7 @@ DLLEXPORT int kkmeans_get_kcentroid(svm_kernel_type kernel_type,
                                     void** kcentroid)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -398,7 +398,7 @@ DLLEXPORT int kkmeans_operator(svm_kernel_type kernel_type,
                                unsigned long* ret)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,
@@ -423,7 +423,7 @@ DLLEXPORT int kkmeans_train(svm_kernel_type kernel_type,
                             const unsigned long max_iter)
 {
     int error = ERR_OK;
-    
+
     matrix_decimal_template(type,
                             error,
                             matrix_template_size_column1or0_template,

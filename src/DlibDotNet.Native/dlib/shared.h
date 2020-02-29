@@ -184,63 +184,68 @@ enum struct svm_kernel_type : int
 
     RadialBasis,
 
-    Sigmoid
+    Sigmoid,
+
+    SparseHistogramIntersection,
+
+    SparseLinear,
+
+    SparsePolynomial,
+
+    SparseRadialBasis,
+
+    SparseSigmoid
 
 };
 
-typedef struct
+enum struct svm_function_type : int
 {
-    // uint8_t
-    uint8_t uint8_t_start;
-    uint8_t uint8_t_inc;
-    uint8_t uint8_t_end;
-    bool use_uint8_t_inc;
 
-    // uint16_t
-    uint16_t uint16_t_start;
-    uint16_t uint16_t_inc;
-    uint16_t uint16_t_end;
-    bool use_uint16_t_inc;
+    Decision,
 
-    // int8_t
-    int8_t int8_t_start;
-    int8_t int8_t_inc;
-    int8_t int8_t_end;
-    bool use_int8_t_inc;
+    ProbabilisticDecision,
 
-    // int16_t
-    int16_t int16_t_start;
-    int16_t int16_t_inc;
-    int16_t int16_t_end;
-    bool use_int16_t_inc;
+    Distance,
 
-    // int32_t
-    int32_t int32_t_start;
-    int32_t int32_t_inc;
-    int32_t int32_t_end;
-    bool use_int32_t_inc;
+    Projection,
 
-    // float
-    float float_start;
-    float float_inc;
-    float float_end;
-    bool use_float_inc;
+    MulticlassLinearDecision
 
-    // double
-    double double_start;
-    double double_inc;
-    double double_end;
-    bool use_double_inc;
+};
 
-    bool use_num;
-    int num;
-} matrix_range_exp_create_param;
+enum struct svm_trainer_type : int
+{
+
+    C,
+
+    Nu
+
+};
+
+enum struct svm_batch_trainer_type : int
+{
+
+    Pegasos
+
+};
+
+enum struct normalizer_type : int
+{
+
+    Vector,
+
+    VectorPca
+
+};
 
 #define ERR_OK                                                            0x00000000
 
 // svm
 #define ERR_SVM_ERROR                                                     0x75000000
 #define ERR_SVM_KERNEL_NOT_SUPPORT                      -(ERR_SVM_ERROR | 0x00000001)
+#define ERR_SVM_FUNCTION_NOT_SUPPORT                    -(ERR_SVM_ERROR | 0x00000002)
+#define ERR_SVM_TRAINER_NOT_SUPPORT                     -(ERR_SVM_ERROR | 0x00000003)
+#define ERR_SVM_BATCH_TRAINER_NOT_SUPPORT               -(ERR_SVM_ERROR | 0x00000004)
 
 // General
 #define ERR_GENERAL_ERROR                                                 0x76000000
@@ -354,6 +359,7 @@ do {\
 
 #define vector_value_to_value(__TYPE__, src, dst) \
 auto& tmp_src = *static_cast<std::vector<__TYPE__>*>(src);\
+dst.reserve(tmp_src.size());\
 for (int index = 0; index < tmp_src.size(); index++)\
 {\
     __TYPE__ tmp = tmp_src.at(index);\
@@ -363,6 +369,7 @@ for (int index = 0; index < tmp_src.size(); index++)\
 #define vector_pointer_to_value(__TYPE__, src, dst) \
 do {\
     std::vector<__TYPE__*>& tmp_src = *static_cast<std::vector<__TYPE__*>*>(src);\
+    dst.reserve(tmp_src.size());\
     for (int index = 0; index < tmp_src.size(); index++)\
     {\
         __TYPE__& tmp = *tmp_src.at(index);\
@@ -373,10 +380,12 @@ do {\
 #define vector_vector_pointer_to_value(__TYPE__, src, dst) \
 do {\
     std::vector<std::vector<__TYPE__*>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__*>*>*>(src);\
+    dst.reserve(tmp_src.size());\
     for (int j = 0 ; j < tmp_src.size(); j++)\
     {\
         auto tmpVector = tmp_src.at(j);\
         std::vector<__TYPE__> vector;\
+        vector.reserve(tmpVector->size());\
         for (int i = 0 ; i < tmpVector->size(); i++)\
         {\
             __TYPE__& o = *(tmpVector->at(i));\
@@ -389,10 +398,12 @@ do {\
 #define vector_vector_valueType_to_value(__TYPE__, src, dst) \
 do {\
     std::vector<std::vector<__TYPE__>*>& tmp_src = *static_cast<std::vector<std::vector<__TYPE__>*>*>(src);\
+    dst.reserve(tmp_src.size());\
     for (int j = 0 ; j < tmp_src.size(); j++)\
     {\
         auto tmpVector = tmp_src.at(j);\
         std::vector<__TYPE__> vector;\
+        vector.reserve(tmpVector->size());\
         for (int i = 0 ; i < tmpVector->size(); i++)\
         {\
             __TYPE__ o = tmpVector->at(i);\

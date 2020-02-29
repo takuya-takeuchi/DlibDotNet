@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet.Extensions;
-using uint8_t = System.Byte;
-using uint16_t = System.UInt16;
-using uint32_t = System.UInt32;
-using int8_t = System.SByte;
-using int16_t = System.Int16;
-using int32_t = System.Int32;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet
@@ -17,6 +11,203 @@ namespace DlibDotNet
     {
 
         #region Methods
+
+
+        public static BatchTrainer<TScalar, TKernel, TTrainer> BatchCached<TScalar, TKernel, TTrainer>(TTrainer trainer,
+                                                                                                       TScalar minLearningRate,
+                                                                                                       int cacheSize = 100)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+
+            trainer.ThrowIfDisposed();
+
+            var ret = BatchCachedBridge<TScalar, TTrainer>.Operator(trainer, minLearningRate, cacheSize);
+            return new BatchTrainer<TScalar, TKernel, TTrainer>(ret);
+        }
+
+        public static Matrix<double> CrossValidateTrainer<TScalar, TTrainer>(TTrainer trainer,
+                                                                             IEnumerable<Matrix<TScalar>> x,
+                                                                             IEnumerable<TScalar> y,
+                                                                             int folds)
+            where TScalar : struct
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (x == null)
+                throw new ArgumentNullException(nameof(x));
+            if (y == null)
+                throw new ArgumentNullException(nameof(y));
+
+            if (!x.Any())
+                throw new ArgumentException();
+            if (!y.Any())
+                throw new ArgumentException();
+            if (!(1 < folds))
+                throw new ArgumentException();
+
+            trainer.ThrowIfDisposed();
+            x.ThrowIfDisposed();
+
+            TrainerHelper.GetTypes<TScalar, TTrainer>(out var trainerType,
+                                                      out var svmTrainerType,
+                                                      out var svmKernelType,
+                                                      out var sampleType);
+
+            var parameter = new KernelBaseParameter(svmKernelType, sampleType, 0, 0);
+
+            using (var xVector = new StdVector<Matrix<TScalar>>(x))
+            using (var yVector = new StdVector<TScalar>(y))
+            {
+                var err = NativeMethods.cross_validate_trainer_svm_trainer(svmKernelType.ToNativeKernelType(),
+                                                                           sampleType.ToNativeMatrixElementType(),
+                                                                           svmTrainerType,
+                                                                           trainer.NativePtr,
+                                                                           parameter.TemplateRows,
+                                                                           parameter.TemplateColumns,
+                                                                           xVector.NativePtr,
+                                                                           yVector.NativePtr,
+                                                                           folds,
+                                                                           out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.SvmTrainerNotSupport:
+                        throw new ArgumentException($"{trainerType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{svmKernelType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{sampleType} is not supported.");
+                }
+
+                return new Matrix<double>(ret, 1, 2);
+            }
+        }
+
+        public static Matrix<double> CrossValidateTrainer<TScalar, TKernel, TTrainer>(BatchTrainer<TScalar, TKernel, TTrainer> trainer,
+                                                                                      IEnumerable<Matrix<TScalar>> x,
+                                                                                      IEnumerable<TScalar> y,
+                                                                                      int folds)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (x == null)
+                throw new ArgumentNullException(nameof(x));
+            if (y == null)
+                throw new ArgumentNullException(nameof(y));
+
+            if (!x.Any())
+                throw new ArgumentException();
+            if (!y.Any())
+                throw new ArgumentException();
+            if (!(1 < folds))
+                throw new ArgumentException();
+
+            trainer.ThrowIfDisposed();
+            x.ThrowIfDisposed();
+
+            BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out var trainerType,
+                                                           out var svmTrainerType,
+                                                           out var svmKernelType,
+                                                           out var sampleType);
+
+            var parameter = new KernelBaseParameter(svmKernelType, sampleType, 0, 0);
+
+            using (var xVector = new StdVector<Matrix<TScalar>>(x))
+            using (var yVector = new StdVector<TScalar>(y))
+            {
+                var err = NativeMethods.cross_validate_trainer_batch_trainer(svmKernelType.ToNativeKernelType(),
+                                                                             sampleType.ToNativeMatrixElementType(),
+                                                                             svmTrainerType,
+                                                                             trainer.NativePtr,
+                                                                             parameter.TemplateRows,
+                                                                             parameter.TemplateColumns,
+                                                                             xVector.NativePtr,
+                                                                             yVector.NativePtr,
+                                                                             folds,
+                                                                             out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.SvmBatchTrainerNotSupport:
+                        throw new ArgumentException($"{trainerType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{svmKernelType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{sampleType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(parameter.TemplateColumns)} or {nameof(parameter.TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<double>(ret, 1, 2);
+            }
+        }
+
+        public static Matrix<double> CrossValidateTrainer<TScalar, TKernel, TTrainer>(ReducedDecisionFunctionTrainer2<TScalar, TKernel, TTrainer> trainer,
+                                                                                      IEnumerable<Matrix<TScalar>> x,
+                                                                                      IEnumerable<TScalar> y,
+                                                                                      int folds)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (x == null)
+                throw new ArgumentNullException(nameof(x));
+            if (y == null)
+                throw new ArgumentNullException(nameof(y));
+
+            if (!x.Any())
+                throw new ArgumentException();
+            if (!y.Any())
+                throw new ArgumentException();
+            if (!(1 < folds))
+                throw new ArgumentException();
+
+            trainer.ThrowIfDisposed();
+            x.ThrowIfDisposed();
+
+            TrainerHelper.GetTypes<TScalar, TTrainer>(out var trainerType,
+                                                      out var svmTrainerType,
+                                                      out var svmKernelType,
+                                                      out var sampleType);
+
+            var parameter = new KernelBaseParameter(svmKernelType, sampleType, 0, 0);
+
+            using (var xVector = new StdVector<Matrix<TScalar>>(x))
+            using (var yVector = new StdVector<TScalar>(y))
+            {
+                var err = NativeMethods.cross_validate_trainer_reduced_decision_function_trainer2(svmKernelType.ToNativeKernelType(),
+                                                                                                  sampleType.ToNativeMatrixElementType(),
+                                                                                                  svmTrainerType,
+                                                                                                  trainer.NativePtr,
+                                                                                                  parameter.TemplateRows,
+                                                                                                  parameter.TemplateColumns,
+                                                                                                  xVector.NativePtr,
+                                                                                                  yVector.NativePtr,
+                                                                                                  folds,
+                                                                                                  out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.SvmTrainerNotSupport:
+                        throw new ArgumentException($"{trainerType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{svmKernelType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{sampleType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(parameter.TemplateColumns)} or {nameof(parameter.TemplateRows)} is not supported.");
+                }
+
+                return new Matrix<double>(ret, 1, 2);
+            }
+        }
 
         public static IEnumerable<Matrix<T>> FindClustersUsingAngularKMeans<T>(IEnumerable<Matrix<T>> samples, IEnumerable<Matrix<T>> centers, uint maxIteration = 1000)
             where T : struct
@@ -112,9 +303,9 @@ namespace DlibDotNet
             }
         }
 
-        public static IEnumerable<Matrix<TScalar>> PickInitialCenters<TScalar, TKernel>(int numberCenters, 
-                                                                                        IEnumerable<Matrix<TScalar>> samples, 
-                                                                                        TKernel kernel, 
+        public static IEnumerable<Matrix<TScalar>> PickInitialCenters<TScalar, TKernel>(int numberCenters,
+                                                                                        IEnumerable<Matrix<TScalar>> samples,
+                                                                                        TKernel kernel,
                                                                                         double percentile = 0.01)
             where TScalar : struct
             where TKernel : KernelBase
@@ -168,6 +359,88 @@ namespace DlibDotNet
 
                 return outCenters.ToArray();
             }
+        }
+
+        public static void RandomizeSamples<T>(IList<T> samples)
+            where T : DlibObject
+        {
+            if (samples == null)
+                throw new ArgumentNullException(nameof(samples));
+
+            using (var vector = new StdVector<T>(samples))
+            {
+                NativeMethods.randomize_samples_pointer(vector.NativePtr);
+                var result = vector.ToArray();
+                for (var index = 0; index < samples.Count; index++)
+                    samples[index] = result[index];
+            }
+        }
+
+        public static void RandomizeSamples<T1, T2>(IList<T1> samples1, IList<T2> samples2)
+        {
+            if (samples1 == null)
+                throw new ArgumentNullException(nameof(samples1));
+            if (samples2 == null)
+                throw new ArgumentNullException(nameof(samples2));
+            if (samples1.Count != samples2.Count)
+                throw new ArgumentException();
+
+            var indexList = Enumerable.Range(0, samples1.Count).ToArray();
+            using (var vector = new StdVector<int>(indexList))
+            {
+                NativeMethods.randomize_samples_value(vector.NativePtr);
+                var result = vector.ToArray();
+                for (var index = 0; index < indexList.Length; index++)
+                {
+                    var newIndex = result[index];
+                    var old1 = samples1[index];
+                    samples1[index] = samples1[newIndex];
+                    samples1[newIndex] = old1;
+
+                    var old2 = samples2[index];
+                    samples2[index] = samples2[newIndex];
+                    samples2[newIndex] = old2;
+                }
+            }
+        }
+
+        public static ReducedDecisionFunctionTrainer2<TScalar, TKernel, TTrainer> Reduced2<TScalar, TKernel, TTrainer>(TTrainer trainer,
+                                                                                                                       uint numBaseVector,
+                                                                                                                       double eps = 1e-3)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+
+            trainer.ThrowIfDisposed();
+
+            TrainerHelper.GetTypes<TScalar, TTrainer>(out var trainerType,
+                                                      out var svmTrainerType,
+                                                      out var svmKernelType,
+                                                      out var sampleType);
+
+            var parameter = new KernelBaseParameter(svmKernelType, sampleType, 0, 0);
+
+            var error = NativeMethods.reduced2(parameter.KernelType.ToNativeKernelType(),
+                                               parameter.SampleType.ToNativeMatrixElementType(),
+                                               parameter.TemplateRows,
+                                               parameter.TemplateColumns,
+                                               svmTrainerType,
+                                               trainer.NativePtr,
+                                               numBaseVector,
+                                               eps,
+                                               out var ret);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.SvmTrainerNotSupport:
+                    throw new ArgumentException($"{trainerType} is not supported.");
+                case NativeMethods.ErrorType.SvmKernelNotSupport:
+                    throw new ArgumentException($"{svmKernelType} is not supported.");
+            }
+
+            return new ReducedDecisionFunctionTrainer2<TScalar, TKernel, TTrainer>(ret);
         }
 
         public static Matrix<TScalar> RankFeatures<TScalar, TKernel>(KCentroid<TScalar, TKernel> kcentroid,
@@ -229,7 +502,399 @@ namespace DlibDotNet
             }
         }
 
+        public static ProbabilisticDecisionFunction<TScalar, TKernel> TrainProbabilisticDecisionFunction<TScalar, TKernel, TTrainer>(TTrainer trainer,
+                                                                                                                                     IEnumerable<Matrix<TScalar>> x,
+                                                                                                                                     IEnumerable<TScalar> y,
+                                                                                                                                     int folds)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (x == null)
+                throw new ArgumentNullException(nameof(x));
+            if (y == null)
+                throw new ArgumentNullException(nameof(y));
+
+            if (!x.Any())
+                throw new ArgumentException();
+            if (!y.Any())
+                throw new ArgumentException();
+            if (!(1 < folds))
+                throw new ArgumentException();
+
+            trainer.ThrowIfDisposed();
+            x.ThrowIfDisposed();
+
+            TrainerHelper.GetTypes<TScalar, TTrainer>(out var trainerType,
+                                                      out var svmTrainerType,
+                                                      out var svmKernelType,
+                                                      out var sampleType);
+
+            var parameter = new KernelBaseParameter(svmKernelType, sampleType, 0, 0);
+
+            using (var xVector = new StdVector<Matrix<TScalar>>(x))
+            using (var yVector = new StdVector<TScalar>(y))
+            {
+                var err = NativeMethods.train_probabilistic_decision_function_svm_trainer(svmKernelType.ToNativeKernelType(),
+                                                                                          sampleType.ToNativeMatrixElementType(),
+                                                                                          svmTrainerType,
+                                                                                          trainer.NativePtr,
+                                                                                          parameter.TemplateRows,
+                                                                                          parameter.TemplateColumns,
+                                                                                          xVector.NativePtr,
+                                                                                          yVector.NativePtr,
+                                                                                          folds,
+                                                                                          out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.SvmTrainerNotSupport:
+                        throw new ArgumentException($"{trainerType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{svmKernelType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{sampleType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(parameter.TemplateColumns)} or {nameof(parameter.TemplateRows)} is not supported.");
+                }
+
+                return new ProbabilisticDecisionFunction<TScalar, TKernel>(ret, parameter);
+            }
+        }
+
+        public static ProbabilisticDecisionFunction<TScalar, TKernel> TrainProbabilisticDecisionFunction<TScalar, TKernel, TTrainer>(ReducedDecisionFunctionTrainer2<TScalar, TKernel, TTrainer> trainer,
+                                                                                                                                     IEnumerable<Matrix<TScalar>> x,
+                                                                                                                                     IEnumerable<TScalar> y,
+                                                                                                                                     int folds)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+            if (x == null)
+                throw new ArgumentNullException(nameof(x));
+            if (y == null)
+                throw new ArgumentNullException(nameof(y));
+
+            if (!x.Any())
+                throw new ArgumentException();
+            if (!y.Any())
+                throw new ArgumentException();
+            if (!(1 < folds))
+                throw new ArgumentException();
+
+            trainer.ThrowIfDisposed();
+            x.ThrowIfDisposed();
+
+            TrainerHelper.GetTypes<TScalar, TTrainer>(out var trainerType,
+                                                      out var svmTrainerType,
+                                                      out var svmKernelType,
+                                                      out var sampleType);
+
+            var parameter = new KernelBaseParameter(svmKernelType, sampleType, 0, 0);
+
+            using (var xVector = new StdVector<Matrix<TScalar>>(x))
+            using (var yVector = new StdVector<TScalar>(y))
+            {
+                var err = NativeMethods.train_probabilistic_decision_function_reduced_decision_function_trainer2(svmKernelType.ToNativeKernelType(),
+                                                                                                                 sampleType.ToNativeMatrixElementType(),
+                                                                                                                 svmTrainerType,
+                                                                                                                 trainer.NativePtr,
+                                                                                                                 parameter.TemplateRows,
+                                                                                                                 parameter.TemplateColumns,
+                                                                                                                 xVector.NativePtr,
+                                                                                                                 yVector.NativePtr,
+                                                                                                                 folds,
+                                                                                                                 out var ret);
+                switch (err)
+                {
+                    case NativeMethods.ErrorType.SvmTrainerNotSupport:
+                        throw new ArgumentException($"{trainerType} is not supported.");
+                    case NativeMethods.ErrorType.SvmKernelNotSupport:
+                        throw new ArgumentException($"{svmKernelType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{sampleType} is not supported.");
+                    case NativeMethods.ErrorType.MatrixElementTemplateSizeNotSupport:
+                        throw new ArgumentException($"{nameof(parameter.TemplateColumns)} or {nameof(parameter.TemplateRows)} is not supported.");
+                }
+
+                return new ProbabilisticDecisionFunction<TScalar, TKernel>(ret, parameter);
+            }
+        }
+
+        public static BatchTrainer<TScalar, TKernel, TTrainer> VerboseBatchCached<TScalar, TKernel, TTrainer>(TTrainer trainer,
+                                                                                                              TScalar minLearningRate,
+                                                                                                              int cacheSize = 100)
+            where TScalar : struct
+            where TKernel : KernelBase
+            where TTrainer : Trainer<TScalar>
+        {
+            if (trainer == null)
+                throw new ArgumentNullException(nameof(trainer));
+
+            trainer.ThrowIfDisposed();
+
+            var ret = VerboseBatchCachedBridge<TScalar, TTrainer>.Operator(trainer, minLearningRate, cacheSize);
+            return new BatchTrainer<TScalar, TKernel, TTrainer>(ret);
+        }
+
         #endregion
+
+        private static class BatchCachedBridge<TScalar, TTrainer>
+            where TScalar : struct
+            where TTrainer : Trainer<TScalar>
+        {
+
+            public static IntPtr Operator(TTrainer trainer, TScalar minLearningRate, int cacheSize)
+            {
+                BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out _,
+                                                               out _,
+                                                               out _,
+                                                               out var sampleType);
+                Bridge<TScalar> bridge;
+                switch (sampleType)
+                {
+                    case MatrixElementTypes.Float:
+                        bridge = new FloatBridge() as Bridge<TScalar>;
+                        break;
+                    case MatrixElementTypes.Double:
+                        bridge = new DoubleBridge() as Bridge<TScalar>;
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
+
+                return bridge.Operator(trainer, minLearningRate, cacheSize);
+            }
+
+#pragma warning disable 693
+            private abstract class Bridge<TScalar>
+#pragma warning restore 693
+                where TScalar : struct
+            {
+
+                #region Methods
+
+                public abstract IntPtr Operator(TTrainer trainer, TScalar minLearningRate, int cacheSize);
+
+                #endregion
+
+            }
+
+            private sealed class FloatBridge : Bridge<float>
+            {
+
+                #region Methods
+
+                public override IntPtr Operator(TTrainer trainer, float minLearningRate, int cacheSize)
+                {
+                    BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out _,
+                                                                   out var svmTrainerType,
+                                                                   out var svmKernelType,
+                                                                   out var sampleType);
+
+                    if (!(minLearningRate > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(minLearningRate)} must be greater than 0.");
+                    if (!(cacheSize > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(cacheSize)} must be greater than 0.");
+
+                    var error = NativeMethods.batch_cached_float(svmKernelType.ToNativeKernelType(),
+                                                                 sampleType.ToNativeMatrixElementType(),
+                                                                 svmTrainerType,
+                                                                 trainer.NativePtr,
+                                                                 minLearningRate,
+                                                                 cacheSize,
+                                                                 out var ret);
+
+                    switch (error)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{sampleType} is not supported.");
+                        case NativeMethods.ErrorType.SvmBatchTrainerNotSupport:
+                            throw new ArgumentException($"{svmTrainerType} is not supported.");
+                        case NativeMethods.ErrorType.SvmKernelNotSupport:
+                            throw new ArgumentException($"{svmKernelType} is not supported.");
+                    }
+
+                    return ret;
+                }
+
+                #endregion
+
+            }
+
+            private sealed class DoubleBridge : Bridge<double>
+            {
+
+                #region Methods
+
+                public override IntPtr Operator(TTrainer trainer, double minLearningRate, int cacheSize)
+                {
+                    BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out _,
+                                                                   out var svmTrainerType,
+                                                                   out var svmKernelType,
+                                                                   out var sampleType);
+
+                    if (!(minLearningRate > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(minLearningRate)} must be greater than 0.");
+                    if (!(cacheSize > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(cacheSize)} must be greater than 0.");
+
+                    var error = NativeMethods.batch_cached_double(svmKernelType.ToNativeKernelType(),
+                                                                  sampleType.ToNativeMatrixElementType(),
+                                                                  svmTrainerType,
+                                                                  trainer.NativePtr,
+                                                                  minLearningRate,
+                                                                  cacheSize,
+                                                                  out var ret);
+
+                    switch (error)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{sampleType} is not supported.");
+                        case NativeMethods.ErrorType.SvmBatchTrainerNotSupport:
+                            throw new ArgumentException($"{svmTrainerType} is not supported.");
+                        case NativeMethods.ErrorType.SvmKernelNotSupport:
+                            throw new ArgumentException($"{svmKernelType} is not supported.");
+                    }
+
+                    return ret;
+                }
+
+                #endregion
+
+            }
+
+        }
+        
+        private static class VerboseBatchCachedBridge<TScalar, TTrainer>
+            where TScalar : struct
+            where TTrainer : Trainer<TScalar>
+        {
+
+            public static IntPtr Operator(TTrainer trainer, TScalar minLearningRate, int cacheSize)
+            {
+                BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out _,
+                                                               out _,
+                                                               out _,
+                                                               out var sampleType);
+                Bridge<TScalar> bridge;
+                switch (sampleType)
+                {
+                    case MatrixElementTypes.Float:
+                        bridge = new FloatBridge() as Bridge<TScalar>;
+                        break;
+                    case MatrixElementTypes.Double:
+                        bridge = new DoubleBridge() as Bridge<TScalar>;
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
+
+                return bridge.Operator(trainer, minLearningRate, cacheSize);
+            }
+
+#pragma warning disable 693
+            private abstract class Bridge<TScalar>
+#pragma warning restore 693
+                where TScalar : struct
+            {
+
+                #region Methods
+
+                public abstract IntPtr Operator(TTrainer trainer, TScalar minLearningRate, int cacheSize);
+
+                #endregion
+
+            }
+
+            private sealed class FloatBridge : Bridge<float>
+            {
+
+                #region Methods
+
+                public override IntPtr Operator(TTrainer trainer, float minLearningRate, int cacheSize)
+                {
+                    BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out _,
+                                                                   out var svmTrainerType,
+                                                                   out var svmKernelType,
+                                                                   out var sampleType);
+
+                    if (!(minLearningRate > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(minLearningRate)} must be greater than 0.");
+                    if (!(cacheSize > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(cacheSize)} must be greater than 0.");
+
+                    var error = NativeMethods.verbose_batch_cached_float(svmKernelType.ToNativeKernelType(),
+                                                                         sampleType.ToNativeMatrixElementType(),
+                                                                         svmTrainerType,
+                                                                         trainer.NativePtr,
+                                                                         minLearningRate,
+                                                                         cacheSize,
+                                                                         out var ret);
+
+                    switch (error)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{sampleType} is not supported.");
+                        case NativeMethods.ErrorType.SvmBatchTrainerNotSupport:
+                            throw new ArgumentException($"{svmTrainerType} is not supported.");
+                        case NativeMethods.ErrorType.SvmKernelNotSupport:
+                            throw new ArgumentException($"{svmKernelType} is not supported.");
+                    }
+
+                    return ret;
+                }
+
+                #endregion
+
+            }
+
+            private sealed class DoubleBridge : Bridge<double>
+            {
+
+                #region Methods
+
+                public override IntPtr Operator(TTrainer trainer, double minLearningRate, int cacheSize)
+                {
+                    BatchTrainerHelper.GetTypes<TScalar, TTrainer>(out _,
+                                                                   out var svmTrainerType,
+                                                                   out var svmKernelType,
+                                                                   out var sampleType);
+
+                    if (!(minLearningRate > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(minLearningRate)} must be greater than 0.");
+                    if (!(cacheSize > 0))
+                        throw new ArgumentOutOfRangeException($"{nameof(cacheSize)} must be greater than 0.");
+
+                    var error = NativeMethods.verbose_batch_cached_double(svmKernelType.ToNativeKernelType(),
+                                                                          sampleType.ToNativeMatrixElementType(),
+                                                                          svmTrainerType,
+                                                                          trainer.NativePtr,
+                                                                          minLearningRate,
+                                                                          cacheSize,
+                                                                          out var ret);
+
+                    switch (error)
+                    {
+                        case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                            throw new ArgumentException($"{sampleType} is not supported.");
+                        case NativeMethods.ErrorType.SvmBatchTrainerNotSupport:
+                            throw new ArgumentException($"{svmTrainerType} is not supported.");
+                        case NativeMethods.ErrorType.SvmKernelNotSupport:
+                            throw new ArgumentException($"{svmKernelType} is not supported.");
+                    }
+
+                    return ret;
+                }
+
+                #endregion
+
+            }
+
+        }
 
     }
 

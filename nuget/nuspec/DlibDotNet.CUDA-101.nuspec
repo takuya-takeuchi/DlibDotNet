@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet.CUDA101</id>
-    <version>19.18.0.20191202</version>
+    <version>19.18.0.20200229</version>
     <title>DlibDotNet for CUDA 10.1</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -33,8 +33,8 @@ Requirements: Visual C++ 2017 Redistributable Package, cublas64_10.dll, cudnn64_
     <file src="..\artifacts\cuda-101\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
     <file src="..\artifacts\cuda-101\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
     <file src="..\artifacts\cuda-101\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
-    <file src="..\artifacts\cuda-101\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
-    <file src="..\artifacts\cuda-101\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\cuda-101\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\centos-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cuda-101\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" />
 
     <!--
     <file src="..\artifacts\cuda-101\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />

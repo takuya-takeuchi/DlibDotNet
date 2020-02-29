@@ -1,14 +1,12 @@
-#ifndef _CPP_STATISTICS_H_
-#define _CPP_STATISTICS_H_
+#ifndef _CPP_STATISTICS_RUNNING_STATS_H_
+#define _CPP_STATISTICS_RUNNING_STATS_H_
 
-#include "../export.h"
+#include "../../export.h"
 #include <dlib/statistics/statistics.h>
-#include "../shared.h"
+#include "../../shared.h"
 
 using namespace dlib;
 using namespace std;
-
-#pragma region running_stats
 
 DLLEXPORT void* running_stats_new(running_stats_type type)
 {
@@ -360,7 +358,5 @@ DLLEXPORT void* running_stats_operator_add(running_stats_type type, void* left, 
 }
 
 #pragma endregion operator
-
-#pragma endregion running_stats
 
 #endif

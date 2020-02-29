@@ -336,7 +336,7 @@ DLLEXPORT int load_image_dataset_metadata(image_dataset_metadata::dataset* meta,
     image_dataset_metadata::dataset& in_meta = *meta;
     std::string in_filename(filename, filename_length);
     try
-    {    
+    {
         dlib::image_dataset_metadata::load_image_dataset_metadata(in_meta, filename);
     }
     catch(dlib::error e)

@@ -6,7 +6,7 @@ using DlibDotNet.Extensions;
 namespace DlibDotNet
 {
 
-    public sealed class DecisionFunction<TScalar, TKernel> : DlibObject
+    public sealed class ProbabilisticDecisionFunction<TScalar, TKernel> : FunctionBase
         where TScalar : struct
         where TKernel : KernelBase
     {
@@ -19,9 +19,9 @@ namespace DlibDotNet
 
         #region Constructors
 
-        internal DecisionFunction(IntPtr ptr,
-                                  KernelBaseParameter parameter,
-                                  bool isEnabledDispose = true) :
+        internal ProbabilisticDecisionFunction(IntPtr ptr,
+                                               KernelBaseParameter parameter,
+                                               bool isEnabledDispose = true) :
             base(isEnabledDispose)
         {
             this._Parameter = parameter;
@@ -32,7 +32,7 @@ namespace DlibDotNet
 
         #region Methods
 
-        public static DecisionFunction<TScalar, TKernel> Deserialize(string path, int templateRows, int templateColumns)
+        public static ProbabilisticDecisionFunction<TScalar, TKernel> Deserialize(string path, int templateRows, int templateColumns)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -45,14 +45,14 @@ namespace DlibDotNet
             var param = new KernelBaseParameter(kernelType, sampleType, templateRows, templateColumns);
 
             var str = Dlib.Encoding.GetBytes(path);
-            var error = NativeMethods.deserialize_decision_function(str,
-                                                                    str.Length,
-                                                                    kernelType.ToNativeKernelType(),
-                                                                    sampleType.ToNativeMatrixElementType(),
-                                                                    templateRows,
-                                                                    templateColumns,
-                                                                    out var ret,
-                                                                    out var errorMessage);
+            var error = NativeMethods.deserialize_probabilistic_decision_function(str,
+                                                                                  str.Length,
+                                                                                  kernelType.ToNativeKernelType(),
+                                                                                  sampleType.ToNativeMatrixElementType(),
+                                                                                  templateRows,
+                                                                                  templateColumns,
+                                                                                  out var ret,
+                                                                                  out var errorMessage);
 
             switch (error)
             {
@@ -66,10 +66,10 @@ namespace DlibDotNet
                     throw new ArgumentException($"{param.KernelType} is not supported.");
             }
 
-            return new DecisionFunction<TScalar, TKernel>(ret, param);
+            return new ProbabilisticDecisionFunction<TScalar, TKernel>(ret, param);
         }
 
-        public static void Serialize(DecisionFunction<TScalar, TKernel> function, string path)
+        public static void Serialize(ProbabilisticDecisionFunction<TScalar, TKernel> function, string path)
         {
             if (function == null)
                 throw new ArgumentNullException(nameof(function));
@@ -79,14 +79,14 @@ namespace DlibDotNet
             function.ThrowIfDisposed();
 
             var str = Dlib.Encoding.GetBytes(path);
-            var ret = NativeMethods.serialize_decision_function(function._Parameter.KernelType.ToNativeKernelType(),
-                                                                function._Parameter.SampleType.ToNativeMatrixElementType(),
-                                                                function._Parameter.TemplateRows,
-                                                                function._Parameter.TemplateColumns,
-                                                                function.NativePtr,
-                                                                str,
-                                                                str.Length,
-                                                                out var errorMessage);
+            var ret = NativeMethods.serialize_probabilistic_decision_function(function._Parameter.KernelType.ToNativeKernelType(),
+                                                                              function._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                              function._Parameter.TemplateRows,
+                                                                              function._Parameter.TemplateColumns,
+                                                                              function.NativePtr,
+                                                                              str,
+                                                                              str.Length,
+                                                                              out var errorMessage);
 
             switch (ret)
             {
@@ -113,11 +113,11 @@ namespace DlibDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            NativeMethods.decision_function_delete(this._Parameter.KernelType.ToNativeKernelType(),
-                                                   this._Parameter.SampleType.ToNativeMatrixElementType(),
-                                                   this._Parameter.TemplateRows,
-                                                   this._Parameter.TemplateColumns,
-                                                   this.NativePtr);
+            NativeMethods.probabilistic_decision_function_delete(this._Parameter.KernelType.ToNativeKernelType(),
+                                                                 this._Parameter.SampleType.ToNativeMatrixElementType(),
+                                                                 this._Parameter.TemplateRows,
+                                                                 this._Parameter.TemplateColumns,
+                                                                 this.NativePtr);
         }
 
         #endregion

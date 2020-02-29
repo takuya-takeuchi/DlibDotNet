@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Authors>Takuya Takeuchi</Authors>
+    <Description>Sample of DlibDotNet</Description>
+    <Company />
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DlibDotNet\DlibDotNet.csproj" />
+  </ItemGroup>
+
+</Project>
