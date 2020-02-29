@@ -36,8 +36,8 @@ Requirements: Visual C++ 2017 Redistributable Package and Intel MKL 2019 Initial
     <file src="..\artifacts\mkl\runtimes\win-x86\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x86\native\DlibDotNetNativeDnn.dll" />
     <file src="..\artifacts\mkl\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
     <file src="..\artifacts\mkl\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
-    <file src="..\artifacts\mkl\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
-    <file src="..\artifacts\mkl\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\mkl\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\centos-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\mkl\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" />
     <!-- <file src="..\artifacts\mkl\runtimes\linux-x86\native\libDlibDotNetNative.so" target="runtimes\linux-x86\native\libDlibDotNetNative.so" />
     <file src="..\artifacts\mkl\runtimes\linux-x86\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x86\native\libDlibDotNetNativeDnn.so" /> -->
     <file src="..\artifacts\mkl\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
