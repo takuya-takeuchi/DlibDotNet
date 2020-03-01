@@ -491,7 +491,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void RotateImage(Array2DBase inputImage, Array2DBase outputImage, double angle, InterpolationTypes interpolationTypes = InterpolationTypes.Quadratic)
+        public static void RotateImage(Array2DBase inputImage, Array2DBase outputImage, double radian, InterpolationTypes interpolationTypes = InterpolationTypes.Quadratic)
         {
             if (inputImage == null)
                 throw new ArgumentNullException(nameof(inputImage));
@@ -505,7 +505,7 @@ namespace DlibDotNet
 
             var inType = inputImage.ImageType.ToNativeArray2DType();
             var outType = outputImage.ImageType.ToNativeArray2DType();
-            var ret = NativeMethods.rotate_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, angle, interpolationTypes.ToNativeInterpolationTypes());
+            var ret = NativeMethods.rotate_image2(inType, inputImage.NativePtr, outType, outputImage.NativePtr, radian, interpolationTypes.ToNativeInterpolationTypes());
             switch (ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
