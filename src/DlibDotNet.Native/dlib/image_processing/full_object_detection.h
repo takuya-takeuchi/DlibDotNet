@@ -4,6 +4,7 @@
 #include "../export.h"
 #include <dlib/image_processing/full_object_detection.h>
 #include <dlib/geometry/rectangle.h>
+#include "../shared.h"
 
 using namespace dlib;
 using namespace std;
@@ -13,6 +14,19 @@ using namespace std;
 DLLEXPORT full_object_detection* full_object_detection_new()
 {
     return new full_object_detection();
+}
+
+DLLEXPORT full_object_detection* full_object_detection_new2(const dlib::rectangle* rect)
+{
+    return new full_object_detection(*rect);
+}
+
+DLLEXPORT full_object_detection* full_object_detection_new3(const dlib::rectangle* rect,
+                                                            std::vector<dlib::point*>* points)
+{
+    std::vector<dlib::point> in_points;
+    new_instance_vector_to_instance(dlib::point, points, in_points);
+    return new full_object_detection(*rect, in_points);
 }
 
 DLLEXPORT rectangle* full_object_detection_get_rect(full_object_detection* detection)

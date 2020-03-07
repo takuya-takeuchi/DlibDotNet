@@ -12,6 +12,12 @@ namespace DlibDotNet
         public static extern IntPtr full_object_detection_new();
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr full_object_detection_new2(IntPtr rect);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr full_object_detection_new3(IntPtr rect, IntPtr points);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern uint full_object_detection_num_parts(IntPtr predictor);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
