@@ -1,14 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.GuiWidgets
 {
 
-    [TestClass]
     public class ImageWindowTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void AddOverlay()
         {
             if (!this.CanGuiDebug)
@@ -39,7 +38,7 @@ namespace DlibDotNet.Tests.GuiWidgets
                 try
                 {
                     var rect = new Rectangle(10, 10, 100, 100);
-                    var array = Array2D.Array2DTest.CreateArray2D(test.Type, path.FullName);
+                    var array = Array2D.Array2DTest.CreateArray2DHelp(test.Type, path.FullName);
                     using (var window = new ImageWindow(array))
                     {
                         switch (test.Type)
@@ -91,7 +90,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             if (!this.CanGuiDebug)
@@ -103,7 +102,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             this.DisposeAndCheckDisposedState(new ImageWindow());
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateFromArray2D()
         {
             if (!this.CanGuiDebug)
@@ -133,7 +132,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             {
                 try
                 {
-                    var array = Array2D.Array2DTest.CreateArray2D(test.Type, path.FullName);
+                    var array = Array2D.Array2DTest.CreateArray2DHelp(test.Type, path.FullName);
                     var window = new ImageWindow(array);
                     this.DisposeAndCheckDisposedState(window);
                     this.DisposeAndCheckDisposedState(array);
@@ -147,7 +146,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateFromArray2DWithTitle()
         {
             if (!this.CanGuiDebug)
@@ -177,7 +176,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             {
                 try
                 {
-                    var array = Array2D.Array2DTest.CreateArray2D(test.Type, path.FullName);
+                    var array = Array2D.Array2DTest.CreateArray2DHelp(test.Type, path.FullName);
                     var window = new ImageWindow(array, test.Type.ToString());
                     this.DisposeAndCheckDisposedState(window);
                     this.DisposeAndCheckDisposedState(array);
@@ -191,7 +190,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void WaitUntilClosed()
         {
             if (!this.CanGuiDebug)

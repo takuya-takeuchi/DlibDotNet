@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using DlibDotNet.Tests.Array2D;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class ColormapsTest : TestBase
     {
 
@@ -18,7 +17,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region Heatmap
 
-        [TestMethod]
+        [Fact]
         public void Heatmap()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -53,13 +52,13 @@ namespace DlibDotNet.Tests.ImageTransforms
                 {
                     const ImageTypes inputType = ImageTypes.Float;
 
-                    var image = DlibTest.LoadImage(test.Type, path);
+                    var image = DlibTest.LoadImageHelp(test.Type, path);
                     imageObj = image;
-                    var horz = Array2DTest.CreateArray2D(inputType);
+                    var horz = Array2DTest.CreateArray2DHelp(inputType);
                     horzObj = horz;
-                    var vert = Array2DTest.CreateArray2D(inputType);
+                    var vert = Array2DTest.CreateArray2DHelp(inputType);
                     vertObj = vert;
-                    var outputImage = Array2DTest.CreateArray2D(test.Type);
+                    var outputImage = Array2DTest.CreateArray2DHelp(test.Type);
                     outputImageObj = outputImage;
 
                     Dlib.SobelEdgeDetector(image, horz, vert);
@@ -67,12 +66,12 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        matrix = Heatmap(test.Type, outputImage);
+                        matrix = HeatmapHelp(test.Type, outputImage);
 
                         if (test.ExpectResult)
                         {
-                            Assert.AreEqual(matrix.Columns, LoadTargetWidth);
-                            Assert.AreEqual(matrix.Rows, LoadTargetHeight);
+                            Assert.Equal(matrix.Columns, LoadTargetWidth);
+                            Assert.Equal(matrix.Rows, LoadTargetHeight);
 
                             if (this.CanGuiDebug)
                             {
@@ -84,7 +83,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                         }
                         else
                         {
-                            Assert.Fail($"Failed to execute Heatmap to Type: {test.Type}");
+                            Assert.True(false, $"Failed to execute Heatmap to Type: {test.Type}");
                         }
                     }
                     catch (Exception)
@@ -123,7 +122,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Heatmap2()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -170,13 +169,13 @@ namespace DlibDotNet.Tests.ImageTransforms
                 {
                     const ImageTypes inputType = ImageTypes.Float;
 
-                    var image = DlibTest.LoadImage(test.Type, path);
+                    var image = DlibTest.LoadImageHelp(test.Type, path);
                     imageObj = image;
-                    var horz = Array2DTest.CreateArray2D(inputType);
+                    var horz = Array2DTest.CreateArray2DHelp(inputType);
                     horzObj = horz;
-                    var vert = Array2DTest.CreateArray2D(inputType);
+                    var vert = Array2DTest.CreateArray2DHelp(inputType);
                     vertObj = vert;
-                    var outputImage = Array2DTest.CreateArray2D(test.Type);
+                    var outputImage = Array2DTest.CreateArray2DHelp(test.Type);
                     outputImageObj = outputImage;
 
                     Dlib.SobelEdgeDetector(image, horz, vert);
@@ -184,7 +183,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        matrix = Heatmap(test.Type, outputImage, test.Max, test.Min);
+                        matrix = HeatmapHelp(test.Type, outputImage, test.Max, test.Min);
 
                         if (test.ExpectResult)
                         {
@@ -198,7 +197,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                         }
                         else
                         {
-                            Assert.Fail($"Failed to execute Heatmap2 to Type: {test.Type}");
+                            Assert.True(false, $"Failed to execute Heatmap2 to Type: {test.Type}");
                         }
                     }
                     catch (Exception)
@@ -241,7 +240,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region Jet
 
-        [TestMethod]
+        [Fact]
         public void Jet()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -276,13 +275,13 @@ namespace DlibDotNet.Tests.ImageTransforms
                 {
                     const ImageTypes inputType = ImageTypes.Float;
 
-                    var image = DlibTest.LoadImage(test.Type, path);
+                    var image = DlibTest.LoadImageHelp(test.Type, path);
                     imageObj = image;
-                    var horz = Array2DTest.CreateArray2D(inputType);
+                    var horz = Array2DTest.CreateArray2DHelp(inputType);
                     horzObj = horz;
-                    var vert = Array2DTest.CreateArray2D(inputType);
+                    var vert = Array2DTest.CreateArray2DHelp(inputType);
                     vertObj = vert;
-                    var outputImage = Array2DTest.CreateArray2D(test.Type);
+                    var outputImage = Array2DTest.CreateArray2DHelp(test.Type);
                     outputImageObj = outputImage;
 
                     Dlib.SobelEdgeDetector(image, horz, vert);
@@ -290,12 +289,12 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        matrix = Jet(test.Type, outputImage);
+                        matrix = JetHelp(test.Type, outputImage);
 
                         if (test.ExpectResult)
                         {
-                            Assert.AreEqual(matrix.Columns, LoadTargetWidth);
-                            Assert.AreEqual(matrix.Rows, LoadTargetHeight);
+                            Assert.Equal(matrix.Columns, LoadTargetWidth);
+                            Assert.Equal(matrix.Rows, LoadTargetHeight);
 
                             if (this.CanGuiDebug)
                             {
@@ -307,7 +306,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                         }
                         else
                         {
-                            Assert.Fail($"Failed to execute Jet to Type: {test.Type}");
+                            Assert.True(false, $"Failed to execute Jet to Type: {test.Type}");
                         }
                     }
                     catch (Exception)
@@ -346,7 +345,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Jet2()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -393,13 +392,13 @@ namespace DlibDotNet.Tests.ImageTransforms
                 {
                     const ImageTypes inputType = ImageTypes.Float;
 
-                    var image = DlibTest.LoadImage(test.Type, path);
+                    var image = DlibTest.LoadImageHelp(test.Type, path);
                     imageObj = image;
-                    var horz = Array2DTest.CreateArray2D(inputType);
+                    var horz = Array2DTest.CreateArray2DHelp(inputType);
                     horzObj = horz;
-                    var vert = Array2DTest.CreateArray2D(inputType);
+                    var vert = Array2DTest.CreateArray2DHelp(inputType);
                     vertObj = vert;
-                    var outputImage = Array2DTest.CreateArray2D(test.Type);
+                    var outputImage = Array2DTest.CreateArray2DHelp(test.Type);
                     outputImageObj = outputImage;
 
                     Dlib.SobelEdgeDetector(image, horz, vert);
@@ -407,7 +406,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        matrix = Jet(test.Type, outputImage, test.Max, test.Min);
+                        matrix = JetHelp(test.Type, outputImage, test.Max, test.Min);
 
                         if (test.ExpectResult)
                         {
@@ -421,7 +420,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                         }
                         else
                         {
-                            Assert.Fail($"Failed to execute Jet2 to Type: {test.Type}");
+                            Assert.True(false, $"Failed to execute Jet2 to Type: {test.Type}");
                         }
                     }
                     catch (Exception)
@@ -462,7 +461,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #endregion
 
-        internal static MatrixOp Heatmap(ImageTypes type, TwoDimensionObjectBase obj)
+        internal static MatrixOp HeatmapHelp(ImageTypes type, TwoDimensionObjectBase obj)
         {
             MatrixOp matrixOp;
             switch (type)
@@ -507,7 +506,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             return matrixOp;
         }
 
-        internal static MatrixOp Heatmap(ImageTypes type, TwoDimensionObjectBase obj, double max, double min = 0)
+        internal static MatrixOp HeatmapHelp(ImageTypes type, TwoDimensionObjectBase obj, double max, double min = 0)
         {
             MatrixOp matrixOp;
             switch (type)
@@ -552,7 +551,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             return matrixOp;
         }
 
-        internal static MatrixOp Jet(ImageTypes type, TwoDimensionObjectBase obj)
+        internal static MatrixOp JetHelp(ImageTypes type, TwoDimensionObjectBase obj)
         {
             MatrixOp matrixOp;
             switch (type)
@@ -597,7 +596,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             return matrixOp;
         }
 
-        internal static MatrixOp Jet(ImageTypes type, TwoDimensionObjectBase obj, double max, double min = 0)
+        internal static MatrixOp JetHelp(ImageTypes type, TwoDimensionObjectBase obj, double max, double min = 0)
         {
             MatrixOp matrixOp;
             switch (type)

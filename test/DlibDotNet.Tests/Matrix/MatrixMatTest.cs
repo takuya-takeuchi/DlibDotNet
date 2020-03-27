@@ -1,15 +1,14 @@
 ﻿using System;
 using DlibDotNet.Tests.Array2D;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Matrix
 {
 
-    [TestClass]
     public class MatrixMatTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             const string testName = "Create";
@@ -34,7 +33,7 @@ namespace DlibDotNet.Tests.Matrix
                 var expectResult = output.ExpectResult;
                 var outputImageAction = new Func<bool, MatrixOp>(expect =>
                 {
-                    using (var array = Array2DTest.CreateArray2D(output.Type))
+                    using (var array = Array2DTest.CreateArray2DHelp(output.Type))
                         return Dlib.Mat(array);
                 });
 
@@ -46,7 +45,7 @@ namespace DlibDotNet.Tests.Matrix
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {output.Type}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {output.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -62,7 +61,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateWithSize()
         {
             const int width = 150;
@@ -90,7 +89,7 @@ namespace DlibDotNet.Tests.Matrix
                 var expectResult = output.ExpectResult;
                 var outputImageAction = new Func<bool, MatrixOp>(expect =>
                 {
-                    using (var array = Array2DTest.CreateArray2D(output.Type, width, height))
+                    using (var array = Array2DTest.CreateArray2DHelp(output.Type, width, height))
                         return Dlib.Mat(array);
                 });
 
@@ -102,7 +101,7 @@ namespace DlibDotNet.Tests.Matrix
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {output.Type}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {output.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -118,7 +117,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckSize()
         {
             const int width = 150;
@@ -144,7 +143,7 @@ namespace DlibDotNet.Tests.Matrix
             foreach (var output in tests)
             {
                 var expectResult = output.ExpectResult;
-                var outputImageAction = new Func<bool, Array2DBase>(expect => Array2DTest.CreateArray2D(output.Type, height, width));
+                var outputImageAction = new Func<bool, Array2DBase>(expect => Array2DTest.CreateArray2DHelp(output.Type, height, width));
 
                 var successAction = new Action<Array2DBase>(array =>
                 {
@@ -152,8 +151,8 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         using (var mat = Dlib.Mat(array))
                         {
-                            Assert.AreEqual(mat.Columns, width, $"Columns should equal to {width}.");
-                            Assert.AreEqual(mat.Rows, height, $"Rows should equal to {height}.");
+                            Assert.True(mat.Columns == width, $"Columns should equal to {width}.");
+                            Assert.True(mat.Rows == height, $"Rows should equal to {height}.");
                         }
                     }
                     finally
@@ -165,7 +164,7 @@ namespace DlibDotNet.Tests.Matrix
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {output.Type}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {output.Type}.");
                 });
 
                 var finallyAction = new Action(() =>

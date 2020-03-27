@@ -1,23 +1,22 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Geometry
 {
 
-    [TestClass]
     public class PointTransformsTest : TestBase
     {
 
         #region PointRotator
 
-        [TestMethod]
+        [Fact]
         public void PointRotatorCreate()
         {
             var rotator = new PointRotator();
             this.DisposeAndCheckDisposedState(rotator);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointRotatorCreate1()
         {
             for (var angle = -360d; angle <= 360d; angle += 2.5)
@@ -27,22 +26,22 @@ namespace DlibDotNet.Tests.Geometry
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointRotatorM()
         {
             for (var angle = -360d; angle <= 360d; angle += 2.5)
             {
                 var rotator = new PointRotator(angle);
                 var m = rotator.M;
-                Assert.AreEqual(m.MatrixElementType, MatrixElementTypes.Double);
-                Assert.AreEqual(m.Rows, 2);
-                Assert.AreEqual(m.Columns, 2);
+                Assert.Equal(m.MatrixElementType, MatrixElementTypes.Double);
+                Assert.Equal(m.Rows, 2);
+                Assert.Equal(m.Columns, 2);
                 this.DisposeAndCheckDisposedState(m);
                 this.DisposeAndCheckDisposedState(rotator);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointRotatorOperator()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -59,14 +58,14 @@ namespace DlibDotNet.Tests.Geometry
 
         #region PointTransform
 
-        [TestMethod]
+        [Fact]
         public void PointTransformCreate()
         {
             var transform = new PointTransform();
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformCreate1()
         {
             for (var angle = -360d; angle <= 360d; angle += 2.5)
@@ -79,7 +78,7 @@ namespace DlibDotNet.Tests.Geometry
                     }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformB()
         {
             for (var angle = -360d; angle <= 360d; angle += 2.5)
@@ -89,13 +88,13 @@ namespace DlibDotNet.Tests.Geometry
                         var vector = new DPoint(x, y);
                         var transform = new PointTransform(angle, vector);
                         var b = transform.B;
-                        Assert.AreEqual(b.X, x);
-                        Assert.AreEqual(b.Y, y);
+                        Assert.Equal(b.X, x);
+                        Assert.Equal(b.Y, y);
                         this.DisposeAndCheckDisposedState(transform);
                     }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformM()
         {
             for (var angle = -360d; angle <= 360d; angle += 2.5)
@@ -105,15 +104,15 @@ namespace DlibDotNet.Tests.Geometry
                         var vector = new DPoint(x, y);
                         var transform = new PointTransform(angle, vector);
                         var m = transform.M;
-                        Assert.AreEqual(m.MatrixElementType, MatrixElementTypes.Double);
-                        Assert.AreEqual(m.Rows, 2);
-                        Assert.AreEqual(m.Columns, 2);
+                        Assert.Equal(m.MatrixElementType, MatrixElementTypes.Double);
+                        Assert.Equal(m.Rows, 2);
+                        Assert.Equal(m.Columns, 2);
                         this.DisposeAndCheckDisposedState(m);
                         this.DisposeAndCheckDisposedState(transform);
                     }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformOperator()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -131,14 +130,14 @@ namespace DlibDotNet.Tests.Geometry
 
         #region PointTransformAffine
 
-        [TestMethod]
+        [Fact]
         public void PointTransformAffineCreate()
         {
             var transform = new PointTransformAffine();
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformAffineCreateException()
         {
             PointTransformAffine transform = null;
@@ -150,7 +149,7 @@ namespace DlibDotNet.Tests.Geometry
                 matrix = new Matrix<double>();
                 vector = new DPoint();
                 transform = new PointTransformAffine(matrix, vector);
-                Assert.Fail("PointTransformAffine should not accept not 2x2 matrix");
+                Assert.True(false, "PointTransformAffine should not accept not 2x2 matrix");
             }
             catch
             {
@@ -165,7 +164,7 @@ namespace DlibDotNet.Tests.Geometry
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformAffineCreate1()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -179,7 +178,7 @@ namespace DlibDotNet.Tests.Geometry
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformAffineB()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -189,14 +188,14 @@ namespace DlibDotNet.Tests.Geometry
                     var vector = new DPoint(x, y);
                     var transform = new PointTransformAffine(matrix, vector);
                     var b = transform.B;
-                    Assert.AreEqual(b.X, x);
-                    Assert.AreEqual(b.Y, y);
+                    Assert.Equal(b.X, x);
+                    Assert.Equal(b.Y, y);
                     this.DisposeAndCheckDisposedState(transform);
                     this.DisposeAndCheckDisposedState(matrix);
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformAffineM()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -206,16 +205,16 @@ namespace DlibDotNet.Tests.Geometry
                     var vector = new DPoint(x, y);
                     var transform = new PointTransformAffine(matrix, vector);
                     var m = transform.M;
-                    Assert.AreEqual(m.MatrixElementType, MatrixElementTypes.Double);
-                    Assert.AreEqual(m.Rows, 2);
-                    Assert.AreEqual(m.Columns, 2);
+                    Assert.Equal(m.MatrixElementType, MatrixElementTypes.Double);
+                    Assert.Equal(m.Rows, 2);
+                    Assert.Equal(m.Columns, 2);
                     this.DisposeAndCheckDisposedState(m);
                     this.DisposeAndCheckDisposedState(transform);
                     this.DisposeAndCheckDisposedState(matrix);
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformAffineOperator()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -235,14 +234,14 @@ namespace DlibDotNet.Tests.Geometry
 
         #region PointTransformProjective
 
-        [TestMethod]
+        [Fact]
         public void PointTransformProjectiveCreate()
         {
             var transform = new PointTransformProjective();
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformProjectiveCreateException()
         {
             PointTransformProjective transform = null;
@@ -251,7 +250,7 @@ namespace DlibDotNet.Tests.Geometry
             try
             {
                 transform = new PointTransformProjective(null);
-                Assert.Fail("PointTransformProjective should not accept null object for 1st argument");
+                Assert.True(false, "PointTransformProjective should not accept null object for 1st argument");
             }
             catch
             {
@@ -267,7 +266,7 @@ namespace DlibDotNet.Tests.Geometry
             {
                 matrix = new Matrix<double>();
                 transform = new PointTransformProjective(matrix);
-                Assert.Fail("PointTransformProjective should not accept not 3x3 matrix");
+                Assert.True(false, "PointTransformProjective should not accept not 3x3 matrix");
             }
             catch
             {
@@ -282,7 +281,7 @@ namespace DlibDotNet.Tests.Geometry
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformProjectiveCreate1()
         {
             var matrix = new Matrix<double>(3, 3);
@@ -291,21 +290,21 @@ namespace DlibDotNet.Tests.Geometry
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformProjectiveM()
         {
             var matrix = new Matrix<double>(3, 3);
             var transform = new PointTransformProjective(matrix);
             var m = transform.M;
-            Assert.AreEqual(m.MatrixElementType, MatrixElementTypes.Double);
-            Assert.AreEqual(m.Rows, 3);
-            Assert.AreEqual(m.Columns, 3);
+            Assert.Equal(m.MatrixElementType, MatrixElementTypes.Double);
+            Assert.Equal(m.Rows, 3);
+            Assert.Equal(m.Columns, 3);
             this.DisposeAndCheckDisposedState(m);
             this.DisposeAndCheckDisposedState(matrix);
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointTransformProjectiveOperator()
         {
             for (var x = -10d; x <= 10d; x += 0.5)
@@ -324,14 +323,14 @@ namespace DlibDotNet.Tests.Geometry
 
         #region RectangleTransform
 
-        [TestMethod]
+        [Fact]
         public void RectangleTransformCreate()
         {
             var transform = new RectangleTransform();
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void RectangleTransformCreateException()
         {
             RectangleTransform transform = null;
@@ -339,7 +338,7 @@ namespace DlibDotNet.Tests.Geometry
             try
             {
                 transform = new RectangleTransform(null);
-                Assert.Fail("RectangleTransform should not accept null object for 1st argument");
+                Assert.True(false, "RectangleTransform should not accept null object for 1st argument");
             }
             catch
             {
@@ -352,7 +351,7 @@ namespace DlibDotNet.Tests.Geometry
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void RectangleTransformCreate1()
         {
             var pointTransformAffine = new PointTransformAffine();
@@ -361,7 +360,7 @@ namespace DlibDotNet.Tests.Geometry
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void RectangleTransformTransform()
         {
             var pointTransformAffine = new PointTransformAffine();
@@ -372,7 +371,7 @@ namespace DlibDotNet.Tests.Geometry
             this.DisposeAndCheckDisposedState(pointTransformAffine);
         }
 
-        [TestMethod]
+        [Fact]
         public void RectangleTransformOperator()
         {
             var l = this.NextRandom(1, 100);
@@ -385,7 +384,7 @@ namespace DlibDotNet.Tests.Geometry
             this.DisposeAndCheckDisposedState(transform);
         }
 
-        [TestMethod]
+        [Fact]
         public void RectangleTransformOperator1()
         {
             var l = this.NextRandom(1, 100);

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Matrix
 {
 
-    [TestClass]
     public class MatrixTest : TestBase
     {
 
         private const string LoadTarget = "Lenna_mini";
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             var tests = new[]
@@ -46,7 +45,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Create1()
         {
             var tests = new[]
@@ -93,7 +92,7 @@ namespace DlibDotNet.Tests.Matrix
                             try
                             {
                                 matrix = CreateMatrix(test.Type, r.Row, r.Column);
-                                Assert.Fail($"{matrix.GetType().Name} should throw exception for Type: {test.Type}, Row: {r.Row}, Column: {r.Column}.");
+                                Assert.True(false, $"{matrix.GetType().Name} should throw exception for Type: {test.Type}, Row: {r.Row}, Column: {r.Column}.");
                             }
                             catch
                             {
@@ -115,7 +114,7 @@ namespace DlibDotNet.Tests.Matrix
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void Create2()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -141,7 +140,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     case MatrixElementTypes.UInt8:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<byte>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<byte>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -153,14 +152,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.UInt16:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<ushort>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<ushort>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -172,14 +171,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.UInt32:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<uint>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<uint>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -191,14 +190,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.Int8:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<sbyte>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<sbyte>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -210,14 +209,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.Int16:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<short>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<short>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -229,14 +228,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.Int32:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<int>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<int>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -248,14 +247,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.Float:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<float>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<float>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -267,14 +266,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (Math.Abs(a - m) > float.Epsilon)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.Double:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<double>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<double>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -286,14 +285,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (Math.Abs(a - m) > double.Epsilon)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.RgbPixel:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbPixel>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<RgbPixel>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -305,14 +304,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}]");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}]");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.RgbAlphaPixel:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<RgbAlphaPixel>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<RgbAlphaPixel>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -324,14 +323,14 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}, {a.Alpha}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}, {m.Alpha}]");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}, {a.Alpha}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}, {m.Alpha}]");
                                         }
                             }
                         }
                         break;
                     case MatrixElementTypes.HsiPixel:
                         {
-                            using (var matrix = DlibTest.LoadImageAsMatrix(input.Type, path) as Matrix<HsiPixel>)
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<HsiPixel>)
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -343,7 +342,7 @@ namespace DlibDotNet.Tests.Matrix
                                             var a = tmp[r, c];
                                             var m = matrix[r, c];
                                             if (a != m)
-                                                Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
                                         }
                             }
                         }
@@ -352,7 +351,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Create3()
         {
             var tests = new[]
@@ -389,7 +388,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -406,7 +405,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -423,7 +422,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -440,7 +439,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -457,7 +456,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -474,7 +473,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -491,7 +490,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (Math.Abs(a - m) > float.Epsilon)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -508,7 +507,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (Math.Abs(a - m) > double.Epsilon)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -525,7 +524,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -542,7 +541,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -559,7 +558,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = result[r * column1 + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
@@ -568,7 +567,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ToArrayTest()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -594,7 +593,7 @@ namespace DlibDotNet.Tests.Matrix
                 {
                     case MatrixElementTypes.UInt8:
                         {
-                            using (var matrix = (Matrix<byte>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<byte>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -605,14 +604,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.UInt16:
                         {
-                            using (var matrix = (Matrix<ushort>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<ushort>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -623,14 +622,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.UInt32:
                         {
-                            using (var matrix = (Matrix<uint>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<uint>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -641,14 +640,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.Int8:
                         {
-                            using (var matrix = (Matrix<sbyte>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<sbyte>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -659,14 +658,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.Int16:
                         {
-                            using (var matrix = (Matrix<short>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<short>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -677,14 +676,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.Int32:
                         {
-                            using (var matrix = (Matrix<int>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<int>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -695,14 +694,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.Float:
                         {
-                            using (var matrix = (Matrix<float>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<float>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -713,14 +712,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.Double:
                         {
-                            using (var matrix = (Matrix<double>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<double>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -731,14 +730,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                            Assert.True(false, $"{input.Type}: array[{step} + {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.RgbPixel:
                         {
-                            using (var matrix = (Matrix<RgbPixel>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<RgbPixel>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -749,14 +748,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}]");
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}]");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.RgbAlphaPixel:
                         {
-                            using (var matrix = (Matrix<RgbAlphaPixel>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<RgbAlphaPixel>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -767,14 +766,14 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}, {a.Alpha}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}, {m.Alpha}]");
+                                            Assert.True(false, $"{input.Type}: array[{r}, {c}] is [{a.Red}, {a.Green}, {a.Blue}, {a.Alpha}], matrix[{r}, {c}] is [{m.Red}, {m.Green}, {m.Blue}, {m.Alpha}]");
                                     }
                             }
                         }
                         break;
                     case MatrixElementTypes.HsiPixel:
                         {
-                            using (var matrix = (Matrix<HsiPixel>)DlibTest.LoadImageAsMatrix(input.Type, path))
+                            using (var matrix = (Matrix<HsiPixel>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
                             {
                                 var array = matrix.ToArray();
                                 var column = matrix.Columns;
@@ -785,7 +784,7 @@ namespace DlibDotNet.Tests.Matrix
                                         var a = array[step + c];
                                         var m = matrix[r, c];
                                         if (a != m)
-                                            Assert.Fail($"{input.Type}: array[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
+                                            Assert.True(false, $"{input.Type}: array[{r}, {c}] is [{a.H}, {a.S}, {a.I}], matrix[{r}, {c}] is [{m.H}, {m.S}, {m.I}]");
                                     }
                             }
                         }
@@ -794,7 +793,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ToStringTest()
         {
             var array = new[]
@@ -831,9 +830,9 @@ namespace DlibDotNet.Tests.Matrix
                     if (test.ExpectResult)
                     {
                         matrix = CreateMatrix(test.Type, 3, 3);
-                        this.Assign(matrix, array);
+                        this.AssignHelp(matrix, array);
                         var str = matrix.ToString();
-                        Assert.AreEqual(test.Answer, str);
+                        Assert.Equal(test.Answer, str);
                     }
                     else
                     {
@@ -842,7 +841,7 @@ namespace DlibDotNet.Tests.Matrix
                             matrix = CreateMatrix(test.Type, 3, 3);
 
                             var str = matrix.ToString();
-                            Assert.Fail($"{matrix.GetType().Name} should throw exception for Type: {test.Type}.");
+                            Assert.True(false, $"{matrix.GetType().Name} should throw exception for Type: {test.Type}.");
                         }
                         catch
                         {
@@ -864,7 +863,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Assign()
         {
             try
@@ -878,7 +877,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(byte)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(byte)}");
             }
 
             try
@@ -892,7 +891,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(ushort)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(ushort)}");
             }
 
             try
@@ -906,7 +905,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(uint)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(uint)}");
             }
 
             try
@@ -920,7 +919,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(sbyte)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(sbyte)}");
             }
 
             try
@@ -934,7 +933,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(short)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(short)}");
             }
 
             try
@@ -948,7 +947,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(int)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(int)}");
             }
 
             try
@@ -962,7 +961,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(float)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(float)}");
             }
 
             try
@@ -976,7 +975,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(double)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(double)}");
             }
 
             try
@@ -998,7 +997,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1020,7 +1019,7 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(RgbAlphaPixel)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(RgbAlphaPixel)}");
             }
 
             try
@@ -1042,11 +1041,11 @@ namespace DlibDotNet.Tests.Matrix
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to set array for Type: {typeof(RgbAlphaPixel)}");
+                Assert.True(false, $"Failed to set array for Type: {typeof(RgbAlphaPixel)}");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Enumerator()
         {
             var tests = new[]
@@ -1078,10 +1077,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1092,10 +1091,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1106,10 +1105,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1120,10 +1119,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1134,10 +1133,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1148,10 +1147,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1162,10 +1161,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1176,10 +1175,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1190,10 +1189,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1204,10 +1203,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1218,10 +1217,10 @@ namespace DlibDotNet.Tests.Matrix
                                 var index = 0;
                                 foreach (var b in matrix)
                                 {
-                                    Assert.AreEqual(b, array[index], $"Fail: {input.Type}. index: {index}");
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
                                     index++;
                                 }
-                                Assert.AreEqual(matrix.Size, index);
+                                Assert.Equal(matrix.Size, index);
                             }
                         }
                         break;
@@ -1229,7 +1228,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Indexer()
         {
             try
@@ -1241,13 +1240,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (byte)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(byte)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(byte)}");
             }
             try
             {
@@ -1258,13 +1257,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (ushort)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(ushort)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(ushort)}");
             }
 
             try
@@ -1276,13 +1275,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (uint)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(uint)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(uint)}");
             }
 
             try
@@ -1294,13 +1293,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (sbyte)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(sbyte)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(sbyte)}");
             }
 
             try
@@ -1312,13 +1311,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (ulong)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(ulong)}");
             }
 
             try
@@ -1330,13 +1329,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (short)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(short)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(short)}");
             }
 
             try
@@ -1348,13 +1347,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = r + c;
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(int)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(int)}");
             }
 
             try
@@ -1366,13 +1365,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (long)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(long)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1384,13 +1383,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (float)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(float)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(float)}");
             }
 
             try
@@ -1402,13 +1401,13 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var v = (double)(r + c);
                             matrix[r, c] = v;
-                            Assert.AreEqual(v, matrix[r, c]);
+                            Assert.Equal(v, matrix[r, c]);
                         }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(double)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(double)}");
             }
 
             try
@@ -1420,14 +1419,14 @@ namespace DlibDotNet.Tests.Matrix
                             var b = (byte)(r + c);
                             var v = new RgbPixel { Red = b, Blue = b, Green = b };
                             matrix[r, c] = v;
-                            Assert.AreEqual(v.Red, matrix[r, c].Red);
-                            Assert.AreEqual(v.Blue, matrix[r, c].Blue);
-                            Assert.AreEqual(v.Green, matrix[r, c].Green);
+                            Assert.Equal(v.Red, matrix[r, c].Red);
+                            Assert.Equal(v.Blue, matrix[r, c].Blue);
+                            Assert.Equal(v.Green, matrix[r, c].Green);
                         }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1439,14 +1438,14 @@ namespace DlibDotNet.Tests.Matrix
                             var b = (byte)(r + c);
                             var v = new RgbAlphaPixel { Red = b, Blue = b, Green = b };
                             matrix[r, c] = v;
-                            Assert.AreEqual(v.Red, matrix[r, c].Red);
-                            Assert.AreEqual(v.Blue, matrix[r, c].Blue);
-                            Assert.AreEqual(v.Green, matrix[r, c].Green);
+                            Assert.Equal(v.Red, matrix[r, c].Red);
+                            Assert.Equal(v.Blue, matrix[r, c].Blue);
+                            Assert.Equal(v.Green, matrix[r, c].Green);
                         }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1458,18 +1457,18 @@ namespace DlibDotNet.Tests.Matrix
                             var b = (byte)(r + c);
                             var v = new HsiPixel { H = b, S = b, I = b };
                             matrix[r, c] = v;
-                            Assert.AreEqual(v.H, matrix[r, c].H);
-                            Assert.AreEqual(v.S, matrix[r, c].S);
-                            Assert.AreEqual(v.I, matrix[r, c].I);
+                            Assert.Equal(v.H, matrix[r, c].H);
+                            Assert.Equal(v.S, matrix[r, c].S);
+                            Assert.Equal(v.I, matrix[r, c].I);
                         }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(HsiPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(HsiPixel)}");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Indexer2()
         {
             try
@@ -1480,13 +1479,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (byte)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(byte)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(byte)}");
             }
             try
             {
@@ -1496,13 +1495,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (ushort)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(ushort)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(ushort)}");
             }
 
             try
@@ -1513,13 +1512,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (uint)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(uint)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(uint)}");
             }
 
             try
@@ -1530,13 +1529,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (ulong)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(ulong)}");
             }
 
             try
@@ -1547,13 +1546,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (sbyte)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(sbyte)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(sbyte)}");
             }
 
             try
@@ -1564,13 +1563,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (short)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(short)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(short)}");
             }
 
             try
@@ -1581,13 +1580,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = index;
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(int)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(int)}");
             }
 
             try
@@ -1598,13 +1597,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (long)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(long)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1615,13 +1614,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (float)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(float)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(float)}");
             }
 
             try
@@ -1632,13 +1631,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (double)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(double)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(double)}");
             }
 
             try
@@ -1649,14 +1648,14 @@ namespace DlibDotNet.Tests.Matrix
                         var b = (byte)(index);
                         var v = new RgbPixel { Red = b, Blue = b, Green = b };
                         matrix[index] = v;
-                        Assert.AreEqual(v.Red, matrix[index].Red);
-                        Assert.AreEqual(v.Blue, matrix[index].Blue);
-                        Assert.AreEqual(v.Green, matrix[index].Green);
+                        Assert.Equal(v.Red, matrix[index].Red);
+                        Assert.Equal(v.Blue, matrix[index].Blue);
+                        Assert.Equal(v.Green, matrix[index].Green);
                     }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1667,14 +1666,14 @@ namespace DlibDotNet.Tests.Matrix
                         var b = (byte)(index);
                         var v = new RgbAlphaPixel { Red = b, Blue = b, Green = b };
                         matrix[index] = v;
-                        Assert.AreEqual(v.Red, matrix[index].Red);
-                        Assert.AreEqual(v.Blue, matrix[index].Blue);
-                        Assert.AreEqual(v.Green, matrix[index].Green);
+                        Assert.Equal(v.Red, matrix[index].Red);
+                        Assert.Equal(v.Blue, matrix[index].Blue);
+                        Assert.Equal(v.Green, matrix[index].Green);
                     }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1685,18 +1684,18 @@ namespace DlibDotNet.Tests.Matrix
                         var b = (byte)(index);
                         var v = new HsiPixel { H = b, S = b, I = b };
                         matrix[index] = v;
-                        Assert.AreEqual(v.H, matrix[index].H);
-                        Assert.AreEqual(v.S, matrix[index].S);
-                        Assert.AreEqual(v.I, matrix[index].I);
+                        Assert.Equal(v.H, matrix[index].H);
+                        Assert.Equal(v.S, matrix[index].S);
+                        Assert.Equal(v.I, matrix[index].I);
                     }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(HsiPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(HsiPixel)}");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Indexer3()
         {
             try
@@ -1707,13 +1706,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (byte)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(byte)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(byte)}");
             }
             try
             {
@@ -1723,13 +1722,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (ushort)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(ushort)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(ushort)}");
             }
 
             try
@@ -1740,13 +1739,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (uint)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(uint)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(uint)}");
             }
 
             try
@@ -1757,13 +1756,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (ulong)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(ulong)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(ulong)}");
             }
 
             try
@@ -1774,13 +1773,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (sbyte)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(sbyte)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(sbyte)}");
             }
 
             try
@@ -1791,13 +1790,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (short)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(short)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(short)}");
             }
 
             try
@@ -1808,13 +1807,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = index;
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(int)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(int)}");
             }
 
             try
@@ -1825,13 +1824,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (long)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(long)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(long)}");
             }
 
             try
@@ -1842,13 +1841,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (float)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(float)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(float)}");
             }
 
             try
@@ -1859,13 +1858,13 @@ namespace DlibDotNet.Tests.Matrix
                     {
                         var v = (double)(index);
                         matrix[index] = v;
-                        Assert.AreEqual(v, matrix[index]);
+                        Assert.Equal(v, matrix[index]);
                     }
                 }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(double)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(double)}");
             }
 
             try
@@ -1876,14 +1875,14 @@ namespace DlibDotNet.Tests.Matrix
                         var b = (byte)(index);
                         var v = new RgbPixel { Red = b, Blue = b, Green = b };
                         matrix[index] = v;
-                        Assert.AreEqual(v.Red, matrix[index].Red);
-                        Assert.AreEqual(v.Blue, matrix[index].Blue);
-                        Assert.AreEqual(v.Green, matrix[index].Green);
+                        Assert.Equal(v.Red, matrix[index].Red);
+                        Assert.Equal(v.Blue, matrix[index].Blue);
+                        Assert.Equal(v.Green, matrix[index].Green);
                     }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1894,14 +1893,14 @@ namespace DlibDotNet.Tests.Matrix
                         var b = (byte)(index);
                         var v = new RgbAlphaPixel { Red = b, Blue = b, Green = b };
                         matrix[index] = v;
-                        Assert.AreEqual(v.Red, matrix[index].Red);
-                        Assert.AreEqual(v.Blue, matrix[index].Blue);
-                        Assert.AreEqual(v.Green, matrix[index].Green);
+                        Assert.Equal(v.Red, matrix[index].Red);
+                        Assert.Equal(v.Blue, matrix[index].Blue);
+                        Assert.Equal(v.Green, matrix[index].Green);
                     }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(RgbPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(RgbPixel)}");
             }
 
             try
@@ -1912,18 +1911,18 @@ namespace DlibDotNet.Tests.Matrix
                         var b = (byte)(index);
                         var v = new HsiPixel { H = b, S = b, I = b };
                         matrix[index] = v;
-                        Assert.AreEqual(v.H, matrix[index].H);
-                        Assert.AreEqual(v.S, matrix[index].S);
-                        Assert.AreEqual(v.I, matrix[index].I);
+                        Assert.Equal(v.H, matrix[index].H);
+                        Assert.Equal(v.S, matrix[index].S);
+                        Assert.Equal(v.I, matrix[index].I);
                     }
             }
             catch (Exception)
             {
-                Assert.Fail($"Failed to access for Type: {typeof(HsiPixel)}");
+                Assert.True(false, $"Failed to access for Type: {typeof(HsiPixel)}");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void RowsColumnsSize()
         {
             var tests = new[]
@@ -1961,7 +1960,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Addition()
         {
             this.AdditionSub<byte>();
@@ -1977,7 +1976,7 @@ namespace DlibDotNet.Tests.Matrix
             this.AdditionSub<HsiPixel>(false);
         }
 
-        [TestMethod]
+        [Fact]
         public void Addition2()
         {
             const int rows = 3;
@@ -2011,16 +2010,16 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var mv = ret[r, c];
                             var av = tmpLeft[index] + tmpRight[index];
-                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            Assert.True(Math.Abs(mv - av) < double.Epsilon);
                             index++;
                         }
                 }
 
-                Assert.IsTrue(index == rows * columns);
+                Assert.True(index == rows * columns);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Addition3()
         {
             const int rows = 31;
@@ -2054,16 +2053,16 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var mv = ret[r, c];
                             var av = tmpLeft[index] + tmpRight[index];
-                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            Assert.True(Math.Abs(mv - av) < double.Epsilon);
                             index++;
                         }
                 }
 
-                Assert.IsTrue(index == rows * columns);
+                Assert.True(index == rows * columns);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Addition4()
         {
             const int rows = 31;
@@ -2097,12 +2096,12 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var mv = ret[r, c];
                             var av = tmpLeft[index] + tmpRight[index];
-                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            Assert.True(Math.Abs(mv - av) < double.Epsilon);
                             index++;
                         }
                 }
 
-                Assert.IsTrue(index == rows * columns);
+                Assert.True(index == rows * columns);
             }
         }
 
@@ -2140,7 +2139,7 @@ namespace DlibDotNet.Tests.Matrix
                             rhs = new Matrix<T>(r.RightRow, r.RightColumn);
                             ret = lhs + rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.True(false, $"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -2166,7 +2165,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtraction()
         {
             this.SubtractionSub<byte>();
@@ -2181,7 +2180,7 @@ namespace DlibDotNet.Tests.Matrix
             this.SubtractionSub<RgbAlphaPixel>(false);
             this.SubtractionSub<HsiPixel>(false);
         }
-        [TestMethod]
+        [Fact]
         public void Subtraction2()
         {
             const int rows = 3;
@@ -2215,16 +2214,16 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var mv = ret[r, c];
                             var av = tmpLeft[index] - tmpRight[index];
-                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            Assert.True(Math.Abs(mv - av) < double.Epsilon);
                             index++;
                         }
                 }
 
-                Assert.IsTrue(index == rows * columns);
+                Assert.True(index == rows * columns);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtraction3()
         {
             const int rows = 31;
@@ -2258,16 +2257,16 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var mv = ret[r, c];
                             var av = tmpLeft[index] - tmpRight[index];
-                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            Assert.True(Math.Abs(mv - av) < double.Epsilon);
                             index++;
                         }
                 }
 
-                Assert.IsTrue(index == rows * columns);
+                Assert.True(index == rows * columns);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtraction4()
         {
             const int rows = 31;
@@ -2301,12 +2300,12 @@ namespace DlibDotNet.Tests.Matrix
                         {
                             var mv = ret[r, c];
                             var av = tmpLeft[index] - tmpRight[index];
-                            Assert.IsTrue(Math.Abs(mv - av) < double.Epsilon);
+                            Assert.True(Math.Abs(mv - av) < double.Epsilon);
                             index++;
                         }
                 }
 
-                Assert.IsTrue(index == rows * columns);
+                Assert.True(index == rows * columns);
             }
         }
 
@@ -2344,7 +2343,7 @@ namespace DlibDotNet.Tests.Matrix
                             rhs = new Matrix<T>(r.RightRow, r.RightColumn);
                             ret = lhs - rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.True(false, $"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -2370,7 +2369,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply()
         {
             this.MultiplySub<byte>();
@@ -2419,7 +2418,7 @@ namespace DlibDotNet.Tests.Matrix
                             rhs = new Matrix<T>(r.RightRow, r.RightColumn);
                             ret = lhs * rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.True(false, $"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -2445,7 +2444,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Division()
         {
             this.DivisionSub<byte>();
@@ -2516,7 +2515,7 @@ namespace DlibDotNet.Tests.Matrix
 
                             ret = lhs / rhs;
 
-                            Assert.Fail($"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
+                            Assert.True(false, $"{lhs.GetType().Name} should throw exception for Type: {lhs.MatrixElementType}, LeftRow: {r.LeftRow}, LeftColumn: {r.LeftColumn}, RightRow: {r.RightRow}, RightColumn: {r.RightColumn}.");
                         }
                         catch
                         {
@@ -2839,7 +2838,7 @@ namespace DlibDotNet.Tests.Matrix
             return null;
         }
 
-        private void Assign(TwoDimensionObjectBase obj, int[] array)
+        private void AssignHelp(TwoDimensionObjectBase obj, int[] array)
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
@@ -2896,89 +2895,89 @@ namespace DlibDotNet.Tests.Matrix
         {
             if (obj is Matrix<sbyte> sbyteMatrix)
             {
-                Assert.AreEqual(sbyteMatrix.Rows, row);
-                Assert.AreEqual(sbyteMatrix.Columns, column);
-                Assert.AreEqual(sbyteMatrix.Size, row * column);
+                Assert.Equal(sbyteMatrix.Rows, row);
+                Assert.Equal(sbyteMatrix.Columns, column);
+                Assert.Equal(sbyteMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<short> shortMatrix)
             {
-                Assert.AreEqual(shortMatrix.Rows, row);
-                Assert.AreEqual(shortMatrix.Columns, column);
-                Assert.AreEqual(shortMatrix.Size, row * column);
+                Assert.Equal(shortMatrix.Rows, row);
+                Assert.Equal(shortMatrix.Columns, column);
+                Assert.Equal(shortMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<int> intMatrix)
             {
-                Assert.AreEqual(intMatrix.Rows, row);
-                Assert.AreEqual(intMatrix.Columns, column);
-                Assert.AreEqual(intMatrix.Size, row * column);
+                Assert.Equal(intMatrix.Rows, row);
+                Assert.Equal(intMatrix.Columns, column);
+                Assert.Equal(intMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<byte> byteMatrix)
             {
-                Assert.AreEqual(byteMatrix.Rows, row);
-                Assert.AreEqual(byteMatrix.Columns, column);
-                Assert.AreEqual(byteMatrix.Size, row * column);
+                Assert.Equal(byteMatrix.Rows, row);
+                Assert.Equal(byteMatrix.Columns, column);
+                Assert.Equal(byteMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<ushort> ushortMatrix)
             {
-                Assert.AreEqual(ushortMatrix.Rows, row);
-                Assert.AreEqual(ushortMatrix.Columns, column);
-                Assert.AreEqual(ushortMatrix.Size, row * column);
+                Assert.Equal(ushortMatrix.Rows, row);
+                Assert.Equal(ushortMatrix.Columns, column);
+                Assert.Equal(ushortMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<uint> uintMatrix)
             {
-                Assert.AreEqual(uintMatrix.Rows, row);
-                Assert.AreEqual(uintMatrix.Columns, column);
-                Assert.AreEqual(uintMatrix.Size, row * column);
+                Assert.Equal(uintMatrix.Rows, row);
+                Assert.Equal(uintMatrix.Columns, column);
+                Assert.Equal(uintMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<float> floatMatrix)
             {
-                Assert.AreEqual(floatMatrix.Rows, row);
-                Assert.AreEqual(floatMatrix.Columns, column);
-                Assert.AreEqual(floatMatrix.Size, row * column);
+                Assert.Equal(floatMatrix.Rows, row);
+                Assert.Equal(floatMatrix.Columns, column);
+                Assert.Equal(floatMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<double> doubleMatrix)
             {
-                Assert.AreEqual(doubleMatrix.Rows, row);
-                Assert.AreEqual(doubleMatrix.Columns, column);
-                Assert.AreEqual(doubleMatrix.Size, row * column);
+                Assert.Equal(doubleMatrix.Rows, row);
+                Assert.Equal(doubleMatrix.Columns, column);
+                Assert.Equal(doubleMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<RgbPixel> rgbPixelMatrix)
             {
-                Assert.AreEqual(rgbPixelMatrix.Rows, row);
-                Assert.AreEqual(rgbPixelMatrix.Columns, column);
-                Assert.AreEqual(rgbPixelMatrix.Size, row * column);
+                Assert.Equal(rgbPixelMatrix.Rows, row);
+                Assert.Equal(rgbPixelMatrix.Columns, column);
+                Assert.Equal(rgbPixelMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<RgbAlphaPixel> rgbAlphaPixelMatrix)
             {
-                Assert.AreEqual(rgbAlphaPixelMatrix.Rows, row);
-                Assert.AreEqual(rgbAlphaPixelMatrix.Columns, column);
-                Assert.AreEqual(rgbAlphaPixelMatrix.Size, row * column);
+                Assert.Equal(rgbAlphaPixelMatrix.Rows, row);
+                Assert.Equal(rgbAlphaPixelMatrix.Columns, column);
+                Assert.Equal(rgbAlphaPixelMatrix.Size, row * column);
                 return;
             }
 
             if (obj is Matrix<HsiPixel> hsiPixelMatrix)
             {
-                Assert.AreEqual(hsiPixelMatrix.Rows, row);
-                Assert.AreEqual(hsiPixelMatrix.Columns, column);
-                Assert.AreEqual(hsiPixelMatrix.Size, row * column);
+                Assert.Equal(hsiPixelMatrix.Rows, row);
+                Assert.Equal(hsiPixelMatrix.Columns, column);
+                Assert.Equal(hsiPixelMatrix.Size, row * column);
                 return;
             }
 

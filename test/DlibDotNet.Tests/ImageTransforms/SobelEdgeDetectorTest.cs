@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using DlibDotNet.Tests.Array2D;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class SobelEdgeDetectorTest : TestBase
     {
 
@@ -14,7 +13,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region SobelEdgeDetector
 
-        [TestMethod]
+        [Fact]
         public void SobelEdgeDetector()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -45,11 +44,11 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        var image = DlibTest.LoadImage(inputType, path);
+                        var image = DlibTest.LoadImageHelp(inputType, path);
                         imageObj = image;
-                        var horz = Array2DTest.CreateArray2D(test.Type);
+                        var horz = Array2DTest.CreateArray2DHelp(test.Type);
                         horzObj = horz;
-                        var vert = Array2DTest.CreateArray2D(test.Type);
+                        var vert = Array2DTest.CreateArray2DHelp(test.Type);
                         vertObj = vert;
 
                         try
@@ -58,7 +57,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!test.ExpectResult)
                             {
-                                Assert.Fail($"SobelEdgeDetector should throw exception for InputType: {inputType}, Type: {test.Type}.");
+                                Assert.True(false, $"SobelEdgeDetector should throw exception for InputType: {inputType}, Type: {test.Type}.");
                             }
                             else
                             {
@@ -101,7 +100,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region SuppressNonMaximumEdges
 
-        [TestMethod]
+        [Fact]
         public void SuppressNonMaximumEdges()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -130,13 +129,13 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        var inputImage = DlibTest.LoadImage(inputType, path);
+                        var inputImage = DlibTest.LoadImageHelp(inputType, path);
                         inputObj = inputImage;
-                        var horz = Array2DTest.CreateArray2D(inputType);
+                        var horz = Array2DTest.CreateArray2DHelp(inputType);
                         horzObj = horz;
-                        var vert = Array2DTest.CreateArray2D(inputType);
+                        var vert = Array2DTest.CreateArray2DHelp(inputType);
                         vertObj = vert;
-                        var outputImage = Array2DTest.CreateArray2D(test.Type);
+                        var outputImage = Array2DTest.CreateArray2DHelp(test.Type);
                         outputObj = outputImage;
 
                         Dlib.SobelEdgeDetector(inputImage, horz, vert);
@@ -147,7 +146,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                             if (!test.ExpectResult)
                             {
-                                Assert.Fail($"SuppressNonMaximumEdges should throw exception for InputType: {inputType}, Type: {test.Type}.");
+                                Assert.True(false, $"SuppressNonMaximumEdges should throw exception for InputType: {inputType}, Type: {test.Type}.");
                             }
                             else
                             {

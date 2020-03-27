@@ -1,19 +1,18 @@
 ﻿using System;
 using System.IO;
 using DlibDotNet.Tests.Array2D;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class AssignImageTest : TestBase
     {
         private const string LoadTarget = "Lenna_mini";
 
         #region AssignImage
 
-        [TestMethod]
+        [Fact]
         public void AssignImage()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -41,24 +40,24 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        var inIage = DlibTest.LoadImage(input.Type, path);
+                        var inIage = DlibTest.LoadImageHelp(input.Type, path);
                         inObj = inIage;
 
                         try
                         {
-                            var outImage = Array2DTest.CreateArray2D(output.Type);
+                            var outImage = Array2DTest.CreateArray2DHelp(output.Type);
                             outObj = outImage;
 
                             Dlib.AssignImage(inIage, outImage);
 
                             if (!expect)
                             {
-                                Assert.Fail($"AssignImage should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
+                                Assert.True(false, $"AssignImage should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
                             }
                             else
                             {
-                                Assert.AreEqual(inIage.Columns, outImage.Columns);
-                                Assert.AreEqual(inIage.Rows, outImage.Rows);
+                                Assert.Equal(inIage.Columns, outImage.Columns);
+                                Assert.Equal(inIage.Rows, outImage.Rows);
 
                                 Dlib.SaveBmp(outImage, $"{Path.Combine(this.GetOutDir(type, "AssignImage"), $"{LoadTarget}_{input.Type}_{output.Type}.bmp")}");
                             }
