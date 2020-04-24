@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
 using DlibDotNet.Tests.Matrix;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Array2D
 {
 
-    [TestClass]
     public class Array2DTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void CreateArray2D()
         {
             var tests = new[]
@@ -33,20 +32,20 @@ namespace DlibDotNet.Tests.Array2D
             {
                 var cols = this.NextRandom(1, 100);
                 var rows = this.NextRandom(1, 100);
-                var array = CreateArray2D(test.Type, rows, cols);
-                Assert.AreEqual(array.Columns, cols);
-                Assert.AreEqual(array.Rows, rows);
-                Assert.AreEqual(array.Size, cols * rows);
+                var array = CreateArray2DHelp(test.Type, rows, cols);
+                Assert.Equal(array.Columns, cols);
+                Assert.Equal(array.Rows, rows);
+                Assert.Equal(array.Size, cols * rows);
                 var rect = array.Rect;
-                Assert.AreEqual(rect.Width, (uint)cols);
-                Assert.AreEqual(rect.Height, (uint)rows);
-                Assert.AreEqual(rect.Left, 0);
-                Assert.AreEqual(rect.Top, 0);
+                Assert.Equal(rect.Width, (uint)cols);
+                Assert.Equal(rect.Height, (uint)rows);
+                Assert.Equal(rect.Left, 0);
+                Assert.Equal(rect.Top, 0);
                 this.DisposeAndCheckDisposedState(array);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateArray2D2()
         {
             var tests = new[]
@@ -67,12 +66,12 @@ namespace DlibDotNet.Tests.Array2D
 
             foreach (var test in tests)
             {
-                var array = CreateArray2D(test.Type);
+                var array = CreateArray2DHelp(test.Type);
                 this.DisposeAndCheckDisposedState(array);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateArray2DMatrix()
         {
             var tests = new[]
@@ -94,20 +93,20 @@ namespace DlibDotNet.Tests.Array2D
             {
                 var cols = this.NextRandom(1, 100);
                 var rows = this.NextRandom(1, 100);
-                var array2DMatrix = CreateArray2DMatrix(test, rows, cols);
-                Assert.AreEqual(array2DMatrix.Columns, cols);
-                Assert.AreEqual(array2DMatrix.Rows, rows);
-                Assert.AreEqual(array2DMatrix.Size, cols * rows);
+                var array2DMatrix = CreateArray2DMatrixHelp(test, rows, cols);
+                Assert.Equal(array2DMatrix.Columns, cols);
+                Assert.Equal(array2DMatrix.Rows, rows);
+                Assert.Equal(array2DMatrix.Size, cols * rows);
                 var rect = array2DMatrix.Rect;
-                Assert.AreEqual(rect.Width, (uint)cols);
-                Assert.AreEqual(rect.Height, (uint)rows);
-                Assert.AreEqual(rect.Left, 0);
-                Assert.AreEqual(rect.Top, 0);
+                Assert.Equal(rect.Width, (uint)cols);
+                Assert.Equal(rect.Height, (uint)rows);
+                Assert.Equal(rect.Left, 0);
+                Assert.Equal(rect.Top, 0);
                 this.DisposeAndCheckDisposedState(array2DMatrix);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateArray2DMatrix2()
         {
             var tests = new[]
@@ -127,12 +126,12 @@ namespace DlibDotNet.Tests.Array2D
 
             foreach (var test in tests.Select(arg => arg.Type))
             {
-                var array2DMatrix = CreateArray2DMatrix(test);
+                var array2DMatrix = CreateArray2DMatrixHelp(test);
                 this.DisposeAndCheckDisposedState(array2DMatrix);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetRowColumn()
         {
             const int width = 150;
@@ -156,7 +155,7 @@ namespace DlibDotNet.Tests.Array2D
 
             foreach (var test in tests)
             {
-                var array2D = CreateArray2D(test.Type, height, width);
+                var array2D = CreateArray2DHelp(test.Type, height, width);
                 switch (array2D.ImageType)
                 {
                     case ImageTypes.UInt8:
@@ -164,7 +163,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<byte>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255, "Array<byte> failed");
+                                Assert.True(row[0] == 255, "Array<byte> failed");
                         }
                         break;
                     case ImageTypes.UInt16:
@@ -172,7 +171,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<ushort>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255, "Array<ushort> failed");
+                                Assert.True(row[0] == 255, "Array<ushort> failed");
                         }
                         break;
                     case ImageTypes.UInt32:
@@ -180,7 +179,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<uint>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255u, "Array<uint> failed");
+                                Assert.True(row[0] == 255u, "Array<uint> failed");
                         }
                         break;
                     case ImageTypes.Int8:
@@ -188,7 +187,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<sbyte>)array2D;
                             Dlib.AssignAllPpixels(array, 127);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 127, "Array<sbyte> failed");
+                                Assert.True(row[0] == 127, "Array<sbyte> failed");
                         }
                         break;
                     case ImageTypes.Int16:
@@ -196,7 +195,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<short>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255, "Array<short> failed");
+                                Assert.True(row[0] == 255, "Array<short> failed");
                         }
                         break;
                     case ImageTypes.Int32:
@@ -204,7 +203,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<int>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255, "Array<int> failed");
+                                Assert.True(row[0] == 255, "Array<int> failed");
                         }
                         break;
                     case ImageTypes.Float:
@@ -212,7 +211,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<float>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255, "Array<float> failed");
+                                Assert.True(row[0] == 255, "Array<float> failed");
                         }
                         break;
                     case ImageTypes.Double:
@@ -220,7 +219,7 @@ namespace DlibDotNet.Tests.Array2D
                             var array = (Array2D<double>)array2D;
                             Dlib.AssignAllPpixels(array, 255);
                             using (var row = array[0])
-                                Assert.AreEqual(row[0], 255, "Array<double> failed");
+                                Assert.True(row[0] == 255, "Array<double> failed");
                         }
                         break;
                     case ImageTypes.BgrPixel:
@@ -237,9 +236,9 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 var t = row[0];
-                                Assert.AreEqual(t.Red, 255, "Array<BgrPixel> failed");
-                                Assert.AreEqual(t.Blue, 255, "Array<BgrPixel> failed");
-                                Assert.AreEqual(t.Green, 255, "Array<BgrPixel> failed");
+                                Assert.True(t.Red == 255, "Array<BgrPixel> failed");
+                                Assert.True(t.Blue == 255, "Array<BgrPixel> failed");
+                                Assert.True(t.Green == 255, "Array<BgrPixel> failed");
                             }
                         }
                         break;
@@ -257,9 +256,9 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 var t = row[0];
-                                Assert.AreEqual(t.Red, 255, "Array<RgbPixel> failed");
-                                Assert.AreEqual(t.Blue, 255, "Array<RgbPixel> failed");
-                                Assert.AreEqual(t.Green, 255, "Array<RgbPixel> failed");
+                                Assert.True(t.Red == 255, "Array<RgbPixel> failed");
+                                Assert.True(t.Blue == 255, "Array<RgbPixel> failed");
+                                Assert.True(t.Green == 255, "Array<RgbPixel> failed");
                             }
                         }
                         break;
@@ -278,10 +277,10 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 var t = row[0];
-                                Assert.AreEqual(t.Red, 255, "Array<RgbAlphaPixel> failed");
-                                Assert.AreEqual(t.Blue, 255, "Array<RgbAlphaPixel> failed");
-                                Assert.AreEqual(t.Green, 255, "Array<RgbAlphaPixel> failed");
-                                Assert.AreEqual(t.Alpha, 255, "Array<RgbAlphaPixel> failed");
+                                Assert.True(t.Red == 255, "Array<RgbAlphaPixel> failed");
+                                Assert.True(t.Blue == 255, "Array<RgbAlphaPixel> failed");
+                                Assert.True(t.Green == 255, "Array<RgbAlphaPixel> failed");
+                                Assert.True(t.Alpha == 255, "Array<RgbAlphaPixel> failed");
                             }
                         }
                         break;
@@ -299,9 +298,9 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 var t = row[0];
-                                Assert.AreEqual(t.H, 255, "Array<HsiPixel> failed");
-                                Assert.AreEqual(t.S, 255, "Array<HsiPixel> failed");
-                                Assert.AreEqual(t.I, 255, "Array<HsiPixel> failed");
+                                Assert.True(t.H == 255, "Array<HsiPixel> failed");
+                                Assert.True(t.S == 255, "Array<HsiPixel> failed");
+                                Assert.True(t.I == 255, "Array<HsiPixel> failed");
                             }
                         }
                         break;
@@ -312,7 +311,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetRowColumn()
         {
             const int width = 150;
@@ -336,7 +335,7 @@ namespace DlibDotNet.Tests.Array2D
 
             foreach (var test in tests)
             {
-                var array2D = CreateArray2D(test.Type, height, width);
+                var array2D = CreateArray2DHelp(test.Type, height, width);
                 switch (array2D.ImageType)
                 {
                     case ImageTypes.UInt8:
@@ -346,7 +345,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<byte> failed");
+                                Assert.True(row[50] == 0, "Array<byte> failed");
                             }
                         }
                         break;
@@ -357,7 +356,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<ushort> failed");
+                                Assert.True(row[50] == 0, "Array<ushort> failed");
                             }
                         }
                         break;
@@ -368,7 +367,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0u, "Array<uint> failed");
+                                Assert.True(row[50] == 0u, "Array<uint> failed");
                             }
                         }
                         break;
@@ -379,7 +378,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<sbyte> failed");
+                                Assert.True(row[50] == 0, "Array<sbyte> failed");
                             }
                         }
                         break;
@@ -390,7 +389,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<short> failed");
+                                Assert.True(row[50] == 0, "Array<short> failed");
                             }
                         }
                         break;
@@ -401,7 +400,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<int> failed");
+                                Assert.True(row[50] == 0, "Array<int> failed");
                             }
                         }
                         break;
@@ -412,7 +411,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<float> failed");
+                                Assert.True(row[50] == 0, "Array<float> failed");
                             }
                         }
                         break;
@@ -423,7 +422,7 @@ namespace DlibDotNet.Tests.Array2D
                             using (var row = array[0])
                             {
                                 row[50] = 0;
-                                Assert.AreEqual(row[50], 0, "Array<double> failed");
+                                Assert.True(row[50] == 0, "Array<double> failed");
                             }
                         }
                         break;
@@ -447,9 +446,9 @@ namespace DlibDotNet.Tests.Array2D
                                     Blue = 64
                                 };
                                 var t = row[50];
-                                Assert.AreEqual(t.Red, 100, "Array<BgrPixel> failed");
-                                Assert.AreEqual(t.Green, 128, "Array<BgrPixel> failed");
-                                Assert.AreEqual(t.Blue, 64, "Array<BgrPixel> failed");
+                                Assert.True(t.Red == 100, "Array<BgrPixel> failed");
+                                Assert.True(t.Green == 128, "Array<BgrPixel> failed");
+                                Assert.True(t.Blue == 64, "Array<BgrPixel> failed");
                             }
                         }
                         break;
@@ -473,9 +472,9 @@ namespace DlibDotNet.Tests.Array2D
                                     Blue = 64
                                 };
                                 var t = row[50];
-                                Assert.AreEqual(t.Red, 100, "Array<RgbPixel> failed");
-                                Assert.AreEqual(t.Green, 128, "Array<RgbPixel> failed");
-                                Assert.AreEqual(t.Blue, 64, "Array<RgbPixel> failed");
+                                Assert.True(t.Red == 100, "Array<RgbPixel> failed");
+                                Assert.True(t.Green == 128, "Array<RgbPixel> failed");
+                                Assert.True(t.Blue == 64, "Array<RgbPixel> failed");
                             }
                         }
                         break;
@@ -502,10 +501,10 @@ namespace DlibDotNet.Tests.Array2D
                                 };
 
                                 var t = row[50];
-                                Assert.AreEqual(t.Red, 100, "Array<RgbAlphaPixel> failed");
-                                Assert.AreEqual(t.Green, 128, "Array<RgbPixel> failed");
-                                Assert.AreEqual(t.Blue, 64, "Array<RgbPixel> failed");
-                                Assert.AreEqual(t.Alpha, 0, "Array<RgbAlphaPixel> failed");
+                                Assert.True(t.Red == 100, "Array<RgbAlphaPixel> failed");
+                                Assert.True(t.Green == 128, "Array<RgbPixel> failed");
+                                Assert.True(t.Blue == 64, "Array<RgbPixel> failed");
+                                Assert.True(t.Alpha == 0, "Array<RgbAlphaPixel> failed");
                             }
                         }
                         break;
@@ -530,9 +529,9 @@ namespace DlibDotNet.Tests.Array2D
                                 };
 
                                 var t = row[50];
-                                Assert.AreEqual(t.H, 100, "Array<HsiPixel> failed");
-                                Assert.AreEqual(t.S, 128, "Array<HsiPixel> failed");
-                                Assert.AreEqual(t.I, 64, "Array<HsiPixel> failed");
+                                Assert.True(t.H == 100, "Array<HsiPixel> failed");
+                                Assert.True(t.S == 128, "Array<HsiPixel> failed");
+                                Assert.True(t.I == 64, "Array<HsiPixel> failed");
                             }
                         }
                         break;
@@ -543,7 +542,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetSetRowColumnMatrix()
         {
             const int width = 150;
@@ -566,7 +565,7 @@ namespace DlibDotNet.Tests.Array2D
 
             foreach (var test in tests)
             {
-                var array2DMatrix = CreateArray2DMatrix(test.Type, height, width);
+                var array2DMatrix = CreateArray2DMatrixHelp(test.Type, height, width);
                 switch (array2DMatrix.MatrixElementType)
                 {
                     case MatrixElementTypes.UInt8:
@@ -584,7 +583,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<byte> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<byte> failed");
                             }
                         }
                         break;
@@ -603,7 +602,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<ushort> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<ushort> failed");
                             }
                         }
                         break;
@@ -622,7 +621,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<uint> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<uint> failed");
                             }
                         }
                         break;
@@ -641,7 +640,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<sbyte> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<sbyte> failed");
                             }
                         }
                         break;
@@ -660,7 +659,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<short> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<short> failed");
                             }
                         }
                         break;
@@ -679,7 +678,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<int> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<int> failed");
                             }
                         }
                         break;
@@ -698,7 +697,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<float> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<float> failed");
                             }
                         }
                         break;
@@ -717,7 +716,7 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t, tmp, "Array2DMatrix<double> failed");
+                                Assert.True(t == tmp, "Array2DMatrix<double> failed");
                             }
                         }
                         break;
@@ -740,9 +739,9 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t.Red, 13, "Array2DMatrix<RgbPixel>.Red failed");
-                                Assert.AreEqual(t.Blue, 55, "Array2DMatrix<RgbPixel>.Blue failed");
-                                Assert.AreEqual(t.Green, 124, "Array2DMatrix<RgbPixel>.Green failed");
+                                Assert.True(t.Red == 13, "Array2DMatrix<RgbPixel>.Red failed");
+                                Assert.True(t.Blue == 55, "Array2DMatrix<RgbPixel>.Blue failed");
+                                Assert.True(t.Green == 124, "Array2DMatrix<RgbPixel>.Green failed");
                             }
                         }
                         break;
@@ -766,10 +765,10 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t.Red, 13, "Array2DMatrix<RgbAlphaPixel>.Red failed");
-                                Assert.AreEqual(t.Blue, 55, "Array2DMatrix<RgbAlphaPixel>.Blue failed");
-                                Assert.AreEqual(t.Green, 124, "Array2DMatrix<RgbAlphaPixel>.Green failed");
-                                Assert.AreEqual(t.Alpha, 4, "Array2DMatrix<RgbAlphaPixel>.Alpha failed");
+                                Assert.True(t.Red == 13, "Array2DMatrix<RgbAlphaPixel>.Red failed");
+                                Assert.True(t.Blue == 55, "Array2DMatrix<RgbAlphaPixel>.Blue failed");
+                                Assert.True(t.Green == 124, "Array2DMatrix<RgbAlphaPixel>.Green failed");
+                                Assert.True(t.Alpha == 4, "Array2DMatrix<RgbAlphaPixel>.Alpha failed");
                             }
                         }
                         break;
@@ -792,9 +791,9 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var value = row[10];
                                 var t = value[5, 10];
-                                Assert.AreEqual(t.H, 13, "Array2DMatrix<HsiPixel>.H failed");
-                                Assert.AreEqual(t.S, 55, "Array2DMatrix<HsiPixel>.S failed");
-                                Assert.AreEqual(t.I, 124, "Array2DMatrix<HsiPixel>.I failed");
+                                Assert.True(t.H == 13, "Array2DMatrix<HsiPixel>.H failed");
+                                Assert.True(t.S == 55, "Array2DMatrix<HsiPixel>.S failed");
+                                Assert.True(t.I == 124, "Array2DMatrix<HsiPixel>.I failed");
                             }
                         }
                         break;
@@ -805,7 +804,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ToBytes()
         {
             var tests = new[]
@@ -841,11 +840,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -860,11 +859,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -879,11 +878,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -898,11 +897,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -917,11 +916,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -936,11 +935,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -955,11 +954,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -974,11 +973,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -993,11 +992,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -1012,11 +1011,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -1031,11 +1030,11 @@ namespace DlibDotNet.Tests.Array2D
 
                                 var tmp = array2D.ToBytes();
                                 if (bytes.Length != tmp.Length)
-                                    Assert.Fail($"Array<{input.Type}>.ToBytes() returns a wrong array");
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
 
                                 for (var index = 0; index < tmp.Length; index++)
                                     if (bytes[index] != tmp[index])
-                                        Assert.Fail($"{input.Type}");
+                                        Assert.True(false, $"{input.Type}");
                             }
                         }
                         break;
@@ -1043,7 +1042,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        internal static Array2DBase CreateArray2D(ImageTypes elementType, string filepath)
+        internal static Array2DBase CreateArray2DHelp(ImageTypes elementType, string filepath)
         {
             switch (elementType)
             {
@@ -1076,7 +1075,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        internal static Array2DBase CreateArray2D(ImageTypes elementType)
+        internal static Array2DBase CreateArray2DHelp(ImageTypes elementType)
         {
             switch (elementType)
             {
@@ -1109,7 +1108,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        internal static Array2DBase CreateArray2D(ImageTypes elementType, int rows, int columns)
+        internal static Array2DBase CreateArray2DHelp(ImageTypes elementType, int rows, int columns)
         {
             switch (elementType)
             {
@@ -1142,7 +1141,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        internal static Array2DMatrixBase CreateArray2DMatrix(MatrixElementTypes elementType)
+        internal static Array2DMatrixBase CreateArray2DMatrixHelp(MatrixElementTypes elementType)
         {
             switch (elementType)
             {
@@ -1173,7 +1172,7 @@ namespace DlibDotNet.Tests.Array2D
             }
         }
 
-        internal static Array2DMatrixBase CreateArray2DMatrix(MatrixElementTypes elementType, int rows, int columns)
+        internal static Array2DMatrixBase CreateArray2DMatrixHelp(MatrixElementTypes elementType, int rows, int columns)
         {
             switch (elementType)
             {

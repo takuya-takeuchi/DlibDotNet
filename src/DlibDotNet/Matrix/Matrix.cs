@@ -283,6 +283,47 @@ namespace DlibDotNet
 
             this._Indexer = this.CreateIndexer(type);
         }
+        
+        public Matrix(IntPtr array, int row, int column, int stride)
+        {
+            if (array == IntPtr.Zero)
+                throw new ArgumentException($"{nameof(array)} must not be {nameof(IntPtr)}.{nameof(IntPtr.Zero)}", nameof(array));
+            if (row < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(row)}", $"{nameof(row)} should be positive value.");
+            if (column < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(column)}", $"{nameof(column)} should be positive value.");
+            if (column < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(stride)} should be positive value.");
+
+            if (!TryParse(typeof(TElement), out var type))
+                throw new NotSupportedException($"{typeof(TElement).Name} does not support");
+
+            this._MatrixElementTypes = type;
+            this._ElementType = type.ToNativeMatrixElementType();
+
+            unsafe
+            {
+                switch (this._ElementType)
+                {
+                    case NativeMethods.MatrixElementType.UInt8:
+                    case NativeMethods.MatrixElementType.UInt16:
+                    case NativeMethods.MatrixElementType.UInt32:
+                    case NativeMethods.MatrixElementType.Int8:
+                    case NativeMethods.MatrixElementType.Int16:
+                    case NativeMethods.MatrixElementType.Int32:
+                    case NativeMethods.MatrixElementType.Float:
+                    case NativeMethods.MatrixElementType.Double:
+                    case NativeMethods.MatrixElementType.RgbPixel:
+                    case NativeMethods.MatrixElementType.BgrPixel:
+                    case NativeMethods.MatrixElementType.RgbAlphaPixel:
+                    case NativeMethods.MatrixElementType.HsiPixel:
+                        this.NativePtr = NativeMethods.matrix_new6(this._ElementType, row, column, stride, array);
+                        break;
+                }
+            }
+
+            this._Indexer = this.CreateIndexer(type);
+        }
 
         public Matrix(byte[] array, int row, int column, int elementSize)
         {

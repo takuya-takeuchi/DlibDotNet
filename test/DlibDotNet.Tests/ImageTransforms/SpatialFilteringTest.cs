@@ -1,19 +1,18 @@
 ﻿using System;
 using System.IO;
 using DlibDotNet.Tests.Array2D;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class SpatialFilteringTest : TestBase
     {
         private const string LoadTarget = "Lenna_mini";
 
         #region GaussianBlur
 
-        [TestMethod]
+        [Fact]
         public void GaussianBlur()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -45,24 +44,24 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        var inIage = DlibTest.LoadImage(input.Type, path);
+                        var inIage = DlibTest.LoadImageHelp(input.Type, path);
                         inObj = inIage;
 
                         try
                         {
-                            var outImage = Array2DTest.CreateArray2D(output.Type);
+                            var outImage = Array2DTest.CreateArray2DHelp(output.Type);
                             outObj = outImage;
 
                             Dlib.GaussianBlur(inIage, outImage);
 
                             if (!expect)
                             {
-                                Assert.Fail($"GaussianBlur should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
+                                Assert.True(false, $"GaussianBlur should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
                             }
                             else
                             {
-                                Assert.AreEqual(inIage.Columns, outImage.Columns);
-                                Assert.AreEqual(inIage.Rows, outImage.Rows);
+                                Assert.Equal(inIage.Columns, outImage.Columns);
+                                Assert.Equal(inIage.Rows, outImage.Rows);
 
                                 Dlib.SaveBmp(outImage, $"{Path.Combine(this.GetOutDir(type, "GaussianBlur"), $"{LoadTarget}_{input.Type}_{output.Type}.bmp")}");
                             }
@@ -106,7 +105,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void GaussianBlurThrowException()
         {
             var path = this.GetDataFile($"{ LoadTarget}.bmp");
@@ -165,8 +164,8 @@ namespace DlibDotNet.Tests.ImageTransforms
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                var outImage = Array2DTest.CreateArray2D(test.Type);
-                var inIage = DlibTest.LoadImage(test.Type, path);
+                var outImage = Array2DTest.CreateArray2DHelp(test.Type);
+                var inIage = DlibTest.LoadImageHelp(test.Type, path);
 
                 try
                 {
@@ -174,7 +173,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     if (!test.ExpectResult)
                     {
-                        Assert.Fail($"GaussianBlur should throw exception for Type: {test.Type}, Sigma: {test.Sigma}, MaxSize: {test.MaxSize}.");
+                        Assert.True(false, $"GaussianBlur should throw exception for Type: {test.Type}, Sigma: {test.Sigma}, MaxSize: {test.MaxSize}.");
                     }
 
                     Dlib.SaveJpeg(outImage, $"{Path.Combine(this.GetOutDir(type, "GaussianBlurThrowException"), $"{LoadTarget}_{test.Type}_{test.Sigma}_{test.MaxSize}.jpg")}");
@@ -204,7 +203,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region SumFilter
 
-        [TestMethod]
+        [Fact]
         public void SumFilter()
         {
             const string testName = "SumFilter";
@@ -238,24 +237,24 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     try
                     {
-                        var inImage = DlibTest.LoadImage(input.Type, path);
+                        var inImage = DlibTest.LoadImageHelp(input.Type, path);
                         inObj = inImage;
 
                         try
                         {
-                            var outImage = Array2DTest.CreateArray2D(output.Type, inImage.Rows, inImage.Columns);
+                            var outImage = Array2DTest.CreateArray2DHelp(output.Type, inImage.Rows, inImage.Columns);
                             outObj = outImage;
 
                             Dlib.SumFilter(inImage, outImage, rect);
 
                             if (!expect)
                             {
-                                Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
+                                Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}");
                             }
                             else
                             {
-                                Assert.AreEqual(inImage.Columns, outImage.Columns);
-                                Assert.AreEqual(inImage.Rows, outImage.Rows);
+                                Assert.Equal(inImage.Columns, outImage.Columns);
+                                Assert.Equal(inImage.Rows, outImage.Rows);
 
                                 Dlib.SaveBmp(outImage, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}_{output.Type}.bmp")}");
                             }

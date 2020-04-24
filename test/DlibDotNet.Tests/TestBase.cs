@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests
 {
@@ -45,8 +45,8 @@ namespace DlibDotNet.Tests
         public void DisposeAndCheckDisposedState(DlibObject obj)
         {
             obj.Dispose();
-            Assert.IsTrue(obj.IsDisposed);
-            Assert.IsTrue(obj.NativePtr == IntPtr.Zero);
+            Assert.True(obj.IsDisposed);
+            Assert.True(obj.NativePtr == IntPtr.Zero);
         }
 
         public void DisposeAndCheckDisposedStates(IEnumerable<DlibObject> objs)

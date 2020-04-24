@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace DlibDotNet.Tests.Matrix
 {
 
-    [TestClass]
     public class MatrixUtilitiesTest : TestBase
     {
         

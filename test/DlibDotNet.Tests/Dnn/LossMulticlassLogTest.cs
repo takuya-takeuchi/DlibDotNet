@@ -1,24 +1,23 @@
 ﻿using System.Linq;
 using DlibDotNet.Dnn;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Dnn
 {
 
-    [TestClass]
     public class LossMulticlassLogTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             var networkIds = Enumerable.Range(0, 4);
             foreach (var networkId in networkIds)
                 using (var loss = new LossMulticlassLog(networkId))
-                    Assert.IsTrue(!loss.IsDisposed);
+                    Assert.True(!loss.IsDisposed);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetLabel()
         {
             var labels = new[]
@@ -1031,9 +1030,9 @@ namespace DlibDotNet.Tests.Dnn
                     using (var loss = new LossMulticlassLog(id))
                     {
                         var label = loss.GetLabels();
-                        Assert.IsTrue(label.Length == l.Label.Length);
+                        Assert.True(label.Length == l.Label.Length);
                         for (var index = 0; index < label.Length; index++)
-                            Assert.AreEqual(label[index], l.Label[index]);
+                            Assert.Equal(label[index], l.Label[index]);
                     }
         }
 

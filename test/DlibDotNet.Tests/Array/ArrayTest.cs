@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Array
 {
 
-    [TestClass]
     public class ArrayTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Indexer()
         {
             var tests = new[]
@@ -43,10 +42,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.RgbAlphaPixel:
@@ -59,10 +58,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.HsiPixel:
@@ -75,10 +74,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.UInt8:
@@ -91,10 +90,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.UInt16:
@@ -107,10 +106,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.UInt32:
@@ -123,10 +122,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.Int8:
@@ -139,10 +138,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.Int16:
@@ -155,10 +154,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.Int32:
@@ -171,10 +170,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.Float:
@@ -187,10 +186,10 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                     case ImageTypes.Double:
@@ -203,17 +202,17 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
-                                Assert.AreEqual(list[index], array[index]);
+                                Assert.Equal(list[index], array[index]);
                         }
                         break;
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void IndexerArray2D()
         {
             var tests = new[]
@@ -250,12 +249,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -273,12 +272,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -296,12 +295,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -319,12 +318,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -342,12 +341,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -365,12 +364,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -388,12 +387,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -411,12 +410,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -434,12 +433,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -457,12 +456,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -480,12 +479,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -497,7 +496,7 @@ namespace DlibDotNet.Tests.Array
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void IndexerMatrix()
         {
             var tests = new[]
@@ -534,12 +533,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -557,12 +556,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -580,12 +579,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -603,12 +602,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -626,12 +625,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -649,12 +648,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -672,12 +671,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -695,12 +694,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -718,12 +717,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -741,12 +740,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -764,12 +763,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             for (var index = 0; index < array.Size; index++)
                             {
-                                Assert.AreEqual(rows, array[index].Rows);
-                                Assert.AreEqual(columns, array[index].Columns);
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
                                 array[index].Dispose();
                             }
 
@@ -781,7 +780,7 @@ namespace DlibDotNet.Tests.Array
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PushBack()
         {
             var tests = new[]
@@ -816,11 +815,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.RgbAlphaPixel:
@@ -833,11 +832,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.HsiPixel:
@@ -850,11 +849,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.UInt8:
@@ -867,11 +866,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.UInt16:
@@ -884,11 +883,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.UInt32:
@@ -901,11 +900,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.Int8:
@@ -918,11 +917,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.Int16:
@@ -935,11 +934,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.Int32:
@@ -952,11 +951,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.Float:
@@ -969,11 +968,11 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                     case ImageTypes.Double:
@@ -986,18 +985,18 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             var index = 0;
                             foreach (var item in array)
-                                Assert.AreEqual(list[index++], item);
+                                Assert.Equal(list[index++], item);
                         }
                         break;
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PushBackArray2D()
         {
             var tests = new[]
@@ -1034,12 +1033,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1057,12 +1056,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1080,12 +1079,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1103,12 +1102,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1126,12 +1125,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1149,12 +1148,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1172,12 +1171,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1195,12 +1194,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1218,12 +1217,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1241,12 +1240,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1264,12 +1263,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1281,7 +1280,7 @@ namespace DlibDotNet.Tests.Array
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PushBackMatrix()
         {
             var tests = new[]
@@ -1318,12 +1317,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1341,12 +1340,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1364,12 +1363,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1387,12 +1386,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1410,12 +1409,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1433,12 +1432,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1456,12 +1455,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1479,12 +1478,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1502,12 +1501,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1525,12 +1524,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 
@@ -1548,12 +1547,12 @@ namespace DlibDotNet.Tests.Array
                             foreach (var value in list)
                                 array.PushBack(value);
 
-                            Assert.AreEqual(array.Size, list.Count);
+                            Assert.Equal(array.Size, list.Count);
 
                             foreach (var item in array)
                             {
-                                Assert.AreEqual(rows, item.Rows);
-                                Assert.AreEqual(columns, item.Columns);
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
                                 item.Dispose();
                             }
 

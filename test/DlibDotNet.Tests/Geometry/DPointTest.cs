@@ -1,52 +1,51 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Geometry
 {
 
-    [TestClass]
     public class DPointTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Create1()
         {
             var point = new DPoint();
-            Assert.AreEqual(point.X, 0d);
-            Assert.AreEqual(point.Y, 0d);
+            Assert.Equal(point.X, 0d);
+            Assert.Equal(point.Y, 0d);
         }
 
-        [TestMethod]
+        [Fact]
         public void Create2()
         {
             var x = this.NextDoubleRandom();
             var y = this.NextDoubleRandom();
             var point = new DPoint(x, y);
-            Assert.AreEqual(point.X, x);
-            Assert.AreEqual(point.Y, y);
+            Assert.Equal(point.X, x);
+            Assert.Equal(point.Y, y);
         }
 
-        [TestMethod]
+        [Fact]
         public void Length()
         {
             var x = this.NextDoubleRandom();
             var y = this.NextDoubleRandom();
             var point = new DPoint(x, y);
             var length = Math.Sqrt(x * x + y * y);
-            Assert.AreEqual(point.Length, length);
+            Assert.Equal(point.Length, length);
         }
 
-        [TestMethod]
+        [Fact]
         public void LengthSquared()
         {
             var x = this.NextDoubleRandom();
             var y = this.NextDoubleRandom();
             var point = new DPoint(x, y);
             var lengthSquared = x * x + y * y;
-            Assert.AreEqual(point.LengthSquared, lengthSquared);
+            Assert.Equal(point.LengthSquared, lengthSquared);
         }
 
-        [TestMethod]
+        [Fact]
         public void Rotate()
         {
             const int away = 90;
@@ -63,22 +62,22 @@ namespace DlibDotNet.Tests.Geometry
                 switch (i)
                 {
                     case 1:
-                        Assert.AreEqual(Math.Round(rotated.X), x, $"Check X and Rotate: {90 * i}");
-                        Assert.AreEqual(Math.Round(rotated.Y), y - away, $"Check Y Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.X) == x, $"Check X and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.Y) == y - away, $"Check Y Rotate: {90 * i}");
                         break;
                     case 2:
-                        Assert.AreEqual(Math.Round(rotated.X), x + away, $"Check X and Rotate: {90 * i}");
-                        Assert.AreEqual(Math.Round(rotated.Y), y, $"Check Y Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.X) == x + away, $"Check X and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.Y) == y, $"Check Y Rotate: {90 * i}");
                         break;
                     case 3:
-                        Assert.AreEqual(Math.Round(rotated.X), x, $"Check X and Rotate: {90 * i}");
-                        Assert.AreEqual(Math.Round(rotated.Y), y + away, $"Check Y and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.X) == x, $"Check X and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.Y) == y + away, $"Check Y and Rotate: {90 * i}");
                         break;
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Rotate2()
         {
             const int away = 90;
@@ -95,22 +94,22 @@ namespace DlibDotNet.Tests.Geometry
                 switch (i)
                 {
                     case 1:
-                        Assert.AreEqual(Math.Round(rotated.X), x, $"Check X and Rotate: {90 * i}");
-                        Assert.AreEqual(Math.Round(rotated.Y), y - away, $"Check Y Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.X) == x, $"Check X and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.Y) == y - away, $"Check Y Rotate: {90 * i}");
                         break;
                     case 2:
-                        Assert.AreEqual(Math.Round(rotated.X), x + away, $"Check X and Rotate: {90 * i}");
-                        Assert.AreEqual(Math.Round(rotated.Y), y, $"Check Y Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.X) == x + away, $"Check X and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.Y) == y, $"Check Y Rotate: {90 * i}");
                         break;
                     case 3:
-                        Assert.AreEqual(Math.Round(rotated.X), x, $"Check X and Rotate: {90 * i}");
-                        Assert.AreEqual(Math.Round(rotated.Y), y + away, $"Check Y and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.X) == x, $"Check X and Rotate: {90 * i}");
+                        Assert.True(Math.Round(rotated.Y) == y + away, $"Check Y and Rotate: {90 * i}");
                         break;
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorAdd()
         {
             var lx = (double)this.NextRandom(0, 100);
@@ -122,11 +121,11 @@ namespace DlibDotNet.Tests.Geometry
             var l = new DPoint(rx, ry);
             var rl = r + l;
 
-            Assert.AreEqual(rl.X, lx + rx);
-            Assert.AreEqual(rl.Y, ly + ry);
+            Assert.Equal(rl.X, lx + rx);
+            Assert.Equal(rl.Y, ly + ry);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorSub()
         {
             var lx = (double)this.NextRandom(0, 100);
@@ -138,11 +137,11 @@ namespace DlibDotNet.Tests.Geometry
             var l = new DPoint(rx, ry);
             var rl = r - l;
 
-            Assert.AreEqual(rl.X, lx - rx);
-            Assert.AreEqual(rl.Y, ly - ry);
+            Assert.Equal(rl.X, lx - rx);
+            Assert.Equal(rl.Y, ly - ry);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorMul_DPoint_Int32()
         {
             var lx = (double)this.NextRandom(10, 100);
@@ -152,11 +151,11 @@ namespace DlibDotNet.Tests.Geometry
             var r = 2;
             var lr = l * r;
 
-            Assert.AreEqual(lr.X, lx * r);
-            Assert.AreEqual(lr.Y, ly * r);
+            Assert.Equal(lr.X, lx * r);
+            Assert.Equal(lr.Y, ly * r);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorMul_DPoint_Double()
         {
             var lx = (double)this.NextRandom(10, 100);
@@ -166,11 +165,11 @@ namespace DlibDotNet.Tests.Geometry
             var r = 2.5d;
             var lr = l * r;
 
-            Assert.AreEqual(lr.X, lx * r);
-            Assert.AreEqual(lr.Y, ly * r);
+            Assert.Equal(lr.X, lx * r);
+            Assert.Equal(lr.Y, ly * r);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorMul_Int32_DPoint()
         {
             var rx = (double)this.NextByteRandom();
@@ -180,11 +179,11 @@ namespace DlibDotNet.Tests.Geometry
             var l = 2;
             var lr = l * r;
 
-            Assert.AreEqual(lr.X, l * rx);
-            Assert.AreEqual(lr.Y, l * ry);
+            Assert.Equal(lr.X, l * rx);
+            Assert.Equal(lr.Y, l * ry);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorMul_Double_DPoint()
         {
             var rx = (double)this.NextByteRandom();
@@ -194,11 +193,11 @@ namespace DlibDotNet.Tests.Geometry
             var l = 2.5d;
             var lr = l * r;
 
-            Assert.AreEqual(lr.X, l * rx);
-            Assert.AreEqual(lr.Y, l * ry);
+            Assert.Equal(lr.X, l * rx);
+            Assert.Equal(lr.Y, l * ry);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorDiv()
         {
             var lx = (double)this.NextRandom(10, 100);
@@ -208,11 +207,11 @@ namespace DlibDotNet.Tests.Geometry
             var l = 2;
             var rl = r / l;
 
-            Assert.AreEqual(rl.X, lx / l);
-            Assert.AreEqual(rl.Y, ly / l);
+            Assert.Equal(rl.X, lx / l);
+            Assert.Equal(rl.Y, ly / l);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorDivByZero()
         {
             var lx = (double)this.NextRandom(10, 100);
@@ -222,7 +221,7 @@ namespace DlibDotNet.Tests.Geometry
             {
                 var r = new DPoint(lx, ly);
                 var rl = r / 0;
-                Assert.Fail("Should throw DivideByZeroException when DPoint was divided by 0");
+                Assert.True(false, "Should throw DivideByZeroException when DPoint was divided by 0");
             }
             catch (DivideByZeroException)
             {
@@ -230,7 +229,7 @@ namespace DlibDotNet.Tests.Geometry
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorEqual()
         {
             var x = (double)this.NextRandom(1, 100);
@@ -241,9 +240,9 @@ namespace DlibDotNet.Tests.Geometry
             var l1 = new DPoint(x * 2, y);
             var l2 = new DPoint(x, y * 2);
 
-            Assert.IsTrue(r == l, $"1 - RX: {r.X}, RY: {r.Y}\nLX: {l.X}, LY: {l.Y}");
-            Assert.IsTrue(r != l1, $"2 - RX: {r.X}, RY: {r.Y}\nLX: {l1.X}, LY: {l1.Y}");
-            Assert.IsTrue(r != l2, $"3 - RX: {r.X}, RY: {r.Y}\nLX: {l2.X}, LY: {l2.Y}");
+            Assert.True(r == l, $"1 - RX: {r.X}, RY: {r.Y}\nLX: {l.X}, LY: {l.Y}");
+            Assert.True(r != l1, $"2 - RX: {r.X}, RY: {r.Y}\nLX: {l1.X}, LY: {l1.Y}");
+            Assert.True(r != l2, $"3 - RX: {r.X}, RY: {r.Y}\nLX: {l2.X}, LY: {l2.Y}");
         }
 
     }

@@ -1,20 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace DlibDotNet.Tests.Queue
 {
 
-    [TestClass]
     public class Kernel1AOfUInt32Test : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             var queue = new Queue<uint>.Kernel1A();
             this.DisposeAndCheckDisposedState(queue);
         }
 
-        [TestMethod]
+        [Fact]
         public void Clear()
         {
             const int size = 100;
@@ -23,12 +22,12 @@ namespace DlibDotNet.Tests.Queue
                 queue.Enqueue((uint)i);
 
             queue.Clear();
-            Assert.AreEqual(0, queue.Count);
+            Assert.Equal(0, queue.Count);
 
             this.DisposeAndCheckDisposedState(queue);
         }
 
-        [TestMethod]
+        [Fact]
         public void Enqueue()
         {
             const int size = 100;
@@ -36,12 +35,12 @@ namespace DlibDotNet.Tests.Queue
             for (var i = 0; i < size; i++)
             {
                 queue.Enqueue((uint)i);
-                Assert.AreEqual(queue.Count, i + 1);
+                Assert.Equal(queue.Count, i + 1);
             }
             this.DisposeAndCheckDisposedState(queue);
         }
 
-        [TestMethod]
+        [Fact]
         public void Dequeue()
         {
             const int size = 100;
@@ -53,14 +52,14 @@ namespace DlibDotNet.Tests.Queue
             while (queue.Count > 0)
             {
                 queue.Dequeue(out var item);
-                Assert.AreEqual(cur, item);
+                Assert.Equal(cur, item);
                 cur++;
             }
 
             this.DisposeAndCheckDisposedState(queue);
         }
 
-        [TestMethod]
+        [Fact]
         public void ElementAndMoveNext()
         {
             const int size = 100;
@@ -72,7 +71,7 @@ namespace DlibDotNet.Tests.Queue
             queue.Reset();
             while (queue.MoveNext)
             {
-                Assert.AreEqual(cur, queue.Element());
+                Assert.Equal(cur, queue.Element());
                 cur++;
             }
 

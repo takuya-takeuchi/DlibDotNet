@@ -2,37 +2,34 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageProcessing
 {
 
-    [TestClass]
     public class ShapePredictorTest : TestBase
     {
 
         private ShapePredictor _ShapePredictor;
 
-        [TestMethod]
+        public ShapePredictorTest()
+        {
+            var path = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
+            this._ShapePredictor = ShapePredictor.Deserialize(path.FullName);
+        }
+
+        [Fact]
         public void CreateShapePredictor()
         {
             var predictor = new ShapePredictor();
             this.DisposeAndCheckDisposedState(predictor);
         }
 
-        [TestInitialize]
-        [TestMethod]
-        public void CreateShapePredictorFromFile()
-        {
-            var path = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
-            this._ShapePredictor = ShapePredictor.Deserialize(path.FullName);
-        }
-
-        [TestMethod]
+        [Fact]
         public void DetectFace()
         {
             if (this._ShapePredictor == null)
-                Assert.Fail("ShapePredictor is not initialized!!");
+                Assert.True(false, "ShapePredictor is not initialized!!");
 
             var faceDetector = Dlib.GetFrontalFaceDetector();
             //Interpolation.PyramidUp(image);
@@ -41,7 +38,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             var image = Dlib.LoadImage<RgbPixel>(path.FullName);
 
             var dets = faceDetector.Operator(image);
-            Assert.AreEqual(dets.Length, 1);
+            Assert.Equal(dets.Length, 1);
 
             var rects = new List<Rectangle>();
 
@@ -71,11 +68,11 @@ namespace DlibDotNet.Tests.ImageProcessing
             this.DisposeAndCheckDisposedState(image);
         }
 
-        [TestMethod]
+        [Fact]
         public void DetectFace2()
         {
             if (this._ShapePredictor == null)
-                Assert.Fail("ShapePredictor is not initialized!!");
+                Assert.True(false, "ShapePredictor is not initialized!!");
 
             const string testName = "DetectFace2";
             var path = this.GetDataFile("Lenna_mini.bmp");
@@ -99,7 +96,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 foreach (var input in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                     Rectangle[] dets = null;
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
@@ -134,7 +131,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -151,11 +148,11 @@ namespace DlibDotNet.Tests.ImageProcessing
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void DetectFace3()
         {
             if (this._ShapePredictor == null)
-                Assert.Fail("ShapePredictor is not initialized!!");
+                Assert.True(false, "ShapePredictor is not initialized!!");
 
             const string testName = "DetectFace3";
             var path = this.GetDataFile("Lenna_mini.bmp");
@@ -178,7 +175,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 foreach (var input in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImageAsMatrix(input.Type, path);
+                    var imageObj = DlibTest.LoadImageAsMatrixHelp(input.Type, path);
                     Rectangle[] dets = null;
 
                     var outputImageAction = new Func<bool, MatrixBase>(expect =>
@@ -213,7 +210,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -230,11 +227,11 @@ namespace DlibDotNet.Tests.ImageProcessing
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void DetectFaceMModRect()
         {
             if (this._ShapePredictor == null)
-                Assert.Fail("ShapePredictor is not initialized!!");
+                Assert.True(false, "ShapePredictor is not initialized!!");
 
             const string testName = "DetectFaceMModRect";
             var path = this.GetDataFile("Lenna_mini.bmp");
@@ -258,7 +255,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 foreach (var input in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                     MModRect[] dets = null;
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
@@ -292,7 +289,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -309,11 +306,11 @@ namespace DlibDotNet.Tests.ImageProcessing
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void DetectFaceMModRect2()
         {
             if (this._ShapePredictor == null)
-                Assert.Fail("ShapePredictor is not initialized!!");
+                Assert.True(false, "ShapePredictor is not initialized!!");
 
             const string testName = "DetectFaceMModRect2";
             var path = this.GetDataFile("Lenna_mini.bmp");
@@ -336,7 +333,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 foreach (var input in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImageAsMatrix(input.Type, path);
+                    var imageObj = DlibTest.LoadImageAsMatrixHelp(input.Type, path);
                     MModRect[] dets = null;
 
                     var outputImageAction = new Func<bool, MatrixBase>(expect =>
@@ -370,7 +367,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -385,13 +382,6 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                     DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
                 }
-        }
-
-        [TestCleanup]
-        public void Dispose()
-        {
-            if (this._ShapePredictor != null)
-                this.DisposeAndCheckDisposedState(this._ShapePredictor);
         }
 
     }
