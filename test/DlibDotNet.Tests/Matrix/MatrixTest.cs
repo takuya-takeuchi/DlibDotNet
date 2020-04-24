@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
@@ -560,6 +563,77 @@ namespace DlibDotNet.Tests.Matrix
                                         if (a != m)
                                             Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
                                     }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        [Fact]
+        public void Create4()
+        {
+            var testName = nameof(this.Create4);
+            var path = this.GetDataFile($"{LoadTarget}_padding2.png");
+
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = true},
+            };
+
+            var type = this.GetType().Name;
+            foreach (var input in tests)
+            {
+                switch (input.Type)
+                {
+                    case MatrixElementTypes.RgbPixel:
+                        {
+                            using (var bitmap = (Bitmap)Image.FromFile(path.FullName))
+                            {
+                                BitmapData bitmapData = null;
+
+                                try
+                                {
+                                    var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                                    bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+                                    var array = bitmapData.Scan0;
+                                    var stride = bitmapData.Stride;
+
+                                    using (var matrix = new Matrix<RgbPixel>(array, bitmap.Height, bitmap.Width, stride))
+                                        Dlib.SavePng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}.png")}");
+                                }
+                                finally
+                                {
+                                    if (bitmapData != null)
+                                        bitmap.UnlockBits(bitmapData);
+                                }
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.BgrPixel:
+                        {
+                            using (var bitmap = (Bitmap)Image.FromFile(path.FullName))
+                            {
+                                BitmapData bitmapData = null;
+
+                                try
+                                {
+                                    var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                                    bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+                                    var array = bitmapData.Scan0;
+                                    var stride = bitmapData.Stride;
+
+                                    using (var matrix = new Matrix<BgrPixel>(array, bitmap.Height, bitmap.Width, stride))
+                                        Dlib.SavePng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{input.Type}.png")}");
+                                }
+                                finally
+                                {
+                                    if (bitmapData != null)
+                                        bitmap.UnlockBits(bitmapData);
+                                }
                             }
                         }
                         break;

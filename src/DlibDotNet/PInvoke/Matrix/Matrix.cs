@@ -34,6 +34,13 @@ namespace DlibDotNet
                                                    out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr matrix_new6(MatrixElementType matrixElementType,
+                                                int row,
+                                                int column,
+                                                int stride,
+                                                IntPtr src);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void matrix_delete(MatrixElementType matrixElementType, IntPtr matrix, int templateRows, int templateColumns);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
