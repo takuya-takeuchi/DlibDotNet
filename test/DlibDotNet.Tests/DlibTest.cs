@@ -291,7 +291,7 @@ namespace DlibDotNet.Tests
                 switch (test.Type)
                 {
                     case ImageTypes.BgrPixel:
-                        image = Dlib.LoadBmp<RgbPixel>(path.FullName);
+                        image = Dlib.LoadBmp<BgrPixel>(path.FullName);
                         break;
                     case ImageTypes.RgbPixel:
                         image = Dlib.LoadBmp<RgbPixel>(path.FullName);
@@ -2432,13 +2432,13 @@ namespace DlibDotNet.Tests
                             {
                                 var data = new BgrPixel[rows * cols];
                                 for (var r = 0; r < rows; r++)
-                                for (var c = 0; c < cols; c++)
-                                    data[steps * r + c] = new BgrPixel
-                                    {
-                                        Red = (byte)random.Next(0, 255),
-                                        Green = (byte)random.Next(0, 255),
-                                        Blue = (byte)random.Next(0, 255)
-                                    };
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = new BgrPixel
+                                        {
+                                            Red = (byte)random.Next(0, 255),
+                                            Green = (byte)random.Next(0, 255),
+                                            Blue = (byte)random.Next(0, 255)
+                                        };
 
                                 image = Dlib.LoadImageData<BgrPixel>(data, rows, cols, steps);
 
@@ -2553,7 +2553,7 @@ namespace DlibDotNet.Tests
 
             return image;
         }
-        
+
         internal static MatrixBase LoadImageAsMatrixHelp(MatrixElementTypes type, FileInfo path)
         {
             MatrixBase matrix;
