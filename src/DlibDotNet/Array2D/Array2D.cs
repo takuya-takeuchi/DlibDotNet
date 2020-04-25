@@ -219,6 +219,7 @@ namespace DlibDotNet
                 case NativeMethods.Array2DType.Int32:
                 case NativeMethods.Array2DType.Float:
                 case NativeMethods.Array2DType.Double:
+                case NativeMethods.Array2DType.BgrPixel:
                 case NativeMethods.Array2DType.RgbPixel:
                 case NativeMethods.Array2DType.RgbAlphaPixel:
                 case NativeMethods.Array2DType.HsiPixel:
