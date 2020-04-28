@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WPF
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -339,3 +340,5 @@ namespace DlibDotNet.Extensions
     }
 
 }
+
+#endif

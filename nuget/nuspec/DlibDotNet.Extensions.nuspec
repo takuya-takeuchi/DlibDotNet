@@ -1,0 +1,43 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DlibDotNet.Extensions</id>
+    <version>19.18.0.20200301</version>
+    <title>DlibDotNet.Extensions</title>
+    <authors>Takuya Takeuchi</authors>
+    <owners>Takuya Takeuchi</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
+    <description>Extension package for DlibDotNet</description>
+    <releaseNotes></releaseNotes>
+    <copyright>© Takuya Takeuchi 2017-2020</copyright>
+    <tags>dlib .net machinelearning</tags>
+    <serviceable>true</serviceable>
+
+    <dependencies>
+      <group targetFramework="net461">
+        <dependency id="DlibDotNet" version="19.18.0.20200301" />
+      </group>
+      <group targetFramework="netstandard2.0">
+        <dependency id="System.Drawing.Common" version="4.7.0" />
+        <dependency id="DlibDotNet" version="19.18.0.20200301" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net461" />
+    </frameworkAssemblies>
+  </metadata>
+  
+  <files>
+
+    <file src="..\..\src\DlibDotNet.Extensions\bin\Release\netstandard2.0\DlibDotNet.Extensions.dll" target="lib\netstandard2.0" />
+
+    <file src="..\..\src\DlibDotNet.Extensions\bin\Release\net461\DlibDotNet.Extensions.dll" target="lib\net461" />
+
+    <!-- license -->
+    <file src="..\..\LICENSE.txt" target="" />
+  </files>
+
+</package>
