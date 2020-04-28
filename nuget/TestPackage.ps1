@@ -36,6 +36,10 @@ function Clear-PackakgeCache([string]$Package, [string]$Version)
    if ($global:IsWindows -or $global:IsMacOS)
    {
       $path = (dotnet nuget locals global-packages --list).Replace('info : global-packages: ', '').Trim()
+      if ($path)
+      {
+         $path = (dotnet nuget locals global-packages --list).Replace('global-packages: ', '').Trim()
+      }
       $path =  Join-Path $path $Package | `
                Join-Path -ChildPath $Version
       if (Test-Path $path)

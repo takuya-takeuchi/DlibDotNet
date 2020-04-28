@@ -1,15 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Matrix
 {
 
     [Obsolete]
-    [TestClass]
     public class MatrixRangeExpTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Craete()
         {
             var tests = new[]
@@ -58,7 +57,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Craete2()
         {
             var tests = new[]
@@ -107,7 +106,7 @@ namespace DlibDotNet.Tests.Matrix
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Craete3()
         {
             var tests = new[]

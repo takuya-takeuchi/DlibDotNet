@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class FindCandidateObjectLocationsTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void FindCandidateObjectLocations()
         {
             var path = this.GetDataFile("Lenna.jpg");
@@ -38,10 +37,10 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 try
                 {
-                    inImg = DlibTest.LoadImage(test.Type, path);
+                    inImg = DlibTest.LoadImageHelp(test.Type, path);
                     var rects = Dlib.FindCandidateObjectLocations(inImg)?.ToArray();
                     if (rects == null || !rects.Any())
-                        Assert.Fail($"{nameof(FindCandidateObjectLocations)} should detect any rectangles.");
+                        Assert.True(false, $"{nameof(FindCandidateObjectLocations)} should detect any rectangles.");
 
                     switch (test.Type)
                     {

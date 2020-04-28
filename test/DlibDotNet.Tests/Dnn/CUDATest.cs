@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Reflection;
 using DlibDotNet.Tests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.Dnn.Tests
 {
 
-    [TestClass]
     public class CudaTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void ThrowCudaException()
         {
             if (Dlib.IsSupportCuda)
@@ -19,7 +18,7 @@ namespace DlibDotNet.Dnn.Tests
                 var type = typeof(Cuda);
                 var method = type.GetMethod(nameof(ThrowCudaException), BindingFlags.NonPublic | BindingFlags.Static);
                 if (method == null)
-                    Assert.Fail($"Failed to get method {nameof(ThrowCudaException)}");
+                    Assert.True(false, $"Failed to get method {nameof(ThrowCudaException)}");
 
                 const int cudaError = 0x77000000;
 
@@ -34,19 +33,19 @@ namespace DlibDotNet.Dnn.Tests
                         cudaErrorMemoryAllocation
                     });
 
-                    Assert.Fail($"{nameof(ThrowCudaException)} does not throw any {nameof(Exception)}.");
+                    Assert.True(false, $"{nameof(ThrowCudaException)} does not throw any {nameof(Exception)}.");
                 }
                 catch (TargetInvocationException tie)
                 {
                     if (tie.InnerException is CudaException ce)
                     {
                         if (!(ce.ErrorName == targetCudaErrorName && ce.ErrorCode == targetCudaErrorCode))
-                            Assert.Fail($"{nameof(CudaException)} does not specify {targetCudaErrorName}.");
+                            Assert.True(false, $"{nameof(CudaException)} does not specify {targetCudaErrorName}.");
                     }
                     else
                     {
                         var e = tie.InnerException;
-                        Assert.Fail($"{nameof(ThrowCudaException)} does not throw {nameof(CudaException)}. Thrown {e}");
+                        Assert.True(false, $"{nameof(ThrowCudaException)} does not throw {nameof(CudaException)}. Thrown {e}");
                     }
                 }
                 const int targetCudaErrorCode2 = 10000;
@@ -60,19 +59,19 @@ namespace DlibDotNet.Dnn.Tests
                         cudaErrorApiFailureBase
                     });
 
-                    Assert.Fail($"{nameof(ThrowCudaException)} does not throw any {nameof(Exception)}.");
+                    Assert.True(false, $"{nameof(ThrowCudaException)} does not throw any {nameof(Exception)}.");
                 }
                 catch (TargetInvocationException tie)
                 {
                     if (tie.InnerException is CudaException ce)
                     {
                         if (!(ce.ErrorName == targetCudaErrorName2 && ce.ErrorCode == targetCudaErrorCode2))
-                            Assert.Fail($"{nameof(CudaException)} does not specify {targetCudaErrorName2}.");
+                            Assert.True(false, $"{nameof(CudaException)} does not specify {targetCudaErrorName2}.");
                     }
                     else
                     {
                         var e = tie.InnerException;
-                        Assert.Fail($"{nameof(ThrowCudaException)} does not throw {nameof(CudaException)}. Thrown {e}");
+                        Assert.True(false, $"{nameof(ThrowCudaException)} does not throw {nameof(CudaException)}. Thrown {e}");
                     }
                 }
 
@@ -89,11 +88,11 @@ namespace DlibDotNet.Dnn.Tests
                 {
                     if (tie.InnerException is CudaException)
                     {
-                        Assert.Fail($"{nameof(ThrowCudaException)} throw {nameof(CudaException)}.");
+                        Assert.True(false, $"{nameof(ThrowCudaException)} throw {nameof(CudaException)}.");
                     }
                     else
                     {
-                        Assert.Fail($"{nameof(ThrowCudaException)} throw {nameof(Exception)}.");
+                        Assert.True(false, $"{nameof(ThrowCudaException)} throw {nameof(Exception)}.");
                     }
                 }
             }

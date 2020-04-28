@@ -1,14 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests
 {
 
-    [TestClass]
     public class CudaTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void GetCudaDriverVersion()
         {
             var ret = Cuda.TryGetDriverVersion(out var version);
@@ -25,7 +24,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetCudaRuntimeVersion()
         {
             var ret = Cuda.TryGetRuntimeVersion(out var version);
@@ -42,7 +41,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetDnnCudaDriverVersion()
         {
             var ret = DlibDotNet.Dnn.Cuda.TryGetDriverVersion(out var version);
@@ -59,7 +58,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetDnnRuntimeVersion()
         {
             var ret = DlibDotNet.Dnn.Cuda.TryGetRuntimeVersion(out var version);

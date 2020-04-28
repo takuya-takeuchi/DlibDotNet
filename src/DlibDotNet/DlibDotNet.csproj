@@ -10,7 +10,7 @@
     <Version>19.18.0</Version>
     <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
     <PackageTags>dlib .net machinelearning</PackageTags>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
   
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
@@ -21,6 +21,7 @@
 
   <PropertyGroup>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -36,6 +37,10 @@
     <Compile Remove="StdLib\Pair\**" />
     <EmbeddedResource Remove="StdLib\Pair\**" />
     <None Remove="StdLib\Pair\**" />
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

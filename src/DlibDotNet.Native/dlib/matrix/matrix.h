@@ -68,6 +68,16 @@ for (size_t index = 0; index < v->size(); index++)\
     *d++ = v->operator[](index);\
 *ret = mat;\
 
+#define matrix_new6_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
+auto m = new matrix<__TYPE__>(num_rows, num_cols);\
+auto &d = *m;\
+uint8_t* s = static_cast<uint8_t*>(src);\
+const auto elem_size = sizeof(__TYPE__);\
+for (int32_t r = 0; r < num_rows; r++)\
+for (int32_t c = 0; c < num_cols; c++)\
+    d(r, c) = *((__TYPE__*)&s[stride * r + c * elem_size]);\
+return m;
+
 #define matrix_delete_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 delete ((dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*)matrix);
 
@@ -427,6 +437,29 @@ DLLEXPORT int matrix_new5(matrix_element_type type,
                     ret);
 
     return error;
+}
+
+DLLEXPORT void* matrix_new6(const matrix_element_type type,
+                            const int32_t num_rows,
+                            const int32_t num_cols,
+                            const int32_t stride,
+                            void* src)
+{
+    int error = ERR_OK;
+    void* ret = nullptr;
+
+    matrix_template(type,
+                    error,
+                    matrix_template_size_template,
+                    matrix_new6_template,
+                    0,
+                    0,
+                    num_rows,
+                    num_cols,
+                    stride,
+                    src);
+
+    return ret;
 }
 
 DLLEXPORT int matrix_begin(matrix_element_type type, void* matrix, const int templateRows, const int templateColumns, void** ret)

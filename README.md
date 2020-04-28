@@ -2,6 +2,8 @@
 
 Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 
+#### DlibDotNet
+
 |Package|OS|x86|x64|ARM|ARM64|Nuget|
 |---|---|---|---|---|---|---|
 |DlibDotNet (CPU)|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.svg)](https://www.nuget.org/packages/DlibDotNet)|
@@ -27,6 +29,14 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 ||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-ARM.svg)](https://www.nuget.org/packages/DlibDotNet-ARM)|
 
 ##### :warning: DlibDotNet for ARM  is not tested yet
+
+#### DlibDotNet.Extensions
+
+|Package|OS|x86|x64|ARM|ARM64|Nuget|
+|---|---|---|---|---|---|---|
+|All Architectures|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Extensions.svg)](https://www.nuget.org/packages/DlibDotNet.Extensions)|
+||Linux|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Extensions.svg)](https://www.nuget.org/packages/DlibDotNet.Extensions)|
+||OSX|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Extensions.svg)](https://www.nuget.org/packages/DlibDotNet.Extensions)|
 
 ## Demo
 

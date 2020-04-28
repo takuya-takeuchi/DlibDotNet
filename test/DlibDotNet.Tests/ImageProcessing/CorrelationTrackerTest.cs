@@ -1,25 +1,24 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageProcessing
 {
 
-    [TestClass]
     public class CorrelationTrackerTest : TestBase
     {
 
         private const string LoadTarget = "Lenna_mini";
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             var tracker = new CorrelationTracker();
             this.DisposeAndCheckDisposedState(tracker);
         }
 
-        [TestMethod]
+        [Fact]
         public void StartTrack()
         {
             const string testName = "StartTrack";
@@ -45,7 +44,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             {
                 var expectResult = input.ExpectResult;
                 var inputType = input.Type;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                 var tracker = new CorrelationTracker();
                 var rect = new DRectangle(46, 15, 216, 205);
 
@@ -61,7 +60,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -80,7 +79,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void UpdateNoscale()
         {
             const string testName = "UpdateNoscale";
@@ -106,7 +105,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             {
                 var expectResult = input.ExpectResult;
                 var inputType = input.Type;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                 var tracker = new CorrelationTracker();
                 var rect = new DRectangle(46, 15, 216, 205);
 
@@ -123,7 +122,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -142,7 +141,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void UpdateNoscale2()
         {
             const string testName = "UpdateNoscale2";
@@ -168,7 +167,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             {
                 var expectResult = input.ExpectResult;
                 var inputType = input.Type;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                 var tracker = new CorrelationTracker();
                 var rect = new DRectangle(46, 15, 216, 205);
 
@@ -185,7 +184,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -204,7 +203,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Update()
         {
             const string testName = "Update";
@@ -230,7 +229,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             {
                 var expectResult = input.ExpectResult;
                 var inputType = input.Type;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                 var tracker = new CorrelationTracker();
                 var rect = new DRectangle(46, 15, 216, 205);
 
@@ -247,7 +246,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -266,7 +265,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Update2()
         {
             const string testName = "Update2";
@@ -292,7 +291,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             {
                 var expectResult = input.ExpectResult;
                 var inputType = input.Type;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                 var tracker = new CorrelationTracker();
                 var rect = new DRectangle(46, 15, 216, 205);
 
@@ -309,7 +308,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -328,7 +327,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPosition()
         {
             const string testName = "GetPosition";
@@ -354,7 +353,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             {
                 var expectResult = input.ExpectResult;
                 var inputType = input.Type;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
                 var tracker = new CorrelationTracker();
                 var rect = new DRectangle(46, 15, 216, 205);
 
@@ -368,12 +367,12 @@ namespace DlibDotNet.Tests.ImageProcessing
                 {
                     tracker.Update(image);
                     var pos = tracker.GetPosition();
-                    Assert.IsFalse(pos.IsEmpty);
+                    Assert.False(pos.IsEmpty);
                 });
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -392,7 +391,7 @@ namespace DlibDotNet.Tests.ImageProcessing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TryTrack()
         {
             const string testName = "TryTrack";
@@ -413,7 +412,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                     {
                         var expectResult = input.ExpectResult;
                         var inputType = input.Type;
-                        var imageObj = DlibTest.LoadImage(input.Type, file);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, file);
 
                         if (index == 0)
                         {
@@ -443,7 +442,7 @@ namespace DlibDotNet.Tests.ImageProcessing
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {inputType}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {inputType}.");
                         });
 
                         var finallyAction = new Action(() =>

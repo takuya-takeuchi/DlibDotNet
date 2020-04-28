@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
 using DlibDotNet.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.StdLib.Vector
 {
 
-    [TestClass]
     public class EnduranceTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Primitive()
         {
             const int size = 100000;
@@ -39,10 +38,10 @@ namespace DlibDotNet.Tests.StdLib.Vector
             Console.WriteLine("Delta (End - Start) Memory = {0} KB", (end - start) / 1024);
 
             // Rough estimate whether occur memory leak (less than 1024KB)
-            Assert.IsTrue((end - start) / 1024 < 1024);
+            Assert.True((end - start) / 1024 < 1024);
         }
 
-        [TestMethod]
+        [Fact]
         public void NonPrimitive()
         {
             const int size = 10000;
@@ -72,7 +71,7 @@ namespace DlibDotNet.Tests.StdLib.Vector
             Console.WriteLine("Delta (End - Start) Memory = {0} KB", (end - start) / 1024);
 
             // Rough estimate whether occur memory leak (less than 10240KB)
-            Assert.IsTrue((end - start) / 1024 < 10240);
+            Assert.True((end - start) / 1024 < 10240);
         }
 
     }

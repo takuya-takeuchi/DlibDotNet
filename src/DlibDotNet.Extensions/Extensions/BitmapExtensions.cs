@@ -219,7 +219,7 @@ namespace DlibDotNet.Extensions
                 switch (channels)
                 {
                     case 1:
-                        NativeMethods.memcpy(dstData.Scan0, srcData.Scan0, srcStride * height);
+                        NativeMethods.cstd_memcpy(dstData.Scan0, srcData.Scan0, srcStride * height);
                         break;
                     case 3:
                     case 4:

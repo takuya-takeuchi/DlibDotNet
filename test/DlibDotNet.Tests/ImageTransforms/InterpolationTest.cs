@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using DlibDotNet.Tests.Array2D;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class InterpolationTest : TestBase
     {
 
@@ -16,7 +15,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region ExtractImageChip
 
-        [TestMethod]
+        [Fact]
         public void ExtractImageChip()
         {
             const string testName = nameof(ExtractImageChip);
@@ -46,7 +45,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                     {
                         var expectResult = supportType.ExpectResult;
                         var interpolation = supportType.Type;
-                        var imageObj = DlibTest.LoadImage(input.Type, path);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, path);
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
@@ -88,7 +87,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -106,7 +105,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                     }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExtractImageChipMatrix()
         {
             const string testName = nameof(ExtractImageChipMatrix);
@@ -135,7 +134,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                     {
                         var expectResult = supportType.ExpectResult;
                         var interpolation = supportType.Type;
-                        var imageObj = DlibTest.LoadImageAsMatrix(input.Type, path);
+                        var imageObj = DlibTest.LoadImageAsMatrixHelp(input.Type, path);
 
                         var outputImageAction = new Func<bool, MatrixBase>(expect =>
                         {
@@ -175,7 +174,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -197,7 +196,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region FlipImageLeftRight
 
-        [TestMethod]
+        [Fact]
         public void FlipImageLeftRight()
         {
             const string testName = "FlipImageLeftRight";
@@ -224,7 +223,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
                     {
@@ -239,7 +238,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -262,7 +261,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region FlipImageLeftRight2
 
-        [TestMethod]
+        [Fact]
         public void FlipImageLeftRight2()
         {
             const string testName = "FlipImageLeftRight2";
@@ -289,8 +288,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                 foreach (var output in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
-                    var outputObj = Array2DTest.CreateArray2D(output.Type);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                    var outputObj = Array2DTest.CreateArray2DHelp(output.Type);
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
                     {
@@ -305,7 +304,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -329,7 +328,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region FlipImageUpDown
 
-        [TestMethod]
+        [Fact]
         public void FlipImageUpDown()
         {
             const string testName = "FlipImageUpDown";
@@ -356,8 +355,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                 foreach (var output in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
-                    var outputObj = Array2DTest.CreateArray2D(output.Type);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                    var outputObj = Array2DTest.CreateArray2DHelp(output.Type);
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
                     {
@@ -372,7 +371,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -396,7 +395,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region PyramidUp
 
-        [TestMethod]
+        [Fact]
         public void PyramidUp()
         {
             const string testName = nameof(PyramidUp);
@@ -422,7 +421,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             foreach (var test in tests)
             {
                 var expectResult = test.ExpectResult;
-                var imageObj = DlibTest.LoadImage(test.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(test.Type, path);
 
                 var outputImageAction = new Func<bool, Array2DBase>(expect =>
                 {
@@ -437,7 +436,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -455,7 +454,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PyramidUpMatrix()
         {
             const string testName = nameof(PyramidUpMatrix);
@@ -480,7 +479,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             foreach (var test in tests)
             {
                 var expectResult = test.ExpectResult;
-                var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+                var imageObj = DlibTest.LoadImageAsMatrixHelp(test.Type, path);
 
                 var outputImageAction = new Func<bool, MatrixBase>(expect =>
                 {
@@ -495,7 +494,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -513,7 +512,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PyramidUpMatrix2()
         {
             const string testName = nameof(PyramidUpMatrix2);
@@ -539,7 +538,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 foreach (var test in tests)
                 {
                     var expectResult = test.ExpectResult;
-                    var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+                    var imageObj = DlibTest.LoadImageAsMatrixHelp(test.Type, path);
 
                     var outputImageAction = new Func<bool, MatrixBase>(expect =>
                     {
@@ -625,7 +624,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -643,7 +642,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void PyramidUpMatrix3()
         {
             const string testName = nameof(PyramidUpMatrix3);
@@ -669,7 +668,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 foreach (var test in tests)
                 {
                     var expectResult = test.ExpectResult;
-                    var imageObj = DlibTest.LoadImageAsMatrix(test.Type, path);
+                    var imageObj = DlibTest.LoadImageAsMatrixHelp(test.Type, path);
 
                     var outputImageAction = new Func<bool, MatrixBase>(expect =>
                     {
@@ -684,7 +683,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -706,7 +705,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region ResizeImage
 
-        [TestMethod]
+        [Fact]
         public void ResizeImage()
         {
             const string testName = "ResizeImage";
@@ -733,7 +732,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 foreach (var input in tests)
                 {
                     var expectResult = input.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
                     {
@@ -748,7 +747,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, Scale: {scale}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, Scale: {scale}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -766,7 +765,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void ResizeImage2()
         {
             const string testName = "ResizeImage2";
@@ -792,8 +791,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                     foreach (var input in tests)
                     {
                         var expectResult = input.ExpectResult;
-                        var imageObj = DlibTest.LoadImage(input.Type, path);
-                        var outputObj = Array2DTest.CreateArray2D(input.Type, size, size);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                        var outputObj = Array2DTest.CreateArray2DHelp(input.Type, size, size);
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
@@ -808,7 +807,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {interpolationTypes}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {input.Type}, Size: {size}, InterpolationType: {interpolationTypes}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -832,7 +831,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region RotateImage
 
-        [TestMethod]
+        [Fact]
         public void RotateImage()
         {
             const string testName = "RotateImage";
@@ -860,8 +859,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                     foreach (var output in tests)
                     {
                         var expectResult = input.ExpectResult && output.ExpectResult;
-                        var imageObj = DlibTest.LoadImage(input.Type, path);
-                        var outputObj = Array2DTest.CreateArray2D(output.Type);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                        var outputObj = Array2DTest.CreateArray2DHelp(output.Type);
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
@@ -876,7 +875,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle: {angle}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle: {angle}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -896,7 +895,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                     }
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateImage2()
         {
             const string testName = "RotateImage2";
@@ -922,8 +921,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                     foreach (var input in tests)
                     {
                         var expectResult = input.ExpectResult;
-                        var imageObj = DlibTest.LoadImage(input.Type, path);
-                        var outputObj = Array2DTest.CreateArray2D(input.Type);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                        var outputObj = Array2DTest.CreateArray2DHelp(input.Type);
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
                         {
@@ -964,7 +963,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region PointRotator
 
-        [TestMethod]
+        [Fact]
         public void TransformImagePointRotator()
         {
             const string testName = "TransformImagePointRotator";
@@ -997,8 +996,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                     foreach (var output in tests)
                     {
                         var expectResult = input.ExpectResult && output.ExpectResult;
-                        var imageObj = DlibTest.LoadImage(input.Type, path);
-                        var outputObj = Array2DTest.CreateArray2D(output.Type, imageObj.Rows, imageObj.Columns);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                        var outputObj = Array2DTest.CreateArray2DHelp(output.Type, imageObj.Rows, imageObj.Columns);
                         var transform = new PointRotator(angle);
 
                         var outputImageAction = new Func<bool, Array2DBase>(expect =>
@@ -1014,7 +1013,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -1038,7 +1037,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region PointTransform
 
-        [TestMethod]
+        [Fact]
         public void TransformImagePointTransform()
         {
             const string testName = "TransformImagePointTransform";
@@ -1071,8 +1070,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                     foreach (var output in tests)
                     {
                         var expectResult = input.ExpectResult && output.ExpectResult;
-                        var imageObj = DlibTest.LoadImage(input.Type, path);
-                        var outputObj = Array2DTest.CreateArray2D(output.Type, imageObj.Rows, imageObj.Columns);
+                        var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                        var outputObj = Array2DTest.CreateArray2DHelp(output.Type, imageObj.Rows, imageObj.Columns);
 
                         // 中心で回転
                         var x = imageObj.Columns / 2;
@@ -1092,7 +1091,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -1116,7 +1115,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region PointTransformAffine
 
-        [TestMethod]
+        [Fact]
         public void TransformImagePointTransformAffine()
         {
             const string testName = "TransformImagePointTransformAffine";
@@ -1164,8 +1163,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                             foreach (var output in tests)
                             {
                                 var expectResult = input.ExpectResult && output.ExpectResult;
-                                var imageObj = DlibTest.LoadImage(input.Type, path);
-                                var outputObj = Array2DTest.CreateArray2D(output.Type, imageObj.Rows, imageObj.Columns);
+                                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                                var outputObj = Array2DTest.CreateArray2DHelp(output.Type, imageObj.Rows, imageObj.Columns);
                                 var matrix = new Matrix<double>(2, 2);
                                 //var rad = Math.PI / (180d / angle);
                                 //matrix.Assign(new[] { Math.Cos(rad), -Math.Sin(rad), Math.Sin(rad), Math.Cos(rad) });
@@ -1184,7 +1183,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                                 var failAction = new Action(() =>
                                 {
-                                    Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
+                                    Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
                                 });
 
                                 var finallyAction = new Action(() =>
@@ -1209,7 +1208,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region PointTransformProjective
 
-        [TestMethod]
+        [Fact]
         public void TransformImagePointTransformProjective()
         {
             const string testName = "TransformImagePointTransformProjective";
@@ -1257,8 +1256,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                             foreach (var output in tests)
                             {
                                 var expectResult = input.ExpectResult && output.ExpectResult;
-                                var imageObj = DlibTest.LoadImage(input.Type, path);
-                                var outputObj = Array2DTest.CreateArray2D(output.Type, imageObj.Rows, imageObj.Columns);
+                                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
+                                var outputObj = Array2DTest.CreateArray2DHelp(output.Type, imageObj.Rows, imageObj.Columns);
                                 var matrix = new Matrix<double>(3, 3);
                                 var transform = new PointTransformProjective(matrix);
 
@@ -1275,7 +1274,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                                 var failAction = new Action(() =>
                                 {
-                                    Assert.Fail($"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
+                                    Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, OutputType: {output.Type}, Angle,: {angle}, X: {x}, Y: {y}.");
                                 });
 
                                 var finallyAction = new Action(() =>

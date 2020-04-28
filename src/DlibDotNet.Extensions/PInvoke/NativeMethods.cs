@@ -19,7 +19,7 @@ namespace DlibDotNet.Extensions
         /// </summary>
         public const string NativeLibrary = "DlibDotNetNative";
 
-        public const string NativeDnnLibrary = "DlibDotNetNativeDnn";
+        //public const string NativeDnnLibrary = "DlibDotNetNativeDnn";
 
         public const CallingConvention CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl;
 
@@ -34,7 +34,7 @@ namespace DlibDotNet.Extensions
             WindowsLibraryLoader.LoadLibraries(new[]
             {
                 $"{NativeLibrary}",
-                $"{NativeDnnLibrary}"
+                //$"{NativeDnnLibrary}"
             });
         }
 

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests
 {
 
-    [TestClass]
     public class DlibTest : TestBase
     {
 
@@ -19,7 +18,7 @@ namespace DlibDotNet.Tests
 
         #region LoadImage
 
-        [TestMethod]
+        [Fact]
         public void ExtractImage4Points()
         {
             const string testName = nameof(this.ExtractImage4Points);
@@ -123,17 +122,17 @@ namespace DlibDotNet.Tests
                     }
 
                     if (!test.ExpectResult)
-                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
                 }
                 catch (Exception e)
                 {
                     if (test.ExpectResult)
-                        Assert.Fail($"{testName} should NOT throw exception for InputType: {test.Type}. Exception is {e}");
+                        Assert.True(false, $"{testName} should NOT throw exception for InputType: {test.Type}. Exception is {e}");
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExtractImage4Points2()
         {
             const string testName = nameof(this.ExtractImage4Points2);
@@ -249,12 +248,12 @@ namespace DlibDotNet.Tests
                     }
 
                     if (!test.ExpectResult)
-                        Assert.Fail($"{testName} should throw exception for InputType: {test.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
                 }
                 catch (Exception e)
                 {
                     if (test.ExpectResult)
-                        Assert.Fail($"{testName} should NOT throw exception for InputType: {test.Type}. Exception is {e}");
+                        Assert.True(false, $"{testName} should NOT throw exception for InputType: {test.Type}. Exception is {e}");
                 }
             }
         }
@@ -263,7 +262,7 @@ namespace DlibDotNet.Tests
 
         #region LoadBmp
 
-        [TestMethod]
+        [Fact]
         public void LoadBmp()
         {
             const int cols = LoadTargetWidth;
@@ -292,7 +291,7 @@ namespace DlibDotNet.Tests
                 switch (test.Type)
                 {
                     case ImageTypes.BgrPixel:
-                        image = Dlib.LoadBmp<RgbPixel>(path.FullName);
+                        image = Dlib.LoadBmp<BgrPixel>(path.FullName);
                         break;
                     case ImageTypes.RgbPixel:
                         image = Dlib.LoadBmp<RgbPixel>(path.FullName);
@@ -331,8 +330,8 @@ namespace DlibDotNet.Tests
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
-                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
 
                 this.DisposeAndCheckDisposedState(image);
             }
@@ -342,7 +341,7 @@ namespace DlibDotNet.Tests
 
         #region LoadDng
 
-        [TestMethod]
+        [Fact]
         public void LoadDng()
         {
             const int cols = LoadTargetWidth;
@@ -410,8 +409,8 @@ namespace DlibDotNet.Tests
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
-                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
 
                 this.DisposeAndCheckDisposedState(image);
             }
@@ -421,7 +420,7 @@ namespace DlibDotNet.Tests
 
         #region LoadImage
 
-        [TestMethod]
+        [Fact]
         public void LoadImage()
         {
             const int cols = LoadTargetWidth;
@@ -502,8 +501,8 @@ namespace DlibDotNet.Tests
                             throw new ArgumentOutOfRangeException();
                     }
 
-                    Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type} for {ext}.");
-                    Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type} for {ext}.");
+                    Assert.True(image.Columns == cols, $"Failed to load {test.Type} for {ext}.");
+                    Assert.True(image.Rows == rows, $"Failed to load {test.Type} for {ext}.");
 
                     this.DisposeAndCheckDisposedState(image);
                 }
@@ -514,7 +513,7 @@ namespace DlibDotNet.Tests
 
         #region LoadImage
 
-        [TestMethod]
+        [Fact]
         public void LoadImageAsMatrix()
         {
             const int cols = LoadTargetWidth;
@@ -602,8 +601,8 @@ namespace DlibDotNet.Tests
                             throw new ArgumentOutOfRangeException();
                     }
 
-                    Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type} for {ext}.");
-                    Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type} for {ext}.");
+                    Assert.True(image.Columns == cols, $"Failed to load {test.Type} for {ext}.");
+                    Assert.True(image.Rows == rows, $"Failed to load {test.Type} for {ext}.");
 
                     this.DisposeAndCheckDisposedState(image);
                 }
@@ -614,7 +613,7 @@ namespace DlibDotNet.Tests
 
         #region LoadJpeg
 
-        [TestMethod]
+        [Fact]
         public void LoadJpeg()
         {
             const int cols = LoadTargetWidth;
@@ -682,8 +681,8 @@ namespace DlibDotNet.Tests
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
-                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
 
                 this.DisposeAndCheckDisposedState(image);
             }
@@ -693,7 +692,7 @@ namespace DlibDotNet.Tests
 
         #region LoadPng
 
-        [TestMethod]
+        [Fact]
         public void LoadPng()
         {
             const int cols = LoadTargetWidth;
@@ -761,8 +760,8 @@ namespace DlibDotNet.Tests
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
-                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
 
                 this.DisposeAndCheckDisposedState(image);
             }
@@ -772,7 +771,7 @@ namespace DlibDotNet.Tests
 
         #region SaveBmp
 
-        [TestMethod]
+        [Fact]
         public void SaveBmp()
         {
             const string testName = nameof(this.SaveBmp);
@@ -888,7 +887,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveBmpMatrix()
         {
             const string testName = nameof(this.SaveBmpMatrix);
@@ -1032,7 +1031,7 @@ namespace DlibDotNet.Tests
 
         #region SaveDng
 
-        [TestMethod]
+        [Fact]
         public void SaveDng()
         {
             const string testName = nameof(this.SaveDng);
@@ -1148,7 +1147,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveDngMatrix()
         {
             const string testName = nameof(this.SaveDngMatrix);
@@ -1292,7 +1291,7 @@ namespace DlibDotNet.Tests
 
         #region SaveJpeg
 
-        [TestMethod]
+        [Fact]
         public void SaveJpeg()
         {
             const string testName = nameof(this.SaveJpeg);
@@ -1408,7 +1407,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveJpegMatrix()
         {
             const string testName = nameof(this.SaveJpegMatrix);
@@ -1548,7 +1547,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveJpegThrowException()
         {
             const string testName = nameof(this.SaveJpegThrowException);
@@ -1716,7 +1715,7 @@ namespace DlibDotNet.Tests
                     }
                     if (!test.ExpectResult)
                     {
-                        Assert.Fail($"Failed to save {test.Type} for quality: {test.Quality}.");
+                        Assert.True(false, $"Failed to save {test.Type} for quality: {test.Quality}.");
                     }
                 }
                 catch
@@ -1738,7 +1737,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveJpegMatrixThrowException()
         {
             const string testName = nameof(this.SaveJpegMatrixThrowException);
@@ -1930,7 +1929,7 @@ namespace DlibDotNet.Tests
                     }
                     if (!test.ExpectResult)
                     {
-                        Assert.Fail($"Failed to save {test.Type} for quality: {test.Quality}.");
+                        Assert.True(false, $"Failed to save {test.Type} for quality: {test.Quality}.");
                     }
                 }
                 catch
@@ -1956,7 +1955,7 @@ namespace DlibDotNet.Tests
 
         #region SavePng
 
-        [TestMethod]
+        [Fact]
         public void SavePng()
         {
             const string testName = nameof(this.SavePng);
@@ -2072,7 +2071,7 @@ namespace DlibDotNet.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SavePngMatrix()
         {
             const string testName = nameof(this.SavePngMatrix);
@@ -2216,7 +2215,7 @@ namespace DlibDotNet.Tests
 
         #region LoadImageData
 
-        [TestMethod]
+        [Fact]
         public void LoadImageData()
         {
             const int cols = 512;
@@ -2275,14 +2274,14 @@ namespace DlibDotNet.Tests
                     }
                 }
 
-                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
-                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
 
                 this.DisposeAndCheckDisposedState(image);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadImageData2()
         {
             const int cols = 512;
@@ -2433,13 +2432,13 @@ namespace DlibDotNet.Tests
                             {
                                 var data = new BgrPixel[rows * cols];
                                 for (var r = 0; r < rows; r++)
-                                for (var c = 0; c < cols; c++)
-                                    data[steps * r + c] = new BgrPixel
-                                    {
-                                        Red = (byte)random.Next(0, 255),
-                                        Green = (byte)random.Next(0, 255),
-                                        Blue = (byte)random.Next(0, 255)
-                                    };
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = new BgrPixel
+                                        {
+                                            Red = (byte)random.Next(0, 255),
+                                            Green = (byte)random.Next(0, 255),
+                                            Blue = (byte)random.Next(0, 255)
+                                        };
 
                                 image = Dlib.LoadImageData<BgrPixel>(data, rows, cols, steps);
 
@@ -2498,8 +2497,8 @@ namespace DlibDotNet.Tests
                     }
                 }
 
-                Assert.AreEqual(image.Columns, cols, $"Failed to load {test.Type}.");
-                Assert.AreEqual(image.Rows, rows, $"Failed to load {test.Type}.");
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
 
                 this.DisposeAndCheckDisposedState(image);
             }
@@ -2507,7 +2506,7 @@ namespace DlibDotNet.Tests
 
         #endregion
 
-        internal static Array2DBase LoadImage(ImageTypes type, FileInfo path)
+        internal static Array2DBase LoadImageHelp(ImageTypes type, FileInfo path)
         {
             Array2DBase image;
             switch (type)
@@ -2554,8 +2553,8 @@ namespace DlibDotNet.Tests
 
             return image;
         }
-        
-        internal static MatrixBase LoadImageAsMatrix(MatrixElementTypes type, FileInfo path)
+
+        internal static MatrixBase LoadImageAsMatrixHelp(MatrixElementTypes type, FileInfo path)
         {
             MatrixBase matrix;
             switch (type)

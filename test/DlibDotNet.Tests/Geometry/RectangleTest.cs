@@ -1,34 +1,33 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Geometry
 {
 
-    [TestClass]
     public class RectangleTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Create1()
         {
             var rect = new Rectangle();
-            Assert.AreEqual(0, rect.Left);
-            Assert.AreEqual(0, rect.Top);
-            Assert.AreEqual(1u, rect.Width);
-            Assert.AreEqual(1u, rect.Height);
+            Assert.Equal(0, rect.Left);
+            Assert.Equal(0, rect.Top);
+            Assert.Equal(1u, rect.Width);
+            Assert.Equal(1u, rect.Height);
         }
 
-        [TestMethod]
+        [Fact]
         public void Create2()
         {
             var width = (uint)this.NextRandom(1, 100);
             var height = (uint)this.NextRandom(1, 100);
             var rect = new Rectangle(width, height);
-            Assert.AreEqual((uint)rect.Right, (width - 1));
-            Assert.AreEqual((uint)rect.Bottom, (height - 1));
+            Assert.Equal((uint)rect.Right, (width - 1));
+            Assert.Equal((uint)rect.Bottom, (height - 1));
         }
 
-        [TestMethod]
+        [Fact]
         public void Create3()
         {
             var left = this.NextRandom(0, 100);
@@ -36,13 +35,13 @@ namespace DlibDotNet.Tests.Geometry
             var right = this.NextRandom(0, 100);
             var bottom = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
-            Assert.AreEqual(rect.Left, left);
-            Assert.AreEqual(rect.Top, top);
-            Assert.AreEqual(rect.Right, right);
-            Assert.AreEqual(rect.Bottom, bottom);
+            Assert.Equal(rect.Left, left);
+            Assert.Equal(rect.Top, top);
+            Assert.Equal(rect.Right, right);
+            Assert.Equal(rect.Bottom, bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void Create4()
         {
             var left = this.NextRandom(0, 100);
@@ -54,7 +53,7 @@ namespace DlibDotNet.Tests.Geometry
             var rect = new Rectangle(p1, p2);
         }
 
-        [TestMethod]
+        [Fact]
         public void Create5()
         {
             var left = this.NextRandom(0, 100);
@@ -63,70 +62,70 @@ namespace DlibDotNet.Tests.Geometry
             var rect = new Rectangle(p);
         }
 
-        [TestMethod]
+        [Fact]
         public void Left()
         {
             var rect = new Rectangle();
             var value = this.NextRandom(0, 100);
             rect.Left = value;
-            Assert.AreEqual(rect.Left, value);
+            Assert.Equal(rect.Left, value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Top()
         {
             var rect = new Rectangle();
             var value = this.NextRandom(0, 100);
             rect.Top = value;
-            Assert.AreEqual(rect.Top, value);
+            Assert.Equal(rect.Top, value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Right()
         {
             var rect = new Rectangle();
             var value = this.NextRandom(0, 100);
             rect.Right = value;
-            Assert.AreEqual(rect.Right, value);
+            Assert.Equal(rect.Right, value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Bottom()
         {
             var rect = new Rectangle();
             var value = this.NextRandom(0, 100);
             rect.Bottom = value;
-            Assert.AreEqual(rect.Bottom, value);
+            Assert.Equal(rect.Bottom, value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Width()
         {
             var width = (uint)this.NextRandom(0, 100);
             var height = (uint)this.NextRandom(0, 100);
             var rect = new Rectangle(width, height);
-            Assert.AreEqual(rect.Width, width);
+            Assert.Equal(rect.Width, width);
         }
 
-        [TestMethod]
+        [Fact]
         public void Height()
         {
             var width = (uint)this.NextRandom(0, 100);
             var height = (uint)this.NextRandom(0, 100);
             var rect = new Rectangle(width, height);
-            Assert.AreEqual(rect.Height, height);
+            Assert.Equal(rect.Height, height);
         }
 
-        [TestMethod]
+        [Fact]
         public void Area()
         {
             var width = (uint)this.NextRandom(0, 100);
             var height = (uint)this.NextRandom(0, 100);
             var rect = new Rectangle(width, height);
-            Assert.AreEqual(rect.Area, width * height);
+            Assert.Equal(rect.Area, width * height);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsEmpty()
         {
             var right = this.NextRandom(1, 100);
@@ -134,17 +133,17 @@ namespace DlibDotNet.Tests.Geometry
             var left = right * 2;
             var top = bottom * 2;
             var rect1 = new Rectangle(left, top, right, bottom);
-            Assert.IsTrue(rect1.IsEmpty);
+            Assert.True(rect1.IsEmpty);
 
             left = this.NextRandom(1, 100);
             top = this.NextRandom(1, 100);
             right = left * 2;
             bottom = top * 2;
             var rect2 = new Rectangle(left, top, right, bottom);
-            Assert.IsFalse(rect2.IsEmpty);
+            Assert.False(rect2.IsEmpty);
         }
 
-        [TestMethod]
+        [Fact]
         public void TopLeft()
         {
             var left = this.NextRandom(0, 100);
@@ -153,11 +152,11 @@ namespace DlibDotNet.Tests.Geometry
             var bottom = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
             var tl = rect.TopLeft;
-            Assert.AreEqual(tl.X, left);
-            Assert.AreEqual(tl.Y, top);
+            Assert.Equal(tl.X, left);
+            Assert.Equal(tl.Y, top);
         }
 
-        [TestMethod]
+        [Fact]
         public void TopRight()
         {
             var left = this.NextRandom(0, 100);
@@ -166,11 +165,11 @@ namespace DlibDotNet.Tests.Geometry
             var bottom = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
             var tr = rect.TopRight;
-            Assert.AreEqual(tr.X, right);
-            Assert.AreEqual(tr.Y, top);
+            Assert.Equal(tr.X, right);
+            Assert.Equal(tr.Y, top);
         }
 
-        [TestMethod]
+        [Fact]
         public void BottomLeft()
         {
             var left = this.NextRandom(0, 100);
@@ -179,11 +178,11 @@ namespace DlibDotNet.Tests.Geometry
             var bottom = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
             var bl = rect.BottomLeft;
-            Assert.AreEqual(bl.X, left);
-            Assert.AreEqual(bl.Y, bottom);
+            Assert.Equal(bl.X, left);
+            Assert.Equal(bl.Y, bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void BottomRight()
         {
             var left = this.NextRandom(0, 100);
@@ -192,11 +191,11 @@ namespace DlibDotNet.Tests.Geometry
             var bottom = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
             var br = rect.BottomRight;
-            Assert.AreEqual(br.X, right);
-            Assert.AreEqual(br.Y, bottom);
+            Assert.Equal(br.X, right);
+            Assert.Equal(br.Y, bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void CenteredRect1()
         {
             const int x = 50;
@@ -212,13 +211,13 @@ namespace DlibDotNet.Tests.Geometry
             expected.Right = expected.Left + width - 1;
             expected.Bottom = expected.Top + height - 1;
 
-            Assert.AreEqual(result.Left, expected.Left);
-            Assert.AreEqual(result.Top, expected.Top);
-            Assert.AreEqual(result.Right, expected.Right);
-            Assert.AreEqual(result.Bottom, expected.Bottom);
+            Assert.Equal(result.Left, expected.Left);
+            Assert.Equal(result.Top, expected.Top);
+            Assert.Equal(result.Right, expected.Right);
+            Assert.Equal(result.Bottom, expected.Bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void CenteredRect2()
         {
             const int x = 50;
@@ -235,13 +234,13 @@ namespace DlibDotNet.Tests.Geometry
             expected.Right = expected.Left + width - 1;
             expected.Bottom = expected.Top + height - 1;
 
-            Assert.AreEqual(result.Left, expected.Left);
-            Assert.AreEqual(result.Top, expected.Top);
-            Assert.AreEqual(result.Right, expected.Right);
-            Assert.AreEqual(result.Bottom, expected.Bottom);
+            Assert.Equal(result.Left, expected.Left);
+            Assert.Equal(result.Top, expected.Top);
+            Assert.Equal(result.Right, expected.Right);
+            Assert.Equal(result.Bottom, expected.Bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void CenteredRect3()
         {
             const int left = 0;
@@ -261,13 +260,13 @@ namespace DlibDotNet.Tests.Geometry
             expected.Right = expected.Left + width - 1;
             expected.Bottom = expected.Top + height - 1;
 
-            Assert.AreEqual(result.Left, expected.Left);
-            Assert.AreEqual(result.Top, expected.Top);
-            Assert.AreEqual(result.Right, expected.Right);
-            Assert.AreEqual(result.Bottom, expected.Bottom);
+            Assert.Equal(result.Left, expected.Left);
+            Assert.Equal(result.Top, expected.Top);
+            Assert.Equal(result.Right, expected.Right);
+            Assert.Equal(result.Bottom, expected.Bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void Contains1()
         {
             var left = 0;
@@ -278,10 +277,10 @@ namespace DlibDotNet.Tests.Geometry
             var y = this.NextRandom(0, 100);
             var p = new Point(x, y);
             var rect = new Rectangle(left, top, right, bottom);
-            Assert.IsTrue(rect.Contains(p));
+            Assert.True(rect.Contains(p));
         }
 
-        [TestMethod]
+        [Fact]
         public void Contains2()
         {
             var left = 0;
@@ -291,10 +290,10 @@ namespace DlibDotNet.Tests.Geometry
             var x = this.NextRandom(0, 100);
             var y = this.NextRandom(0, 100);
             var rect = new Rectangle(left, top, right, bottom);
-            Assert.IsTrue(rect.Contains(x, y));
+            Assert.True(rect.Contains(x, y));
         }
 
-        [TestMethod]
+        [Fact]
         public void Intersect()
         {
             const int left = 0;
@@ -317,13 +316,13 @@ namespace DlibDotNet.Tests.Geometry
             var bottom3 = Math.Min(rect.Bottom, rect2.Bottom);
             var expected = new Rectangle(left3, top3, right3, bottom3);
 
-            Assert.AreEqual(result.Left, expected.Left);
-            Assert.AreEqual(result.Top, expected.Top);
-            Assert.AreEqual(result.Right, expected.Right);
-            Assert.AreEqual(result.Bottom, expected.Bottom);
+            Assert.Equal(result.Left, expected.Left);
+            Assert.Equal(result.Top, expected.Top);
+            Assert.Equal(result.Right, expected.Right);
+            Assert.Equal(result.Bottom, expected.Bottom);
         }
 
-        [TestMethod]
+        [Fact]
         public void Center()
         {
             var left = 0;
@@ -334,11 +333,11 @@ namespace DlibDotNet.Tests.Geometry
             var y = 50;
             var rect = new Rectangle(left, top, right, bottom);
             var center = rect.Center;
-            Assert.AreEqual(center.X, x);
-            Assert.AreEqual(center.Y, y);
+            Assert.Equal(center.X, x);
+            Assert.Equal(center.Y, y);
         }
 
-        [TestMethod]
+        [Fact]
         public void DCenter()
         {
             const int left = 0;
@@ -349,11 +348,11 @@ namespace DlibDotNet.Tests.Geometry
             const double y = 50.5d;
             Rectangle rect = new Rectangle(left, top, right, bottom);
             var center = rect.DCenter;
-            Assert.AreEqual(center.X, x);
-            Assert.AreEqual(center.Y, y);
+            Assert.Equal(center.X, x);
+            Assert.Equal(center.Y, y);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAspectRatio()
         {
             const int left = 0;
@@ -363,22 +362,22 @@ namespace DlibDotNet.Tests.Geometry
             var rect = new Rectangle(left, top, right, bottom);
             rect = Rectangle.SetAspectRatio(rect, 2);
 
-            Assert.AreEqual(rect.Left, -21);
-            Assert.AreEqual(rect.Top, 15);
-            Assert.AreEqual(rect.Right, 120);
-            Assert.AreEqual(rect.Bottom, 85);
+            Assert.Equal(rect.Left, -21);
+            Assert.Equal(rect.Top, 15);
+            Assert.Equal(rect.Right, 120);
+            Assert.Equal(rect.Bottom, 85);
 
             try
             {
                 rect = Rectangle.SetAspectRatio(rect, 0);
-                Assert.Fail($"{nameof(Rectangle.SetAspectRatio)} should throw {nameof(ArgumentOutOfRangeException)} if ration is 0");
+                Assert.True(false, $"{nameof(Rectangle.SetAspectRatio)} should throw {nameof(ArgumentOutOfRangeException)} if ration is 0");
             }
             catch (ArgumentOutOfRangeException)
             {
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Translate()
         {
             const int left = 0;
@@ -392,13 +391,13 @@ namespace DlibDotNet.Tests.Geometry
 
             var ret = rect.Translate(point);
 
-            Assert.AreEqual(ret.Left, left + x);
-            Assert.AreEqual(ret.Top, top + y);
-            Assert.AreEqual(ret.Right, right + x);
-            Assert.AreEqual(ret.Bottom, bottom + y);
+            Assert.Equal(ret.Left, left + x);
+            Assert.Equal(ret.Top, top + y);
+            Assert.Equal(ret.Right, right + x);
+            Assert.Equal(ret.Bottom, bottom + y);
         }
 
-        [TestMethod]
+        [Fact]
         public void TranslateStatic()
         {
             const int left = 0;
@@ -412,13 +411,13 @@ namespace DlibDotNet.Tests.Geometry
 
             var ret = Rectangle.Translate(rect, point);
 
-            Assert.AreEqual(ret.Left, left + x);
-            Assert.AreEqual(ret.Top, top + y);
-            Assert.AreEqual(ret.Right, right + x);
-            Assert.AreEqual(ret.Bottom, bottom + y);
+            Assert.Equal(ret.Left, left + x);
+            Assert.Equal(ret.Top, top + y);
+            Assert.Equal(ret.Right, right + x);
+            Assert.Equal(ret.Bottom, bottom + y);
         }
 
-        [TestMethod]
+        [Fact]
         public void TranslateXY()
         {
             const int left = 0;
@@ -431,13 +430,13 @@ namespace DlibDotNet.Tests.Geometry
 
             var ret = rect.Translate(x, y);
 
-            Assert.AreEqual(ret.Left, left + x);
-            Assert.AreEqual(ret.Top, top + y);
-            Assert.AreEqual(ret.Right, right + x);
-            Assert.AreEqual(ret.Bottom, bottom + y);
+            Assert.Equal(ret.Left, left + x);
+            Assert.Equal(ret.Top, top + y);
+            Assert.Equal(ret.Right, right + x);
+            Assert.Equal(ret.Bottom, bottom + y);
         }
 
-        [TestMethod]
+        [Fact]
         public void TranslateStaticXY()
         {
             const int left = 0;
@@ -451,13 +450,13 @@ namespace DlibDotNet.Tests.Geometry
 
             var ret = Rectangle.Translate(rect, x, y);
 
-            Assert.AreEqual(ret.Left, left + x);
-            Assert.AreEqual(ret.Top, top + y);
-            Assert.AreEqual(ret.Right, right + x);
-            Assert.AreEqual(ret.Bottom, bottom + y);
+            Assert.Equal(ret.Left, left + x);
+            Assert.Equal(ret.Top, top + y);
+            Assert.Equal(ret.Right, right + x);
+            Assert.Equal(ret.Bottom, bottom + y);
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorAdd()
         {
             var lleft = this.NextRandom(0, 100);
@@ -473,13 +472,13 @@ namespace DlibDotNet.Tests.Geometry
             var l = new Rectangle(rleft, rtop, rright, rbottom);
             var rl = r + l;
 
-            Assert.AreEqual(rl.Left, Math.Min(l.Left, r.Left));
-            Assert.AreEqual(rl.Top, Math.Min(l.Top, r.Top));
-            Assert.AreEqual(rl.Right, Math.Max(l.Right, r.Right));
-            Assert.AreEqual(rl.Bottom, Math.Max(l.Bottom, r.Bottom));
+            Assert.Equal(rl.Left, Math.Min(l.Left, r.Left));
+            Assert.Equal(rl.Top, Math.Min(l.Top, r.Top));
+            Assert.Equal(rl.Right, Math.Max(l.Right, r.Right));
+            Assert.Equal(rl.Bottom, Math.Max(l.Bottom, r.Bottom));
         }
 
-        [TestMethod]
+        [Fact]
         public void OperatorEqual()
         {
             for (var left = 1; left <= 100; left++)
@@ -495,11 +494,11 @@ namespace DlibDotNet.Tests.Geometry
                     var l3 = new Rectangle(left * 2, top, right, bottom);
                     var l4 = new Rectangle(left, top * 2, right, bottom);
 
-                    Assert.AreEqual(r, l, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
-                    Assert.AreNotEqual(r, l1, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
-                    Assert.AreNotEqual(r, l2, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
-                    Assert.AreNotEqual(r, l3, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
-                    Assert.AreNotEqual(r, l4, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.True(r == l, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.True(r != l1, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.True(r != l2, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.True(r != l3, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
+                    Assert.True(r != l4, $"left: {left}, top: {top}, right: {right}, bottom: {bottom}");
                 }
         }
 

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using DlibDotNet.Tests.Matrix;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.Optimization
 {
 
-    [TestClass]
     public class MaxCostAssignmentTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void MaxCostAssignment1()
         {
             var tests = new[]
@@ -33,7 +32,7 @@ namespace DlibDotNet.Tests.Optimization
             this.ExecuteMaxCostAssignments(datas);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxCostAssignment2()
         {
             var matrix = new Matrix<int>(3,3);
@@ -43,17 +42,17 @@ namespace DlibDotNet.Tests.Optimization
                 4, 5, 0});
 
             var assignments = Dlib.MaxCostAssignment(matrix).ToArray();
-            Assert.AreEqual(assignments.Length, 3);
+            Assert.Equal(assignments.Length, 3);
             foreach (var assignment in assignments)
                 Console.WriteLine(assignment);
-            Assert.AreEqual(assignments[0], 2);
-            Assert.AreEqual(assignments[1], 0);
-            Assert.AreEqual(assignments[2], 1);
+            Assert.Equal(assignments[0], 2);
+            Assert.Equal(assignments[1], 0);
+            Assert.Equal(assignments[2], 1);
 
             this.DisposeAndCheckDisposedState(matrix);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxCostAssignmentThrowException1()
         {
             var tests = new[]
@@ -74,7 +73,7 @@ namespace DlibDotNet.Tests.Optimization
             this.ExecuteMaxCostAssignments(datas);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxCostAssignmentThrowException2()
         {
             var tests = new[]
@@ -120,7 +119,7 @@ namespace DlibDotNet.Tests.Optimization
                         try
                         {
                             this.ExecuteMaxCostAssignment(data);
-                            Assert.Fail($"ExecuteMaxCostAssignment should throw exception for Type: {matrixElementType}, Rows: {data.Rows}, Columns: {data.Columns}");
+                            Assert.True(false, $"ExecuteMaxCostAssignment should throw exception for Type: {matrixElementType}, Rows: {data.Rows}, Columns: {data.Columns}");
                         }
                         catch
                         {

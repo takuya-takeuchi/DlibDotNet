@@ -2,12 +2,12 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DlibDotNet.Tests;
+using Xunit;
 
 namespace DlibDotNet.Extensions.Tests.Extensions
 {
 
-    [TestClass]
     public class BitmapExtensionsTest : TestBase
     {
 
@@ -90,7 +90,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
             return dst;
         }
 
-        [TestMethod]
+        [Fact]
         public void To8bppIndexedGrayscale()
         {
             const string testName = "To8bppIndexedGrayscale";
@@ -119,7 +119,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
                     using (var ret = output.Source.To8bppIndexedGrayscale(value))
                     {
                         if (ret.PixelFormat != output.ExpectResult)
-                            Assert.Fail();
+                            Assert.True(false);
 
                         var format = output.Source.PixelFormat.ToString();
                         var cof = value.ToString();
@@ -131,7 +131,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
                 output.Source.Dispose();
         }
 
-        [TestMethod]
+        [Fact]
         public void ToArray2DFrom8bppIndexed()
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
@@ -151,9 +151,9 @@ namespace DlibDotNet.Extensions.Tests.Extensions
                     {
                         var array = ret.ToArray2D<byte>();
                         if (ret.PixelFormat != output.ExpectResult)
-                            Assert.Fail();
+                            Assert.True(false);
                         if (array.ImageType != ImageTypes.UInt8)
-                            Assert.Fail();
+                            Assert.True(false);
 
                         this.DisposeAndCheckDisposedState(array);
                     }

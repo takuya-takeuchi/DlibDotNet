@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class EqualizeHistogramTest : TestBase
     {
 
@@ -13,7 +12,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region EqualizeHistogram
 
-        [TestMethod]
+        [Fact]
         public void EqualizeHistogram()
         {
             const string testName = nameof(EqualizeHistogram);
@@ -39,7 +38,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             foreach (var input in tests)
             {
                 var expectResult = input.ExpectResult;
-                var imageObj = DlibTest.LoadImage(input.Type, path);
+                var imageObj = DlibTest.LoadImageHelp(input.Type, path);
 
                 var outputImageAction = new Func<bool, Array2DBase>(expect =>
                 {
@@ -54,7 +53,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 var failAction = new Action(() =>
                 {
-                    Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                    Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                 });
 
                 var finallyAction = new Action(() =>
@@ -72,7 +71,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EqualizeHistogram2()
         {
             const string testName = nameof(EqualizeHistogram2);
@@ -115,7 +114,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 foreach (var output in outTests)
                 {
                     var expectResult = input.ExpectResult && output.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(input.Type, path);
+                    var imageObj = DlibTest.LoadImageHelp(input.Type, path);
 
                     var outputImageAction = new Func<bool, Array2DBase>(expect =>
                     {
@@ -193,7 +192,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {input.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
                     });
 
                     var finallyAction = new Action(() =>

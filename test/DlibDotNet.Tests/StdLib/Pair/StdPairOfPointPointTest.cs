@@ -1,14 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.Tests.StdLib.Pair
 {
 
-    [TestClass]
     public class StdPairOfPointPointTest : TestBase
     {
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             var first = new Point();
@@ -17,7 +16,7 @@ namespace DlibDotNet.Tests.StdLib.Pair
             this.DisposeAndCheckDisposedState(pair);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckGetFirstSecond()
         {
             var fx = this.NextRandom(1, 100);
@@ -29,17 +28,17 @@ namespace DlibDotNet.Tests.StdLib.Pair
             var second = new Point(sx, sy);
             var pair1 = new StdPair<Point, Point>(first, second);
 
-            Assert.AreEqual(pair1.First.X, fx);
-            Assert.AreEqual(pair1.First.Y, fy);
-            Assert.AreEqual(pair1.Second.X, sx);
-            Assert.AreEqual(pair1.Second.Y, sy);
-            Assert.AreEqual(pair1.First, first);
-            Assert.AreEqual(pair1.Second, second);
+            Assert.Equal(pair1.First.X, fx);
+            Assert.Equal(pair1.First.Y, fy);
+            Assert.Equal(pair1.Second.X, sx);
+            Assert.Equal(pair1.Second.Y, sy);
+            Assert.Equal(pair1.First, first);
+            Assert.Equal(pair1.Second, second);
             
             this.DisposeAndCheckDisposedState(pair1);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckSetFirstSecond()
         {
             var fx = this.NextRandom(1, 100);
@@ -56,10 +55,10 @@ namespace DlibDotNet.Tests.StdLib.Pair
             pair.First = first1;
             pair.Second = second2;
 
-            Assert.AreEqual(pair.First.X, fx);
-            Assert.AreEqual(pair.First.Y, fy);
-            Assert.AreEqual(pair.Second.X, sx);
-            Assert.AreEqual(pair.Second.Y, sy);
+            Assert.Equal(pair.First.X, fx);
+            Assert.Equal(pair.First.Y, fy);
+            Assert.Equal(pair.Second.X, sx);
+            Assert.Equal(pair.Second.Y, sy);
 
             this.DisposeAndCheckDisposedState(pair);
         }

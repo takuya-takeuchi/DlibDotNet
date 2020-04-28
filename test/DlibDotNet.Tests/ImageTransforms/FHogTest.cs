@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DlibDotNet.Tests.ImageTransforms
 {
 
-    [TestClass]
     public class FHogTest : TestBase
     {
 
@@ -12,7 +11,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
         #region ExtractFHogFeatures
 
-        [TestMethod]
+        [Fact]
         public void ExtractFHogFeatures()
         {
             const string testName = nameof(this.ExtractFHogFeatures);
@@ -40,7 +39,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                         continue;
 
                     var expectResult = output.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(inputType, path);
+                    var imageObj = DlibTest.LoadImageHelp(inputType, path);
                     Array2DMatrixBase outputObj = null;
 
                     var outputImageAction = new Func<bool, Array2DMatrixBase>(expect =>
@@ -109,7 +108,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {inputType}, OutputType: {output.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {inputType}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
@@ -129,7 +128,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExtractFHogFeatures2()
         {
             var path = this.GetDataFile($"{LoadTarget}.bmp");
@@ -147,7 +146,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                 try
                 {
-                    imageObj = DlibTest.LoadImage(ImageTypes.RgbPixel, path);
+                    imageObj = DlibTest.LoadImageHelp(ImageTypes.RgbPixel, path);
 
                     switch (output.Type)
                     {
@@ -184,7 +183,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExtractFHogFeatures3()
         {
             const string testName = nameof(this.ExtractFHogFeatures3);
@@ -212,7 +211,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                         continue;
 
                     var expectResult = output.ExpectResult;
-                    var imageObj = DlibTest.LoadImage(inputType, path);
+                    var imageObj = DlibTest.LoadImageHelp(inputType, path);
                     Matrix<double> outputObj = null;
 
                     var outputImageAction = new Func<bool, Matrix<double>>(expect =>
@@ -265,7 +264,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                     var failAction = new Action(() =>
                     {
-                        Assert.Fail($"{testName} should throw exception for InputType: {inputType}, OutputType: {output.Type}.");
+                        Assert.True(false, $"{testName} should throw exception for InputType: {inputType}, OutputType: {output.Type}.");
                     });
 
                     var finallyAction = new Action(() =>
