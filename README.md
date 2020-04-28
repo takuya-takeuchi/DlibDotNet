@@ -1,6 +1,8 @@
-# ![Alt text](nuget/ml48.png "Dlib.Net") Dlib.Net [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+# ![Alt text](nuget/ml48.png "DlibDotNet") DlibDotNet [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
+
+#### DlibDotNet
 
 |Package|OS|x86|x64|ARM|ARM64|Nuget|
 |---|---|---|---|---|---|---|
@@ -28,6 +30,14 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 
 ##### :warning: DlibDotNet for ARM  is not tested yet
 
+#### DlibDotNet.Extensions
+
+|Package|OS|x86|x64|ARM|ARM64|Nuget|
+|---|---|---|---|---|---|---|
+|All Architectures|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Extensions.svg)](https://www.nuget.org/packages/DlibDotNet.Extensions)|
+||Linux|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Extensions.svg)](https://www.nuget.org/packages/DlibDotNet.Extensions)|
+||OSX|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Extensions.svg)](https://www.nuget.org/packages/DlibDotNet.Extensions)|
+
 ## Demo
 
 ### Linux
@@ -42,7 +52,7 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 ## Related Projects
 
 - [FaceRecognition.Net](https://github.com/takuya-takeuchi/FaceRecognitionDotNet)
-  - Face recognition .NET library uses Dlib.Net
+  - Face recognition .NET library uses DlibDotNet
 
 ## Usage
  
