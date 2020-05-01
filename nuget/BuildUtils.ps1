@@ -35,7 +35,8 @@ class Config
       91,
       92,
       100,
-      101
+      101,
+	  102
    )
 
    $CudaVersionHash =
@@ -44,7 +45,8 @@ class Config
       91 = "CUDA_PATH_V9_1";
       92 = "CUDA_PATH_V9_2";
       100 = "CUDA_PATH_V10_0";
-      101 = "CUDA_PATH_V10_1"
+      101 = "CUDA_PATH_V10_1";
+	  102 = "CUDA_PATH_V10_2"
    }
 
    $VisualStudio = "Visual Studio 15 2017"
