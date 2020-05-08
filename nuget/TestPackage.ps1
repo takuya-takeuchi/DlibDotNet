@@ -192,6 +192,13 @@ $tmp101.Add("$env:CUDA_PATH_V10_1\bin\cudnn64_7.dll")
 $tmp101.Add("$env:CUDA_PATH_V10_1\bin\curand64_10.dll")
 $tmp101.Add("$env:CUDA_PATH_V10_1\bin\cusolver64_10.dll")
 
+# For DlibDotNet.CUDA102
+$tmp101 = New-Object 'System.Collections.Generic.List[string]'
+$tmp101.Add("$env:CUDA_PATH_V10_2\bin\cublas64_10.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_2\bin\cudnn64_7.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_2\bin\curand64_10.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_2\bin\cusolver64_10.dll")
+
 # For mkl
 $tmpmkl = New-Object 'System.Collections.Generic.List[string]'
 $tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_core.dll")
@@ -213,6 +220,7 @@ $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Archite
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA92";  Dependencies = $tmp92    }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA100"; Dependencies = $tmp100   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA101"; Dependencies = $tmp101   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA102"; Dependencies = $tmp101   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.MKL";     Dependencies = $tmpmkl   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet.MKL";     Dependencies = $tmpmkl86 }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "arm"; Architecture = 32; Package = "DlibDotNet.ARM";     Dependencies = $null     }
