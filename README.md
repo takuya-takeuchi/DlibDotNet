@@ -18,6 +18,9 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 |DlibDotNet for CUDA 10.1|Windows|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA101.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA101)|
 ||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA101.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA101)|
 ||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA101.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA101)|
+|DlibDotNet for CUDA 10.2|Windows|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA102.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA102)|
+||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA102.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA102)|
+||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA102.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA102)|
 |DlibDotNet for Intel MKL|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
 ||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
 ||OSX|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
