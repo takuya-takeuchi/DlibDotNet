@@ -36,6 +36,7 @@ $BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture =
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 92;  Package = "DlibDotNet.CUDA92";  PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 100; Package = "DlibDotNet.CUDA100"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 101; Package = "DlibDotNet.CUDA101"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 102; Package = "DlibDotNet.CUDA102"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 
 foreach($BuildTarget in $BuildTargets)
 {
@@ -70,12 +71,26 @@ foreach($BuildTarget in $BuildTargets)
 
    if ($BuildTarget.CUDA -ne 0)
    {
-      Write-Host "Start docker run --runtime=nvidia --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
-      docker run --runtime=nvidia --rm `
-                  -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-                  -e "LOCAL_UID=$(id -u $env:USER)" `
-                  -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $Version $package $platformTarget $rid
+      $dockerAPIVersion = docker version --format '{{.Server.APIVersion}}'
+      Write-Host "Docker API Version: $dockerAPIVersion" -ForegroundColor Yellow
+      if ($dockerAPIVersion -ge 1.40)
+      {
+         Write-Host "Start docker run --gpus all --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
+         docker run --gpus all --rm `
+                     -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                     -e "LOCAL_UID=$(id -u $env:USER)" `
+                     -e "LOCAL_GID=$(id -g $env:USER)" `
+                     -t "$dockername" $Version $package $platformTarget $rid
+      }
+      else
+      {
+         Write-Host "Start docker run --runtime=nvidia --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $OperatingSystem $OperatingSystemVersion" -ForegroundColor Green
+         docker run --runtime=nvidia --rm `
+                     -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                     -e "LOCAL_UID=$(id -u $env:USER)" `
+                     -e "LOCAL_GID=$(id -g $env:USER)" `
+                     -t "$dockername" $Version $package $platformTarget $rid
+      }
    }
    else
    {
