@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.MKL</id>
-    <version>19.18.0.20200429</version>
+    <version>19.18.0.20200525</version>
     <title>DlibDotNet for MKL</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -15,7 +15,7 @@
 Requirements: Visual C++ 2017 Redistributable Package and Intel MKL 2019 Initial Release
 </description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2017-2019</copyright>
+    <copyright>© Takuya Takeuchi 2017-2020</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>

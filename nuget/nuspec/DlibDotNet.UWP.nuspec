@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.UWP</id>
-    <version>19.18.0.20200429</version>
+    <version>19.18.0.20200525</version>
     <title>DlibDotNet for UWP</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -13,7 +13,7 @@
     <description>Dlib wrapper library written in C++ and C# for Windows Universal Application
 </description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2017-2019</copyright>
+    <copyright>© Takuya Takeuchi 2017-2020</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>
