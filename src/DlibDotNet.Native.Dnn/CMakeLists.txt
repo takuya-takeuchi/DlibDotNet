@@ -24,7 +24,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 18)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20200429)
+set(VERSION_DATE 20200525)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

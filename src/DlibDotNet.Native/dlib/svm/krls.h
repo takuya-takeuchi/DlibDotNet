@@ -223,6 +223,7 @@ DLLEXPORT int serialize_krls(svm_kernel_type kernel_type,
                              const int templateColumns,
                              void* krls,
                              const char* file_name,
+                             const int32_t file_name_length,
                              std::string** error_message)
 {
     int error = ERR_OK;
@@ -249,6 +250,7 @@ DLLEXPORT int serialize_krls(svm_kernel_type kernel_type,
 }
 
 DLLEXPORT int deserialize_krls(const char* file_name,
+                               const int32_t file_name_length,
                                svm_kernel_type kernel_type,
                                matrix_element_type type,
                                const int templateRows,
