@@ -26,7 +26,16 @@
   <ItemGroup> 
     <None Update="Lenna.png"> 
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
-    </None> 
+    </None>
+    <None Update="mmod_human_face_detector.dat"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </None>
+    <None Update="x64.runsettings"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </None>
+    <None Update="x86.runsettings"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </None>
   </ItemGroup>
 
 </Project>

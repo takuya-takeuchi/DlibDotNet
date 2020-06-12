@@ -116,6 +116,7 @@ function RunTest($BuildTargets)
       $ErrorActionPreference = "silentlycontinue"
       $env:PlatformTarget = $PlatformTarget
       $dotnetPath = ""
+      $runsetting = ""
       if ($global:IsWindows)
       {
          switch($PlatformTarget)
@@ -135,7 +136,20 @@ function RunTest($BuildTargets)
          $dotnetPath = "dotnet"
       }
 
-      & ${dotnetPath} test -c Release -r "$TestDir" -p:RuntimeIdentifier=$RuntimeIdentifier --logger trx
+      switch($PlatformTarget)
+      {
+         "x64"
+         {
+            $runsetting = "x64.runsettings"
+         }
+         "x86"
+         {
+            $runsetting = "x86.runsettings"
+         }
+      }
+
+      Write-Host "${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx" -Foreground Yellow
+      & ${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx
       if ($lastexitcode -eq 0) {
          Write-Host "Test Successful" -ForegroundColor Green
       } else {
@@ -199,19 +213,6 @@ $tmp102.Add("$env:CUDA_PATH_V10_2\bin\cudnn64_7.dll")
 $tmp102.Add("$env:CUDA_PATH_V10_2\bin\curand64_10.dll")
 $tmp102.Add("$env:CUDA_PATH_V10_2\bin\cusolver64_10.dll")
 
-# For mkl
-$tmpmkl = New-Object 'System.Collections.Generic.List[string]'
-$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_core.dll")
-$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_intel_thread.dll")
-$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\mkl\mkl_avx2.dll")
-$tmpmkl.Add("$env:MKL_WIN\redist\intel64_win\compiler\libiomp5md.dll")
-
-$tmpmkl86 = New-Object 'System.Collections.Generic.List[string]'
-$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\mkl\mkl_core.dll")
-$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\mkl\mkl_intel_thread.dll")
-$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\mkl\mkl_avx2.dll")
-$tmpmkl86.Add("$env:MKL_WIN\redist\ia32_win\compiler\libiomp5md.dll")
-
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet";         Dependencies = $null     }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet";         Dependencies = $null     }
@@ -221,8 +222,8 @@ $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Archite
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA100"; Dependencies = $tmp100   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA101"; Dependencies = $tmp101   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA102"; Dependencies = $tmp102   }
-$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.MKL";     Dependencies = $tmpmkl   }
-$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet.MKL";     Dependencies = $tmpmkl86 }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.MKL";     Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet.MKL";     Dependencies = $null     }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "arm"; Architecture = 32; Package = "DlibDotNet.ARM";     Dependencies = $null     }
 
 # Store current directory

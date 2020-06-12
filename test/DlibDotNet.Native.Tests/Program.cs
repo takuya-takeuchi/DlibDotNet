@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DlibDotNet.Native.Tests
@@ -41,6 +42,17 @@ namespace DlibDotNet.Native.Tests
             using(var image = DlibDotNet.Dlib.LoadImage<RgbPixel>("Lenna.png"))
             {
                 var dets = faceDetector.Operator(image);
+                Assert.AreEqual(1, dets.Length);
+            }
+        }
+
+        [TestMethod]
+        public void LossMmod()
+        {
+            using(var loss = DlibDotNet.Dnn.LossMmod.Deserialize("mmod_human_face_detector.dat"))
+            using(var matrix = DlibDotNet.Dlib.LoadImageAsMatrix<RgbPixel>("Lenna.png"))
+            {
+                var dets = loss.Operator(matrix).First().ToArray();
                 Assert.AreEqual(1, dets.Length);
             }
         }
