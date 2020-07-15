@@ -764,6 +764,12 @@ DLLEXPORT chip_details* chip_details_new5(drectangle* rect, const unsigned long 
     return new dlib::chip_details(r, size, angle);
 }
 
+DLLEXPORT chip_details* chip_details_new6(rectangle* rect)
+{
+    rectangle& r = *rect;
+    return new dlib::chip_details(r);
+}
+
 DLLEXPORT bool chip_details_angle(chip_details* chip, double* angle)
 {
     *angle = chip->angle;

@@ -24,6 +24,9 @@ namespace DlibDotNet
         public static extern IntPtr chip_details_new5(IntPtr rect, uint size, double angle);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr chip_details_new6(IntPtr rect);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool chip_details_angle(IntPtr chip, out double angle);
 
