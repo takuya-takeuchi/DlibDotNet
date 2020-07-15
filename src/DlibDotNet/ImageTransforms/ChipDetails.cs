@@ -35,6 +35,12 @@ namespace DlibDotNet
             using (var tmp = rect.ToNative())
                 this.NativePtr = NativeMethods.chip_details_new3(tmp.NativePtr, dims.NativePtr);
         }
+		
+		public ChipDetails(Rectangle rect)
+        {
+            using (var tmp = rect.ToNative())
+                this.NativePtr = NativeMethods.chip_details_new6(tmp.NativePtr);
+        }
 
         public ChipDetails(DRectangle rect, uint size)
         {
