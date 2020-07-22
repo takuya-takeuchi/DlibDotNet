@@ -46,7 +46,8 @@ class Config
       92 = "CUDA_PATH_V9_2";
       100 = "CUDA_PATH_V10_0";
       101 = "CUDA_PATH_V10_1";
-      102 = "CUDA_PATH_V10_2"
+      102 = "CUDA_PATH_V10_2";
+      102 = "CUDA_PATH_V11_0"
    }
 
    $VisualStudio = "Visual Studio 15 2017"
@@ -416,6 +417,8 @@ class Config
    {
       # CUDA_PATH_V10_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0
       # CUDA_PATH_V10_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1
+      # CUDA_PATH_V10_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2
+      # CUDA_PATH_V11_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0
       # CUDA_PATH_V9_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0
       # CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1
       # CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2
