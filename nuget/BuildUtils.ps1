@@ -36,7 +36,8 @@ class Config
       92,
       100,
       101,
-      102
+      102,
+      110
    )
 
    $CudaVersionHash =
@@ -47,7 +48,7 @@ class Config
       100 = "CUDA_PATH_V10_0";
       101 = "CUDA_PATH_V10_1";
       102 = "CUDA_PATH_V10_2";
-      102 = "CUDA_PATH_V11_0"
+      110 = "CUDA_PATH_V11_0"
    }
 
    $VisualStudio = "Visual Studio 15 2017"
@@ -129,7 +130,7 @@ class Config
       if ($this.PlatformArray.Contains($Platform) -eq $False)
       {
          $candidate = $this.PlatformArray -join "/"
-         Write-Host "Error: Specify Architecture [${candidate}]" -ForegroundColor Red
+         Write-Host "Error: Specify Platform [${candidate}]" -ForegroundColor Red
          exit -1
       }
 
