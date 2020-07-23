@@ -285,6 +285,37 @@ switch(type)\
         break;\
 }
 
+#define matrix_cartesian_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
+switch(type)\
+{\
+    case matrix_element_type::UInt8:\
+        __FUNC__(uint8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::RgbPixel:\
+        __FUNC__(rgb_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::BgrPixel:\
+        __FUNC__(bgr_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::LabPixel:\
+        __FUNC__(lab_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt16:\
+    case matrix_element_type::UInt32:\
+    case matrix_element_type::UInt64:\
+    case matrix_element_type::Int8:\
+    case matrix_element_type::Int16:\
+    case matrix_element_type::Int32:\
+    case matrix_element_type::Int64:\
+    case matrix_element_type::Float:\
+    case matrix_element_type::Double:\
+    case matrix_element_type::HsiPixel:\
+    case matrix_element_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #define matrix_hsi_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
 switch(type)\
 {\
@@ -901,6 +932,37 @@ switch(type)\
         break;\
 }
 
+#define matrix_cartesian_inout_in_template(type, error, __FUNC__, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, ...) \
+switch(type)\
+{\
+    case matrix_element_type::UInt8:\
+        { __FUNC__(uint8_t, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
+    case matrix_element_type::RgbPixel:\
+        { __FUNC__(rgb_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
+    case matrix_element_type::BgrPixel:\
+        { __FUNC__(bgr_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
+    case matrix_element_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
+    case matrix_element_type::UInt16:\
+    case matrix_element_type::UInt32:\
+    case matrix_element_type::UInt64:\
+    case matrix_element_type::Int8:\
+    case matrix_element_type::Int16:\
+    case matrix_element_type::Int32:\
+    case matrix_element_type::Int64:\
+    case matrix_element_type::Float:\
+    case matrix_element_type::Double:\
+    case matrix_element_type::HsiPixel:\
+    case matrix_element_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #define matrix_numericrgbbgr_inout_out_template(__TYPE__, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, ...) \
 switch(subtype)\
 {\
@@ -1387,6 +1449,35 @@ switch(type)\
         break;\
 }
 
+#define array2d_cartesian_template(type, error, __FUNC__, ...) \
+switch(type)\
+{\
+    case array2d_type::UInt8:\
+        { __FUNC__(uint8_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbPixel:\
+        { __FUNC__(rgb_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::BgrPixel:\
+        { __FUNC__(bgr_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt16:\
+    case array2d_type::UInt32:\
+    case array2d_type::Int8:\
+    case array2d_type::Int16:\
+    case array2d_type::Int32:\
+    case array2d_type::Float:\
+    case array2d_type::Double:\
+    case array2d_type::HsiPixel:\
+    case array2d_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #define array2d_hsi_template(type, error, __FUNC__, ...) \
 switch(type)\
 {\
@@ -1645,6 +1736,35 @@ switch(type)\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
         break;\
+    case array2d_type::RgbAlphaPixel:\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}\
+
+#define array2d_cartesian_inout_in_template(type, error, __FUNC__, __SUB_FUNC__, subtype, ...) \
+switch(type)\
+{\
+    case array2d_type::UInt8:\
+        { __FUNC__(uint8_t, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbPixel:\
+        { __FUNC__(rgb_pixel, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::BgrPixel:\
+        { __FUNC__(bgr_pixel, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt16:\
+    case array2d_type::UInt32:\
+    case array2d_type::Int8:\
+    case array2d_type::Int16:\
+    case array2d_type::Int32:\
+    case array2d_type::Float:\
+    case array2d_type::Double:\
+    case array2d_type::HsiPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\

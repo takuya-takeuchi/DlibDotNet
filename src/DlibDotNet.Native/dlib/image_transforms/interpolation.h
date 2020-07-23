@@ -240,9 +240,6 @@ switch(int_type)\
     case interpolation_type::NearestNeighbor:\
         dlib::extract_image_chip(in_, *chip_location, out_, interpolate_nearest_neighbor());\
         break;\
-    case interpolation_type::Bilinear:\
-        dlib::extract_image_chip(in_, *chip_location, out_, interpolate_bilinear());\
-        break;\
     default:\
         error = ERR_GENERAL_INVALID_PARAMETER;\
         break;\
@@ -919,17 +916,17 @@ DLLEXPORT int extract_image_chips_matrix(matrix_element_type img_type, void* in_
     auto type = img_type;
     auto subtype = array_type;
 
-    matrix_nonalpha_inout_in_template(type,
-                                      error,
-                                      matrix_inout_out_template,
-                                      matrix_inout_template_size_template,
-                                      extract_image_chips_matrix_template,
-                                      subtype,
-                                      0,
-                                      0,
-                                      in_img,
-                                      chips,
-                                      array);
+    matrix_cartesian_inout_in_template(type,
+                                       error,
+                                       matrix_inout_out_template,
+                                       matrix_inout_template_size_template,
+                                       extract_image_chips_matrix_template,
+                                       subtype,
+                                       0,
+                                       0,
+                                       in_img,
+                                       chips,
+                                       array);
 
     return error;
 }
@@ -945,14 +942,14 @@ DLLEXPORT int extract_image_chip(array2d_type img_type,
     auto type = img_type;
     auto subtype = array_type;
 
-    array2d_nonalpha_inout_in_template(type,
-                                       error,
-                                       array2d_nonalpha_inout_out_template,
-                                       extract_image_chip_template,
-                                       subtype,
-                                       in_img,
-                                       chip_location,
-                                       out_chip);
+    array2d_cartesian_inout_in_template(type,
+                                        error,
+                                        array2d_nonalpha_inout_out_template,
+                                        extract_image_chip_template,
+                                        subtype,
+                                        in_img,
+                                        chip_location,
+                                        out_chip);
 
     return error;
 }
@@ -1004,17 +1001,17 @@ DLLEXPORT int extract_image_chip_matrix(matrix_element_type img_type, void* in_i
     auto type = img_type;
     auto subtype = array_type;
 
-    matrix_nonalpha_inout_in_template(type,
-                                      error,
-                                      matrix_inout_out_template,
-                                      matrix_inout_template_size_template,
-                                      extract_image_chip_matrix_template,
-                                      subtype,
-                                      0,
-                                      0,
-                                      in_img,
-                                      chip_location,
-                                      out_chip);
+    matrix_cartesian_inout_in_template(type,
+                                       error,
+                                       matrix_inout_out_template,
+                                       matrix_inout_template_size_template,
+                                       extract_image_chip_matrix_template,
+                                       subtype,
+                                       0,
+                                       0,
+                                       in_img,
+                                       chip_location,
+                                       out_chip);
 
     return error;
 }
@@ -1026,36 +1023,18 @@ DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_
     auto type = img_type;
     auto subtype = array_type;
 
-    if (type == matrix_element_type::HsiPixel)
-    {
-        matrix_hsi_inout_in_template(type,
-                                     error,
-                                     matrix_hsi_inout_out_template,
-                                     matrix_inout_template_size_template,
-                                     extract_image_chip_matrix2_hsi_template,
-                                     subtype,
-                                     0,
-                                     0,
-                                     in_img,
-                                     chip_location,
-                                     int_type,
-                                     out_chip);
-    }
-    else
-    {
-        matrix_numericrgbbgr_inout_in_template(type,
-                                               error,
-                                               matrix_inout_out_template,
-                                               matrix_inout_template_size_template,
-                                               extract_image_chip_matrix2_template,
-                                               subtype,
-                                               0,
-                                               0,
-                                               in_img,
-                                               chip_location,
-                                               int_type,
-                                               out_chip);
-    }
+    matrix_cartesian_inout_in_template(type,
+                                       error,
+                                       matrix_inout_out_template,
+                                       matrix_inout_template_size_template,
+                                       extract_image_chip_matrix2_template,
+                                       subtype,
+                                       0,
+                                       0,
+                                       in_img,
+                                       chip_location,
+                                       int_type,
+                                       out_chip);
 
     return error;
 }
@@ -1068,15 +1047,15 @@ DLLEXPORT int jitter_image(matrix_element_type type, void* in_img, dlib::rand* r
 {
     int error = ERR_OK;
 
-    matrix_nonalpha_template(type,
-                             error,
-                             matrix_template_size_template,
-                             jitter_image_template,
-                             0,
-                             0,
-                             in_img,
-                             r,
-                             out_img);
+    matrix_cartesian_template(type,
+                              error,
+                              matrix_template_size_template,
+                              jitter_image_template,
+                              0,
+                              0,
+                              in_img,
+                              r,
+                              out_img);
 
     return error;
 }
@@ -1146,14 +1125,14 @@ DLLEXPORT int extract_image_4points(array2d_type type,
 {
     int error = ERR_OK;
 
-    array2d_nonalpha_template(type,
-                              error,
-                              extract_image_4points_template,
-                              image,
-                              points,
-                              width,
-                              height,
-                              output);
+    array2d_cartesian_template(type,
+                               error,
+                               extract_image_4points_template,
+                               image,
+                               points,
+                               width,
+                               height,
+                               output);
 
     return error;
 }
@@ -1169,17 +1148,17 @@ DLLEXPORT int extract_image_4points_matrix(matrix_element_type type,
 {
     int error = ERR_OK;
 
-    matrix_nonalpha_template(type,
-                             error,
-                             matrix_template_size_template,
-                             extract_image_4points_matrix_template,
-                             templateRows,
-                             templateColumns,
-                             matrix,
-                             points,
-                             width,
-                             height,
-                             output);
+    matrix_cartesian_template(type,
+                              error,
+                              matrix_template_size_template,
+                              extract_image_4points_matrix_template,
+                              templateRows,
+                              templateColumns,
+                              matrix,
+                              points,
+                              width,
+                              height,
+                              output);
 
     return error;
 }

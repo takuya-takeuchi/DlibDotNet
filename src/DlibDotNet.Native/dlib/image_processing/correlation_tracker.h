@@ -53,11 +53,11 @@ DLLEXPORT int correlation_tracker_start_track(correlation_tracker* tracker, arra
 {
     int error = ERR_OK;
 
-    array2d_nonalpha_template(type,
-                              error,
-                              correlation_tracker_start_track_template,
-                              img,
-                              p);
+    array2d_cartesian_template(type,
+                               error,
+                               correlation_tracker_start_track_template,
+                               img,
+                               p);
 
     return error;
 }
@@ -76,12 +76,12 @@ DLLEXPORT int correlation_tracker_update_noscale(correlation_tracker* tracker,
 {
     int error = ERR_OK;
 
-    array2d_nonalpha_template(type,
-                              error,
-                              correlation_tracker_update_noscale_template,
-                              img,
-                              guess,
-                              confident);
+    array2d_cartesian_template(type,
+                               error,
+                               correlation_tracker_update_noscale_template,
+                               img,
+                               guess,
+                               confident);
 
     return error;
 }
@@ -93,11 +93,11 @@ DLLEXPORT int correlation_tracker_update_noscale2(correlation_tracker* tracker,
 {
     int error = ERR_OK;
 
-    array2d_nonalpha_template(type,
-                              error,
-                              correlation_tracker_update_noscale2_template,
-                              img,
-                              confident);
+    array2d_cartesian_template(type,
+                               error,
+                               correlation_tracker_update_noscale2_template,
+                               img,
+                               confident);
 
     return error;
 }
@@ -110,12 +110,12 @@ DLLEXPORT int correlation_tracker_update(correlation_tracker* tracker,
 {
     int error = ERR_OK;
 
-    array2d_nonalpha_template(type,
-                              error,
-                              correlation_tracker_update_template,
-                              img,
-                              guess,
-                              confident);
+    array2d_cartesian_template(type,
+                               error,
+                               correlation_tracker_update_template,
+                               img,
+                               guess,
+                               confident);
 
     return error;
 }
@@ -127,7 +127,7 @@ DLLEXPORT int correlation_tracker_update2(correlation_tracker* tracker,
 {
     int error = ERR_OK;
 
-    array2d_nonalpha_template(type,
+    array2d_cartesian_template(type,
                               error,
                               correlation_tracker_update2_template,
                               img,
