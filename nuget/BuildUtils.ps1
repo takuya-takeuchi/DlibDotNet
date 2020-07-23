@@ -95,7 +95,7 @@ class Config
    #  %4: Architecture (32/64)
    #  %5: Platform (desktop/android/ios/uwp)
    #  %6: Optional Argument
-   #    if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101/102]
+   #    if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101/102/110]
    #    if Target is mkl and Windows, IntelMKL directory path
    #***************************************
    Config(  [string]$Root,
