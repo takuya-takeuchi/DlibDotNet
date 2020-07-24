@@ -167,7 +167,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.UInt8:
                         {
                             var array = (Array2D<byte>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255, "Array<byte> failed");
                         }
@@ -175,7 +175,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.UInt16:
                         {
                             var array = (Array2D<ushort>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255, "Array<ushort> failed");
                         }
@@ -183,7 +183,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.UInt32:
                         {
                             var array = (Array2D<uint>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255u, "Array<uint> failed");
                         }
@@ -191,7 +191,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Int8:
                         {
                             var array = (Array2D<sbyte>)array2D;
-                            Dlib.AssignAllPpixels(array, 127);
+                            Dlib.AssignAllPixels(array, 127);
                             using (var row = array[0])
                                 Assert.True(row[0] == 127, "Array<sbyte> failed");
                         }
@@ -199,7 +199,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Int16:
                         {
                             var array = (Array2D<short>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255, "Array<short> failed");
                         }
@@ -207,7 +207,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Int32:
                         {
                             var array = (Array2D<int>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255, "Array<int> failed");
                         }
@@ -215,7 +215,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Float:
                         {
                             var array = (Array2D<float>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255, "Array<float> failed");
                         }
@@ -223,7 +223,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Double:
                         {
                             var array = (Array2D<double>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                                 Assert.True(row[0] == 255, "Array<double> failed");
                         }
@@ -238,7 +238,7 @@ namespace DlibDotNet.Tests.Array2D
                                 Green = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 var t = row[0];
@@ -258,7 +258,7 @@ namespace DlibDotNet.Tests.Array2D
                                 Green = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 var t = row[0];
@@ -279,7 +279,7 @@ namespace DlibDotNet.Tests.Array2D
                                 Alpha = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 var t = row[0];
@@ -300,7 +300,7 @@ namespace DlibDotNet.Tests.Array2D
                                 I = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 var t = row[0];
@@ -320,7 +320,7 @@ namespace DlibDotNet.Tests.Array2D
                                 B = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 var t = row[0];
@@ -368,7 +368,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.UInt8:
                         {
                             var array = (Array2D<byte>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -379,7 +379,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.UInt16:
                         {
                             var array = (Array2D<ushort>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -390,7 +390,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.UInt32:
                         {
                             var array = (Array2D<uint>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -401,7 +401,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Int8:
                         {
                             var array = (Array2D<sbyte>)array2D;
-                            Dlib.AssignAllPpixels(array, 127);
+                            Dlib.AssignAllPixels(array, 127);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -412,7 +412,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Int16:
                         {
                             var array = (Array2D<short>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -423,7 +423,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Int32:
                         {
                             var array = (Array2D<int>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -434,7 +434,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Float:
                         {
                             var array = (Array2D<float>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -445,7 +445,7 @@ namespace DlibDotNet.Tests.Array2D
                     case ImageTypes.Double:
                         {
                             var array = (Array2D<double>)array2D;
-                            Dlib.AssignAllPpixels(array, 255);
+                            Dlib.AssignAllPixels(array, 255);
                             using (var row = array[0])
                             {
                                 row[50] = 0;
@@ -463,7 +463,7 @@ namespace DlibDotNet.Tests.Array2D
                                 Green = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 row[50] = new BgrPixel
@@ -489,7 +489,7 @@ namespace DlibDotNet.Tests.Array2D
                                 Green = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 row[50] = new RgbPixel
@@ -516,7 +516,7 @@ namespace DlibDotNet.Tests.Array2D
                                 Alpha = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 row[50] = new RgbAlphaPixel
@@ -545,7 +545,7 @@ namespace DlibDotNet.Tests.Array2D
                                 I = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 row[50] = new HsiPixel
@@ -572,7 +572,7 @@ namespace DlibDotNet.Tests.Array2D
                                 B = 255
                             };
 
-                            Dlib.AssignAllPpixels(array, pixel);
+                            Dlib.AssignAllPixels(array, pixel);
                             using (var row = array[0])
                             {
                                 row[50] = new LabPixel
