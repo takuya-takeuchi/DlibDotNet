@@ -28,12 +28,12 @@ DLLEXPORT int save_dng(array2d_type type, void* image, const char* file_name, co
 {
     int error = ERR_OK;
 
-    array2d_template(type,
-                     error,
-                     save_dng_array2d_template,
-                     image,
-                     file_name,
-                     file_name_length);
+    array2d_nolab_template(type,
+                           error,
+                           save_dng_array2d_template,
+                           image,
+                           file_name,
+                           file_name_length);
 
     return error;
 }
@@ -47,15 +47,15 @@ DLLEXPORT int save_dng_matrix(matrix_element_type type,
 {
     int error = ERR_OK;
 
-    matrix_template(type,
-                    error,
-                    matrix_template_size_template,
-                    save_dng_matrix_template,
-                    templateRows,
-                    templateColumns,
-                    matrix,
-                    file_name,
-                    file_name_length);
+    matrix_nolab_template(type,
+                          error,
+                          matrix_template_size_template,
+                          save_dng_matrix_template,
+                          templateRows,
+                          templateColumns,
+                          matrix,
+                          file_name,
+                          file_name_length);
 
     return error;
 }

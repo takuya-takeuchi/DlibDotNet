@@ -42,6 +42,8 @@ namespace DlibDotNet
 
             HsiPixel,
 
+            LabPixel,
+
             Matrix
 
         }
@@ -94,7 +96,9 @@ namespace DlibDotNet
 
             RgbAlphaPixel,
 
-            HsiPixel
+            HsiPixel,
+
+            LabPixel
 
         }
 
@@ -429,7 +433,13 @@ namespace DlibDotNet
         public static extern void assign_pixel_rgb_hsi(ref RgbPixel dest, ref HsiPixel src);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void assign_pixel_rgb_lab(ref RgbPixel dest, ref LabPixel src);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void assign_pixel_rgbalpha_hsi(ref RgbAlphaPixel dest, ref HsiPixel src);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void assign_pixel_rgbalpha_lab(ref RgbAlphaPixel dest, ref LabPixel src);
 
         #endregion
 
@@ -625,6 +635,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, HsiPixel[] data, uint rows, uint columns, uint steps);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, LabPixel[] data, uint rows, uint columns, uint steps);
 
         #endregion
 

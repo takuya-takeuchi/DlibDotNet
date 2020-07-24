@@ -33,7 +33,8 @@ namespace DlibDotNet
                 new {Type = typeof(Matrix<RgbPixel>),       ElementType = MatrixElementTypes.RgbPixel },
                 new {Type = typeof(Matrix<BgrPixel>),       ElementType = MatrixElementTypes.BgrPixel },
                 new {Type = typeof(Matrix<RgbAlphaPixel>),  ElementType = MatrixElementTypes.RgbAlphaPixel },
-                new {Type = typeof(Matrix<HsiPixel>),       ElementType = MatrixElementTypes.HsiPixel }
+                new {Type = typeof(Matrix<HsiPixel>),       ElementType = MatrixElementTypes.HsiPixel },
+                new {Type = typeof(Matrix<LabPixel>),       ElementType = MatrixElementTypes.LabPixel }
             };
 
             foreach (var type in types)

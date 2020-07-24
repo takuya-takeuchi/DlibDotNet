@@ -36,7 +36,8 @@ namespace DlibDotNet
                 new {Type = typeof(RgbPixel),       ElementType = MatrixElementTypes.RgbPixel },
                 new {Type = typeof(BgrPixel),       ElementType = MatrixElementTypes.BgrPixel },
                 new {Type = typeof(RgbAlphaPixel),  ElementType = MatrixElementTypes.RgbAlphaPixel },
-                new {Type = typeof(HsiPixel),       ElementType = MatrixElementTypes.HsiPixel }
+                new {Type = typeof(HsiPixel),       ElementType = MatrixElementTypes.HsiPixel },
+                new {Type = typeof(LabPixel),       ElementType = MatrixElementTypes.LabPixel }
             };
 
             foreach (var type in types)
@@ -57,6 +58,7 @@ namespace DlibDotNet
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.BgrPixel, Marshal.SizeOf<BgrPixel>());
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.RgbAlphaPixel, Marshal.SizeOf<RgbAlphaPixel>());
             ElementSizeDictionary.Add(NativeMethods.MatrixElementType.HsiPixel, Marshal.SizeOf<HsiPixel>());
+            ElementSizeDictionary.Add(NativeMethods.MatrixElementType.LabPixel, Marshal.SizeOf<LabPixel>());
         }
 
         protected MatrixBase(int templateRows = 0, int templateColumns = 0, bool isEnabledDispose = true)

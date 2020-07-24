@@ -68,6 +68,7 @@ MAKE_FUNC(double, double)
 MAKE_FUNC(dlib::rgb_pixel, rgb_pixel)
 MAKE_FUNC(dlib::bgr_pixel, bgr_pixel)
 MAKE_FUNC(dlib::hsi_pixel, hsi_pixel)
+MAKE_FUNC(dlib::lab_pixel, lab_pixel)
 MAKE_FUNC(dlib::rgb_alpha_pixel, rgb_alpha_pixel)
 
 DLLEXPORT int mat_mat_OpStdVectToMat(matrix_element_type type, void* vec, int templateRows, int templateColumns, void** mat_op)

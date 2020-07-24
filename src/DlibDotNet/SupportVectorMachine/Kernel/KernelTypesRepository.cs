@@ -32,6 +32,7 @@ namespace DlibDotNet
                 new { Type = typeof(double),        ElementType = MatrixElementTypes.Double        },
                 new { Type = typeof(RgbPixel),      ElementType = MatrixElementTypes.RgbPixel      },
                 new { Type = typeof(HsiPixel),      ElementType = MatrixElementTypes.HsiPixel      },
+                new { Type = typeof(LabPixel),      ElementType = MatrixElementTypes.LabPixel      },
                 new { Type = typeof(RgbAlphaPixel), ElementType = MatrixElementTypes.RgbAlphaPixel }
             };
 

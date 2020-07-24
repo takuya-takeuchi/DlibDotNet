@@ -16,6 +16,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt64,         ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
@@ -65,6 +66,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt64,        ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
@@ -114,6 +116,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt64,        ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
@@ -250,6 +253,13 @@ namespace DlibDotNet.Tests.Matrix
                         return new MatrixRangeExp<HsiPixel>(default(HsiPixel), default(HsiPixel), (int)0);
                     else
                         return new MatrixRangeExp<HsiPixel>(default(HsiPixel), default(HsiPixel));
+                case MatrixElementTypes.LabPixel:
+                    if (useInc)
+                        return new MatrixRangeExp<LabPixel>(default(LabPixel), default(LabPixel), default(LabPixel));
+                    else if (useNum)
+                        return new MatrixRangeExp<LabPixel>(default(LabPixel), default(LabPixel), (int)0);
+                    else
+                        return new MatrixRangeExp<LabPixel>(default(LabPixel), default(LabPixel));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

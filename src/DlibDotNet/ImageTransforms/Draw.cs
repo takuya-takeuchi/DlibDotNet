@@ -287,7 +287,7 @@ namespace DlibDotNet
                 }
             }
         }
-
+        
         public static void DrawLine(Array2D<HsiPixel> image, Point p1, Point p2, HsiPixel color)
         {
             if (image == null)
@@ -303,6 +303,33 @@ namespace DlibDotNet
             using (var np2 = p2.ToNative())
             {
                 var ret = NativeMethods.draw_line(NativeMethods.Array2DType.HsiPixel,
+                                                  image.NativePtr,
+                                                  np1.NativePtr,
+                                                  np2.NativePtr,
+                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+        
+        public static void DrawLine(Array2D<LabPixel> image, Point p1, Point p2, LabPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line(NativeMethods.Array2DType.LabPixel,
                                                   image.NativePtr,
                                                   np1.NativePtr,
                                                   np2.NativePtr,
@@ -616,6 +643,33 @@ namespace DlibDotNet
                 }
             }
         }
+        
+        public static void DrawLine(Matrix<LabPixel> image, Point p1, Point p2, LabPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            image.ThrowIfDisposed();
+
+            using (var np1 = p1.ToNative())
+            using (var np2 = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_matrix(NativeMethods.MatrixElementType.LabPixel,
+                                                         image.NativePtr,
+                                                         np1.NativePtr,
+                                                         np2.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
 
         #endregion
 
@@ -841,6 +895,29 @@ namespace DlibDotNet
             }
         }
 
+        public static void DrawRectangle(Array2D<LabPixel> image, Rectangle rect, LabPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle(NativeMethods.Array2DType.LabPixel,
+                                                       image.NativePtr,
+                                                       native.NativePtr,
+                                                       ref color,
+                                                       thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+
         public static void DrawRectangle(Array2D<HsiPixel> image, Rectangle rect, HsiPixel color, uint thickness = 1)
         {
             if (image == null)
@@ -862,7 +939,7 @@ namespace DlibDotNet
                 }
             }
         }
-        
+
         public static void DrawRectangle(Matrix<byte> image, Rectangle rect, byte color, uint thickness = 1)
         {
             if (image == null)
@@ -1093,6 +1170,28 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             {
                 var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.HsiPixel,
+                                                              image.NativePtr,
+                                                              native.NativePtr,
+                                                              ref color,
+                                                              thickness);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void DrawRectangle(Matrix<LabPixel> image, Rectangle rect, LabPixel color, uint thickness = 1)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.draw_rectangle_matrix(NativeMethods.MatrixElementType.LabPixel,
                                                               image.NativePtr,
                                                               native.NativePtr,
                                                               ref color,
@@ -1340,6 +1439,27 @@ namespace DlibDotNet
             }
         }
 
+        public static void FillRect(Array2D<LabPixel> image, Rectangle rect, LabPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect(NativeMethods.Array2DType.LabPixel,
+                                                  image.NativePtr,
+                                                  native.NativePtr,
+                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
         public static void FillRect(Matrix<byte> image, Rectangle rect, byte color)
         {
             if (image == null)
@@ -1560,6 +1680,27 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             {
                 var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.HsiPixel,
+                                                         image.NativePtr,
+                                                         native.NativePtr,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
+        }
+
+        public static void FillRect(Matrix<LabPixel> image, Rectangle rect, LabPixel color)
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            {
+                var ret = NativeMethods.fill_rect_matrix(NativeMethods.MatrixElementType.LabPixel,
                                                          image.NativePtr,
                                                          native.NativePtr,
                                                          ref color);

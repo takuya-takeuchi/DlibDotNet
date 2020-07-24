@@ -1788,6 +1788,128 @@ namespace DlibDotNet
 
         }
 
+        internal sealed class IndexerLabPixel : Indexer<LabPixel>
+        {
+
+            #region Constructors
+
+            public IndexerLabPixel(MatrixBase parent)
+                : base(parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override LabPixel this[int index]
+            {
+                get
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+                    if (!(r == 1 || c == 1))
+                        throw new NotSupportedException();
+
+                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
+                        throw new IndexOutOfRangeException();
+
+                    unsafe
+                    {
+                        var value = new LabPixel();
+                        var p = (IntPtr)(&value);
+                        var ret = NativeMethods.matrix_operator_get_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        this.ThrowIfHasError(ret);
+
+                        return value;
+                    }
+                }
+                set
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+                    if (!(r == 1 || c == 1))
+                        throw new NotSupportedException();
+
+                    if (!((r == 1 && 0 <= index && index < c) || (c == 1 && 0 <= index && index < r)))
+                        throw new IndexOutOfRangeException();
+
+                    unsafe
+                    {
+                        var p = (IntPtr)(&value);
+                        var ret = NativeMethods.matrix_operator_set_one_row_column(this._Type, this._Parent.NativePtr, index, tr, tc, p);
+                        this.ThrowIfHasError(ret);
+                    }
+                }
+            }
+
+            public override LabPixel this[int row, int column]
+            {
+                get
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+
+                    if (!(0 <= column && column < c) && (0 <= row && row < r))
+                        throw new IndexOutOfRangeException();
+
+                    unsafe
+                    {
+                        var value = new LabPixel();
+                        var p = (IntPtr)(&value);
+                        var ret = NativeMethods.matrix_operator_get_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        this.ThrowIfHasError(ret);
+
+                        return value;
+                    }
+                }
+                set
+                {
+                    var r = this._Parent.Rows;
+                    var c = this._Parent.Columns;
+                    var tr = this._Parent.TemplateRows;
+                    var tc = this._Parent.TemplateColumns;
+
+                    if (!(0 <= column && column < c) && (0 <= row && row < r))
+                        throw new IndexOutOfRangeException();
+
+                    unsafe
+                    {
+                        var p = (IntPtr)(&value);
+                        var ret = NativeMethods.matrix_operator_set_row_column(this._Type, this._Parent.NativePtr, row, column, tr, tc, p);
+                        this.ThrowIfHasError(ret);
+                    }
+                }
+
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override IEnumerator<LabPixel> GetEnumerator()
+            {
+                this.GetBeginEnd(out var begin, out var end);
+
+                var length = ((ulong)end - (ulong)begin) / (uint)Marshal.SizeOf<LabPixel>();
+
+                var array = new LabPixel[length];
+                InteropHelper.Copy(begin, array, (uint)array.Length);
+
+                foreach (var b in array)
+                    yield return b;
+            }
+
+            #endregion
+
+        }
+
     }
 
 }

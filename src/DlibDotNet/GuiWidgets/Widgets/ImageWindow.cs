@@ -298,6 +298,20 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="Rectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="LabPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
+        public void AddOverlay(Rectangle rect, LabPixel color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
+        }
+
         #endregion
 
         #region AddOverlay(IEnumerable<Rectangle> rects, pixel_type color)
@@ -429,6 +443,17 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
+        }
+
+        public void AddOverlay(IEnumerable<Rectangle> rects, LabPixel color)
+        {
+            this.ThrowIfDisposed();
+
+            if (rects == null)
+                throw new ArgumentNullException(nameof(rects));
+
+            using (var vector = new StdVector<Rectangle>(rects))
+                NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
         }
 
         #endregion
@@ -602,6 +627,20 @@ namespace DlibDotNet
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
         }
 
+        /// <summary>
+        /// Adds the given overlay rectangle into this object such that it will be displayed. 
+        /// </summary>
+        /// <param name="rect">A <see cref="DRectangle"/> structure that represents the rectangle to be displayed.</param>
+        /// <param name="color">A <see cref="LabPixel"/> value that represents a color.</param>
+        /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
+        public void AddOverlay(DRectangle rect, LabPixel color)
+        {
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+                NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
+        }
+
         #endregion
 
         #region AddOverlay(Rectangle rect, pixel_type color, string str)
@@ -745,6 +784,18 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color, pStr.NativePtr);
+        }
+
+        public void AddOverlay(Rectangle rect, LabPixel color, string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            this.ThrowIfDisposed();
+
+            using (var native = rect.ToNative())
+            using (var pStr = new StdString(str))
+                NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.LabPixel, ref color, pStr.NativePtr);
         }
 
         #endregion

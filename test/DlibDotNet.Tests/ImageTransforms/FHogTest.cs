@@ -24,6 +24,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = false},
                 new { Type = MatrixElementTypes.UInt16,        ExpectResult = false},
@@ -78,6 +79,9 @@ namespace DlibDotNet.Tests.ImageTransforms
                                 break;
                             case MatrixElementTypes.HsiPixel:
                                 outputObj = Dlib.ExtractFHogFeatures<HsiPixel>(imageObj);
+                                break;
+                            case MatrixElementTypes.LabPixel:
+                                outputObj = Dlib.ExtractFHogFeatures<LabPixel>(imageObj);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -196,6 +200,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
@@ -250,6 +255,9 @@ namespace DlibDotNet.Tests.ImageTransforms
                                 break;
                             case MatrixElementTypes.HsiPixel:
                                 Dlib.ExtractFHogFeatures<HsiPixel>(imageObj, out outputObj);
+                                break;
+                            case MatrixElementTypes.LabPixel:
+                                Dlib.ExtractFHogFeatures<LabPixel>(imageObj, out outputObj);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();

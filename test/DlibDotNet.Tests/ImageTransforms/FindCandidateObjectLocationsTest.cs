@@ -26,6 +26,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true },
                 new { Type = ImageTypes.Int32,         ExpectResult = true },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false },
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false },
                 new { Type = ImageTypes.Float,         ExpectResult = false },
                 new { Type = ImageTypes.Double,        ExpectResult = false }
             };
@@ -79,6 +80,10 @@ namespace DlibDotNet.Tests.ImageTransforms
                         case ImageTypes.HsiPixel:
                             foreach (var r in rects)
                                 Dlib.DrawRectangle((Array2D<HsiPixel>)inImg, r, new HsiPixel { H = 255 });
+                            break;
+                        case ImageTypes.LabPixel:
+                            foreach (var r in rects)
+                                Dlib.DrawRectangle((Array2D<LabPixel>)inImg, r, new LabPixel { L = 255 });
                             break;
                         case ImageTypes.Float:
                             foreach (var r in rects)

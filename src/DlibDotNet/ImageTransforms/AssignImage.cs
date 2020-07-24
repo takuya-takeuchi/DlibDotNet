@@ -204,6 +204,22 @@ namespace DlibDotNet
             }
         }
 
+        public static void AssignAllPpixels(Array2D<LabPixel> dest, LabPixel pixel)
+        {
+            if (dest == null)
+                throw new ArgumentNullException(nameof(dest));
+
+            dest.ThrowIfDisposed(nameof(dest));
+
+            var outType = dest.ImageType.ToNativeArray2DType();
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.LabPixel, ref pixel);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
+            }
+        }
+
         #endregion
 
         public static void AssignImage(Array2DBase src, Array2DBase dest)

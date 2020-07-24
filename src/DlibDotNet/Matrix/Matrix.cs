@@ -278,6 +278,13 @@ namespace DlibDotNet
                                 this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
                         }
                         break;
+                    case NativeMethods.MatrixElementType.LabPixel:
+                    {
+                        var tmp = array as LabPixel[];
+                        fixed (LabPixel* src = &tmp[0])
+                            this.NativePtr = NativeMethods.matrix_new2(this._ElementType, row, column, (IntPtr)src);
+                    }
+                        break;
                 }
             }
 
@@ -317,6 +324,7 @@ namespace DlibDotNet
                     case NativeMethods.MatrixElementType.BgrPixel:
                     case NativeMethods.MatrixElementType.RgbAlphaPixel:
                     case NativeMethods.MatrixElementType.HsiPixel:
+                    case NativeMethods.MatrixElementType.LabPixel:
                         this.NativePtr = NativeMethods.matrix_new6(this._ElementType, row, column, stride, array);
                         break;
                 }
@@ -483,6 +491,9 @@ namespace DlibDotNet
                     break;
                 case MatrixElementTypes.HsiPixel:
                     NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<HsiPixel>().ToArray());
+                    break;
+                case MatrixElementTypes.LabPixel:
+                    NativeMethods.matrix_operator_array(this._ElementType, this.NativePtr, templateRows, templateColumns, array.Cast<LabPixel>().ToArray());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -804,6 +815,23 @@ namespace DlibDotNet
                         result = array as TElement[];
                     }
                     break;
+                case MatrixElementTypes.LabPixel:
+                    unsafe
+                    {
+                        var row = this.Rows;
+                        var column = this.Columns;
+
+                        var array = new LabPixel[row * column];
+                        fixed (LabPixel* dst = &array[0])
+                        {
+                            var src = this.NativePtr;
+                            var type = this._ElementType;
+                            err = NativeMethods.extensions_matrix_to_array(src, type, templateRows, templateColumns, (IntPtr)dst);
+                        }
+
+                        result = array as TElement[];
+                    }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -915,6 +943,8 @@ namespace DlibDotNet
                     return new IndexerRgbAlphaPixel(this) as Indexer<TElement>;
                 case MatrixElementTypes.HsiPixel:
                     return new IndexerHsiPixel(this) as Indexer<TElement>;
+                case MatrixElementTypes.LabPixel:
+                    return new IndexerLabPixel(this) as Indexer<TElement>;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(types), types, null);
             }

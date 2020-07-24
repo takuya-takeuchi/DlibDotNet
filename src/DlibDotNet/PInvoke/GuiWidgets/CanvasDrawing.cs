@@ -43,6 +43,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_line_canvas(IntPtr canvas, IntPtr p1, IntPtr p2, IntPtr area, Array2DType pixelType, ref HsiPixel color);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_line_canvas(IntPtr canvas, IntPtr p1, IntPtr p2, IntPtr area, Array2DType pixelType, ref LabPixel color);
+
         #endregion
 
         #region draw_line_canvas_infinity
@@ -79,6 +82,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_line_canvas_infinity(IntPtr canvas, IntPtr p1, IntPtr p2, Array2DType pixelType, ref HsiPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_line_canvas_infinity(IntPtr canvas, IntPtr p1, IntPtr p2, Array2DType pixelType, ref LabPixel color);
 
         #endregion
 
@@ -117,6 +123,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_rectangle_canvas(IntPtr canvas, IntPtr rect, IntPtr area, Array2DType pixelType, ref HsiPixel color);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_rectangle_canvas(IntPtr canvas, IntPtr rect, IntPtr area, Array2DType pixelType, ref LabPixel color);
+
         #endregion
 
         #region draw_rectangle_canvas_infinity
@@ -153,6 +162,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_rectangle_canvas_infinity(IntPtr canvas, IntPtr rect, Array2DType pixelType, ref HsiPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_rectangle_canvas_infinity(IntPtr canvas, IntPtr rect, Array2DType pixelType, ref LabPixel color);
 
         #endregion
 

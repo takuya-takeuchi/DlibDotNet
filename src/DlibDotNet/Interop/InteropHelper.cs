@@ -89,10 +89,21 @@ namespace DlibDotNet.Interop
             Copy(ptrSource, dest, 0, elements);
         }
 
+        public static void Copy(IntPtr ptrSource, LabPixel[] dest, uint elements)
+        {
+            Copy(ptrSource, dest, 0, elements);
+        }
+
         public static unsafe void Copy(IntPtr ptrSource, HsiPixel[] dest, int startIndex, uint elements)
         {
             fixed (HsiPixel* ptrDest = &dest[startIndex])
                 NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<HsiPixel>()));
+        }
+
+        public static unsafe void Copy(IntPtr ptrSource, LabPixel[] dest, int startIndex, uint elements)
+        {
+            fixed (LabPixel* ptrDest = &dest[startIndex])
+                NativeMethods.cstd_memcpy((IntPtr)ptrDest, ptrSource, (int)(elements * Marshal.SizeOf<LabPixel>()));
         }
 
         public static unsafe void Copy(uint[] source, IntPtr ptrDest, uint elements)
@@ -135,6 +146,12 @@ namespace DlibDotNet.Interop
         {
             fixed (HsiPixel* ptrSource = &source[0])
                 NativeMethods.cstd_memcpy(ptrDest, (IntPtr)ptrSource, (int)(elements * Marshal.SizeOf<HsiPixel>()));
+        }
+
+        public static unsafe void Copy(LabPixel[] source, IntPtr ptrDest, uint elements)
+        {
+            fixed (LabPixel* ptrSource = &source[0])
+                NativeMethods.cstd_memcpy(ptrDest, (IntPtr)ptrSource, (int)(elements * Marshal.SizeOf<LabPixel>()));
         }
 
     }

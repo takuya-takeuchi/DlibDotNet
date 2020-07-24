@@ -272,21 +272,10 @@ switch(int_type)\
         break;\
 }\
 
-#define extract_image_chip_matrix2_hsi_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, __SUBTYPE__, subtype, ...) \
+#define extract_image_chip_matrix2_nearest_neighbor_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, __SUBTYPE__, subtype, ...) \
 auto& in_ = *((matrix<__TYPE__, __ROWS__, __COLUMNS__>*)in_img);\
 auto& out_ = *((matrix<__SUBTYPE__, __ROWS__, __COLUMNS__>*)out_chip);\
-switch(int_type)\
-{\
-    case interpolation_type::NearestNeighbor:\
-        dlib::extract_image_chip(in_, *chip_location, out_, interpolate_nearest_neighbor());\
-        break;\
-    case interpolation_type::Bilinear:\
-        dlib::extract_image_chip(in_, *chip_location, out_, interpolate_bilinear());\
-        break;\
-    default:\
-        error = ERR_GENERAL_INVALID_PARAMETER;\
-        break;\
-}\
+dlib::extract_image_chip(in_, *chip_location, out_, interpolate_nearest_neighbor());\
 
 #define jitter_image_template(__TYPE__, error, __ELEMENT_TYPE__, __ROWS__, __COLUMNS__, ...) \
 auto& in = *(static_cast<dlib::matrix<__TYPE__, __ROWS__, __COLUMNS__>*>(in_img));\
@@ -1023,18 +1012,35 @@ DLLEXPORT int extract_image_chip_matrix2(matrix_element_type img_type, void* in_
     auto type = img_type;
     auto subtype = array_type;
 
-    matrix_cartesian_inout_in_template(type,
-                                       error,
-                                       matrix_inout_out_template,
-                                       matrix_inout_template_size_template,
-                                       extract_image_chip_matrix2_template,
-                                       subtype,
-                                       0,
-                                       0,
-                                       in_img,
-                                       chip_location,
-                                       int_type,
-                                       out_chip);
+    if (int_type == interpolation_type::NearestNeighbor)
+    {
+        matrix_nonalpha_inout_in_template(type,
+                                          error,
+                                          matrix_inout_out_template,
+                                          matrix_inout_template_size_template,
+                                          extract_image_chip_matrix2_nearest_neighbor_template,
+                                          subtype,
+                                          0,
+                                          0,
+                                          in_img,
+                                          chip_location
+                                          out_chip);
+    }
+    else
+    {
+        matrix_cartesian_inout_in_template(type,
+                                           error,
+                                           matrix_inout_out_template,
+                                           matrix_inout_template_size_template,
+                                           extract_image_chip_matrix2_template,
+                                           subtype,
+                                           0,
+                                           0,
+                                           in_img,
+                                           chip_location,
+                                           int_type,
+                                           out_chip);
+    }
 
     return error;
 }

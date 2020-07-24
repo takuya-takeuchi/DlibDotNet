@@ -46,6 +46,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Array2DType type, ref HsiPixel color);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType perspective_window_add_overlay(IntPtr window, IntPtr p1, IntPtr p2, Array2DType type, ref LabPixel color);
+
         #endregion
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -79,6 +82,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Array2DType type, ref HsiPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType perspective_window_add_overlay3(IntPtr window, IntPtr vector, Array2DType type, ref LabPixel color);
 
         #endregion
 

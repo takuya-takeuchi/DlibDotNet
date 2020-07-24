@@ -224,6 +224,8 @@ namespace DlibDotNet
                             return new StdVectorMatrixImp<RgbAlphaPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
                         case MatrixElementTypes.HsiPixel:
                             return new StdVectorMatrixImp<HsiPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.LabPixel:
+                            return new StdVectorMatrixImp<LabPixel>(templateRows, templateColumns) as StdVectorImp<TItem>;
                     }
                 }
             }

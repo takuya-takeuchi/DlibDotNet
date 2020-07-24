@@ -49,6 +49,7 @@ namespace DlibDotNet
                 new { Type = typeof(RgbPixel),               ItemType = ItemTypes.PixelType },
                 new { Type = typeof(RgbAlphaPixel),          ItemType = ItemTypes.PixelType },
                 new { Type = typeof(HsiPixel),               ItemType = ItemTypes.PixelType },
+                new { Type = typeof(LabPixel),               ItemType = ItemTypes.PixelType },
 
                 new { Type = typeof(Array2D<byte>),          ItemType = ItemTypes.Array2D },
                 new { Type = typeof(Array2D<ushort>),        ItemType = ItemTypes.Array2D },
@@ -61,6 +62,7 @@ namespace DlibDotNet
                 new { Type = typeof(Array2D<RgbPixel>),      ItemType = ItemTypes.Array2D },
                 new { Type = typeof(Array2D<RgbAlphaPixel>), ItemType = ItemTypes.Array2D },
                 new { Type = typeof(Array2D<HsiPixel>),      ItemType = ItemTypes.Array2D },
+                new { Type = typeof(Array2D<LabPixel>),      ItemType = ItemTypes.Array2D },
 
                 new { Type = typeof(Matrix<byte>),           ItemType = ItemTypes.Matrix },
                 new { Type = typeof(Matrix<ushort>),         ItemType = ItemTypes.Matrix },
@@ -72,6 +74,7 @@ namespace DlibDotNet
                 new { Type = typeof(Matrix<double>),         ItemType = ItemTypes.Matrix },
                 new { Type = typeof(Matrix<RgbPixel>),       ItemType = ItemTypes.Matrix },
                 new { Type = typeof(Matrix<HsiPixel>),       ItemType = ItemTypes.Matrix },
+                new { Type = typeof(Matrix<LabPixel>),       ItemType = ItemTypes.Matrix },
                 new { Type = typeof(Matrix<RgbAlphaPixel>),  ItemType = ItemTypes.Matrix }
             };
 
@@ -91,7 +94,8 @@ namespace DlibDotNet
                 new { Type = typeof(RgbPixel),      ElementType = ImageTypes.RgbPixel },
                 new { Type = typeof(BgrPixel),      ElementType = ImageTypes.BgrPixel },
                 new { Type = typeof(RgbAlphaPixel), ElementType = ImageTypes.RgbAlphaPixel },
-                new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel }
+                new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel },
+                new { Type = typeof(LabPixel),      ElementType = ImageTypes.LabPixel }
             };
 
             foreach (var type in elementTypes)
@@ -110,6 +114,7 @@ namespace DlibDotNet
                 new { Type = typeof(RgbPixel),      ElementType = MatrixElementTypes.RgbPixel },
                 new { Type = typeof(BgrPixel),      ElementType = MatrixElementTypes.BgrPixel },
                 new { Type = typeof(HsiPixel),      ElementType = MatrixElementTypes.HsiPixel },
+                new { Type = typeof(LabPixel),      ElementType = MatrixElementTypes.LabPixel },
                 new { Type = typeof(RgbAlphaPixel), ElementType = MatrixElementTypes.RgbAlphaPixel }
             };
 
@@ -329,6 +334,9 @@ namespace DlibDotNet
                 case ImageTypes.HsiPixel:
                     NativeMethods.array_pixel_getitem_hsi_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var hsi);
                     return hsi;
+                case ImageTypes.LabPixel:
+                    NativeMethods.array_pixel_getitem_lab_pixel(type.ToNativeArray2DType(), this.NativePtr, index, out var lab);
+                    return lab;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -366,6 +374,8 @@ namespace DlibDotNet
                     return new Array2D<RgbAlphaPixel>(array, ImageTypes.RgbAlphaPixel, false);
                 case NativeMethods.Array2DType.HsiPixel:
                     return new Array2D<HsiPixel>(array, ImageTypes.HsiPixel, false);
+                case NativeMethods.Array2DType.LabPixel:
+                    return new Array2D<LabPixel>(array, ImageTypes.LabPixel, false);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -405,6 +415,8 @@ namespace DlibDotNet
                     return new Matrix<RgbAlphaPixel>(mat, templateRow, templateColumn, false);
                 case MatrixElementTypes.HsiPixel:
                     return new Matrix<HsiPixel>(mat, templateRow, templateColumn, false);
+                case MatrixElementTypes.LabPixel:
+                    return new Matrix<LabPixel>(mat, templateRow, templateColumn, false);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -461,6 +473,9 @@ namespace DlibDotNet
                     break;
                 case ImageTypes.HsiPixel:
                     NativeMethods.array_pixel_pushback_hsi_pixel(type.ToNativeArray2DType(), this.NativePtr, (HsiPixel)item);
+                    break;
+                case ImageTypes.LabPixel:
+                    NativeMethods.array_pixel_pushback_lab_pixel(type.ToNativeArray2DType(), this.NativePtr, (LabPixel)item);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

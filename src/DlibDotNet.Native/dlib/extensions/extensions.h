@@ -67,6 +67,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -87,6 +88,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -107,6 +109,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -127,6 +130,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -147,6 +151,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -167,6 +172,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -205,6 +211,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Double:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -243,6 +250,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::Double:
                     case array2d_type::RgbPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     case array2d_type::RgbAlphaPixel:
                     default:
                         return nullptr;
@@ -264,6 +272,7 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::HsiPixel:
+                    case array2d_type::LabPixel:
                     default:
                         return nullptr;
                 }
@@ -284,6 +293,28 @@ DLLEXPORT void* extensions_load_image_data(array2d_type dst_type, array2d_type s
                     case array2d_type::RgbPixel:
                     case array2d_type::BgrPixel:
                     case array2d_type::RgbAlphaPixel:
+                    case array2d_type::LabPixel:
+                    default:
+                        return nullptr;
+                }
+            }
+        case array2d_type::LabPixel:
+            {
+                switch(src_type)
+                {
+                    // from lab_pixel to lab_pixel
+                    case array2d_type::LabPixel:
+                        extensions_load_image_data_from_to_sametype(lab_pixel, data, rows, columns, steps);
+                    case array2d_type::UInt8:
+                    case array2d_type::UInt16:
+                    case array2d_type::Int16:
+                    case array2d_type::Int32:
+                    case array2d_type::Float:
+                    case array2d_type::Double:
+                    case array2d_type::RgbPixel:
+                    case array2d_type::BgrPixel:
+                    case array2d_type::RgbAlphaPixel:
+                    case array2d_type::HsiPixel:
                     default:
                         return nullptr;
                 }
@@ -957,6 +988,9 @@ DLLEXPORT int extensions_matrix_to_array(void* src, matrix_element_type type, co
         case matrix_element_type::HsiPixel:
             extensions_matrix_to_array_template(hsi_pixel, templateRows, templateColumns, err, src, dst);
             break;
+        case matrix_element_type::LabPixel:
+            extensions_matrix_to_array_template(lab_pixel, templateRows, templateColumns, err, src, dst);
+            break;
         case matrix_element_type::RgbAlphaPixel:
             extensions_matrix_to_array_template(rgb_alpha_pixel, templateRows, templateColumns, err, src, dst);
             break;
@@ -1013,6 +1047,9 @@ DLLEXPORT int extensions_convert_array_to_bytes(array2d_type src_type, void* src
             break;
         case array2d_type::HsiPixel:
             extensions_convert_array_to_bytes_template(dlib::hsi_pixel, src, dst, rows, columns);
+            break;
+        case array2d_type::LabPixel:
+            extensions_convert_array_to_bytes_template(dlib::lab_pixel, src, dst, rows, columns);
             break;
         default:
             err = ERR_ARRAY2D_TYPE_NOT_SUPPORT;

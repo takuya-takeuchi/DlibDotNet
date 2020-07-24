@@ -24,6 +24,7 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -60,6 +61,7 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -86,7 +88,8 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
-                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true}
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true}
             };
 
             foreach (var test in tests.Select(arg => arg.Type))
@@ -121,7 +124,8 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
-                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true}
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true}
             };
 
             foreach (var test in tests.Select(arg => arg.Type))
@@ -149,8 +153,10 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.Double,        ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true}
             };
 
             foreach (var test in tests)
@@ -304,6 +310,26 @@ namespace DlibDotNet.Tests.Array2D
                             }
                         }
                         break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var array = (Array2D<LabPixel>)array2D;
+                            var pixel = new LabPixel
+                            {
+                                L = 255,
+                                A = 255,
+                                B = 255
+                            };
+
+                            Dlib.AssignAllPpixels(array, pixel);
+                            using (var row = array[0])
+                            {
+                                var t = row[0];
+                                Assert.True(t.L == 255, "Array<LabPixel> failed");
+                                Assert.True(t.A == 255, "Array<LabPixel> failed");
+                                Assert.True(t.B == 255, "Array<LabPixel> failed");
+                            }
+                        }
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(array2D.ImageType), array2D.ImageType, null);
                 }
@@ -329,6 +355,7 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -535,6 +562,33 @@ namespace DlibDotNet.Tests.Array2D
                             }
                         }
                         break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var array = (Array2D<LabPixel>)array2D;
+                            var pixel = new LabPixel
+                            {
+                                L = 255,
+                                A = 255,
+                                B = 255
+                            };
+
+                            Dlib.AssignAllPpixels(array, pixel);
+                            using (var row = array[0])
+                            {
+                                row[50] = new LabPixel
+                                {
+                                    L = 100,
+                                    A = 128,
+                                    B = 64
+                                };
+
+                                var t = row[50];
+                                Assert.True(t.L == 100, "Array<LabPixel> failed");
+                                Assert.True(t.A == 128, "Array<LabPixel> failed");
+                                Assert.True(t.B == 64, "Array<LabPixel> failed");
+                            }
+                        }
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(array2D.ImageType), array2D.ImageType, null);
                 }
@@ -560,7 +614,8 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
-                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true}
+                new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true}
             };
 
             foreach (var test in tests)
@@ -797,6 +852,31 @@ namespace DlibDotNet.Tests.Array2D
                             }
                         }
                         break;
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            var matrix = (Array2DMatrix<LabPixel>)array2DMatrix;
+                            using (var row = matrix[0])
+                            {
+                                var mat = new Matrix<LabPixel>(10, 99)
+                                {
+                                    [5, 10] = new LabPixel
+                                    {
+                                        L = 13,
+                                        A = 55,
+                                        B = 99
+                                    }
+                                };
+
+                                row[10] = mat;
+
+                                var value = row[10];
+                                var t = value[5, 10];
+                                Assert.True(t.L == 13, "Array2DMatrix<LabPixel>.L failed");
+                                Assert.True(t.A == 55, "Array2DMatrix<LabPixel>.A failed");
+                                Assert.True(t.B == 99, "Array2DMatrix<LabPixel>.B failed");
+                            }
+                        }
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(array2DMatrix.MatrixElementType), array2DMatrix.MatrixElementType, null);
                 }
@@ -816,6 +896,7 @@ namespace DlibDotNet.Tests.Array2D
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
@@ -1038,6 +1119,25 @@ namespace DlibDotNet.Tests.Array2D
                             }
                         }
                         break;
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            using (var array2D = new Array2D<LabPixel>(row, column))
+                            using (var matrix = MatrixTest.FillMatrixByNonZero<LabPixel>(row, column, out _, out var bytes))
+                            {
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                        array2D[r][c] = matrix[r, c];
+
+                                var tmp = array2D.ToBytes();
+                                if (bytes.Length != tmp.Length)
+                                    Assert.True(false, $"Array<{input.Type}>.ToBytes() returns a wrong array");
+
+                                for (var index = 0; index < tmp.Length; index++)
+                                    if (bytes[index] != tmp[index])
+                                        Assert.True(false, $"{input.Type}");
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -1067,6 +1167,8 @@ namespace DlibDotNet.Tests.Array2D
                 case ImageTypes.RgbAlphaPixel:
                     return Dlib.LoadImage<RgbAlphaPixel>(filepath);
                 case ImageTypes.HsiPixel:
+                    return Dlib.LoadImage<HsiPixel>(filepath);
+                case ImageTypes.LabPixel:
                     return Dlib.LoadImage<HsiPixel>(filepath);
                 case ImageTypes.BgrPixel:
                     return Dlib.LoadImage<BgrPixel>(filepath);
@@ -1103,6 +1205,8 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<RgbAlphaPixel>();
                 case ImageTypes.HsiPixel:
                     return new Array2D<HsiPixel>();
+                case ImageTypes.LabPixel:
+                    return new Array2D<LabPixel>();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }
@@ -1136,6 +1240,8 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2D<RgbAlphaPixel>(rows, columns);
                 case ImageTypes.HsiPixel:
                     return new Array2D<HsiPixel>(rows, columns);
+                case ImageTypes.LabPixel:
+                    return new Array2D<LabPixel>(rows, columns);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }
@@ -1167,6 +1273,8 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2DMatrix<RgbAlphaPixel>();
                 case MatrixElementTypes.HsiPixel:
                     return new Array2DMatrix<HsiPixel>();
+                case MatrixElementTypes.LabPixel:
+                    return new Array2DMatrix<LabPixel>();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }
@@ -1198,6 +1306,8 @@ namespace DlibDotNet.Tests.Array2D
                     return new Array2DMatrix<RgbAlphaPixel>(rows, columns);
                 case MatrixElementTypes.HsiPixel:
                     return new Array2DMatrix<HsiPixel>(rows, columns);
+                case MatrixElementTypes.LabPixel:
+                    return new Array2DMatrix<LabPixel>(rows, columns);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementType), elementType, null);
             }

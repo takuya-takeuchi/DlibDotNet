@@ -54,9 +54,63 @@ switch(type)\
     case matrix_element_type::HsiPixel:\
         __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
         break;\
+    case matrix_element_type::LabPixel:\
+        __FUNC__(lab_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
     case matrix_element_type::RgbAlphaPixel:\
         __FUNC__(rgb_alpha_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
         break;\
+    default:\
+        error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define matrix_nolab_template(type, error, __FUNC__, __SUB_FUNC__, __ROWS__, __COLUMNS__, ...) \
+switch(type)\
+{\
+    case matrix_element_type::UInt8:\
+        __FUNC__(uint8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt16:\
+        __FUNC__(uint16_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt32:\
+        __FUNC__(uint32_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::UInt64:\
+        __FUNC__(uint64_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int8:\
+        __FUNC__(int8_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int16:\
+        __FUNC__(int16_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int32:\
+        __FUNC__(int32_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Int64:\
+        __FUNC__(int64_t, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Float:\
+        __FUNC__(float, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::Double:\
+        __FUNC__(double, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::RgbPixel:\
+        __FUNC__(rgb_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::BgrPixel:\
+        __FUNC__(bgr_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::HsiPixel:\
+        __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::RgbAlphaPixel:\
+        __FUNC__(rgb_alpha_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::LabPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
         break;\
@@ -104,6 +158,9 @@ switch(type)\
     case matrix_element_type::HsiPixel:\
         __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
         break;\
+    case matrix_element_type::LabPixel:\
+        __FUNC__(lab_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -146,6 +203,7 @@ switch(type)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -187,6 +245,9 @@ switch(type)\
         break;\
     case matrix_element_type::RgbPixel:\
         __FUNC__(rgb_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::LabPixel:\
+        __FUNC__(lab_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
         break;\
     case matrix_element_type::HsiPixel:\
     case matrix_element_type::RgbAlphaPixel:\
@@ -233,6 +294,7 @@ switch(type)\
         break;\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -279,6 +341,7 @@ switch(type)\
         __FUNC__(bgr_pixel, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, __VA_ARGS__);\
         break;\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -334,6 +397,7 @@ switch(type)\
     case matrix_element_type::Double:\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -402,6 +466,7 @@ switch(type)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -428,6 +493,7 @@ switch(type)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -452,6 +518,7 @@ switch(type)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -538,6 +605,9 @@ switch(type)\
     case matrix_element_type::HsiPixel:\
         __FUNC__(hsi_pixel, error, type, __VA_ARGS__);\
         break;\
+    case matrix_element_type::LabPixel:\
+        __FUNC__(lab_pixel, error, type, __VA_ARGS__);\
+        break;\
     case matrix_element_type::RgbAlphaPixel:\
         __FUNC__(rgb_alpha_pixel, error, type, __VA_ARGS__);\
         break;\
@@ -566,6 +636,7 @@ switch(type)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -613,6 +684,9 @@ switch(subtype)\
         break;\
     case matrix_element_type::HsiPixel:\
         __SIZE_FUNC__(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, hsi_pixel, subtype, __VA_ARGS__);\
+        break;\
+    case matrix_element_type::LabPixel:\
+        __SIZE_FUNC__(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, lab_pixel, subtype, __VA_ARGS__);\
         break;\
     case matrix_element_type::RgbAlphaPixel:\
         __SIZE_FUNC__(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, rgb_alpha_pixel, subtype, __VA_ARGS__);\
@@ -664,6 +738,9 @@ switch(type)\
     case matrix_element_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
         break;\
+    case matrix_element_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
     case matrix_element_type::RgbAlphaPixel:\
         { __FUNC__(rgb_alpha_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
         break;\
@@ -714,6 +791,9 @@ switch(subtype)\
     case matrix_element_type::HsiPixel:\
         __SIZE_FUNC__(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, hsi_pixel, subtype, __VA_ARGS__);\
         break;\
+    case matrix_element_type::LabPixel:\
+        __SIZE_FUNC__(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, lab_pixel, subtype, __VA_ARGS__);\
+        break;\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -761,6 +841,9 @@ switch(type)\
         break;\
     case matrix_element_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
+    case matrix_element_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
         break;\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
@@ -804,6 +887,7 @@ switch(subtype)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -830,6 +914,7 @@ switch(subtype)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -854,6 +939,7 @@ switch(subtype)\
     case matrix_element_type::Double:\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -878,6 +964,7 @@ switch(type)\
     case matrix_element_type::Double:\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -925,6 +1012,9 @@ switch(type)\
         break;\
     case matrix_element_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
+        break;\
+    case matrix_element_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
         break;\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
@@ -1003,6 +1093,7 @@ switch(subtype)\
         __SIZE_FUNC__(__TYPE__, error, type, __SUB_FUNC__, __ROWS__, __COLUMNS__, bgr_pixel, subtype, __VA_ARGS__);\
         break;\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -1049,6 +1140,7 @@ switch(type)\
         { __FUNC__(bgr_pixel, error, type, __SIZE_FUNC__, __SUB_FUNC__, subtype, __ROWS__, __COLUMNS__, __VA_ARGS__); }\
         break;\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -1091,6 +1183,7 @@ switch(type)\
     case matrix_element_type::RgbPixel:\
     case matrix_element_type::BgrPixel:\
     case matrix_element_type::HsiPixel:\
+    case matrix_element_type::LabPixel:\
     case matrix_element_type::RgbAlphaPixel:\
     default:\
         error = ERR_MATRIX_ELEMENT_TYPE_NOT_SUPPORT;\
@@ -1363,9 +1456,57 @@ switch(type)\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __VA_ARGS__); }\
         break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __VA_ARGS__); }\
+        break;\
     case array2d_type::RgbAlphaPixel:\
         { __FUNC__(rgb_alpha_pixel, error, type, __VA_ARGS__); }\
         break;\
+    default:\
+        error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define array2d_nolab_template(type, error, __FUNC__, ...) \
+switch(type)\
+{\
+    case array2d_type::UInt8:\
+        { __FUNC__(uint8_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt16:\
+        { __FUNC__(uint16_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::UInt32:\
+        { __FUNC__(uint32_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int8:\
+        { __FUNC__(int8_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int16:\
+        { __FUNC__(int16_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Int32:\
+        { __FUNC__(int32_t, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Float:\
+        { __FUNC__(float, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::Double:\
+        { __FUNC__(double, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbPixel:\
+        { __FUNC__(rgb_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::BgrPixel:\
+        { __FUNC__(bgr_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::HsiPixel:\
+        { __FUNC__(hsi_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::RgbAlphaPixel:\
+        { __FUNC__(rgb_alpha_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
         break;\
@@ -1401,6 +1542,7 @@ switch(type)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1442,6 +1584,9 @@ switch(type)\
         break;\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __VA_ARGS__); }\
         break;\
     case array2d_type::RgbAlphaPixel:\
     default:\
@@ -1494,6 +1639,7 @@ switch(type)\
     case array2d_type::Double:\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1533,6 +1679,9 @@ switch(type)\
     case array2d_type::BgrPixel:\
         { __FUNC__(bgr_pixel, error, type, __VA_ARGS__); }\
         break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __VA_ARGS__); }\
+        break;\
     case array2d_type::HsiPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
@@ -1557,6 +1706,9 @@ switch(type)\
         break;\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __VA_ARGS__); }\
         break;\
     case array2d_type::UInt32:\
     case array2d_type::Int8:\
@@ -1606,6 +1758,9 @@ switch(subtype)\
     case array2d_type::HsiPixel:\
         { __SUB_FUNC__(__TYPE__, error, type, hsi_pixel, subtype, __VA_ARGS__); }\
         break;\
+    case array2d_type::LabPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, lab_pixel, subtype, __VA_ARGS__); }\
+        break;\
     case array2d_type::RgbAlphaPixel:\
         { __SUB_FUNC__(__TYPE__, error, type, rgb_alpha_pixel, subtype, __VA_ARGS__); }\
         break;\
@@ -1649,6 +1804,9 @@ switch(type)\
         break;\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
         break;\
     case array2d_type::RgbAlphaPixel:\
         { __FUNC__(rgb_alpha_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
@@ -1694,6 +1852,9 @@ switch(subtype)\
     case array2d_type::HsiPixel:\
         { __SUB_FUNC__(__TYPE__, error, type, hsi_pixel, subtype, __VA_ARGS__); }\
         break;\
+    case array2d_type::LabPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, lab_pixel, subtype, __VA_ARGS__); }\
+        break;\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1735,6 +1896,9 @@ switch(type)\
         break;\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
         break;\
     case array2d_type::RgbAlphaPixel:\
     default:\
@@ -1789,6 +1953,7 @@ switch(subtype)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1813,6 +1978,7 @@ switch(type)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1849,6 +2015,7 @@ switch(subtype)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1885,6 +2052,7 @@ switch(type)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -1923,6 +2091,9 @@ switch(subtype)\
         break;\
     case array2d_type::BgrPixel:\
         { __SUB_FUNC__(__TYPE__, error, type, bgr_pixel, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, lab_pixel, subtype, __VA_ARGS__); }\
         break;\
     case array2d_type::HsiPixel:\
     case array2d_type::RgbAlphaPixel:\
@@ -1964,6 +2135,9 @@ switch(type)\
     case array2d_type::BgrPixel:\
         { __FUNC__(bgr_pixel, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
         break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SUB_FUNC__, subtype, __VA_ARGS__); }\
+        break;\
     case array2d_type::HsiPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
@@ -1991,6 +2165,7 @@ switch(subtype)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -2017,6 +2192,7 @@ switch(type)\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
     case array2d_type::HsiPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -2043,6 +2219,9 @@ switch(subtype)\
         break;\
     case array2d_type::HsiPixel:\
         { __SUB_FUNC__(__TYPE__, error, type, hsi_pixel, subtype, __VA_ARGS__); }\
+        break;\
+    case array2d_type::LabPixel:\
+        { __SUB_FUNC__(__TYPE__, error, type, lab_pixel, subtype, __VA_ARGS__); }\
         break;\
     case array2d_type::Int8:\
     case array2d_type::Int16:\
@@ -2073,6 +2252,9 @@ switch(type)\
     case array2d_type::HsiPixel:\
         { __FUNC__(hsi_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
         break;\
+    case array2d_type::LabPixel:\
+        { __FUNC__(lab_pixel, error, type, __SUB_FUNC__, subtype,  __VA_ARGS__); }\
+        break;\
     case array2d_type::Int8:\
     case array2d_type::Int16:\
     case array2d_type::Int32:\
@@ -2101,6 +2283,7 @@ switch(subtype)\
     case array2d_type::Double:\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\
@@ -2123,6 +2306,7 @@ switch(type)\
     case array2d_type::Double:\
     case array2d_type::RgbPixel:\
     case array2d_type::BgrPixel:\
+    case array2d_type::LabPixel:\
     case array2d_type::RgbAlphaPixel:\
     default:\
         error = ERR_ARRAY2D_TYPE_NOT_SUPPORT;\

@@ -39,6 +39,9 @@ namespace DlibDotNet
         public static extern IntPtr perspective_window_overlay_dot_new2(IntPtr v, Array2DType type, ref HsiPixel color);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr perspective_window_overlay_dot_new2(IntPtr v, Array2DType type, ref LabPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool perspective_window_overlay_dot_p(IntPtr dot, out IntPtr vector);
 
