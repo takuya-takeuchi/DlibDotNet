@@ -21,7 +21,7 @@ namespace DlibDotNet
         public byte Red;
 
         /// <summary>
-        /// Gets or sets the green component of the color. of this <see cref="RgbPixel"/>.
+        /// Gets or sets the green component of the color of this <see cref="RgbPixel"/>.
         /// </summary>
         /// <value>The green component of the color of this <see cref="RgbPixel"/>.</value>
         public byte Green;
