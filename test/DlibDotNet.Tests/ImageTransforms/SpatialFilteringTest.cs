@@ -29,6 +29,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -121,6 +122,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.Int32,         ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Sigma = 0, MaxSize = 1},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.Float,         ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.Double,        ExpectResult = false,  Sigma = 0, MaxSize = 1},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 0},
@@ -133,6 +135,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.Int32,         ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 0},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = false,  Sigma = 10, MaxSize = 0},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 2},
@@ -145,6 +148,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.Int32,         ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 2},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.Float,         ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.Double,        ExpectResult = false,  Sigma = 10, MaxSize = 2},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Sigma = 10, MaxSize = 1001},
@@ -157,6 +161,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true, Sigma = 10, MaxSize = 1001},
                 new { Type = ImageTypes.Int32,         ExpectResult = true, Sigma = 10, MaxSize = 1001},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Sigma = 10, MaxSize = 1001},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true, Sigma = 10, MaxSize = 1001},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Sigma = 10, MaxSize = 1001},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Sigma = 10, MaxSize = 1001}
             };
@@ -222,7 +227,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = false},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = false}
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false}
             };
 
             var type = this.GetType().Name;

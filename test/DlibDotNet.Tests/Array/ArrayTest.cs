@@ -16,6 +16,7 @@ namespace DlibDotNet.Tests.Array
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
                 new { Type = ImageTypes.UInt32,        ExpectResult = true},
@@ -70,6 +71,22 @@ namespace DlibDotNet.Tests.Array
                             var list = new List<HsiPixel>();
                             for (var i = 0; i < length; i++)
                                 list.Add(this.NextHsiPixelRandom());
+
+                            foreach (var value in list)
+                                array.PushBack(value);
+
+                            Assert.Equal(array.Size, list.Count);
+
+                            for (var index = 0; index < array.Size; index++)
+                                Assert.Equal(list[index], array[index]);
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        using (var array = new Array<LabPixel>())
+                        {
+                            var list = new List<LabPixel>();
+                            for (var i = 0; i < length; i++)
+                                list.Add(this.NextLabPixelRandom());
 
                             foreach (var value in list)
                                 array.PushBack(value);
@@ -221,6 +238,7 @@ namespace DlibDotNet.Tests.Array
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
                 new { Type = ImageTypes.UInt32,        ExpectResult = true},
@@ -291,6 +309,29 @@ namespace DlibDotNet.Tests.Array
                             var list = new List<Array2D<HsiPixel>>();
                             for (var i = 0; i < length; i++)
                                 list.Add(this.CreateRandomArray2DHsiPixel(rows, columns));
+
+                            foreach (var value in list)
+                                array.PushBack(value);
+
+                            Assert.Equal(array.Size, list.Count);
+
+                            for (var index = 0; index < array.Size; index++)
+                            {
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
+                                array[index].Dispose();
+                            }
+
+                            foreach (var item in list)
+                                item.Dispose();
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        using (var array = new Array<Array2D<LabPixel>>())
+                        {
+                            var list = new List<Array2D<LabPixel>>();
+                            for (var i = 0; i < length; i++)
+                                list.Add(this.CreateRandomArray2DLabPixel(rows, columns));
 
                             foreach (var value in list)
                                 array.PushBack(value);
@@ -505,6 +546,7 @@ namespace DlibDotNet.Tests.Array
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
                 new { Type = ImageTypes.UInt32,        ExpectResult = true},
@@ -575,6 +617,29 @@ namespace DlibDotNet.Tests.Array
                             var list = new List<Matrix<HsiPixel>>();
                             for (var i = 0; i < length; i++)
                                 list.Add(this.CreateRandomMatrixHsiPixel(rows, columns));
+
+                            foreach (var value in list)
+                                array.PushBack(value);
+
+                            Assert.Equal(array.Size, list.Count);
+
+                            for (var index = 0; index < array.Size; index++)
+                            {
+                                Assert.Equal(rows, array[index].Rows);
+                                Assert.Equal(columns, array[index].Columns);
+                                array[index].Dispose();
+                            }
+
+                            foreach (var item in list)
+                                item.Dispose();
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        using (var array = new Array<Matrix<LabPixel>>())
+                        {
+                            var list = new List<Matrix<LabPixel>>();
+                            for (var i = 0; i < length; i++)
+                                list.Add(this.CreateRandomMatrixLabPixel(rows, columns));
 
                             foreach (var value in list)
                                 array.PushBack(value);
@@ -789,6 +854,7 @@ namespace DlibDotNet.Tests.Array
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
                 new { Type = ImageTypes.UInt32,        ExpectResult = true},
@@ -845,6 +911,23 @@ namespace DlibDotNet.Tests.Array
                             var list = new List<HsiPixel>();
                             for (var i = 0; i < length; i++)
                                 list.Add(this.NextHsiPixelRandom());
+
+                            foreach (var value in list)
+                                array.PushBack(value);
+
+                            Assert.Equal(array.Size, list.Count);
+
+                            var index = 0;
+                            foreach (var item in array)
+                                Assert.Equal(list[index++], item);
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        using (var array = new Array<LabPixel>())
+                        {
+                            var list = new List<LabPixel>();
+                            for (var i = 0; i < length; i++)
+                                list.Add(this.NextLabPixelRandom());
 
                             foreach (var value in list)
                                 array.PushBack(value);
@@ -1005,6 +1088,7 @@ namespace DlibDotNet.Tests.Array
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
                 new { Type = ImageTypes.UInt32,        ExpectResult = true},
@@ -1075,6 +1159,29 @@ namespace DlibDotNet.Tests.Array
                             var list = new List<Array2D<HsiPixel>>();
                             for (var i = 0; i < length; i++)
                                 list.Add(this.CreateRandomArray2DHsiPixel(rows, columns));
+
+                            foreach (var value in list)
+                                array.PushBack(value);
+
+                            Assert.Equal(array.Size, list.Count);
+
+                            foreach (var item in array)
+                            {
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
+                                item.Dispose();
+                            }
+
+                            foreach (var item in list)
+                                item.Dispose();
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        using (var array = new Array<Array2D<LabPixel>>())
+                        {
+                            var list = new List<Array2D<LabPixel>>();
+                            for (var i = 0; i < length; i++)
+                                list.Add(this.CreateRandomArray2DLabPixel(rows, columns));
 
                             foreach (var value in list)
                                 array.PushBack(value);
@@ -1289,6 +1396,7 @@ namespace DlibDotNet.Tests.Array
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
                 new { Type = ImageTypes.UInt32,        ExpectResult = true},
@@ -1359,6 +1467,29 @@ namespace DlibDotNet.Tests.Array
                             var list = new List<Matrix<HsiPixel>>();
                             for (var i = 0; i < length; i++)
                                 list.Add(this.CreateRandomMatrixHsiPixel(rows, columns));
+
+                            foreach (var value in list)
+                                array.PushBack(value);
+
+                            Assert.Equal(array.Size, list.Count);
+
+                            foreach (var item in array)
+                            {
+                                Assert.Equal(rows, item.Rows);
+                                Assert.Equal(columns, item.Columns);
+                                item.Dispose();
+                            }
+
+                            foreach (var item in list)
+                                item.Dispose();
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        using (var array = new Array<Matrix<LabPixel>>())
+                        {
+                            var list = new List<Matrix<LabPixel>>();
+                            for (var i = 0; i < length; i++)
+                                list.Add(this.CreateRandomMatrixLabPixel(rows, columns));
 
                             foreach (var value in list)
                                 array.PushBack(value);

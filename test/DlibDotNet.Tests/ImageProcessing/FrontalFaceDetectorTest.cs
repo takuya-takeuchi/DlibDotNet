@@ -63,6 +63,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false}
@@ -126,6 +127,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false}
@@ -189,6 +191,7 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false}

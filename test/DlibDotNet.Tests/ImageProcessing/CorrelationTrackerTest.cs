@@ -30,14 +30,15 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                new { Type = ImageTypes.Int8,          ExpectResult = false},
+                new { Type = ImageTypes.Int16,         ExpectResult = false},
+                new { Type = ImageTypes.Int32,         ExpectResult = false},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = false},
+                new { Type = ImageTypes.Double,        ExpectResult = false}
             };
 
             foreach (var input in tests)
@@ -91,14 +92,15 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                new { Type = ImageTypes.Int8,          ExpectResult = false},
+                new { Type = ImageTypes.Int16,         ExpectResult = false},
+                new { Type = ImageTypes.Int32,         ExpectResult = false},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = false},
+                new { Type = ImageTypes.Double,        ExpectResult = false}
             };
 
             foreach (var input in tests)
@@ -153,14 +155,15 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                new { Type = ImageTypes.Int8,          ExpectResult = false},
+                new { Type = ImageTypes.Int16,         ExpectResult = false},
+                new { Type = ImageTypes.Int32,         ExpectResult = false},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = false},
+                new { Type = ImageTypes.Double,        ExpectResult = false}
             };
 
             foreach (var input in tests)
@@ -215,14 +218,15 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                new { Type = ImageTypes.Int8,          ExpectResult = false},
+                new { Type = ImageTypes.Int16,         ExpectResult = false},
+                new { Type = ImageTypes.Int32,         ExpectResult = false},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = false},
+                new { Type = ImageTypes.Double,        ExpectResult = false}
             };
 
             foreach (var input in tests)
@@ -277,14 +281,15 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                new { Type = ImageTypes.Int8,          ExpectResult = false},
+                new { Type = ImageTypes.Int16,         ExpectResult = false},
+                new { Type = ImageTypes.Int32,         ExpectResult = false},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = false},
+                new { Type = ImageTypes.Double,        ExpectResult = false}
             };
 
             foreach (var input in tests)
@@ -339,14 +344,15 @@ namespace DlibDotNet.Tests.ImageProcessing
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                new { Type = ImageTypes.Int8,          ExpectResult = true},
-                new { Type = ImageTypes.Int16,         ExpectResult = true},
-                new { Type = ImageTypes.Int32,         ExpectResult = true},
-                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                new { Type = ImageTypes.Float,         ExpectResult = true},
-                new { Type = ImageTypes.Double,        ExpectResult = true}
+                new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                new { Type = ImageTypes.Int8,          ExpectResult = false},
+                new { Type = ImageTypes.Int16,         ExpectResult = false},
+                new { Type = ImageTypes.Int32,         ExpectResult = false},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = false},
+                new { Type = ImageTypes.Double,        ExpectResult = false}
             };
 
             foreach (var input in tests)
@@ -398,7 +404,10 @@ namespace DlibDotNet.Tests.ImageProcessing
 
             var tests = new[]
             {
-                new { Type = ImageTypes.Int32,         ExpectResult = true}
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true}
             };
 
             var type = this.GetType().Name;

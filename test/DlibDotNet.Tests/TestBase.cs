@@ -234,6 +234,21 @@ namespace DlibDotNet.Tests
             };
         }
 
+        public LabPixel NextLabPixelRandom()
+        {
+            return this.NextLabPixelRandom(0, 255);
+        }
+
+        public LabPixel NextLabPixelRandom(int minValue, int maxValue)
+        {
+            return new LabPixel
+            {
+                L = (byte)this._Random.Next(minValue, maxValue),
+                A = (byte)this._Random.Next(minValue, maxValue),
+                B = (byte)this._Random.Next(minValue, maxValue)
+            };
+        }
+
         #region Array2D
 
         public Array2D<Byte> CreateRandomArray2DByte(int rows, int columns)
@@ -342,6 +357,16 @@ namespace DlibDotNet.Tests
             for (var r = 0; r < rows; r++)
             for (var c = 0; c < columns; c++)
                 array[r][c] = this.NextHsiPixelRandom();
+
+            return array;
+        }
+
+        public Array2D<LabPixel> CreateRandomArray2DLabPixel(int rows, int columns)
+        {
+            var array = new Array2D<LabPixel>(rows, columns);
+            for (var r = 0; r < rows; r++)
+            for (var c = 0; c < columns; c++)
+                array[r][c] = this.NextLabPixelRandom();
 
             return array;
         }
@@ -456,6 +481,16 @@ namespace DlibDotNet.Tests
             for (var r = 0; r < rows; r++)
                 for (var c = 0; c < columns; c++)
                     array[r, c] = this.NextHsiPixelRandom();
+
+            return array;
+        }
+
+        public Matrix<LabPixel> CreateRandomMatrixLabPixel(int rows, int columns)
+        {
+            var array = new Matrix<LabPixel>(rows, columns);
+            for (var r = 0; r < rows; r++)
+            for (var c = 0; c < columns; c++)
+                array[r, c] = this.NextLabPixelRandom();
 
             return array;
         }

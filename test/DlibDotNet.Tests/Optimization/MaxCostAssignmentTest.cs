@@ -59,7 +59,9 @@ namespace DlibDotNet.Tests.Optimization
             {
                 new { Type = MatrixElementTypes.RgbPixel,      Rows = 0, Columns = 0, ExpectResult = false},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, Rows = 0, Columns = 0, ExpectResult = false},
+                new { Type = MatrixElementTypes.BgrPixel,      Rows = 0, Columns = 0, ExpectResult = false},
                 new { Type = MatrixElementTypes.HsiPixel,      Rows = 0, Columns = 0, ExpectResult = false},
+                new { Type = MatrixElementTypes.LabPixel,      Rows = 0, Columns = 0, ExpectResult = false},
                 new { Type = MatrixElementTypes.Float,         Rows = 0, Columns = 0, ExpectResult = false},
                 new { Type = MatrixElementTypes.Double,        Rows = 0, Columns = 0, ExpectResult = false}
             };

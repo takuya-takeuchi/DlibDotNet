@@ -43,9 +43,19 @@ namespace DlibDotNet
             NativeMethods.assign_pixel_rgb_hsi(ref dest, ref src);
         }
 
+        public static void AssignPixel(ref RgbPixel dest, LabPixel src)
+        {
+            NativeMethods.assign_pixel_rgb_lab(ref dest, ref src);
+        }
+
         public static void AssignPixel(ref RgbAlphaPixel dest, HsiPixel src)
         {
             NativeMethods.assign_pixel_rgbalpha_hsi(ref dest, ref src);
+        }
+
+        public static void AssignPixel(ref RgbAlphaPixel dest, LabPixel src)
+        {
+            NativeMethods.assign_pixel_rgbalpha_lab(ref dest, ref src);
         }
 
         #endregion
@@ -638,6 +648,24 @@ namespace DlibDotNet
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.HsiPixel} to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
+        public static Array2D<T> LoadImageData<T>(LabPixel[] data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = ImageTypes.LabPixel.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.LabPixel} to {dstType}.");
 
             return new Array2D<T>(ret, type);
         }

@@ -105,6 +105,10 @@ namespace DlibDotNet
         public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, HsiPixel[] array);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int matrix_operator_array(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, LabPixel[] array);
+
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType matrix_operator_left_shift(MatrixElementType type, IntPtr matrix, int templateRows, int templateColumns, IntPtr ofstream);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

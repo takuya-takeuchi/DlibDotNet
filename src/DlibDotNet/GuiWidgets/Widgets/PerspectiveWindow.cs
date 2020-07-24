@@ -180,6 +180,21 @@ namespace DlibDotNet
             NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
         }
 
+        public void AddOverlay(Vector<double> p1, Vector<double> p2, LabPixel color)
+        {
+            this.ThrowIfDisposed();
+
+            if (p1 == null)
+                throw new ArgumentNullException(nameof(p1));
+            if (p2 == null)
+                throw new ArgumentNullException(nameof(p2));
+
+            p1.ThrowIfDisposed();
+            p2.ThrowIfDisposed();
+
+            NativeMethods.perspective_window_add_overlay(this.NativePtr, p1.NativePtr, p2.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
+        }
+
         #endregion
 
         public void AddOverlay(IEnumerable<Vector<double>> points)
@@ -312,6 +327,19 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Vector<double>>(points))
                 NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
+        }
+
+        public void AddOverlay(IEnumerable<Vector<double>> points, LabPixel color)
+        {
+            this.ThrowIfDisposed();
+
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+
+            points.ThrowIfDisposed();
+
+            using (var vector = new StdVector<Vector<double>>(points))
+                NativeMethods.perspective_window_add_overlay3(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
         }
 
         #endregion

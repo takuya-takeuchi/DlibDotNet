@@ -62,6 +62,11 @@ namespace DlibDotNet
             {
             }
 
+            public OverlayDot(Vector<double> point, LabPixel pixel) :
+                this(NativeMethods.perspective_window_overlay_dot_new2(point.NativePtr, NativeMethods.Array2DType.LabPixel, ref pixel))
+            {
+            }
+
             internal OverlayDot(IntPtr ptr)
             {
                 if (ptr == IntPtr.Zero)

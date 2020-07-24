@@ -31,7 +31,9 @@ namespace DlibDotNet
 
         RgbAlphaPixel,
 
-        HsiPixel
+        HsiPixel,
+
+        LabPixel
 
     }
 

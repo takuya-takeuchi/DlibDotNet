@@ -30,6 +30,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = false },
                 new { Type = ImageTypes.Int32,         ExpectResult = false },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true },
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true },
                 new { Type = ImageTypes.Float,         ExpectResult = false },
                 new { Type = ImageTypes.Double,        ExpectResult = false }
             };
@@ -89,6 +90,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = false },
                 new { Type = ImageTypes.Int32,         ExpectResult = false },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true },
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true },
                 new { Type = ImageTypes.Float,         ExpectResult = false },
                 new { Type = ImageTypes.Double,        ExpectResult = false }
             };
@@ -105,6 +107,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = false },
                 new { Type = ImageTypes.Int32,         ExpectResult = false },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true },
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true },
                 new { Type = ImageTypes.Float,         ExpectResult = false },
                 new { Type = ImageTypes.Double,        ExpectResult = false }
             };
@@ -168,6 +171,11 @@ namespace DlibDotNet.Tests.ImageTransforms
                             case ImageTypes.HsiPixel:
                                 {
                                     Dlib.EqualizeHistogram<HsiPixel>(imageObj, out var ret);
+                                    return ret;
+                                }
+                            case ImageTypes.LabPixel:
+                                {
+                                    Dlib.EqualizeHistogram<LabPixel>(imageObj, out var ret);
                                     return ret;
                                 }
                             case ImageTypes.Float:

@@ -22,6 +22,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
@@ -56,6 +57,7 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
@@ -350,6 +352,25 @@ namespace DlibDotNet.Tests.Matrix
                             }
                         }
                         break;
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            using (var matrix = DlibTest.LoadImageAsMatrixHelp(input.Type, path) as Matrix<LabPixel>)
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                using (var tmp = new Matrix<LabPixel>(array, row, column))
+                                    for (var r = 0; r < row; r++)
+                                        for (var c = 0; c < column; c++)
+                                        {
+                                            var a = tmp[r, c];
+                                            var m = matrix[r, c];
+                                            if (a != m)
+                                                Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is [{a.B}, {a.A}, {a.B}], matrix[{r}, {c}] is [{m.B}, {m.A}, {m.B}]");
+                                        }
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -366,6 +387,8 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
@@ -566,6 +589,23 @@ namespace DlibDotNet.Tests.Matrix
                             }
                         }
                         break;
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<LabPixel>(row1, column1, out var result, out _))
+                            {
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (var c = 0; c < column; c++)
+                                    {
+                                        var a = result[r * column1 + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.True(false, $"{input.Type}: tmp[{r}, {c}] is {a}, matrix[{r}, {c}] is {m}");
+                                    }
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -655,6 +695,8 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
@@ -863,6 +905,24 @@ namespace DlibDotNet.Tests.Matrix
                             }
                         }
                         break;
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            using (var matrix = (Matrix<LabPixel>)DlibTest.LoadImageAsMatrixHelp(input.Type, path))
+                            {
+                                var array = matrix.ToArray();
+                                var column = matrix.Columns;
+                                var row = matrix.Rows;
+                                for (var r = 0; r < row; r++)
+                                    for (int c = 0, step = r * column; c < column; c++)
+                                    {
+                                        var a = array[step + c];
+                                        var m = matrix[r, c];
+                                        if (a != m)
+                                            Assert.True(false, $"{input.Type}: array[{r}, {c}] is [{a.L}, {a.A}, {a.B}], matrix[{r}, {c}] is [{m.L}, {m.A}, {m.B}]");
+                                    }
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -882,9 +942,11 @@ namespace DlibDotNet.Tests.Matrix
 
             var tests = new[]
             {
+                new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = false, Answer = "" },
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = false, Answer = "" },
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false, Answer = "" },
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false, Answer = "" },
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = false, Answer = "" },
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true,  Answer = answer1},
                 new { Type = MatrixElementTypes.UInt16,        ExpectResult = true,  Answer = answer },
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = true,  Answer = answer },
@@ -1131,6 +1193,8 @@ namespace DlibDotNet.Tests.Matrix
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
@@ -1287,6 +1351,20 @@ namespace DlibDotNet.Tests.Matrix
                     case MatrixElementTypes.HsiPixel:
                         {
                             using (var matrix = FillMatrixByNonZero<HsiPixel>(row, column, out var array, out _))
+                            {
+                                var index = 0;
+                                foreach (var b in matrix)
+                                {
+                                    Assert.True(b == array[index], $"Fail: {input.Type}. index: {index}");
+                                    index++;
+                                }
+                                Assert.Equal(matrix.Size, index);
+                            }
+                        }
+                        break;
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            using (var matrix = FillMatrixByNonZero<LabPixel>(row, column, out var array, out _))
                             {
                                 var index = 0;
                                 foreach (var b in matrix)
@@ -2001,9 +2079,11 @@ namespace DlibDotNet.Tests.Matrix
         {
             var tests = new[]
             {
+                new { Type = MatrixElementTypes.BgrPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
                 new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
@@ -2905,6 +2985,29 @@ namespace DlibDotNet.Tests.Matrix
                             bytes = array;
                             return new Matrix<HsiPixel>(array, row, column, sizeof(HsiPixel)) as Matrix<T>;
                         }
+                    case MatrixElementTypes.LabPixel:
+                        {
+                            var tmp = new LabPixel[length];
+                            for (var index = 0; index < tmp.Length; index++)
+                            {
+                                tmp[index].L = (byte)rand.Next(1, 100);
+                                tmp[index].A = (byte)rand.Next(1, 100);
+                                tmp[index].B = (byte)rand.Next(1, 100);
+                            }
+
+                            var array = new byte[length * sizeof(LabPixel)];
+                            var buffer = Marshal.AllocHGlobal(sizeof(LabPixel));
+                            for (var i = 0; i < tmp.Length; i++)
+                            {
+                                Marshal.StructureToPtr(tmp[i], buffer, false);
+                                Marshal.Copy(buffer, array, i * sizeof(LabPixel), sizeof(LabPixel));
+                            }
+                            Marshal.FreeHGlobal(buffer);
+
+                            result = tmp as T[];
+                            bytes = array;
+                            return new Matrix<LabPixel>(array, row, column, sizeof(LabPixel)) as Matrix<T>;
+                        }
                 }
 
             result = null;
@@ -3039,6 +3142,14 @@ namespace DlibDotNet.Tests.Matrix
                 return;
             }
 
+            if (obj is Matrix<BgrPixel> bgrPixelMatrix)
+            {
+                Assert.Equal(bgrPixelMatrix.Rows, row);
+                Assert.Equal(bgrPixelMatrix.Columns, column);
+                Assert.Equal(bgrPixelMatrix.Size, row * column);
+                return;
+            }
+
             if (obj is Matrix<RgbAlphaPixel> rgbAlphaPixelMatrix)
             {
                 Assert.Equal(rgbAlphaPixelMatrix.Rows, row);
@@ -3052,6 +3163,14 @@ namespace DlibDotNet.Tests.Matrix
                 Assert.Equal(hsiPixelMatrix.Rows, row);
                 Assert.Equal(hsiPixelMatrix.Columns, column);
                 Assert.Equal(hsiPixelMatrix.Size, row * column);
+                return;
+            }
+
+            if (obj is Matrix<LabPixel> labPixelMatrix)
+            {
+                Assert.Equal(labPixelMatrix.Rows, row);
+                Assert.Equal(labPixelMatrix.Columns, column);
+                Assert.Equal(labPixelMatrix.Size, row * column);
                 return;
             }
 
@@ -3084,6 +3203,8 @@ namespace DlibDotNet.Tests.Matrix
                     return new Matrix<RgbAlphaPixel>();
                 case MatrixElementTypes.HsiPixel:
                     return new Matrix<HsiPixel>();
+                case MatrixElementTypes.LabPixel:
+                    return new Matrix<HsiPixel>();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementTypes), elementTypes, null);
             }
@@ -3109,12 +3230,16 @@ namespace DlibDotNet.Tests.Matrix
                     return new Matrix<float>(rows, columns);
                 case MatrixElementTypes.Double:
                     return new Matrix<double>(rows, columns);
+                case MatrixElementTypes.BgrPixel:
+                    return new Matrix<BgrPixel>(rows, columns);
                 case MatrixElementTypes.RgbPixel:
                     return new Matrix<RgbPixel>(rows, columns);
                 case MatrixElementTypes.RgbAlphaPixel:
                     return new Matrix<RgbAlphaPixel>(rows, columns);
                 case MatrixElementTypes.HsiPixel:
                     return new Matrix<HsiPixel>(rows, columns);
+                case MatrixElementTypes.LabPixel:
+                    return new Matrix<LabPixel>(rows, columns);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(elementTypes), elementTypes, null);
             }

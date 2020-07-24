@@ -85,6 +85,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, Array2DType type, ref HsiPixel color);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType image_window_add_overlay(IntPtr window, IntPtr rect, Array2DType type, ref LabPixel color);
+
         #endregion
 
         #region image_window_add_overlay2
@@ -122,6 +125,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, Array2DType type, ref HsiPixel color);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType image_window_add_overlay2(IntPtr window, IntPtr vectorOfRect, Array2DType type, ref LabPixel color);
+
         #endregion
 
         #region image_window_add_overlay3
@@ -158,6 +164,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, Array2DType type, ref HsiPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType image_window_add_overlay3(IntPtr window, IntPtr rect, Array2DType type, ref LabPixel color);
 
         #endregion
 
@@ -209,6 +218,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_add_overlay6(IntPtr window, IntPtr rect, Array2DType type, ref HsiPixel color, IntPtr str);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType image_window_add_overlay6(IntPtr window, IntPtr rect, Array2DType type, ref LabPixel color, IntPtr str);
 
         #endregion
 

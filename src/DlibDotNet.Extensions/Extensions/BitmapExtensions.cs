@@ -101,6 +101,7 @@ namespace DlibDotNet.Extensions
                 case ImageTypes.UInt16:
                 case ImageTypes.Int16:
                 case ImageTypes.HsiPixel:
+                case ImageTypes.LabPixel:
                 case ImageTypes.Float:
                 case ImageTypes.Double:
                 case ImageTypes.Matrix:

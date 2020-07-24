@@ -35,6 +35,8 @@ namespace DlibDotNet.Extensions
 
             HsiPixel,
 
+            LabPixel,
+
             Matrix
 
         }
@@ -68,7 +70,9 @@ namespace DlibDotNet.Extensions
 
             RgbAlphaPixel,
 
-            HsiPixel
+            HsiPixel,
+
+            LabPixel,
 
         }
 

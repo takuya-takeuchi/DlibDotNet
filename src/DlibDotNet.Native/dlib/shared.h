@@ -17,7 +17,8 @@ enum struct array2d_type : int
     BgrPixel,
     RgbAlphaPixel,
     HsiPixel,
-    Matrix,
+    LabPixel,
+    Matrix
 };
 
 enum struct matrix_element_type : int
@@ -35,7 +36,8 @@ enum struct matrix_element_type : int
     RgbPixel,
     BgrPixel,
     RgbAlphaPixel,
-    HsiPixel
+    HsiPixel,
+    LabPixel
 };
 
 enum struct vector_element_type : int
