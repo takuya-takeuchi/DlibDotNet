@@ -9,7 +9,7 @@ namespace DlibDotNet
     /// Represents an Lab colored graphical pixel.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct LabPixel
+    public struct LabPixel : IEquatable<LabPixel>
     {
 
         #region Fields
