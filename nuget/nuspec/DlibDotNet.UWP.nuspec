@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.UWP</id>
-    <version>19.18.0.20200525</version>
+    <version>19.20.0.20200725</version>
     <title>DlibDotNet for UWP</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -10,8 +10,7 @@
     <license type="file">LICENSE.txt</license>
     <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
     <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
-    <description>Dlib wrapper library written in C++ and C# for Windows Universal Application
-</description>
+    <description>Dlib wrapper library written in C++ and C# for Windows Universal Application</description>
     <releaseNotes></releaseNotes>
     <copyright>© Takuya Takeuchi 2017-2020</copyright>
     <tags>dlib .net machinelearning</tags>
@@ -24,7 +23,7 @@
     <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets" />
     <!-- cross-targetting via compile-time references -->
     <file src="ref\**\*" target="ref" />
-    <file src="..\artifacts\uwp\cpu\\runtimes\**\*" target="runtimes" />
+    <file src="..\artifacts\uwp\cpu\runtimes\**\*" target="runtimes" />
 
     <file src="..\..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
 
