@@ -20,6 +20,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             var tests = new[]
             {
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
@@ -76,6 +77,9 @@ namespace DlibDotNet.Tests.GuiWidgets
                             case ImageTypes.HsiPixel:
                                 window.AddOverlay(rect, new HsiPixel(0, 0, 0), test.Type.ToString());
                                 break;
+                            case ImageTypes.LabPixel:
+                                window.AddOverlay(rect, new LabPixel(0, 0, 0), test.Type.ToString());
+                                break;
                         }
 
                         window.WaitUntilClosed();
@@ -115,6 +119,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             var tests = new[]
             {
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
@@ -159,6 +164,7 @@ namespace DlibDotNet.Tests.GuiWidgets
             var tests = new[]
             {
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},

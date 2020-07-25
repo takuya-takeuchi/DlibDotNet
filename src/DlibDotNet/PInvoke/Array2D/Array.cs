@@ -85,6 +85,9 @@ namespace DlibDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_get_row_column_hsi_pixel(IntPtr row, int column, out HsiPixel value);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void array2d_get_row_column_lab_pixel(IntPtr row, int column, out LabPixel value);
+
         #endregion
 
         #region array2d_set_row_column
@@ -124,6 +127,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void array2d_set_row_column_hsi_pixel(IntPtr row, int column, HsiPixel value);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void array2d_set_row_column_lab_pixel(IntPtr row, int column, LabPixel value);
 
         #endregion
 

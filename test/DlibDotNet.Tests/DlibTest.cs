@@ -29,14 +29,15 @@ namespace DlibDotNet.Tests
                     new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                     new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                     new { Type = ImageTypes.UInt8,         ExpectResult = true},
-                    new { Type = ImageTypes.UInt16,        ExpectResult = true},
-                    new { Type = ImageTypes.UInt32,        ExpectResult = true},
-                    new { Type = ImageTypes.Int8,          ExpectResult = true},
-                    new { Type = ImageTypes.Int16,         ExpectResult = true},
-                    new { Type = ImageTypes.Int32,         ExpectResult = true},
-                    new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
-                    new { Type = ImageTypes.Float,         ExpectResult = true},
-                    new { Type = ImageTypes.Double,        ExpectResult = true}
+                    new { Type = ImageTypes.UInt16,        ExpectResult = false},
+                    new { Type = ImageTypes.UInt32,        ExpectResult = false},
+                    new { Type = ImageTypes.Int8,          ExpectResult = false},
+                    new { Type = ImageTypes.Int16,         ExpectResult = false},
+                    new { Type = ImageTypes.Int32,         ExpectResult = false},
+                    new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                    new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                    new { Type = ImageTypes.Float,         ExpectResult = false},
+                    new { Type = ImageTypes.Double,        ExpectResult = false}
                 };
 
             var points = new[]
@@ -107,6 +108,11 @@ namespace DlibDotNet.Tests
                             using (var output = Dlib.ExtractImage4Points(image, points, width, height))
                                 Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
                             break;
+                        case ImageTypes.LabPixel:
+                            using (var image = Dlib.LoadImage<LabPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
                         case ImageTypes.Float:
                             using (var image = Dlib.LoadImage<float>(path.FullName))
                             using (var output = Dlib.ExtractImage4Points(image, points, width, height))
@@ -143,16 +149,17 @@ namespace DlibDotNet.Tests
                     new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
                     new { Type = MatrixElementTypes.RgbAlphaPixel, ExpectResult = false},
                     new { Type = MatrixElementTypes.UInt8,         ExpectResult = true},
-                    new { Type = MatrixElementTypes.UInt16,        ExpectResult = true},
-                    new { Type = MatrixElementTypes.UInt32,        ExpectResult = true},
-                    new { Type = MatrixElementTypes.UInt64,        ExpectResult = true},
-                    new { Type = MatrixElementTypes.Int8,          ExpectResult = true},
-                    new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
-                    new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
-                    new { Type = MatrixElementTypes.Int64,         ExpectResult = true},
-                    new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
-                    new { Type = MatrixElementTypes.Float,         ExpectResult = true},
-                    new { Type = MatrixElementTypes.Double,        ExpectResult = true}
+                    new { Type = MatrixElementTypes.UInt16,        ExpectResult = false},
+                    new { Type = MatrixElementTypes.UInt32,        ExpectResult = false},
+                    new { Type = MatrixElementTypes.UInt64,        ExpectResult = false},
+                    new { Type = MatrixElementTypes.Int8,          ExpectResult = false},
+                    new { Type = MatrixElementTypes.Int16,         ExpectResult = false},
+                    new { Type = MatrixElementTypes.Int32,         ExpectResult = false},
+                    new { Type = MatrixElementTypes.Int64,         ExpectResult = false},
+                    new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = false},
+                    new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.Float,         ExpectResult = false},
+                    new { Type = MatrixElementTypes.Double,        ExpectResult = false}
                 };
 
             var points = new[]
@@ -233,6 +240,11 @@ namespace DlibDotNet.Tests
                             using (var output = Dlib.ExtractImage4Points(image, points, width, height))
                                 Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
                             break;
+                        case MatrixElementTypes.LabPixel:
+                            using (var image = Dlib.LoadImageAsMatrix<LabPixel>(path.FullName))
+                            using (var output = Dlib.ExtractImage4Points(image, points, width, height))
+                                Dlib.SaveJpeg(output, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget2}_{test.Type}.bmp")}");
+                            break;
                         case MatrixElementTypes.Float:
                             using (var image = Dlib.LoadImageAsMatrix<float>(path.FullName))
                             using (var output = Dlib.ExtractImage4Points(image, points, width, height))
@@ -281,6 +293,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -319,6 +332,9 @@ namespace DlibDotNet.Tests
                         break;
                     case ImageTypes.HsiPixel:
                         image = Dlib.LoadBmp<HsiPixel>(path.FullName);
+                        break;
+                    case ImageTypes.LabPixel:
+                        image = Dlib.LoadBmp<LabPixel>(path.FullName);
                         break;
                     case ImageTypes.Float:
                         image = Dlib.LoadBmp<float>(path.FullName);
@@ -360,6 +376,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -398,6 +415,9 @@ namespace DlibDotNet.Tests
                         break;
                     case ImageTypes.HsiPixel:
                         image = Dlib.LoadDng<HsiPixel>(path.FullName);
+                        break;
+                    case ImageTypes.LabPixel:
+                        image = Dlib.LoadDng<LabPixel>(path.FullName);
                         break;
                     case ImageTypes.Float:
                         image = Dlib.LoadDng<float>(path.FullName);
@@ -452,6 +472,7 @@ namespace DlibDotNet.Tests
                     new { Type = ImageTypes.Int16,         ExpectResult = true},
                     new { Type = ImageTypes.Int32,         ExpectResult = true},
                     new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                    new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                     new { Type = ImageTypes.Float,         ExpectResult = true},
                     new { Type = ImageTypes.Double,        ExpectResult = true}
                 };
@@ -490,6 +511,9 @@ namespace DlibDotNet.Tests
                             break;
                         case ImageTypes.HsiPixel:
                             image = Dlib.LoadImage<HsiPixel>(path.FullName);
+                            break;
+                        case ImageTypes.LabPixel:
+                            image = Dlib.LoadImage<LabPixel>(path.FullName);
                             break;
                         case ImageTypes.Float:
                             image = Dlib.LoadImage<float>(path.FullName);
@@ -546,6 +570,7 @@ namespace DlibDotNet.Tests
                     new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                     new { Type = MatrixElementTypes.Int64,         ExpectResult = true},
                     new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                    new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                     new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                     new { Type = MatrixElementTypes.Double,        ExpectResult = true}
                 };
@@ -591,6 +616,9 @@ namespace DlibDotNet.Tests
                         case MatrixElementTypes.HsiPixel:
                             image = Dlib.LoadImageAsMatrix<HsiPixel>(path.FullName);
                             break;
+                        case MatrixElementTypes.LabPixel:
+                            image = Dlib.LoadImageAsMatrix<LabPixel>(path.FullName);
+                            break;
                         case MatrixElementTypes.Float:
                             image = Dlib.LoadImageAsMatrix<float>(path.FullName);
                             break;
@@ -632,6 +660,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -670,6 +699,9 @@ namespace DlibDotNet.Tests
                         break;
                     case ImageTypes.HsiPixel:
                         image = Dlib.LoadJpeg<HsiPixel>(path.FullName);
+                        break;
+                    case ImageTypes.LabPixel:
+                        image = Dlib.LoadJpeg<LabPixel>(path.FullName);
                         break;
                     case ImageTypes.Float:
                         image = Dlib.LoadJpeg<float>(path.FullName);
@@ -711,6 +743,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -750,6 +783,9 @@ namespace DlibDotNet.Tests
                     case ImageTypes.HsiPixel:
                         image = Dlib.LoadPng<HsiPixel>(path.FullName);
                         break;
+                    case ImageTypes.LabPixel:
+                        image = Dlib.LoadPng<LabPixel>(path.FullName);
+                        break;
                     case ImageTypes.Float:
                         image = Dlib.LoadPng<float>(path.FullName);
                         break;
@@ -788,6 +824,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -867,6 +904,13 @@ namespace DlibDotNet.Tests
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                            Dlib.SaveBmp(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.Float:
                         {
                             var image = Dlib.LoadImage<float>(path.FullName);
@@ -904,6 +948,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -998,6 +1043,15 @@ namespace DlibDotNet.Tests
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
                             var matrix = new Matrix<HsiPixel>(image);
+                            Dlib.SaveBmp(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                            var matrix = new Matrix<LabPixel>(image);
                             Dlib.SaveBmp(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.bmp")}");
                             this.DisposeAndCheckDisposedState(matrix);
                             this.DisposeAndCheckDisposedState(image);
@@ -1048,6 +1102,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -1055,95 +1110,116 @@ namespace DlibDotNet.Tests
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                switch (test.Type)
+                var expectResult = test.ExpectResult;
+
+                var outputImageAction = new Func<bool, Array2DBase>(expect =>
                 {
-                    case ImageTypes.BgrPixel:
-                        {
-                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.RgbPixel:
-                        {
-                            var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.RgbAlphaPixel:
-                        {
-                            var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.UInt8:
-                        {
-                            var image = Dlib.LoadImage<byte>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.UInt16:
-                        {
-                            var image = Dlib.LoadImage<ushort>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.UInt32:
-                        {
-                            var image = Dlib.LoadImage<uint>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Int8:
-                        {
-                            var image = Dlib.LoadImage<sbyte>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Int16:
-                        {
-                            var image = Dlib.LoadImage<short>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Int32:
-                        {
-                            var image = Dlib.LoadImage<int>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.HsiPixel:
-                        {
-                            var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Float:
-                        {
-                            var image = Dlib.LoadImage<float>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Double:
-                        {
-                            var image = Dlib.LoadImage<double>(path.FullName);
-                            Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    switch (test.Type)
+                    {
+                        case ImageTypes.BgrPixel:
+                            {
+                                var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.RgbPixel:
+                            {
+                                var image = Dlib.LoadImage<RgbPixel>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                            break;
+                        case ImageTypes.RgbAlphaPixel:
+                            {
+                                var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.UInt8:
+                            {
+                                var image = Dlib.LoadImage<byte>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.UInt16:
+                            {
+                                var image = Dlib.LoadImage<ushort>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.UInt32:
+                            {
+                                var image = Dlib.LoadImage<uint>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.Int8:
+                            {
+                                var image = Dlib.LoadImage<sbyte>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.Int16:
+                            {
+                                var image = Dlib.LoadImage<short>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.Int32:
+                            {
+                                var image = Dlib.LoadImage<int>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.HsiPixel:
+                            {
+                                var image = Dlib.LoadImage<HsiPixel>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.LabPixel:
+                            {
+                                var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.Float:
+                            {
+                                var image = Dlib.LoadImage<float>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        case ImageTypes.Double:
+                            {
+                                var image = Dlib.LoadImage<double>(path.FullName);
+                                Dlib.SaveDng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return image;
+                            }
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                });
+
+                var successAction = new Action<Array2DBase>(image =>
+                {
+                    this.DisposeAndCheckDisposedState(image);
+                });
+
+                var failAction = new Action(() =>
+                {
+                    Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
+                });
+
+                var finallyAction = new Action(() =>
+                {
+                });
+
+                var exceptionAction = new Action(() =>
+                {
+                    Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                });
+
+                DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
             }
         }
 
@@ -1164,6 +1240,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -1171,119 +1248,129 @@ namespace DlibDotNet.Tests
             var type = this.GetType().Name;
             foreach (var test in tests)
             {
-                switch (test.Type)
+                var expectResult = test.ExpectResult;
+
+                var outputImageAction = new Func<bool, Tuple<MatrixBase, Array2DBase>>(expect =>
                 {
-                    case ImageTypes.BgrPixel:
-                        {
-                            var image = Dlib.LoadImage<BgrPixel>(path.FullName);
-                            var matrix = new Matrix<BgrPixel>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.RgbPixel:
-                        {
-                            var image = Dlib.LoadImage<RgbPixel>(path.FullName);
-                            var matrix = new Matrix<RgbPixel>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.RgbAlphaPixel:
-                        {
-                            var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
-                            var matrix = new Matrix<RgbAlphaPixel>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.UInt8:
-                        {
-                            var image = Dlib.LoadImage<byte>(path.FullName);
-                            var matrix = new Matrix<byte>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.UInt16:
-                        {
-                            var image = Dlib.LoadImage<ushort>(path.FullName);
-                            var matrix = new Matrix<ushort>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.UInt32:
-                        {
-                            var image = Dlib.LoadImage<uint>(path.FullName);
-                            var matrix = new Matrix<uint>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Int8:
-                        {
-                            var image = Dlib.LoadImage<sbyte>(path.FullName);
-                            var matrix = new Matrix<sbyte>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Int16:
-                        {
-                            var image = Dlib.LoadImage<short>(path.FullName);
-                            var matrix = new Matrix<short>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Int32:
-                        {
-                            var image = Dlib.LoadImage<int>(path.FullName);
-                            var matrix = new Matrix<int>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.HsiPixel:
-                        {
-                            var image = Dlib.LoadImage<HsiPixel>(path.FullName);
-                            var matrix = new Matrix<HsiPixel>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Float:
-                        {
-                            var image = Dlib.LoadImage<float>(path.FullName);
-                            var matrix = new Matrix<float>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    case ImageTypes.Double:
-                        {
-                            var image = Dlib.LoadImage<double>(path.FullName);
-                            var matrix = new Matrix<double>(image);
-                            Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
-                            this.DisposeAndCheckDisposedState(matrix);
-                            this.DisposeAndCheckDisposedState(image);
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    switch (test.Type)
+                    {
+                        case ImageTypes.BgrPixel:
+                            {
+                                var image = Dlib.LoadImage<BgrPixel>(path.FullName);
+                                var matrix = new Matrix<BgrPixel>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.RgbPixel:
+                            {
+                                var image = Dlib.LoadImage<RgbPixel>(path.FullName);
+                                var matrix = new Matrix<RgbPixel>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.RgbAlphaPixel:
+                            {
+                                var image = Dlib.LoadImage<RgbAlphaPixel>(path.FullName);
+                                var matrix = new Matrix<RgbAlphaPixel>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.UInt8:
+                            {
+                                var image = Dlib.LoadImage<byte>(path.FullName);
+                                var matrix = new Matrix<byte>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.UInt16:
+                            {
+                                var image = Dlib.LoadImage<ushort>(path.FullName);
+                                var matrix = new Matrix<ushort>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.UInt32:
+                            {
+                                var image = Dlib.LoadImage<uint>(path.FullName);
+                                var matrix = new Matrix<uint>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.Int8:
+                            {
+                                var image = Dlib.LoadImage<sbyte>(path.FullName);
+                                var matrix = new Matrix<sbyte>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.Int16:
+                            {
+                                var image = Dlib.LoadImage<short>(path.FullName);
+                                var matrix = new Matrix<short>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.Int32:
+                            {
+                                var image = Dlib.LoadImage<int>(path.FullName);
+                                var matrix = new Matrix<int>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.HsiPixel:
+                            {
+                                var image = Dlib.LoadImage<HsiPixel>(path.FullName);
+                                var matrix = new Matrix<HsiPixel>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.LabPixel:
+                            {
+                                var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                                var matrix = new Matrix<LabPixel>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.Float:
+                            {
+                                var image = Dlib.LoadImage<float>(path.FullName);
+                                var matrix = new Matrix<float>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        case ImageTypes.Double:
+                            {
+                                var image = Dlib.LoadImage<double>(path.FullName);
+                                var matrix = new Matrix<double>(image);
+                                Dlib.SaveDng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.dng")}");
+                                return new Tuple<MatrixBase, Array2DBase>(matrix, image);
+                            }
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                });
+
+                var successAction = new Action<Tuple<MatrixBase, Array2DBase>>(tuple =>
+                {
+                    this.DisposeAndCheckDisposedState(tuple.Item2);
+                    this.DisposeAndCheckDisposedState(tuple.Item1);
+                });
+
+                var failAction = new Action(() =>
+                {
+                    Assert.True(false, $"{testName} should throw exception for InputType: {test.Type}.");
+                });
+
+                var finallyAction = new Action(() =>
+                {
+                });
+
+                var exceptionAction = new Action(() =>
+                {
+                    Console.WriteLine($"Failed to execute {testName} to InputType: {test.Type}.");
+                });
+
+                DoTest(outputImageAction, expectResult, successAction, finallyAction, failAction, exceptionAction);
             }
         }
 
@@ -1308,6 +1395,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -1383,6 +1471,13 @@ namespace DlibDotNet.Tests
                     case ImageTypes.HsiPixel:
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
+                            Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var image = Dlib.LoadImage<LabPixel>(path.FullName);
                             Dlib.SaveJpeg(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(image);
                         }
@@ -1424,6 +1519,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -1518,6 +1614,15 @@ namespace DlibDotNet.Tests
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
                             var matrix = new Matrix<HsiPixel>(image);
+                            Dlib.SaveJpeg(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                            var matrix = new Matrix<LabPixel>(image);
                             Dlib.SaveJpeg(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.jpg")}", 50);
                             this.DisposeAndCheckDisposedState(matrix);
                             this.DisposeAndCheckDisposedState(image);
@@ -1564,6 +1669,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Int32,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 0},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Quality = 100},
@@ -1576,6 +1682,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Int32,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 100},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = -1},
@@ -1588,6 +1695,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Int32,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false, Quality = -1},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Float,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Double,        ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = 101},
@@ -1600,6 +1708,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.Int32,         ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false, Quality = 101},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.Float,         ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.Double,        ExpectResult = false, Quality = 101}
             };
@@ -1694,6 +1803,14 @@ namespace DlibDotNet.Tests
                                 this.DisposeAndCheckDisposedState(image);
                             }
                             break;
+                        case ImageTypes.LabPixel:
+                            {
+                                var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                                dimensionObject = image;
+                                Dlib.SaveJpeg(image, filepath, test.Quality);
+                                this.DisposeAndCheckDisposedState(image);
+                            }
+                            break;
                         case ImageTypes.Float:
                             {
                                 var image = Dlib.LoadImage<float>(path.FullName);
@@ -1754,6 +1871,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Int32,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 0},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 0},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true, Quality = 100},
@@ -1766,6 +1884,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Int32,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true, Quality = 100},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Float,         ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.Double,        ExpectResult = true, Quality = 100},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = -1},
@@ -1778,6 +1897,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Int32,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false, Quality = -1},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Float,         ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.Double,        ExpectResult = false, Quality = -1},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false, Quality = 101},
@@ -1790,6 +1910,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.Int32,         ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false, Quality = 101},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.Float,         ExpectResult = false, Quality = 101},
                 new { Type = ImageTypes.Double,        ExpectResult = false, Quality = 101}
             };
@@ -1904,6 +2025,16 @@ namespace DlibDotNet.Tests
                                 this.DisposeAndCheckDisposedState(image);
                             }
                             break;
+                        case ImageTypes.LabPixel:
+                            {
+                                var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                                dimensionObject = image;
+                                var matrix = new Matrix<LabPixel>(image);
+                                Dlib.SaveJpeg(matrix, filepath, test.Quality);
+                                this.DisposeAndCheckDisposedState(matrix);
+                                this.DisposeAndCheckDisposedState(image);
+                            }
+                            break;
                         case ImageTypes.Float:
                             {
                                 var image = Dlib.LoadImage<float>(path.FullName);
@@ -1972,6 +2103,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -2051,6 +2183,13 @@ namespace DlibDotNet.Tests
                             this.DisposeAndCheckDisposedState(image);
                         }
                         break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                            Dlib.SavePng(image, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
                     case ImageTypes.Float:
                         {
                             var image = Dlib.LoadImage<float>(path.FullName);
@@ -2088,6 +2227,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -2182,6 +2322,15 @@ namespace DlibDotNet.Tests
                         {
                             var image = Dlib.LoadImage<HsiPixel>(path.FullName);
                             var matrix = new Matrix<HsiPixel>(image);
+                            Dlib.SavePng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
+                            this.DisposeAndCheckDisposedState(matrix);
+                            this.DisposeAndCheckDisposedState(image);
+                        }
+                        break;
+                    case ImageTypes.LabPixel:
+                        {
+                            var image = Dlib.LoadImage<LabPixel>(path.FullName);
+                            var matrix = new Matrix<LabPixel>(image);
                             Dlib.SavePng(matrix, $"{Path.Combine(this.GetOutDir(type, testName), $"{LoadTarget}_{test.Type}.png")}");
                             this.DisposeAndCheckDisposedState(matrix);
                             this.DisposeAndCheckDisposedState(image);
@@ -2295,6 +2444,7 @@ namespace DlibDotNet.Tests
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
@@ -2428,6 +2578,27 @@ namespace DlibDotNet.Tests
                                 }
                             }
                             break;
+                        case ImageTypes.LabPixel:
+                            {
+                                var data = new LabPixel[rows * cols];
+                                for (var r = 0; r < rows; r++)
+                                    for (var c = 0; c < cols; c++)
+                                        data[steps * r + c] = new LabPixel
+                                        {
+                                            L = (byte)random.Next(0, 255),
+                                            A = (byte)random.Next(0, 255),
+                                            B = (byte)random.Next(0, 255)
+                                        };
+
+                                image = Dlib.LoadImageData<LabPixel>(data, rows, cols, steps);
+
+                                if (this.CanGuiDebug)
+                                {
+                                    win.SetImage((Array2D<LabPixel>)image);
+                                    win.WaitUntilClosed();
+                                }
+                            }
+                            break;
                         case ImageTypes.BgrPixel:
                             {
                                 var data = new BgrPixel[rows * cols];
@@ -2541,6 +2712,9 @@ namespace DlibDotNet.Tests
                 case ImageTypes.HsiPixel:
                     image = Dlib.LoadImage<HsiPixel>(path.FullName);
                     break;
+                case ImageTypes.LabPixel:
+                    image = Dlib.LoadImage<LabPixel>(path.FullName);
+                    break;
                 case ImageTypes.Float:
                     image = Dlib.LoadImage<float>(path.FullName);
                     break;
@@ -2598,6 +2772,10 @@ namespace DlibDotNet.Tests
                 case MatrixElementTypes.HsiPixel:
                     using (var image = Dlib.LoadImage<HsiPixel>(path.FullName))
                         matrix = new Matrix<HsiPixel>(image);
+                    break;
+                case MatrixElementTypes.LabPixel:
+                    using (var image = Dlib.LoadImage<LabPixel>(path.FullName))
+                        matrix = new Matrix<LabPixel>(image);
                     break;
                 case MatrixElementTypes.Float:
                     using (var image = Dlib.LoadImage<float>(path.FullName))

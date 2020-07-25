@@ -34,6 +34,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true },
                 new { Type = ImageTypes.Int32,         ExpectResult = true },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false },
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false},
                 new { Type = ImageTypes.Float,         ExpectResult = true },
                 new { Type = ImageTypes.Double,        ExpectResult = true }
             };
@@ -139,6 +140,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 255,  Min = 0},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Max = 75,   Min = 50},
@@ -151,6 +153,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 75,   Min = 50},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 75,   Min = 50}
             };
@@ -257,6 +260,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true },
                 new { Type = ImageTypes.Int32,         ExpectResult = true },
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false },
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false },
                 new { Type = ImageTypes.Float,         ExpectResult = true },
                 new { Type = ImageTypes.Double,        ExpectResult = true }
             };
@@ -362,6 +366,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 255,  Min = 0},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Max = 255,  Min = 0},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 255,  Min = 0},
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = false,  Max = 75,   Min = 50},
@@ -374,6 +379,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.Int32,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false,  Max = 75,   Min = 50},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = false,  Max = 75,   Min = 50},
                 new { Type = ImageTypes.Float,         ExpectResult = true,   Max = 75,   Min = 50},
                 new { Type = ImageTypes.Double,        ExpectResult = true,   Max = 75,   Min = 50}
             };
@@ -493,6 +499,9 @@ namespace DlibDotNet.Tests.ImageTransforms
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Heatmap(obj as Array2D<HsiPixel>);
                     break;
+                case ImageTypes.LabPixel:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<LabPixel>);
+                    break;
                 case ImageTypes.Float:
                     matrixOp = Dlib.Heatmap(obj as Array2D<float>);
                     break;
@@ -537,6 +546,9 @@ namespace DlibDotNet.Tests.ImageTransforms
                     break;
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Heatmap(obj as Array2D<HsiPixel>, max, min);
+                    break;
+                case ImageTypes.LabPixel:
+                    matrixOp = Dlib.Heatmap(obj as Array2D<LabPixel>, max, min);
                     break;
                 case ImageTypes.Float:
                     matrixOp = Dlib.Heatmap(obj as Array2D<float>, max, min);
@@ -583,6 +595,9 @@ namespace DlibDotNet.Tests.ImageTransforms
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Jet(obj as Array2D<HsiPixel>);
                     break;
+                case ImageTypes.LabPixel:
+                    matrixOp = Dlib.Jet(obj as Array2D<LabPixel>);
+                    break;
                 case ImageTypes.Float:
                     matrixOp = Dlib.Jet(obj as Array2D<float>);
                     break;
@@ -627,6 +642,9 @@ namespace DlibDotNet.Tests.ImageTransforms
                     break;
                 case ImageTypes.HsiPixel:
                     matrixOp = Dlib.Jet(obj as Array2D<HsiPixel>, max, min);
+                    break;
+                case ImageTypes.LabPixel:
+                    matrixOp = Dlib.Jet(obj as Array2D<LabPixel>, max, min);
                     break;
                 case ImageTypes.Float:
                     matrixOp = Dlib.Jet(obj as Array2D<float>, max, min);

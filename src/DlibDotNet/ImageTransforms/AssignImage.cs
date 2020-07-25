@@ -10,9 +10,9 @@ namespace DlibDotNet
 
         #region Methods
 
-        #region AssignAllPpixels
+        #region AssignAllPixels
 
-        public static void AssignAllPpixels(Array2D<byte> dest, byte pixel)
+        public static void AssignAllPixels(Array2D<byte> dest, byte pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -28,7 +28,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<ushort> dest, ushort pixel)
+        public static void AssignAllPixels(Array2D<ushort> dest, ushort pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -44,7 +44,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<uint> dest, uint pixel)
+        public static void AssignAllPixels(Array2D<uint> dest, uint pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -60,7 +60,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<sbyte> dest, sbyte pixel)
+        public static void AssignAllPixels(Array2D<sbyte> dest, sbyte pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -76,7 +76,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<short> dest, short pixel)
+        public static void AssignAllPixels(Array2D<short> dest, short pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -92,7 +92,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<int> dest, int pixel)
+        public static void AssignAllPixels(Array2D<int> dest, int pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -108,7 +108,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<float> dest, float pixel)
+        public static void AssignAllPixels(Array2D<float> dest, float pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -124,7 +124,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<double> dest, double pixel)
+        public static void AssignAllPixels(Array2D<double> dest, double pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -140,7 +140,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<BgrPixel> dest, BgrPixel pixel)
+        public static void AssignAllPixels(Array2D<BgrPixel> dest, BgrPixel pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -156,7 +156,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<RgbPixel> dest, RgbPixel pixel)
+        public static void AssignAllPixels(Array2D<RgbPixel> dest, RgbPixel pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -172,7 +172,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<RgbAlphaPixel> dest, RgbAlphaPixel pixel)
+        public static void AssignAllPixels(Array2D<RgbAlphaPixel> dest, RgbAlphaPixel pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -188,7 +188,7 @@ namespace DlibDotNet
             }
         }
 
-        public static void AssignAllPpixels(Array2D<HsiPixel> dest, HsiPixel pixel)
+        public static void AssignAllPixels(Array2D<HsiPixel> dest, HsiPixel pixel)
         {
             if (dest == null)
                 throw new ArgumentNullException(nameof(dest));
@@ -197,6 +197,22 @@ namespace DlibDotNet
 
             var outType = dest.ImageType.ToNativeArray2DType();
             var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.HsiPixel, ref pixel);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException("Output or input type is not supported.");
+            }
+        }
+
+        public static void AssignAllPixels(Array2D<LabPixel> dest, LabPixel pixel)
+        {
+            if (dest == null)
+                throw new ArgumentNullException(nameof(dest));
+
+            dest.ThrowIfDisposed(nameof(dest));
+
+            var outType = dest.ImageType.ToNativeArray2DType();
+            var ret = NativeMethods.assign_all_pixels(outType, dest.NativePtr, NativeMethods.Array2DType.LabPixel, ref pixel);
             switch (ret)
             {
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:

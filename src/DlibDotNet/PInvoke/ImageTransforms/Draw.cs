@@ -44,6 +44,9 @@ namespace DlibDotNet
         public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref HsiPixel color);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_line(Array2DType pixelType, IntPtr image, IntPtr p1, IntPtr p2, ref LabPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_line_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr p1, IntPtr p2, ref byte color);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -75,6 +78,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_line_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr p1, IntPtr p2, ref HsiPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_line_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr p1, IntPtr p2, ref LabPixel color);
 
         #endregion
 
@@ -112,7 +118,10 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref HsiPixel color, uint thickness);
-        
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_rectangle(Array2DType pixelType, IntPtr image, IntPtr rect, ref LabPixel color, uint thickness);
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_rectangle_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr rect, ref byte color, uint thickness);
 
@@ -145,6 +154,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType draw_rectangle_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr rect, ref HsiPixel color, uint thickness);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType draw_rectangle_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr rect, ref LabPixel color, uint thickness);
 
         #endregion
 
@@ -184,6 +196,9 @@ namespace DlibDotNet
         public static extern ErrorType fill_rect(Array2DType pixelType, IntPtr image, IntPtr rect, ref HsiPixel color);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType fill_rect(Array2DType pixelType, IntPtr image, IntPtr rect, ref LabPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType fill_rect_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr rect, ref byte color);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -215,6 +230,9 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType fill_rect_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr rect, ref HsiPixel color);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType fill_rect_matrix(MatrixElementType elementType, IntPtr matrix, IntPtr rect, ref LabPixel color);
 
         #endregion
 

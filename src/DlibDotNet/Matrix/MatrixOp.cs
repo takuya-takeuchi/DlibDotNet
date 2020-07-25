@@ -232,6 +232,9 @@ namespace DlibDotNet
                         case NativeMethods.Array2DType.HsiPixel:
                             vector = new StdVector<HsiPixel>(this._Ref);
                             break;
+                        case NativeMethods.Array2DType.LabPixel:
+                            vector = new StdVector<LabPixel>(this._Ref);
+                            break;
                     }
                     vector?.Dispose();
                     NativeMethods.matrix_op_op_std_vect_to_mat_value_delete(this._Array2DType, this.NativePtr);

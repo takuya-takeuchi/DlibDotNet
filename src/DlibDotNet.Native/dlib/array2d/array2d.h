@@ -268,6 +268,7 @@ MAKE_ROWCOLUMN_FUNC(double, double)
 MAKE_ROWCOLUMN_FUNC(rgb_pixel, rgb_pixel)
 MAKE_ROWCOLUMN_FUNC(bgr_pixel, bgr_pixel)
 MAKE_ROWCOLUMN_FUNC(hsi_pixel, hsi_pixel)
+MAKE_ROWCOLUMN_FUNC(lab_pixel, lab_pixel)
 MAKE_ROWCOLUMN_FUNC(rgb_alpha_pixel, rgb_alpha_pixel)
 
 #pragma endregion array2d_row_column
@@ -450,6 +451,7 @@ MAKE_ROWCOLUMN_MATRIX_FUNC(double, double, matrix_element_type::Double)
 MAKE_ROWCOLUMN_MATRIX_FUNC(rgb_pixel, rgb_pixel, matrix_element_type::RgbPixel)
 MAKE_ROWCOLUMN_MATRIX_FUNC(bgr_pixel, bgr_pixel, matrix_element_type::BgrPixel)
 MAKE_ROWCOLUMN_MATRIX_FUNC(hsi_pixel, hsi_pixel, matrix_element_type::HsiPixel)
+MAKE_ROWCOLUMN_MATRIX_FUNC(lab_pixel, lab_pixel, matrix_element_type::LabPixel)
 MAKE_ROWCOLUMN_MATRIX_FUNC(rgb_alpha_pixel, rgb_alpha_pixel, matrix_element_type::RgbAlphaPixel)
 
 #pragma endregion array2d_get_row_column

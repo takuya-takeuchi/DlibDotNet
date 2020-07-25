@@ -48,6 +48,9 @@ namespace DlibDotNet
         public static extern void mat_StdVect_hsi_pixel(IntPtr vector, out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void mat_StdVect_lab_pixel(IntPtr vector, out IntPtr ret);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void mat_StdVect_rgb_alpha_pixel(IntPtr vector, out IntPtr ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

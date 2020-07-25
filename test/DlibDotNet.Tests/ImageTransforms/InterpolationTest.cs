@@ -32,7 +32,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int8,          SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
                 new { Type = ImageTypes.Int16,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
                 new { Type = ImageTypes.Int32,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = ImageTypes.HsiPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = ImageTypes.HsiPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = ImageTypes.LabPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
                 new { Type = ImageTypes.Float,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
                 new { Type = ImageTypes.Double,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }}
             };
@@ -71,6 +72,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                                     return Dlib.ExtractImageChip<int>(imageObj, chip, interpolation);
                                 case ImageTypes.HsiPixel:
                                     return Dlib.ExtractImageChip<HsiPixel>(imageObj, chip, interpolation);
+                                case ImageTypes.LabPixel:
+                                    return Dlib.ExtractImageChip<LabPixel>(imageObj, chip, interpolation);
                                 case ImageTypes.Float:
                                     return Dlib.ExtractImageChip<float>(imageObj, chip, interpolation);
                                 case ImageTypes.Double:
@@ -113,17 +116,19 @@ namespace DlibDotNet.Tests.ImageTransforms
 
             var tests = new[]
             {
+                new { Type = MatrixElementTypes.BgrPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
                 new { Type = MatrixElementTypes.RgbPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
                 new { Type = MatrixElementTypes.RgbAlphaPixel, SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = false }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
                 new { Type = MatrixElementTypes.UInt8,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.UInt16,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.UInt32,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.Int8,          SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.Int16,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.Int32,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.HsiPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
-                new { Type = MatrixElementTypes.Float,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
-                new { Type = MatrixElementTypes.Double,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }}
+                new { Type = MatrixElementTypes.UInt16,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.UInt32,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.Int8,          SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.Int16,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.Int32,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.HsiPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.LabPixel,      SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = true }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = true } }},
+                new { Type = MatrixElementTypes.Float,         SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }},
+                new { Type = MatrixElementTypes.Double,        SupportType = new [] { new { Type = InterpolationTypes.Bilinear, ExpectResult = false }, new { Type = InterpolationTypes.NearestNeighbor, ExpectResult = true }, new { Type = InterpolationTypes.Quadratic, ExpectResult = false } }}
             };
 
             var type = this.GetType().Name;
@@ -140,6 +145,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                         {
                             switch (input.Type)
                             {
+                                case MatrixElementTypes.BgrPixel:
+                                    return Dlib.ExtractImageChip<BgrPixel>(imageObj, chip, interpolation);
                                 case MatrixElementTypes.RgbPixel:
                                     return Dlib.ExtractImageChip<RgbPixel>(imageObj, chip, interpolation);
                                 case MatrixElementTypes.RgbAlphaPixel:
@@ -158,6 +165,8 @@ namespace DlibDotNet.Tests.ImageTransforms
                                     return Dlib.ExtractImageChip<int>(imageObj, chip, interpolation);
                                 case MatrixElementTypes.HsiPixel:
                                     return Dlib.ExtractImageChip<HsiPixel>(imageObj, chip, interpolation);
+                                case MatrixElementTypes.LabPixel:
+                                    return Dlib.ExtractImageChip<LabPixel>(imageObj, chip, interpolation);
                                 case MatrixElementTypes.Float:
                                     return Dlib.ExtractImageChip<float>(imageObj, chip, interpolation);
                                 case MatrixElementTypes.Double:
@@ -174,7 +183,7 @@ namespace DlibDotNet.Tests.ImageTransforms
 
                         var failAction = new Action(() =>
                         {
-                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}.");
+                            Assert.True(false, $"{testName} should throw exception for InputType: {input.Type}, SupportType: {supportType.Type}, ExpectedResult: {expectResult}.");
                         });
 
                         var finallyAction = new Action(() =>
@@ -214,6 +223,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -279,6 +289,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -346,6 +357,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -413,6 +425,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.Float,         ExpectResult = true},
                 new { Type = ImageTypes.Double,        ExpectResult = true}
             };
@@ -471,6 +484,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true}
             };
@@ -529,6 +543,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true}
             };
@@ -611,6 +626,11 @@ namespace DlibDotNet.Tests.ImageTransforms
                                         Dlib.PyramidUp((Matrix<HsiPixel>)imageObj, pyr, out var ret);
                                         return ret;
                                     }
+                                case MatrixElementTypes.LabPixel:
+                                {
+                                    Dlib.PyramidUp((Matrix<LabPixel>)imageObj, pyr, out var ret);
+                                    return ret;
+                                }
                                 default:
                                     throw new ArgumentOutOfRangeException();
                             }
@@ -659,6 +679,7 @@ namespace DlibDotNet.Tests.ImageTransforms
                 new { Type = MatrixElementTypes.Int16,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Int32,         ExpectResult = true},
                 new { Type = MatrixElementTypes.HsiPixel,      ExpectResult = true},
+                new { Type = MatrixElementTypes.LabPixel,      ExpectResult = true},
                 new { Type = MatrixElementTypes.Float,         ExpectResult = true},
                 new { Type = MatrixElementTypes.Double,        ExpectResult = true}
             };
@@ -715,6 +736,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -841,6 +863,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -973,6 +996,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1047,6 +1071,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1125,6 +1150,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
@@ -1218,6 +1244,7 @@ namespace DlibDotNet.Tests.ImageTransforms
             {
                 new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = false},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
                 new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = false},
                 new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},

@@ -38,7 +38,8 @@ namespace DlibDotNet
                 new { Type = typeof(RgbPixel),      ElementType = ImageTypes.RgbPixel,      Size = Marshal.SizeOf<RgbPixel>() },
                 new { Type = typeof(BgrPixel),      ElementType = ImageTypes.BgrPixel,      Size = Marshal.SizeOf<BgrPixel>() },
                 new { Type = typeof(RgbAlphaPixel), ElementType = ImageTypes.RgbAlphaPixel, Size = Marshal.SizeOf<RgbAlphaPixel>() },
-                new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel,      Size = Marshal.SizeOf<HsiPixel>() }
+                new { Type = typeof(HsiPixel),      ElementType = ImageTypes.HsiPixel,      Size = Marshal.SizeOf<HsiPixel>() },
+                new { Type = typeof(LabPixel),      ElementType = ImageTypes.LabPixel,      Size = Marshal.SizeOf<LabPixel>() }
             };
 
             foreach (var type in types)
@@ -179,6 +180,8 @@ namespace DlibDotNet
                         return new RowInt32(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.HsiPixel:
                         return new RowHsiPixel(ret, this.ImageType, this) as Row<TElement>;
+                    case ImageTypes.LabPixel:
+                        return new RowLabPixel(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Float:
                         return new RowFloat(ret, this.ImageType, this) as Row<TElement>;
                     case ImageTypes.Double:
@@ -223,6 +226,7 @@ namespace DlibDotNet
                 case NativeMethods.Array2DType.RgbPixel:
                 case NativeMethods.Array2DType.RgbAlphaPixel:
                 case NativeMethods.Array2DType.HsiPixel:
+                case NativeMethods.Array2DType.LabPixel:
                     var rows = (uint)this.Rows;
                     var columns = (uint)this.Columns;
                     var size = ElementSizeDictionary[this.ImageType];
@@ -771,6 +775,44 @@ namespace DlibDotNet
                         throw new IndexOutOfRangeException();
 
                     NativeMethods.array2d_set_row_column_hsi_pixel(this.NativePtr, column, value);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class RowLabPixel : Row<LabPixel>
+        {
+
+            #region Constructors
+
+            public RowLabPixel(IntPtr ptr, ImageTypes type, Array2DBase parent)
+                : base(ptr, type, parent)
+            {
+            }
+
+            #endregion
+
+            #region Properties
+
+            public override LabPixel this[int column]
+            {
+                get
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    LabPixel value;
+                    NativeMethods.array2d_get_row_column_lab_pixel(this.NativePtr, column, out value);
+                    return value;
+                }
+                set
+                {
+                    if (!(0 <= column && column < this._Parent.Columns))
+                        throw new IndexOutOfRangeException();
+
+                    NativeMethods.array2d_set_row_column_lab_pixel(this.NativePtr, column, value);
                 }
             }
 

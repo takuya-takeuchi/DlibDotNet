@@ -30,6 +30,8 @@ namespace DlibDotNet.Extensions
                     return NativeMethods.Array2DType.Int32;
                 case ImageTypes.HsiPixel:
                     return NativeMethods.Array2DType.HsiPixel;
+                case ImageTypes.LabPixel:
+                    return NativeMethods.Array2DType.LabPixel;
                 case ImageTypes.Float:
                     return NativeMethods.Array2DType.Float;
                 case ImageTypes.Double:
@@ -73,6 +75,8 @@ namespace DlibDotNet.Extensions
                     return NativeMethods.MatrixElementType.RgbAlphaPixel;
                 case MatrixElementTypes.HsiPixel:
                     return NativeMethods.MatrixElementType.HsiPixel;
+                case MatrixElementTypes.LabPixel:
+                    return NativeMethods.MatrixElementType.LabPixel;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(matrixElementTypes), matrixElementTypes, null);
             }
@@ -128,9 +132,11 @@ namespace DlibDotNet.Extensions
                 case MatrixElementTypes.BgrPixel:
                     return ImageTypes.BgrPixel;
                 case MatrixElementTypes.RgbAlphaPixel:
-                    return ImageTypes.HsiPixel;
+                    return ImageTypes.RgbAlphaPixel;
                 case MatrixElementTypes.HsiPixel:
                     return ImageTypes.HsiPixel;
+                case MatrixElementTypes.LabPixel:
+                    return ImageTypes.LabPixel;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(matrixElementTypes), matrixElementTypes, null);
             }

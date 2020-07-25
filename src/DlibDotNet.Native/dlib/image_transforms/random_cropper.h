@@ -178,18 +178,18 @@ DLLEXPORT int random_cropper_operator(random_cropper* cropper,
 {
     int error = ERR_OK;
 
-    matrix_nonalpha_template(type,
-                             error,
-                             matrix_template_size_template,
-                             random_cropper_operator_template,
-                             0,
-                             0,
-                             cropper,
-                             num_crops,
-                             images,
-                             rects,
-                             crops,
-                             crop_rects);
+    matrix_cartesian_template(type,
+                              error,
+                              matrix_template_size_template,
+                              random_cropper_operator_template,
+                              0,
+                              0,
+                              cropper,
+                              num_crops,
+                              images,
+                              rects,
+                              crops,
+                              crop_rects);
 
     return error;
 }
@@ -203,17 +203,17 @@ DLLEXPORT int random_cropper_operator2(random_cropper* cropper,
 {
     int error = ERR_OK;
 
-    matrix_nonalpha_template(type,
-                             error,
-                             matrix_template_size_template,
-                             random_cropper_operator2_template,
-                             0,
-                             0,
-                             cropper,
-                             image,
-                             rects,
-                             crop,
-                             crop_rects);
+    matrix_cartesian_template(type,
+                              error,
+                              matrix_template_size_template,
+                              random_cropper_operator2_template,
+                              0,
+                              0,
+                              cropper,
+                              image,
+                              rects,
+                              crop,
+                              crop_rects);
 
     return error;
 }

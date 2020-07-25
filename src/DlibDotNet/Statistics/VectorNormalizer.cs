@@ -113,6 +113,8 @@ namespace DlibDotNet
                     return new MatrixBgrPixelImp(this, type.ToNativeMatrixElementType()) as Imp<TElement>;
                 case MatrixElementTypes.HsiPixel:
                     return new MatrixHsiPixelImp(this, type.ToNativeMatrixElementType()) as Imp<TElement>;
+                case MatrixElementTypes.LabPixel:
+                    return new MatrixLabPixelImp(this, type.ToNativeMatrixElementType()) as Imp<TElement>;
                 case MatrixElementTypes.RgbAlphaPixel:
                     return new MatrixRgbAlphaPixelImp(this, type.ToNativeMatrixElementType()) as Imp<TElement>;
                 default:
@@ -499,6 +501,33 @@ namespace DlibDotNet
                                                          x.NativePtr,
                                                          out var ret);
                 return new Matrix<HsiPixel>(ret);
+            }
+
+            #endregion
+
+        }
+
+        internal sealed class MatrixLabPixelImp : Imp<Matrix<LabPixel>>
+        {
+
+            #region Constructors
+
+            internal MatrixLabPixelImp(DlibObject parent, NativeMethods.MatrixElementType type)
+                : base(parent, type)
+            {
+            }
+
+            #endregion
+
+            #region Method
+
+            public override Matrix<LabPixel> Operator(Matrix<LabPixel> x)
+            {
+                NativeMethods.vector_normalizer_operator(this.Type,
+                    this.Parent.NativePtr,
+                    x.NativePtr,
+                    out var ret);
+                return new Matrix<LabPixel>(ret);
             }
 
             #endregion

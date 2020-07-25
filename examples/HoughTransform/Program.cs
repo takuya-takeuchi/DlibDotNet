@@ -34,7 +34,7 @@ namespace HoughTransform
                     var l = Point.Rotate(arc, tmp2, angle2 * 180 / Math.PI);
                     var r = Point.Rotate(arc, tmp3, angle2 * 180 / Math.PI);
 
-                    Dlib.AssignAllPpixels(img, 0);
+                    Dlib.AssignAllPixels(img, 0);
                     Dlib.DrawLine(img, l, r, 255);
 
                     using (var himg = new Array2D<int>())

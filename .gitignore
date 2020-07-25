@@ -320,3 +320,5 @@ src/DlibDotNet.Native.Dnn/build*
 !nuget/lib/.keepfolder
 
 nuget/*.nupkg
+
+work

@@ -85,6 +85,9 @@ namespace DlibDotNet
                     case MatrixElementTypes.HsiPixel:
                         NativeMethods.mat_StdVect_hsi_pixel(vector.NativePtr, out ret);
                         return new MatrixOp(NativeMethods.ElementType.OpStdVectToMatValue, ImageTypes.HsiPixel, ret);
+                    case MatrixElementTypes.LabPixel:
+                        NativeMethods.mat_StdVect_lab_pixel(vector.NativePtr, out ret);
+                        return new MatrixOp(NativeMethods.ElementType.OpStdVectToMatValue, ImageTypes.LabPixel, ret);
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
