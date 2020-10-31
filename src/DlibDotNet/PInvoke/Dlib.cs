@@ -598,6 +598,9 @@ namespace DlibDotNet
         #region extensions_load_image_data
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, IntPtr data, uint rows, uint columns, uint steps);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr extensions_load_image_data(Array2DType dst_type, Array2DType src_type, byte[] data, uint rows, uint columns, uint steps);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]

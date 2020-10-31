@@ -453,6 +453,24 @@ namespace DlibDotNet
 
         #region LoadImageData
 
+        public static Array2D<T> LoadImageData<T>(IntPtr data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == IntPtr.Zero)
+                throw new ArgumentException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = type.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from pointer to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
         public static Array2D<T> LoadImageData<T>(byte[] data, uint rows, uint columns, uint steps)
             where T : struct
         {
