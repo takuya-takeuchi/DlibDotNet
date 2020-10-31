@@ -453,6 +453,24 @@ namespace DlibDotNet
 
         #region LoadImageData
 
+        public static Array2D<T> LoadImageData<T>(IntPtr data, uint rows, uint columns, uint steps)
+            where T : struct
+        {
+            if (data == IntPtr.Zero)
+                throw new ArgumentException(nameof(data));
+
+            if (!Array2D<T>.TryParse<T>(out var type))
+                throw new NotSupportedException();
+
+            var srcType = type.ToNativeArray2DType();
+            var dstType = type.ToNativeArray2DType();
+            var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from pointer to {dstType}.");
+
+            return new Array2D<T>(ret, type);
+        }
+
         public static Array2D<T> LoadImageData<T>(byte[] data, uint rows, uint columns, uint steps)
             where T : struct
         {
@@ -470,6 +488,34 @@ namespace DlibDotNet
 
             return new Array2D<T>(ret, type);
         }
+
+        public static Array2D<byte> LoadImageData(byte[] data, uint rows, uint columns, uint steps)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            var srcType = ImageTypes.UInt8.ToNativeArray2DType();
+            var dstType = ImageTypes.UInt8.ToNativeArray2DType();
+            var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+            if (ret == IntPtr.Zero)
+                throw new ArgumentException($"Can not import from {ImageTypes.UInt8} to {dstType}.");
+
+            return new Array2D<byte>(ret, ImageTypes.UInt8);
+        }
+
+        //public static Array2D<sbyte> LoadImageData(sbyte[] data, uint rows, uint columns, uint steps)
+        //{
+        //    if (data == null)
+        //        throw new ArgumentNullException(nameof(data));
+
+        //    var srcType = ImageTypes.Int8.ToNativeArray2DType();
+        //    var dstType = ImageTypes.Int8.ToNativeArray2DType();
+        //    var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
+        //    if (ret == IntPtr.Zero)
+        //        throw new ArgumentException($"Can not import from {ImageTypes.Int8} to {dstType}.");
+
+        //    return new Array2D<sbyte>(ret, ImageTypes.Int8);
+        //}
 
         public static Array2D<T> LoadImageData<T>(ImagePixelFormat format, byte[] data, uint rows, uint columns, uint steps)
             where T : struct
@@ -490,184 +536,144 @@ namespace DlibDotNet
             return new Array2D<T>(ret, type);
         }
 
-        public static Array2D<T> LoadImageData<T>(ushort[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<ushort> LoadImageData(ushort[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.UInt16.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.UInt16.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.UInt16} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<ushort>(ret, ImageTypes.UInt16);
         }
 
-        public static Array2D<T> LoadImageData<T>(short[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<short> LoadImageData(short[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.Int16.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.Int16.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.Int16} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<short>(ret, ImageTypes.Int16);
         }
 
-        public static Array2D<T> LoadImageData<T>(int[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<int> LoadImageData(int[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.Int32.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.Int32.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.Int32} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<int>(ret, ImageTypes.Int32);
         }
 
-        public static Array2D<T> LoadImageData<T>(float[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<float> LoadImageData(float[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.Float.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.Float.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.Float} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<float>(ret, ImageTypes.Float);
         }
 
-        public static Array2D<T> LoadImageData<T>(double[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<double> LoadImageData(double[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.Double.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.Double.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.Double} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<double>(ret, ImageTypes.Double);
         }
 
-        public static Array2D<T> LoadImageData<T>(RgbPixel[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<RgbPixel> LoadImageData(RgbPixel[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.RgbPixel.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.RgbPixel.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.RgbPixel} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<RgbPixel>(ret, ImageTypes.RgbPixel);
         }
 
-        public static Array2D<T> LoadImageData<T>(BgrPixel[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<BgrPixel> LoadImageData(BgrPixel[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.BgrPixel.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.BgrPixel.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.BgrPixel} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<BgrPixel>(ret, ImageTypes.BgrPixel);
         }
 
-        public static Array2D<T> LoadImageData<T>(RgbAlphaPixel[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<RgbAlphaPixel> LoadImageData(RgbAlphaPixel[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.RgbAlphaPixel.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.RgbAlphaPixel.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.RgbAlphaPixel} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<RgbAlphaPixel>(ret, ImageTypes.RgbAlphaPixel);
         }
 
-        public static Array2D<T> LoadImageData<T>(HsiPixel[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<HsiPixel> LoadImageData(HsiPixel[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.HsiPixel.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.HsiPixel.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.HsiPixel} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<HsiPixel>(ret, ImageTypes.HsiPixel);
         }
 
-        public static Array2D<T> LoadImageData<T>(LabPixel[] data, uint rows, uint columns, uint steps)
-            where T : struct
+        public static Array2D<LabPixel> LoadImageData(LabPixel[] data, uint rows, uint columns, uint steps)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (!Array2D<T>.TryParse<T>(out var type))
-                throw new NotSupportedException();
-
             var srcType = ImageTypes.LabPixel.ToNativeArray2DType();
-            var dstType = type.ToNativeArray2DType();
+            var dstType = ImageTypes.LabPixel.ToNativeArray2DType();
             var ret = NativeMethods.extensions_load_image_data(dstType, srcType, data, rows, columns, steps);
             if (ret == IntPtr.Zero)
                 throw new ArgumentException($"Can not import from {ImageTypes.LabPixel} to {dstType}.");
 
-            return new Array2D<T>(ret, type);
+            return new Array2D<LabPixel>(ret, ImageTypes.LabPixel);
         }
 
         #endregion
