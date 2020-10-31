@@ -2392,7 +2392,7 @@ namespace DlibDotNet.Tests
                     switch (test.Type)
                     {
                         case ImageTypes.UInt8:
-                            image = Dlib.LoadImageData<byte>(data, 512, 512, 512);
+                            image = Dlib.LoadImageData(data, 512, 512, 512);
 
                             if (this.CanGuiDebug)
                             {
@@ -2441,6 +2441,7 @@ namespace DlibDotNet.Tests
             {
                 new { Type = ImageTypes.UInt8,         ExpectResult = true},
                 new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                //new { Type = ImageTypes.Int8,          ExpectResult = true},
                 new { Type = ImageTypes.Int16,         ExpectResult = true},
                 new { Type = ImageTypes.Int32,         ExpectResult = true},
                 new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
@@ -2468,7 +2469,7 @@ namespace DlibDotNet.Tests
                                     for (var c = 0; c < cols; c++)
                                         data[steps * r + c] = (byte)random.Next(0, 255);
 
-                                image = Dlib.LoadImageData<byte>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2477,6 +2478,22 @@ namespace DlibDotNet.Tests
                                 }
                             }
                             break;
+                        //case ImageTypes.Int8:
+                        //    {
+                        //        var data = new sbyte[rows * cols];
+                        //        for (var r = 0; r < rows; r++)
+                        //            for (var c = 0; c < cols; c++)
+                        //                data[steps * r + c] = (sbyte)random.Next(sbyte.MinValue, sbyte.MaxValue);
+
+                        //        image = Dlib.LoadImageData(data, rows, cols, steps);
+
+                        //        if (this.CanGuiDebug)
+                        //        {
+                        //            win.SetImage((Array2D<sbyte>)image);
+                        //            win.WaitUntilClosed();
+                        //        }
+                        //    }
+                        //    break;
                         case ImageTypes.UInt16:
                             {
                                 var data = new ushort[rows * cols];
@@ -2484,7 +2501,7 @@ namespace DlibDotNet.Tests
                                     for (var c = 0; c < cols; c++)
                                         data[steps * r + c] = (ushort)random.Next(0, 255);
 
-                                image = Dlib.LoadImageData<ushort>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2500,7 +2517,7 @@ namespace DlibDotNet.Tests
                                     for (var c = 0; c < cols; c++)
                                         data[steps * r + c] = (short)random.Next(0, 255);
 
-                                image = Dlib.LoadImageData<short>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2516,7 +2533,7 @@ namespace DlibDotNet.Tests
                                     for (var c = 0; c < cols; c++)
                                         data[steps * r + c] = random.Next(0, 255);
 
-                                image = Dlib.LoadImageData<int>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2532,7 +2549,7 @@ namespace DlibDotNet.Tests
                                     for (var c = 0; c < cols; c++)
                                         data[steps * r + c] = (float)random.NextDouble();
 
-                                image = Dlib.LoadImageData<float>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2548,7 +2565,7 @@ namespace DlibDotNet.Tests
                                     for (var c = 0; c < cols; c++)
                                         data[steps * r + c] = random.NextDouble();
 
-                                image = Dlib.LoadImageData<double>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2569,7 +2586,7 @@ namespace DlibDotNet.Tests
                                             I = (byte)random.Next(0, 255)
                                         };
 
-                                image = Dlib.LoadImageData<HsiPixel>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2590,7 +2607,7 @@ namespace DlibDotNet.Tests
                                             B = (byte)random.Next(0, 255)
                                         };
 
-                                image = Dlib.LoadImageData<LabPixel>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2611,7 +2628,7 @@ namespace DlibDotNet.Tests
                                             Blue = (byte)random.Next(0, 255)
                                         };
 
-                                image = Dlib.LoadImageData<BgrPixel>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2632,7 +2649,7 @@ namespace DlibDotNet.Tests
                                             Blue = (byte)random.Next(0, 255)
                                         };
 
-                                image = Dlib.LoadImageData<RgbPixel>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
@@ -2654,7 +2671,7 @@ namespace DlibDotNet.Tests
                                             Alpha = (byte)random.Next(0, 255)
                                         };
 
-                                image = Dlib.LoadImageData<RgbAlphaPixel>(data, rows, cols, steps);
+                                image = Dlib.LoadImageData(data, rows, cols, steps);
 
                                 if (this.CanGuiDebug)
                                 {
