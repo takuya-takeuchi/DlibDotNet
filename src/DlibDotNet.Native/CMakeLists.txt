@@ -4,7 +4,8 @@ cmake_policy(SET CMP0054 NEW)
 
 set(PROJ_NAME DlibDotNetNative)
 
-project(${PROJ_NAME} VERSION 19.18.0)
+# It means that CMakeLists.txt version rather than library version
+project(${PROJ_NAME} VERSION 1.0.0)
 
 # OS info
 message("-------------------------------------------------------")
@@ -22,9 +23,9 @@ message("-------------------------------------------------------")
 
 # Version info
 set(VERSION_MAJOR 19)
-set(VERSION_MINOR 20)
+set(VERSION_MINOR 21)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20200725)
+set(VERSION_DATE 20201122)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
