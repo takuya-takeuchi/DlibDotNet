@@ -451,6 +451,36 @@ namespace DlibDotNet
             return image;
         }
 
+        /// <summary>
+        /// This function loads PNG (Portable Network Graphics) file into an <see cref="Array2D{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of element in the image.</typeparam>
+        /// <param name="png">A byte array that contains png image data from which to create the <see cref="Array2D{T}"/>.</param>
+        /// <returns>The <see cref="Array2D{T}"/> this method creates.</returns>
+        /// <exception cref="ArgumentException">The specified type of image is not supported.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="png"/> is null.</exception>
+        /// <exception cref="ImageLoadException">Failed to load image on dlib.</exception>
+        public static Array2D<T> LoadPng<T>(byte[] png)
+            where T : struct
+        {
+            if (png == null)
+                throw new ArgumentNullException(nameof(png));
+
+            var image = new Array2D<T>();
+
+            var array2DType = image.ImageType.ToNativeArray2DType();
+            var ret = NativeMethods.load_png_from_buffer(array2DType, image.NativePtr, png, png.Length, out var errorMessage);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{image.ImageType} is not supported.");
+                case NativeMethods.ErrorType.GeneralFileImageLoad:
+                    throw new ImageLoadException(StringHelper.FromStdString(errorMessage));
+            }
+
+            return image;
+        }
+
         #region LoadImageData
 
         public static Array2D<T> LoadImageData<T>(IntPtr data, uint rows, uint columns, uint steps)
