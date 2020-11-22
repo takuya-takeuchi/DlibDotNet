@@ -96,8 +96,7 @@ function RunTest($BuildTargets)
       # Copy Dependencies
       $OutDir = Join-Path $TargetDir bin | `
                   Join-Path -ChildPath Release | `
-                  Join-Path -ChildPath netcoreapp2.0 | `
-                  Join-Path -ChildPath $RuntimeIdentifier
+                  Join-Path -ChildPath netcoreapp2.0
       if (!(Test-Path "$OutDir")) {
          New-Item "$OutDir" -ItemType Directory > $null
       }
@@ -108,7 +107,8 @@ function RunTest($BuildTargets)
          {
             foreach($Dependency in $BuildTarget.Dependencies)
             {
-               Copy-Item "$Dependency" "$OutDir"
+               $FileName = [System.IO.Path]::GetFileName("$Dependency")
+               New-Item -Value "$Dependency" -Path "$OutDir" -Name "$FileName" -ItemType SymbolicLink > $null
             }
          }
       }
@@ -213,6 +213,34 @@ $tmp102.Add("$env:CUDA_PATH_V10_2\bin\cudnn64_7.dll")
 $tmp102.Add("$env:CUDA_PATH_V10_2\bin\curand64_10.dll")
 $tmp102.Add("$env:CUDA_PATH_V10_2\bin\cusolver64_10.dll")
 
+# For DlibDotNet.CUDA110
+$tmp110 = New-Object 'System.Collections.Generic.List[string]'
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublas64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublasLt64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\curand64_10.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cusolver64_10.dll")
+
+# For DlibDotNet.CUDA111
+$tmp111 = New-Object 'System.Collections.Generic.List[string]'
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cublas64_11.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cublasLt64_11.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_adv_infer64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_adv_train64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_cnn_infer64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_cnn_train64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_ops_infer64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_ops_train64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\curand64_10.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cusolver64_11.dll")
+
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet";         Dependencies = $null     }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet";         Dependencies = $null     }
@@ -222,6 +250,8 @@ $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Archite
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA100"; Dependencies = $tmp100   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA101"; Dependencies = $tmp101   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA102"; Dependencies = $tmp102   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA110"; Dependencies = $tmp110   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.CUDA111"; Dependencies = $tmp111   }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet.MKL";     Dependencies = $null     }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "DlibDotNet.MKL";     Dependencies = $null     }
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "arm"; Architecture = 32; Package = "DlibDotNet.ARM";     Dependencies = $null     }

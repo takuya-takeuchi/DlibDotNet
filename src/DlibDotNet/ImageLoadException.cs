@@ -11,6 +11,11 @@ namespace DlibDotNet
 
         #region Constructors
 
+        internal ImageLoadException(string message) :
+            base(message)
+        {
+        }
+
         internal ImageLoadException(string filepath, string message):
             base(message)
         {

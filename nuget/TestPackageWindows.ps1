@@ -25,6 +25,8 @@ $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA92"; 
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA100"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA101"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA102"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA110"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
+$BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA111"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 
 foreach($BuildTarget in $BuildTargets)
 {
