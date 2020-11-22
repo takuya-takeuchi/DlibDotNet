@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet.CUDA110</id>
-    <version>19.18.0.20200525</version>
+    <version>19.21.0.20201122</version>
     <title>DlibDotNet for CUDA 11.0</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
