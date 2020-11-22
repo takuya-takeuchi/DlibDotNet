@@ -216,16 +216,30 @@ $tmp102.Add("$env:CUDA_PATH_V10_2\bin\cusolver64_10.dll")
 # For DlibDotNet.CUDA110
 $tmp110 = New-Object 'System.Collections.Generic.List[string]'
 $tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublas64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublasLt64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_train64_8.dll")
 $tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn64_8.dll")
 $tmp110.Add("$env:CUDA_PATH_V11_0\bin\curand64_10.dll")
 $tmp110.Add("$env:CUDA_PATH_V11_0\bin\cusolver64_10.dll")
 
 # For DlibDotNet.CUDA111
 $tmp111 = New-Object 'System.Collections.Generic.List[string]'
-$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cublas64_11.dll")
-$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn64_8.dll")
-$tmp111.Add("$env:CUDA_PATH_V11_1\bin\curand64_10.dll")
-$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cusolver64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublas64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublasLt64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\curand64_10.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cusolver64_11.dll")
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "DlibDotNet";         Dependencies = $null     }
