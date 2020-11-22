@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>DlibDotNet.CUDA102</id>
+    <id>DlibDotNet.CUDA111</id>
     <version>19.21.0.20201122</version>
-    <title>DlibDotNet for CUDA 10.2</title>
+    <title>DlibDotNet for CUDA 11.1</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -12,7 +12,7 @@
     <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
     <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
 
-Requirements: Visual C++ 2017 Redistributable Package, cublas64_10.dll, cudnn64_7.dll, curand64_10.dll and cusolver64_10.dll</description>
+Requirements: Visual C++ 2017 Redistributable Package and cudnn 8</description>
     <releaseNotes></releaseNotes>
     <copyright>© Takuya Takeuchi 2017-2020</copyright>
     <tags>dlib .net machinelearning</tags>
@@ -25,20 +25,20 @@ Requirements: Visual C++ 2017 Redistributable Package, cublas64_10.dll, cudnn64_
     <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets" />
     <!-- cross-targetting via compile-time references -->
     <file src="ref\**\*" target="ref" />
-    <file src="..\artifacts\cuda-102\runtimes\**\*" target="runtimes" />
+    <file src="..\artifacts\cuda-111\runtimes\**\*" target="runtimes" />
 
     <file src="..\..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
 
-    <file src="..\artifacts\cuda-102\runtimes\win-x64\native\DlibDotNetNative.dll" target="runtimes\win-x64\native\DlibDotNetNative.dll" />
-    <file src="..\artifacts\cuda-102\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
-    <file src="..\artifacts\cuda-102\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
-    <file src="..\artifacts\cuda-102\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
-    <file src="..\artifacts\cuda-102\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\centos-x64\native\libDlibDotNetNative.so" />
-    <file src="..\artifacts\cuda-102\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\cuda-111\runtimes\win-x64\native\DlibDotNetNative.dll" target="runtimes\win-x64\native\DlibDotNetNative.dll" />
+    <file src="..\artifacts\cuda-111\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
+    <file src="..\artifacts\cuda-111\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cuda-111\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\cuda-111\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\centos-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cuda-111\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" />
 
     <!--
-    <file src="..\artifacts\cuda-102\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
-    <file src="..\artifacts\cuda-102\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" target="runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" />
+    <file src="..\artifacts\cuda-111\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
+    <file src="..\artifacts\cuda-111\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" target="runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" />
     -->
 
     <!-- license -->

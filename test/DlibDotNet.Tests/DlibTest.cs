@@ -803,6 +803,86 @@ namespace DlibDotNet.Tests
             }
         }
 
+        [Fact]
+        public void LoadPngFromBuffer()
+        {
+            const int cols = LoadTargetWidth;
+            const int rows = LoadTargetHeight;
+            var path = this.GetDataFile($"{LoadTarget}.png");
+
+            var tests = new[]
+            {
+                new { Type = ImageTypes.BgrPixel,      ExpectResult = true},
+                new { Type = ImageTypes.RgbPixel,      ExpectResult = true},
+                new { Type = ImageTypes.RgbAlphaPixel, ExpectResult = true},
+                new { Type = ImageTypes.UInt8,         ExpectResult = true},
+                new { Type = ImageTypes.UInt16,        ExpectResult = true},
+                new { Type = ImageTypes.UInt32,        ExpectResult = true},
+                new { Type = ImageTypes.Int8,          ExpectResult = true},
+                new { Type = ImageTypes.Int16,         ExpectResult = true},
+                new { Type = ImageTypes.Int32,         ExpectResult = true},
+                new { Type = ImageTypes.HsiPixel,      ExpectResult = true},
+                new { Type = ImageTypes.LabPixel,      ExpectResult = true},
+                new { Type = ImageTypes.Float,         ExpectResult = true},
+                new { Type = ImageTypes.Double,        ExpectResult = true}
+            };
+
+            var png = File.ReadAllBytes(path.FullName);
+            foreach (var test in tests)
+            {
+                TwoDimensionObjectBase image;
+                switch (test.Type)
+                {
+                    case ImageTypes.BgrPixel:
+                        image = Dlib.LoadPng<BgrPixel>(png);
+                        break;
+                    case ImageTypes.RgbPixel:
+                        image = Dlib.LoadPng<RgbPixel>(png);
+                        break;
+                    case ImageTypes.RgbAlphaPixel:
+                        image = Dlib.LoadPng<RgbAlphaPixel>(png);
+                        break;
+                    case ImageTypes.UInt8:
+                        image = Dlib.LoadPng<byte>(png);
+                        break;
+                    case ImageTypes.UInt16:
+                        image = Dlib.LoadPng<ushort>(png);
+                        break;
+                    case ImageTypes.UInt32:
+                        image = Dlib.LoadPng<uint>(png);
+                        break;
+                    case ImageTypes.Int8:
+                        image = Dlib.LoadPng<sbyte>(png);
+                        break;
+                    case ImageTypes.Int16:
+                        image = Dlib.LoadPng<short>(png);
+                        break;
+                    case ImageTypes.Int32:
+                        image = Dlib.LoadPng<int>(png);
+                        break;
+                    case ImageTypes.HsiPixel:
+                        image = Dlib.LoadPng<HsiPixel>(png);
+                        break;
+                    case ImageTypes.LabPixel:
+                        image = Dlib.LoadPng<LabPixel>(png);
+                        break;
+                    case ImageTypes.Float:
+                        image = Dlib.LoadPng<float>(png);
+                        break;
+                    case ImageTypes.Double:
+                        image = Dlib.LoadPng<double>(png);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                Assert.True(image.Columns == cols, $"Failed to load {test.Type}.");
+                Assert.True(image.Rows == rows, $"Failed to load {test.Type}.");
+
+                this.DisposeAndCheckDisposedState(image);
+            }
+        }
+
         #endregion
 
         #region SaveBmp

@@ -21,8 +21,14 @@ Param([Parameter(
       $CertificateKeyFile,
       
       [Parameter(
-      Mandatory=$False,
+      Mandatory=$True,
       Position = 4
+      )][string]
+      $CertificatePassword,
+      
+      [Parameter(
+      Mandatory=$False,
+      Position = 5
       )][string]
       $NotCountAsFailTests
 )
@@ -38,7 +44,7 @@ $NugetPath = Join-Path $DlibDotNetRoot "nuget"
 $OperatingSystem="windows"
 $OperatingSystemVersion="10"
 $TargetTestProject = "DlibDotNet.UWP.Tests.csproj"
-$MSBuildDir = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\amd64"
+$MSBuildDir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\amd64"
 $AppcertDir = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{ Target = "cpu";  Architecture = "x64"; CUDA = 0;   Package = "DlibDotNet.UWP" }
@@ -117,6 +123,7 @@ function Build([string]$Architecture, [string]$OutputDir, [string]$Thumbprint, [
    $command += " /p:AppxBundlePlatforms=""${Architecture}"""
    $command += " /p:AppxPackageSigningEnabled=true"
    $command += " /p:PackageCertificateThumbprint=${Thumbprint}"
+   $command += " /p:PackageCertificatePassword=${CertificatePassword}"
    $command += " /p:PackageCertificateKeyFile=""${CertificateKeyFile}"""
 
    Invoke-Expression "cmd.exe /c $command"
