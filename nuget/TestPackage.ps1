@@ -96,8 +96,7 @@ function RunTest($BuildTargets)
       # Copy Dependencies
       $OutDir = Join-Path $TargetDir bin | `
                   Join-Path -ChildPath Release | `
-                  Join-Path -ChildPath netcoreapp2.0 | `
-                  Join-Path -ChildPath $RuntimeIdentifier
+                  Join-Path -ChildPath netcoreapp2.0
       if (!(Test-Path "$OutDir")) {
          New-Item "$OutDir" -ItemType Directory > $null
       }
@@ -109,7 +108,7 @@ function RunTest($BuildTargets)
             foreach($Dependency in $BuildTarget.Dependencies)
             {
                $FileName = [System.IO.Path]::GetFileName("$Dependency")
-               New-Item -Value "$Dependency" -Path "$OutDir" -Name "$FileName" -ItemType SymbolicLink
+               New-Item -Value "$Dependency" -Path "$OutDir" -Name "$FileName" -ItemType SymbolicLink > $null
             }
          }
       }
