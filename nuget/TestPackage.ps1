@@ -108,7 +108,8 @@ function RunTest($BuildTargets)
          {
             foreach($Dependency in $BuildTarget.Dependencies)
             {
-               Copy-Item "$Dependency" "$OutDir"
+               $FileName = [System.IO.Path]::GetFileName("$Dependency")
+               New-Item -Value "$Dependency" -Path "$OutDir" -Name "$FileName" -ItemType SymbolicLink
             }
          }
       }
