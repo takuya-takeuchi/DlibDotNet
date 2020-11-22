@@ -139,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DlibDotNet.UWP">
-      <Version>19.17.0.20190730-pre</Version>
+      <Version>19.21.0.20201122</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
