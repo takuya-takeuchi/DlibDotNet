@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using DlibDotNet;
 using DlibDotNet.Extensions;
@@ -57,12 +58,16 @@ namespace FaceDetection.Controllers
 
                 using (var ms = new MemoryStream(image.Data))
                 using (var bitmap = (Bitmap)System.Drawing.Image.FromStream(ms))
-                using (var matrix = bitmap.ToMatrix<BgrPixel>())
-                using (var faceDetector = Dlib.GetFrontalFaceDetector())
+                using (var png = new MemoryStream())
                 {
-                    var dets = faceDetector.Operator(matrix);
-                    foreach (var r in dets)
-                        areas.Add(new FaceArea { Left = r.Left, Top = r.Top, Right = r.Right, Bottom = r.Bottom });
+                    bitmap.Save(png, ImageFormat.Png);
+                    using (var matrix = Dlib.LoadPng<BgrPixel>(png.ToArray()))
+                    using (var faceDetector = Dlib.GetFrontalFaceDetector())
+                    {
+                        var dets = faceDetector.Operator(matrix);
+                        foreach (var r in dets)
+                            areas.Add(new FaceArea { Left = r.Left, Top = r.Top, Right = r.Right, Bottom = r.Bottom });
+                    }
                 }
 
                 return Ok(areas.ToArray());
