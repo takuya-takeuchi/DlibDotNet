@@ -32,10 +32,7 @@ namespace FaceDetection.Client
             var api = new FaceDetectionApi(url);
             try
             {
-                var image = new Server.Model.Image
-                {
-                    Data = File.ReadAllBytes(file)
-                };
+                var image = new Server.Model.Image(File.ReadAllBytes(file));
                 var result = api.ApiFaceDetectionLocationsPostWithHttpInfo(image);
                 if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -43,7 +40,7 @@ namespace FaceDetection.Client
                     return;
                 }
 
-                Console.WriteLine($"[Info] Find {image.Data.Length} faces");
+                Console.WriteLine($"[Info] Find {result.Data.Count} faces");
 
                 using (var ms = new MemoryStream(image.Data))
                 using (var bitmap = (Bitmap)System.Drawing.Image.FromStream(ms))

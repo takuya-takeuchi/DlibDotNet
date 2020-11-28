@@ -23,13 +23,13 @@ if ((Test-Path swagger.json))
     Remove-Item swagger.json
 }
 
-$swaggerUrl = "https://oss.sonatype.org/content/repositories/snapshots/io/swagger/codegen/v3/swagger-codegen-cli/3.0.24-SNAPSHOT/swagger-codegen-cli-3.0.24-20201118.130427-14.jar"
-# $swaggerUrl = "https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.23/swagger-codegen-cli-3.0.23.jar"
-if (!(Test-Path "swagger-codegen-cli.jar"))
+# $openapiUrl = "https://oss.sonatype.org/content/repositories/snapshots/org/openapitools/openapi-generator-cli/5.0.0-SNAPSHOT/openapi-generator-cli-5.0.0-20201128.073749-892.jar"
+$openapiUrl = "https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0-beta3/openapi-generator-cli-5.0.0-beta3.jar"
+if (!(Test-Path "openapi-generator-cli.jar"))
 {
-    Write-Host "[Info] Download swagger-codegen-cli.jar" -Foreground Yellow
-    Invoke-WebRequest -Uri "${swaggerUrl}" `
-                      -outfile swagger-codegen-cli.jar
+    Write-Host "[Info] Download openapi-generator-cli.jar" -Foreground Yellow
+    Invoke-WebRequest -Uri "${openapiUrl}" `
+                      -outfile openapi-generator-cli.jar
 }
 
 Invoke-WebRequest -Uri "http://localhost:5000/swagger/v1/swagger.json" `
@@ -44,14 +44,14 @@ if (!(Test-Path swagger.json))
 Write-Host "[Info] Succeed to get swagger.json" -Foreground Green
 
 $current = Get-Location
-$executable = Join-Path $current "swagger-codegen-cli.jar"
+$executable = Join-Path $current "openapi-generator-cli.jar"
 $arguments = "generate " + 
              "-i swagger.json " + 
-             "-l csharp " + 
+             "-g csharp-netcore " + 
              "-o Server " + 
-             "-DpackageName=`"FaceDetection.Server`" " + 
-             "-DnetCoreProjectFile=true " + 
-             "-DtargetFramework=`"v5.0`""
+             "--additional-properties=netCoreProjectFile=true," + 
+             "targetFramework=netstandard2.0," +
+             "packageName=FaceDetection.Server"
 Invoke-Expression "& '${java}' -jar ${executable} ${arguments}"
 Remove-Item swagger.json
 
