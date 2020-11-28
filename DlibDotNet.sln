@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3DPointCloud", "examples\3D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Surf", "examples\Surf\Surf.csproj", "{6E027771-5500-4555-822C-C7FE6AC8709D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlibDotNet.Extensions", "src\DlibDotNet.Extensions\DlibDotNet.Extensions.csproj", "{D3BFF103-53CB-46DC-A0E8-05A01E11099B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions", "src\DlibDotNet.Extensions\DlibDotNet.Extensions.csproj", "{D3BFF103-53CB-46DC-A0E8-05A01E11099B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinForms", "WinForms", "{4082257D-FC8E-4D37-8489-89AAFC9D4A38}"
 EndProject
@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceLandmarkDetection", "ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceLandmarkDetection", "examples\WPF\FaceLandmarkDetection\FaceLandmarkDetection.csproj", "{9575AC94-3760-483F-9403-A77E7CFE8F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlibDotNet.Extensions.Tests", "test\DlibDotNet.Extensions.Tests\DlibDotNet.Extensions.Tests.csproj", "{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions.Tests", "test\DlibDotNet.Extensions.Tests\DlibDotNet.Extensions.Tests.csproj", "{2A75C8B3-5122-4E7E-A0CF-A0AD5FFA60B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnnFaceRecognition", "examples\DnnFaceRecognition\DnnFaceRecognition.csproj", "{C6EFE2AC-63BD-4574-B4A1-9AC80CA5AD2E}"
 EndProject
@@ -140,6 +140,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Svm", "examples\Svm\Svm.csproj", "{2CD4DF53-113C-4859-82BE-E0173A12B3D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SvmPegasos", "examples\SvmPegasos\SvmPegasos.csproj", "{BF95F4C0-67F0-426A-945C-DD38348F4A4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP.NET", "ASP.NET", "{D2D6D0D7-7544-4730-A34E-DAE2588B55D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaceDetection", "examples\ASP.NET\FaceDetection\FaceDetection.csproj", "{A258EC9C-79CE-47BE-8D54-35AED0A082BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1085,6 +1089,22 @@ Global
 		{BF95F4C0-67F0-426A-945C-DD38348F4A4C}.Release|x64.Build.0 = Release|Any CPU
 		{BF95F4C0-67F0-426A-945C-DD38348F4A4C}.Release|x86.ActiveCfg = Release|Any CPU
 		{BF95F4C0-67F0-426A-945C-DD38348F4A4C}.Release|x86.Build.0 = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|x64.Build.0 = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Debug|x86.Build.0 = Debug|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|ARM.Build.0 = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|x64.ActiveCfg = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|x64.Build.0 = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1154,6 +1174,8 @@ Global
 		{F5C085BB-3525-40B5-B619-74BC2C229104} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{2CD4DF53-113C-4859-82BE-E0173A12B3D4} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{BF95F4C0-67F0-426A-945C-DD38348F4A4C} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{D2D6D0D7-7544-4730-A34E-DAE2588B55D8} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
+		{A258EC9C-79CE-47BE-8D54-35AED0A082BC} = {D2D6D0D7-7544-4730-A34E-DAE2588B55D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}
