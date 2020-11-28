@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Reflection.Metadata.Ecma335;
 using FaceDetection.Server.Api;
 using Image = FaceDetection.Server;
 
