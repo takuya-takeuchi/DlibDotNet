@@ -16,10 +16,14 @@ namespace FaceDetection
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var urls = args.Length == 0 ? new []{ "http://localhost:5000", "https://localhost:5001" } : args;
+
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                              .UseUrls(urls)
+                              .UseKestrel();
                 });
         }
 

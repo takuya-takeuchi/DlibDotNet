@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FaceDetection</name>
+    </assembly>
+    <members>
+        <member name="T:FaceDetection.Controllers.FaceDetectionController">
+            <summary>
+            Get rectangles of face area from specified image
+            </summary>
+        </member>
+        <member name="M:FaceDetection.Controllers.FaceDetectionController.Locations(FaceDetection.Models.Image)">
+            <summary>
+            Returns an enumerable collection of face location correspond to all faces in specified image.
+            </summary>
+        </member>
+        <member name="T:FaceDetection.Models.FaceArea">
+            <summary>
+            Describes the left, top, right and bottom location of a face.
+            </summary>
+        </member>
+        <member name="P:FaceDetection.Models.FaceArea.Bottom">
+            <summary>
+            The y-axis value of the bottom of the rectangle of face.
+            </summary>
+        </member>
+        <member name="P:FaceDetection.Models.FaceArea.Left">
+            <summary>
+            The x-axis value of the left side of the rectangle of face.
+            </summary>
+        </member>
+        <member name="P:FaceDetection.Models.FaceArea.Right">
+            <summary>
+            The x-axis value of the right side of the rectangle of face.
+            </summary>
+        </member>
+        <member name="P:FaceDetection.Models.FaceArea.Top">
+            <summary>
+            The y-axis value of the top of the rectangle of face.
+            </summary>
+        </member>
+        <member name="T:FaceDetection.Models.Image">
+            <summary>
+            Represents a image data.
+            </summary>
+        </member>
+        <member name="P:FaceDetection.Models.Image.Data">
+            <summary>
+            The image data.
+            </summary>
+        </member>
+    </members>
+</doc>
