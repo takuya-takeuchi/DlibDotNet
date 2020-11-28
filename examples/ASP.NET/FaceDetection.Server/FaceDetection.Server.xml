@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>FaceDetection</name>
+        <name>FaceDetection.Server</name>
     </assembly>
     <members>
         <member name="T:FaceDetection.Controllers.FaceDetectionController">
