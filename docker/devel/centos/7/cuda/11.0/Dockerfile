@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.0-cudnn8-devel-centos7
+FROM nvidia/cuda:11.0.3-cudnn8-devel-centos7
 LABEL maintainer "Takuya Takeuchi <takuya.takeuchi.dev@gmail.com>"
 
 # install package to build
