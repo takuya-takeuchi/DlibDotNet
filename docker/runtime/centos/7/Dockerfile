@@ -14,5 +14,10 @@ RUN yum update -y --disablerepo=cuda,nvidia-ml && yum install -y \
     dotnet-sdk-2.1 \
  && yum clean all
 
+# Install gdi++
+RUN yum install -y \
+    libgdiplus \
+ && yum clean all
+
 # Trigger first run experience by running arbitrary cmd to populate local package cache
 RUN dotnet help
