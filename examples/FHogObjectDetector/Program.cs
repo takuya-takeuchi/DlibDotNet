@@ -156,7 +156,7 @@ namespace FHogObjectDetector
                                 for (var i = 0; i < imageTest.Count; ++i)
                                 {
                                     // Run the detector and get the face detections.
-                                    var dets = detector.Operator(imageTest[i]);
+                                    detector.Operator(imageTest[i], out IEnumerable<Rectangle> dets);
                                     win.ClearOverlay();
                                     win.SetImage(imageTest[i]);
                                     win.AddOverlay(dets, new RgbPixel(255, 0, 0));
