@@ -56,9 +56,6 @@ namespace DlibDotNet
 
         #endregion
 
-        #region Properties
-        #endregion
-
         #region Methods
 
         public void Deserialize(string path)
@@ -81,7 +78,7 @@ namespace DlibDotNet
             return this._Imp.DrawFHog(weightIndex, cellDrawSize);
         }
 
-        public IEnumerable<Rectangle> Operator<U>(Matrix<U> image)
+        public void Operator<U>(Matrix<U> image, out IEnumerable<Rectangle> rectangles)
             where U : struct
         {
             if (image == null)
@@ -90,7 +87,19 @@ namespace DlibDotNet
             image.ThrowIfDisposed();
             this.ThrowIfDisposed();
 
-            return this._Imp.Operator(image);
+            rectangles = this._Imp.Operator(image);
+        }
+
+        public void Operator<U>(Matrix<U> image, out IEnumerable<Tuple<double, Rectangle>> tuples)
+            where U : struct
+        {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            image.ThrowIfDisposed();
+            this.ThrowIfDisposed();
+
+            tuples = this._Imp.OperatorWithConfidence(image);
         }
 
         public void Serialize(string path)
@@ -164,6 +173,9 @@ namespace DlibDotNet
             public abstract Matrix<byte> DrawFHog(uint weightIndex = 0, int cellDrawSize = 15);
 
             public abstract IEnumerable<Rectangle> Operator<U>(Matrix<U> image)
+                where U : struct;
+
+            public abstract IEnumerable<Tuple<double, Rectangle>> OperatorWithConfidence<U>(Matrix<U> image)
                 where U : struct;
 
             public abstract void Serialize(byte[] filepath, int filepathLength);
@@ -283,15 +295,48 @@ namespace DlibDotNet
                                                                                    this.NativePtr,
                                                                                    type,
                                                                                    image.NativePtr,
-                                                                                   out var matrix);
+                                                                                   out var rects);
                 switch (ret)
                 {
                     case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                         throw new ArgumentException($"{type} is not supported.");
                 }
 
-                using (var tmp = new StdVector<Rectangle>(matrix))
+                using (var tmp = new StdVector<Rectangle>(rects))
                     return tmp.ToArray();
+            }
+
+            public override IEnumerable<Tuple<double, Rectangle>> OperatorWithConfidence<U>(Matrix<U> image)
+            {
+                if (image == null)
+                    throw new ArgumentNullException(nameof(image));
+
+                image.ThrowIfDisposed();
+
+                var type = image.MatrixElementType.ToNativeMatrixElementType();
+                var ret = NativeMethods.object_detector_scan_fhog_pyramid_operator_with_confidence(this._PyramidType,
+                                                                                                   this._PyramidRate,
+                                                                                                   this._FeatureExtractorType,
+                                                                                                   this.NativePtr,
+                                                                                                   type,
+                                                                                                   image.NativePtr,
+                                                                                                   out var rects,
+                                                                                                   out var confidences);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
+                        throw new ArgumentException($"{type} is not supported.");
+                }
+
+                using (var rectsVector = new StdVector<Rectangle>(rects))
+                using (var tconfidencesVector = new StdVector<double>(confidences))
+                {
+                    var rectsArray = rectsVector.ToArray();
+                    var confidencesArray = tconfidencesVector.ToArray();
+                    var count = rectsArray.Length;
+                    for (var index = 0; index < count; index++)
+                        yield return new Tuple<double, Rectangle>(confidencesArray[index], rectsArray[index]);
+                };
             }
 
             public override void Serialize(byte[] filepath, int filepathLength)
