@@ -78,7 +78,7 @@ namespace DlibDotNet
             return this._Imp.DrawFHog(weightIndex, cellDrawSize);
         }
 
-        public IEnumerable<Rectangle> Operator<U>(Matrix<U> image)
+        public void Operator<U>(Matrix<U> image, out IEnumerable<Rectangle> rectangles)
             where U : struct
         {
             if (image == null)
@@ -87,10 +87,10 @@ namespace DlibDotNet
             image.ThrowIfDisposed();
             this.ThrowIfDisposed();
 
-            return this._Imp.Operator(image);
+            rectangles = this._Imp.Operator(image);
         }
 
-        public IEnumerable<Tuple<double, Rectangle>> OperatorWithConfidence<U>(Matrix<U> image)
+        public void Operator<U>(Matrix<U> image, out IEnumerable<Tuple<double, Rectangle>> tuples)
             where U : struct
         {
             if (image == null)
@@ -99,7 +99,7 @@ namespace DlibDotNet
             image.ThrowIfDisposed();
             this.ThrowIfDisposed();
 
-            return this._Imp.OperatorWithConfidence(image);
+            tuples = this._Imp.OperatorWithConfidence(image);
         }
 
         public void Serialize(string path)
@@ -329,10 +329,10 @@ namespace DlibDotNet
                 }
 
                 using (var rectsVector = new StdVector<Rectangle>(rects))
-                using (var tconfidencesVector = new StdVector<double>(rects))
+                using (var tconfidencesVector = new StdVector<double>(confidences))
                 {
                     var rectsArray = rectsVector.ToArray();
-                    var confidencesArray = confidencesVector.ToArray();
+                    var confidencesArray = tconfidencesVector.ToArray();
                     var count = rectsArray.Length;
                     for (var index = 0; index < count; index++)
                         yield return new Tuple<double, Rectangle>(confidencesArray[index], rectsArray[index]);
