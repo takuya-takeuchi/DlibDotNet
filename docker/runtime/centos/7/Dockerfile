@@ -10,8 +10,13 @@ RUN rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-p
 
 # Install the .NET SDK
 ENV DOTNET_SDK_VERSION 2.1.802
-RUN yum update -y && yum install -y \
+RUN yum update -y --disablerepo=cuda,nvidia-ml && yum install -y \
     dotnet-sdk-2.1 \
+ && yum clean all
+
+# Install gdi++
+RUN yum install -y \
+    libgdiplus \
  && yum clean all
 
 # Trigger first run experience by running arbitrary cmd to populate local package cache

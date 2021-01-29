@@ -485,6 +485,16 @@ namespace DlibDotNet
                                                                                   out IntPtr dets);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType object_detector_scan_fhog_pyramid_operator_with_confidence(PyramidType pyramidType,
+                                                                                                  uint pyramidRate,
+                                                                                                  FHogFeatureExtractorType featureExtractorType,
+                                                                                                  IntPtr detector,
+                                                                                                  MatrixElementType elementType,
+                                                                                                  IntPtr matrix,
+                                                                                                  out IntPtr rects,
+                                                                                                  out IntPtr confidences);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType object_detector_scan_fhog_pyramid_serialize(byte[] fileName,
                                                                                    int filepathLength,
                                                                                    PyramidType pyramidType,
