@@ -26,6 +26,14 @@ namespace DlibDotNet.Tests.ImageProcessing
         }
 
         [Fact]
+        public void CreateShapePredictor2()
+        {
+            var path = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
+            var predictor = ShapePredictor.Deserialize(File.ReadAllBytes(path.FullName));
+            this.DisposeAndCheckDisposedState(predictor);
+        }
+
+        [Fact]
         public void DetectFace()
         {
             if (this._ShapePredictor == null)

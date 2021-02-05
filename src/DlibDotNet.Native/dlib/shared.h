@@ -1,6 +1,8 @@
 #ifndef _CPP_SHARED_H_
 #define _CPP_SHARED_H_
 
+#include "vector_streambuf.h"
+
 #include <regex>
 
 enum struct array2d_type : int
