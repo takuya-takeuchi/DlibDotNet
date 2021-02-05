@@ -238,6 +238,57 @@ namespace DlibDotNet.Tests.ImageProcessing
         }
 
         [Fact]
+        public void DetectFace4()
+        {
+            var model = this.GetDataFile("shape_predictor_68_face_landmarks.dat");
+
+            var predictor1 = ShapePredictor.Deserialize(model.FullName);
+            var predictor2 = ShapePredictor.Deserialize(File.ReadAllBytes(model.FullName));
+
+            if (this._ShapePredictor == null)
+                Assert.True(false, "ShapePredictor is not initialized!!");
+
+            string testName = $"{nameof(DetectFace4)}";
+            var path = this.GetDataFile("Lenna_mini.bmp");
+            var tests = new[]
+            {
+                new { Type = MatrixElementTypes.RgbPixel,      ExpectResult = true},
+            };
+
+            using (var faceDetector = Dlib.GetFrontalFaceDetector())
+            using (var matrix = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName))
+            {
+                var dets = faceDetector.Operator(matrix);
+                var shapes1 = dets.Select(r => predictor1.Detect(matrix, r)).ToList();
+                var shapes2 = dets.Select(r => predictor2.Detect(matrix, r)).ToList();
+                Assert.Equal(shapes1.Count, shapes2.Count);
+
+                for (var index = 0; index < shapes1.Count; index++)
+                {
+                    var shape1 = shapes1[index];
+                    var shape2 = shapes2[index];
+
+                    var r1 = shape1.Rect;
+                    var r2 = shape2.Rect;
+                    var parts1 = shape1.Parts;
+                    var parts2 = shape2.Parts;
+
+                    for (uint i = 0; i < parts1; i++)
+                    {
+                        var part1 = shape1.GetPart(i);
+                        var part2 = shape2.GetPart(i);
+
+                        Assert.Equal(part1.X, part2.X);
+                        Assert.Equal(part1.Y, part2.Y);
+                    }
+                }
+            }
+            
+            this.DisposeAndCheckDisposedState(predictor2);
+            this.DisposeAndCheckDisposedState(predictor1);
+        }
+
+        [Fact]
         public void DetectFaceMModRect()
         {
             if (this._ShapePredictor == null)
