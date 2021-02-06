@@ -88,32 +88,6 @@ DLLEXPORT int deserialize_shape_predictor(const char* file_name,
     return err;
 }
 
-// DLLEXPORT int deserialize_shape_predictor2(const char* item,
-//                                            const int item_length,
-//                                            shape_predictor** ret,
-//                                            std::string** error_message)
-// {
-//     int err = ERR_OK;
-//     *ret = nullptr;
-
-//     try
-//     {
-//         std::vector<char> vec(item, item + item_length);
-//         vector_streambuf buf(vec);
-//         std::istream stream(&buf);
-//         shape_predictor* predictor = new shape_predictor();
-//         dlib::deserialize((*predictor), stream);
-//         *ret = predictor;
-//     }
-//     catch (serialization_error& e)
-//     {
-//         err = ERR_GENERAL_SERIALIZATION;
-//         *error_message = new std::string(e.what());
-//     }
-
-//     return err;
-// }
-
 DLLEXPORT int deserialize_shape_predictor2(const char* item,
                                            const int item_length,
                                            shape_predictor** ret,
