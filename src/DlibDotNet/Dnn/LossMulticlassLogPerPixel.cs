@@ -101,6 +101,28 @@ namespace DlibDotNet.Dnn
             return new LossMulticlassLogPerPixel(net, networkType);
         }
 
+        public static LossMulticlassLogPerPixel Deserialize(byte[] content, int networkType = 0)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            var error = NativeMethods.LossMulticlassLogPerPixel_deserialize2(networkType,
+                                                                             content,
+                                                                             content.Length,
+                                                                             out var net,
+                                                                             out var errorMessage);
+            Cuda.ThrowCudaException(error);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(networkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+
+            return new LossMulticlassLogPerPixel(net, networkType);
+        }
+
         public static LossMulticlassLogPerPixel Deserialize(ProxyDeserialize deserialize, int networkType = 0)
         {
             if (deserialize == null)
