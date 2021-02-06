@@ -13,12 +13,20 @@ namespace DlibDotNet.Tests
 
         private readonly Random _Random;
 
+        protected readonly string ModelDirectory = "Models";
+
         #endregion
 
         #region Constructors
 
         protected TestBase()
         {
+            var dir = Environment.GetEnvironmentVariable("DlibDotNetModelDir");
+            if (Directory.Exists(dir))
+            {
+                ModelDirectory = dir;
+            }
+
             this._Random = new Random();
         }
 
