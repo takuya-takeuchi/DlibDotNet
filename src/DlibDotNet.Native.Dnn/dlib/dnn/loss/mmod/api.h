@@ -88,6 +88,22 @@ DLLEXPORT int LossMmod_deserialize(const int id,
                                              error_message);
 }
 
+DLLEXPORT int LossMmod_deserialize2(const int id,
+                                    const char* item,
+                                    const int item_length,
+                                    void** ret,
+                                    std::string** error_message)
+{
+    auto iter = LossMmodRegistry.find(id);
+    if (iter == end(LossMmodRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMmodRegistry[id]->deserialize2(item,
+                                              item_length,
+                                              ret,
+                                              error_message);
+}
+
 DLLEXPORT int LossMmod_deserialize_proxy(const int id,
                                          proxy_deserialize* proxy,
                                          void** ret,
