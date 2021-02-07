@@ -72,6 +72,25 @@ namespace DlibDotNet
             return new ShapePredictor(predictor);
         }
 
+        public static ShapePredictor Deserialize(byte[] item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var ret = NativeMethods.deserialize_shape_predictor2(item,
+                                                                 item.Length,
+                                                                 out var predictor,
+                                                                 out var errorMessage);
+
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+
+            return new ShapePredictor(predictor);
+        }
+
         public static ShapePredictor Deserialize(ProxyDeserialize deserialize)
         {
             if (deserialize == null)

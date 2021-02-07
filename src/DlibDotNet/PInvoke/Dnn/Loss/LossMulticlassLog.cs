@@ -73,6 +73,13 @@ namespace DlibDotNet
                                                                      out IntPtr error_message);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType LossMulticlassLog_deserialize2(int id,
+                                                                      byte[] file_name,
+                                                                      int file_name_length,
+                                                                      out IntPtr ret,
+                                                                      out IntPtr error_message);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMulticlassLog_deserialize_proxy(int id,
                                                                            IntPtr proxy,
                                                                            out IntPtr ret,

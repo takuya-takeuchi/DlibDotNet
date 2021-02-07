@@ -113,6 +113,22 @@ DLLEXPORT int LossMulticlassLog_deserialize(const int id,
                                                       error_message);
 }
 
+DLLEXPORT int LossMulticlassLog_deserialize2(const int id,
+                                             const char* item,
+                                             const int item_length,
+                                             void** ret,
+                                             std::string** error_message)
+{
+    auto iter = LossMulticlassLogRegistry.find(id);
+    if (iter == end(LossMulticlassLogRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMulticlassLogRegistry[id]->deserialize2(item,
+                                                       item_length,
+                                                       ret,
+                                                       error_message);
+}
+
 DLLEXPORT int LossMulticlassLog_deserialize_proxy(const int id,
                                                   proxy_deserialize* proxy,
                                                   void** ret,

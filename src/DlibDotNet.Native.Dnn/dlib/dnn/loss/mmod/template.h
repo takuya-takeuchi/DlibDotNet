@@ -128,6 +128,36 @@ int LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, 
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, typename LABEL_ELEMENT_POINTER, int ID>
+int LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, LABEL_ELEMENT_POINTER, ID>::deserialize2(const char* item,
+                                                                                                                         const int item_length,
+                                                                                                                         void** ret,
+                                                                                                                         std::string** error_message)
+{
+    int error = ERR_OK;
+
+    try
+    {
+        std::string s(item, item_length);
+        std::istringstream iss(s);
+        std::istream& stream = iss;
+        auto net = new NET();
+        dlib::deserialize((*net), stream);
+        *ret = net;
+    }
+    catch (serialization_error& e)
+    {
+        error = ERR_GENERAL_SERIALIZATION;
+        *error_message = new std::string(e.what());
+    }
+    catch(dlib::cuda_error ce)
+    {
+        cuda_error_to_error_code(ce, error);
+    }
+
+    return error;
+}
+
+template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, typename LABEL_ELEMENT_POINTER, int ID>
 int LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, LABEL_ELEMENT_POINTER, ID>::deserialize_proxy(proxy_deserialize* proxy,
                                                                                                        void** ret,
                                                                                                        std::string** error_message)
