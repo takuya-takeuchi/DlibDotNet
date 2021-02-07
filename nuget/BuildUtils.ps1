@@ -515,6 +515,7 @@ function ConfigCUDA([Config]$Config)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+            -D CUDA_NVCC_FLAGS="--expt-relaxed-constexpr" `
             ..
    }
    else
@@ -534,6 +535,7 @@ function ConfigCUDA([Config]$Config)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+            -D CUDA_NVCC_FLAGS="--expt-relaxed-constexpr" `
             ..
    }
 }
