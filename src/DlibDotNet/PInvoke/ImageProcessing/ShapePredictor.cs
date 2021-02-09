@@ -24,6 +24,9 @@ namespace DlibDotNet
         public static extern ErrorType deserialize_shape_predictor(byte[] filName, int fileNameLength, out IntPtr predictor, out IntPtr errorMessage);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern ErrorType deserialize_shape_predictor2(byte[] filName, int fileNameLength, out IntPtr predictor, out IntPtr errorMessage);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType deserialize_shape_predictor_proxy(IntPtr proxy_deserialize, 
                                                                          out IntPtr predictor,
                                                                          out IntPtr errorMessage);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using DlibDotNet.Dnn;
 using Xunit;
 
@@ -15,6 +16,22 @@ namespace DlibDotNet.Tests.Dnn
             foreach (var networkId in networkIds)
                 using (var loss = new LossMulticlassLog(networkId))
                     Assert.True(!loss.IsDisposed);
+        }
+
+        [Fact]
+        public void Deserialize()
+        {
+            var path = Path.Combine(this.ModelDirectory, "mnist_network_inception.dat");
+            using (var loss = LossMulticlassLog.Deserialize(path))
+                Assert.Equal(43, loss.NumLayers);
+        }
+
+        [Fact]
+        public void Deserialize2()
+        {
+            var path = Path.Combine(this.ModelDirectory, "mnist_network_inception.dat");
+            using (var loss = LossMulticlassLog.Deserialize(File.ReadAllBytes(path)))
+                Assert.Equal(43, loss.NumLayers);
         }
 
         [Fact]
@@ -1034,6 +1051,27 @@ namespace DlibDotNet.Tests.Dnn
                         for (var index = 0; index < label.Length; index++)
                             Assert.Equal(label[index], l.Label[index]);
                     }
+        }
+        
+        [Fact]
+        public void Operator()
+        {
+            var image = this.GetDataFile("mnist-7.bmp");
+            var path = Path.Combine(this.ModelDirectory, "mnist_network_inception.dat");
+            using (var loss1 = LossMulticlassLog.Deserialize(path))
+            using (var loss2 = LossMulticlassLog.Deserialize(File.ReadAllBytes(path)))
+            using (var matrix = Dlib.LoadImageAsMatrix<byte>(image.FullName))
+            using (var ret1 = loss1.Operator(matrix))
+            using (var ret2 = loss2.Operator(matrix))
+            {
+                Assert.Equal(1, ret1.Count);
+                Assert.Equal(1, ret2.Count);
+
+                var r1 = ret1[0];
+                var r2 = ret2[0];
+
+                Assert.Equal(r1, r2);
+            }
         }
 
     }

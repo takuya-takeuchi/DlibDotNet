@@ -88,6 +88,28 @@ namespace DlibDotNet.Dnn
             return new LossMetric(net, networkType);
         }
 
+        public static LossMetric Deserialize(byte[] content, int networkType = 0)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+            
+            var error = NativeMethods.LossMetric_deserialize2(networkType,
+                                                              content,
+                                                              content.Length,
+                                                              out var net,
+                                                              out var errorMessage);
+            Cuda.ThrowCudaException(error);
+            switch (error)
+            {
+                case NativeMethods.ErrorType.DnnNotSupportNetworkType:
+                    throw new NotSupportNetworkTypeException(networkType);
+                case NativeMethods.ErrorType.GeneralSerialization:
+                    throw new SerializationException(StringHelper.FromStdString(errorMessage, true));
+            }
+
+            return new LossMetric(net, networkType);
+        }
+
         public static LossMetric Deserialize(ProxyDeserialize deserialize, int networkType = 0)
         {
             if (deserialize == null)

@@ -75,6 +75,22 @@ DLLEXPORT int LossMetric_deserialize(const int id,
                                                error_message);
 }
 
+DLLEXPORT int LossMetric_deserialize2(const int id,
+                                      const char* item,
+                                      const int item_length,
+                                      void** ret,
+                                      std::string** error_message)
+{
+    auto iter = LossMetricRegistry.find(id);
+    if (iter == end(LossMetricRegistry))
+        return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
+
+    return LossMetricRegistry[id]->deserialize2(item,
+                                                item_length,
+                                                ret,
+                                                error_message);
+}
+
 DLLEXPORT int LossMetric_deserialize_proxy(const int id,
                                            proxy_deserialize* proxy,
                                            void** ret,

@@ -50,6 +50,10 @@ public:
                             const int file_name_length,
                             void** ret,
                             std::string** error_message) override;
+    virtual int deserialize2(const char* item,
+                             const int item_length,
+                             void** ret,
+                             std::string** error_message) override;
     virtual int deserialize_proxy(proxy_deserialize* proxy,
                                   void** ret,
                                   std::string** error_message) override;
