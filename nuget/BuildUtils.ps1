@@ -462,6 +462,33 @@ function ConfigCPU([Config]$Config)
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ..
    }
+   elseif ($IsMacOS)
+   {
+      # Use static libjpeg
+      $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
+      $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
+      $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
+
+      $arch_type = $Config.GetArchitecture()
+      cmake -D ARCH_TYPE="$arch_type" `
+            -D DLIB_USE_CUDA=OFF `
+            -D DLIB_USE_LAPACK=OFF `
+            -D mkl_include_dir="" `
+            -D mkl_intel="" `
+            -D mkl_rt="" `
+            -D mkl_thread="" `
+            -D mkl_pthread="" `
+            -D LIBPNG_IS_GOOD=OFF `
+            -D PNG_FOUND=OFF `
+            -D PNG_LIBRARY_RELEASE="" `
+            -D PNG_LIBRARY_DEBUG="" `
+            -D PNG_PNG_INCLUDE_DIR="" `
+            -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+            -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+            -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+            -D JPEG_FOUND=OFF `
+            ..
+   }
    else
    {
       $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
