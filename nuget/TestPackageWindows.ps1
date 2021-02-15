@@ -28,6 +28,19 @@ $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA102";
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA110"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA111"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 
+if ([string]::IsNullOrEmpty($Version))
+{
+   $packages = Get-ChildItem *.* -include *.nupkg | Sort-Object -Property Name -Descending
+   foreach ($file in $packages)
+   {
+      $file = Split-Path $file -leaf
+      $file = $file -replace "DlibDotNet\.",""
+      $file = $file -replace "\.nupkg",""
+      $Version = $file
+      break
+   }
+}
+
 foreach($BuildTarget in $BuildTargets)
 {
    $package = $BuildTarget.Package

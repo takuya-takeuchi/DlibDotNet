@@ -22,6 +22,19 @@ $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet";     Pla
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 # $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.MKL"; PlatformTarget="x86"; RID = "$OperatingSystem-x86"; }
 
+if ([string]::IsNullOrEmpty($Version))
+{
+   $packages = Get-ChildItem *.* -include *.nupkg | Sort-Object -Property Name -Descending
+   foreach ($file in $packages)
+   {
+      $file = Split-Path $file -leaf
+      $file = $file -replace "DlibDotNet\.",""
+      $file = $file -replace "\.nupkg",""
+      $Version = $file
+      break
+   }
+}
+
 foreach($BuildTarget in $BuildTargets)
 {
    $package = $BuildTarget.Package

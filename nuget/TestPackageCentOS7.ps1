@@ -20,8 +20,6 @@ $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DockerDir = Join-Path $DlibDotNetRoot docker
 
-Set-Location -Path $DockerDir
-
 $DockerFileDir = Join-Path $DockerDir test  | `
                  Join-Path -ChildPath $OperatingSystem | `
                  Join-Path -ChildPath $OperatingSystemVersion
@@ -39,6 +37,21 @@ $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture =
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 102; Package = "DlibDotNet.CUDA102"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 110; Package = "DlibDotNet.CUDA110"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 111; Package = "DlibDotNet.CUDA111"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
+
+if ([string]::IsNullOrEmpty($Version))
+{
+   $packages = Get-ChildItem *.* -include *.nupkg | Sort-Object -Property Name -Descending
+   foreach ($file in $packages)
+   {
+      $file = Split-Path $file -leaf
+      $file = $file -replace "DlibDotNet\.",""
+      $file = $file -replace "\.nupkg",""
+      $Version = $file
+      break
+   }
+}
+
+Set-Location -Path $DockerDir
 
 foreach($BuildTarget in $BuildTargets)
 {
