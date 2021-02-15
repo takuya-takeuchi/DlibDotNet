@@ -14,5 +14,5 @@ RUN dpkg --add-architecture i386 && dpkg --print-foreign-architectures
 # install package to build
 RUN apt-get update && apt-get install -y --allow-unauthenticated \
     libx11-6:i386 \
-    intel-mkl-32bit-2020.0.088 \
+    intel-mkl-32bit-2020.0-088 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
