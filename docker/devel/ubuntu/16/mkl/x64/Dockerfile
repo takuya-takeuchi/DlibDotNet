@@ -12,7 +12,7 @@ RUN sh -c 'echo deb https://apt.repos.intel.com/mkl all main > /etc/apt/sources.
 RUN apt-get update && apt-get install -y \
     build-essential \
     libx11-dev \
-    intel-mkl-64bit-2019.0-045 \
+    intel-mkl-64bit-2020.0.088 \
     cmake
 
 # set compiler

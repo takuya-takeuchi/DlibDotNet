@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
 
 # install package to build
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    intel-mkl-32bit-2019.0-045
+    intel-mkl-32bit-2020.0.088
 
 # set compiler
 ENV CMAKE_C_COMPILER=/usr/bin/gcc
