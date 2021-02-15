@@ -3,7 +3,7 @@
 #%1: Version of Release (19.17.0.yyyyMMdd)
 #***************************************
 Param([Parameter(
-      Mandatory=$True,
+      Mandatory=$False,
       Position = 1
       )][string]
       $Version
@@ -44,7 +44,7 @@ if ([string]::IsNullOrEmpty($Version))
    foreach ($file in $packages)
    {
       $file = Split-Path $file -leaf
-      $file = $file -replace "DlibDotNet\.",""
+      $file = $file -replace "DlibDotNet(\.[a-zA-Z]+[0-9]*)*\.",""
       $file = $file -replace "\.nupkg",""
       $Version = $file
       break
