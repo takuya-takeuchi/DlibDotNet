@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet.CUDA110</id>
-    <version>19.21.0.20210227</version>
+    <version>19.21.0.20210229</version>
     <title>DlibDotNet for CUDA 11.0</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -14,7 +14,7 @@
 
 Requirements: Visual C++ 2017 Redistributable Package and cudnn 8</description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2017-2020</copyright>
+    <copyright>© Takuya Takeuchi 2017-2021</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>
