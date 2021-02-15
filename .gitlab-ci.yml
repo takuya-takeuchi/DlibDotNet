@@ -19,6 +19,20 @@ build:win:
     paths:
       - nuget/artifacts
 
+build:cent:
+  stage: build
+  before_script:
+    - git submodule update --init --recursive
+  script:
+    - cd nuget
+    - pwsh BuildCentOS7.ps1
+  tags:
+    - linux
+    - cuda
+  artifacts:
+    paths:
+      - nuget/artifacts
+
 build:ubuntu:
   stage: build
   before_script:
@@ -27,7 +41,7 @@ build:ubuntu:
     - cd nuget
     - pwsh BuildUbuntu18.ps1
   tags:
-    - ubuntu
+    - linux
     - cuda
   artifacts:
     paths:
@@ -58,6 +72,7 @@ package:
   dependencies:
     - build:win
     - build:ubuntu
+    - build:cent
     - build:osx
   artifacts:
     paths:
@@ -78,13 +93,27 @@ test:win:
     paths:
       - nuget/artifacts/test
 
+test:cent:
+  stage: test
+  script:
+    - cd nuget
+    - pwsh TestPackageCentOS7.ps1
+  tags:
+    - linux
+    - cuda
+  dependencies:
+    - package
+  artifacts:
+    paths:
+      - nuget/artifacts/test
+
 test:ubuntu:
   stage: test
   script:
     - cd nuget
     - pwsh TestPackageUbuntu18.ps1
   tags:
-    - ubuntu
+    - linux
     - cuda
   dependencies:
     - package
