@@ -39,7 +39,7 @@ build:ubuntu:
     - git submodule update --init --recursive
   script:
     - cd nuget
-    - pwsh BuildUbuntu18.ps1
+    - pwsh BuildUbuntu16.ps1
   tags:
     - linux
     - cuda
@@ -111,7 +111,7 @@ test:ubuntu:
   stage: test
   script:
     - cd nuget
-    - pwsh TestPackageUbuntu18.ps1
+    - pwsh TestPackageUbuntu16.ps1
   tags:
     - linux
     - cuda
