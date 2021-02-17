@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet.CUDA100</id>
-    <version>19.21.0.20210227</version>
+    <version>19.21.0.20210229</version>
     <title>DlibDotNet for CUDA 10.0</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -14,7 +14,7 @@
 
 Requirements: Visual C++ 2017 Redistributable Package, cublas64_100.dll, cudnn64_7.dll, curand64_100.dll and cusolver64_100.dll</description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2017-2020</copyright>
+    <copyright>© Takuya Takeuchi 2017-2021</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>

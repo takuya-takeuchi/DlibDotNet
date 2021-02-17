@@ -34,8 +34,9 @@ RUN apt-get update && apt-get install -y \
     g++-multilib:i386
 
 # install package to build
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    intel-mkl-32bit-2019.0-045
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACFA9FC57E6C5DBE
+RUN apt-get update && apt-get install -y --no-install-recommends --allow-unauthenticated \
+    intel-mkl-32bit-2020.0.088
 
 # set compiler
 ENV CMAKE_C_COMPILER=/usr/bin/gcc

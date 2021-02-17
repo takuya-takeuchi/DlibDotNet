@@ -15,7 +15,7 @@ $DistributionVersion="7"
 $Current = Get-Location
 $DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
-$DockerDir = Join-Path $Current docker
+$DockerDir = Join-Path $DlibDotNetRoot docker
 
 Set-Location -Path $DockerDir
 
