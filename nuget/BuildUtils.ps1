@@ -921,7 +921,7 @@ function Build([Config]$Config)
    $BuildDirectory = Join-Path $BuildDirectory $Output
    if ((Test-Path $BuildDirectory) -eq $False)
    {
-      New-Item $BuildDirectory -Recurse -ItemType Directory
+      New-Item $BuildDirectory -ItemType Directory
    }
 
    $Target = $Config.GetTarget()
