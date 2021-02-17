@@ -87,6 +87,7 @@ foreach($BuildTarget in $BuildTargets)
       {
          $storeDirecotry = $Config.GetStoreDriectory($key)
          docker run --rm `
+                     -v "$($storeDirecotry):$($storeDirecotry)" `
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                      -e "LOCAL_UID=$(id -u $env:USER)" `
                      -e "LOCAL_GID=$(id -g $env:USER)" `
