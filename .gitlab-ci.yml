@@ -92,6 +92,7 @@ package:
     - windows
   dependencies:
     - build:win
+    - build:uwp
     - build:ubuntu
     - build:cent
     - build:osx
@@ -113,6 +114,21 @@ test:win:
   artifacts:
     paths:
       - nuget/artifacts/test
+
+# test:uwp:
+#   stage: test
+#   before_script:
+#     - chcp 65001
+#   script:
+#     - cd nuget
+#     - pwsh TestPackageUniversalWindowsPlatform.ps1
+#   tags:
+#     - windows
+#   dependencies:
+#     - package
+#   artifacts:
+#     paths:
+#       - nuget/artifacts/test
 
 test:cent:
   stage: test
