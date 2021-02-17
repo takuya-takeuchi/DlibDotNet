@@ -87,11 +87,11 @@ foreach($BuildTarget in $BuildTargets)
       {
          $storeDirecotry = $Config.GetStoreDriectory($key)
          docker run --rm `
-                     -v "$($storeDirecotry):$($storeDirecotry)" `
+                     -v "$($storeDirecotry):/opt/data/builds" `
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                      -e "LOCAL_UID=$(id -u $env:USER)" `
                      -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -e "CIBuildDir=$($storeDirecotry)" `
+                     -e "CIBuildDir=/opt/data/builds" `
                      -t "$dockername" $key $target $architecture $platform $option
       }
       else
