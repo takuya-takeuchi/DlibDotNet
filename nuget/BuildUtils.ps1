@@ -353,6 +353,7 @@ class Config
    {
       $DirectoryName = Split-Path $CMakefileDir -leaf
       $buildDir = $env:CIBuildDir
+      Write-Host "buildDir: $buildDir"
       if (!(Test-Path($buildDir)))
       {
          return $CMakefileDir
