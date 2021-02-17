@@ -349,11 +349,15 @@ class Config
       return $this._Platform
    }
 
+   [string] GetRootStoreDriectory()
+   {
+      return $env:CIBuildDir
+   }
+
    [string] GetStoreDriectory([string]$CMakefileDir)
    {
       $DirectoryName = Split-Path $CMakefileDir -leaf
-      $buildDir = $env:CIBuildDir
-      Write-Host "buildDir: $buildDir"
+      $buildDir = $this.GetRootStoreDriectory()
       if (!(Test-Path($buildDir)))
       {
          return $CMakefileDir
@@ -365,7 +369,7 @@ class Config
 
    [bool] HasStoreDriectory()
    {
-      $buildDir = $env:CIBuildDir
+      $buildDir = $this.GetRootStoreDriectory()
       return Test-Path($buildDir)
    }
 

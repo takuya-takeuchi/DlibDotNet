@@ -85,7 +85,7 @@ foreach($BuildTarget in $BuildTargets)
       Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
       if ($Config.HasStoreDriectory())
       {
-         $storeDirecotry = $Config.GetStoreDriectory($key)
+         $storeDirecotry = $Config.GetRootStoreDriectory()
          docker run --rm `
                      -v "$($storeDirecotry):/opt/data/builds" `
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
