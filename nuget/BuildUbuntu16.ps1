@@ -83,11 +83,25 @@ foreach($BuildTarget in $BuildTargets)
    foreach ($key in $BuildSourceHash.keys)
    {
       Write-Host "Start 'docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
-      docker run --rm `
-                  -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
-                  -e "LOCAL_UID=$(id -u $env:USER)" `
-                  -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $key $target $architecture $platform $option
+      if ($Config.HasStoreDriectory())
+      {
+         $storeDirecotry = $Config.GetStoreDriectory($key)
+         docker run --rm `
+                     -v "$($storeDirecotry):$($storeDirecotry)" `
+                     -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                     -e "LOCAL_UID=$(id -u $env:USER)" `
+                     -e "LOCAL_GID=$(id -g $env:USER)" `
+                     -e "CIBuildDir=$($storeDirecotry)" `
+                     -t "$dockername" $key $target $architecture $platform $option
+      }
+      else
+      {
+         docker run --rm `
+                     -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
+                     -e "LOCAL_UID=$(id -u $env:USER)" `
+                     -e "LOCAL_GID=$(id -g $env:USER)" `
+                     -t "$dockername" $key $target $architecture $platform $option
+      }
    
       if ($lastexitcode -ne 0)
       {
@@ -100,6 +114,8 @@ foreach($BuildTarget in $BuildTargets)
    foreach ($key in $BuildSourceHash.keys)
    {
       $srcDir = Join-Path $DlibDotNetSourceRoot $key
+      $srcDir = $Config.GetStoreDriectory($srcDir)
+
       $dll = $BuildSourceHash[$key]
       $dstDir = Join-Path $Current $libraryDir
 

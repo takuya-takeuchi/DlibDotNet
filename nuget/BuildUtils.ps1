@@ -349,6 +349,25 @@ class Config
       return $this._Platform
    }
 
+   [string] GetStoreDriectory([string]$CMakefileDir)
+   {
+      $DirectoryName = Split-Path $CMakefileDir -leaf
+      $buildDir = $env:CIBuildDir
+      if (!(Test-Path($buildDir)))
+      {
+         return $CMakefileDir
+      }
+
+      return Join-Path $buildDir "DlibDotNet" | `
+             Join-Path -ChildPath $DirectoryName
+   }
+
+   [bool] HasStoreDriectory()
+   {
+      $buildDir = $env:CIBuildDir
+      return Test-Path($buildDir)
+   }
+
    [string] GetBuildDirectoryName([string]$os="")
    {
       if (![string]::IsNullOrEmpty($os))
@@ -446,7 +465,7 @@ class Config
 
 }
 
-function ConfigCPU([Config]$Config)
+function ConfigCPU([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsWindows)
    {
@@ -460,7 +479,7 @@ function ConfigCPU([Config]$Config)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-            ..
+            ${CMakefileDir}
    }
    elseif ($IsMacOS)
    {
@@ -487,7 +506,7 @@ function ConfigCPU([Config]$Config)
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             -D JPEG_FOUND=OFF `
-            ..
+            ${CMakefileDir}
    }
    else
    {
@@ -512,11 +531,11 @@ function ConfigCPU([Config]$Config)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-            ..
+            ${CMakefileDir}
    }
 }
 
-function ConfigCUDA([Config]$Config)
+function ConfigCUDA([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsWindows)
    {
@@ -543,7 +562,7 @@ function ConfigCUDA([Config]$Config)
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             -D CUDA_NVCC_FLAGS="--expt-relaxed-constexpr" `
-            ..
+            ${CMakefileDir}
    }
    else
    {
@@ -563,11 +582,11 @@ function ConfigCUDA([Config]$Config)
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             -D CUDA_NVCC_FLAGS="--expt-relaxed-constexpr" `
-            ..
+            ${CMakefileDir}
    }
 }
 
-function ConfigMKL([Config]$Config)
+function ConfigMKL([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsWindows)
    {
@@ -628,7 +647,7 @@ function ConfigMKL([Config]$Config)
                   -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
                   -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
                   -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-                  ..
+                  ${CMakefileDir}
          }
          64
          { 
@@ -672,7 +691,7 @@ function ConfigMKL([Config]$Config)
                   -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
                   -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
                   -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-                  ..
+                  ${CMakefileDir}
          }
       }
    }
@@ -695,11 +714,11 @@ function ConfigMKL([Config]$Config)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-            ..
+            ${CMakefileDir}
    }
 }
 
-function ConfigARM([Config]$Config)
+function ConfigARM([Config]$Config, [string]$CMakefileDir)
 {
    if ($Config.GetArchitecture() -eq 32)
    {
@@ -714,7 +733,7 @@ function ConfigARM([Config]$Config)
             -D PNG_LIBRARY_RELEASE="" `
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
-            ..
+            ${CMakefileDir}
    }
    else
    {
@@ -729,11 +748,11 @@ function ConfigARM([Config]$Config)
             -D PNG_LIBRARY_RELEASE="" `
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
-            ..
+            ${CMakefileDir}
    }
 }
 
-function ConfigUWP([Config]$Config)
+function ConfigUWP([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsWindows)
    {
@@ -764,7 +783,7 @@ function ConfigUWP([Config]$Config)
                -D DLIB_USE_BLAS=OFF `
                -D DLIB_USE_LAPACK=OFF `
                -D DLIB_NO_GUI_SUPPORT=ON `
-               ..
+               ${CMakefileDir}
       }
       else
       {
@@ -785,13 +804,13 @@ function ConfigUWP([Config]$Config)
                -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
                -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
                -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-               ..
+               ${CMakefileDir}
       }
 
    }
 }
 
-function ConfigANDROID([Config]$Config)
+function ConfigANDROID([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsLinux)
    {
@@ -831,7 +850,7 @@ function ConfigANDROID([Config]$Config)
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
             -D DLIB_NO_GUI_SUPPORT=ON `
-            ..
+            ${CMakefileDir}
    }
    else
    {      
@@ -840,7 +859,7 @@ function ConfigANDROID([Config]$Config)
    }
 }
 
-function ConfigIOS([Config]$Config)
+function ConfigIOS([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsMacOS)
    {
@@ -861,7 +880,7 @@ function ConfigIOS([Config]$Config)
             -D PNG_LIBRARY_DEBUG="" `
             -D PNG_PNG_INCLUDE_DIR="" `
             -D DLIB_NO_GUI_SUPPORT=ON `
-            ..
+            ${CMakefileDir}
    }
    else
    {      
@@ -881,7 +900,15 @@ function Reset-Dlib-Modification([Config]$Config, [string]$currentDir)
 
 function Build([Config]$Config)
 {
+   # current is each source directory
    $Current = Get-Location
+
+   $CMakefile = Join-Path $Current "CMakeLists.txt"
+   if (!(Test-Path(${CMakefile})))
+   {
+      Write-Host "CMakeLists.txt does not exist in ${Current}" -ForegroundColor Red
+      exit -1
+   }
 
    $Output = $Config.GetBuildDirectoryName("")
    if ((Test-Path $Output) -eq $False)
@@ -889,13 +916,21 @@ function Build([Config]$Config)
       New-Item $Output -ItemType Directory
    }
 
-   Set-Location -Path $Output
+   $BuildDirectory = $Config.GetStoreDriectory($Current)
+   $BuildDirectory = Join-Path $BuildDirectory $Output
+   if ((Test-Path $BuildDirectory) -eq $False)
+   {
+      New-Item $BuildDirectory -ItemType Directory
+   }
 
    $Target = $Config.GetTarget()
    $Platform = $Config.GetPlatform()
 
+
    # revert dlib
    Reset-Dlib-Modification $Config (Join-Path $Current $Output)
+
+   Set-Location -Path $BuildDirectory
 
    switch ($Platform)
    {
@@ -905,33 +940,33 @@ function Build([Config]$Config)
          {
             "cpu"
             {
-               ConfigCPU $Config
+               ConfigCPU $Config $Current
             }
             "mkl"
             {
-               ConfigMKL $Config
+               ConfigMKL $Config $Current
             }
             "cuda"
             {
-               ConfigCUDA $Config
+               ConfigCUDA $Config $Current
             }
             "arm"
             {
-               ConfigARM $Config
+               ConfigARM $Config $Current
             }
          }
       }
       "android"
       {
-         ConfigANDROID $Config
+         ConfigANDROID $Config $Current
       }
       "ios"
       {
-         ConfigIOS $Config
+         ConfigIOS $Config $Current
       }
       "uwp"
       {
-         ConfigUWP $Config
+         ConfigUWP $Config $Current
       }
    }
 

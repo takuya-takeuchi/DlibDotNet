@@ -8,6 +8,7 @@ build:win:
   before_script:
     - chcp 65001
     - git submodule update --init --recursive
+    - "Get-ChildItem env:"
   script:
     - cd nuget
     - git clean -fxd .
@@ -23,6 +24,7 @@ build:cent:
   stage: build
   before_script:
     - git submodule update --init --recursive
+    - export
   script:
     - cd nuget
     - pwsh BuildCentOS7.ps1
@@ -37,6 +39,7 @@ build:ubuntu:
   stage: build
   before_script:
     - git submodule update --init --recursive
+    - export
   script:
     - cd nuget
     - pwsh BuildUbuntu16.ps1
@@ -51,6 +54,7 @@ build:osx:
   stage: build
   before_script:
     - git submodule update --init --recursive
+    - export
   script:
     - cd nuget
     - pwsh BuildOSX.ps1
