@@ -11,10 +11,10 @@ $targets = @(
 )
 
 $ScriptPath = $PSScriptRoot
-$OpenJijDotNetRoot = Split-Path $ScriptPath -Parent
+$DlibDotNetRoot = Split-Path $ScriptPath -Parent
 
-$source = Join-Path $OpenJijDotNetRoot src | `
-          Join-Path -ChildPath OpenJijDotNet
+$source = Join-Path $DlibDotNetRoot src | `
+          Join-Path -ChildPath DlibDotNet
 dotnet restore ${source}
 dotnet build -c Release ${source}
 

@@ -51,6 +51,12 @@ if ([string]::IsNullOrEmpty($Version))
    }
 }
 
+if ([string]::IsNullOrEmpty($Version))
+{
+   Write-Host "Version is not specified" -ForegroundColor Red
+   exit -1
+}
+
 Set-Location -Path $DockerDir
 
 foreach($BuildTarget in $BuildTargets)

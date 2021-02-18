@@ -41,6 +41,12 @@ if ([string]::IsNullOrEmpty($Version))
    }
 }
 
+if ([string]::IsNullOrEmpty($Version))
+{
+   Write-Host "Version is not specified" -ForegroundColor Red
+   exit -1
+}
+
 foreach($BuildTarget in $BuildTargets)
 {
    $package = $BuildTarget.Package
