@@ -33,9 +33,9 @@ foreach($BuildTarget in $BuildTargets)
    $package = $BuildTarget.Package
    $platformTarget = $BuildTarget.PlatformTarget
    $runtimeIdentifier = $BuildTarget.RID
-   $version = $Version
+   $versionStr = $Version
 
-   if ([string]::IsNullOrEmpty($version))
+   if ([string]::IsNullOrEmpty($versionStr))
    {
       $packages = Get-ChildItem "${Current}/*" -include *.nupkg | `
                   Where-Object -FilterScript {$_.Name -match "${package}\.([0-9\.]+).nupkg"} | `
@@ -50,18 +50,18 @@ foreach($BuildTarget in $BuildTargets)
          $file = Split-Path $file -leaf
          $file = $file -replace "${package}\.",""
          $file = $file -replace "\.nupkg",""
-         $version = $file
+         $versionStr = $file
          break
       }
 
-      if ([string]::IsNullOrEmpty($version))
+      if ([string]::IsNullOrEmpty($versionStr))
       {
          Write-Host "Version is not specified" -ForegroundColor Red
          exit -1
       }
    }
 
-   $command = ".\\TestPackage.ps1 -Package ${package} -Version $Version -PlatformTarget ${platformTarget} -RuntimeIdentifier ${runtimeIdentifier}"
+   $command = ".\\TestPackage.ps1 -Package ${package} -Version $versionStr -PlatformTarget ${platformTarget} -RuntimeIdentifier ${runtimeIdentifier}"
    Invoke-Expression $command
 
    if ($lastexitcode -ne 0)

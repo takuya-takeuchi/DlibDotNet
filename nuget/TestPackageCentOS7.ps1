@@ -48,9 +48,9 @@ foreach($BuildTarget in $BuildTargets)
    $platformTarget = $BuildTarget.PlatformTarget
    $rid = $BuildTarget.RID
    $postfix = $BuildTarget.Postfix
-   $version = $Version
+   $versionStr = $Version
 
-   if ([string]::IsNullOrEmpty($version))
+   if ([string]::IsNullOrEmpty($versionStr))
    {
       $packages = Get-ChildItem "${Current}/*" -include *.nupkg | `
                   Where-Object -FilterScript {$_.Name -match "${package}\.([0-9\.]+).nupkg"} | `
@@ -65,11 +65,11 @@ foreach($BuildTarget in $BuildTargets)
          $file = Split-Path $file -leaf
          $file = $file -replace "${package}\.",""
          $file = $file -replace "\.nupkg",""
-         $version = $file
+         $versionStr = $file
          break
       }
 
-      if ([string]::IsNullOrEmpty($version))
+      if ([string]::IsNullOrEmpty($versionStr))
       {
          Write-Host "Version is not specified" -ForegroundColor Red
          exit -1
@@ -109,7 +109,7 @@ foreach($BuildTarget in $BuildTargets)
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                      -e "LOCAL_UID=$(id -u $env:USER)" `
                      -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -t "$dockername" $Version $package $platformTarget $rid
+                     -t "$dockername" $versionStr $package $platformTarget $rid
       }
       else
       {
@@ -118,7 +118,7 @@ foreach($BuildTarget in $BuildTargets)
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                      -e "LOCAL_UID=$(id -u $env:USER)" `
                      -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -t "$dockername" $Version $package $platformTarget $rid
+                     -t "$dockername" $versionStr $package $platformTarget $rid
       }
    }
    else
@@ -128,7 +128,7 @@ foreach($BuildTarget in $BuildTargets)
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $Version $package $platformTarget $rid
+                  -t "$dockername" $versionStr $package $platformTarget $rid
    }
 
    if ($lastexitcode -ne 0)
