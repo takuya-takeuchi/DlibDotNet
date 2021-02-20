@@ -21,3 +21,15 @@ run-build-ubuntu16-cpu-x64-desktop: ## run build container for ubuntu16 cpu x64 
 
 run-build-ubuntu16-mkl-x64-desktop: ## run build container for ubuntu16 mkl x64 on desktop
 	@pwsh RunBuildContainer.ps1 mkl 64 desktop ubuntu 16 "/x64"
+
+run-test-centos7-cpu-x64-desktop: ## run build container for centos7 cpu x64 on desktop
+	@pwsh RunTestContainer.ps1 cpu 64 desktop centos 7 "/x64"
+
+run-test-centos7-mkl-x64-desktop: ## run build container for centos7 mkl x64 on desktop
+	@pwsh RunTestContainer.ps1 mkl 64 desktop centos 7 "/x64"
+	
+run-test-ubuntu16-cpu-x64-desktop: ## run build container for ubuntu16 cpu x64 on desktop
+	@pwsh RunTestContainer.ps1 cpu 64 desktop ubuntu 16 "/x64"
+
+run-test-ubuntu16-mkl-x64-desktop: ## run build container for ubuntu16 mkl x64 on desktop
+	@pwsh RunTestContainer.ps1 mkl 64 desktop ubuntu 16 "/x64"
