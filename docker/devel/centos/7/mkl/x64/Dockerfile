@@ -16,7 +16,7 @@ RUN yum update -y && yum install -y \
     lapack-devel \
     openblas-devel \
     cmake3 \
-    intel-mkl-64bit-2020.0.088
+    intel-mkl-64bit-2020.0-088
 RUN yum groupinstall -y "Development Tools"
 
 # set compiler
