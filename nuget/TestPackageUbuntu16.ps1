@@ -50,7 +50,7 @@ foreach($BuildTarget in $BuildTargets)
    $postfix = $BuildTarget.Postfix
    $versionStr = $Version
 
-   if ([string]::IsNullOrEmpty($versionStr))
+   if ([string]::IsNullOrEmpty($Version))
    {
       $packages = Get-ChildItem "${Current}/*" -include *.nupkg | `
                   Where-Object -FilterScript {$_.Name -match "${package}\.([0-9\.]+).nupkg"} | `
