@@ -25,7 +25,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 21)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20210228)
+set(VERSION_DATE 20210230)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)

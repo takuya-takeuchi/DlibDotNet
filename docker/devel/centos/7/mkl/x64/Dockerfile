@@ -15,8 +15,9 @@ RUN yum update -y && yum install -y \
     libX11-devel \
     lapack-devel \
     openblas-devel \
-    cmake3 \
-    intel-mkl-64bit-2019.0-045
+    cmake3
+RUN yum update -y && yum install -y \
+    intel-mkl-64bit-2020.0-088
 RUN yum groupinstall -y "Development Tools"
 
 # set compiler

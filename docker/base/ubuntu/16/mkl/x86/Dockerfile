@@ -12,7 +12,7 @@ RUN sh -c 'echo deb https://apt.repos.intel.com/mkl all main > /etc/apt/sources.
 RUN dpkg --add-architecture i386 && dpkg --print-foreign-architectures
 
 # install package to build
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --allow-unauthenticated \
     libx11-6:i386 \
-    intel-mkl-32bit-2019.0-045 \
+    intel-mkl-32bit-2020.0-088 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
