@@ -38,19 +38,6 @@ $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture =
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 110; Package = "DlibDotNet.CUDA110"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; CUDA = 111; Package = "DlibDotNet.CUDA111"; PlatformTarget="x64"; Postfix = "";     RID = "$RidOperatingSystem-x64"; }
 
-if ([string]::IsNullOrEmpty($Version))
-{
-   $packages = Get-ChildItem *.* -include *.nupkg | Sort-Object -Property Name -Descending
-   foreach ($file in $packages)
-   {
-      $file = Split-Path $file -leaf
-      $file = $file -replace "DlibDotNet(\.[a-zA-Z]+[0-9]+)*\.",""
-      $file = $file -replace "\.nupkg",""
-      $Version = $file
-      break
-   }
-}
-
 Set-Location -Path $DockerDir
 
 foreach($BuildTarget in $BuildTargets)
@@ -61,6 +48,33 @@ foreach($BuildTarget in $BuildTargets)
    $platformTarget = $BuildTarget.PlatformTarget
    $rid = $BuildTarget.RID
    $postfix = $BuildTarget.Postfix
+   $versionStr = $Version
+
+   if ([string]::IsNullOrEmpty($Version))
+   {
+      $packages = Get-ChildItem "${Current}/*" -include *.nupkg | `
+                  Where-Object -FilterScript {$_.Name -match "${package}\.([0-9\.]+).nupkg"} | `
+                  Sort-Object -Property Name -Descending
+      foreach ($file in $packages)
+      {
+         Write-Host $file -ForegroundColor Blue
+      }
+
+      foreach ($file in $packages)
+      {
+         $file = Split-Path $file -leaf
+         $file = $file -replace "${package}\.",""
+         $file = $file -replace "\.nupkg",""
+         $versionStr = $file
+         break
+      }
+
+      if ([string]::IsNullOrEmpty($versionStr))
+      {
+         Write-Host "Version is not specified" -ForegroundColor Red
+         exit -1
+      }
+   }
 
    if ($target -ne "cuda")
    {
@@ -90,31 +104,31 @@ foreach($BuildTarget in $BuildTargets)
       Write-Host "Docker API Version: $dockerAPIVersion" -ForegroundColor Yellow
       if ($dockerAPIVersion -ge 1.40)
       {
-         Write-Host "Start docker run --gpus all --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
+         Write-Host "Start docker run --gpus all --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $versionStr $package $platformTarget $rid" -ForegroundColor Green
          docker run --gpus all --rm `
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                      -e "LOCAL_UID=$(id -u $env:USER)" `
                      -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -t "$dockername" $Version $package $platformTarget $rid
+                     -t "$dockername" $versionStr $package $platformTarget $rid
       }
       else
       {
-         Write-Host "Start docker run --runtime=nvidia --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
+         Write-Host "Start docker run --runtime=nvidia --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $versionStr $package $platformTarget $rid" -ForegroundColor Green
          docker run --runtime=nvidia --rm `
                      -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                      -e "LOCAL_UID=$(id -u $env:USER)" `
                      -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -t "$dockername" $Version $package $platformTarget $rid
+                     -t "$dockername" $versionStr $package $platformTarget $rid
       }
    }
    else
    {
-      Write-Host "Start docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
+      Write-Host "Start docker run --rm -v ""$($DlibDotNetRoot):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $versionStr $package $platformTarget $rid" -ForegroundColor Green
       docker run --rm `
                   -v "$($DlibDotNetRoot):/opt/data/DlibDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $Version $package $platformTarget $rid
+                  -t "$dockername" $versionStr $package $platformTarget $rid
    }
 
    if ($lastexitcode -ne 0)

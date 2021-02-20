@@ -2,14 +2,14 @@
 <package>
   <metadata>
     <id>DlibDotNet.MKL</id>
-    <version>19.21.0.20210229</version>
+    <version>19.21.0.20210230</version>
     <title>DlibDotNet for MKL</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
-    <iconUrl>https://github.com/takuya-takeuchi/DlibDotNet/blob/master/nuget/ml128.png?raw=true</iconUrl>
+    <icon>images\ml128.png</icon>
     <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
 
 Requirements for Windows: Visual C++ 2017 Redistributable Package and Intel MKL 2020 Initial Release
@@ -21,8 +21,10 @@ Requirements for OSX: Intel MKL 2020 Initial Release
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>
-  
+
   <files>
+    <file src="..\ml128.png" target="images\" />
+
     <file src="build\DlibDotNet.Native.props" target="build\DlibDotNet.props" />
     <!-- allows the 'DlibDotNet' package to read runtimes\** folder -->
     <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets" />

@@ -28,25 +28,40 @@ $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA102";
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA110"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 $BuildTargets += New-Object PSObject -Property @{Package = "DlibDotNet.CUDA111"; PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
 
-if ([string]::IsNullOrEmpty($Version))
-{
-   $packages = Get-ChildItem *.* -include *.nupkg | Sort-Object -Property Name -Descending
-   foreach ($file in $packages)
-   {
-      $file = Split-Path $file -leaf
-      $file = $file -replace "DlibDotNet(\.[a-zA-Z]+[0-9]*)*\.",""
-      $file = $file -replace "\.nupkg",""
-      $Version = $file
-      break
-   }
-}
-
 foreach($BuildTarget in $BuildTargets)
 {
    $package = $BuildTarget.Package
    $platformTarget = $BuildTarget.PlatformTarget
    $runtimeIdentifier = $BuildTarget.RID
-   $command = ".\\TestPackage.ps1 -Package ${package} -Version $Version -PlatformTarget ${platformTarget} -RuntimeIdentifier ${runtimeIdentifier}"
+   $versionStr = $Version
+
+   if ([string]::IsNullOrEmpty($Version))
+   {
+      $packages = Get-ChildItem "${Current}/*" -include *.nupkg | `
+                  Where-Object -FilterScript {$_.Name -match "${package}\.([0-9\.]+).nupkg"} | `
+                  Sort-Object -Property Name -Descending
+      foreach ($file in $packages)
+      {
+         Write-Host $file -ForegroundColor Blue
+      }
+
+      foreach ($file in $packages)
+      {
+         $file = Split-Path $file -leaf
+         $file = $file -replace "${package}\.",""
+         $file = $file -replace "\.nupkg",""
+         $versionStr = $file
+         break
+      }
+
+      if ([string]::IsNullOrEmpty($versionStr))
+      {
+         Write-Host "Version is not specified" -ForegroundColor Red
+         exit -1
+      }
+   }
+
+   $command = ".\\TestPackage.ps1 -Package ${package} -Version $versionStr -PlatformTarget ${platformTarget} -RuntimeIdentifier ${runtimeIdentifier}"
    Invoke-Expression $command
 
    if ($lastexitcode -ne 0)

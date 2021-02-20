@@ -8,6 +8,7 @@ build:win:
   before_script:
     - chcp 65001
     - git submodule update --init --recursive
+    - "Get-ChildItem env:"
   script:
     - cd nuget
     - git clean -fxd .
@@ -19,10 +20,28 @@ build:win:
     paths:
       - nuget/artifacts
 
+build:uwp:
+  stage: build
+  before_script:
+    - chcp 65001
+    - git submodule update --init --recursive
+    - "Get-ChildItem env:"
+  script:
+    - cd nuget
+    - git clean -fxd .
+    - pwsh BuildUniversalWindowsPlatform.ps1
+  tags:
+    - windows
+    - cuda
+  artifacts:
+    paths:
+      - nuget/artifacts
+
 build:cent:
   stage: build
   before_script:
     - git submodule update --init --recursive
+    - export
   script:
     - cd nuget
     - pwsh BuildCentOS7.ps1
@@ -37,6 +56,7 @@ build:ubuntu:
   stage: build
   before_script:
     - git submodule update --init --recursive
+    - export
   script:
     - cd nuget
     - pwsh BuildUbuntu16.ps1
@@ -51,6 +71,7 @@ build:osx:
   stage: build
   before_script:
     - git submodule update --init --recursive
+    - export
   script:
     - cd nuget
     - pwsh BuildOSX.ps1
@@ -71,6 +92,7 @@ package:
     - windows
   dependencies:
     - build:win
+    - build:uwp
     - build:ubuntu
     - build:cent
     - build:osx
@@ -92,6 +114,21 @@ test:win:
   artifacts:
     paths:
       - nuget/artifacts/test
+
+# test:uwp:
+#   stage: test
+#   before_script:
+#     - chcp 65001
+#   script:
+#     - cd nuget
+#     - pwsh TestPackageUniversalWindowsPlatform.ps1
+#   tags:
+#     - windows
+#   dependencies:
+#     - package
+#   artifacts:
+#     paths:
+#       - nuget/artifacts/test
 
 test:cent:
   stage: test
