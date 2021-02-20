@@ -57,13 +57,13 @@ if ($Target -ne "cuda")
 {
    $postfix = $Option
    $cuda = 0
-   $dockername = "dlibdotnet/runtime/$Distribution/$DistributionVersion/$Target" + $postfix
+   $dockername = "dlibdotnet/test/$Distribution/$DistributionVersion/$Target" + $postfix
 }
 else
 {
    $cudaVersion = ($Option / 10).ToString("0.0")
    $cuda = 1
-   $dockername = "dlibdotnet/runtime/$Distribution/$DistributionVersion/$Target/$cudaVersion"
+   $dockername = "dlibdotnet/test/$Distribution/$DistributionVersion/$Target/$cudaVersion"
 }
 
 if ($cuda -ne 0)
