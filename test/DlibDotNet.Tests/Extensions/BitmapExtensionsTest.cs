@@ -211,6 +211,17 @@ namespace DlibDotNet.Tests.Extensions
             var path = this.GetDataFile($"{LoadTarget}.png");
 
             using (var rgb = new Bitmap(path.FullName))
+            using (var array = Dlib.LoadImage<RgbPixel>(path.FullName))
+            using (var test = array.ToBitmap())
+                Assert.True(Compare(rgb, test));
+        }
+
+        [Fact]
+        public void ToBitmapAsMatrix()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.png");
+
+            using (var rgb = new Bitmap(path.FullName))
             using (var matrix = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName))
             using (var test = matrix.ToBitmap())
                 Assert.True(Compare(rgb, test));
