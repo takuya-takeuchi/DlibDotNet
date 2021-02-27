@@ -13,6 +13,49 @@ namespace DlibDotNet.Tests.Extensions
 
         private const string LoadTarget = "Lenna";
 
+        private static bool Compare(Bitmap bitmap1, Bitmap bitmap2)
+        {
+            var pixelFormat1 = bitmap1.PixelFormat;
+            var pixelFormat2 = bitmap2.PixelFormat;
+            if (pixelFormat1 != pixelFormat2)
+                return false;
+
+            var rect1 = new System.Drawing.Rectangle(0, 0, bitmap1.Width, bitmap1.Height);
+            var rect2 = new System.Drawing.Rectangle(0, 0, bitmap2.Width, bitmap2.Height);
+            if (rect1 != rect2)
+                return false;
+
+            var data1 = bitmap1.LockBits(rect1, ImageLockMode.ReadOnly, bitmap1.PixelFormat);
+            var data2 = bitmap2.LockBits(rect2, ImageLockMode.ReadOnly, bitmap2.PixelFormat);
+
+            try
+            {
+                var length = data1.Stride * rect1.Height;
+
+                unsafe
+                {
+                    for (var i = 0; i < length; i++)
+                    {
+                        var p1 = ((byte*)data1.Scan0) + i;
+                        var p2 = ((byte*)data2.Scan0) + i;
+                        if (*p1 != *p2)
+                            return false;
+                    }
+                }
+
+                return true;
+            }
+            finally
+            {
+                // create pallet
+
+                if (data1 != null)
+                    bitmap1.UnlockBits(data1);
+                if (data2 != null)
+                    bitmap2.UnlockBits(data2);
+            }
+        }
+
         private static Bitmap To32Rgb(Bitmap bitmap, bool withAlpha)
         {
             var width = bitmap.Width;
@@ -96,39 +139,38 @@ namespace DlibDotNet.Tests.Extensions
             const string testName = nameof(To8bppIndexedGrayscale);
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var rgb24 = Image.FromFile(path.FullName) as Bitmap;
-            var rgb32 = To32Rgb(rgb24, false);
-
-            var tests = new[]
+            using (var rgb24 = Image.FromFile(path.FullName) as Bitmap)
+            using (var rgb32 = To32Rgb(rgb24, false))
             {
-                new
+                var tests = new[]
                 {
-                    Source = rgb24,
-                    ExpectResult = PixelFormat.Format8bppIndexed
-                },
-                new
-                {
-                    Source = rgb32,
-                    ExpectResult = PixelFormat.Format8bppIndexed
-                }
-            };
-
-            foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
-                foreach (var output in tests)
-                {
-                    using (var ret = output.Source.To8bppIndexedGrayscale(value))
+                    new
                     {
-                        if (ret.PixelFormat != output.ExpectResult)
-                            Assert.True(false);
-
-                        var format = output.Source.PixelFormat.ToString();
-                        var cof = value.ToString();
-                        ret.Save(Path.Combine(this.GetOutDir(testName), $"{format}_{cof}.bmp"), ImageFormat.Bmp);
+                        Source = rgb24, ExpectResult = PixelFormat.Format8bppIndexed
+                    },
+                    new
+                    {
+                        Source = rgb32, ExpectResult = PixelFormat.Format8bppIndexed
                     }
-                }
+                };
 
-            foreach (var output in tests)
-                output.Source.Dispose();
+                foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
+                    foreach (var output in tests)
+                    {
+                        using (var ret = output.Source.To8bppIndexedGrayscale(value))
+                        {
+                            if (ret.PixelFormat != output.ExpectResult)
+                                Assert.True(false);
+
+                            var format = output.Source.PixelFormat.ToString();
+                            var cof = value.ToString();
+                            ret.Save(Path.Combine(this.GetOutDir(testName), $"{format}_{cof}.bmp"), ImageFormat.Bmp);
+                        }
+                    }
+
+                foreach (var output in tests)
+                    output.Source.Dispose();
+            }
         }
 
         [Fact]
@@ -136,30 +178,42 @@ namespace DlibDotNet.Tests.Extensions
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var rgb = new Bitmap(path.FullName);
-            var argb = To32Rgb(rgb, false);
-
-            var tests = new[]
+            using (var rgb = new Bitmap(path.FullName))
+            using (var argb = To32Rgb(rgb, false))
             {
+                var tests = new[]
+                {
                 new { Source = rgb,   ExpectResult = PixelFormat.Format8bppIndexed },
                 new { Source = argb,  ExpectResult = PixelFormat.Format8bppIndexed }
             };
 
-            foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
+                foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
+                    foreach (var output in tests)
+                        using (var ret = output.Source.To8bppIndexedGrayscale(value))
+                        {
+                            var array = ret.ToArray2D<byte>();
+                            if (ret.PixelFormat != output.ExpectResult)
+                                Assert.True(false);
+                            if (array.ImageType != ImageTypes.UInt8)
+                                Assert.True(false);
+
+                            this.DisposeAndCheckDisposedState(array);
+                        }
+
                 foreach (var output in tests)
-                    using (var ret = output.Source.To8bppIndexedGrayscale(value))
-                    {
-                        var array = ret.ToArray2D<byte>();
-                        if (ret.PixelFormat != output.ExpectResult)
-                            Assert.True(false);
-                        if (array.ImageType != ImageTypes.UInt8)
-                            Assert.True(false);
+                    output.Source.Dispose();
+            }
+        }
 
-                        this.DisposeAndCheckDisposedState(array);
-                    }
+        [Fact]
+        public void ToBitmap()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.png");
 
-            foreach (var output in tests)
-                output.Source.Dispose();
+            using (var rgb = new Bitmap(path.FullName))
+            using (var matrix = Dlib.LoadImageAsMatrix<RgbPixel>(path.FullName))
+            using (var test = matrix.ToBitmap())
+                Assert.True(Compare(rgb, test));
         }
 
     }
