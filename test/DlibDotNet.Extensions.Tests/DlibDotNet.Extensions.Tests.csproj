@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\DlibDotNet.Extensions\DlibDotNet.Extensions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="data\Lenna.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

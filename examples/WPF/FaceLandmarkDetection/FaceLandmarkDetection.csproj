@@ -47,6 +47,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Drawing.Common.5.0.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -107,10 +110,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\DlibDotNet.Extensions\DlibDotNet.Extensions.csproj">
-      <Project>{d3bff103-53cb-46dc-a0e8-05a01e11099b}</Project>
-      <Name>DlibDotNet.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\src\DlibDotNet\DlibDotNet.csproj">
       <Project>{b13a6288-7b69-4b53-9138-2e20a8d5cfc5}</Project>
       <Name>DlibDotNet</Name>
