@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.UWP</id>
-    <version>19.21.0.20210228</version>
+    <version>19.21.0.20210301</version>
     <title>DlibDotNet for UWP</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -15,6 +15,14 @@
     <copyright>© Takuya Takeuchi 2017-2020</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
+    <dependencies>
+      <group targetFramework="netstandard2.0">
+        <dependency id="System.Drawing.Common" version="5.0.1" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net461" />
+    </frameworkAssemblies>
   </metadata>
 
   <files>
