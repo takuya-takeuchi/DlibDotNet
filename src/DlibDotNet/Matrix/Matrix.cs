@@ -598,7 +598,7 @@ namespace DlibDotNet
                     throw new ArgumentException($"{nameof(this.TemplateColumns)} or {nameof(this.TemplateRows)} is not supported.");
             }
         }
-
+        
         public TElement[] ToArray()
         {
             this.ThrowIfDisposed();

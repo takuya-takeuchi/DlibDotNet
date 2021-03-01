@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DlibDotNet.CUDA101</id>
-    <version>19.21.0.20210230</version>
+    <version>19.21.0.20210302</version>
     <title>DlibDotNet for CUDA 10.1</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -17,6 +17,14 @@ Requirements: Visual C++ 2017 Redistributable Package, cublas64_10.dll, cudnn64_
     <copyright>© Takuya Takeuchi 2017-2021</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
+    <dependencies>
+      <group targetFramework="netstandard2.0">
+        <dependency id="System.Drawing.Common" version="5.0.1" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net461" />
+    </frameworkAssemblies>
   </metadata>
 
   <files>
