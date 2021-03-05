@@ -24,4 +24,12 @@ foreach ($target in $targets)
    pwsh CreatePackage.ps1 $target
 }
 
-nuget pack nuspec\DlibDotNet.Extensions.nuspec
+# $nugetPath = Join-Path $PSScriptRoot nuget.exe
+# if ($global:IsWindows)
+# {
+#    Invoke-Expression "${nugetPath} pack nuspec\DlibDotNet.Extensions.nuspec"
+# }
+# else
+# {
+#    Invoke-Expression "mono ${nugetPath} pack nuspec\DlibDotNet.Extensions.nuspec"
+# }
