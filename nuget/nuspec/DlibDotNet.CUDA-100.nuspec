@@ -1,5 +1,5 @@
-﻿<?xml version="1.0"?>
-<package >
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
   <metadata>
     <id>DlibDotNet.CUDA100</id>
     <version>19.21.0.20210302</version>

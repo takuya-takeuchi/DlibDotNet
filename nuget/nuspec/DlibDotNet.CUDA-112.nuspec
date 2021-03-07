@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>DlibDotNet.CUDA112</id>
+    <version>19.21.0.20210302</version>
+    <title>DlibDotNet for CUDA 11.2</title>
+    <authors>Takuya Takeuchi</authors>
+    <owners>Takuya Takeuchi</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <icon>images\ml128.png</icon>
+    <description>Dlib wrapper library written in C++ and C# for Windows, MacOS and Linux
+
+Requirements: Visual C++ 2017 Redistributable Package and cudnn 8</description>
+    <releaseNotes></releaseNotes>
+    <copyright>© Takuya Takeuchi 2017-2021</copyright>
+    <tags>dlib .net machinelearning</tags>
+    <serviceable>true</serviceable>
+    <dependencies>
+      <group targetFramework="netstandard2.0">
+        <dependency id="System.Drawing.Common" version="5.0.1" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net461" />
+    </frameworkAssemblies>
+  </metadata>
+
+  <files>
+    <file src="..\ml128.png" target="images\" />
+
+    <file src="build\DlibDotNet.Native.props" target="build\DlibDotNet.props" />
+    <!-- allows the 'DlibDotNet' package to read runtimes\** folder -->
+    <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets" />
+    <!-- cross-targetting via compile-time references -->
+    <file src="ref\**\*" target="ref" />
+    <file src="..\artifacts\cuda-112\runtimes\**\*" target="runtimes" />
+
+    <file src="..\..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
+
+    <file src="..\artifacts\cuda-112\runtimes\win-x64\native\DlibDotNetNative.dll" target="runtimes\win-x64\native\DlibDotNetNative.dll" />
+    <file src="..\artifacts\cuda-112\runtimes\win-x64\native\DlibDotNetNativeDnn.dll" target="runtimes\win-x64\native\DlibDotNetNativeDnn.dll" />
+    <file src="..\artifacts\cuda-112\runtimes\linux-x64\native\libDlibDotNetNative.so" target="runtimes\linux-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cuda-112\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\linux-x64\native\libDlibDotNetNativeDnn.so" />
+    <file src="..\artifacts\cuda-112\runtimes\centos-x64\native\libDlibDotNetNative.so" target="runtimes\centos-x64\native\libDlibDotNetNative.so" />
+    <file src="..\artifacts\cuda-112\runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" target="runtimes\centos-x64\native\libDlibDotNetNativeDnn.so" />
+
+    <!--
+    <file src="..\artifacts\cuda-112\runtimes\osx-x64\native\libDlibDotNetNative.dylib" target="runtimes\osx-x64\native\libDlibDotNetNative.dylib" />
+    <file src="..\artifacts\cuda-112\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" target="runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib" />
+    -->
+
+    <!-- license -->
+    <file src="..\..\LICENSE.txt" target="" />
+    <file src="..\..\Licenses\dlib.txt" target="licenses" />
+    <file src="..\..\Licenses\giflib.txt" target="licenses" />
+    <file src="..\..\Licenses\libjpeg.txt" target="licenses" />
+    <file src="..\..\Licenses\libpng.txt" target="licenses" />
+    <file src="..\..\Licenses\zlib.txt" target="licenses" />
+  </files>
+
+</package>
