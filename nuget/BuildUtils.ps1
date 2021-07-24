@@ -156,6 +156,7 @@ class Config
    [int]      $_CudaVersion
    [string]   $_AndroidABI
    [string]   $_AndroidNativeAPILevel
+   [string]   $_OSXArchitectures
 
    #***************************************
    # Arguments
