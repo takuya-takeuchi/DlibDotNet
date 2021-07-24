@@ -851,7 +851,7 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
       $arch_type = $Config.GetArchitecture()
-         Write-Host "   cmake -D ARCH_TYPE="$arch_type" `
+         Write-Host "   cmake -D ARCH_TYPE=`"${arch_type}`" `
          -D DLIB_USE_CUDA=OFF `
          -D DLIB_USE_LAPACK=OFF `
          -D mkl_include_dir=`"`" `
@@ -869,7 +869,7 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
          -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
          -D JPEG_FOUND=OFF `
          ${CMakefileDir}" -ForegroundColor Yellow
-      cmake -D ARCH_TYPE="$arch_type" `
+      cmake -D ARCH_TYPE="${arch_type}" `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_LAPACK=OFF `
             -D mkl_include_dir="" `
