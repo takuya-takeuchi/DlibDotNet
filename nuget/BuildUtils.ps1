@@ -1189,29 +1189,51 @@ function ConfigANDROID([Config]$Config, [string]$CMakefileDir)
 
       $level = $Config.GetAndroidNativeAPILevel()
       $abi = $Config.GetAndroidABI()
-
-      cmake -G Ninja `
-            -D CMAKE_TOOLCHAIN_FILE=${env:ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake `
-            -D ANDROID_NDK=${env:ANDROID_NDK_HOME} `
-            -D CMAKE_MAKE_PROGRAM=ninja `
-            -D ANDROID_NATIVE_API_LEVEL=${level} `
-            -D ANDROID_ABI=${abi} `
-            -D ANDROID_TOOLCHAIN=clang `
-            -D DLIB_USE_CUDA=OFF `
-            -D DLIB_USE_BLAS=OFF `
-            -D DLIB_USE_LAPACK=OFF `
-            -D mkl_include_dir="" `
-            -D mkl_intel="" `
-            -D mkl_rt="" `
-            -D mkl_thread="" `
-            -D mkl_pthread="" `
-            -D LIBPNG_IS_GOOD=OFF `
-            -D PNG_FOUND=OFF `
-            -D PNG_LIBRARY_RELEASE="" `
-            -D PNG_LIBRARY_DEBUG="" `
-            -D PNG_PNG_INCLUDE_DIR="" `
-            -D DLIB_NO_GUI_SUPPORT=ON `
-            ${CMakefileDir}
+   
+      # https://github.com/Tencent/ncnn/wiki/FAQ-ncnn-throw-error#undefined-reference-to-__kmpc_xyz_xyz
+      # $env:NDK_TOOLCHAIN_VERSION = 4.9
+      $env:OpenCV_DIR = "${installOpenCVDir}/sdk/native/jni"
+      $env:ncnn_DIR = "${installNcnnDir}/lib/cmake/ncnn"
+         Write-Host "   cmake -D CMAKE_TOOLCHAIN_FILE=${env:ANDROID_NDK}/build/cmake/android.toolchain.cmake `
+      -D ANDROID_ABI=$abi `
+      -D ANDROID_PLATFORM=android-$level `
+      -D ANDROID_CPP_FEATURES:STRING=`"exceptions rtti`" `
+      -D BUILD_SHARED_LIBS=ON `
+      -D DLIB_USE_CUDA=OFF `
+      -D DLIB_USE_BLAS=OFF `
+      -D DLIB_USE_LAPACK=OFF `
+      -D mkl_include_dir="" `
+      -D mkl_intel="" `
+      -D mkl_rt="" `
+      -D mkl_thread="" `
+      -D mkl_pthread="" `
+      -D LIBPNG_IS_GOOD=OFF `
+      -D PNG_FOUND=OFF `
+      -D PNG_LIBRARY_RELEASE="" `
+      -D PNG_LIBRARY_DEBUG="" `
+      -D PNG_PNG_INCLUDE_DIR="" `
+      -D DLIB_NO_GUI_SUPPORT=ON `
+      ${CMakefileDir}" -ForegroundColor Yellow
+         cmake -D CMAKE_TOOLCHAIN_FILE=${env:ANDROID_NDK}/build/cmake/android.toolchain.cmake `
+               -D ANDROID_ABI=$abi `
+               -D ANDROID_PLATFORM=android-$level `
+               -D ANDROID_CPP_FEATURES:STRING="exceptions rtti" `
+               -D BUILD_SHARED_LIBS=ON `
+               -D DLIB_USE_CUDA=OFF `
+               -D DLIB_USE_BLAS=OFF `
+               -D DLIB_USE_LAPACK=OFF `
+               -D mkl_include_dir="" `
+               -D mkl_intel="" `
+               -D mkl_rt="" `
+               -D mkl_thread="" `
+               -D mkl_pthread="" `
+               -D LIBPNG_IS_GOOD=OFF `
+               -D PNG_FOUND=OFF `
+               -D PNG_LIBRARY_RELEASE="" `
+               -D PNG_LIBRARY_DEBUG="" `
+               -D PNG_PNG_INCLUDE_DIR="" `
+               -D DLIB_NO_GUI_SUPPORT=ON `
+               ${CMakefileDir}
    }
    else
    {
