@@ -905,6 +905,23 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
       $arch_type = $Config.GetArchitecture()
+      Write-Host "   cmake -D ARCH_TYPE=`"$arch_type`" `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D mkl_include_dir=`"`" `
+         -D mkl_intel=`"`" `
+         -D mkl_rt=`"`" `
+         -D mkl_thread=`"`" `
+         -D mkl_pthread=`"`" `
+         -D LIBPNG_IS_GOOD=OFF `
+         -D PNG_FOUND=OFF `
+         -D PNG_LIBRARY_RELEASE=`"`" `
+         -D PNG_LIBRARY_DEBUG=`"`" `
+         -D PNG_PNG_INCLUDE_DIR=`"`" `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         ${CMakefileDir}" -ForegroundColor Yellow
       cmake -D ARCH_TYPE="$arch_type" `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_LAPACK=OFF `
@@ -944,7 +961,19 @@ function ConfigCUDA([Config]$Config, [string]$CMakefileDir)
       $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
-      cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+      $vs = $Config.GetVisualStudio()
+      $vsarch = $Config.GetVisualStudioArchitecture()
+
+      Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
+         -D DLIB_USE_CUDA=ON `
+         -D DLIB_USE_BLAS=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         -D CUDA_NVCC_FLAGS=`"--expt-relaxed-constexpr`" `
+         ${CMakefileDir}" -ForegroundColor Yellow
+      cmake -G "${vs}" -A $vsarch -T host=x64 `
             -D DLIB_USE_CUDA=ON `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
@@ -960,6 +989,19 @@ function ConfigCUDA([Config]$Config, [string]$CMakefileDir)
       $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
+      Write-Host "   cmake -D DLIB_USE_CUDA=ON `
+         -D DLIB_USE_BLAS=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D LIBPNG_IS_GOOD=OFF  `
+         -D PNG_FOUND=OFF `
+         -D PNG_LIBRARY_RELEASE="" `
+         -D PNG_LIBRARY_DEBUG=`"`" `
+         -D PNG_PNG_INCLUDE_DIR=`"`" `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         -D CUDA_NVCC_FLAGS=`"--expt-relaxed-constexpr`" `
+         ${CMakefileDir}" -ForegroundColor Yellow
       cmake -D DLIB_USE_CUDA=ON `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
@@ -1124,6 +1166,19 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
       $arch_type = $Config.GetArchitecture()
+      Write-Host "   cmake -D ARCH_TYPE=`"$arch_type`" `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_BLAS=ON `
+         -D DLIB_USE_LAPACK=OFF `
+         -D LIBPNG_IS_GOOD=OFF `
+         -D PNG_FOUND=OFF `
+         -D PNG_LIBRARY_RELEASE=`"`" `
+         -D PNG_LIBRARY_DEBUG=`"`" `
+         -D PNG_PNG_INCLUDE_DIR=`"`" `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         ${CMakefileDir}" -ForegroundColor Yellow
       cmake -D ARCH_TYPE="$arch_type" `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=ON `
