@@ -3,58 +3,45 @@ Param()
 # import class and function
 $ScriptPath = $PSScriptRoot
 $DlibDotNetRoot = Split-Path $ScriptPath -Parent
-$NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
-             Join-Path -ChildPath "BuildUtils.ps1"
-import-module $NugetPath -function *
+$ScriptPath = Join-Path $DlibDotNetRoot "nuget" | `
+              Join-Path -ChildPath "BuildUtils.ps1"
+import-module $ScriptPath -function *
 
 $OperatingSystem="ios"
 
 # Store current directory
 $Current = Get-Location
-$DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
-$DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
 $BuildSourceHash = [Config]::GetBinaryLibraryIOSHash()
 
-$BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "ios";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-
-foreach($BuildTarget in $BuildTargets)
+$DeveloperDir = ${env:DEVELOPER_DIR}
+if ([string]::IsNullOrEmpty($DeveloperDir))
 {
-   $target = $BuildTarget.Target
-   $architecture = $BuildTarget.Architecture
-   $rid = $BuildTarget.RID
+   Write-Host "Environmental Value 'DEVELOPER_DIR' is not defined." -ForegroundColor Yellow
+}
 
-   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "ios", $option)
-   $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
-   $build = $Config.GetBuildDirectoryName("")
+if ($DeveloperDir -And !(Test-Path $DeveloperDir))
+{
+   Write-Host "Environmental Value 'DEVELOPER_DIR' does not exist." -ForegroundColor Yellow
+}
 
-   foreach ($key in $BuildSourceHash.keys)
+$BuildTargets = @()
+# $BuildTargets += [BuildTarget]::new("ios", "cpu", 64, "arm64",  "" )
+$BuildTargets += [BuildTarget]::new("ios", "cpu", 64, "arm64e", "" )
+# $BuildTargets += [BuildTarget]::new("ios", "cpu", 32, "armv7s", "" )
+# $BuildTargets += [BuildTarget]::new("ios", "cpu", 32, "armv7",  "" )
+$BuildTargets += [BuildTarget]::new("ios", "cpu", 64, "x86_64", "" )
+# $BuildTargets += [BuildTarget]::new("ios", "cpu", 32, "i386",   "" )
+
+foreach ($BuildTarget in $BuildTargets)
+{
+   $BuildTarget.OperatingSystem = ${OperatingSystem}
+   
+   $ret = [Config]::Build($DlibDotNetRoot, $False, $BuildSourceHash, $BuildTarget)
+   if ($ret -eq $False)
    {
-      $srcDir = Join-Path $DlibDotNetSourceRoot $key
-
-      # Move to build target directory
-      Set-Location -Path $srcDir
-
-      $arc = $Config.GetArchitectureName()
-      Write-Host "Build $key [$arc] for $target" -ForegroundColor Green
-      Build -Config $Config
-
-      if ($lastexitcode -ne 0)
-      {
-         Set-Location -Path $Current
-         exit -1
-      }
-   }
-  
-   # Copy output binary
-   foreach ($key in $BuildSourceHash.keys)
-   {
-      $srcDir = Join-Path $DlibDotNetSourceRoot $key
-      $dll = $BuildSourceHash[$key]
-      $dstDir = Join-Path $Current $libraryDir
-
-      CopyToArtifact -configuration "Release-iphoneos" -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+      Set-Location -Path $Current
+      exit -1
    }
 }
 

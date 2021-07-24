@@ -1,3 +1,69 @@
+class BuildTarget
+{
+   [string] $Platform
+   [string] $Target
+   [int]    $Architecture
+   [string] $Postfix
+   [string] $RID
+
+   BuildTarget( [string]$Platform,
+                [string]$Target,
+                [int]   $Architecture,
+                [string]$RID,
+                [string]$Postfix = ""
+              )
+   {
+      $this.Platform = $Platform
+      $this.Target = $Target
+      $this.Architecture = $Architecture
+      $this.Postfix = $Postfix
+      $this.RID = $RID
+   }
+
+   BuildTarget( [string]$Platform,
+                [string]$Target,
+                [int]   $Architecture,
+                [string]$RID,
+                [string]$Postfix = "",
+                [int]   $CudaVersion = 0
+              )
+   {
+      $this.Platform = $Platform
+      $this.Target = $Target
+      $this.Architecture = $Architecture
+      $this.Postfix = $Postfix
+      $this.RID = $RID
+      $this.CudaVersion = $CudaVersion
+   }
+
+   BuildTarget( [string]$Platform,
+                [string]$Target,
+                [int]   $Architecture,
+                [string]$RID,
+                [string]$Postfix = "",
+                [string]$MklDiretory = ""
+              )
+   {
+      $this.Platform = $Platform
+      $this.Target = $Target
+      $this.Architecture = $Architecture
+      $this.Postfix = $Postfix
+      $this.RID = $RID
+      $this.MklDiretory = $MklDiretory
+   }
+
+   [string] $OperatingSystem
+   [string] $Distribution
+   [string] $DistributionVersion
+
+   [string] $CudaVersion
+
+   [string] $AndroidVersion
+   [string] $AndroidNativeApiLevel
+
+   [string] $MklDiretory
+}
+
 class Config
 {
 
@@ -56,26 +122,26 @@ class Config
    }
 
    $VisualStudio = "Visual Studio 15 2017"
-   
-   static $BuildLibraryWindowsHash = 
+
+   static $BuildLibraryWindowsHash =
    @{
       "DlibDotNet.Native"     = "DlibDotNetNative.dll";
       "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"
    }
-   
-   static $BuildLibraryLinuxHash = 
+
+   static $BuildLibraryLinuxHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.so";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"
    }
-   
-   static $BuildLibraryOSXHash = 
+
+   static $BuildLibraryOSXHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.dylib";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib"
    }
-   
-   static $BuildLibraryIOSHash = 
+
+   static $BuildLibraryIOSHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.a";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
@@ -165,6 +231,10 @@ class Config
             $this._AndroidABI            = $setting.ANDROID_ABI
             $this._AndroidNativeAPILevel = $setting.ANDROID_NATIVE_API_LEVEL
          }
+         "ios"
+         {
+            $this._OSXArchitectures = $Option
+         }
       }
 
       $this._Root = $Root
@@ -209,6 +279,12 @@ class Config
    [string] GetRootDir()
    {
       return $this._Root
+   }
+
+   [string] GetToolchainDir()
+   {
+      return   Join-Path $this.GetRootDir() src |
+               Join-Path -ChildPath toolchains
    }
 
    [string] GetDlibRootDir()
@@ -289,7 +365,14 @@ class Config
       }
       elseif ($global:IsMacOS)
       {
-         $os = "osx"
+         if (![string]::IsNullOrEmpty($this._OSXArchitectures))
+         {
+            $os = "ios"
+         }
+         else
+         {
+            $os = "osx"
+         }
       }
       elseif ($global:IsLinux)
       {
@@ -389,19 +472,37 @@ class Config
       {
          $osname = $this.GetOSName()
       }
-      
+
       $target = $this._Target
       $platform = $this._Platform
       $architecture = $this.GetArchitectureName()
 
+      switch ($platform)
+      {
+         "android"
+         {
+            $architecture = $this._AndroidABI
+         }
+         "ios"
+         {
+            $architecture = $this._OSXArchitectures
+         }
+      }
+
+      $postfix = ""
+      if ($this._Configuration -eq "Debug")
+      {
+         $postfix = "_d"
+      }
+
       if ($target -eq "cuda")
       {
          $version = $this._CudaVersion
-         return "build_${osname}_${platform}_cuda-${version}_${architecture}"
+         return "build_${osname}_${platform}_cuda-${version}_${architecture}${postfix}"
       }
       else
       {
-         return "build_${osname}_${platform}_${target}_${architecture}"
+         return "build_${osname}_${platform}_${target}_${architecture}${postfix}"
       }
    }
 
@@ -414,7 +515,7 @@ class Config
    {
       $architecture = $this._Architecture
       $target = $this._Target
-      
+
       if ($target -eq "arm")
       {
          if ($architecture -eq 32)
@@ -453,7 +554,7 @@ class Config
       # CUDA_PATH_V11_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0
       # CUDA_PATH_V11_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1
       # CUDA_PATH_V11_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2
-      $version = $this.CudaVersionHash[$this._CudaVersion]      
+      $version = $this.CudaVersionHash[$this._CudaVersion]
       return [environment]::GetEnvironmentVariable($version, 'Machine')
    }
 
@@ -470,6 +571,257 @@ class Config
    [string] GetSSE2INSTRUCTIONS()
    {
       return "OFF"
+   }
+
+   [string] GetToolchainFile()
+   {
+      $architecture = $this._Architecture
+      $target = $this._Target
+      $toolchainDir = $this.GetToolchainDir()
+      $toolchain = Join-Path $toolchainDir "empty.cmake"
+
+      if ($global:IsLinux)
+      {
+         if ($target -eq "arm")
+         {
+            if ($architecture -eq 64)
+            {
+               $toolchain = Join-Path $toolchainDir "aarch64-linux-gnu.toolchain.cmake"
+            }
+         }
+      }
+      else
+      {
+         $Platform = $this._Platform
+         switch ($Platform)
+         {
+            "ios"
+            {
+               $osxArchitectures = $this.GetOSXArchitectures()
+               $toolchain = Join-Path $toolchainDir "${osxArchitectures}-ios.cmake"
+            }
+         }
+      }
+
+      return $toolchain
+   }
+
+   [string] GetDeveloperDir()
+   {
+      return $env:DEVELOPER_DIR
+   }
+
+   [string] GetOSXArchitectures()
+   {
+      return $this._OSXArchitectures
+   }
+
+   [string] GetIOSSDK([string]$osxArchitectures, [string]$developerDir)
+   {
+      switch ($osxArchitectures)
+      {
+         "arm64e"
+         {
+            return "${developerDir}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+         }
+         "arm64"
+         {
+            return "${developerDir}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+         }
+         "arm"
+         {
+            return "${developerDir}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+         }
+         "armv7"
+         {
+            return "${developerDir}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+         }
+         "armv7s"
+         {
+            return "${developerDir}/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk"
+         }
+         "i386"
+         {
+            return "${developerDir}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
+         }
+         "x86_64"
+         {
+            return "${developerDir}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"
+         }
+      }
+      return $this._OSXArchitectures
+   }
+
+   static [bool] Build([string]$root, [bool]$docker, [hashtable]$buildHashTable, [BuildTarget]$buildTarget)
+   {
+      $current = $PSScriptRoot
+
+      $platform              = $buildTarget.Platform
+      $target                = $buildTarget.Target
+      $architecture          = $buildTarget.Architecture
+      $postfix               = $buildTarget.Postfix
+      $rid                   = $buildTarget.RID
+      $operatingSystem       = $buildTarget.OperatingSystem
+      $distribution          = $buildTarget.Distribution
+      $distributionVersion   = $buildTarget.DistributionVersion
+      $cudaVersion           = $buildTarget.CudaVersion
+      $androidVersion        = $buildTarget.AndroidVersion
+      $androidNativeApiLevel = $buildTarget.AndroidNativeApiLevel
+      $mklDiretory           = $buildTarget.MklDiretory
+      $configuration         = "Release"
+
+      $option = ""
+
+      $sourceRoot = Join-Path $root src
+
+      if ($docker -eq $True)
+      {
+         $dockerDir = Join-Path $root docker
+
+         Set-Location -Path $dockerDir
+
+         $dockerFileDir = Join-Path $dockerDir build  | `
+                          Join-Path -ChildPath $distribution | `
+                          Join-Path -ChildPath $distributionVersion
+
+         if ($platform -eq "android")
+         {
+            $setting =
+            @{
+               'ANDROID_ABI' = $rid;
+               'ANDROID_NATIVE_API_LEVEL' = $androidNativeApiLevel
+            }
+            $option = [Config]::Base64Encode((ConvertTo-Json -Compress $setting))
+
+            $dockername = "dlibdotnet/build/$distribution/$distributionVersion/android/$androidVersion"
+            $imagename  = "dlibdotnet/devel/$distribution/$distributionVersion/android/$androidVersion"
+         }
+         else
+         {
+            if ($target -ne "cuda")
+            {
+               $option = ""
+
+               $dockername = "dlibdotnet/build/$distribution/$distributionVersion/$Target" + $postfix
+               $imagename  = "dlibdotnet/devel/$distribution/$distributionVersion/$Target" + $postfix
+            }
+            else
+            {
+               $option = $cudaVersion
+
+               $cudaVersion = ($cudaVersion / 10).ToString("0.0")
+               $dockername = "dlibdotnet/build/$distribution/$distributionVersion/$Target/$cudaVersion"
+               $imagename  = "dlibdotnet/devel/$distribution/$distributionVersion/$Target/$cudaVersion"
+            }
+         }
+
+         $config = [Config]::new($root, $configuration, $target, $architecture, $platform, $option)
+         $libraryDir = Join-Path "artifacts" $config.GetArtifactDirectoryName()
+         $build = $config.GetBuildDirectoryName($operatingSystem)
+
+         Write-Host "Start 'docker build -t $dockername $dockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
+         docker build --network host --force-rm=true -t $dockername $dockerFileDir --build-arg IMAGE_NAME="$imagename" | Write-Host
+
+         if ($lastexitcode -ne 0)
+         {
+            Write-Host "Failed to docker build: $lastexitcode" -ForegroundColor Red
+            return $False
+         }
+
+         if ($platform -eq "desktop")
+         {
+            if ($target -eq "arm")
+            {
+               Write-Host "Start 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'" -ForegroundColor Green
+               docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            }
+         }
+
+         # Build binary
+         foreach ($key in $buildHashTable.keys)
+         {
+            Write-Host "Start 'docker run --rm -v ""$($root):/opt/data/DlibDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
+            docker run --rm --network host `
+                        -v "$($root):/opt/data/DlibDotNet" `
+                        -e "LOCAL_UID=$(id -u $env:USER)" `
+                        -e "LOCAL_GID=$(id -g $env:USER)" `
+                        -t "$dockername" $key $target $architecture $platform $option | Write-Host
+
+            if ($lastexitcode -ne 0)
+            {
+               Write-Host "Failed to docker run: $lastexitcode" -ForegroundColor Red
+               return $False
+            }
+         }
+
+         # Copy output binary
+         foreach ($key in $buildHashTable.keys)
+         {
+            $srcDir = Join-Path $sourceRoot $key
+            $dll = $buildHashTable[$key]
+            $dstDir = Join-Path $current $libraryDir
+
+            CopyToArtifact -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+         }
+      }
+      else
+      {
+         if ($platform -eq "ios")
+         {
+            $option = $rid
+         }
+         else
+         {
+            if ($target -eq "mkl")
+            {
+               $option = $mklDiretory
+            }
+            elseif ($target -eq "cuda")
+            {
+               $option = $cudaVersion
+            }
+         }
+
+         $config = [Config]::new($root, $configuration, $target, $architecture, $platform, $option)
+         $libraryDir = Join-Path "artifacts" $config.GetArtifactDirectoryName()
+         $build = $config.GetBuildDirectoryName($operatingSystem)
+
+         foreach ($key in $buildHashTable.keys)
+         {
+            $srcDir = Join-Path $sourceRoot $key
+
+            # Move to build target directory
+            Set-Location -Path $srcDir
+
+            $arc = $config.GetArchitectureName()
+            Write-Host "Build $key [$arc] for $target" -ForegroundColor Green
+            Build -Config $config
+
+            if ($lastexitcode -ne 0)
+            {
+               return $False
+            }
+         }
+
+         # Copy output binary
+         foreach ($key in $buildHashTable.keys)
+         {
+            $srcDir = Join-Path $sourceRoot $key
+            $dll = $buildHashTable[$key]
+            $dstDir = Join-Path $current $libraryDir
+
+            if ($global:IsWindows)
+            {
+               CopyToArtifact -configuration "Release" -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+            }
+            else
+            {
+               CopyToArtifact -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+            }
+         }
+      }
+
+      return $True
    }
 
 }
@@ -609,20 +961,20 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
          Write-Host "Error: Specified IntelMKL directory '${intelMklDirectory}' does not found" -ForegroundColor Red
          exit -1
       }
- 
+
       $architecture = $Config.GetArchitecture()
       $architectureDir = ""
       switch ($architecture)
       {
          32
-         { 
+         {
             $architectureDir = "ia32_win"
             $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
             $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/${architectureDir}/libiomp5md.lib"
             $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_core_dll.lib"
-            $MKLINTELC_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_c.lib"            
+            $MKLINTELC_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_c.lib"
             $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_thread_dll.lib"
-      
+
             if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
                Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
                exit -1
@@ -639,7 +991,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
                Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
                exit -1
             }
-      
+
             $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
             $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
             $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
@@ -659,14 +1011,14 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
                   ${CMakefileDir}
          }
          64
-         { 
+         {
             $architectureDir = "intel64_win"
             $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
             $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/${architectureDir}/libiomp5md.lib"
             $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_core_dll.lib"
             $MKLINTELLP64DLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_lp64_dll.lib"
             $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_thread_dll.lib"
-      
+
             if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
                Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
                exit -1
@@ -687,7 +1039,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
             $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
             $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
             $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
-      
+
             cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
                   -D DLIB_USE_CUDA=OFF `
                   -D DLIB_USE_BLAS=ON `
@@ -709,7 +1061,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
       $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
       $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
-      
+
       $arch_type = $Config.GetArchitecture()
       cmake -D ARCH_TYPE="$arch_type" `
             -D DLIB_USE_CUDA=OFF `
@@ -799,7 +1151,7 @@ function ConfigUWP([Config]$Config, [string]$CMakefileDir)
          $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
          $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
          $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
-         
+
          cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
                -D CMAKE_SYSTEM_NAME=WindowsStore `
                -D CMAKE_SYSTEM_VERSION=10.0 `
@@ -862,7 +1214,7 @@ function ConfigANDROID([Config]$Config, [string]$CMakefileDir)
             ${CMakefileDir}
    }
    else
-   {      
+   {
       Write-Host "Error: This platform can not build android binary" -ForegroundColor Red
       exit -1
    }
@@ -892,7 +1244,7 @@ function ConfigIOS([Config]$Config, [string]$CMakefileDir)
             ${CMakefileDir}
    }
    else
-   {      
+   {
       Write-Host "Error: This platform can not build iOS binary" -ForegroundColor Red
       exit -1
    }
@@ -1001,10 +1353,21 @@ function CopyToArtifact()
                Join-Path -ChildPath ${libraryName}
    }
 
-   $output = Join-Path $dstDir runtimes | `
-            Join-Path -ChildPath ${rid} | `
-            Join-Path -ChildPath native | `
-            Join-Path -ChildPath $libraryName
+   $dstDir = Join-Path $dstDir runtimes | `
+             Join-Path -ChildPath ${rid} | `
+             Join-Path -ChildPath native
+
+   $output = Join-Path $dstDir $libraryName
+
+   if (!(Test-Path($binary)))
+   {
+      Write-Host "${binary} does not exist" -ForegroundColor Red
+   }
+
+   if (!(Test-Path($dstDir)))
+   {
+      Write-Host "${dstDir} does not exist" -ForegroundColor Red
+   }
 
    Write-Host "Copy ${libraryName} to ${output}" -ForegroundColor Green
    Copy-Item ${binary} ${output}
