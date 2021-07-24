@@ -1247,9 +1247,45 @@ function ConfigIOS([Config]$Config, [string]$CMakefileDir)
 {
    if ($IsMacOS)
    {
-      cmake -G Xcode `
-            -D CMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake `
-            -D PLATFORM=OS64COMBINED `
+      # # Build NcnnDotNet.Native
+      Write-Host "Start Build NcnnDotNet.Native" -ForegroundColor Green
+
+      $developerDir = $Config.GetDeveloperDir()
+      $osxArchitectures = $Config.GetOSXArchitectures()
+      $toolchain = $Config.GetToolchainFile()
+
+      $OSX_SYSROOT = $Config.GetIOSSDK($osxArchitectures, $developerDir)
+
+      # use libc++ rather than libstdc++
+      Write-Host "   cmake -D CMAKE_SYSTEM_NAME=iOS `
+         -D CMAKE_OSX_ARCHITECTURES=${osxArchitectures} `
+         -D CMAKE_OSX_SYSROOT=${OSX_SYSROOT} `
+         -D CMAKE_TOOLCHAIN_FILE=`"${toolchain}`" `
+         -D CMAKE_CXX_FLAGS=`"-std=c++11 -stdlib=libc++ -static`" `
+         -D CMAKE_EXE_LINKER_FLAGS=`"-std=c++11 -stdlib=libc++ -static`" `
+         -D BUILD_SHARED_LIBS=OFF `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_BLAS=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D mkl_include_dir=`"`" `
+         -D mkl_intel=`"`" `
+         -D mkl_rt=`"`" `
+         -D mkl_thread=`"`" `
+         -D mkl_pthread=`"`" `
+         -D LIBPNG_IS_GOOD=OFF `
+         -D PNG_FOUND=OFF `
+         -D PNG_LIBRARY_RELEASE=`"`" `
+         -D PNG_LIBRARY_DEBUG=`"`" `
+         -D PNG_PNG_INCLUDE_DIR=`"`" `
+         -D DLIB_NO_GUI_SUPPORT=ON `
+         ${CMakefileDir}" -ForegroundColor Yellow
+      cmake -D CMAKE_SYSTEM_NAME=iOS `
+            -D CMAKE_OSX_ARCHITECTURES=${osxArchitectures} `
+            -D CMAKE_OSX_SYSROOT=${OSX_SYSROOT} `
+            -D CMAKE_TOOLCHAIN_FILE="${toolchain}" `
+            -D CMAKE_CXX_FLAGS="-std=c++11 -stdlib=libc++ -static" `
+            -D CMAKE_EXE_LINKER_FLAGS="-std=c++11 -stdlib=libc++ -static" `
+            -D BUILD_SHARED_LIBS=OFF `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
