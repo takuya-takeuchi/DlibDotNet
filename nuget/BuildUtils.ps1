@@ -829,7 +829,7 @@ class Config
 
 function ConfigCPU([Config]$Config, [string]$CMakefileDir)
 {
-   if ($IsWindows)
+   if ($global:IsWindows)
    {
       $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
       $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
@@ -853,7 +853,7 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             ${CMakefileDir}
    }
-   elseif ($IsMacOS)
+   elseif ($global:IsMacOS)
    {
       # Use static libjpeg
       $USE_AVX_INSTRUCTIONS  = $Config.GetAVXINSTRUCTIONS()
@@ -927,7 +927,7 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
 
 function ConfigCUDA([Config]$Config, [string]$CMakefileDir)
 {
-   if ($IsWindows)
+   if ($global:IsWindows)
    {
       $cudaPath = $Config.GetCUDAPath()
       if (!(Test-Path $cudaPath))
@@ -978,7 +978,7 @@ function ConfigCUDA([Config]$Config, [string]$CMakefileDir)
 
 function ConfigMKL([Config]$Config, [string]$CMakefileDir)
 {
-   if ($IsWindows)
+   if ($global:IsWindows)
    {
       $intelMklDirectory = $Config.GetIntelMklDirectory()
       if (!$intelMklDirectory) {
@@ -1176,7 +1176,7 @@ function ConfigARM([Config]$Config, [string]$CMakefileDir)
 
 function ConfigUWP([Config]$Config, [string]$CMakefileDir)
 {
-   if ($IsWindows)
+   if ($global:IsWindows)
    {
       # apply patch
       $patch = "uwp.patch"
@@ -1234,7 +1234,7 @@ function ConfigUWP([Config]$Config, [string]$CMakefileDir)
 
 function ConfigANDROID([Config]$Config, [string]$CMakefileDir)
 {
-   if ($IsLinux)
+   if ($global:IsLinux)
    {
       if (!${env:ANDROID_NDK_HOME})
       {
@@ -1305,7 +1305,7 @@ function ConfigANDROID([Config]$Config, [string]$CMakefileDir)
 
 function ConfigIOS([Config]$Config, [string]$CMakefileDir)
 {
-   if ($IsMacOS)
+   if ($global:IsMacOS)
    {
       # # Build NcnnDotNet.Native
       Write-Host "Start Build NcnnDotNet.Native" -ForegroundColor Green
