@@ -1408,9 +1408,9 @@ function Build([Config]$Config)
       }
    }
 
-   $configName = $Config.GetConfigurationName()
-   Write-Host "cmake --build . --config ${configName}" -ForegroundColor Yellow
-   cmake --build . --config ${configName}
+   $cofiguration = $Config.GetConfigurationName()
+   Write-Host "cmake --build . --config ${cofiguration}" -ForegroundColor Yellow
+   cmake --build . --config ${cofiguration}
 
    # Move to Root directory
    Set-Location -Path $Current
