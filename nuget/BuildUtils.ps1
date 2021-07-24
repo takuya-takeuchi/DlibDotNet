@@ -835,7 +835,17 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
       $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
-      cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+      $vs = $Config.GetVisualStudio()
+      $vsarch = $Config.GetVisualStudioArchitecture()
+
+      Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         ${CMakefileDir}" -ForegroundColor Yellow
+      cmake -G "${vs}" -A $vsarch -T host=x64 `
             -D DLIB_USE_CUDA=OFF `
             -D DLIB_USE_LAPACK=OFF `
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
@@ -851,7 +861,7 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
       $arch_type = $Config.GetArchitecture()
-         Write-Host "   cmake -D ARCH_TYPE=`"${arch_type}`" `
+      Write-Host "   cmake -D ARCH_TYPE=`"${arch_type}`" `
          -D DLIB_USE_CUDA=OFF `
          -D DLIB_USE_LAPACK=OFF `
          -D mkl_include_dir=`"`" `
@@ -1015,7 +1025,23 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
             $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
             $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
-            cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+            $vs = $Config.GetVisualStudio()
+            $vsarch = $Config.GetVisualStudioArchitecture()
+      
+            Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_BLAS=ON `
+         -D DLIB_USE_LAPACK=OFF `
+         -D mkl_include_dir=`"${MKL_INCLUDE_DIR}`" `
+         -D BLAS_libiomp5md_LIBRARY=`"${LIBIOMP5MD_LIB}`" `
+         -D BLAS_mkl_core_dll_LIBRARY=`"${MKLCOREDLL_LIB}`" `
+         -D BLAS_mkl_intel_c_dll_LIBRARY=`"${MKLINTELC_LIB}`" `
+         -D BLAS_mkl_intel_thread_dll_LIBRARY=`"${MKLINTELTHREADDLL_LIB}`" `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         ${CMakefileDir}" -ForegroundColor Yellow
+            cmake -G "${vs}" -A $vsarch -T host=x64 `
                   -D DLIB_USE_CUDA=OFF `
                   -D DLIB_USE_BLAS=ON `
                   -D DLIB_USE_LAPACK=OFF `
@@ -1059,7 +1085,23 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
             $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
             $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
-            cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+            $vs = $Config.GetVisualStudio()
+            $vsarch = $Config.GetVisualStudioArchitecture()
+      
+            Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_BLAS=ON `
+         -D DLIB_USE_LAPACK=OFF `
+         -D mkl_include_dir=`"${MKL_INCLUDE_DIR}`" `
+         -D BLAS_libiomp5md_LIBRARY=`"${LIBIOMP5MD_LIB}`" `
+         -D BLAS_mkl_core_dll_LIBRARY=`"${MKLCOREDLL_LIB}`" `
+         -D BLAS_mkl_intel_lp64_dll_LIBRARY=`"${MKLINTELLP64DLL_LIB}`" `
+         -D BLAS_mkl_intel_thread_dll_LIBRARY=`"${MKLINTELTHREADDLL_LIB}`" `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         ${CMakefileDir}" -ForegroundColor Yellow
+            cmake -G "${vs}" -A $vsarch -T host=x64 `
                   -D DLIB_USE_CUDA=OFF `
                   -D DLIB_USE_BLAS=ON `
                   -D DLIB_USE_LAPACK=OFF `
@@ -1409,7 +1451,7 @@ function Build([Config]$Config)
    }
 
    $cofiguration = $Config.GetConfigurationName()
-   Write-Host "cmake --build . --config ${cofiguration}" -ForegroundColor Yellow
+   Write-Host "   cmake --build . --config ${cofiguration}" -ForegroundColor Yellow
    cmake --build . --config ${cofiguration}
 
    # Move to Root directory
