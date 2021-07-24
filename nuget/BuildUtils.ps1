@@ -1027,7 +1027,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
 
             $vs = $Config.GetVisualStudio()
             $vsarch = $Config.GetVisualStudioArchitecture()
-      
+
             Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
          -D DLIB_USE_CUDA=OFF `
          -D DLIB_USE_BLAS=ON `
@@ -1087,7 +1087,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
 
             $vs = $Config.GetVisualStudio()
             $vsarch = $Config.GetVisualStudioArchitecture()
-      
+
             Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
          -D DLIB_USE_CUDA=OFF `
          -D DLIB_USE_BLAS=ON `
@@ -1190,9 +1190,26 @@ function ConfigUWP([Config]$Config, [string]$CMakefileDir)
       git apply """${patchFullPath}"""
       Set-Location -Path $current
 
+      $vs = $Config.GetVisualStudio()
+      $vsarch = $Config.GetVisualStudioArchitecture()
+
       if ($Config.GetTarget() -eq "arm")
       {
-         cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+         Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
+         -D CMAKE_SYSTEM_NAME=WindowsStore `
+         -D USE_AVX_INSTRUCTIONS:BOOL=OFF `
+         -D USE_SSE2_INSTRUCTIONS:BOOL=OFF `
+         -D USE_SSE4_INSTRUCTIONS:BOOL=OFF `
+         -D CMAKE_SYSTEM_VERSION=10.0 `
+         -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
+         -D _WINDLL=ON `
+         -D _WIN32_UNIVERSAL_APP=ON `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_BLAS=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D DLIB_NO_GUI_SUPPORT=ON `
+         ${CMakefileDir}" -ForegroundColor Yellow
+         cmake -G "${vs}" -A $vsarch -T host=x64 `
                -D CMAKE_SYSTEM_NAME=WindowsStore `
                -D USE_AVX_INSTRUCTIONS:BOOL=OFF `
                -D USE_SSE2_INSTRUCTIONS:BOOL=OFF `
@@ -1213,7 +1230,21 @@ function ConfigUWP([Config]$Config, [string]$CMakefileDir)
          $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
          $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
-         cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+         Write-Host "   cmake -G `"${vs}`" -A $vsarch -T host=x64 `
+         -D CMAKE_SYSTEM_NAME=WindowsStore `
+         -D CMAKE_SYSTEM_VERSION=10.0 `
+         -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
+         -D _WINDLL=ON `
+         -D _WIN32_UNIVERSAL_APP=ON `
+         -D DLIB_USE_CUDA=OFF `
+         -D DLIB_USE_BLAS=OFF `
+         -D DLIB_USE_LAPACK=OFF `
+         -D DLIB_NO_GUI_SUPPORT=ON `
+         -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
+         -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
+         -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         ${CMakefileDir}" -ForegroundColor Yellow
+         cmake -G "${vs}" -A $vsarch -T host=x64 `
                -D CMAKE_SYSTEM_NAME=WindowsStore `
                -D CMAKE_SYSTEM_VERSION=10.0 `
                -D WINAPI_FAMILY=WINAPI_FAMILY_APP `
@@ -1250,7 +1281,7 @@ function ConfigANDROID([Config]$Config, [string]$CMakefileDir)
 
       $level = $Config.GetAndroidNativeAPILevel()
       $abi = $Config.GetAndroidABI()
-   
+
       # https://github.com/Tencent/ncnn/wiki/FAQ-ncnn-throw-error#undefined-reference-to-__kmpc_xyz_xyz
       # $env:NDK_TOOLCHAIN_VERSION = 4.9
       $env:OpenCV_DIR = "${installOpenCVDir}/sdk/native/jni"
