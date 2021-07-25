@@ -46,9 +46,9 @@ namespace Demo.Services
 
         #region IDetectService Members
 
-        public DetectResult Detect(string file)
+        public DetectResult Detect(byte[] file)
         {
-            using var frame = Dlib.LoadImageAsMatrix<BgrPixel>(file);
+            using var frame = Dlib.LoadPng<RgbPixel>(file);
             var rects = this._FrontalFaceDetector.Operator(frame);
 
             var faces = new List<Face>();

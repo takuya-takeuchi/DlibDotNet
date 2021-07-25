@@ -9,7 +9,7 @@ namespace Demo.Models
 
         #region Constructors
 
-        public Face(IEnumerable<FacePoint> points, Rectangle rect)
+        public Face(IList<FacePoint> points, Rectangle rect)
         {
             this.Points = points;
             this.Rect = rect;
@@ -19,7 +19,7 @@ namespace Demo.Models
 
         #region Properties
 
-        public IEnumerable<FacePoint> Points
+        public IList<FacePoint> Points
         {
             get;
         }

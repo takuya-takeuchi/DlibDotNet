@@ -18,9 +18,7 @@ namespace Demo.UWP.Services
                 ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail, 
                 SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary
             };
-
-            picker.FileTypeFilter.Add(".jpg");
-            picker.FileTypeFilter.Add(".jpeg");
+            
             picker.FileTypeFilter.Add(".png");
 
             var file = await picker.PickSingleFileAsync();
