@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UltraFaceDotNet.Xamarin" Version="1.0.0.2" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1260" />
+    <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.6.1" />
+    <PackageReference Include="Prism.Unity.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="SkiaSharp" />
+    <None Remove="NcnnDotNet.Xamarin" />
+    <None Remove="data\RFB-320.bin" />
+    <None Remove="data\RFB-320.param" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="data\RFB-320.bin" />
+    <EmbeddedResource Include="data\RFB-320.param" />
+  </ItemGroup>
+</Project>

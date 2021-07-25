@@ -1,20 +1,53 @@
-<Project>
+<?xml version="1.0"  encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
   <PropertyGroup>
-    <NativeDependenciesVersion>19.16.0.20190223</NativeDependenciesVersion>
+    <RuntimeIdentifiers>win;linux;osx</RuntimeIdentifiers>
+    <ExtrasBuildEachRuntimeIdentifier>true</ExtrasBuildEachRuntimeIdentifier>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(NugetPackageRoot)==''">
-    <NugetPackageRoot>
-      "$([MSBuild]::GetPathOfFileAbove($(MSBuildThisFile), $(MSBuildThisFileDirectory)..\..\))"
-    </NugetPackageRoot>
-  </PropertyGroup>
+  <ItemGroup Condition=" '$(Platform)' == 'x64' AND '$(RuntimeIdentifier)' == 'win' ">
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\NcnnDotNetNative.dll">
+          <Link>NcnnDotNetNative.dll</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\NcnnDotNetNativeDnn.dll">
+          <Link>NcnnDotNetNativeDnn.dll</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+  </ItemGroup>
 
- <Target Name="EmitNugetPackageRootMessage">
-   <Message Importance="High" Text='$(NugetPackageRoot)' />
- </Target>
+  <ItemGroup Condition=" '$(Platform)' == 'x64' AND '$(RuntimeIdentifier)' == 'osx' ">
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libNcnnDotNetNative.dylib">
+          <Link>libNcnnDotNetNative.dylib</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libNcnnDotNetNativeDnn.dylib">
+          <Link>libNcnnDotNetNativeDnn.dylib</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(Platform)' == 'x64' AND '$(RuntimeIdentifier)' == 'linux' ">
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libNcnnDotNetNative.so">
+          <Link>libNcnnDotNetNative.so</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libNcnnDotNetNativeDnn.so">
+          <Link>libNcnnDotNetNativeDnn.so</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(Platform)' == 'arm64' AND '$(RuntimeIdentifier)' == 'linux' ">
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-arm64\native\libNcnnDotNetNative.so">
+          <Link>libNcnnDotNetNative.so</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-arm64\native\libNcnnDotNetNativeDnn.so">
+          <Link>libNcnnDotNetNativeDnn.so</Link>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+  </ItemGroup>
 
-  <ImportGroup>
-    <Import Project="$(NuGetPackageRoot)dlibdotnet.native\$(NativeDependenciesVersion)\build\DlibDotNet.Native.targets"
-            Condition="Exists('$(NuGetPackageRoot)dlibdotnet.native\$(NativeDependenciesVersion)\build\DlibDotNet.Native.targets')" />
-  </ImportGroup>
 </Project>
