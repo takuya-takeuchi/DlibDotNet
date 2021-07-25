@@ -8,14 +8,14 @@ $targets = @(
    "CUDA-111",
    "CUDA-112",
    "MKL",
-   "UWP"
+   "Xamarin"
 )
 
 $ScriptPath = $PSScriptRoot
 $DlibDotNetRoot = Split-Path $ScriptPath -Parent
 
 $source = Join-Path $DlibDotNetRoot src | `
-          Join-Path -ChildPath NcnnDotNet
+          Join-Path -ChildPath DlibDotNet
 dotnet restore ${source}
 # build for iOS
 dotnet build -c Release -p:CustomDefinition=LIB_STATIC ${source} /nowarn:CS1591
