@@ -530,4 +530,4 @@ MigrationBackup/
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,visualstudiocode
 
 # custom
-RFB-320.*
+shape_predictor_68_face_landmarks.dat

@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Demo.Models;
 using Demo.Services.Interfaces;
-using NcnnDotNet;
-using NcnnDotNet.OpenCV;
-using UltraFaceDotNet;
-using Mat = NcnnDotNet.Mat;
+using DlibDotNet;
 
 namespace Demo.Services
 {
@@ -16,7 +14,9 @@ namespace Demo.Services
 
         #region Fields
 
-        private readonly UltraFace _UltraFace;
+        private readonly FrontalFaceDetector _FrontalFaceDetector;
+
+        private readonly ShapePredictor _PosePredictor68Point;
 
         #endregion
 
@@ -26,56 +26,41 @@ namespace Demo.Services
         {
             var resourcePrefix = "Demo.data.";
             // note that the prefix includes the trailing period '.' that is required
-            var files = new [] { "RFB-320.bin", "RFB-320.param" };
+            var files = new [] { "shape_predictor_68_face_landmarks.dat" };
             var assembly = System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(DetectService)).Assembly;
             foreach (var file in files)
             {
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), file);
-                using (var fs = File.Create(path))
-                using (var stream = assembly.GetManifestResourceStream(resourcePrefix + file))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    stream.CopyTo(fs);                    
-                }
+                using var fs = File.Create(path);
+                using var stream = assembly.GetManifestResourceStream(resourcePrefix + file);
+                stream.Seek(0, SeekOrigin.Begin);
+                stream.CopyTo(fs);
             }
 
             var binPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), files[0]);
-            var paramPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), files[1]);
-
-            var param = new UltraFaceParameter
-            {
-                BinFilePath = binPath,
-                ParamFilePath = paramPath,
-                InputWidth = 320,
-                InputLength = 240,
-                NumThread = 1,
-                ScoreThreshold = 0.7f
-            };
-
-            this._UltraFace = UltraFace.Create(param);
+            this._FrontalFaceDetector = Dlib.GetFrontalFaceDetector();
+            this._PosePredictor68Point = ShapePredictor.Deserialize(binPath);
         }
 
         #endregion
 
         #region IDetectService Members
 
-        public DetectResult Detect(byte[] file)
+        public DetectResult Detect(string file)
         {
-            using var frame = Cv2.ImDecode(file, CvLoadImage.Grayscale);
-            if (frame.IsEmpty)
-                throw new NotSupportedException("This file is not supported!!");
+            using var frame = Dlib.LoadImageAsMatrix<BgrPixel>(file);
+            var rects = this._FrontalFaceDetector.Operator(frame);
 
-            if (Ncnn.IsSupportVulkan)
-                Ncnn.CreateGpuInstance();
+            var faces = new List<Face>();
+            foreach (var rect in rects)
+            {
+                var ret = this._PosePredictor68Point.Detect(frame, new Rectangle(rect.Left, rect.Top, rect.Right, rect.Bottom));
+                var landmarkTuples = Enumerable.Range(0, (int)ret.Parts)
+                                               .Select(index => new FacePoint(ret.GetPart((uint)index), index)).ToArray();
+                faces.Add(new Face(landmarkTuples, rect));
+            }
 
-            using var inMat = Mat.FromPixels(frame.Data, NcnnDotNet.PixelType.Bgr2Rgb, frame.Cols, frame.Rows);
-
-            var faceInfos = this._UltraFace.Detect(inMat).ToArray();
-
-            if (Ncnn.IsSupportVulkan)
-                Ncnn.DestroyGpuInstance();
-
-            return new DetectResult(frame.Cols, frame.Rows, faceInfos);
+            return new DetectResult(frame.Columns, frame.Rows, faces);
         }
 
         #endregion

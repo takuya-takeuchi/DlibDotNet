@@ -1393,8 +1393,8 @@ function ConfigIOS([Config]$Config, [string]$CMakefileDir)
 {
    if ($global:IsMacOS)
    {
-      # # Build NcnnDotNet.Native
-      Write-Host "Start Build NcnnDotNet.Native" -ForegroundColor Green
+      # # Build DlibDotNet.Native
+      Write-Host "Start Build DlibDotNet.Native" -ForegroundColor Green
 
       $developerDir = $Config.GetDeveloperDir()
       $osxArchitectures = $Config.GetOSXArchitectures()

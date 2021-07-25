@@ -46,7 +46,7 @@ namespace Demo.ViewModels
         {
             return new DelegateCommand(async () =>
             {
-                var result = await this._FileAccessService.GetFileContent();
+                var result = await this._FileAccessService.GetFile();
                 if (result == null) 
                     return;
 
@@ -64,14 +64,12 @@ namespace Demo.ViewModels
                 paint.IsAntialias = true;
                 paint.TextEncoding = SKTextEncoding.Utf8;
 
-                foreach (var face in detectResult.Boxes)
+                foreach (var face in detectResult.Faces)
                 {
-                    var w = face.X2 - face.X1;
-                    var h = face.Y2 - face.Y1;
-                    
+                    var rect = face.Rect;
                     paint.Color = SKColors.Red;
                     paint.Style = SKPaintStyle.Stroke;
-                    surface.Canvas.DrawRect(face.X1, face.Y1, w, h, paint);
+                    surface.Canvas.DrawRect(rect.Left, rect.Top, rect.Width, rect.Height, paint);
                 }
                 
                 this.SelectedImage = ImageSource.FromStream(() => surface.Snapshot().Encode().AsStream());

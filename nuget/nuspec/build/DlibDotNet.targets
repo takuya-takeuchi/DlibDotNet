@@ -7,45 +7,45 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(Platform)' == 'x64' AND '$(RuntimeIdentifier)' == 'win' ">
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\NcnnDotNetNative.dll">
-          <Link>NcnnDotNetNative.dll</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNative.dll">
+          <Link>DlibDotNetNative.dll</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\NcnnDotNetNativeDnn.dll">
-          <Link>NcnnDotNetNativeDnn.dll</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\DlibDotNetNativeDnn.dll">
+          <Link>DlibDotNetNativeDnn.dll</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Platform)' == 'x64' AND '$(RuntimeIdentifier)' == 'osx' ">
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libNcnnDotNetNative.dylib">
-          <Link>libNcnnDotNetNative.dylib</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNetNative.dylib">
+          <Link>libDlibDotNetNative.dylib</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libNcnnDotNetNativeDnn.dylib">
-          <Link>libNcnnDotNetNativeDnn.dylib</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\osx-x64\native\libDlibDotNetNativeDnn.dylib">
+          <Link>libDlibDotNetNativeDnn.dylib</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
   </ItemGroup>
   
   <ItemGroup Condition=" '$(Platform)' == 'x64' AND '$(RuntimeIdentifier)' == 'linux' ">
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libNcnnDotNetNative.so">
-          <Link>libNcnnDotNetNative.so</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNative.so">
+          <Link>libDlibDotNetNative.so</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libNcnnDotNetNativeDnn.so">
-          <Link>libNcnnDotNetNativeDnn.so</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libDlibDotNetNativeDnn.so">
+          <Link>libDlibDotNetNativeDnn.so</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
   </ItemGroup>
   
   <ItemGroup Condition=" '$(Platform)' == 'arm64' AND '$(RuntimeIdentifier)' == 'linux' ">
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-arm64\native\libNcnnDotNetNative.so">
-          <Link>libNcnnDotNetNative.so</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-arm64\native\libDlibDotNetNative.so">
+          <Link>libDlibDotNetNative.so</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-arm64\native\libNcnnDotNetNativeDnn.so">
-          <Link>libNcnnDotNetNativeDnn.so</Link>
+      <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-arm64\native\libDlibDotNetNativeDnn.so">
+          <Link>libDlibDotNetNativeDnn.so</Link>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
   </ItemGroup>

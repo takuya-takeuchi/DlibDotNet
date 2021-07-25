@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UltraFaceDotNet;
 
 namespace Demo.Models
 {
@@ -9,18 +8,18 @@ namespace Demo.Models
 
         #region Constructors
 
-        public DetectResult(int width, int height, IEnumerable<FaceInfo> boxes)
+        public DetectResult(int width, int height, IEnumerable<Face> faces)
         {
             this.Width = width;
             this.Height = height;
-            this.Boxes = new List<FaceInfo>(boxes);
+            this.Faces = new List<Face>(faces);
         }
 
         #endregion
 
         #region Properties
 
-        public IReadOnlyCollection<FaceInfo> Boxes
+        public IReadOnlyCollection<Face> Faces
         {
             get;
         }
