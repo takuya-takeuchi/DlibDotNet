@@ -30,7 +30,7 @@
 
     <!-- Android -->  
     <file src="build/DlibDotNet.Android.targets" target="build/MonoAndroid/DlibDotNet.Xamarin.targets"/>
-    <file src="../../src/DlibDotNet/bin/Release_Android/netstandard2.0/DlibDotNet.dll" target="lib/MonoAndroid" />
+    <file src="../../src/DlibDotNet/bin/Release_NoGUI/netstandard2.0/DlibDotNet.dll" target="lib/MonoAndroid" />
     <!-- <file src="../artifacts/android/runtimes/armeabi/native/libDlibDotNetNative.so" target="native/android/armeabi" /> -->
     <!-- <file src="../artifacts/android/runtimes/armeabi-v7a/native/libDlibDotNetNative.so" target="native/android/armeabi-v7a" />
     <file src="../artifacts/android/runtimes/armeabi-v7a/native/libDlibDotNetNativeDnn.so" target="native/android/armeabi-v7a" /> -->
@@ -43,7 +43,7 @@
 
     <!-- iOS -->
     <file src="build/DlibDotNet.iOS.targets" target="build/XamariniOS/DlibDotNet.Xamarin.targets"/>
-    <file src="../../src/DlibDotNet/bin/Release_NoGUI/netstandard2.0/DlibDotNet.dll" target="lib/XamariniOS" />
+    <file src="../../src/DlibDotNet/bin/Release_Static/netstandard2.0/DlibDotNet.dll" target="lib/XamariniOS" />
     <file src="../artifacts/ios/runtimes/arm64/native/libDlibDotNetNative_merged.a" target="native/ios-device" />
     <file src="../artifacts/ios/runtimes/arm64/native/libDlibDotNetNativeDnn_merged.a" target="native/ios-device" />
     <file src="../artifacts/ios/runtimes/x86_64/native/libDlibDotNetNative_merged.a" target="native/ios-simulator" />
