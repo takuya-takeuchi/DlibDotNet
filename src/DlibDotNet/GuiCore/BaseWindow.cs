@@ -13,7 +13,7 @@ namespace DlibDotNet
             base(isEnabledDispose)
         {
 #if DLIB_NO_GUI_SUPPORT
-                throw new NotSupportedException();
+            throw new NotSupportedException();
 #endif
         }
 
