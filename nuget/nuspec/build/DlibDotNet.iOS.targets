@@ -1,0 +1,26 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup Condition="(('$(Platform)' == 'iPhone'))">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNative.a">
+            <Kind>Static</Kind>
+            <ForceLoad>True</ForceLoad>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNativeDnn.a">
+            <Kind>Static</Kind>
+            <ForceLoad>True</ForceLoad>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+    </ItemGroup>
+    <ItemGroup Condition="(('$(Platform)' == 'iPhoneSimulator'))">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNative.a">
+            <Kind>Static</Kind>
+            <ForceLoad>True</ForceLoad>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNativeDnn.a">
+            <Kind>Static</Kind>
+            <ForceLoad>True</ForceLoad>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+    </ItemGroup>
+</Project>
