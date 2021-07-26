@@ -8,6 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
+#if !DLIB_NO_GUI_SUPPORT
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr custom_drawable_window_new(bool resizable,
                                                                bool undecorated,
@@ -18,6 +19,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void custom_drawable_window_delete(IntPtr window);
+#endif
 
     }
 

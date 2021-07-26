@@ -8,6 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
+#if !DLIB_NO_GUI_SUPPORT
         #region draw_line_canvas
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -167,6 +168,7 @@ namespace DlibDotNet
         public static extern ErrorType draw_rectangle_canvas_infinity(IntPtr canvas, IntPtr rect, Array2DType pixelType, ref LabPixel color);
 
         #endregion
+#endif
 
     }
 
