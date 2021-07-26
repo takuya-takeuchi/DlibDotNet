@@ -23,7 +23,6 @@ dotnet restore ${source}
 $customProperties = @{
    "DLIB_NO_GUI_SUPPORT%2cLIB_STATIC" = "Release_Static";
    "DLIB_NO_GUI_SUPPORT"              = "Release_NoGUI";
-   ""                                 = "Release_General";
 }
 foreach ($key in $customProperties.keys)
 {
