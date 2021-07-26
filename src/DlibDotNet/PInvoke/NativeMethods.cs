@@ -19,6 +19,8 @@ namespace DlibDotNet
         /// </summary>
 #if LIB_STATIC
         public const string NativeLibrary = "__Internal";
+
+        public const string NativeDnnLibrary = "__Internal";
 #else
         public const string NativeLibrary = "DlibDotNetNative";
 
