@@ -23,7 +23,7 @@ dotnet restore ${source}
 $customProperties = @{
    "DLIB_NO_GUI_SUPPORT%2cLIB_STATIC" = "Release_Static";
    "DLIB_NO_GUI_SUPPORT"              = "Release_NoGUI";
-   ""                                 = "Release";
+   ""                                 = "Release_General";
 }
 foreach ($key in $customProperties.keys)
 {
@@ -37,15 +37,12 @@ foreach ($key in $customProperties.keys)
    $dest = Join-Path $source bin | `
          Join-Path -ChildPath ${dirname}
    
-   if ($dirname -ne "Release")
+   if (Test-path($dest))
    {
-      if (Test-path($dest))
-      {
-         Write-Host "Remove ${dest}" -ForegroundColor Blue
-         Remove-Item -Path "${dest}" -Recurse -Force > $null
-      }
-      Move-Item "${output}" "${dest}"
+      Write-Host "Remove ${dest}" -ForegroundColor Blue
+      Remove-Item -Path "${dest}" -Recurse -Force > $null
    }
+   Move-Item "${output}" "${dest}"
 }
 
 # build for general
