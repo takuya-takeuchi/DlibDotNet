@@ -8,6 +8,7 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
+#if !DLIB_NO_GUI_SUPPORT
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void base_window_close_window(IntPtr window);
 
@@ -31,6 +32,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void base_window_show(IntPtr window);
+#endif
 
     }
 
