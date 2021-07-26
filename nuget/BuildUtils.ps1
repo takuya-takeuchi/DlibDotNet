@@ -143,8 +143,8 @@ class Config
 
    static $BuildLibraryIOSHash =
    @{
-      "DlibDotNet.Native"     = "libDlibDotNetNative.a";
-      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
+      "DlibDotNet.Native"     = "libDlibDotNetNative_merged.a";
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn_merged.a"
    }
 
    [string]   $_Root
@@ -1539,6 +1539,63 @@ function Build([Config]$Config)
    $cofiguration = $Config.GetConfigurationName()
    Write-Host "   cmake --build . --config ${cofiguration}" -ForegroundColor Yellow
    cmake --build . --config ${cofiguration}
+
+   $Platform = $Config.GetPlatform()
+
+   # Post build
+   switch ($Platform)
+   {
+      "ios"
+      {
+         $BuildTargets = @()
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "arm64e"; }
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "arm64";  }
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "arm";    }
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "armv7";  }
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "armv7s"; }
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "i386";   }
+         $BuildTargets += New-Object PSObject -Property @{ Platform = "x86_64"; }
+
+         foreach($BuildTarget in $BuildTargets)
+         {
+            $platform = $BuildTarget.Platform
+            $vulkan = $BuildTarget.Vulkan
+            $osxArchitectures = $Config.GetOSXArchitectures()
+
+            if ($osxArchitectures -eq $platform )
+            {
+               Write-Host "Invoke libtool for ${platform}" -ForegroundColor Yellow
+
+               if (Test-Path "libDlibDotNetNative_merged.a")
+               {
+                  Remove-Item "libDlibDotNetNative_merged.a"
+               }
+
+               if (Test-Path "libDlibDotNetNativeDnn_merged.a")
+               {
+                  Remove-Item "libDlibDotNetNativeDnn_merged.a"
+               }
+
+
+               if (Test-Path "libDlibDotNetNative.a")
+               {
+                  # https://github.com/abseil/abseil-cpp/issues/604
+                  libtool -o "libDlibDotNetNative_merged.a" `
+                           "libDlibDotNetNative.a" `
+                           "dlib_build/libdlib.a"
+               }
+
+               if (Test-Path "libDlibDotNetNativeDnn.a")
+               {
+                  # https://github.com/abseil/abseil-cpp/issues/604
+                  libtool -o "libDlibDotNetNativeDnn_merged.a" `
+                           "libDlibDotNetNativeDnn.a" `
+                           "dlib_build/libdlib.a"
+               }
+            }
+         }
+      }
+   }
 
    # Move to Root directory
    Set-Location -Path $Current
