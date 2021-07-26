@@ -143,8 +143,8 @@ class Config
 
    static $BuildLibraryIOSHash =
    @{
-      "DlibDotNet.Native"     = "libDlibDotNetNative.a";
-      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
+      "DlibDotNet.Native"     = "libDlibDotNetNative_merged.a";
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn_merged.a"
    }
 
    [string]   $_Root
