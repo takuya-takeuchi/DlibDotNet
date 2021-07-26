@@ -19,28 +19,34 @@ $source = Join-Path $DlibDotNetRoot src | `
 dotnet restore ${source}
 
 # build for iOS
-dotnet build -c Release -p:CustomDefinition=LIB_STATIC -p:CustomDefinition=DLIB_NO_GUI_SUPPORT ${source} /nowarn:CS1591
-$output = Join-Path $source bin | `
-          Join-Path -ChildPath Release
-$dest = Join-Path $source bin | `
-        Join-Path -ChildPath Release_Static
-if (Test-path($dest))
-{
-   Remove-Item -Path "${dest}" -Recurse -Force > $null
+# https://github.com/dotnet/msbuild/issues/471#issuecomment-366268743
+$customProperties = @{
+   "DLIB_NO_GUI_SUPPORT%2cLIB_STATIC" = "Release_Static";
+   "DLIB_NO_GUI_SUPPORT"              = "Release_NoGUI";
+   ""                                 = "Release";
 }
-Move-Item "${output}" "${dest}"
+foreach ($key in $customProperties.keys)
+{
+   $customProperty = $key
+   $dirname = $customProperties[$key]
 
-# build for Android and UWP
-dotnet build -c Release -p:CustomDefinition=DLIB_NO_GUI_SUPPORT ${source} /nowarn:CS1591
-$output = Join-Path $source bin | `
-          Join-Path -ChildPath Release
-$dest = Join-Path $source bin | `
-        Join-Path -ChildPath Release_NoGUI
-if (Test-path($dest))
-{
-   Remove-Item -Path "${dest}" -Recurse -Force > $null
+   Write-Host "Build ${output}" -ForegroundColor Blue
+   dotnet build -c Release -p:CustomDefinition="${customProperty}" ${source} /nowarn:CS1591
+   $output = Join-Path $source bin | `
+            Join-Path -ChildPath Release
+   $dest = Join-Path $source bin | `
+         Join-Path -ChildPath ${dirname}
+   
+   if ($output -ne "Release")
+   {
+      if (Test-path($dest))
+      {
+         Write-Host "Remove ${dest}" -ForegroundColor Blue
+         Remove-Item -Path "${dest}" -Recurse -Force > $null
+      }
+      Move-Item "${output}" "${dest}"
+   }
 }
-Move-Item "${output}" "${dest}"
 
 # build for general
 dotnet build -c Release ${source} /nowarn:CS1591
