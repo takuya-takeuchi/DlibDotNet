@@ -23,14 +23,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
@@ -52,14 +46,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
@@ -81,14 +69,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
@@ -110,14 +92,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
@@ -139,14 +115,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
@@ -168,14 +138,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
@@ -197,14 +161,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
                                                              p1.NativePtr,
                                                              p2.NativePtr,
@@ -238,17 +196,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
@@ -271,17 +220,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
@@ -304,17 +244,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
@@ -337,17 +268,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
@@ -370,17 +292,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
@@ -403,17 +316,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
@@ -436,17 +340,8 @@ namespace DlibDotNet
 #if !DLIB_NO_GUI_SUPPORT
            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
-           if (p1 == null)
-               throw new ArgumentNullException(nameof(p1));
-           if (p2 == null)
-               throw new ArgumentNullException(nameof(p2));
-           if (area == null)
-               throw new ArgumentNullException(nameof(area));
 
            canvas.ThrowIfDisposed();
-           p1.ThrowIfDisposed();
-           p2.ThrowIfDisposed();
-           area.ThrowIfDisposed();
 
            var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
                                                     p1.NativePtr,
