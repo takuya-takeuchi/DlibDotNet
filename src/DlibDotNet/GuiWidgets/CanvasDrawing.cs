@@ -12,7 +12,7 @@ namespace DlibDotNet
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           DrawLine(canvas, p1, p2, new RgbPixel());
+            DrawLine(canvas, p1, p2, new RgbPixel());
 #else
             throw new NotSupportedException();
 #endif
@@ -21,21 +21,25 @@ namespace DlibDotNet
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, byte color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
+            if (canvas == null)
                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.UInt8,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.UInt8,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
             throw new NotSupportedException();
 #endif
@@ -44,21 +48,21 @@ namespace DlibDotNet
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, ushort color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.UInt16,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                              p1.NativePtr,
+                                                              p2.NativePtr,
+                                                              NativeMethods.Array2DType.UInt16,
+                                                              ref color);
+            switch (ret)
+            {
+                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                    throw new ArgumentException($"{color} is not supported.");
+            }
 #else
             throw new NotSupportedException();
 #endif
