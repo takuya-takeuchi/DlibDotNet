@@ -1,4 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System;
+
+// ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
@@ -10,22 +12,33 @@ namespace DlibDotNet
         protected ScrollableRegion(DrawableWindow window) :
             base(window)
         {
+#if DLIB_NO_GUI_SUPPORT
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
 
         #region Methods
 
-        //public void SetPos(int x, int y)
-        //{
-        //    this.ThrowIfDisposed();
-        //    NativeMethods.scrollable_region_set_pos(this.NativePtr, x, y);
-        //}
+        public void SetPos(int x, int y)
+        {
+#if !DLIB_NO_GUI_SUPPORT
+           this.ThrowIfDisposed();
+           NativeMethods.scrollable_region_set_pos(this.NativePtr, x, y);
+#else
+            throw new NotSupportedException();
+#endif
+        }
 
         public void SetSize(uint width, uint height)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
             NativeMethods.scrollable_region_set_size(this.NativePtr, width, height);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

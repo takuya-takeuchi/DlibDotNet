@@ -11,7 +11,11 @@ namespace DlibDotNet
 
         public MenuItemSeparator()
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.NativePtr = NativeMethods.menu_item_separator_new();
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -25,12 +29,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.menu_item_separator_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
