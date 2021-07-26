@@ -258,22 +258,22 @@ namespace DlibDotNet
         {
             switch (type)
             {
-                case NativeMethods.MatrixElementType.UInt8:
-                    return new UInt8Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.Int8:
-                    return new Int8Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.UInt16:
-                    return new UInt16Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.Int16:
-                    return new Int16Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.UInt32:
-                    return new UInt32Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.Int32:
-                    return new Int32Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.UInt64:
-                    return new UInt64Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
-                case NativeMethods.MatrixElementType.Int64:
-                    return new Int64Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.UInt8:
+                //     return new UInt8Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.Int8:
+                //     return new Int8Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.UInt16:
+                //     return new UInt16Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.Int16:
+                //     return new Int16Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.UInt32:
+                //     return new UInt32Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.Int32:
+                //     return new Int32Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.UInt64:
+                //     return new UInt64Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
+                // case NativeMethods.MatrixElementType.Int64:
+                //     return new Int64Imp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
                 case NativeMethods.MatrixElementType.Double:
                     return new DoubleImp(this, this._Parameter, type, this._SvmFunctionType) as Imp<TScalar>;
                 case NativeMethods.MatrixElementType.Float:
@@ -326,325 +326,325 @@ namespace DlibDotNet
 
         }
 
-        internal sealed class Int8Imp : Imp<sbyte>
-        {
+        // internal sealed class Int8Imp : Imp<sbyte>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal Int8Imp(DlibObject parent,
-                             KernelBaseParameter kernelParameter,
-                             NativeMethods.MatrixElementType elementType,
-                             NativeMethods.SvmFunctionType functionType):
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal Int8Imp(DlibObject parent,
+        //                      KernelBaseParameter kernelParameter,
+        //                      NativeMethods.MatrixElementType elementType,
+        //                      NativeMethods.SvmFunctionType functionType):
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override sbyte Operator(Matrix<sbyte> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_int8_t(svmKernelType.ToNativeKernelType(),
-                                                                            matrixElementType,
-                                                                            templateRows,
-                                                                            templateColumns,
-                                                                            functionType,
-                                                                            function,
-                                                                            x.NativePtr,
-                                                                            out var ret);
-                return ret;
-            }
+        //     public override sbyte Operator(Matrix<sbyte> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_int8_t(svmKernelType.ToNativeKernelType(),
+        //                                                                     matrixElementType,
+        //                                                                     templateRows,
+        //                                                                     templateColumns,
+        //                                                                     functionType,
+        //                                                                     function,
+        //                                                                     x.NativePtr,
+        //                                                                     out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class UInt8Imp : Imp<byte>
-        {
+        // internal sealed class UInt8Imp : Imp<byte>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal UInt8Imp(DlibObject parent,
-                              KernelBaseParameter kernelParameter,
-                              NativeMethods.MatrixElementType elementType,
-                              NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal UInt8Imp(DlibObject parent,
+        //                       KernelBaseParameter kernelParameter,
+        //                       NativeMethods.MatrixElementType elementType,
+        //                       NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override byte Operator(Matrix<byte> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_uint8_t(svmKernelType.ToNativeKernelType(),
-                                                                             matrixElementType,
-                                                                             templateRows,
-                                                                             templateColumns,
-                                                                             functionType,
-                                                                             function,
-                                                                             x.NativePtr,
-                                                                             out var ret);
-                return ret;
-            }
+        //     public override byte Operator(Matrix<byte> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_uint8_t(svmKernelType.ToNativeKernelType(),
+        //                                                                      matrixElementType,
+        //                                                                      templateRows,
+        //                                                                      templateColumns,
+        //                                                                      functionType,
+        //                                                                      function,
+        //                                                                      x.NativePtr,
+        //                                                                      out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class Int16Imp : Imp<short>
-        {
+        // internal sealed class Int16Imp : Imp<short>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal Int16Imp(DlibObject parent,
-                              KernelBaseParameter kernelParameter,
-                              NativeMethods.MatrixElementType elementType,
-                              NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal Int16Imp(DlibObject parent,
+        //                       KernelBaseParameter kernelParameter,
+        //                       NativeMethods.MatrixElementType elementType,
+        //                       NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override short Operator(Matrix<short> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_int16_t(svmKernelType.ToNativeKernelType(),
-                                                                             matrixElementType,
-                                                                             templateRows,
-                                                                             templateColumns,
-                                                                             functionType,
-                                                                             function,
-                                                                             x.NativePtr,
-                                                                             out var ret);
-                return ret;
-            }
+        //     public override short Operator(Matrix<short> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_int16_t(svmKernelType.ToNativeKernelType(),
+        //                                                                      matrixElementType,
+        //                                                                      templateRows,
+        //                                                                      templateColumns,
+        //                                                                      functionType,
+        //                                                                      function,
+        //                                                                      x.NativePtr,
+        //                                                                      out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class UInt16Imp : Imp<ushort>
-        {
+        // internal sealed class UInt16Imp : Imp<ushort>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal UInt16Imp(DlibObject parent,
-                               KernelBaseParameter kernelParameter,
-                               NativeMethods.MatrixElementType elementType,
-                               NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal UInt16Imp(DlibObject parent,
+        //                        KernelBaseParameter kernelParameter,
+        //                        NativeMethods.MatrixElementType elementType,
+        //                        NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override ushort Operator(Matrix<ushort> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_uint16_t(svmKernelType.ToNativeKernelType(),
-                                                                              matrixElementType,
-                                                                              templateRows,
-                                                                              templateColumns,
-                                                                              functionType,
-                                                                              function,
-                                                                              x.NativePtr,
-                                                                              out var ret);
-                return ret;
-            }
+        //     public override ushort Operator(Matrix<ushort> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_uint16_t(svmKernelType.ToNativeKernelType(),
+        //                                                                       matrixElementType,
+        //                                                                       templateRows,
+        //                                                                       templateColumns,
+        //                                                                       functionType,
+        //                                                                       function,
+        //                                                                       x.NativePtr,
+        //                                                                       out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class Int32Imp : Imp<int>
-        {
+        // internal sealed class Int32Imp : Imp<int>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal Int32Imp(DlibObject parent,
-                              KernelBaseParameter kernelParameter,
-                              NativeMethods.MatrixElementType elementType,
-                              NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal Int32Imp(DlibObject parent,
+        //                       KernelBaseParameter kernelParameter,
+        //                       NativeMethods.MatrixElementType elementType,
+        //                       NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override int Operator(Matrix<int> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_int32_t(svmKernelType.ToNativeKernelType(),
-                                                                             matrixElementType,
-                                                                             templateRows,
-                                                                             templateColumns,
-                                                                             functionType,
-                                                                             function,
-                                                                             x.NativePtr,
-                                                                             out var ret);
-                return ret;
-            }
+        //     public override int Operator(Matrix<int> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_int32_t(svmKernelType.ToNativeKernelType(),
+        //                                                                      matrixElementType,
+        //                                                                      templateRows,
+        //                                                                      templateColumns,
+        //                                                                      functionType,
+        //                                                                      function,
+        //                                                                      x.NativePtr,
+        //                                                                      out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class UInt32Imp : Imp<uint>
-        {
+        // internal sealed class UInt32Imp : Imp<uint>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal UInt32Imp(DlibObject parent,
-                               KernelBaseParameter kernelParameter,
-                               NativeMethods.MatrixElementType elementType,
-                               NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal UInt32Imp(DlibObject parent,
+        //                        KernelBaseParameter kernelParameter,
+        //                        NativeMethods.MatrixElementType elementType,
+        //                        NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override uint Operator(Matrix<uint> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_uint32_t(svmKernelType.ToNativeKernelType(),
-                                                                              matrixElementType,
-                                                                              templateRows,
-                                                                              templateColumns,
-                                                                              functionType,
-                                                                              function,
-                                                                              x.NativePtr,
-                                                                              out var ret);
-                return ret;
-            }
+        //     public override uint Operator(Matrix<uint> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_uint32_t(svmKernelType.ToNativeKernelType(),
+        //                                                                       matrixElementType,
+        //                                                                       templateRows,
+        //                                                                       templateColumns,
+        //                                                                       functionType,
+        //                                                                       function,
+        //                                                                       x.NativePtr,
+        //                                                                       out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class Int64Imp : Imp<long>
-        {
+        // internal sealed class Int64Imp : Imp<long>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal Int64Imp(DlibObject parent,
-                              KernelBaseParameter kernelParameter,
-                              NativeMethods.MatrixElementType elementType,
-                              NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal Int64Imp(DlibObject parent,
+        //                       KernelBaseParameter kernelParameter,
+        //                       NativeMethods.MatrixElementType elementType,
+        //                       NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override long Operator(Matrix<long> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_int64_t(svmKernelType.ToNativeKernelType(),
-                                                                             matrixElementType,
-                                                                             templateRows,
-                                                                             templateColumns,
-                                                                             functionType,
-                                                                             function,
-                                                                             x.NativePtr,
-                                                                             out var ret);
-                return ret;
-            }
+        //     public override long Operator(Matrix<long> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_int64_t(svmKernelType.ToNativeKernelType(),
+        //                                                                      matrixElementType,
+        //                                                                      templateRows,
+        //                                                                      templateColumns,
+        //                                                                      functionType,
+        //                                                                      function,
+        //                                                                      x.NativePtr,
+        //                                                                      out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
-        internal sealed class UInt64Imp : Imp<ulong>
-        {
+        // internal sealed class UInt64Imp : Imp<ulong>
+        // {
 
-            #region Constructors 
+        //     #region Constructors 
 
-            internal UInt64Imp(DlibObject parent,
-                               KernelBaseParameter kernelParameter,
-                               NativeMethods.MatrixElementType elementType,
-                               NativeMethods.SvmFunctionType functionType) :
-                base(parent, kernelParameter, elementType, functionType)
-            {
-            }
+        //     internal UInt64Imp(DlibObject parent,
+        //                        KernelBaseParameter kernelParameter,
+        //                        NativeMethods.MatrixElementType elementType,
+        //                        NativeMethods.SvmFunctionType functionType) :
+        //         base(parent, kernelParameter, elementType, functionType)
+        //     {
+        //     }
 
-            #endregion
+        //     #endregion
 
-            #region Method
+        //     #region Method
 
-            public override ulong Operator(Matrix<ulong> x)
-            {
-                var svmKernelType = this.KernelParameter.KernelType;
-                var matrixElementType = this.ElementType;
-                var templateColumns = this.KernelParameter.TemplateColumns;
-                var templateRows = this.KernelParameter.TemplateRows;
-                var functionType = this.FunctionType;
-                var function = this.Parent.NativePtr;
-                var err = NativeMethods.normalized_function_operator_uint64_t(svmKernelType.ToNativeKernelType(),
-                                                                              matrixElementType,
-                                                                              templateRows,
-                                                                              templateColumns,
-                                                                              functionType,
-                                                                              function,
-                                                                              x.NativePtr,
-                                                                              out var ret);
-                return ret;
-            }
+        //     public override ulong Operator(Matrix<ulong> x)
+        //     {
+        //         var svmKernelType = this.KernelParameter.KernelType;
+        //         var matrixElementType = this.ElementType;
+        //         var templateColumns = this.KernelParameter.TemplateColumns;
+        //         var templateRows = this.KernelParameter.TemplateRows;
+        //         var functionType = this.FunctionType;
+        //         var function = this.Parent.NativePtr;
+        //         var err = NativeMethods.normalized_function_operator_uint64_t(svmKernelType.ToNativeKernelType(),
+        //                                                                       matrixElementType,
+        //                                                                       templateRows,
+        //                                                                       templateColumns,
+        //                                                                       functionType,
+        //                                                                       function,
+        //                                                                       x.NativePtr,
+        //                                                                       out var ret);
+        //         return ret;
+        //     }
 
-            #endregion
+        //     #endregion
 
-        }
+        // }
 
         internal sealed class DoubleImp : Imp<double>
         {
