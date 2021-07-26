@@ -8,6 +8,8 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
+#if !DLIB_NO_GUI_SUPPORT
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr perspective_window_new();
 
@@ -93,6 +95,8 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void perspective_window_delete(IntPtr ptr);
+
+#endif
 
     }
 
