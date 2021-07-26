@@ -22,7 +22,7 @@ namespace DlibDotNet
         {
 #if !DLIB_NO_GUI_SUPPORT
             if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+                throw new ArgumentNullException(nameof(canvas));
 
             canvas.ThrowIfDisposed();
 
@@ -41,7 +41,7 @@ namespace DlibDotNet
                 }
             }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
@@ -53,132 +53,157 @@ namespace DlibDotNet
 
             canvas.ThrowIfDisposed();
 
-            var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                              p1.NativePtr,
-                                                              p2.NativePtr,
-                                                              NativeMethods.Array2DType.UInt16,
-                                                              ref color);
-            switch (ret)
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
             {
-                case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                    throw new ArgumentException($"{color} is not supported.");
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.UInt16,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
             }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, float color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.Float,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.Float,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, double color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.Double,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.Double,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, RgbPixel color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.RgbPixel,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.RgbPixel,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, RgbAlphaPixel color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.RgbAlphaPixel,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.RgbAlphaPixel,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, HsiPixel color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
-           var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
-                                                             p1.NativePtr,
-                                                             p2.NativePtr,
-                                                             NativeMethods.Array2DType.HsiPixel,
-                                                             ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            canvas.ThrowIfDisposed();
+
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas_infinity(canvas.NativePtr,
+                                                                  p1Native.NativePtr,
+                                                                  p2Native.NativePtr,
+                                                                  NativeMethods.Array2DType.HsiPixel,
+                                                                  ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
@@ -189,177 +214,212 @@ namespace DlibDotNet
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           DrawLine(canvas, p1, p2, area, new RgbPixel());
+            DrawLine(canvas, p1, p2, area, new RgbPixel());
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, byte color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.UInt8,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.UInt8,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, ushort color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.UInt16,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.UInt16,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, float color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.Float,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.Float,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, double color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.Double,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.Double,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, RgbPixel color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.RgbPixel,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.RgbPixel,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, RgbAlphaPixel color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.RgbAlphaPixel,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.RgbAlphaPixel,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
         public static void DrawLine(Array2DBase canvas, Point p1, Point p2, Rectangle area, HsiPixel color)
         {
 #if !DLIB_NO_GUI_SUPPORT
-           if (canvas == null)
-               throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+                throw new ArgumentNullException(nameof(canvas));
 
-           canvas.ThrowIfDisposed();
+            canvas.ThrowIfDisposed();
 
-           var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
-                                                    p1.NativePtr,
-                                                    p2.NativePtr,
-                                                    area.NativePtr,
-                                                    NativeMethods.Array2DType.HsiPixel,
-                                                    ref color);
-           switch (ret)
-           {
-               case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
-                   throw new ArgumentException($"{color} is not supported.");
-           }
+            using (var p1Native = p1.ToNative())
+            using (var p2Native = p2.ToNative())
+            using (var areaNative = area.ToNative())
+            {
+                var ret = NativeMethods.draw_line_canvas(canvas.NativePtr,
+                                                         p1Native.NativePtr,
+                                                         p2Native.NativePtr,
+                                                         areaNative.NativePtr,
+                                                         NativeMethods.Array2DType.HsiPixel,
+                                                         ref color);
+                switch (ret)
+                {
+                    case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
+                        throw new ArgumentException($"{color} is not supported.");
+                }
+            }
 #else
-            throw new NotSupportedException();
+        throw new NotSupportedException();
 #endif
         }
 
