@@ -1,23 +1,23 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ItemGroup Condition="(('$(Platform)' == 'iPhone'))">
-        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNative.a">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNative_merged.a">
             <Kind>Static</Kind>
             <ForceLoad>True</ForceLoad>
             <SmartLink>True</SmartLink>
         </NativeReference>
-        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNativeDnn.a">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNativeDnn_merged.a">
             <Kind>Static</Kind>
             <ForceLoad>True</ForceLoad>
             <SmartLink>True</SmartLink>
         </NativeReference>
     </ItemGroup>
     <ItemGroup Condition="(('$(Platform)' == 'iPhoneSimulator'))">
-        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNative.a">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNative_merged.a">
             <Kind>Static</Kind>
             <ForceLoad>True</ForceLoad>
             <SmartLink>True</SmartLink>
         </NativeReference>
-        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNativeDnn.a">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNativeDnn_merged.a">
             <Kind>Static</Kind>
             <ForceLoad>True</ForceLoad>
             <SmartLink>True</SmartLink>
