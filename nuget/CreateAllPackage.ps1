@@ -37,7 +37,7 @@ foreach ($key in $customProperties.keys)
    $dest = Join-Path $source bin | `
          Join-Path -ChildPath ${dirname}
    
-   if ($output -ne "Release")
+   if ($dirname -ne "Release")
    {
       if (Test-path($dest))
       {
