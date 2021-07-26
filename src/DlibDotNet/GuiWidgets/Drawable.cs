@@ -17,10 +17,11 @@ namespace DlibDotNet
 
         protected Drawable(DrawableWindow window)
         {
-#if DLIB_NO_GUI_SUPPORT
+#if !DLIB_NO_GUI_SUPPORT
+            this._Window = window;
+#else
             throw new NotSupportedException();
 #endif
-            this._Window = window;
         }
 
         #endregion

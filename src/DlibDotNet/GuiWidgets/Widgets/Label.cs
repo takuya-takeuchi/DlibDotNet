@@ -12,7 +12,11 @@ namespace DlibDotNet
         public Label(DrawableWindow window) :
             base(window)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.NativePtr = NativeMethods.label_new(window.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -21,9 +25,13 @@ namespace DlibDotNet
 
         public void SetText(string name)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
             var str = Dlib.Encoding.GetBytes(name ?? "");
             NativeMethods.label_set_text(this.NativePtr, str, str.Length);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #region Overrids
@@ -33,12 +41,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.label_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
