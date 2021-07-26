@@ -887,6 +887,7 @@ namespace DlibDotNet
 
             public override void CopyTo(IntPtr ptr, ImageWindow.OverlayLine[] array, int arrayIndex)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return;
@@ -895,47 +896,75 @@ namespace DlibDotNet
                 NativeMethods.stdvector_image_window_overlay_line_copy(ptr, dst);
                 var tmp = dst.Select(p => new ImageWindow.OverlayLine(p)).ToArray();
                 Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create()
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_image_window_overlay_line_new1();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(int size)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
                 return NativeMethods.stdvector_image_window_overlay_line_new2(new IntPtr(size));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(IEnumerable<ImageWindow.OverlayLine> data)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
                 return NativeMethods.stdvector_image_window_overlay_line_new3(array, new IntPtr(array.Length));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override void Dispose(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 NativeMethods.stdvector_image_window_overlay_line_delete(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_image_window_overlay_line_getPointer(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override int GetSize(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_image_window_overlay_line_getSize(ptr).ToInt32();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override ImageWindow.OverlayLine[] ToArray(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return new ImageWindow.OverlayLine[0];
@@ -943,6 +972,9 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_image_window_overlay_line_copy(ptr, dst);
                 return dst.Select(p => new ImageWindow.OverlayLine(p)).ToArray();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             #endregion
@@ -1163,6 +1195,7 @@ namespace DlibDotNet
 
             public override void CopyTo(IntPtr ptr, SurfPoint[] array, int arrayIndex)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return;
@@ -1171,47 +1204,75 @@ namespace DlibDotNet
                 NativeMethods.stdvector_surf_point_copy(ptr, dst);
                 var tmp = dst.Select(p => new SurfPoint(p)).ToArray();
                 Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create()
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_surf_point_new1();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(int size)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
                 return NativeMethods.stdvector_surf_point_new2(new IntPtr(size));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(IEnumerable<SurfPoint> data)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
                 return NativeMethods.stdvector_surf_point_new3(array, new IntPtr(array.Length));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override void Dispose(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 NativeMethods.stdvector_surf_point_delete(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_surf_point_getPointer(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override int GetSize(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_surf_point_getSize(ptr).ToInt32();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override SurfPoint[] ToArray(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return new SurfPoint[0];
@@ -1219,6 +1280,9 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_surf_point_copy(ptr, dst);
                 return dst.Select(p => new SurfPoint(p)).ToArray();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             #endregion
@@ -1397,6 +1461,7 @@ namespace DlibDotNet
 
             public override void CopyTo(IntPtr ptr, PerspectiveWindow.OverlayDot[] array, int arrayIndex)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return;
@@ -1405,47 +1470,75 @@ namespace DlibDotNet
                 NativeMethods.stdvector_perspective_window_overlay_dot_copy(ptr, dst);
                 var tmp = dst.Select(p => new PerspectiveWindow.OverlayDot(p)).ToArray();
                 Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create()
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_perspective_window_overlay_dot_new1();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(int size)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
                 return NativeMethods.stdvector_perspective_window_overlay_dot_new2(new IntPtr(size));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(IEnumerable<PerspectiveWindow.OverlayDot> data)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
                 return NativeMethods.stdvector_perspective_window_overlay_dot_new3(array, new IntPtr(array.Length));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override void Dispose(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 NativeMethods.stdvector_perspective_window_overlay_dot_delete(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_perspective_window_overlay_dot_getPointer(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override int GetSize(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_perspective_window_overlay_dot_getSize(ptr).ToInt32();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override PerspectiveWindow.OverlayDot[] ToArray(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return new PerspectiveWindow.OverlayDot[0];
@@ -1453,6 +1546,9 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_perspective_window_overlay_dot_copy(ptr, dst);
                 return dst.Select(p => new PerspectiveWindow.OverlayDot(p)).ToArray();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             #endregion
@@ -2114,6 +2210,7 @@ namespace DlibDotNet
 
             public override void CopyTo(IntPtr ptr, ImageDisplay.OverlayRect[] array, int arrayIndex)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return;
@@ -2122,47 +2219,75 @@ namespace DlibDotNet
                 NativeMethods.stdvector_image_display_overlay_rect_copy(ptr, dst);
                 var tmp = dst.Select(p => new StdVector<ImageDisplay.OverlayRect>(p)).ToArray();
                 Array.Copy(tmp, 0, array, arrayIndex, tmp.Length);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create()
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_image_display_overlay_rect_new1();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(int size)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
                 return NativeMethods.stdvector_image_display_overlay_rect_new2(new IntPtr(size));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr Create(IEnumerable<ImageDisplay.OverlayRect> data)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.Select(rectangle => rectangle.NativePtr).ToArray();
                 return NativeMethods.stdvector_image_display_overlay_rect_new3(array, new IntPtr(array.Length));
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override void Dispose(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 NativeMethods.stdvector_image_display_overlay_rect_delete(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_image_display_overlay_rect_getPointer(ptr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override int GetSize(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 return NativeMethods.stdvector_image_display_overlay_rect_getSize(ptr).ToInt32();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public override ImageDisplay.OverlayRect[] ToArray(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 var size = this.GetSize(ptr);
                 if (size == 0)
                     return new ImageDisplay.OverlayRect[0];
@@ -2170,6 +2295,9 @@ namespace DlibDotNet
                 var dst = new IntPtr[size];
                 NativeMethods.stdvector_image_display_overlay_rect_copy(ptr, dst);
                 return dst.Select(p => new ImageDisplay.OverlayRect(p)).ToArray();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             #endregion

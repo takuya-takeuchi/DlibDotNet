@@ -218,6 +218,8 @@ namespace DlibDotNet
 
         #region image_window_overlay_line
 
+#if !DLIB_NO_GUI_SUPPORT
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_image_window_overlay_line_new1();
 
@@ -238,6 +240,8 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_window_overlay_line_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 
@@ -343,6 +347,8 @@ namespace DlibDotNet
 
         #region surf_point
 
+#if !DLIB_NO_GUI_SUPPORT
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_surf_point_new1();
 
@@ -363,6 +369,8 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_surf_point_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 
@@ -443,6 +451,8 @@ namespace DlibDotNet
 
         #region perspective_window_overlay_dot
 
+#if !DLIB_NO_GUI_SUPPORT
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_perspective_window_overlay_dot_new1();
 
@@ -463,6 +473,8 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_perspective_window_overlay_dot_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 
@@ -693,6 +705,8 @@ namespace DlibDotNet
 
         #region image_display::overlay_rect
 
+#if !DLIB_NO_GUI_SUPPORT
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_image_display_overlay_rect_new1();
 
@@ -713,6 +727,8 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_display_overlay_rect_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 

@@ -112,6 +112,13 @@ namespace DlibDotNet
 
         public void SetPos(int x, int y)
         {
+            this.SetPosCore(x, y);
+        }
+
+        #region Overrides
+
+        protected virtual void SetPosCore(int x, int y)
+        {
 #if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
             NativeMethods.drawable_set_pos(this.NativePtr, x, y);
@@ -119,6 +126,8 @@ namespace DlibDotNet
             throw new NotSupportedException();
 #endif
         }
+
+        #endregion
 
         #endregion
 

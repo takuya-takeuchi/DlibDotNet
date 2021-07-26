@@ -21,16 +21,6 @@ namespace DlibDotNet
 
         #region Methods
 
-        public void SetPos(int x, int y)
-        {
-#if !DLIB_NO_GUI_SUPPORT
-           this.ThrowIfDisposed();
-           NativeMethods.scrollable_region_set_pos(this.NativePtr, x, y);
-#else
-            throw new NotSupportedException();
-#endif
-        }
-
         public void SetSize(uint width, uint height)
         {
 #if !DLIB_NO_GUI_SUPPORT
@@ -40,6 +30,20 @@ namespace DlibDotNet
             throw new NotSupportedException();
 #endif
         }
+
+        #region Overrides
+
+        protected override void SetPosCore(int x, int y)
+        {
+#if !DLIB_NO_GUI_SUPPORT
+            this.ThrowIfDisposed();
+            NativeMethods.scrollable_region_set_pos(this.NativePtr, x, y);
+#else
+            throw new NotSupportedException();
+#endif
+        }
+
+        #endregion
 
         #endregion
 
