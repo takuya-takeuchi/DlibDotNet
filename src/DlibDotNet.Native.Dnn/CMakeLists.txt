@@ -78,10 +78,13 @@ configure_file(
     ${PROJECT_SOURCE_DIR}/dlib/config.h
     @ONLY)
 
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h
-                          ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.h)
-FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp
-                          ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.cpp)
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
+    FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib_ios/*.h)
+    FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib_ios/*.cpp)
+else()
+    FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
+    FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
+endif()
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER1 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/shared.h)
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER2 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/export.h)
 

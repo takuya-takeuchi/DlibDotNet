@@ -147,6 +147,12 @@ class Config
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
    }
 
+   static $BuildLibraryRenameMap =
+   @{
+      "DlibDotNet.Native"     = "ddnnative_";
+      "DlibDotNet.Native.Dnn" = "ddnnative.dnn_"
+   }
+
    [string]   $_Root
    [string]   $_Configuration
    [int]      $_Architecture
@@ -275,6 +281,11 @@ class Config
    static [hashtable] GetBinaryLibraryIOSHash()
    {
       return [Config]::BuildLibraryIOSHash
+   }
+
+   static [hashtable] GetBuildLibraryRenameMap()
+   {
+      return [Config]::BuildLibraryRenameMap
    }
 
    [string] GetRootDir()
@@ -793,6 +804,17 @@ class Config
 
             # Move to build target directory
             Set-Location -Path $srcDir
+
+            # for iOS only
+            # rename *.cpp file to avoid duplicate *.o file name
+            if ($platform -eq "ios")
+            {
+               $source = Join-Path $srcDir "dlib"
+               $destination = Join-Path $srcDir "dlib_ios"
+               $map = [Config]::GetBuildLibraryRenameMap()
+               $prefix = $map[$key]
+               Rename-Files $source $destination $prefix
+            }
 
             $arc = $config.GetArchitectureName()
             Write-Host "Build $key [$arc] for $target" -ForegroundColor Green
@@ -1632,4 +1654,24 @@ function CopyToArtifact()
 
    Write-Host "Copy ${libraryName} to ${output}" -ForegroundColor Green
    Copy-Item ${binary} ${output}
+}
+
+function Rename-Files()
+{
+   Param([string]$Source, [string]$Destination, [string]$Prefix)
+
+   if (Test-Path "${Destination}")
+   {
+      Remove-Item -Path "${Destination}" -Recurse -Force
+   }
+
+   Copy-Item "${Source}" "${Destination}" -Recurse -Force
+   $files = Get-ChildItem -Path "${Destination}" -Recurse -Include "*.cpp"
+   foreach ($file in $files)
+   {
+      $filename = Split-Path $file -Leaf
+      $directory = Split-Path $file -Parent
+      $newfile = Join-Path $directory "${Prefix}${filename}"
+      Move-Item "${file}" "${newfile}" -force
+   }
 }
