@@ -1667,6 +1667,46 @@ function Rename-Files()
 
    Copy-Item "${Source}" "${Destination}" -Recurse -Force
    $files = Get-ChildItem -Path "${Destination}" -Recurse -Include "*.cpp"
+   $filenames = $files | Split-Path  -Leaf | Sort-Object | Get-Unique
+
+   $sanitizedFiles = @{}
+   foreach ($file in $files)
+   {
+      $filename = Split-Path $file -Leaf
+      $fullname = $file.FullName
+      $d = Split-Path $fullname -Parent
+      $tmp = $d.Replace($Destination, '').TrimStart('\').TrimStart('/')
+      if ($global:IsWindows)
+      {
+          $structures = $tmp.Split('\')
+      }
+      else
+      {
+          $structures = $tmp.Split('/')
+      }
+      $directory = Split-Path $fullname -Parent
+
+      if ($structures.Length -eq 0)
+      {
+          $newPrefix = ""
+      }
+      else
+      {
+          $newPrefix = [System.String]::Join("_", $structures)
+      }
+
+      $new = Join-Path $directory "${newPrefix}_${filename}"
+      $sanitizedFiles.Add($file, $new)
+   }
+
+   foreach ($key in $sanitizedFiles.Keys)
+   {
+      $src = $key
+      $dst = $sanitizedFiles[$key]
+      Move-Item "${src}" "${dst}" -force
+   }
+
+   $files = Get-ChildItem -Path "${Destination}" -Recurse -Include "*.cpp"
    foreach ($file in $files)
    {
       $filename = Split-Path $file -Leaf

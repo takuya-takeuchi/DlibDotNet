@@ -73,15 +73,18 @@ set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
 
 # create config file
-configure_file(
-    ${PROJECT_SOURCE_DIR}/dlib/config.h.in
-    ${PROJECT_SOURCE_DIR}/dlib/config.h
-    @ONLY)
-
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/dlib_ios/config.h.in
+        ${PROJECT_SOURCE_DIR}/dlib_ios/config.h
+        @ONLY)
     FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib_ios/*.h)
     FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib_ios/*.cpp)
 else()
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/dlib/config.h.in
+        ${PROJECT_SOURCE_DIR}/dlib/config.h
+        @ONLY)
     FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
     FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
 endif()
