@@ -12,14 +12,14 @@
 #define VERSION_PATCH "@VERSION_PATCH@"
 #define VERSION_DATE  "@VERSION_DATE@"
 
-DLLEXPORT std::string* get_version()
+DLLEXPORT std::string* dnn_get_version()
 {
     std::stringstream ss;
     ss << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << "." << VERSION_DATE;
     return new std::string(ss.str());
 }
 
-DLLEXPORT bool is_support_gui()
+DLLEXPORT bool dnn_is_support_gui()
 {
 #ifdef DLIB_NO_GUI_SUPPORT
     return false;
@@ -28,7 +28,7 @@ DLLEXPORT bool is_support_gui()
 #endif
 }
 
-DLLEXPORT bool is_support_cuda()
+DLLEXPORT bool dnn_is_support_cuda()
 {
 #ifdef DLIB_USE_CUDA
     return true;

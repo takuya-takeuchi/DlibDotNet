@@ -8,14 +8,14 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
         
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(get_version))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dnn_get_version();
 
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(is_support_gui))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_is_support_gui();
 
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(is_support_cuda))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_is_support_cuda();
 
