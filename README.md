@@ -1,8 +1,6 @@
-# ![Alt text](nuget/ml48.png "DlibDotNet") DlibDotNet [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+![DlibDotNet](https://socialify.git.ci/takuya-takeuchi/DlibDotNet/image?description=1&font=Raleway&language=1&logo=https%3A%2F%2Fgithub.com%2Ftakuya-takeuchi%2FDlibDotNet%2Fraw%2Fmaster%2Fnuget%2Fml128.png&owner=1&pattern=Circuit%20Board&theme=Light)
 
-Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
-
-#### DlibDotNet
+[![GitHub Stars](https://img.shields.io/github/stars/takuya-takeuchi/dlibdotnet?label=STARS&color=%23DFB317&style=for-the-badge)]() [![GitHub Forks](https://img.shields.io/github/forks/takuya-takeuchi/dlibdotnet?label=FORKS&color=%236ECA00&style=for-the-badge)]() [![GitHub Issues](https://img.shields.io/github/issues/takuya-takeuchi/dlibdotnet?label=ISSUES&color=%23007EC6&style=for-the-badge)]() [![GitHub Lisence](https://img.shields.io/github/license/takuya-takeuchi/dlibdotnet?label=LISENCE&color=%239109BD&style=for-the-badge)]()
 
 |Package|OS|x86|x64|ARM|ARM64|Nuget|
 |---|---|---|---|---|---|---|
@@ -30,9 +28,9 @@ Dlib wrapper written in C++ and C# for Windows, MacOS and Linux
 |DlibDotNet for Intel MKL|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
 ||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
 ||OSX|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
-|DlibDotNet for UWP|Windows|✓|✓|✓|✓|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.UWP.svg)](https://www.nuget.org/packages/DlibDotNet.UWP)|
-||Linux|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.UWP.svg)](https://www.nuget.org/packages/DlibDotNet.UWP)|
-||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.UWP.svg)](https://www.nuget.org/packages/DlibDotNet.UWP)|
+|DlibDotNet (Xamarin)|UWP|✓|✓|✓|✓|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Xamarin.svg)](https://www.nuget.org/packages/DlibDotNet.Xamarin)|
+||Android|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Xamarin.svg)](https://www.nuget.org/packages/DlibDotNet.Xamarin)|
+||iOS|-|✓|-|✓|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.Xamarin.svg)](https://www.nuget.org/packages/DlibDotNet.Xamarin)|
 |DlibDotNet for ARM|Windows|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-ARM.svg)](https://www.nuget.org/packages/DlibDotNet-ARM)|
 ||Linux|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-ARM.svg)](https://www.nuget.org/packages/DlibDotNet-ARM)|
 ||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet-ARM.svg)](https://www.nuget.org/packages/DlibDotNet-ARM)|

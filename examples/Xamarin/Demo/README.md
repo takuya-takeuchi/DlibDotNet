@@ -25,5 +25,5 @@ And extract them and copy to examples/Xamarin/Demo/Demo/data.
 You can build and run from `Visual Studio for Mac`
 You can choose a image file to detect objects.
 
-<img src="images/android.png" width="300" /> <img src="images/ios.png" width="300" />
+<img src="images/ios.png" width="300" />
 <img src="images/uwp.png" width="600" />
