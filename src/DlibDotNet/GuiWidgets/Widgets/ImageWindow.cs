@@ -13,21 +13,30 @@ namespace DlibDotNet
 
         public ImageWindow()
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.NativePtr = NativeMethods.image_window_new();
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public ImageWindow(Array2DBase image)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
 
             image.ThrowIfDisposed(nameof(image));
 
             this.NativePtr = NativeMethods.image_window_new_array2d1(image.ImageType.ToNativeArray2DType(), image.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public ImageWindow(Array2DBase image, string title)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
             if (title == null)
@@ -37,10 +46,14 @@ namespace DlibDotNet
 
             var str = Dlib.Encoding.GetBytes(title);
             this.NativePtr = NativeMethods.image_window_new_array2d2(image.ImageType.ToNativeArray2DType(), image.NativePtr, str, str.Length);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public ImageWindow(MatrixBase matrix)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
 
@@ -48,10 +61,14 @@ namespace DlibDotNet
 
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
             this.NativePtr = NativeMethods.image_window_new_matrix1(type, matrix.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public ImageWindow(MatrixBase matrix, string title)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
             if (title == null)
@@ -62,10 +79,14 @@ namespace DlibDotNet
             var type = matrix.MatrixElementType.ToNativeMatrixElementType();
             var str = Dlib.Encoding.GetBytes(title);
             this.NativePtr = NativeMethods.image_window_new_matrix2(type, matrix.NativePtr, str, str.Length);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public ImageWindow(MatrixOp matrix)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
 
@@ -89,10 +110,14 @@ namespace DlibDotNet
             }
 
             this.NativePtr = ret;
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public ImageWindow(MatrixOp matrix, string title)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (matrix == null)
                 throw new ArgumentNullException(nameof(matrix));
             if (title == null)
@@ -120,11 +145,11 @@ namespace DlibDotNet
             }
 
             this.NativePtr = ret;
+#else
+            throw new NotSupportedException();
+#endif
         }
 
-        #endregion
-
-        #region Properties
         #endregion
 
         #region Methods
@@ -138,10 +163,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.AddOverlay(rect, new RgbPixel
             {
                 Red = 255
             });
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -152,10 +181,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, byte color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -166,10 +199,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, ushort color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -180,10 +217,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, uint color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -194,10 +235,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, sbyte color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -208,10 +253,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, short color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -222,10 +271,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, int color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -236,10 +289,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, float color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Float, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -250,10 +307,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, double color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Double, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -264,10 +325,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, RgbPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -278,10 +343,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, RgbAlphaPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -292,10 +361,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, HsiPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -306,10 +379,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(Rectangle rect, LabPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -318,14 +395,19 @@ namespace DlibDotNet
 
         public void AddOverlay(IEnumerable<Rectangle> rects)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.AddOverlay(rects, new RgbPixel
             {
                 Red = 255
             });
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, byte color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -333,10 +415,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, ushort color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -344,10 +430,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, uint color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -355,10 +445,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, sbyte color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -366,10 +460,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int8, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, short color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -377,10 +475,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int16, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, int color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -388,10 +490,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Int32, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, float color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -399,10 +505,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Float, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, double color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -410,10 +520,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.Double, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, RgbPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -421,10 +535,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, RgbAlphaPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -432,10 +550,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, HsiPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -443,10 +565,14 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(IEnumerable<Rectangle> rects, LabPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (rects == null)
@@ -454,6 +580,9 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<Rectangle>(rects))
                 NativeMethods.image_window_add_overlay2(this.NativePtr, vector.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -467,10 +596,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.AddOverlay(rect, new RgbPixel
             {
                 Red = 255
             });
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -481,10 +614,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, byte color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt8, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -495,10 +632,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, ushort color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -509,10 +650,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, uint color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -523,10 +668,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, sbyte color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -537,10 +686,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, short color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -551,10 +704,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, int color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -565,10 +722,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, float color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Float, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -579,10 +740,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, double color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Double, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -593,10 +758,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, RgbPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -607,10 +776,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, RgbAlphaPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -621,10 +794,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, HsiPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         /// <summary>
@@ -635,10 +812,14 @@ namespace DlibDotNet
         /// <exception cref="ObjectDisposedException"><see cref="ImageWindow"/> is disposed.</exception>
         public void AddOverlay(DRectangle rect, LabPixel color)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             using (var native = rect.ToNative())
                 NativeMethods.image_window_add_overlay3(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.LabPixel, ref color);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -647,15 +828,20 @@ namespace DlibDotNet
 
         public void AddOverlay(Rectangle rect, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.AddOverlay(rect, new RgbPixel
             {
                 Red = 255
             },
             str);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, sbyte color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -664,10 +850,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int8, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, short color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -676,10 +866,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int16, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, int color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -688,10 +882,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Int32, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, byte color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -700,10 +898,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt8, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, ushort color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -712,10 +914,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt16, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, uint color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -724,10 +930,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.UInt32, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, float color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -736,10 +946,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Float, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, double color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -748,10 +962,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.Double, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, RgbPixel color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -760,10 +978,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbPixel, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, RgbAlphaPixel color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -772,10 +994,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.RgbAlphaPixel, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, HsiPixel color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -784,10 +1010,14 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.HsiPixel, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void AddOverlay(Rectangle rect, LabPixel color, string str)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -796,6 +1026,9 @@ namespace DlibDotNet
             using (var native = rect.ToNative())
             using (var pStr = new StdString(str))
                 NativeMethods.image_window_add_overlay6(this.NativePtr, native.NativePtr, NativeMethods.Array2DType.LabPixel, ref color, pStr.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -804,6 +1037,7 @@ namespace DlibDotNet
 
         public void AddOverlay(OverlayLine line)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (line == null)
@@ -812,6 +1046,9 @@ namespace DlibDotNet
             line.ThrowIfDisposed();
 
             NativeMethods.image_window_add_overlay4(this.NativePtr, line.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -820,6 +1057,7 @@ namespace DlibDotNet
 
         public void AddOverlay(IEnumerable<OverlayLine> lines)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (lines == null)
@@ -827,43 +1065,63 @@ namespace DlibDotNet
 
             using (var vector = new StdVector<OverlayLine>(lines))
                 NativeMethods.image_window_add_overlay5(this.NativePtr, vector.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
 
         public void ClearOverlay()
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
             NativeMethods.image_window_clear_overlay(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public bool GetNextDoubleClick(out Point p)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             var ret = NativeMethods.image_window_get_next_double_click(this.NativePtr, out var ptr);
             p = new Point(ptr);
             return ret;
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public bool GetNextDoubleClick(out Point p, out uint mouseButton)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             var ret = NativeMethods.image_window_get_next_double_click2(this.NativePtr, out var ptr, out mouseButton);
             p = new Point(ptr);
             return ret;
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public bool IsClosed()
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             return NativeMethods.image_window_is_closed(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void SetImage(Array2DBase image)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (image == null)
@@ -877,10 +1135,14 @@ namespace DlibDotNet
                 case NativeMethods.ErrorType.Array2DTypeTypeNotSupport:
                     throw new ArgumentException($"{image.ImageType} is not supported.");
             }
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void SetImage(MatrixBase matrix)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (matrix == null)
@@ -894,10 +1156,14 @@ namespace DlibDotNet
                 case NativeMethods.ErrorType.MatrixElementTypeNotSupport:
                     throw new ArgumentException($"{matrix.MatrixElementType} is not supported.");
             }
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public void SetImage(MatrixOp matrix)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this.ThrowIfDisposed();
 
             if (matrix == null)
@@ -931,6 +1197,9 @@ namespace DlibDotNet
                 case NativeMethods.ErrorType.MatrixOpTypeNotSupport:
                     throw new ArgumentException($"{matrix.ElementType} is not supported.");
             }
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #region Overrides
@@ -940,12 +1209,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.image_window_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

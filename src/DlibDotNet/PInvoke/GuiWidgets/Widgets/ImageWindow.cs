@@ -7,7 +7,8 @@ namespace DlibDotNet
 
     internal sealed partial class NativeMethods
     {
-
+        
+#if !DLIB_NO_GUI_SUPPORT
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void image_window_delete(IntPtr ptr);
 
@@ -247,6 +248,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType image_window_set_image_matrix(IntPtr window, MatrixElementType type, IntPtr matrix);
+#endif
 
     }
 

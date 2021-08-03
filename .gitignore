@@ -322,3 +322,5 @@ src/DlibDotNet.Native.Dnn/build*
 nuget/*.nupkg
 
 work
+
+.DS_Store

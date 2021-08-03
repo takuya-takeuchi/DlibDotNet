@@ -19,7 +19,7 @@ namespace DlibDotNet.Dnn
         /// <returns><code>true</code> if CUDA driver is installed and CUDA system returns valid value; otherwise, <code>false</code>.</returns>
         public static bool TryGetDriverVersion(out int version)
         {
-            return NativeMethods.dnn_cuda_cudaDriverGetVersion(out version);
+            return NativeMethods.cuda_dnn_cudaDriverGetVersion(out version);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace DlibDotNet.Dnn
         /// <returns><code>true</code> if CUDA runtime is installed and CUDA system returns valid value; otherwise, <code>false</code>.</returns>
         public static bool TryGetRuntimeVersion(out int version)
         {
-            return NativeMethods.dnn_cuda_cudaRuntimeGetVersion(out version);
+            return NativeMethods.cuda_dnn_cudaRuntimeGetVersion(out version);
         }
 
         #region Helpers
@@ -47,11 +47,11 @@ namespace DlibDotNet.Dnn
 
             tmp = -(tmp + (int)NativeMethods.ErrorType.CudaError);
 
-            NativeMethods.dnn_cuda_cudaDriverGetVersion(out var driverVersion);
-            NativeMethods.dnn_cuda_cudaRuntimeGetVersion(out var runtimeVersion);
-            var namePtr = NativeMethods.dnn_cuda_cudaGetErrorName(tmp);
+            NativeMethods.cuda_dnn_cudaDriverGetVersion(out var driverVersion);
+            NativeMethods.cuda_dnn_cudaRuntimeGetVersion(out var runtimeVersion);
+            var namePtr = NativeMethods.cuda_dnn_cudaGetErrorName(tmp);
             var name = namePtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(namePtr) : null;
-            var strPtr = NativeMethods.dnn_cuda_cudaGetErrorString(tmp);
+            var strPtr = NativeMethods.cuda_dnn_cudaGetErrorString(tmp);
             var message = strPtr != IntPtr.Zero ? Marshal.PtrToStringAnsi(strPtr) : null;
             throw new CudaException(tmp, NativeMethods.NativeDnnLibrary, driverVersion, runtimeVersion, name, message);
         }

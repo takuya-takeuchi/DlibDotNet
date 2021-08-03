@@ -13,6 +13,7 @@ namespace DlibDotNet
 
         public static void DrawSurfPoints(ImageWindow window, IEnumerable<SurfPoint> surfPoints)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (window == null)
                 throw new ArgumentNullException(nameof(window));
             if (surfPoints == null)
@@ -23,6 +24,9 @@ namespace DlibDotNet
 
             using (var points = new StdVector<SurfPoint>(surfPoints))
                 NativeMethods.draw_surf_points(window.NativePtr, points.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

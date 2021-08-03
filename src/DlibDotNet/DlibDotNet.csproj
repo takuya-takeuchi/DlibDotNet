@@ -25,11 +25,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG;$(CustomDefinition)</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
+    <DefineConstants>$(DefineConstants);$(CustomDefinition)</DefineConstants>
     <DocumentationFile>docs\DlibDotNet.xml</DocumentationFile>
   </PropertyGroup>
 

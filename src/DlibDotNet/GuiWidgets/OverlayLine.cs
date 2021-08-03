@@ -10,9 +10,6 @@ namespace DlibDotNet
         public sealed class OverlayLine : DlibObject
         {
 
-            #region Events
-            #endregion
-
             #region Fields
 
             private RgbAlphaPixel _Color;
@@ -22,22 +19,34 @@ namespace DlibDotNet
             #region Constructors
 
             public OverlayLine()
-                : this(NativeMethods.image_window_overlay_line_new())
             {
+#if !DLIB_NO_GUI_SUPPORT
+                this.NativePtr = NativeMethods.image_window_overlay_line_new();
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public OverlayLine(Point p1, Point p2, RgbPixel pixel)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 using(var native1 = p1.ToNative())
                 using (var native2 = p2.ToNative())
                     this.NativePtr = NativeMethods.image_window_overlay_line_new_rgb(native1.NativePtr, native2.NativePtr, pixel);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             public OverlayLine(Point p1, Point p2, BgrPixel pixel)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 using (var native1 = p1.ToNative())
                 using (var native2 = p2.ToNative())
                     this.NativePtr = NativeMethods.image_window_overlay_line_new_bgr(native1.NativePtr, native2.NativePtr, pixel);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             //public OverlayLine(Point p1, Point p2, RgbAlphaPixel color)
@@ -53,10 +62,14 @@ namespace DlibDotNet
 
             internal OverlayLine(IntPtr ptr)
             {
+#if !DLIB_NO_GUI_SUPPORT
                 if (ptr == IntPtr.Zero)
                     throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
 
                 this.NativePtr = ptr;
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             #endregion
@@ -67,8 +80,12 @@ namespace DlibDotNet
             {
                 get
                 {
+#if !DLIB_NO_GUI_SUPPORT
                     NativeMethods.image_window_overlay_line_color(this.NativePtr, ref this._Color);
                     return this._Color;
+#else
+                    throw new NotSupportedException();
+#endif
                 }
             }
 
@@ -76,8 +93,12 @@ namespace DlibDotNet
             {
                 get
                 {
+#if !DLIB_NO_GUI_SUPPORT
                     NativeMethods.image_window_overlay_line_p1(this.NativePtr, out var point);
                     return new Point(point);
+#else
+                    throw new NotSupportedException();
+#endif
                 }
             }
 
@@ -85,8 +106,12 @@ namespace DlibDotNet
             {
                 get
                 {
+#if !DLIB_NO_GUI_SUPPORT
                     NativeMethods.image_window_overlay_line_p2(this.NativePtr, out var point);
                     return new Point(point);
+#else
+                    throw new NotSupportedException();
+#endif
                 }
             }
 
@@ -101,12 +126,16 @@ namespace DlibDotNet
             /// </summary>
             protected override void DisposeUnmanaged()
             {
+#if !DLIB_NO_GUI_SUPPORT
                 base.DisposeUnmanaged();
 
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
                 NativeMethods.image_window_overlay_line_delete(this.NativePtr);
+#else
+                throw new NotSupportedException();
+#endif
             }
 
             #endregion

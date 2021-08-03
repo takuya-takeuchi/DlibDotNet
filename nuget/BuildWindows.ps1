@@ -3,16 +3,14 @@ Param()
 # import class and function
 $ScriptPath = $PSScriptRoot
 $DlibDotNetRoot = Split-Path $ScriptPath -Parent
-$NugetPath = Join-Path $DlibDotNetRoot "nuget" | `
-             Join-Path -ChildPath "BuildUtils.ps1"
-import-module $NugetPath -function *
+$ScriptPath = Join-Path $DlibDotNetRoot "nuget" | `
+              Join-Path -ChildPath "BuildUtils.ps1"
+import-module $ScriptPath -function *
 
 $OperatingSystem="win"
 
 # Store current directory
 $Current = Get-Location
-$DlibDotNetRoot = (Split-Path (Get-Location) -Parent)
-$DlibDotNetSourceRoot = Join-Path $DlibDotNetRoot src
 
 $BuildSourceHash = [Config]::GetBinaryLibraryWindowsHash()
 
@@ -28,72 +26,29 @@ if ($IntelMKLDir -And !(Test-Path $IntelMKLDir))
 }
 
 $BuildTargets = @()
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "cpu";  Architecture = 32; RID = "$OperatingSystem-x86";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 0   }
-$BuildTargets += New-Object PSObject -Property @{Target = "mkl";  Architecture = 32; RID = "$OperatingSystem-x86";   CUDA = 0   }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 90  }
-#$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 91  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 92  }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 100 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 101 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 102 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 110 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 111 }
-$BuildTargets += New-Object PSObject -Property @{Target = "cuda"; Architecture = 64; RID = "$OperatingSystem-x64";   CUDA = 112 }
+$BuildTargets += [BuildTarget]::new("desktop", "cpu",  64, "$OperatingSystem-x64", "", 0                 )
+$BuildTargets += [BuildTarget]::new("desktop", "cpu",  32, "$OperatingSystem-x86", "", 0                 )
+$BuildTargets += [BuildTarget]::new("desktop", "mkl",  64, "$OperatingSystem-x64", "", "${IntelMKLDir}" )
+$BuildTargets += [BuildTarget]::new("desktop", "mkl",  32, "$OperatingSystem-x86", "", "${IntelMKLDir}" )
+# $BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 90                )
+# $BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 91                )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 92                )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 100               )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 101               )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 102               )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 110               )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 111               )
+$BuildTargets += [BuildTarget]::new("desktop", "cuda", 64, "$OperatingSystem-x64", "", 112               )
 
 foreach ($BuildTarget in $BuildTargets)
 {
-   $target = $BuildTarget.Target
-   $architecture = $BuildTarget.Architecture
-   $rid = $BuildTarget.RID
-   $cudaVersion = $BuildTarget.CUDA
-
-   if ($target -eq "cpu")
+   $BuildTarget.OperatingSystem = ${OperatingSystem}
+   
+   $ret = [Config]::Build($DlibDotNetRoot, $False, $BuildSourceHash, $BuildTarget)
+   if ($ret -eq $False)
    {
-      $option = ""
-   }
-   elseif ($target -eq "mkl")
-   {
-      $option = $IntelMKLDir
-   }
-   else
-   {
-      $option = $cudaVersion
-   }
-
-   $Config = [Config]::new($DlibDotNetRoot, "Release", $target, $architecture, "desktop", $option)
-   $libraryDir = Join-Path "artifacts" $Config.GetArtifactDirectoryName()
-   $build = $Config.GetBuildDirectoryName($OperatingSystem)
-
-   foreach ($key in $BuildSourceHash.keys)
-   {
-      $srcDir = Join-Path $DlibDotNetSourceRoot $key
-
-      # Move to build target directory
-      Set-Location -Path $srcDir
-
-      $arc = $Config.GetArchitectureName()
-      Write-Host "Build $key [$arc] for $target" -ForegroundColor Green
-      Build -Config $Config
-
-      if ($lastexitcode -ne 0)
-      {
-         Set-Location -Path $Current
-         exit -1
-      }
-   }
-
-   # Copy output binary
-   foreach ($key in $BuildSourceHash.keys)
-   {
-      $srcDir = Join-Path $DlibDotNetSourceRoot $key
-      $srcDir = $Config.GetStoreDriectory($srcDir)
-
-      $dll = $BuildSourceHash[$key]
-      $dstDir = Join-Path $Current $libraryDir
-
-      CopyToArtifact -configuration "Release" -srcDir $srcDir -build $build -libraryName $dll -dstDir $dstDir -rid $rid
+      Set-Location -Path $Current
+      exit -1
    }
 }
 

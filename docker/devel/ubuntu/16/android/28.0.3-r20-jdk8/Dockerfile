@@ -14,13 +14,16 @@ ENV ANDROID_SDK_VERSION_BUILDTOOLS 28.0.3
 ENV ANDROID_NDK_URL https://dl.google.com/android/repository/android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip
 ENV OPENJDK_MAJOR_VERSION 8
 
-# install openjdk8
-RUN apt-get update && apt-get install -y --no-install-recommends \
-	curl \
-	tar \
-	ca-certificates \
+# install package to build
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libx11-dev \
+    libgtk2.0-dev \
+    pkg-config \
 	openjdk-8-jdk \
 	ca-certificates-java
+    
+# install openjdk8
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 RUN export JAVA_HOME
 
@@ -47,8 +50,9 @@ RUN cd /opt \
  &&	mv android-ndk-${ANDROID_NDK_VERSION} android-ndk-linux
 
 # install latest cmake
-ENV CMAKE_FILE cmake-3.14.5-Linux-x86_64.tar.gz
-ENV CMAKE_URL https://github.com/Kitware/CMake/releases/download/v3.14.5/${CMAKE_FILE}
+ENV CMAKE_VERSION 3.14.5
+ENV CMAKE_FILE cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz
+ENV CMAKE_URL https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_FILE}
 ENV CMAKE_URL_FILE ${CMAKE_FILE}
 RUN wget ${CMAKE_URL} \
  && tar -xzf ${CMAKE_FILE} \
@@ -57,18 +61,34 @@ RUN wget ${CMAKE_URL} \
  && ln -s /opt/cmake/bin/* /usr/bin
 
 # install latest ninja
+ENV NINJA_VERSION 1.9.0
 ENV NINJA_FILE ninja-linux.zip
-ENV NINJA_URL https://github.com/ninja-build/ninja/releases/download/v1.9.0/${NINJA_FILE}
-RUN wget https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip \
+ENV NINJA_URL https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/${NINJA_FILE}
+RUN wget https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/ninja-linux.zip \
  && unzip ${NINJA_FILE} \
  && rm ${NINJA_FILE} \
  && mkdir -p /opt/ninja \
  && mv ninja /opt/ninja \
  && ln -s /opt/ninja/* /usr/bin
 
-# Install powershell core
+# Register Microsoft key and feed
+RUN apt-get update && apt-get install -y \
+    wget \
+    apt-transport-https
 RUN wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y \
     powershell \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# install vulkan sdk
+RUN apt-get update && apt install -y wget apt-transport-https
+
+ENV VULKAN_SDK_VERSION 1.2.162.0
+WORKDIR /usr/share/vulkan
+RUN wget https://sdk.lunarg.com/sdk/download/${VULKAN_SDK_VERSION}/linux/vulkansdk-linux-x86_64-${VULKAN_SDK_VERSION}.tar.gz?Human=true -O vulkansdk-linux-x86_64-${VULKAN_SDK_VERSION}.tar.gz
+RUN tar -xf vulkansdk-linux-x86_64-${VULKAN_SDK_VERSION}.tar.gz
+RUN rm vulkansdk-linux-x86_64-${VULKAN_SDK_VERSION}.tar.gz
+ENV VULKAN_SDK /usr/share/vulkan/${VULKAN_SDK_VERSION}/x86_64
+
+WORKDIR /

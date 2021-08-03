@@ -11,13 +11,18 @@ namespace DlibDotNet
 
         public static void MessageBox(string title, string message)
         {
+#if !DLIB_NO_GUI_SUPPORT
             var t = Encoding.GetBytes(title ?? "");
             var m = Encoding.GetBytes(message ?? "");
             NativeMethods.message_box(t, t.Length, m, m.Length);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public static void SaveFileBox(StringActionMediator mediator)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (mediator == null)
                 throw new ArgumentNullException(nameof(mediator));
 
@@ -25,6 +30,9 @@ namespace DlibDotNet
 
             NativeMethods.save_file_box(mediator.NativePtr);
             GC.KeepAlive(mediator);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

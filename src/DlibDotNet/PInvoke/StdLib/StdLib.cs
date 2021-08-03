@@ -74,9 +74,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_int32_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int stdvector_int32_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_int32_delete(IntPtr vector);
 
         #endregion
@@ -97,9 +94,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_uint32_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int stdvector_uint32_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_uint32_delete(IntPtr vector);
@@ -124,9 +118,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_long_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern long stdvector_long_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_long_delete(IntPtr vector);
 
         #endregion
@@ -147,9 +138,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_float_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern float stdvector_float_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_float_delete(IntPtr vector);
@@ -174,9 +162,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_double_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern double stdvector_double_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_double_delete(IntPtr vector);
 
         #endregion
@@ -197,9 +182,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_full_object_detection_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_full_object_detection_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_full_object_detection_delete(IntPtr vector);
@@ -227,9 +209,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_rect_detection_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_rect_detection_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_rect_detection_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -238,6 +217,8 @@ namespace DlibDotNet
         #endregion
 
         #region image_window_overlay_line
+
+#if !DLIB_NO_GUI_SUPPORT
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_image_window_overlay_line_new1();
@@ -255,13 +236,12 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_image_window_overlay_line_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_image_window_overlay_line_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_window_overlay_line_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_window_overlay_line_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 
@@ -281,9 +261,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_image_dataset_metadata_image_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_image_dataset_metadata_image_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_dataset_metadata_image_delete(IntPtr vector);
@@ -311,9 +288,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_image_dataset_metadata_box_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_image_dataset_metadata_box_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_dataset_metadata_box_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -337,9 +311,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_matrix_getPointer(MatrixElementType matrixElementType, IntPtr vector, int templateRows, int templateColumns);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_matrix_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_matrix_delete(MatrixElementType matrixElementType, IntPtr vector, int templateRows, int templateColumns);
@@ -367,9 +338,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_mmod_rect_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_mmod_rect_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_mmod_rect_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -378,6 +346,8 @@ namespace DlibDotNet
         #endregion
 
         #region surf_point
+
+#if !DLIB_NO_GUI_SUPPORT
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_surf_point_new1();
@@ -395,13 +365,12 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_surf_point_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_surf_point_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_surf_point_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_surf_point_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 
@@ -421,9 +390,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_sample_pair_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_sample_pair_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_sample_pair_delete(IntPtr vector);
@@ -451,9 +417,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_chip_details_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_chip_details_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_chip_details_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -479,9 +442,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_string_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_string_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_string_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -490,6 +450,8 @@ namespace DlibDotNet
         #endregion
 
         #region perspective_window_overlay_dot
+
+#if !DLIB_NO_GUI_SUPPORT
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_perspective_window_overlay_dot_new1();
@@ -507,13 +469,12 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_perspective_window_overlay_dot_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_perspective_window_overlay_dot_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_perspective_window_overlay_dot_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_perspective_window_overlay_dot_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 
@@ -533,9 +494,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_rectangle_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_rectangle_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_rectangle_delete(IntPtr vector);
@@ -563,9 +521,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_point_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_point_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_point_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -589,9 +544,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_dpoint_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_dpoint_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_dpoint_delete(IntPtr vector);
@@ -619,9 +571,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_vector_double_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_vector_double_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_vector_double_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -645,9 +594,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_stdvector_double_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_stdvector_double_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_stdvector_double_delete(IntPtr vector);
@@ -675,9 +621,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_stdvector_mmod_rect_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_stdvector_mmod_rect_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_stdvector_mmod_rect_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -701,9 +644,6 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_stdvector_full_object_detection_getPointer(IntPtr vector);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_stdvector_full_object_detection_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_stdvector_full_object_detection_delete(IntPtr vector);
@@ -731,9 +671,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_stdvector_rectangle_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_stdvector_rectangle_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_stdvector_rectangle_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -759,9 +696,6 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_mmod_options_detector_window_details_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_mmod_options_detector_window_details_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_mmod_options_detector_window_details_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
@@ -770,6 +704,8 @@ namespace DlibDotNet
         #endregion
 
         #region image_display::overlay_rect
+
+#if !DLIB_NO_GUI_SUPPORT
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr stdvector_image_display_overlay_rect_new1();
@@ -787,13 +723,12 @@ namespace DlibDotNet
         public static extern IntPtr stdvector_image_display_overlay_rect_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_image_display_overlay_rect_at(IntPtr vector, int index);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_display_overlay_rect_delete(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void stdvector_image_display_overlay_rect_copy(IntPtr vector, IntPtr[] dst);
+
+#endif
 
         #endregion
 

@@ -44,6 +44,7 @@ namespace DlibDotNet
         protected CustomDrawableWindow(bool resizable = true,
                                        bool undecorated = false)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this._Constructor = new DelegateHandler<OnConstructorDelegate>(this.Constructor);
             this._Destructor = new DelegateHandler<OnDestructorDelegate>(this.Destructor);
             this._OnWindowResized = new DelegateHandler<OnWindowResizedDelegate>(this.WindowResized);
@@ -55,6 +56,9 @@ namespace DlibDotNet
                                                                       this._Destructor.Handle,
                                                                       this._OnWindowResized.Handle,
                                                                       this._OnKeyDown.Handle);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -89,12 +93,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.custom_drawable_window_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
