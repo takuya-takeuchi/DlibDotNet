@@ -1,1 +1,3 @@
+#ifndef DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT
 #include "net2.h"
+#endif

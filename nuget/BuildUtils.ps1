@@ -127,31 +127,36 @@ class Config
    static $BuildLibraryWindowsHash =
    @{
       "DlibDotNet.Native"     = "DlibDotNetNative.dll";
-      "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll"
+      "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll";
+      "DlibDotNet.Native.Lite" = "DlibDotNetNativeLite.dll";
    }
 
    static $BuildLibraryLinuxHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.so";
-      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so"
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so";
+      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.so";
    }
 
    static $BuildLibraryOSXHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.dylib";
-      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib"
+      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib";
+      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.dylib";
    }
 
    static $BuildLibraryIOSHash =
    @{
-      "DlibDotNet.Native"     = "libDlibDotNetNative.a";
-      "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a"
+      # "DlibDotNet.Native"     = "libDlibDotNetNative.a";
+      # "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a";
+      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.a";
    }
 
    static $BuildLibraryRenameMap =
    @{
       "DlibDotNet.Native"     = "ddnnative_";
-      "DlibDotNet.Native.Dnn" = "ddnnative.dnn_"
+      "DlibDotNet.Native.Dnn" = "ddnnative.dnn_";
+      "DlibDotNet.Native.Lite" = "ddnnative.lite_";
    }
 
    [string]   $_Root

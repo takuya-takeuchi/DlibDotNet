@@ -44,9 +44,17 @@ DLLEXPORT bool __CLASS__##Registry_contains(const int id)\
 
 #pragma endregion template
 
+#ifndef DLIB_NO_LOSSMETRIC_SUPPORT
 MAKE_REGISTRY_FUNC(LossMetric)
+#endif
+#ifndef DLIB_NO_LOSSMMODSUPPORT
 MAKE_REGISTRY_FUNC(LossMmod)
+#endif
+#ifndef DLIB_NO_LOSSMULTICLASSLOG_SUPPORT
 MAKE_REGISTRY_FUNC(LossMulticlassLog)
+#endif
+#ifndef DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT
 MAKE_REGISTRY_FUNC(LossMulticlassLogPerPixel)
+#endif
 
 #endif

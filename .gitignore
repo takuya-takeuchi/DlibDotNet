@@ -310,6 +310,7 @@ src/DlibDotNet.Native/*.bat
 src/DlibDotNet.Native.Dnn/*.bat
 src/DlibDotNet.Native/build*
 src/DlibDotNet.Native.Dnn/build*
+src/DlibDotNet.Native.Lite/build*
 
 
 # native nuget package
