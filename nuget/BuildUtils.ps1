@@ -128,28 +128,24 @@ class Config
    @{
       "DlibDotNet.Native"     = "DlibDotNetNative.dll";
       "DlibDotNet.Native.Dnn" = "DlibDotNetNativeDnn.dll";
-      "DlibDotNet.Native.Lite" = "DlibDotNetNativeLite.dll";
    }
 
    static $BuildLibraryLinuxHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.so";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.so";
-      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.so";
    }
 
    static $BuildLibraryOSXHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.dylib";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.dylib";
-      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.dylib";
    }
 
    static $BuildLibraryIOSHash =
    @{
       "DlibDotNet.Native"     = "libDlibDotNetNative.a";
       "DlibDotNet.Native.Dnn" = "libDlibDotNetNativeDnn.a";
-      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.a";
    }
 
    static $BuildLibraryRenameMap =
@@ -157,6 +153,21 @@ class Config
       "DlibDotNet.Native"     = "ddnnative_";
       "DlibDotNet.Native.Dnn" = "ddnnative.dnn_";
       "DlibDotNet.Native.Lite" = "ddnnative.lite_";
+   }
+
+   static $BuildLibraryXamarinWindowsHash =
+   @{
+      "DlibDotNet.Native.Lite" = "DlibDotNetNativeLite.dll";
+   }
+
+   static $BuildLibraryXamarinLinuxHash =
+   @{
+      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.so";
+   }
+
+   static $BuildLibraryXamarinIOSHash =
+   @{
+      "DlibDotNet.Native.Lite" = "libDlibDotNetNativeLite.a";
    }
 
    [string]   $_Root
@@ -292,6 +303,21 @@ class Config
    static [hashtable] GetBuildLibraryRenameMap()
    {
       return [Config]::BuildLibraryRenameMap
+   }
+
+   static [hashtable] GetBinaryLibraryXamarinLinuxHash()
+   {
+      return [Config]::BuildLibraryXamarinLinuxHash
+   }
+
+   static [hashtable] GetBinaryLibraryXamarinIOSHash()
+   {
+      return [Config]::BuildLibraryXamarinIOSHash
+   }
+
+   static [hashtable] GetBinaryLibraryXamarinWindowsHash()
+   {
+      return [Config]::BuildLibraryXamarinWindowsHash
    }
 
    [string] GetRootDir()
@@ -887,13 +913,24 @@ class Config
 
             $targets += $binary
 
+            # skip merge binary if contains lite
+            $skipMerge = $False
             foreach ($key in $buildHashTable.keys)
             {
                if ($key.Contains("Lite"))
                {
-                  continue
+                  $merge = $True
+                  break
                }
+            }
 
+            if ($skipMerge -eq $True)
+            {
+               break
+            }
+
+            foreach ($key in $buildHashTable.keys)
+            {
                $srcDir = Join-Path $sourceRoot $key
                $dll = $buildHashTable[$key]
 
