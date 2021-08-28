@@ -37,6 +37,20 @@ foreach ($f in $sources)
     Copy-Item $s $d -Force
 }
 
+# cuda
+$directory = "cuda"
+$sources = @(
+    "cuda.h",
+    "cuda.cpp"
+)
+New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $native $directory | Join-Path -ChildPath $f
+    $d = Join-Path $root   $directory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
+}
+
 # dnn
 $directory = "dnn"
 $sources = @(
@@ -76,4 +90,19 @@ foreach ($f in $deletes)
     {
         Remove-Item "${d}"
     }
+}
+
+# cuda
+$directory = "cuda"
+$newDirectory = "cuda_dnn"
+$sources = @(
+    "cuda.h",
+    "cuda.cpp"
+)
+New-Item (Join-Path $root $newDirectory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $nativeDnn $directory    | Join-Path -ChildPath $f
+    $d = Join-Path $root      $newDirectory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
 }
