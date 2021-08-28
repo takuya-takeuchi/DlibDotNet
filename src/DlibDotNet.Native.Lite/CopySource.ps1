@@ -18,7 +18,7 @@ foreach ($f in $sources)
 {
     $s = Join-Path $native $f
     $d = Join-Path $root $f
-    Copy-Item $s $d
+    Copy-Item $s $d -Force
 }
 
 # matrix
@@ -34,7 +34,7 @@ foreach ($f in $sources)
 {
     $s = Join-Path $native $directory | Join-Path -ChildPath $f
     $d = Join-Path $root   $directory | Join-Path -ChildPath $f
-    Copy-Item $s $d
+    Copy-Item $s $d -Force
 }
 
 # dnn
@@ -42,10 +42,27 @@ $directory = "dnn"
 $sources = @(
     "dnn"
 )
+$deletes = @(
+    "input.cpp",
+    "input.h",
+    "tensor.cpp",
+    "tensor.h",
+    "validation.cpp",
+    "validation.h",
+    # "solvers/adam.cpp",
+    # "solvers/adam.h",
+    "solvers/sgd.cpp",
+    "solvers/sgd.h"
+)
 New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
 foreach ($f in $sources)
 {
     $s = Join-Path $nativeDnn $directory | Join-Path -ChildPath "*"
     $d = Join-Path $root      $directory
-    Copy-Item $s $d -Recurse
+    Copy-Item $s $d -Recurse -Force
+}
+foreach ($f in $deletes)
+{
+    $d = Join-Path $root $directory | Join-Path -ChildPath $f
+    Remove-Item $d
 }

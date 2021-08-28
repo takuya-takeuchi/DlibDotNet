@@ -305,6 +305,7 @@ enum struct optimizer_type : int
 #define ERR_DNN_NOT_SUPPORT_NETWORKTYPE                 -(ERR_DNN_ERROR | 0x00000001)
 #define ERR_DNN_PROPAGATE_EXCEPTION                     -(ERR_DNN_ERROR | 0x00000002)
 #define ERR_DNN_NOT_CLONEABLE_AS_SPECIFIED_NETWORKTYPE  -(ERR_DNN_ERROR | 0x00000003)
+#define ERR_DNN_NOT_SUPPORT                             -(ERR_DNN_ERROR | 0x00000004)
 
 #pragma region macro
 

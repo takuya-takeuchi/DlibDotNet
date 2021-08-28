@@ -15,6 +15,7 @@ message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
 message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
 message("-- CMAKE_C_COMPILER:       ${CMAKE_C_COMPILER}")
 message("-- CMAKE_CXX_COMPILER:     ${CMAKE_CXX_COMPILER}")
+message("-- CMAKE_CXX_COMPILER_ID:  ${CMAKE_CXX_COMPILER_ID}")
 string (REGEX MATCH "\\.el[1-9]" os_version_suffix ${CMAKE_SYSTEM})
 message("-- os_version_suffix:      ${os_version_suffix}")
 message("-- Project: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -26,6 +27,28 @@ set(VERSION_MAJOR 19)
 set(VERSION_MINOR 21)
 set(VERSION_PATCH 0)
 set(VERSION_DATE 20210302)
+
+option(DLIB_NOT_SUPPORT_DNN_TRAINING "Disable training functions for dnn" OFF)
+option(DLIB_NO_LOSSMETRIC_SUPPORT "Disable loss metric" OFF)
+option(DLIB_NO_LOSSMMODSUPPORT "Disable loss mmod" OFF)
+option(DLIB_NO_LOSSMULTICLASSLOG_SUPPORT "Disable loss multiclass log" OFF)
+option(DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT "Disable loss multiclass log per pixe;" OFF)
+
+if(DLIB_NOT_SUPPORT_DNN_TRAINING)
+  add_definitions(-DDLIB_NOT_SUPPORT_DNN_TRAINING)
+endif()
+if(DLIB_NO_LOSSMETRIC_SUPPORT)
+  add_definitions(-DDLIB_NO_LOSSMETRIC_SUPPORT)
+endif()
+if(DLIB_NO_LOSSMMODSUPPORT)
+  add_definitions(-DDLIB_NO_LOSSMMODSUPPORT)
+endif()
+if(DLIB_NO_LOSSMULTICLASSLOG_SUPPORT)
+  add_definitions(-DDLIB_NO_LOSSMULTICLASSLOG_SUPPORT)
+endif()
+if(DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT)
+  add_definitions(-DDLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT)
+endif()
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
@@ -97,11 +120,17 @@ else()
 endif()
 
 OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
-if (${ENABLE_NEON})
-        # ARM64 ignore mfpu option
-        # https://developer.arm.com/docs/dui0774/i/compiler-command-line-options/-mfpu
-	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+    if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Android")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -DNDEBUG")
+    endif()
+
+    if (${ENABLE_NEON})
+            # ARM64 ignore mfpu option
+            # https://developer.arm.com/docs/dui0774/i/compiler-command-line-options/-mfpu
+        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
+    endif()
 endif()
 
 configure_file(
