@@ -64,9 +64,9 @@ namespace DlibDotNet
                 LossMmodRegistry_add(builder);
             foreach (var builder in new[] {
                 LossMulticlassLog_net_type_create(),
-                 LossMulticlassLog_net_1000_type_create(),
-                 LossMulticlassLog_anet_1000_type_create(),
-                 LossMulticlassLog_net_type2_create()
+                LossMulticlassLog_net_1000_type_create(),
+                LossMulticlassLog_anet_1000_type_create(),
+                LossMulticlassLog_net_type2_create()
             })
                 LossMulticlassLogRegistry_add(builder);
             foreach (var builder in new[] {
@@ -93,6 +93,13 @@ namespace DlibDotNet
                 LossMmod_det_anet_type_create()
             })
                 LossMmodRegistry_add(builder);
+            foreach (var builder in new[] {
+                LossMulticlassLog_net_type_create(),
+                LossMulticlassLog_net_1000_type_create(),
+                LossMulticlassLog_anet_1000_type_create(),
+                LossMulticlassLog_net_type2_create()
+            })
+                LossMulticlassLogRegistry_add(builder);
 #endif
         }
 

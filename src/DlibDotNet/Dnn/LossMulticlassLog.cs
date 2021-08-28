@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -332,6 +331,7 @@ namespace DlibDotNet.Dnn
             throw new NotSupportedException();
         }
 
+#if !LITE
         public static void TestOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
             where T : struct
         {
@@ -457,6 +457,7 @@ namespace DlibDotNet.Dnn
                 }
             }
         }
+#endif
 
         #region Overrides 
 
@@ -758,4 +759,3 @@ namespace DlibDotNet.Dnn
     }
 
 }
-#endif

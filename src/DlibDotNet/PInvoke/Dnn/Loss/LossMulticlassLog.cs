@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Runtime.InteropServices;
 using OutputLabelType = System.UInt32;
@@ -260,4 +259,3 @@ namespace DlibDotNet
     }
 
 }
-#endif
