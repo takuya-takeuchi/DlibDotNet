@@ -6,11 +6,13 @@ $nativeDnn = Join-Path $src DlibDotNet.Native.Dnn | `
              Join-Path -ChildPath "dlib"
 $root = Join-Path $current dlib
 
-# coomon
+# common
 $sources = @(
     "shared.h",
     "template.h",
     "export.h",
+    "stdvector.cpp",
+    "stdvector.h",
     "vector_streambuf.cpp",
     "vector_streambuf.h"
 )
@@ -21,6 +23,70 @@ foreach ($f in $sources)
     Copy-Item $s $d -Force
 }
 
+# array
+$directory = "array"
+$sources = @(
+    "array.h",
+    "array.cpp"
+)
+New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $native $directory | Join-Path -ChildPath $f
+    $d = Join-Path $root   $directory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
+}
+
+# array2d
+$directory = "array2d"
+$sources = @(
+    "array2d.h",
+    "array2d.cpp"
+)
+New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $native $directory | Join-Path -ChildPath $f
+    $d = Join-Path $root   $directory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
+}
+
+# extensions
+$directory = "extensions"
+$sources = @(
+    "extensions.h",
+    "extensions.cpp"
+)
+New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $native $directory | Join-Path -ChildPath $f
+    $d = Join-Path $root   $directory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
+}
+
+# geometry
+$directory = "geometry"
+$sources = @(
+    "common.h",
+    "common.cpp",
+    "dpoint.h",
+    "dpoint.cpp",
+    "drectangle.h",
+    "drectangle.cpp",
+    "point.h",
+    "point.cpp",
+    "rectangle.h",
+    "rectangle.cpp"
+)
+New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $native $directory | Join-Path -ChildPath $f
+    $d = Join-Path $root   $directory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
+}
+
 # matrix
 $directory = "matrix"
 $sources = @(
@@ -28,6 +94,20 @@ $sources = @(
     "matrix.cpp",
     "matrix_common.h",
     "matrix_common.cpp"
+)
+New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
+foreach ($f in $sources)
+{
+    $s = Join-Path $native $directory | Join-Path -ChildPath $f
+    $d = Join-Path $root   $directory | Join-Path -ChildPath $f
+    Copy-Item $s $d -Force
+}
+
+# geometry
+$directory = "rand"
+$sources = @(
+    "rand_kernel_1.h",
+    "rand_kernel_1.cpp"
 )
 New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
 foreach ($f in $sources)
