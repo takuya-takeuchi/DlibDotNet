@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -644,4 +643,3 @@ namespace DlibDotNet
     }
 
 }
-#endif

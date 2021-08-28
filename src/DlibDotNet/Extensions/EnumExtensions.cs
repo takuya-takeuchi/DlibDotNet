@@ -157,7 +157,6 @@ namespace DlibDotNet.Extensions
             }
         }
 
-#if !LITE
         internal static NativeMethods.PointMappingTypes GetNativePointMappingTypes(this PointTransformBase pointTransform)
         {
             if (pointTransform is PointRotator)
@@ -171,7 +170,6 @@ namespace DlibDotNet.Extensions
 
             throw new ArgumentOutOfRangeException(nameof(pointTransform));
         }
-#endif
 
         internal static NativeMethods.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelType type)
         {
