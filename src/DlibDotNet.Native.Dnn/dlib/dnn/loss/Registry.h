@@ -6,10 +6,18 @@
 #include <dlib/matrix.h>
 #include <vector>
 
+#ifndef DLIB_NO_LOSSMETRIC_SUPPORT
 #include "metric/LossMetricBase.h"
+#endif
+#ifndef DLIB_NO_LOSSMMODSUPPORT
 #include "mmod/LossMmodBase.h"
+#endif
+#ifndef DLIB_NO_LOSSMULTICLASSLOG_SUPPORT
 #include "multiclass_log/LossMulticlassLogBase.h"
+#endif
+#ifndef DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT
 #include "multiclass_log_per_pixel/LossMulticlassLogPerPixelBase.h"
+#endif
 
 using namespace dlib;
 using namespace std;
