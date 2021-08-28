@@ -21,8 +21,10 @@ dotnet restore ${source}
 # build for iOS
 # https://github.com/dotnet/msbuild/issues/471#issuecomment-366268743
 $customProperties = @{
-   "DLIB_NO_GUI_SUPPORT%2cLIB_STATIC" = "Release_Static";
-   "DLIB_NO_GUI_SUPPORT"              = "Release_NoGUI";
+   "DLIB_NO_GUI_SUPPORT%2cLIB_STATIC"        = "Release_Static";
+   "DLIB_NO_GUI_SUPPORT"                     = "Release_NoGUI";
+   "DLIB_NO_GUI_SUPPORT%2cLITE%2cLIB_STATIC" = "Release_Lite_Static";
+   "DLIB_NO_GUI_SUPPORT%2cLITE"              = "Release_Lite";
 }
 foreach ($key in $customProperties.keys)
 {
@@ -32,9 +34,9 @@ foreach ($key in $customProperties.keys)
    Write-Host "Build ${output}" -ForegroundColor Blue
    dotnet build -c Release -p:CustomDefinition="${customProperty}" ${source} /nowarn:CS1591
    $output = Join-Path $source bin | `
-            Join-Path -ChildPath Release
+             Join-Path -ChildPath Release
    $dest = Join-Path $source bin | `
-         Join-Path -ChildPath ${dirname}
+           Join-Path -ChildPath ${dirname}
    
    if (Test-path($dest))
    {
