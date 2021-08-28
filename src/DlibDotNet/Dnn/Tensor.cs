@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 
 namespace DlibDotNet.Dnn
@@ -34,5 +33,3 @@ namespace DlibDotNet.Dnn
     }
 
 }
-
-#endif

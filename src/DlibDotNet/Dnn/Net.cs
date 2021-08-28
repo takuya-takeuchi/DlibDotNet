@@ -1,4 +1,3 @@
-#if !LITE
 namespace DlibDotNet.Dnn
 {
 
@@ -46,4 +45,3 @@ namespace DlibDotNet.Dnn
     }
 
 }
-#endif

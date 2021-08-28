@@ -187,5 +187,4 @@ namespace DlibDotNet
     }
 
 }
-
 #endif

@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,6 +41,7 @@ namespace DlibDotNet
             this._Indexer = this.CreateIndexer(type);
         }
 
+#if !LITE
         public Matrix(Array2D<TElement> array)
         {
             if (array == null)
@@ -69,6 +69,7 @@ namespace DlibDotNet
             this.NativePtr = ptr;
             this._Indexer = this.CreateIndexer(type);
         }
+#endif
 
         public Matrix(MatrixTemplateSizeParameter parameter)
             : base(parameter.TemplateRows, parameter.TemplateColumns)
@@ -999,4 +1000,3 @@ namespace DlibDotNet
     }
 
 }
-#endif

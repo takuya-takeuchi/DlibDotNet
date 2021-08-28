@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -133,8 +132,10 @@ namespace DlibDotNet
                         return new StdVectorFloatImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.Double:
                         return new StdVectorDoubleImp() as StdVectorImp<TItem>;
+#if !LITE
                     case StdVectorElementTypesRepository.ElementTypes.VectorDouble:
                         return new StdVectorVectorDoubleImp() as StdVectorImp<TItem>;
+#endif
                     case StdVectorElementTypesRepository.ElementTypes.Rectangle:
                         return new StdVectorRectangleImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.Point:
@@ -143,12 +144,15 @@ namespace DlibDotNet
                         return new StdVectorDPointImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.ChipDetails:
                         return new StdVectorChipDetailsImp() as StdVectorImp<TItem>;
+#if !LITE
                     case StdVectorElementTypesRepository.ElementTypes.StdString:
                         return new StdVectorStdStringImp() as StdVectorImp<TItem>;
+#endif
                     case StdVectorElementTypesRepository.ElementTypes.FullObjectDetection:
                         return new StdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.RectDetection:
                         return new StdVectorRectDetectionImp() as StdVectorImp<TItem>;
+#if !LITE
                     case StdVectorElementTypesRepository.ElementTypes.ImageWindowOverlayLine:
                         return new StdVectorImageWindowOverlayLineImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.PerspectiveWindowOverlayDot:
@@ -157,12 +161,15 @@ namespace DlibDotNet
                         return new StdVectorImageDatasetMetadataImageImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.ImageDatasetMetadataBox:
                         return new StdVectorImageDatasetMetadataBoxImp() as StdVectorImp<TItem>;
+#endif
                     case StdVectorElementTypesRepository.ElementTypes.MModRect:
                         return new StdVectorMModRectImp() as StdVectorImp<TItem>;
+#if !LITE
                     case StdVectorElementTypesRepository.ElementTypes.SurfPoint:
                         return new StdVectorSurfPointImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.SamplePair:
                         return new StdVectorSamplePairImp() as StdVectorImp<TItem>;
+#endif
                     case StdVectorElementTypesRepository.ElementTypes.StdVectorDouble:
                         return new StdVectorStdVectorDoubleImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.StdVectorRectangle:
@@ -173,8 +180,10 @@ namespace DlibDotNet
                         return new StdVectorStdVectorFullObjectDetectionImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.DetectorWindowDetails:
                         return new StdVectorMModOptionsDetectorWindowDetailsImp() as StdVectorImp<TItem>;
+#if !LITE
                     case StdVectorElementTypesRepository.ElementTypes.OverlayRect:
                         return new StdVectorOverlayRectImp() as StdVectorImp<TItem>;
+#endif
                 }
             }
             else
@@ -674,6 +683,7 @@ namespace DlibDotNet
 
         }
 
+#if !LITE
         private sealed class StdVectorStdStringImp : StdVectorImp<StdString>
         {
 
@@ -742,6 +752,7 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
         private sealed class StdVectorFullObjectDetectionImp : StdVectorImp<FullObjectDetection>
         {
@@ -881,6 +892,7 @@ namespace DlibDotNet
 
         }
 
+#if !LITE
         private sealed class StdVectorImageWindowOverlayLineImp : StdVectorImp<ImageWindow.OverlayLine>
         {
 
@@ -981,7 +993,9 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
+#if !LITE 
         private sealed class StdVectorImageDatasetMetadataImageImp : StdVectorImp<ImageDatasetMetadata.Image>
         {
 
@@ -1050,7 +1064,9 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
+#if !LITE
         private sealed class StdVectorImageDatasetMetadataBoxImp : StdVectorImp<ImageDatasetMetadata.Box>
         {
 
@@ -1119,6 +1135,7 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
         private sealed class StdVectorMModRectImp : StdVectorImp<MModRect>
         {
@@ -1189,6 +1206,7 @@ namespace DlibDotNet
 
         }
 
+#if !LITE
         private sealed class StdVectorSurfPointImp : StdVectorImp<SurfPoint>
         {
 
@@ -1289,7 +1307,9 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
+#if !LITE
         private sealed class StdVectorSamplePairImp : StdVectorImp<SamplePair>
         {
 
@@ -1358,6 +1378,7 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif        
 
         private sealed class StdVectorMatrixImp<TElement> : StdVectorImp<Matrix<TElement>>
             where TElement : struct
@@ -1455,6 +1476,7 @@ namespace DlibDotNet
 
         }
 
+#if !LITE
         private sealed class StdVectorPerspectiveWindowOverlayDotImp : StdVectorImp<PerspectiveWindow.OverlayDot>
         {
 
@@ -1555,6 +1577,7 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
         private sealed class StdVectorRectangleImp : StdVectorImp<Rectangle>
         {
@@ -1790,6 +1813,7 @@ namespace DlibDotNet
 
         }
 
+#if !LITE
         private sealed class StdVectorVectorDoubleImp : StdVectorImp<Vector<double>>
         {
 
@@ -1858,6 +1882,7 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
         private sealed class StdVectorStdVectorDoubleImp : StdVectorImp<StdVector<double>>
         {
@@ -2203,7 +2228,8 @@ namespace DlibDotNet
             #endregion
 
         }
-        
+
+#if !LITE        
         private sealed class StdVectorOverlayRectImp : StdVectorImp<ImageDisplay.OverlayRect>
         {
 
@@ -2304,6 +2330,7 @@ namespace DlibDotNet
             #endregion
 
         }
+#endif
 
         #endregion
 
@@ -2410,4 +2437,3 @@ namespace DlibDotNet
     }
 
 }
-#endif

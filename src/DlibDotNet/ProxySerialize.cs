@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.IO;
 
@@ -53,5 +52,3 @@ namespace DlibDotNet
     }
 
 }
-
-#endif

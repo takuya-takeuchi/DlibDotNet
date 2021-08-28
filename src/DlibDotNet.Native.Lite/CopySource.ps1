@@ -59,15 +59,12 @@ $sources = @(
 $deletes = @(
     "input.cpp",
     "input.h",
-    "tensor.cpp",
-    "tensor.h",
     "validation.cpp",
     "validation.h",
     # "solvers/adam.cpp",
     # "solvers/adam.h",
     "solvers/sgd.cpp",
     "solvers/sgd.h",
-    "loss/mmod",
     "loss/multiclass_log",
     "loss/multiclass_log_per_pixel"
 )

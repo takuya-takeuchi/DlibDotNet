@@ -47,6 +47,7 @@ namespace DlibDotNet
                 $"{NativeDnnLibrary}"
             });
 
+#if !LITE
             foreach (var builder in new[] {
                 LossMetric_anet_type_create(),
                 LossMetric_metric_net_type_create()
@@ -77,6 +78,22 @@ namespace DlibDotNet
                 LossMulticlassLogPerPixel_seg_anet_type_create()
             })
                 LossMulticlassLogPerPixelRegistry_add(builder);
+#else
+            foreach (var builder in new[] {
+                LossMetric_anet_type_create(),
+                LossMetric_metric_net_type_create()
+            })
+                LossMetricRegistry_add(builder);
+            foreach (var builder in new[] {
+                LossMmod_net_type_create(),
+                LossMmod_net_type_1_create(),
+                LossMmod_net_type_2_create(),
+                LossMmod_net_type_3_create(),
+                LossMmod_det_bnet_type_create(),
+                LossMmod_det_anet_type_create()
+            })
+                LossMmodRegistry_add(builder);
+#endif
         }
 
         #endregion

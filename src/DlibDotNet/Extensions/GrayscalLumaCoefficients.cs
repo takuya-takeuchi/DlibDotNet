@@ -1,6 +1,3 @@
-#if !LITE
-
-
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.Extensions
 {
@@ -29,5 +26,3 @@ namespace DlibDotNet.Extensions
     }
 
 }
-
-#endif

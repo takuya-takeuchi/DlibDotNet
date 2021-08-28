@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -47,5 +46,3 @@ namespace DlibDotNet
     }
 
 }
-
-#endif

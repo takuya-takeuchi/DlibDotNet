@@ -1,4 +1,3 @@
-#if !LITE
 using System.Collections.Generic;
 
 namespace DlibDotNet.Extensions
@@ -48,5 +47,3 @@ namespace DlibDotNet.Extensions
     }
 
 }
-
-#endif

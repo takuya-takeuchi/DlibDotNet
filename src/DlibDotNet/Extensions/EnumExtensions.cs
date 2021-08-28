@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 
 namespace DlibDotNet.Extensions
@@ -158,6 +157,7 @@ namespace DlibDotNet.Extensions
             }
         }
 
+#if !LITE
         internal static NativeMethods.PointMappingTypes GetNativePointMappingTypes(this PointTransformBase pointTransform)
         {
             if (pointTransform is PointRotator)
@@ -171,6 +171,7 @@ namespace DlibDotNet.Extensions
 
             throw new ArgumentOutOfRangeException(nameof(pointTransform));
         }
+#endif
 
         internal static NativeMethods.MlpKernelType ToNativeMlpKernelType(this MultilayerPerceptronKernelType type)
         {
@@ -183,6 +184,7 @@ namespace DlibDotNet.Extensions
             }
         }
 
+#if !LITE
         internal static NativeMethods.RunningStatsType ToRunningStatsType(this RunningStatsType type)
         {
             switch (type)
@@ -195,6 +197,7 @@ namespace DlibDotNet.Extensions
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
+#endif
 
         internal static NativeMethods.ImagePixelType ToImagePixelType(this ImagePixelFormat type)
         {
@@ -250,5 +253,3 @@ namespace DlibDotNet.Extensions
     }
 
 }
-
-#endif

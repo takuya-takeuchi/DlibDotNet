@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Collections.Generic;
 using DlibDotNet.Dnn;
@@ -34,20 +33,26 @@ namespace DlibDotNet
                 new { Type = typeof(StdString),                            ElementType = ElementTypes.StdString  },
                 new { Type = typeof(FullObjectDetection),                  ElementType = ElementTypes.FullObjectDetection  },
                 new { Type = typeof(RectDetection),                        ElementType = ElementTypes.RectDetection  },
+#if !LITE
                 new { Type = typeof(ImageWindow.OverlayLine),              ElementType = ElementTypes.ImageWindowOverlayLine  },
                 new { Type = typeof(PerspectiveWindow.OverlayDot),         ElementType = ElementTypes.PerspectiveWindowOverlayDot  },
+#endif
                 new { Type = typeof(MModRect),                             ElementType = ElementTypes.MModRect  },
+#if !LITE
                 new { Type = typeof(SurfPoint),                            ElementType = ElementTypes.SurfPoint  },
                 new { Type = typeof(SamplePair),                           ElementType = ElementTypes.SamplePair  },
                 new { Type = typeof(ImageDatasetMetadata.Image),           ElementType = ElementTypes.ImageDatasetMetadataImage },
                 new { Type = typeof(ImageDatasetMetadata.Box),             ElementType = ElementTypes.ImageDatasetMetadataBox },
                 new { Type = typeof(Vector<double>),                       ElementType = ElementTypes.VectorDouble       },
+#endif
                 new { Type = typeof(StdVector<double>),                    ElementType = ElementTypes.StdVectorDouble },
                 new { Type = typeof(StdVector<Rectangle>),                 ElementType = ElementTypes.StdVectorRectangle },
                 new { Type = typeof(StdVector<MModRect>),                  ElementType = ElementTypes.StdVectorMModRect  },
                 new { Type = typeof(StdVector<FullObjectDetection>),       ElementType = ElementTypes.StdVectorFullObjectDetection  },
                 new { Type = typeof(MModOptions.DetectorWindowDetails),    ElementType = ElementTypes.DetectorWindowDetails  },
+#if !LITE
                 new { Type = typeof(ImageDisplay.OverlayRect),             ElementType = ElementTypes.OverlayRect  }
+#endif
             };
 
             foreach (var type in types)
@@ -118,5 +123,3 @@ namespace DlibDotNet
     }
 
 }
-
-#endif

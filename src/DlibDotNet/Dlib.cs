@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.IO;
 using System.Linq;
@@ -201,6 +200,7 @@ namespace DlibDotNet
             return new FrontalFaceDetector(ret);
         }
 
+#if !LITE
         public static Rectangle GetRect(HoughTransform houghTransform)
         {
             if (houghTransform == null)
@@ -211,6 +211,7 @@ namespace DlibDotNet
             NativeMethods.hough_transform_get_rect(houghTransform.NativePtr, out var rect);
             return new Rectangle(rect);
         }
+#endif
 
         public static Rectangle GetRect(MatrixBase matrix)
         {
@@ -1014,4 +1015,3 @@ namespace DlibDotNet
     }
 
 }
-#endif

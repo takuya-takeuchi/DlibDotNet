@@ -1,4 +1,3 @@
-#if !LITE
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -764,4 +763,3 @@ namespace DlibDotNet
     }
 
 }
-#endif
