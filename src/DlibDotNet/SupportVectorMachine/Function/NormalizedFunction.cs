@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.IO;
 using DlibDotNet.Extensions;
 
@@ -729,3 +730,5 @@ namespace DlibDotNet
     }
 
 }
+
+#endif

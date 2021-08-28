@@ -1,3 +1,4 @@
+#if !LITE
 using System;
 
 // ReSharper disable once CheckNamespace
@@ -86,3 +87,4 @@ namespace DlibDotNet
     }
 
 }
+#endif

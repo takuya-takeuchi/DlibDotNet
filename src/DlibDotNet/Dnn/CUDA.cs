@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.Runtime.InteropServices;
 
 namespace DlibDotNet.Dnn
@@ -63,3 +64,5 @@ namespace DlibDotNet.Dnn
     }
 
 }
+
+#endif

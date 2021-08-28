@@ -1,4 +1,5 @@
-﻿namespace DlibDotNet
+#if !LITE
+namespace DlibDotNet
 {
 
     /// <summary>
@@ -34,3 +35,5 @@
     }
 
 }
+
+#endif

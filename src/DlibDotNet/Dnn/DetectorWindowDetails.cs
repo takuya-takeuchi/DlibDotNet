@@ -1,5 +1,7 @@
-﻿namespace DlibDotNet.Dnn
+#if !LITE
+namespace DlibDotNet.Dnn
 {
 
 
 }
+#endif

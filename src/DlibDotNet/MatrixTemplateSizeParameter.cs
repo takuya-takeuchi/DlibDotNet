@@ -1,4 +1,5 @@
-﻿namespace DlibDotNet
+#if !LITE
+namespace DlibDotNet
 {
 
     public sealed class MatrixTemplateSizeParameter : IParameter
@@ -31,3 +32,4 @@
     }
 
 }
+#endif

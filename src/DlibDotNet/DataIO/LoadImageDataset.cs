@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,3 +98,4 @@ namespace DlibDotNet
     }
 
 }
+#endif

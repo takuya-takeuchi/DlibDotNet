@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+#if !LITE
+// ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
 
@@ -61,3 +62,4 @@ namespace DlibDotNet
     }
 
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
@@ -114,3 +115,4 @@ namespace DlibDotNet
     }
 
 }
+#endif

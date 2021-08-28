@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 
 namespace DlibDotNet.Extensions
 {
@@ -249,3 +250,5 @@ namespace DlibDotNet.Extensions
     }
 
 }
+
+#endif

@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.Runtime.InteropServices;
 using DlibDotNet.ImageDatasetMetadata;
 
@@ -112,3 +113,5 @@ namespace DlibDotNet
     }
 
 }
+
+#endif

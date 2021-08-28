@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -1013,3 +1014,4 @@ namespace DlibDotNet
     }
 
 }
+#endif

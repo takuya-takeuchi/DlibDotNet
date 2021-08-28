@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.Runtime.InteropServices;
 
 namespace DlibDotNet.Interop
@@ -157,3 +158,5 @@ namespace DlibDotNet.Interop
     }
 
 }
+
+#endif

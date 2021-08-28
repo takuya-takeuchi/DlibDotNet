@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 
 namespace DlibDotNet.Util
 {
@@ -18,3 +19,5 @@ namespace DlibDotNet.Util
     }
 
 }
+
+#endif

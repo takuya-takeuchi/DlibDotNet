@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+#if !LITE
+// ReSharper disable once CheckNamespace
 namespace DlibDotNet
 {
     public enum InterpolationTypes
@@ -13,3 +14,5 @@ namespace DlibDotNet
     }
 
 }
+
+#endif

@@ -1,4 +1,5 @@
-﻿using System;
+#if !LITE
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -486,3 +487,4 @@ namespace DlibDotNet.Extensions
     }
 
 }
+#endif
