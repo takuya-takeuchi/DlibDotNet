@@ -52,17 +52,28 @@ $deletes = @(
     # "solvers/adam.cpp",
     # "solvers/adam.h",
     "solvers/sgd.cpp",
-    "solvers/sgd.h"
+    "solvers/sgd.h",
+    "loss/mmod",
+    "loss/multiclass_log",
+    "loss/multiclass_log_per_pixel"
 )
 New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
 foreach ($f in $sources)
 {
     $s = Join-Path $nativeDnn $directory | Join-Path -ChildPath "*"
     $d = Join-Path $root      $directory
-    Copy-Item $s $d -Recurse -Force
+    Copy-Item "${s}" "${d}" -Recurse -Force
 }
 foreach ($f in $deletes)
 {
     $d = Join-Path $root $directory | Join-Path -ChildPath $f
-    Remove-Item $d
+    $item = Get-Item "${d}"
+    if ($item -is [System.IO.DirectoryInfo])
+    {
+        Remove-Item "${d}" -Recurse
+    }
+    else
+    {
+        Remove-Item "${d}"
+    }
 }
