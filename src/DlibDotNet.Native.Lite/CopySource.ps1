@@ -65,7 +65,6 @@ $deletes = @(
     # "solvers/adam.h",
     "solvers/sgd.cpp",
     "solvers/sgd.h",
-    "loss/multiclass_log",
     "loss/multiclass_log_per_pixel"
 )
 New-Item (Join-Path $root $directory) -Type Directory -Force | Out-Null
