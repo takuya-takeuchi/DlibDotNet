@@ -1,4 +1,3 @@
-#if !LITE
 using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
@@ -22,6 +21,10 @@ namespace DlibDotNet
         public const string NativeLibrary = "__Internal";
 
         public const string NativeDnnLibrary = "__Internal";
+#elif LITE
+        public const string NativeLibrary = "DlibDotNetNativeLite";
+
+        public const string NativeDnnLibrary = "DlibDotNetNativeLite";
 #else
         public const string NativeLibrary = "DlibDotNetNative";
 
@@ -81,4 +84,3 @@ namespace DlibDotNet
     }
 
 }
-#endif
