@@ -35,19 +35,19 @@ option(DLIB_NO_LOSSMULTICLASSLOG_SUPPORT "Disable loss multiclass log" OFF)
 option(DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT "Disable loss multiclass log per pixe;" OFF)
 
 if(DLIB_NOT_SUPPORT_DNN_TRAINING)
-  add_definitions(-DDLIB_NOT_SUPPORT_DNN_TRAINING)
+  add_compile_definitions(DLIB_NOT_SUPPORT_DNN_TRAINING)
 endif()
 if(DLIB_NO_LOSSMETRIC_SUPPORT)
-  add_definitions(-DDLIB_NO_LOSSMETRIC_SUPPORT)
+  add_compile_definitions(DLIB_NO_LOSSMETRIC_SUPPORT)
 endif()
 if(DLIB_NO_LOSSMMODSUPPORT)
-  add_definitions(-DDLIB_NO_LOSSMMODSUPPORT)
+  add_compile_definitions(DLIB_NO_LOSSMMODSUPPORT)
 endif()
 if(DLIB_NO_LOSSMULTICLASSLOG_SUPPORT)
-  add_definitions(-DDLIB_NO_LOSSMULTICLASSLOG_SUPPORT)
+  add_compile_definitions(DLIB_NO_LOSSMULTICLASSLOG_SUPPORT)
 endif()
 if(DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT)
-  add_definitions(-DDLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT)
+  add_compile_definitions(DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT)
 endif()
 
 # libjpeg-dev, libpng-dev 
@@ -98,9 +98,6 @@ endif()
 # dlib project submodule 
 set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
-
-# disable some codes
-add_compile_definitions(DLIB_NO_LOSSMULTICLASSLOG_SUPPORT DLIB_NO_LOSSMULTICLASSLOGPERPIXEL_SUPPORT)
 
 # create config file
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")

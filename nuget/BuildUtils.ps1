@@ -913,24 +913,58 @@ class Config
 
             $targets += $binary
 
-            # skip merge binary if contains lite
-            $skipMerge = $False
             foreach ($key in $buildHashTable.keys)
             {
                if ($key.Contains("Lite"))
                {
-                  $merge = $True
-                  break
+                  continue
                }
+
+               $srcDir = Join-Path $sourceRoot $key
+               $dll = $buildHashTable[$key]
+
+               $input = Join-Path $dstDir $dll
+               if (!(Test-Path "${input}"))
+               {  
+                  Write-Host "${input} is missing" -ForegroundColor Red
+                  return $False
+               }
+
+               $targets += $input
             }
 
-            if ($skipMerge -eq $True)
+            $args = $targets -join " "
+            Write-Host "libtool -o `"${output}`" ${args}" -ForegroundColor Yellow
+            libtool -o "${output}" ${args}
+            
+            # merge for lite
+            $targets = @();
+
+            $binary = Join-Path ${sourceRoot} "DlibDotNet.Native.Lite"  | `
+                      Join-Path -ChildPath ${build} | `
+                      Join-Path -ChildPath "dlib_build" | `
+                      Join-Path -ChildPath "libdlib.a"
+            if (!(Test-Path "${binary}"))
+            {  
+               Write-Host "${binary} is missing" -ForegroundColor Red
+               return $False
+            }
+            
+            $targets += $binary
+
+            $output = Join-Path $dstDir "libDlibDotNetNativeLite_merged.a"
+            if (Test-Path "${output}")
             {
-               break
+               Remove-Item "${output}"
             }
 
             foreach ($key in $buildHashTable.keys)
             {
+               if ($key.Contains("Lite") -eq $False)
+               {
+                  continue
+               }
+
                $srcDir = Join-Path $sourceRoot $key
                $dll = $buildHashTable[$key]
 

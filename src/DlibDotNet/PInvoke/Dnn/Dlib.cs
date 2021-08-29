@@ -7,7 +7,8 @@ namespace DlibDotNet
 
     internal sealed partial class NativeMethods
     {
-        
+
+#if !LITE
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr dnn_get_version();
 
@@ -18,6 +19,7 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool dnn_is_support_cuda();
+#endif
 
         #region input
 

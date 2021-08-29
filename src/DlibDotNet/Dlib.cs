@@ -16,6 +16,7 @@ namespace DlibDotNet
 
         #region Methods
 
+#if !LITE
         public static string GetNativeVersion()
         {
             return StringHelper.FromStdString(NativeMethods.get_version(), true);
@@ -25,6 +26,7 @@ namespace DlibDotNet
         {
             return StringHelper.FromStdString(NativeMethods.dnn_get_version(), true);
         }
+#endif
 
         #region AssignPixel
 
@@ -1004,11 +1006,15 @@ namespace DlibDotNet
 
         public static bool IsSupportGui => NativeMethods.is_support_gui();
 
+#if !LITE
         public static bool IsDnnSupportGui => NativeMethods.dnn_is_support_gui();
+#endif
 
         public static bool IsSupportCuda => NativeMethods.is_support_cuda();
 
+#if !LITE
         public static bool IsDnnSupportCuda => NativeMethods.dnn_is_support_cuda();
+#endif
 
         #endregion
 
