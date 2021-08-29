@@ -933,9 +933,12 @@ class Config
                $targets += $input
             }
 
-            $args = $targets -join " "
-            Write-Host "libtool -o `"${output}`" ${args}" -ForegroundColor Yellow
-            libtool -o "${output}" ${args}
+            if ($targets.Count -ge 3)
+            {
+               $args = $targets -join " "
+               Write-Host "libtool -o `"${output}`" ${args}" -ForegroundColor Yellow
+               libtool -o "${output}" ${args}
+            }
             
             # merge for lite
             $targets = @();
