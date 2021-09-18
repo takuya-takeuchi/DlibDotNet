@@ -143,6 +143,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaceDetection.Client", "exa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaceDetection.Server", "examples\ASP.NET\FaceDetection.Server\FaceDetection.Server.csproj", "{DCD4F84F-91D6-4936-AD45-890127D9EF54}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions", "src\DlibDotNet.Extensions\DlibDotNet.Extensions.csproj", "{2273A0B6-E4B7-4D22-A358-08C1315AF09E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1087,6 +1089,22 @@ Global
 		{DCD4F84F-91D6-4936-AD45-890127D9EF54}.Release|x64.Build.0 = Release|x64
 		{DCD4F84F-91D6-4936-AD45-890127D9EF54}.Release|x86.ActiveCfg = Release|Any CPU
 		{DCD4F84F-91D6-4936-AD45-890127D9EF54}.Release|x86.Build.0 = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|x64.Build.0 = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|ARM.Build.0 = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x64.Build.0 = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1157,6 +1175,7 @@ Global
 		{D2D6D0D7-7544-4730-A34E-DAE2588B55D8} = {19C83FDC-2BC9-42D6-9F51-3A0B822FABAD}
 		{EBACC7C9-4376-4D04-BFBB-12D5E7ABCD37} = {D2D6D0D7-7544-4730-A34E-DAE2588B55D8}
 		{DCD4F84F-91D6-4936-AD45-890127D9EF54} = {D2D6D0D7-7544-4730-A34E-DAE2588B55D8}
+		{2273A0B6-E4B7-4D22-A358-08C1315AF09E} = {A9E3AD0D-91F4-48B4-9509-5C06B54C7374}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}
