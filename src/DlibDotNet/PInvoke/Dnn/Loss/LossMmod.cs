@@ -114,7 +114,7 @@ namespace DlibDotNet
         public static extern ErrorType LossMmod_net_to_xml(int id, IntPtr obj, byte[] filename, int filenameLength);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_operator_left_shift(int id, IntPtr trainer, IntPtr stream);
+        public static extern ErrorType LossMmod_operator_left_shift(int id, IntPtr obj, IntPtr stream);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_set_all_bn_running_stats_window_sizes(int id,
@@ -132,35 +132,36 @@ namespace DlibDotNet
         public static extern IntPtr LossMmod_trainer_new(int id, IntPtr net);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr LossMmod_trainer_new2(int id, IntPtr net, IntPtr sgd);
+        public static extern IntPtr LossMmod_trainer_new2(int id, IntPtr net, int optimizer_id, IntPtr optimizer);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern void LossMmod_trainer_delete(int id, IntPtr trainer);
+        public static extern void LossMmod_trainer_delete(int id, IntPtr trainer, int optimizer_id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_set_learning_rate(int id, IntPtr trainer, double lr);
+        public static extern ErrorType LossMmod_trainer_set_learning_rate(int id, IntPtr trainer, int optimizer_id, double lr);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_get_learning_rate(int id, IntPtr trainer, out double lr);
+        public static extern ErrorType LossMmod_trainer_get_learning_rate(int id, IntPtr trainer, int optimizer_id, out double lr);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_get_average_loss(int id, IntPtr trainer, out double loss);
+        public static extern ErrorType LossMmod_trainer_get_average_loss(int id, IntPtr trainer, int optimizer_id, out double loss);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_get_average_test_loss(int id, IntPtr trainer, out double loss);
+        public static extern ErrorType LossMmod_trainer_get_average_test_loss(int id, IntPtr trainer, int optimizer_id, out double loss);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_set_min_learning_rate(int id, IntPtr trainer, double lr);
+        public static extern ErrorType LossMmod_trainer_set_min_learning_rate(int id, IntPtr trainer, int optimizer_id, double lr);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_set_mini_batch_size(int id, IntPtr trainer, uint size);
+        public static extern ErrorType LossMmod_trainer_set_mini_batch_size(int id, IntPtr trainer, int optimizer_id, uint size);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType LossMmod_trainer_be_verbose(int id, IntPtr trainer);
+        public static extern ErrorType LossMmod_trainer_be_verbose(int id, IntPtr trainer, int optimizer_id);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_set_synchronization_file(int id,
                                                                                  IntPtr trainer,
+                                                                                 int optimizer_id,
                                                                                  byte[] filename,
                                                                                  int filenameLength,
                                                                                  uint second);
@@ -168,26 +169,31 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_set_iterations_without_progress_threshold(int id,
                                                                                                   IntPtr trainer,
+                                                                                                  int optimizer_id,
                                                                                                   uint thresh);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_set_test_iterations_without_progress_threshold(int id,
                                                                                                        IntPtr trainer,
+                                                                                                       int optimizer_id,
                                                                                                        uint thresh);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_get_net(int id,
                                                                 IntPtr trainer,
+                                                                int optimizer_id,
                                                                 out IntPtr ret);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_operator_left_shift(int id,
                                                                             IntPtr trainer,
+                                                                            int optimizer_id,
                                                                             IntPtr stream);
 
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_test_one_step(int id,
                                                                       IntPtr trainer,
+                                                                      int optimizer_id,
                                                                       MatrixElementType data_element_type,
                                                                       IntPtr data,
                                                                       MatrixElementType label_element_type,
@@ -196,6 +202,7 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_train(int id,
                                                               IntPtr trainer,
+                                                              int optimizer_id,
                                                               MatrixElementType data_element_type,
                                                               IntPtr data,
                                                               MatrixElementType label_element_type,
@@ -204,6 +211,7 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType LossMmod_trainer_train_one_step(int id,
                                                                        IntPtr trainer,
+                                                                       int optimizer_id,
                                                                        MatrixElementType data_element_type,
                                                                        IntPtr data,
                                                                        MatrixElementType label_element_type,

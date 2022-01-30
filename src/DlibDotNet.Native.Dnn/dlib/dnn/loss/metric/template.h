@@ -319,109 +319,308 @@ void* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_new_sgd(void* net, sgd* param)
+void* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_new_optimizer(void* net, const int32_t optimizer_id, void* optimizer)
 {
     auto& n = *static_cast<NET*>(net);
-    auto& p = *static_cast<sgd*>(param);
-    return new dnn_trainer<NET>(n, p);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto& sgd = *static_cast<dlib::sgd*>(optimizer);
+                return new dnn_trainer<NET, dlib::sgd>(n, sgd);
+            }
+        case ::optimizer_type::Adam:
+            {
+                auto& adam = *static_cast<dlib::adam*>(optimizer);
+                return new dnn_trainer<NET, dlib::adam>(n, adam);
+            }
+        default:
+            return nullptr;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_delete(void* trainer)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_delete(void* trainer, const int32_t optimizer_id)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    delete t;
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                delete t;
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                delete t;
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_learning_rate(void* trainer, const double lr)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_learning_rate(void* trainer,
+                                                                                                                               const int32_t optimizer_id,
+                                                                                                                               const double lr)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_learning_rate(lr);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->set_learning_rate(lr);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->set_learning_rate(lr);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_learning_rate(void* trainer, double* lr)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_learning_rate(void* trainer,
+                                                                                                                               const int32_t optimizer_id,
+                                                                                                                               double* lr)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    *lr = t->get_learning_rate();
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                *lr = t->get_learning_rate();
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                *lr = t->get_learning_rate();
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_average_loss(void* trainer, double* loss)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_average_loss(void* trainer,
+                                                                                                                              const int32_t optimizer_id,
+                                                                                                                              double* loss)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    *loss = t->get_average_loss();
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                *loss = t->get_average_loss();
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                *loss = t->get_average_loss();
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_average_test_loss(void* trainer, double* loss)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_average_test_loss(void* trainer,
+                                                                                                                                   const int32_t optimizer_id,
+                                                                                                                                   double* loss)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    *loss = t->get_average_test_loss();
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                *loss = t->get_average_test_loss();
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                *loss = t->get_average_test_loss();
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_min_learning_rate(void* trainer, const double lr)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_min_learning_rate(void* trainer,
+                                                                                                                                   const int32_t optimizer_id,
+                                                                                                                                   const double lr)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_min_learning_rate(lr);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->set_min_learning_rate(lr);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->set_min_learning_rate(lr);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_mini_batch_size(void* trainer, const unsigned long size)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_mini_batch_size(void* trainer,
+                                                                                                                                 const int32_t optimizer_id,
+                                                                                                                                 const unsigned long size)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_mini_batch_size(size);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->set_mini_batch_size(size);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->set_mini_batch_size(size);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
-void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_be_verbose(void* trainer)
+void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_be_verbose(void* trainer, const int32_t optimizer_id)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->be_verbose();
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->be_verbose();
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->be_verbose();
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_synchronization_file(void* trainer,
+                                                                                                                                      const int32_t optimizer_id,
                                                                                                                                       const char* filename,
                                                                                                                                       const int filename_length,
                                                                                                                                       const unsigned long second)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_synchronization_file(std::string(filename, filename_length), std::chrono::seconds(second));
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->set_synchronization_file(std::string(filename, filename_length), std::chrono::seconds(second));
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->set_synchronization_file(std::string(filename, filename_length), std::chrono::seconds(second));
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_iterations_without_progress_threshold(void* trainer,
+                                                                                                                                                       const int32_t optimizer_id,
                                                                                                                                                        const unsigned long thresh)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_iterations_without_progress_threshold(thresh);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->set_iterations_without_progress_threshold(thresh);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->set_iterations_without_progress_threshold(thresh);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_set_test_iterations_without_progress_threshold(void* trainer,
-                                                                                                                                                                            const unsigned long thresh)
+                                                                                                                                                            const int32_t optimizer_id,
+                                                                                                                                                            const unsigned long thresh)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->set_test_iterations_without_progress_threshold(thresh);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->set_test_iterations_without_progress_threshold(thresh);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->set_test_iterations_without_progress_threshold(thresh);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_get_net(void* trainer,
+                                                                                                                     const int32_t optimizer_id,
                                                                                                                      void** ret)
 {
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    *ret = &(t->get_net());
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                *ret = &(t->get_net());
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                *ret = &(t->get_net());
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_operator_left_shift(void* trainer,
+                                                                                                                                 const int32_t optimizer_id,
                                                                                                                                  std::ostringstream* stream)
 {
-    auto& t = *static_cast<dnn_trainer<NET>*>(trainer);
-    *stream << t;\
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                *stream << t;
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                *stream << t;
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
@@ -443,6 +642,7 @@ const dlib::tensor* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_test_one_step(void* trainer,
+                                                                                                                           const int32_t optimizer_id,
                                                                                                                            matrix_element_type data_element_type,
                                                                                                                            void* data,
                                                                                                                            matrix_element_type label_element_type,
@@ -452,12 +652,26 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT,
     std::vector<LABEL_ELEMENT> out_label;
     convert(data, labels, out_data, out_label);
 
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->test_one_step(out_data, out_label);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->test_one_step(out_data, out_label);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->test_one_step(out_data, out_label);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_train(void* trainer,
+                                                                                                                   const int32_t optimizer_id,
                                                                                                                    matrix_element_type data_element_type,
                                                                                                                    void* data,
                                                                                                                    matrix_element_type label_element_type,
@@ -467,12 +681,26 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT,
     std::vector<LABEL_ELEMENT> out_label;
     convert(data, labels, out_data, out_label);
 
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->train(out_data, out_label);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->train(out_data, out_label);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->train(out_data, out_label);
+            }
+            break;
+    }
 }
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_train_one_step(void* trainer,
+                                                                                                                            const int32_t optimizer_id,
                                                                                                                             matrix_element_type data_element_type,
                                                                                                                             void* data,
                                                                                                                             matrix_element_type label_element_type,
@@ -482,8 +710,21 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT,
     std::vector<LABEL_ELEMENT> out_label;
     convert(data, labels, out_data, out_label);
 
-    auto t = static_cast<dnn_trainer<NET>*>(trainer);
-    t->train_one_step(out_data, out_label);
+    switch(optimizer_id)
+    {
+        case ::optimizer_type::Sgd:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::sgd>*>(trainer);
+                t->train_one_step(out_data, out_label);
+            }
+            break;
+        case ::optimizer_type::Adam:
+            {
+                auto t = static_cast<dnn_trainer<NET, dlib::adam>*>(trainer);
+                t->train_one_step(out_data, out_label);
+            }
+            break;
+    }
 }
 
 #endif

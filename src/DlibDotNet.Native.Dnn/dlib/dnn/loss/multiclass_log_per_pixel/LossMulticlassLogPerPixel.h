@@ -95,37 +95,44 @@ public:
 
 public:
     virtual void* trainer_new(void* net) override;
-    virtual void* trainer_new_sgd(void* net, sgd* sgd) override;
-    virtual void trainer_delete(void* trainer) override;
-    virtual void trainer_set_learning_rate(void* trainer, const double lr) override;
-    virtual void trainer_get_learning_rate(void* trainer, double* lr) override;
-    virtual void trainer_get_average_loss(void* trainer, double* loss) override;
-    virtual void trainer_get_average_test_loss(void* trainer, double* loss) override;
-    virtual void trainer_set_min_learning_rate(void* trainer, const double lr) override;
-    virtual void trainer_set_mini_batch_size(void* trainer, const unsigned long size) override;
-    virtual void trainer_be_verbose(void* trainer) override;
+    virtual void* trainer_new_optimizer(void* net, const int32_t optimizer_id, void* optimizer) override;
+    virtual void trainer_delete(void* trainer, const int32_t optimizer_id) override;
+    virtual void trainer_set_learning_rate(void* trainer, const int32_t optimizer_id, const double lr) override;
+    virtual void trainer_get_learning_rate(void* trainer, const int32_t optimizer_id, double* lr) override;
+    virtual void trainer_get_average_loss(void* trainer, const int32_t optimizer_id, double* loss) override;
+    virtual void trainer_get_average_test_loss(void* trainer, const int32_t optimizer_id, double* loss) override;
+    virtual void trainer_set_min_learning_rate(void* trainer, const int32_t optimizer_id, const double lr) override;
+    virtual void trainer_set_mini_batch_size(void* trainer, const int32_t optimizer_id, const unsigned long size) override;
+    virtual void trainer_be_verbose(void* trainer, const int32_t optimizer_id) override;
     virtual void trainer_set_synchronization_file(void* trainer,
+                                                  const int32_t optimizer_id,
                                                   const char* filename,
                                                   const int filename_length,
                                                   const unsigned long second) override;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
-                                                                           const unsigned long thresh) override;
+                                                                   const int32_t optimizer_id,
+                                                                   const unsigned long thresh) override;
     virtual void trainer_set_test_iterations_without_progress_threshold(void* trainer,
-                                                                                const unsigned long thresh) override;
+                                                                        const int32_t optimizer_id,
+                                                                        const unsigned long thresh) override;
     virtual void trainer_get_net(void* trainer,
+                                 const int32_t optimizer_id,
                                  void** ret) override;
-    virtual void trainer_operator_left_shift(void* trainer, std::ostringstream* stream) override;
+    virtual void trainer_operator_left_shift(void* trainer, const int32_t optimizer_id, std::ostringstream* stream) override;
     virtual void trainer_test_one_step(void* trainer,
+                                       const int32_t optimizer_id,
                                        matrix_element_type data_element_type,
                                        void* data,
                                        matrix_element_type label_element_type,
                                        void* labels) override;
     virtual void trainer_train(void* trainer,
+                               const int32_t optimizer_id,
                                matrix_element_type data_element_type,
                                void* data,
                                matrix_element_type label_element_type,
                                void* labels) override;
     virtual void trainer_train_one_step(void* trainer,
+                                        const int32_t optimizer_id,
                                         matrix_element_type data_element_type,
                                         void* data,
                                         matrix_element_type label_element_type,

@@ -70,7 +70,8 @@ class Config
    $ConfigurationArray =
    @(
       "Debug",
-      "Release"
+      "Release",
+      "RelWithDebInfo"
    )
 
    $TargetArray =
@@ -167,7 +168,7 @@ class Config
    #***************************************
    # Arguments
    #  %1: Root directory of DlibDotNet
-   #  %2: Build Configuration (Release/Debug)
+   #  %2: Build Configuration (Release/Debug/RelWithDebug)
    #  %3: Target (cpu/cuda/mkl/arm)
    #  %4: Architecture (32/64)
    #  %5: Platform (desktop/android/ios/uwp)

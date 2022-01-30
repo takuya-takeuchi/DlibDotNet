@@ -288,97 +288,98 @@ DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new(const int id, void* net)
     return LossMulticlassLogPerPixelRegistry[id]->trainer_new(net);
 }
 
-DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new2(const int id, void* net, sgd* sgd)
+DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new2(const int id, void* net, const int32_t optimizer_id, void* optimizer)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return nullptr;
 
-    return LossMulticlassLogPerPixelRegistry[id]->trainer_new_sgd(net, sgd);
+    return LossMulticlassLogPerPixelRegistry[id]->trainer_new_optimizer(net, optimizer_id, optimizer);
 }
 
-DLLEXPORT void LossMulticlassLogPerPixel_trainer_delete(const int id, void* trainer)
+DLLEXPORT void LossMulticlassLogPerPixel_trainer_delete(const int id, void* trainer, const int32_t optimizer_id)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_delete(trainer);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_delete(trainer, optimizer_id);
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_learning_rate(const int id, void* trainer, const double lr)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_set_learning_rate(trainer, lr);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_set_learning_rate(trainer, optimizer_id, lr);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_learning_rate(const int id, void* trainer, double* lr)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_learning_rate(const int id, void* trainer, const int32_t optimizer_id, double* lr)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_get_learning_rate(trainer, lr);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_get_learning_rate(trainer, optimizer_id, lr);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_loss(const int id, void* trainer, double* loss)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_get_average_loss(trainer, loss);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_get_average_loss(trainer, optimizer_id, loss);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_test_loss(const int id, void* trainer, double* loss)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_test_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_get_average_test_loss(trainer, loss);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_get_average_test_loss(trainer, optimizer_id, loss);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_min_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_set_min_learning_rate(trainer, lr);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_set_min_learning_rate(trainer, optimizer_id, lr);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_mini_batch_size(const int id, void* trainer, const unsigned long size)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_mini_batch_size(const int id, void* trainer, const int32_t optimizer_id, const unsigned long size)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_set_mini_batch_size(trainer, size);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_set_mini_batch_size(trainer, optimizer_id, size);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_be_verbose(const int id, void* trainer)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_be_verbose(const int id, void* trainer, const int32_t optimizer_id)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_be_verbose(trainer);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_be_verbose(trainer, optimizer_id);
     return ERR_OK;
 }
 
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_synchronization_file(const int id,
                                                                          void* trainer,
+                                                                         const int32_t optimizer_id,
                                                                          const char* filename,
                                                                          const int filename_length,
                                                                          const unsigned long second)
@@ -387,36 +388,39 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_synchronization_file(const i
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_set_synchronization_file(trainer, filename, filename_length, second);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_set_synchronization_file(trainer, optimizer_id, filename, filename_length, second);
     return ERR_OK;
 }
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_iterations_without_progress_threshold(const int id,
                                                                                           void* trainer,
+                                                                                          const int32_t optimizer_id,
                                                                                           const unsigned long thresh)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_set_iterations_without_progress_threshold(trainer, thresh);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_set_iterations_without_progress_threshold(trainer, optimizer_id, thresh);
     return ERR_OK;
 }
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_test_iterations_without_progress_threshold(const int id,
                                                                                                void* trainer,
+                                                                                               const int32_t optimizer_id,
                                                                                                const unsigned long thresh)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_set_test_iterations_without_progress_threshold(trainer, thresh);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_set_test_iterations_without_progress_threshold(trainer, optimizer_id, thresh);
     return ERR_OK;
 }
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_net(const int id,
                                                         void* trainer,
+                                                        const int32_t optimizer_id,
                                                         void** ret)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -427,7 +431,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_net(const int id,
 
     try
     {
-        LossMulticlassLogPerPixelRegistry[id]->trainer_get_net(trainer, ret);
+        LossMulticlassLogPerPixelRegistry[id]->trainer_get_net(trainer, optimizer_id, ret);
     }
     catch(std::exception)
     {
@@ -439,13 +443,14 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_net(const int id,
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_operator_left_shift(const int id,
                                                                     void* trainer,
+                                                                    const int32_t optimizer_id,
                                                                     std::ostringstream* stream)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMulticlassLogPerPixelRegistry[id]->trainer_operator_left_shift(trainer, stream);
+    LossMulticlassLogPerPixelRegistry[id]->trainer_operator_left_shift(trainer, optimizer_id, stream);
     return ERR_OK;
 }
 
@@ -485,6 +490,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_subnet_delete(const int id, void* subnet
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
                                                               void* trainer,
+                                                              const int32_t optimizer_id,
                                                               matrix_element_type data_element_type,
                                                               void* data,
                                                               matrix_element_type label_element_type,
@@ -502,6 +508,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
     try
     {
         LossMulticlassLogPerPixelRegistry[id]->trainer_test_one_step(trainer,
+                                                                     optimizer_id,
                                                                      data_element_type,
                                                                      data,
                                                                      label_element_type,
@@ -516,11 +523,12 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
 }
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
-                                              void* trainer,
-                                              matrix_element_type data_element_type,
-                                              void* data,
-                                              matrix_element_type label_element_type,
-                                              void* labels)
+                                                      void* trainer,
+                                                      const int32_t optimizer_id,
+                                                      matrix_element_type data_element_type,
+                                                      void* data,
+                                                      matrix_element_type label_element_type,
+                                                      void* labels)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -534,6 +542,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
     try
     {
         LossMulticlassLogPerPixelRegistry[id]->trainer_train(trainer,
+                                                             optimizer_id,
                                                              data_element_type,
                                                              data,
                                                              label_element_type,
@@ -549,6 +558,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_train_one_step(const int id,
                                                                void* trainer,
+                                                               const int32_t optimizer_id,
                                                                matrix_element_type data_element_type,
                                                                void* data,
                                                                matrix_element_type label_element_type,
@@ -566,6 +576,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train_one_step(const int id,
     try
     {
         LossMulticlassLogPerPixelRegistry[id]->trainer_train_one_step(trainer,
+                                                                      optimizer_id,
                                                                       data_element_type,
                                                                       data,
                                                                       label_element_type,
