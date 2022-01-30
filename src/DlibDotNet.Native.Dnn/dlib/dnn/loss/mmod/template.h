@@ -653,11 +653,11 @@ const dlib::tensor* LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT,
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, typename LABEL_ELEMENT_POINTER, int ID>
 void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, LABEL_ELEMENT_POINTER, ID>::trainer_test_one_step(void* trainer,
-                                                                                                            matrix_element_type data_element_type,
-                                                                                                            void* data,
-                                                                                                            matrix_element_type label_element_type,
-                                                                                                            void* labels,
-                                                                                                            const int32_t optimizer_id)
+                                                                                                                                   const int32_t optimizer_id,
+                                                                                                                                   matrix_element_type data_element_type,
+                                                                                                                                   void* data,
+                                                                                                                                   matrix_element_type label_element_type,
+                                                                                                                                   void* labels)
 {
     std::vector<dlib::matrix<ELEMENT>> out_data;
     std::vector<LABEL_ELEMENT> out_label;
@@ -682,11 +682,11 @@ void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT,
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, typename LABEL_ELEMENT_POINTER, int ID>
 void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, LABEL_ELEMENT_POINTER, ID>::trainer_train(void* trainer,
-                                                                                                    matrix_element_type data_element_type,
-                                                                                                    void* data,
-                                                                                                    matrix_element_type label_element_type,
-                                                                                                    void* labels,
-                                                                                                    const int32_t optimizer_id)
+                                                                                                                           const int32_t optimizer_id,
+                                                                                                                           matrix_element_type data_element_type,
+                                                                                                                           void* data,
+                                                                                                                           matrix_element_type label_element_type,
+                                                                                                                           void* labels)
 {
     std::vector<dlib::matrix<ELEMENT>> out_data;
     std::vector<LABEL_ELEMENT> out_label;
@@ -711,11 +711,11 @@ void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT,
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, typename LABEL_ELEMENT_POINTER, int ID>
 void LossMmod<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, LABEL_ELEMENT_POINTER, ID>::trainer_train_one_step(void* trainer,
-                                                                                                             matrix_element_type data_element_type,
-                                                                                                             void* data,
-                                                                                                             matrix_element_type label_element_type,
-                                                                                                             void* labels,
-                                                                                                             const int32_t optimizer_id)
+                                                                                                                                    const int32_t optimizer_id,
+                                                                                                                                    matrix_element_type data_element_type,
+                                                                                                                                    void* data,
+                                                                                                                                    matrix_element_type label_element_type,
+                                                                                                                                    void* labels)
 {
     std::vector<matrix<ELEMENT>> out_data;
     std::vector<LABEL_ELEMENT> out_label;

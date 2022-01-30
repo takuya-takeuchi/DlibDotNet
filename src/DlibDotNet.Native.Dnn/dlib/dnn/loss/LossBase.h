@@ -80,23 +80,23 @@ public:
                                  void** ret) = 0;
     virtual void trainer_operator_left_shift(void* trainer, const int32_t optimizer_id, std::ostringstream* stream) = 0;
     virtual void trainer_test_one_step(void* trainer,
+                                       const int32_t optimizer_id,
                                        matrix_element_type data_element_type,
                                        void* data,
                                        matrix_element_type label_element_type,
-                                       void* labels,
-                                       const int32_t optimizer_id) = 0;
+                                       void* labels) = 0;
     virtual void trainer_train(void* trainer,
+                               const int32_t optimizer_id,
                                matrix_element_type data_element_type,
                                void* data,
                                matrix_element_type label_element_type,
-                               void* labels,
-                               const int32_t optimizer_id) = 0;
+                               void* labels) = 0;
     virtual void trainer_train_one_step(void* trainer,
+                                        const int32_t optimizer_id,
                                         matrix_element_type data_element_type,
                                         void* data,
                                         matrix_element_type label_element_type,
-                                        void* labels,
-                                        const int32_t optimizer_id) = 0;
+                                        void* labels) = 0;
 
 };
 

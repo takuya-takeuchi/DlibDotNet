@@ -701,11 +701,11 @@ const dlib::tensor* LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_test_one_step(void* trainer,
+                                                                                                                     const int32_t optimizer_id,
                                                                                                                      matrix_element_type data_element_type,
                                                                                                                      void* data,
                                                                                                                      matrix_element_type label_element_type,
-                                                                                                                     void* labels,
-                                                                                                                     const int32_t optimizer_id)
+                                                                                                                     void* labels)
 {
     std::vector<dlib::matrix<ELEMENT>> out_data;
     std::vector<LABEL_ELEMENT> out_label;
@@ -730,11 +730,11 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_train(void* trainer,
+                                                                                                             const int32_t optimizer_id,
                                                                                                              matrix_element_type data_element_type,
                                                                                                              void* data,
                                                                                                              matrix_element_type label_element_type,
-                                                                                                             void* labels,
-                                                                                                             const int32_t optimizer_id)
+                                                                                                             void* labels)
 {
     std::vector<dlib::matrix<ELEMENT>> out_data;
     std::vector<LABEL_ELEMENT> out_label;
@@ -759,11 +759,11 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_train_one_step(void* trainer,
+                                                                                                                      const int32_t optimizer_id,
                                                                                                                       matrix_element_type data_element_type,
                                                                                                                       void* data,
                                                                                                                       matrix_element_type label_element_type,
-                                                                                                                      void* labels,
-                                                                                                                      const int32_t optimizer_id)
+                                                                                                                      void* labels)
 {
     std::vector<matrix<ELEMENT>> out_data;
     std::vector<LABEL_ELEMENT> out_label;

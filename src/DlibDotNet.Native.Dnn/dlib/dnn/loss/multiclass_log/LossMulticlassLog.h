@@ -129,23 +129,23 @@ public:
                                  void** ret) override;
     virtual void trainer_operator_left_shift(void* trainer, const int32_t optimizer_id, std::ostringstream* stream) override;
     virtual void trainer_test_one_step(void* trainer,
+                                       const int32_t optimizer_id,
                                        matrix_element_type data_element_type,
                                        void* data,
                                        matrix_element_type label_element_type,
-                                       void* labels,
-                                       const int32_t optimizer_id) override;
+                                       void* labels) override;
     virtual void trainer_train(void* trainer,
+                               const int32_t optimizer_id,
                                matrix_element_type data_element_type,
                                void* data,
                                matrix_element_type label_element_type,
-                               void* labels,
-                               const int32_t optimizer_id) override;
+                               void* labels) override;
     virtual void trainer_train_one_step(void* trainer,
+                                        const int32_t optimizer_id,
                                         matrix_element_type data_element_type,
                                         void* data,
                                         matrix_element_type label_element_type,
-                                        void* labels,
-                                        const int32_t optimizer_id) override;
+                                        void* labels) override;
 protected:
     void convert(void* data,
                  void* labels,

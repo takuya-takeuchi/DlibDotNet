@@ -642,11 +642,11 @@ const dlib::tensor* LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_test_one_step(void* trainer,
+                                                                                                                           const int32_t optimizer_id,
                                                                                                                            matrix_element_type data_element_type,
                                                                                                                            void* data,
                                                                                                                            matrix_element_type label_element_type,
-                                                                                                                           void* labels,
-                                                                                                                           const int32_t optimizer_id)
+                                                                                                                           void* labels)
 {
     std::vector<dlib::matrix<ELEMENT, ROW, COLUMN>> out_data;
     std::vector<LABEL_ELEMENT> out_label;
@@ -671,11 +671,11 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT,
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_train(void* trainer,
+                                                                                                                   const int32_t optimizer_id,
                                                                                                                    matrix_element_type data_element_type,
                                                                                                                    void* data,
                                                                                                                    matrix_element_type label_element_type,
-                                                                                                                   void* labels,
-                                                                                                                   const int32_t optimizer_id)
+                                                                                                                   void* labels)
 {
     std::vector<dlib::matrix<ELEMENT, ROW, COLUMN>> out_data;
     std::vector<LABEL_ELEMENT> out_label;
@@ -700,11 +700,11 @@ void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT,
 
 template<typename NET, matrix_element_type MATRIX_ELEMENT, typename ELEMENT, int ROW, int COLUMN, matrix_element_type LABEL_MATRIX_ELEMENT, typename LABEL_ELEMENT, int ID>
 void LossMetric<NET, MATRIX_ELEMENT, ELEMENT, ROW, COLUMN, LABEL_MATRIX_ELEMENT, LABEL_ELEMENT, ID>::trainer_train_one_step(void* trainer,
+                                                                                                                            const int32_t optimizer_id,
                                                                                                                             matrix_element_type data_element_type,
                                                                                                                             void* data,
                                                                                                                             matrix_element_type label_element_type,
-                                                                                                                            void* labels,
-                                                                                                                            const int32_t optimizer_id)
+                                                                                                                            void* labels)
 {
     std::vector<dlib::matrix<ELEMENT, ROW, COLUMN>> out_data;
     std::vector<LABEL_ELEMENT> out_label;

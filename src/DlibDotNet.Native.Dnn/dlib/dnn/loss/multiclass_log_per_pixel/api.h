@@ -490,11 +490,11 @@ DLLEXPORT int LossMulticlassLogPerPixel_subnet_delete(const int id, void* subnet
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
                                                               void* trainer,
+                                                              const int32_t optimizer_id,
                                                               matrix_element_type data_element_type,
                                                               void* data,
                                                               matrix_element_type label_element_type,
-                                                              void* labels,
-                                                              const int32_t optimizer_id)
+                                                              void* labels)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -508,11 +508,11 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
     try
     {
         LossMulticlassLogPerPixelRegistry[id]->trainer_test_one_step(trainer,
+                                                                     optimizer_id,
                                                                      data_element_type,
                                                                      data,
                                                                      label_element_type,
-                                                                     labels,
-                                                                     optimizer_id);
+                                                                     labels);
     }
     catch(dlib::cuda_error ce)
     {
@@ -523,12 +523,12 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
 }
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
-                                              void* trainer,
-                                              matrix_element_type data_element_type,
-                                              void* data,
-                                              matrix_element_type label_element_type,
-                                              void* labels,
-                                              const int32_t optimizer_id)
+                                                      void* trainer,
+                                                      const int32_t optimizer_id,
+                                                      matrix_element_type data_element_type,
+                                                      void* data,
+                                                      matrix_element_type label_element_type,
+                                                      void* labels)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -542,11 +542,11 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
     try
     {
         LossMulticlassLogPerPixelRegistry[id]->trainer_train(trainer,
+                                                             optimizer_id,
                                                              data_element_type,
                                                              data,
                                                              label_element_type,
-                                                             labels,
-                                                             optimizer_id);
+                                                             labels);
     }
     catch(dlib::cuda_error ce)
     {
@@ -558,11 +558,11 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_train_one_step(const int id,
                                                                void* trainer,
+                                                               const int32_t optimizer_id,
                                                                matrix_element_type data_element_type,
                                                                void* data,
                                                                matrix_element_type label_element_type,
-                                                               void* labels,
-                                                               const int32_t optimizer_id)
+                                                               void* labels)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -576,11 +576,11 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train_one_step(const int id,
     try
     {
         LossMulticlassLogPerPixelRegistry[id]->trainer_train_one_step(trainer,
+                                                                      optimizer_id,
                                                                       data_element_type,
                                                                       data,
                                                                       label_element_type,
-                                                                      labels,
-                                                                      optimizer_id);
+                                                                      labels);
     }
     catch(dlib::cuda_error ce)
     {
