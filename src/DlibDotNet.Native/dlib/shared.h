@@ -242,6 +242,12 @@ enum struct normalizer_type : int
 
 };
 
+enum struct optimizer_type : int
+{
+    Sgd = 0,
+    Adam,
+};
+
 #define ERR_OK                                                            0x00000000
 
 // svm

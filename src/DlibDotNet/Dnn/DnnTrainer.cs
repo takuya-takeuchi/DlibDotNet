@@ -34,6 +34,18 @@ namespace DlibDotNet.Dnn
             this.NativePtr = this._Imp.NativePtr;
         }
 
+        public DnnTrainer(T net, Adam adam)
+        {
+            if (adam == null)
+                throw new ArgumentNullException(nameof(adam));
+
+            adam.ThrowIfDisposed();
+
+            this._Imp = CreateImp(net, adam);
+
+            this.NativePtr = this._Imp.NativePtr;
+        }
+
         #endregion
 
         #region Properties
@@ -184,6 +196,21 @@ namespace DlibDotNet.Dnn
                 return new LossMulticlassLogTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
             if (t == typeof(LossMulticlassLogPerPixel))
                 return new LossMulticlassLogPerPixelTrainer(net.NativePtr, net.NetworkType, sgd) as TrainerImp<T>;
+
+            throw new NotSupportedException();
+        }
+
+        private static TrainerImp<T> CreateImp(T net, Adam sgd)
+        {
+            var t = typeof(T);
+            if (t == typeof(LossMetric))
+                return new LossMetricTrainer(net.NativePtr, net.NetworkType, Adam) as TrainerImp<T>;
+            if (t == typeof(LossMmod))
+                return new LossMmodTrainer(net.NativePtr, net.NetworkType, Adam) as TrainerImp<T>;
+            if (t == typeof(LossMulticlassLog))
+                return new LossMulticlassLogTrainer(net.NativePtr, net.NetworkType, Adam) as TrainerImp<T>;
+            if (t == typeof(LossMulticlassLogPerPixel))
+                return new LossMulticlassLogPerPixelTrainer(net.NativePtr, net.NetworkType, Adam) as TrainerImp<T>;
 
             throw new NotSupportedException();
         }

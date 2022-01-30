@@ -262,97 +262,98 @@ DLLEXPORT void* LossMmod_trainer_new(const int id, void* net)
     return LossMmodRegistry[id]->trainer_new(net);
 }
 
-DLLEXPORT void* LossMmod_trainer_new2(const int id, void* net, sgd* sgd)
+DLLEXPORT void* LossMmod_trainer_new2(const int id, void* net, const int32_t optimizer_id, void* optimizer)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return nullptr;
 
-    return LossMmodRegistry[id]->trainer_new_sgd(net, sgd);
+    return LossMmodRegistry[id]->trainer_new_optimizer(net, optimizer_id, optimizer);
 }
 
-DLLEXPORT void LossMmod_trainer_delete(const int id, void* trainer)
+DLLEXPORT void LossMmod_trainer_delete(const int id, void* trainer, const int32_t optimizer_id)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return;
 
-    LossMmodRegistry[id]->trainer_delete(trainer);
+    LossMmodRegistry[id]->trainer_delete(trainer, optimizer_id);
 }
 
-DLLEXPORT int LossMmod_trainer_set_learning_rate(const int id, void* trainer, const double lr)
+DLLEXPORT int LossMmod_trainer_set_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_learning_rate(trainer, lr);
+    LossMmodRegistry[id]->trainer_set_learning_rate(trainer, optimizer_id, lr);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_get_learning_rate(const int id, void* trainer, double* lr)
+DLLEXPORT int LossMmod_trainer_get_learning_rate(const int id, void* trainer, const int32_t optimizer_id, double* lr)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_get_learning_rate(trainer, lr);
+    LossMmodRegistry[id]->trainer_get_learning_rate(trainer, optimizer_id, lr);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_get_average_loss(const int id, void* trainer, double* loss)
+DLLEXPORT int LossMmod_trainer_get_average_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_get_average_loss(trainer, loss);
+    LossMmodRegistry[id]->trainer_get_average_loss(trainer, optimizer_id, loss);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_get_average_test_loss(const int id, void* trainer, double* loss)
+DLLEXPORT int LossMmod_trainer_get_average_test_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_get_average_test_loss(trainer, loss);
+    LossMmodRegistry[id]->trainer_get_average_test_loss(trainer, optimizer_id, loss);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_set_min_learning_rate(const int id, void* trainer, const double lr)
+DLLEXPORT int LossMmod_trainer_set_min_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_min_learning_rate(trainer, lr);
+    LossMmodRegistry[id]->trainer_set_min_learning_rate(trainer, optimizer_id, lr);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_set_mini_batch_size(const int id, void* trainer, const unsigned long size)
+DLLEXPORT int LossMmod_trainer_set_mini_batch_size(const int id, void* trainer, const int32_t optimizer_id, const unsigned long size)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_mini_batch_size(trainer, size);
+    LossMmodRegistry[id]->trainer_set_mini_batch_size(trainer, optimizer_id, size);
     return ERR_OK;
 }
 
-DLLEXPORT int LossMmod_trainer_be_verbose(const int id, void* trainer)
+DLLEXPORT int LossMmod_trainer_be_verbose(const int id, void* trainer, const int32_t optimizer_id)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_be_verbose(trainer);
+    LossMmodRegistry[id]->trainer_be_verbose(trainer, optimizer_id);
     return ERR_OK;
 }
 
 
 DLLEXPORT int LossMmod_trainer_set_synchronization_file(const int id,
                                                         void* trainer,
+                                                        const int32_t optimizer_id,
                                                         const char* filename,
                                                         const int filename_length,
                                                         const unsigned long second)
@@ -361,37 +362,40 @@ DLLEXPORT int LossMmod_trainer_set_synchronization_file(const int id,
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_synchronization_file(trainer, filename, filename_length, second);
+    LossMmodRegistry[id]->trainer_set_synchronization_file(trainer, optimizer_id, filename, filename_length, second);
     return ERR_OK;
 }
 
 DLLEXPORT int LossMmod_trainer_set_iterations_without_progress_threshold(const int id,
-                                                                           void* trainer,
-                                                                           const unsigned long thresh)
+                                                                         void* trainer,
+                                                                         const int32_t optimizer_id,
+                                                                         const unsigned long thresh)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_iterations_without_progress_threshold(trainer, thresh);
+    LossMmodRegistry[id]->trainer_set_iterations_without_progress_threshold(trainer, optimizer_id, thresh);
     return ERR_OK;
 }
 
 DLLEXPORT int LossMmod_trainer_set_test_iterations_without_progress_threshold(const int id,
-                                                                                void* trainer,
-                                                                                const unsigned long thresh)
+                                                                              void* trainer,
+                                                                              const int32_t optimizer_id,
+                                                                              const unsigned long thresh)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_set_test_iterations_without_progress_threshold(trainer, thresh);
+    LossMmodRegistry[id]->trainer_set_test_iterations_without_progress_threshold(trainer, optimizer_id, thresh);
     return ERR_OK;
 }
 
 DLLEXPORT int LossMmod_trainer_get_net(const int id,
-                                         void* trainer,
-                                         void** ret)
+                                       void* trainer,
+                                       const int32_t optimizer_id,
+                                       void** ret)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
@@ -401,7 +405,7 @@ DLLEXPORT int LossMmod_trainer_get_net(const int id,
 
     try
     {
-        LossMmodRegistry[id]->trainer_get_net(trainer, ret);
+        LossMmodRegistry[id]->trainer_get_net(trainer, optimizer_id, ret);
     }
     catch(std::exception)
     {
@@ -412,14 +416,15 @@ DLLEXPORT int LossMmod_trainer_get_net(const int id,
 }
 
 DLLEXPORT int LossMmod_trainer_operator_left_shift(const int id,
-                                                     void* trainer,
-                                                     std::ostringstream* stream)
+                                                   void* trainer,
+                                                   const int32_t optimizer_id,
+                                                   std::ostringstream* stream)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
         return ERR_DNN_NOT_SUPPORT_NETWORKTYPE;
 
-    LossMmodRegistry[id]->trainer_operator_left_shift(trainer, stream);
+    LossMmodRegistry[id]->trainer_operator_left_shift(trainer, optimizer_id, stream);
     return ERR_OK;
 }
 
@@ -462,7 +467,8 @@ DLLEXPORT int LossMmod_trainer_test_one_step(const int id,
                                                matrix_element_type data_element_type,
                                                void* data,
                                                matrix_element_type label_element_type,
-                                               void* labels)
+                                               void* labels,
+                                               const int32_t optimizer_id)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
@@ -479,7 +485,8 @@ DLLEXPORT int LossMmod_trainer_test_one_step(const int id,
                                                       data_element_type,
                                                       data,
                                                       label_element_type,
-                                                      labels);
+                                                      labels,
+                                                      optimizer_id);
     }
     catch(dlib::cuda_error ce)
     {
@@ -494,7 +501,8 @@ DLLEXPORT int LossMmod_trainer_train(const int id,
                                        matrix_element_type data_element_type,
                                        void* data,
                                        matrix_element_type label_element_type,
-                                       void* labels)
+                                       void* labels,
+                                       const int32_t optimizer_id)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
@@ -511,7 +519,8 @@ DLLEXPORT int LossMmod_trainer_train(const int id,
                                               data_element_type,
                                               data,
                                               label_element_type,
-                                              labels);
+                                              labels,
+                                              optimizer_id);
     }
     catch(dlib::cuda_error ce)
     {
@@ -522,11 +531,12 @@ DLLEXPORT int LossMmod_trainer_train(const int id,
 }
 
 DLLEXPORT int LossMmod_trainer_train_one_step(const int id,
-                                                void* trainer,
-                                                matrix_element_type data_element_type,
-                                                void* data,
-                                                matrix_element_type label_element_type,
-                                                void* labels)
+                                              void* trainer,
+                                              matrix_element_type data_element_type,
+                                              void* data,
+                                              matrix_element_type label_element_type,
+                                              void* labels,
+                                              const int32_t optimizer_id)
 {
     auto iter = LossMmodRegistry.find(id);
     if (iter == end(LossMmodRegistry))
@@ -543,7 +553,8 @@ DLLEXPORT int LossMmod_trainer_train_one_step(const int id,
                                                      data_element_type,
                                                      data,
                                                      label_element_type,
-                                                     labels);
+                                                     labels,
+                                                     optimizer_id);
     }
     catch(dlib::cuda_error ce)
     {
