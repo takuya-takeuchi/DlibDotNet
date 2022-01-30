@@ -350,6 +350,7 @@ namespace DlibDotNet.Dnn
             {
                 var ret = NativeMethods.LossMulticlassLog_trainer_test_one_step(trainer.Type,
                                                                                 trainer.NativePtr,
+                                                                                trainer.SolverType,
                                                                                 dataElementTypes.ToNativeMatrixElementType(),
                                                                                 dataVec.NativePtr,
                                                                                 NativeMethods.MatrixElementType.UInt32,
@@ -395,6 +396,7 @@ namespace DlibDotNet.Dnn
             {
                 var ret = NativeMethods.LossMulticlassLog_trainer_train(trainer.Type,
                                                                         trainer.NativePtr,
+                                                                        trainer.SolverType,
                                                                         dataElementTypes.ToNativeMatrixElementType(),
                                                                         dataVec.NativePtr,
                                                                         NativeMethods.MatrixElementType.UInt32,
@@ -440,6 +442,7 @@ namespace DlibDotNet.Dnn
             {
                 var ret = NativeMethods.LossMulticlassLog_trainer_train_one_step(trainer.Type,
                                                                                  trainer.NativePtr,
+                                                                                 trainer.SolverType,
                                                                                  dataElementTypes.ToNativeMatrixElementType(),
                                                                                  dataVec.NativePtr,
                                                                                  NativeMethods.MatrixElementType.UInt32,
