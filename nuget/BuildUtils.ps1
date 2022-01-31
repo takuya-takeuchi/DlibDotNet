@@ -771,6 +771,8 @@ class Config
          foreach ($key in $buildHashTable.keys)
          {
             $srcDir = Join-Path $sourceRoot $key
+            $srcDir = $config.GetStoreDriectory($srcDir)
+
             $dll = $buildHashTable[$key]
             $dstDir = Join-Path $current $libraryDir
 
@@ -831,6 +833,8 @@ class Config
          foreach ($key in $buildHashTable.keys)
          {
             $srcDir = Join-Path $sourceRoot $key
+            $srcDir = $Config.GetStoreDriectory($srcDir)
+
             $dll = $buildHashTable[$key]
             $dstDir = Join-Path $current $libraryDir
 

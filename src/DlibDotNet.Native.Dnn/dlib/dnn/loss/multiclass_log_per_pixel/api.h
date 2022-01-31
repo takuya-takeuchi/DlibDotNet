@@ -288,7 +288,7 @@ DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new(const int id, void* net)
     return LossMulticlassLogPerPixelRegistry[id]->trainer_new(net);
 }
 
-DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new2(const int id, void* net, const int32_t optimizer_id, void* optimizer)
+DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new2(const int id, void* net, const ::optimizer_type optimizer_id, void* optimizer)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -297,7 +297,7 @@ DLLEXPORT void* LossMulticlassLogPerPixel_trainer_new2(const int id, void* net, 
     return LossMulticlassLogPerPixelRegistry[id]->trainer_new_optimizer(net, optimizer_id, optimizer);
 }
 
-DLLEXPORT void LossMulticlassLogPerPixel_trainer_delete(const int id, void* trainer, const int32_t optimizer_id)
+DLLEXPORT void LossMulticlassLogPerPixel_trainer_delete(const int id, void* trainer, const ::optimizer_type optimizer_id)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -306,7 +306,7 @@ DLLEXPORT void LossMulticlassLogPerPixel_trainer_delete(const int id, void* trai
     LossMulticlassLogPerPixelRegistry[id]->trainer_delete(trainer, optimizer_id);
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_learning_rate(const int id, void* trainer, const ::optimizer_type optimizer_id, const double lr)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -316,7 +316,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_learning_rate(const int id, 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_learning_rate(const int id, void* trainer, const int32_t optimizer_id, double* lr)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_learning_rate(const int id, void* trainer, const ::optimizer_type optimizer_id, double* lr)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -326,7 +326,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_learning_rate(const int id, 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_loss(const int id, void* trainer, const ::optimizer_type optimizer_id, double* loss)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -336,7 +336,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_loss(const int id, v
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_test_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_test_loss(const int id, void* trainer, const ::optimizer_type optimizer_id, double* loss)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -346,7 +346,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_average_test_loss(const int 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_min_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_min_learning_rate(const int id, void* trainer, const ::optimizer_type optimizer_id, const double lr)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -356,7 +356,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_min_learning_rate(const int 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_mini_batch_size(const int id, void* trainer, const int32_t optimizer_id, const unsigned long size)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_mini_batch_size(const int id, void* trainer, const ::optimizer_type optimizer_id, const unsigned long size)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -366,7 +366,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_mini_batch_size(const int id
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLogPerPixel_trainer_be_verbose(const int id, void* trainer, const int32_t optimizer_id)
+DLLEXPORT int LossMulticlassLogPerPixel_trainer_be_verbose(const int id, void* trainer, const ::optimizer_type optimizer_id)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
     if (iter == end(LossMulticlassLogPerPixelRegistry))
@@ -379,7 +379,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_be_verbose(const int id, void* t
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_synchronization_file(const int id,
                                                                          void* trainer,
-                                                                         const int32_t optimizer_id,
+                                                                         const ::optimizer_type optimizer_id,
                                                                          const char* filename,
                                                                          const int filename_length,
                                                                          const unsigned long second)
@@ -394,7 +394,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_synchronization_file(const i
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_iterations_without_progress_threshold(const int id,
                                                                                           void* trainer,
-                                                                                          const int32_t optimizer_id,
+                                                                                          const ::optimizer_type optimizer_id,
                                                                                           const unsigned long thresh)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -407,7 +407,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_iterations_without_progress_
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_test_iterations_without_progress_threshold(const int id,
                                                                                                void* trainer,
-                                                                                               const int32_t optimizer_id,
+                                                                                               const ::optimizer_type optimizer_id,
                                                                                                const unsigned long thresh)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -420,7 +420,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_set_test_iterations_without_prog
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_net(const int id,
                                                         void* trainer,
-                                                        const int32_t optimizer_id,
+                                                        const ::optimizer_type optimizer_id,
                                                         void** ret)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -443,7 +443,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_get_net(const int id,
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_operator_left_shift(const int id,
                                                                     void* trainer,
-                                                                    const int32_t optimizer_id,
+                                                                    const ::optimizer_type optimizer_id,
                                                                     std::ostringstream* stream)
 {
     auto iter = LossMulticlassLogPerPixelRegistry.find(id);
@@ -490,7 +490,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_subnet_delete(const int id, void* subnet
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
                                                               void* trainer,
-                                                              const int32_t optimizer_id,
+                                                              const ::optimizer_type optimizer_id,
                                                               matrix_element_type data_element_type,
                                                               void* data,
                                                               matrix_element_type label_element_type,
@@ -524,7 +524,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_test_one_step(const int id,
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
                                                       void* trainer,
-                                                      const int32_t optimizer_id,
+                                                      const ::optimizer_type optimizer_id,
                                                       matrix_element_type data_element_type,
                                                       void* data,
                                                       matrix_element_type label_element_type,
@@ -558,7 +558,7 @@ DLLEXPORT int LossMulticlassLogPerPixel_trainer_train(const int id,
 
 DLLEXPORT int LossMulticlassLogPerPixel_trainer_train_one_step(const int id,
                                                                void* trainer,
-                                                               const int32_t optimizer_id,
+                                                               const ::optimizer_type optimizer_id,
                                                                matrix_element_type data_element_type,
                                                                void* data,
                                                                matrix_element_type label_element_type,

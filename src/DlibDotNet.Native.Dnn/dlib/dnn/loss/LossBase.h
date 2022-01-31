@@ -55,44 +55,44 @@ public:
 
 public:
     virtual void* trainer_new(void* net) = 0;
-    virtual void* trainer_new_optimizer(void* net, const int32_t optimizer_id, void* optimizer) = 0;
-    virtual void trainer_delete(void* trainer, const int32_t optimizer_id) = 0;
-    virtual void trainer_set_learning_rate(void* trainer, const int32_t optimizer_id, const double lr) = 0;
-    virtual void trainer_get_learning_rate(void* trainer, const int32_t optimizer_id, double* lr) = 0;
-    virtual void trainer_get_average_loss(void* trainer, const int32_t optimizer_id, double* loss) = 0;
-    virtual void trainer_get_average_test_loss(void* trainer, const int32_t optimizer_id, double* loss) = 0;
-    virtual void trainer_set_min_learning_rate(void* trainer, const int32_t optimizer_id, const double lr) = 0;
-    virtual void trainer_set_mini_batch_size(void* trainer, const int32_t optimizer_id, const unsigned long size) = 0;
-    virtual void trainer_be_verbose(void* trainer, const int32_t optimizer_id) = 0;
+    virtual void* trainer_new_optimizer(void* net, const ::optimizer_type optimizer_id, void* optimizer) = 0;
+    virtual void trainer_delete(void* trainer, const ::optimizer_type optimizer_id) = 0;
+    virtual void trainer_set_learning_rate(void* trainer, const ::optimizer_type optimizer_id, const double lr) = 0;
+    virtual void trainer_get_learning_rate(void* trainer, const ::optimizer_type optimizer_id, double* lr) = 0;
+    virtual void trainer_get_average_loss(void* trainer, const ::optimizer_type optimizer_id, double* loss) = 0;
+    virtual void trainer_get_average_test_loss(void* trainer, const ::optimizer_type optimizer_id, double* loss) = 0;
+    virtual void trainer_set_min_learning_rate(void* trainer, const ::optimizer_type optimizer_id, const double lr) = 0;
+    virtual void trainer_set_mini_batch_size(void* trainer, const ::optimizer_type optimizer_id, const unsigned long size) = 0;
+    virtual void trainer_be_verbose(void* trainer, const ::optimizer_type optimizer_id) = 0;
     virtual void trainer_set_synchronization_file(void* trainer,
-                                                  const int32_t optimizer_id,
+                                                  const ::optimizer_type optimizer_id,
                                                   const char* filename,
                                                   const int filename_length,
                                                   const unsigned long second) = 0;
     virtual void trainer_set_iterations_without_progress_threshold(void* trainer,
-                                                                   const int32_t optimizer_id,
+                                                                   const ::optimizer_type optimizer_id,
                                                                    const unsigned long thresh) = 0;
     virtual void trainer_set_test_iterations_without_progress_threshold(void* trainer,
-                                                                        const int32_t optimizer_id,
+                                                                        const ::optimizer_type optimizer_id,
                                                                         const unsigned long thresh) = 0;
     virtual void trainer_get_net(void* trainer,
-                                 const int32_t optimizer_id,
+                                 const ::optimizer_type optimizer_id,
                                  void** ret) = 0;
-    virtual void trainer_operator_left_shift(void* trainer, const int32_t optimizer_id, std::ostringstream* stream) = 0;
+    virtual void trainer_operator_left_shift(void* trainer, const ::optimizer_type optimizer_id, std::ostringstream* stream) = 0;
     virtual void trainer_test_one_step(void* trainer,
-                                       const int32_t optimizer_id,
+                                       const ::optimizer_type optimizer_id,
                                        matrix_element_type data_element_type,
                                        void* data,
                                        matrix_element_type label_element_type,
                                        void* labels) = 0;
     virtual void trainer_train(void* trainer,
-                               const int32_t optimizer_id,
+                               const ::optimizer_type optimizer_id,
                                matrix_element_type data_element_type,
                                void* data,
                                matrix_element_type label_element_type,
                                void* labels) = 0;
     virtual void trainer_train_one_step(void* trainer,
-                                        const int32_t optimizer_id,
+                                        const ::optimizer_type optimizer_id,
                                         matrix_element_type data_element_type,
                                         void* data,
                                         matrix_element_type label_element_type,

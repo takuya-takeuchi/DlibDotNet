@@ -279,7 +279,7 @@ DLLEXPORT void* LossMulticlassLog_trainer_new(const int id, void* net)
     return LossMulticlassLogRegistry[id]->trainer_new(net);
 }
 
-DLLEXPORT void* LossMulticlassLog_trainer_new2(const int id, void* net, const int32_t optimizer_id, void* optimizer)
+DLLEXPORT void* LossMulticlassLog_trainer_new2(const int id, void* net, const ::optimizer_type optimizer_id, void* optimizer)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -288,7 +288,7 @@ DLLEXPORT void* LossMulticlassLog_trainer_new2(const int id, void* net, const in
     return LossMulticlassLogRegistry[id]->trainer_new_optimizer(net, optimizer_id, optimizer);
 }
 
-DLLEXPORT void LossMulticlassLog_trainer_delete(const int id, void* trainer, const int32_t optimizer_id)
+DLLEXPORT void LossMulticlassLog_trainer_delete(const int id, void* trainer, const ::optimizer_type optimizer_id)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -297,7 +297,7 @@ DLLEXPORT void LossMulticlassLog_trainer_delete(const int id, void* trainer, con
     LossMulticlassLogRegistry[id]->trainer_delete(trainer, optimizer_id);
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
+DLLEXPORT int LossMulticlassLog_trainer_set_learning_rate(const int id, void* trainer, const ::optimizer_type optimizer_id, const double lr)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -307,7 +307,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_learning_rate(const int id, void* tr
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_get_learning_rate(const int id, void* trainer, const int32_t optimizer_id, double* lr)
+DLLEXPORT int LossMulticlassLog_trainer_get_learning_rate(const int id, void* trainer, const ::optimizer_type optimizer_id, double* lr)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -317,7 +317,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_learning_rate(const int id, void* tr
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_get_average_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
+DLLEXPORT int LossMulticlassLog_trainer_get_average_loss(const int id, void* trainer, const ::optimizer_type optimizer_id, double* loss)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -327,7 +327,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_average_loss(const int id, void* tra
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_get_average_test_loss(const int id, void* trainer, const int32_t optimizer_id, double* loss)
+DLLEXPORT int LossMulticlassLog_trainer_get_average_test_loss(const int id, void* trainer, const ::optimizer_type optimizer_id, double* loss)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -337,7 +337,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_average_test_loss(const int id, void
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_min_learning_rate(const int id, void* trainer, const int32_t optimizer_id, const double lr)
+DLLEXPORT int LossMulticlassLog_trainer_set_min_learning_rate(const int id, void* trainer, const ::optimizer_type optimizer_id, const double lr)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -347,7 +347,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_min_learning_rate(const int id, void
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_set_mini_batch_size(const int id, void* trainer, const int32_t optimizer_id, const unsigned long size)
+DLLEXPORT int LossMulticlassLog_trainer_set_mini_batch_size(const int id, void* trainer, const ::optimizer_type optimizer_id, const unsigned long size)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -357,7 +357,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_mini_batch_size(const int id, void* 
     return ERR_OK;
 }
 
-DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer, const int32_t optimizer_id)
+DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer, const ::optimizer_type optimizer_id)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
     if (iter == end(LossMulticlassLogRegistry))
@@ -370,7 +370,7 @@ DLLEXPORT int LossMulticlassLog_trainer_be_verbose(const int id, void* trainer, 
 
 DLLEXPORT int LossMulticlassLog_trainer_set_synchronization_file(const int id,
                                                                  void* trainer,
-                                                                 const int32_t optimizer_id,
+                                                                 const ::optimizer_type optimizer_id,
                                                                  const char* filename,
                                                                  const int filename_length,
                                                                  const unsigned long second)
@@ -385,7 +385,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_synchronization_file(const int id,
 
 DLLEXPORT int LossMulticlassLog_trainer_set_iterations_without_progress_threshold(const int id,
                                                                                   void* trainer,
-                                                                                  const int32_t optimizer_id,
+                                                                                  const ::optimizer_type optimizer_id,
                                                                                   const unsigned long thresh)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -398,7 +398,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_iterations_without_progress_threshol
 
 DLLEXPORT int LossMulticlassLog_trainer_set_test_iterations_without_progress_threshold(const int id,
                                                                                        void* trainer,
-                                                                                       const int32_t optimizer_id,
+                                                                                       const ::optimizer_type optimizer_id,
                                                                                        const unsigned long thresh)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -411,7 +411,7 @@ DLLEXPORT int LossMulticlassLog_trainer_set_test_iterations_without_progress_thr
 
 DLLEXPORT int LossMulticlassLog_trainer_get_net(const int id,
                                                 void* trainer,
-                                                const int32_t optimizer_id,
+                                                const ::optimizer_type optimizer_id,
                                                 void** ret)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -434,7 +434,7 @@ DLLEXPORT int LossMulticlassLog_trainer_get_net(const int id,
 
 DLLEXPORT int LossMulticlassLog_trainer_operator_left_shift(const int id,
                                                             void* trainer,
-                                                            const int32_t optimizer_id,
+                                                            const ::optimizer_type optimizer_id,
                                                             std::ostringstream* stream)
 {
     auto iter = LossMulticlassLogRegistry.find(id);
@@ -481,7 +481,7 @@ DLLEXPORT int LossMulticlassLog_subnet_delete(const int id, void* subnet)
 
 DLLEXPORT int LossMulticlassLog_trainer_test_one_step(const int id,
                                                       void* trainer,
-                                                      const int32_t optimizer_id,
+                                                      const ::optimizer_type optimizer_id,
                                                       matrix_element_type data_element_type,
                                                       void* data,
                                                       matrix_element_type label_element_type,
@@ -515,7 +515,7 @@ DLLEXPORT int LossMulticlassLog_trainer_test_one_step(const int id,
 
 DLLEXPORT int LossMulticlassLog_trainer_train(const int id,
                                               void* trainer,
-                                              const int32_t optimizer_id,
+                                              const ::optimizer_type optimizer_id,
                                               matrix_element_type data_element_type,
                                               void* data,
                                               matrix_element_type label_element_type,
@@ -549,7 +549,7 @@ DLLEXPORT int LossMulticlassLog_trainer_train(const int id,
 
 DLLEXPORT int LossMulticlassLog_trainer_train_one_step(const int id,
                                                        void* trainer,
-                                                       const int32_t optimizer_id,
+                                                       const ::optimizer_type optimizer_id,
                                                        matrix_element_type data_element_type,
                                                        void* data,
                                                        matrix_element_type label_element_type,

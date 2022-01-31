@@ -20,22 +20,22 @@ build:win:
     paths:
       - nuget/artifacts
 
-build:uwp:
-  stage: build
-  before_script:
-    - chcp 65001
-    - git submodule update --init --recursive
-    - "Get-ChildItem env:"
-  script:
-    - cd nuget
-    - git clean -fxd .
-    - pwsh BuildUniversalWindowsPlatform.ps1
-  tags:
-    - windows
-    - cuda
-  artifacts:
-    paths:
-      - nuget/artifacts
+# build:uwp:
+#   stage: build
+#   before_script:
+#     - chcp 65001
+#     - git submodule update --init --recursive
+#     - "Get-ChildItem env:"
+#   script:
+#     - cd nuget
+#     - git clean -fxd .
+#     - pwsh BuildUniversalWindowsPlatform.ps1
+#   tags:
+#     - windows
+#     - cuda
+#   artifacts:
+#     paths:
+#       - nuget/artifacts
 
 build:cent:
   stage: build
@@ -92,7 +92,7 @@ package:
     - windows
   dependencies:
     - build:win
-    - build:uwp
+    # - build:uwp
     - build:ubuntu
     - build:cent
     - build:osx
