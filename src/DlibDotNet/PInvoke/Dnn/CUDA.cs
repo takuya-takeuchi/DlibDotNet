@@ -8,19 +8,19 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(cuda_cudaRuntimeGetVersion))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool dnn_cuda_cudaRuntimeGetVersion(out int version);
+        public static extern bool cuda_dnn_cudaRuntimeGetVersion(out int version);
 
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(cuda_cudaDriverGetVersion))]
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool dnn_cuda_cudaDriverGetVersion(out int version);
+        public static extern bool cuda_dnn_cudaDriverGetVersion(out int version);
 
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(cuda_cudaGetErrorName))]
-        public static extern IntPtr dnn_cuda_cudaGetErrorName(int code);
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr cuda_dnn_cudaGetErrorName(int code);
 
-        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention, EntryPoint = nameof(cuda_cudaGetErrorString))]
-        public static extern IntPtr dnn_cuda_cudaGetErrorString(int code);
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr cuda_dnn_cudaGetErrorString(int code);
 
     }
 

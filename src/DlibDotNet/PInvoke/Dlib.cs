@@ -282,6 +282,15 @@ namespace DlibDotNet
 
         }
 
+        internal enum OptimizerType
+        {
+
+            Sgd,
+
+            Adam
+
+        }
+
         internal enum ErrorType
         {
 

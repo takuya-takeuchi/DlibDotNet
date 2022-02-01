@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+  <!--
+      For more information see the docs on creating custom Linker Settings
+      https://docs.microsoft.com/en-us/xamarin/cross-platform/deploy-test/linker
+  -->
+  <assembly fullname="Essential.Interfaces">
+    <type fullname="Xamarin.Essentials.Implementation.AppInfoImplementation">
+      <method name=".ctor" />
+    </type>
+  </assembly>
+
+  <assembly fullname="Prism" />
+  <assembly fullname="Prism.Forms" />
+  <assembly fullname="Prism.Unity.Forms" />
+  <assembly fullname="Unity.Container" />
+
+</linker>

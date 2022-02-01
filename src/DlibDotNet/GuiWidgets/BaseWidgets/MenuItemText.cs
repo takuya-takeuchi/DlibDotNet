@@ -19,6 +19,7 @@ namespace DlibDotNet
 
         public MenuItemText(string str, VoidActionMediator mediator, char hk)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (mediator == null)
                 throw new ArgumentNullException(nameof(mediator));
 
@@ -26,6 +27,9 @@ namespace DlibDotNet
 
             var s = Dlib.Encoding.GetBytes(str ?? "");
             this.NativePtr = NativeMethods.menu_item_text_new(s, s.Length, mediator.NativePtr, hk);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -39,12 +43,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.menu_item_text_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

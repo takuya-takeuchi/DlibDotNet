@@ -205,85 +205,85 @@ namespace DlibDotNet
 
         #region operator
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_int8_t(SvmKernelType kernel_type,
-                                                                           MatrixElementType type,
-                                                                           int templateRows,
-                                                                           int templateColumns,
-                                                                           SvmFunctionType function_type,
-                                                                           IntPtr function,
-                                                                           IntPtr sample,
-                                                                           out sbyte ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_int8_t(SvmKernelType kernel_type,
+        //                                                                    MatrixElementType type,
+        //                                                                    int templateRows,
+        //                                                                    int templateColumns,
+        //                                                                    SvmFunctionType function_type,
+        //                                                                    IntPtr function,
+        //                                                                    IntPtr sample,
+        //                                                                    out sbyte ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_uint8_t(SvmKernelType kernel_type,
-                                                                            MatrixElementType type,
-                                                                            int templateRows,
-                                                                            int templateColumns,
-                                                                            SvmFunctionType function_type,
-                                                                            IntPtr function,
-                                                                            IntPtr sample,
-                                                                            out byte ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_uint8_t(SvmKernelType kernel_type,
+        //                                                                     MatrixElementType type,
+        //                                                                     int templateRows,
+        //                                                                     int templateColumns,
+        //                                                                     SvmFunctionType function_type,
+        //                                                                     IntPtr function,
+        //                                                                     IntPtr sample,
+        //                                                                     out byte ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_int16_t(SvmKernelType kernel_type,
-                                                                            MatrixElementType type,
-                                                                            int templateRows,
-                                                                            int templateColumns,
-                                                                            SvmFunctionType function_type,
-                                                                            IntPtr function,
-                                                                            IntPtr sample,
-                                                                            out short ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_int16_t(SvmKernelType kernel_type,
+        //                                                                     MatrixElementType type,
+        //                                                                     int templateRows,
+        //                                                                     int templateColumns,
+        //                                                                     SvmFunctionType function_type,
+        //                                                                     IntPtr function,
+        //                                                                     IntPtr sample,
+        //                                                                     out short ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_uint16_t(SvmKernelType kernel_type,
-                                                                             MatrixElementType type,
-                                                                             int templateRows,
-                                                                             int templateColumns,
-                                                                             SvmFunctionType function_type,
-                                                                             IntPtr function,
-                                                                             IntPtr sample,
-                                                                             out ushort ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_uint16_t(SvmKernelType kernel_type,
+        //                                                                      MatrixElementType type,
+        //                                                                      int templateRows,
+        //                                                                      int templateColumns,
+        //                                                                      SvmFunctionType function_type,
+        //                                                                      IntPtr function,
+        //                                                                      IntPtr sample,
+        //                                                                      out ushort ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_int32_t(SvmKernelType kernel_type,
-                                                                            MatrixElementType type,
-                                                                            int templateRows,
-                                                                            int templateColumns,
-                                                                            SvmFunctionType function_type,
-                                                                            IntPtr function,
-                                                                            IntPtr sample,
-                                                                            out int ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_int32_t(SvmKernelType kernel_type,
+        //                                                                     MatrixElementType type,
+        //                                                                     int templateRows,
+        //                                                                     int templateColumns,
+        //                                                                     SvmFunctionType function_type,
+        //                                                                     IntPtr function,
+        //                                                                     IntPtr sample,
+        //                                                                     out int ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_uint32_t(SvmKernelType kernel_type,
-                                                                             MatrixElementType type,
-                                                                             int templateRows,
-                                                                             int templateColumns,
-                                                                             SvmFunctionType function_type,
-                                                                             IntPtr function,
-                                                                             IntPtr sample,
-                                                                             out uint ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_uint32_t(SvmKernelType kernel_type,
+        //                                                                      MatrixElementType type,
+        //                                                                      int templateRows,
+        //                                                                      int templateColumns,
+        //                                                                      SvmFunctionType function_type,
+        //                                                                      IntPtr function,
+        //                                                                      IntPtr sample,
+        //                                                                      out uint ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_int64_t(SvmKernelType kernel_type,
-                                                                            MatrixElementType type,
-                                                                            int templateRows,
-                                                                            int templateColumns,
-                                                                            SvmFunctionType function_type,
-                                                                            IntPtr function,
-                                                                            IntPtr sample,
-                                                                            out long ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_int64_t(SvmKernelType kernel_type,
+        //                                                                     MatrixElementType type,
+        //                                                                     int templateRows,
+        //                                                                     int templateColumns,
+        //                                                                     SvmFunctionType function_type,
+        //                                                                     IntPtr function,
+        //                                                                     IntPtr sample,
+        //                                                                     out long ret);
 
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ErrorType normalized_function_operator_uint64_t(SvmKernelType kernel_type,
-                                                                             MatrixElementType type,
-                                                                             int templateRows,
-                                                                             int templateColumns,
-                                                                             SvmFunctionType function_type,
-                                                                             IntPtr function,
-                                                                             IntPtr sample,
-                                                                             out ulong ret);
+        // [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        // public static extern ErrorType normalized_function_operator_uint64_t(SvmKernelType kernel_type,
+        //                                                                      MatrixElementType type,
+        //                                                                      int templateRows,
+        //                                                                      int templateColumns,
+        //                                                                      SvmFunctionType function_type,
+        //                                                                      IntPtr function,
+        //                                                                      IntPtr sample,
+        //                                                                      out ulong ret);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern ErrorType normalized_function_operator_double(SvmKernelType kernel_type,

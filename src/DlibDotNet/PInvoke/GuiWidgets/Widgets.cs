@@ -27,12 +27,12 @@ namespace DlibDotNet
 
         #endregion
 
+#if !DLIB_NO_GUI_SUPPORT
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void message_box(byte[] title, int titleLength, byte[] message, int messageLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void save_file_box(IntPtr stringActionMediator);
-
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr void_action_mediator_new(IntPtr callback);
@@ -63,6 +63,7 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void image_display_overlay_rect_action_mediator_delete(IntPtr mediator);
+#endif
 
     }
 

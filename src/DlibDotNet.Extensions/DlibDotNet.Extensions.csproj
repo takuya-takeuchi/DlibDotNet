@@ -42,7 +42,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="!$(TargetFramework.Contains('netstandard')) And !$(TargetFramework.Contains('netcoreapp')) ">
-    <Reference Include="System.Drawing" />
     <Reference Include="System" />
   </ItemGroup>
 

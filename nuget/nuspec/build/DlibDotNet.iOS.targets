@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup Condition="(('$(Platform)' == 'iPhone'))">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-device\libDlibDotNetNative_merged.a">
+            <Kind>Static</Kind>
+            <ForceLoad>True</ForceLoad>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+    </ItemGroup>
+    <ItemGroup Condition="(('$(Platform)' == 'iPhoneSimulator'))">
+        <NativeReference Include="$(MSBuildThisFileDirectory)..\..\native\ios-simulator\libDlibDotNetNative_merged.a">
+            <Kind>Static</Kind>
+            <ForceLoad>True</ForceLoad>
+            <SmartLink>True</SmartLink>
+        </NativeReference>
+    </ItemGroup>
+</Project>

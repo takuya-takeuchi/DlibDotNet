@@ -25,7 +25,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 21)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20210302)
+set(VERSION_DATE 20220130)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -73,15 +73,21 @@ set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
 
 # create config file
-configure_file(
-    ${PROJECT_SOURCE_DIR}/dlib/config.h.in
-    ${PROJECT_SOURCE_DIR}/dlib/config.h
-    @ONLY)
-
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h
-                          ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.h)
-FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp
-                          ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/cuda/cuda.cpp)
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/dlib_ios/config.h.in
+        ${PROJECT_SOURCE_DIR}/dlib_ios/config.h
+        @ONLY)
+    FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib_ios/*.h)
+    FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib_ios/*.cpp)
+else()
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/dlib/config.h.in
+        ${PROJECT_SOURCE_DIR}/dlib/config.h
+        @ONLY)
+    FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
+    FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
+endif()
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER1 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/shared.h)
 FILE(GLOB_RECURSE DLIBDOTNET_SHARED_HEADER2 ${PROJECT_SOURCE_DIR}/../DlibDotNet.Native/dlib/export.h)
 

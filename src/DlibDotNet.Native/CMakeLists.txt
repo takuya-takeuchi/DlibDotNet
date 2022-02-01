@@ -25,7 +25,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 19)
 set(VERSION_MINOR 21)
 set(VERSION_PATCH 0)
-set(VERSION_DATE 20210302)
+set(VERSION_DATE 20220130)
 
 # libjpeg-dev, libpng-dev 
 set(DLIB_JPEG_SUPPORT True)
@@ -77,13 +77,21 @@ set(DLIB_IN_PROJECT_BUILD True)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/dlib/dlib ${CMAKE_CURRENT_BINARY_DIR}/dlib_build)
 
 # create config file
-configure_file(
-    ${PROJECT_SOURCE_DIR}/dlib/config.h.in
-    ${PROJECT_SOURCE_DIR}/dlib/config.h
-    @ONLY)
-
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
-FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/dlib_ios/config.h.in
+        ${PROJECT_SOURCE_DIR}/dlib_ios/config.h
+        @ONLY)
+    FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib_ios/*.h)
+    FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib_ios/*.cpp)
+else()
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/dlib/config.h.in
+        ${PROJECT_SOURCE_DIR}/dlib/config.h
+        @ONLY)
+    FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/dlib/*.h)
+    FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/dlib/*.cpp)
+endif()
 
 OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
 if (${ENABLE_NEON})

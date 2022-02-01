@@ -20,6 +20,7 @@ namespace DlibDotNet
 
         public ClickActionMediator(Action<Point, bool, uint> callback)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
@@ -28,6 +29,9 @@ namespace DlibDotNet
             var @delegate = new NativeMethods.ClickActionDelegate(this.NativeCallback);
             this._Handle = Marshal.GetFunctionPointerForDelegate(@delegate);
             this.NativePtr = NativeMethods.click_action_mediator_new(this._Handle);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -41,12 +45,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.click_action_mediator_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -55,7 +63,11 @@ namespace DlibDotNet
 
         private void NativeCallback(IntPtr point, bool isDoubleClick, uint button)
         {
+#if !DLIB_NO_GUI_SUPPORT
             this._Callback.Invoke(new Point(point, false), isDoubleClick, button );
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

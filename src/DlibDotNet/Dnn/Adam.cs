@@ -3,7 +3,7 @@
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class Adam : DlibObject
+    public sealed class Adam : Solver
     {
 
         #region Constructors
@@ -16,6 +16,18 @@ namespace DlibDotNet.Dnn
         public Adam(float weightDecay, float momentum1, float momentum2)
         {
             this.NativePtr = NativeMethods.adam_new(weightDecay, momentum1, momentum2);
+        }
+
+        #endregion
+
+        #region Properties
+
+        public override int SolverType
+        {
+            get
+            {
+                return (int)NativeMethods.OptimizerType.Adam;
+            }
         }
 
         #endregion

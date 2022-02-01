@@ -20,6 +20,7 @@ namespace DlibDotNet
 
         public StringActionMediator(Action<string> callback)
         {
+#if !DLIB_NO_GUI_SUPPORT
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
@@ -28,6 +29,9 @@ namespace DlibDotNet
             var @delegate = new NativeMethods.StringActionDelegate(this.NativeCallback);
             this._Handle = Marshal.GetFunctionPointerForDelegate(@delegate);
             this.NativePtr = NativeMethods.string_action_mediator_new(this._Handle);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion
@@ -41,12 +45,16 @@ namespace DlibDotNet
         /// </summary>
         protected override void DisposeUnmanaged()
         {
+#if !DLIB_NO_GUI_SUPPORT
             base.DisposeUnmanaged();
 
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
             NativeMethods.string_action_mediator_delete(this.NativePtr);
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         #endregion

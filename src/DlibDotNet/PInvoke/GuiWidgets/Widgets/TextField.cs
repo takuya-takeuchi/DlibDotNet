@@ -8,6 +8,8 @@ namespace DlibDotNet
     internal sealed partial class NativeMethods
     {
 
+#if !DLIB_NO_GUI_SUPPORT
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern IntPtr text_field_new(IntPtr drawable_window);
 
@@ -35,6 +37,8 @@ namespace DlibDotNet
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void text_field_set_text_modified_handler(IntPtr text_field, IntPtr mediator);
+
+#endif
 
     }
 

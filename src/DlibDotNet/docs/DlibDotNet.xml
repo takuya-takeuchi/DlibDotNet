@@ -24,253 +24,6 @@
             Releases all unmanaged resources.
             </summary>
         </member>
-        <member name="T:DlibDotNet.BgrPixel">
-            <summary>
-            Represents an BGR color value.
-            </summary>
-        </member>
-        <member name="F:DlibDotNet.BgrPixel.Blue">
-            <summary>
-            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
-            </summary>
-            <value>The blue component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.BgrPixel.Green">
-            <summary>
-            Gets or sets the green component of the color. of this <see cref="T:DlibDotNet.BgrPixel"/>.
-            </summary>
-            <value>The green component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.BgrPixel.Red">
-            <summary>
-            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
-            </summary>
-            <value>The red component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
-        </member>
-        <member name="M:DlibDotNet.BgrPixel.#ctor(System.Byte,System.Byte,System.Byte)">
-            <summary>
-            Initializes a new instance of the <see cref="T:DlibDotNet.BgrPixel"/> class with the specified BGR color value.
-            </summary>
-            <param name="blue">The blue component of the color.</param>
-            <param name="green">The green component of the color.</param>
-            <param name="red">The red component of the color.</param>
-        </member>
-        <member name="M:DlibDotNet.BgrPixel.Equals(System.Object)">
-            <summary>
-            Specifies whether this <see cref="T:DlibDotNet.BgrPixel"/> contains the same BGR color value as the specified <see cref="T:System.Object"/>.
-            </summary>
-            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
-            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.BgrPixel"/> and has the same BGR color value as this <see cref="T:DlibDotNet.BgrPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.BgrPixel.GetHashCode">
-            <summary>
-            Returns a hash code for this <see cref="T:DlibDotNet.BgrPixel"/>.
-            </summary>
-            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.BgrPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.BgrPixel.op_Equality(DlibDotNet.BgrPixel,DlibDotNet.BgrPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.BgrPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> and <see cref="F:DlibDotNet.BgrPixel.Red"/> properties of the two <see cref="T:DlibDotNet.BgrPixel"/> objects are equal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
-            <returns><code>true</code> if the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> and <see cref="F:DlibDotNet.BgrPixel.Red"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="M:DlibDotNet.BgrPixel.op_Inequality(DlibDotNet.BgrPixel,DlibDotNet.BgrPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.BgrPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> or <see cref="F:DlibDotNet.BgrPixel.Red"/> properties of the two <see cref="T:DlibDotNet.BgrPixel"/> objects are unequal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
-            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.BgrPixel.Red"/> properties or the <see cref="F:DlibDotNet.BgrPixel.Green"/> properties or the <see cref="F:DlibDotNet.BgrPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="T:DlibDotNet.HsiPixel">
-            <summary>
-            Represents an HSI color space value.
-            </summary>
-        </member>
-        <member name="F:DlibDotNet.HsiPixel.H">
-            <summary>
-            Gets or sets the hue component of this <see cref="T:DlibDotNet.HsiPixel"/>.
-            </summary>
-            <value>The hue component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.HsiPixel.S">
-            <summary>
-            Gets or sets the saturation component of this <see cref="T:DlibDotNet.HsiPixel"/>.
-            </summary>
-            <value>The saturation component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.HsiPixel.I">
-            <summary>
-            Gets or sets the intensity component of this <see cref="T:DlibDotNet.HsiPixel"/>.
-            </summary>
-            <value>The intensity component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
-        </member>
-        <member name="M:DlibDotNet.HsiPixel.#ctor(System.Byte,System.Byte,System.Byte)">
-            <summary>
-            Initializes a new instance of the <see cref="T:DlibDotNet.HsiPixel"/> class with the specified HSI color space value.
-            </summary>
-            <param name="hue">The the hue component of the color space.</param>
-            <param name="saturation">The saturation component of the color space.</param>
-            <param name="intensity">The intensity component of the color space.</param>
-        </member>
-        <member name="M:DlibDotNet.HsiPixel.Equals(System.Object)">
-            <summary>
-            Specifies whether this <see cref="T:DlibDotNet.HsiPixel"/> contains the same  HSI color space value as the specified <see cref="T:System.Object"/>.
-            </summary>
-            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
-            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.HsiPixel"/> and has the same  HSI color space value as this <see cref="T:DlibDotNet.HsiPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.HsiPixel.GetHashCode">
-            <summary>
-            Returns a hash code for this <see cref="T:DlibDotNet.HsiPixel"/>.
-            </summary>
-            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.HsiPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.HsiPixel.op_Equality(DlibDotNet.HsiPixel,DlibDotNet.HsiPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.HsiPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> and <see cref="F:DlibDotNet.HsiPixel.I"/> properties of the two <see cref="T:DlibDotNet.HsiPixel"/> objects are equal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
-            <returns><code>true</code> if the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> and <see cref="F:DlibDotNet.HsiPixel.I"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="M:DlibDotNet.HsiPixel.op_Inequality(DlibDotNet.HsiPixel,DlibDotNet.HsiPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.HsiPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> or <see cref="F:DlibDotNet.HsiPixel.I"/> properties of the two <see cref="T:DlibDotNet.HsiPixel"/> objects are unequal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
-            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.HsiPixel.H"/> properties or the <see cref="F:DlibDotNet.HsiPixel.S"/> properties or the <see cref="F:DlibDotNet.HsiPixel.I"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="T:DlibDotNet.RgbAlphaPixel">
-            <summary>
-            Represents an ARGB color value.
-            </summary>
-        </member>
-        <member name="F:DlibDotNet.RgbAlphaPixel.Red">
-            <summary>
-            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
-            </summary>
-            <value>The red component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.RgbAlphaPixel.Green">
-            <summary>
-            Gets or sets the green component of the color. of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
-            </summary>
-            <value>The green component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.RgbAlphaPixel.Blue">
-            <summary>
-            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
-            </summary>
-            <value>The blue component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.RgbAlphaPixel.Alpha">
-            <summary>
-            Gets or sets the alpha component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
-            </summary>
-            <value>The alpha component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
-        </member>
-        <member name="M:DlibDotNet.RgbAlphaPixel.#ctor(System.Byte,System.Byte,System.Byte,System.Byte)">
-            <summary>
-            Initializes a new instance of the <see cref="T:DlibDotNet.RgbAlphaPixel"/> class with the specified ARGB color value.
-            </summary>
-            <param name="alpha">The alpha component of the color.</param>
-            <param name="red">The red component of the color.</param>
-            <param name="green">The green component of the color.</param>
-            <param name="blue">The blue component of the color.</param>
-        </member>
-        <member name="M:DlibDotNet.RgbAlphaPixel.Equals(System.Object)">
-            <summary>
-            Specifies whether this <see cref="T:DlibDotNet.RgbAlphaPixel"/> contains the same ARGB color value as the specified <see cref="T:System.Object"/>.
-            </summary>
-            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
-            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.RgbAlphaPixel"/> and has the same ARGB color value as this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.RgbAlphaPixel.GetHashCode">
-            <summary>
-            Returns a hash code for this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
-            </summary>
-            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.RgbAlphaPixel.op_Equality(DlibDotNet.RgbAlphaPixel,DlibDotNet.RgbAlphaPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> and <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects are equal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
-            <returns><code>true</code> if the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> and <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="M:DlibDotNet.RgbAlphaPixel.op_Inequality(DlibDotNet.RgbAlphaPixel,DlibDotNet.RgbAlphaPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> or <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects are unequal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
-            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="T:DlibDotNet.RgbPixel">
-            <summary>
-            Represents an RGB color value.
-            </summary>
-        </member>
-        <member name="F:DlibDotNet.RgbPixel.Red">
-            <summary>
-            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
-            </summary>
-            <value>The red component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.RgbPixel.Green">
-            <summary>
-            Gets or sets the green component of the color. of this <see cref="T:DlibDotNet.RgbPixel"/>.
-            </summary>
-            <value>The green component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
-        </member>
-        <member name="F:DlibDotNet.RgbPixel.Blue">
-            <summary>
-            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
-            </summary>
-            <value>The blue component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
-        </member>
-        <member name="M:DlibDotNet.RgbPixel.#ctor(System.Byte,System.Byte,System.Byte)">
-            <summary>
-            Initializes a new instance of the <see cref="T:DlibDotNet.RgbPixel"/> class with the specified RGB color value.
-            </summary>
-            <param name="red">The red component of the color.</param>
-            <param name="green">The green component of the color.</param>
-            <param name="blue">The blue component of the color.</param>
-        </member>
-        <member name="M:DlibDotNet.RgbPixel.Equals(System.Object)">
-            <summary>
-            Specifies whether this <see cref="T:DlibDotNet.RgbPixel"/> contains the same RGB color value as the specified <see cref="T:System.Object"/>.
-            </summary>
-            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
-            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.RgbPixel"/> and has the same RGB color value as this <see cref="T:DlibDotNet.RgbPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.RgbPixel.GetHashCode">
-            <summary>
-            Returns a hash code for this <see cref="T:DlibDotNet.RgbPixel"/>.
-            </summary>
-            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.RgbPixel"/>.</returns>
-        </member>
-        <member name="M:DlibDotNet.RgbPixel.op_Equality(DlibDotNet.RgbPixel,DlibDotNet.RgbPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.RgbPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> and <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbPixel"/> objects are equal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
-            <returns><code>true</code> if the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> and <see cref="F:DlibDotNet.RgbPixel.Blue"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
-        </member>
-        <member name="M:DlibDotNet.RgbPixel.op_Inequality(DlibDotNet.RgbPixel,DlibDotNet.RgbPixel)">
-            <summary>
-            Compares two <see cref="T:DlibDotNet.RgbPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> or <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbPixel"/> objects are unequal.
-            </summary>
-            <param name="left">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
-            <param name="right">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
-            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.RgbPixel.Red"/> properties or the <see cref="F:DlibDotNet.RgbPixel.Green"/> properties or the <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
-        </member>
         <member name="T:DlibDotNet.Array`1">
             <summary>
             Represents a 1-Dimensional array of objects. 
@@ -421,6 +174,17 @@
             <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="path"/> is null.</exception>
             <exception cref="T:System.IO.FileNotFoundException">The specified file does not exist.</exception>
+            <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
+        </member>
+        <member name="M:DlibDotNet.Dlib.LoadPng``1(System.Byte[])">
+            <summary>
+            This function loads PNG (Portable Network Graphics) file into an <see cref="T:DlibDotNet.Array2D`1"/>.
+            </summary>
+            <typeparam name="T">The type of element in the image.</typeparam>
+            <param name="png">A byte array that contains png image data from which to create the <see cref="T:DlibDotNet.Array2D`1"/>.</param>
+            <returns>The <see cref="T:DlibDotNet.Array2D`1"/> this method creates.</returns>
+            <exception cref="T:System.ArgumentException">The specified type of image is not supported.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="png"/> is null.</exception>
             <exception cref="T:DlibDotNet.ImageLoadException">Failed to load image on dlib.</exception>
         </member>
         <member name="M:DlibDotNet.Dlib.SaveBmp(DlibDotNet.Array2DBase,System.String)">
@@ -980,6 +744,26 @@
             </summary>
             <param name="disposing">Indicate value whether <see cref="M:System.IDisposable.Dispose"/> method was called.</param>
         </member>
+        <member name="T:DlibDotNet.Extensions.GrayscalLumaCoefficients">
+            <summary>
+            Define the standard for converting RGB values to luminance when gray-scaled.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.Extensions.GrayscalLumaCoefficients.ITU_R_BT_601">
+            <summary>
+            Operate gray-scaled by BT.601 of ITU-R (ITU Radiocommunication Sector) Recommendation. Luminance of formula is 0.299 R + 0.587 G + 0.114 B.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.Extensions.GrayscalLumaCoefficients.ITU_R_BT_709">
+            <summary>
+            Operate gray-scaled by BT.709 of ITU-R (ITU Radiocommunication Sector) Recommendation. Luminance of formula is 0.2126 R + 0.7152 G + 0.0722 B.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.Extensions.GrayscalLumaCoefficients.SMPTE_240M">
+            <summary>
+            Operate gray-scaled by 240M specification SMPTER (Society of Motion Picture and Television Engineers) established. Luminance of formula is 0.212 R + 0.701 G + 0.087 B.
+            </summary>
+        </member>
         <member name="T:DlibDotNet.DPoint">
             <summary>
             Represents an ordered pair of double-precision floating-point x- and y-coordinates that defines a point in a two-dimensional plane.
@@ -1267,6 +1051,14 @@
             <param name="color">A <see cref="T:DlibDotNet.HsiPixel"/> value that represents a color.</param>
             <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
         </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.Rectangle,DlibDotNet.LabPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.Rectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.LabPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
         <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle)">
             <summary>
             Adds the given overlay rectangle into this object such that it will be displayed. 
@@ -1360,6 +1152,14 @@
             </summary>
             <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
             <param name="color">A <see cref="T:DlibDotNet.HsiPixel"/> value that represents a color.</param>
+            <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
+        </member>
+        <member name="M:DlibDotNet.ImageWindow.AddOverlay(DlibDotNet.DRectangle,DlibDotNet.LabPixel)">
+            <summary>
+            Adds the given overlay rectangle into this object such that it will be displayed. 
+            </summary>
+            <param name="rect">A <see cref="T:DlibDotNet.DRectangle"/> structure that represents the rectangle to be displayed.</param>
+            <param name="color">A <see cref="T:DlibDotNet.LabPixel"/> value that represents a color.</param>
             <exception cref="T:System.ObjectDisposedException"><see cref="T:DlibDotNet.ImageWindow"/> is disposed.</exception>
         </member>
         <member name="M:DlibDotNet.ImageWindow.DisposeUnmanaged">
@@ -1576,6 +1376,313 @@
             <summary>
             Releases all unmanaged resources.
             </summary>
+        </member>
+        <member name="T:DlibDotNet.BgrPixel">
+            <summary>
+            Represents an BGR color value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.BgrPixel.Blue">
+            <summary>
+            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <value>The blue component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.BgrPixel.Green">
+            <summary>
+            Gets or sets the green component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <value>The green component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.BgrPixel.Red">
+            <summary>
+            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <value>The red component of the color of this <see cref="T:DlibDotNet.BgrPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.BgrPixel"/> class with the specified BGR color value.
+            </summary>
+            <param name="blue">The blue component of the color.</param>
+            <param name="green">The green component of the color.</param>
+            <param name="red">The red component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.BgrPixel"/> contains the same BGR color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.BgrPixel"/> and has the same BGR color value as this <see cref="T:DlibDotNet.BgrPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.BgrPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.BgrPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.op_Equality(DlibDotNet.BgrPixel,DlibDotNet.BgrPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.BgrPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> and <see cref="F:DlibDotNet.BgrPixel.Red"/> properties of the two <see cref="T:DlibDotNet.BgrPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> and <see cref="F:DlibDotNet.BgrPixel.Red"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.BgrPixel.op_Inequality(DlibDotNet.BgrPixel,DlibDotNet.BgrPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.BgrPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.BgrPixel.Blue"/>, <see cref="F:DlibDotNet.BgrPixel.Green"/> or <see cref="F:DlibDotNet.BgrPixel.Red"/> properties of the two <see cref="T:DlibDotNet.BgrPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.BgrPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.BgrPixel.Red"/> properties or the <see cref="F:DlibDotNet.BgrPixel.Green"/> properties or the <see cref="F:DlibDotNet.BgrPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.HsiPixel">
+            <summary>
+            Represents an HSI color space value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.HsiPixel.H">
+            <summary>
+            Gets or sets the hue component of this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <value>The hue component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.HsiPixel.S">
+            <summary>
+            Gets or sets the saturation component of this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <value>The saturation component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.HsiPixel.I">
+            <summary>
+            Gets or sets the intensity component of this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <value>The intensity component of this <see cref="T:DlibDotNet.HsiPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.HsiPixel"/> class with the specified HSI color space value.
+            </summary>
+            <param name="hue">The the hue component of the color space.</param>
+            <param name="saturation">The saturation component of the color space.</param>
+            <param name="intensity">The intensity component of the color space.</param>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.HsiPixel"/> contains the same  HSI color space value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.HsiPixel"/> and has the same  HSI color space value as this <see cref="T:DlibDotNet.HsiPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.HsiPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.HsiPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.op_Equality(DlibDotNet.HsiPixel,DlibDotNet.HsiPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.HsiPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> and <see cref="F:DlibDotNet.HsiPixel.I"/> properties of the two <see cref="T:DlibDotNet.HsiPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> and <see cref="F:DlibDotNet.HsiPixel.I"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.HsiPixel.op_Inequality(DlibDotNet.HsiPixel,DlibDotNet.HsiPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.HsiPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.HsiPixel.H"/>, <see cref="F:DlibDotNet.HsiPixel.S"/> or <see cref="F:DlibDotNet.HsiPixel.I"/> properties of the two <see cref="T:DlibDotNet.HsiPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.HsiPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.HsiPixel.H"/> properties or the <see cref="F:DlibDotNet.HsiPixel.S"/> properties or the <see cref="F:DlibDotNet.HsiPixel.I"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.LabPixel">
+            <summary>
+            Represents an Lab colored graphical pixel.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.LabPixel.L">
+            <summary>
+            Gets or sets a lightness component of this <see cref="T:DlibDotNet.LabPixel"/>.
+            </summary>
+            <value>The lightness component of this <see cref="T:DlibDotNet.LabPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.LabPixel.A">
+            <summary>
+            Gets or sets the component corresponds to between green to red component of this <see cref="T:DlibDotNet.LabPixel"/>.
+            </summary>
+            <value>The component corresponds to between green to red component of this <see cref="T:DlibDotNet.LabPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.LabPixel.B">
+            <summary>
+            Gets or sets the component corresponds to between blue to yellow component of this <see cref="T:DlibDotNet.LabPixel"/>.
+            </summary>
+            <value>The component corresponds to between blue to yellow component of this <see cref="T:DlibDotNet.LabPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.LabPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.LabPixel"/> class with the specified Lab color value.
+            </summary>
+            <param name="l">The lightness component of the color.</param>
+            <param name="a">The component corresponds to between green to red component of the color.</param>
+            <param name="b">The component corresponds to between blue to yellow component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.LabPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.LabPixel"/> contains the same RGB color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.LabPixel"/> and has the same RGB color value as this <see cref="T:DlibDotNet.LabPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.LabPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.LabPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.LabPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.LabPixel.op_Equality(DlibDotNet.LabPixel,DlibDotNet.LabPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.LabPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.LabPixel.L"/>, <see cref="F:DlibDotNet.LabPixel.A"/> and <see cref="F:DlibDotNet.LabPixel.B"/> properties of the two <see cref="T:DlibDotNet.LabPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.LabPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.LabPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.LabPixel.L"/>, <see cref="F:DlibDotNet.LabPixel.A"/> and <see cref="F:DlibDotNet.LabPixel.B"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.LabPixel.op_Inequality(DlibDotNet.LabPixel,DlibDotNet.LabPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.LabPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.LabPixel.L"/>, <see cref="F:DlibDotNet.LabPixel.A"/> or <see cref="F:DlibDotNet.LabPixel.B"/> properties of the two <see cref="T:DlibDotNet.LabPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.LabPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.LabPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.LabPixel.L"/> properties or the <see cref="F:DlibDotNet.LabPixel.A"/> properties or the <see cref="F:DlibDotNet.LabPixel.B"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.RgbAlphaPixel">
+            <summary>
+            Represents an ARGB color value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Red">
+            <summary>
+            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The red component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Green">
+            <summary>
+            Gets or sets the green component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The green component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Blue">
+            <summary>
+            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The blue component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbAlphaPixel.Alpha">
+            <summary>
+            Gets or sets the alpha component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <value>The alpha component of the color of this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.#ctor(System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.RgbAlphaPixel"/> class with the specified ARGB color value.
+            </summary>
+            <param name="alpha">The alpha component of the color.</param>
+            <param name="red">The red component of the color.</param>
+            <param name="green">The green component of the color.</param>
+            <param name="blue">The blue component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.RgbAlphaPixel"/> contains the same ARGB color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.RgbAlphaPixel"/> and has the same ARGB color value as this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.RgbAlphaPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.op_Equality(DlibDotNet.RgbAlphaPixel,DlibDotNet.RgbAlphaPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> and <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> and <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbAlphaPixel.op_Inequality(DlibDotNet.RgbAlphaPixel,DlibDotNet.RgbAlphaPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/>, <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> or <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbAlphaPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbAlphaPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.RgbAlphaPixel.Alpha"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Red"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Green"/> properties or the <see cref="F:DlibDotNet.RgbAlphaPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="T:DlibDotNet.RgbPixel">
+            <summary>
+            Represents an RGB color value.
+            </summary>
+        </member>
+        <member name="F:DlibDotNet.RgbPixel.Red">
+            <summary>
+            Gets or sets the red component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <value>The red component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbPixel.Green">
+            <summary>
+            Gets or sets the green component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <value>The green component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
+        </member>
+        <member name="F:DlibDotNet.RgbPixel.Blue">
+            <summary>
+            Gets or sets the blue component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <value>The blue component of the color of this <see cref="T:DlibDotNet.RgbPixel"/>.</value>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DlibDotNet.RgbPixel"/> class with the specified RGB color value.
+            </summary>
+            <param name="red">The red component of the color.</param>
+            <param name="green">The green component of the color.</param>
+            <param name="blue">The blue component of the color.</param>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.Equals(System.Object)">
+            <summary>
+            Specifies whether this <see cref="T:DlibDotNet.RgbPixel"/> contains the same RGB color value as the specified <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to test.</param>
+            <returns><code>true</code> if <paramref name="obj"/> is a <see cref="T:DlibDotNet.RgbPixel"/> and has the same RGB color value as this <see cref="T:DlibDotNet.RgbPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.GetHashCode">
+            <summary>
+            Returns a hash code for this <see cref="T:DlibDotNet.RgbPixel"/>.
+            </summary>
+            <returns>An integer value that specifies a hash value for this <see cref="T:DlibDotNet.RgbPixel"/>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.op_Equality(DlibDotNet.RgbPixel,DlibDotNet.RgbPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> and <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbPixel"/> objects are equal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <returns><code>true</code> if the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> and <see cref="F:DlibDotNet.RgbPixel.Blue"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
+        </member>
+        <member name="M:DlibDotNet.RgbPixel.op_Inequality(DlibDotNet.RgbPixel,DlibDotNet.RgbPixel)">
+            <summary>
+            Compares two <see cref="T:DlibDotNet.RgbPixel"/> objects. The result specifies whether the values of the <see cref="F:DlibDotNet.RgbPixel.Red"/>, <see cref="F:DlibDotNet.RgbPixel.Green"/> or <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of the two <see cref="T:DlibDotNet.RgbPixel"/> objects are unequal.
+            </summary>
+            <param name="left">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <param name="right">A <see cref="T:DlibDotNet.RgbPixel"/> to compare.</param>
+            <returns><code>true</code> if the values of either the <see cref="F:DlibDotNet.RgbPixel.Red"/> properties or the <see cref="F:DlibDotNet.RgbPixel.Green"/> properties or the <see cref="F:DlibDotNet.RgbPixel.Blue"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
         </member>
         <member name="T:DlibDotNet.MultilayerPerceptron`1">
             <summary>

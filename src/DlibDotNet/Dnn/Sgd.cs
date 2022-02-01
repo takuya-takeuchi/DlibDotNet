@@ -3,7 +3,7 @@
 namespace DlibDotNet.Dnn
 {
 
-    public sealed class Sgd : DlibObject
+    public sealed class Sgd : Solver
     {
 
         #region Constructors
@@ -16,6 +16,18 @@ namespace DlibDotNet.Dnn
         public Sgd(float weightDecay, float momentum = 0.9f)
         {
             this.NativePtr = NativeMethods.sgd_new(weightDecay, momentum);
+        }
+
+        #endregion
+
+        #region Properties
+
+        public override int SolverType
+        {
+            get
+            {
+                return (int)NativeMethods.OptimizerType.Sgd;
+            }
         }
 
         #endregion

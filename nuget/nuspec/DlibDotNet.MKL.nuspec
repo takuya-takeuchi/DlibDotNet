@@ -1,8 +1,8 @@
-﻿<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
     <id>DlibDotNet.MKL</id>
-    <version>19.21.0.20210302</version>
+    <version>19.21.0.20220130</version>
     <title>DlibDotNet for MKL</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -33,12 +33,14 @@ Requirements for OSX: Intel MKL 2020 Initial Release
   <files>
     <file src="..\ml128.png" target="images\" />
 
-    <file src="build\DlibDotNet.Native.props" target="build\DlibDotNet.props" />
-    <!-- allows the 'DlibDotNet' package to read runtimes\** folder -->
-    <file src="build\DlibDotNet.targets" target="build\DlibDotNet.targets" />
+    <!-- It prevent from building on arm because platform fixes x64 -->
+    <!-- <file src="build\DlibDotNet.Native.props" target="build\DlibDotNet.props" /> -->
+
     <!-- cross-targetting via compile-time references -->
     <file src="ref\**\*" target="ref" />
-    <file src="..\artifacts\mkl\runtimes\**\*" target="runtimes" />
+    <!-- <file src="..\artifacts\cpu\runtimes\**\*" target="runtimes" /> -->
+    <file src="build/net45/DlibDotNet.targets" target="build/net45/DlibDotNet.targets"/>
+    <file src="buildTransitive/net45/DlibDotNet.targets" target="buildTransitive/net45/DlibDotNet.targets"/>
 
     <file src="..\..\src\DlibDotNet\bin\Release\netstandard2.0\DlibDotNet.dll" target="lib\netstandard2.0" />
 
