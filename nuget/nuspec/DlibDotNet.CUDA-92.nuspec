@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DlibDotNet.CUDA92</id>
-    <version>19.21.0.20220130</version>
+    <version>19.21.0.20220429</version>
     <title>DlibDotNet for CUDA 9.2</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
