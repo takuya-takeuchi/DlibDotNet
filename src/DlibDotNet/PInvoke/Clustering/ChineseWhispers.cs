@@ -9,7 +9,7 @@ namespace DlibDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern uint clustering_chinese_whispers(IntPtr edges, IntPtr labels, uint num_iterations);
+        public static extern ulong clustering_chinese_whispers(IntPtr edges, IntPtr labels, uint num_iterations);
 
     }
 

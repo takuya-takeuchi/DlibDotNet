@@ -21,7 +21,7 @@ namespace DlibDotNet
             using (var e = new StdVector<SamplePair>(edges))
             using (var l = new StdVector<uint>())
             {
-                clusters = NativeMethods.clustering_chinese_whispers(e.NativePtr, l.NativePtr, iterations);
+                clusters = (uint)NativeMethods.clustering_chinese_whispers(e.NativePtr, l.NativePtr, iterations);
                 labels = l.ToArray();
             }
         }

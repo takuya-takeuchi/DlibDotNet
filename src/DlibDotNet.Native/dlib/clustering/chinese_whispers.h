@@ -8,9 +8,9 @@
 using namespace dlib;
 using namespace std;
 
-DLLEXPORT unsigned long clustering_chinese_whispers(std::vector<sample_pair*>* edges,
-                                                    std::vector<uint32_t>* labels,
-                                                    const unsigned long num_iterations = 100)
+DLLEXPORT uint64_t clustering_chinese_whispers(std::vector<sample_pair*>* edges,
+                                               std::vector<uint32_t>* labels,
+                                               const uint32_t num_iterations = 100)
 {
     std::vector<sample_pair*>& e = *(static_cast<std::vector<sample_pair*>*>(edges));
     std::vector<sample_pair> edges_tmp;
