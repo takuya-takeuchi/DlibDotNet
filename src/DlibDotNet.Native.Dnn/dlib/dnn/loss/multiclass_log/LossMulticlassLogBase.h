@@ -8,8 +8,8 @@
 
 #include "../LossBase.h"
 
-typedef unsigned long loss_multiclass_log_out_type;
-typedef unsigned long loss_multiclass_log_train_label_type;
+typedef uint64_t loss_multiclass_log_out_type;
+typedef uint64_t loss_multiclass_log_train_label_type;
 
 using namespace dlib;
 using namespace std;

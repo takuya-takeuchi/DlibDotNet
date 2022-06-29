@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DlibDotNet.Extensions;
-using OutputLabelType = System.UInt32;
+using OutputLabelType = System.UInt64;
 
 namespace DlibDotNet.Dnn
 {
@@ -331,7 +331,7 @@ namespace DlibDotNet.Dnn
             throw new NotSupportedException();
         }
 
-        public static void TestOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+        public static void TestOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<UInt64> label)
             where T : struct
         {
             if (trainer == null)
@@ -346,14 +346,14 @@ namespace DlibDotNet.Dnn
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
             using (var dataVec = new StdVector<Matrix<T>>(data))
-            using (var labelVec = new StdVector<uint>(label))
+            using (var labelVec = new StdVector<UInt64>(label))
             {
                 var ret = NativeMethods.LossMulticlassLog_trainer_test_one_step(trainer.Type,
                                                                                 trainer.NativePtr,
                                                                                 trainer.SolverType,
                                                                                 dataElementTypes.ToNativeMatrixElementType(),
                                                                                 dataVec.NativePtr,
-                                                                                NativeMethods.MatrixElementType.UInt32,
+                                                                                NativeMethods.MatrixElementType.UInt64,
                                                                                 labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
@@ -375,7 +375,7 @@ namespace DlibDotNet.Dnn
         /// <exception cref="ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
         /// <exception cref="NotSupportedException">The specified type of element in the matrix does not supported.</exception>
-        public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+        public static void Train<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<UInt64> label)
             where T : struct
         {
             if (trainer == null)
@@ -392,14 +392,14 @@ namespace DlibDotNet.Dnn
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
             using (var dataVec = new StdVector<Matrix<T>>(data))
-            using (var labelVec = new StdVector<uint>(label))
+            using (var labelVec = new StdVector<UInt64>(label))
             {
                 var ret = NativeMethods.LossMulticlassLog_trainer_train(trainer.Type,
                                                                         trainer.NativePtr,
                                                                         trainer.SolverType,
                                                                         dataElementTypes.ToNativeMatrixElementType(),
                                                                         dataVec.NativePtr,
-                                                                        NativeMethods.MatrixElementType.UInt32,
+                                                                        NativeMethods.MatrixElementType.UInt64,
                                                                         labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
@@ -421,7 +421,7 @@ namespace DlibDotNet.Dnn
         /// <exception cref="ArgumentNullException"><paramref name="trainer"/>, <paramref name="data"/> or <paramref name="label"/> is null.</exception>
         /// <exception cref="ObjectDisposedException"><paramref name="trainer"/> is disposed.</exception>
         /// <exception cref="NotSupportedException">The specified type of element in the matrix does not supported.</exception>
-        public static void TrainOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<uint> label)
+        public static void TrainOneStep<T>(DnnTrainer<LossMulticlassLog> trainer, IEnumerable<Matrix<T>> data, IEnumerable<UInt64> label)
             where T : struct
         {
             if (trainer == null)
@@ -438,14 +438,14 @@ namespace DlibDotNet.Dnn
             Matrix<T>.TryParse<T>(out var dataElementTypes);
 
             using (var dataVec = new StdVector<Matrix<T>>(data))
-            using (var labelVec = new StdVector<uint>(label))
+            using (var labelVec = new StdVector<UInt64>(label))
             {
                 var ret = NativeMethods.LossMulticlassLog_trainer_train_one_step(trainer.Type,
                                                                                  trainer.NativePtr,
                                                                                  trainer.SolverType,
                                                                                  dataElementTypes.ToNativeMatrixElementType(),
                                                                                  dataVec.NativePtr,
-                                                                                 NativeMethods.MatrixElementType.UInt32,
+                                                                                 NativeMethods.MatrixElementType.UInt64,
                                                                                  labelVec.NativePtr);
                 Cuda.ThrowCudaException(ret);
 
@@ -678,7 +678,7 @@ namespace DlibDotNet.Dnn
             internal Output(IntPtr output) :
                 base(output)
             {
-                this._Size = NativeMethods.dnn_output_uint32_t_getSize(output);
+                this._Size = NativeMethods.dnn_output_uint64_t_getSize(output);
             }
 
             #endregion
@@ -703,7 +703,7 @@ namespace DlibDotNet.Dnn
                     if (!(0 <= index && index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, index);
+                    return NativeMethods.dnn_output_uint64_t_getItem(this.NativePtr, index);
                 }
             }
 
@@ -716,7 +716,7 @@ namespace DlibDotNet.Dnn
                     if (!(index < this._Size))
                         throw new ArgumentOutOfRangeException();
 
-                    return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, (int)index);
+                    return NativeMethods.dnn_output_uint64_t_getItem(this.NativePtr, (int)index);
                 }
             }
 
@@ -733,7 +733,7 @@ namespace DlibDotNet.Dnn
                 if (this.NativePtr == IntPtr.Zero)
                     return;
 
-                NativeMethods.dnn_output_uint32_t_delete(this.NativePtr);
+                NativeMethods.dnn_output_uint64_t_delete(this.NativePtr);
             }
 
             #endregion
@@ -747,7 +747,7 @@ namespace DlibDotNet.Dnn
                 this.ThrowIfDisposed();
 
                 for (var index = 0; index < this._Size; index++)
-                    yield return NativeMethods.dnn_output_uint32_t_getItem(this.NativePtr, index);
+                    yield return NativeMethods.dnn_output_uint64_t_getItem(this.NativePtr, index);
             }
 
             #endregion

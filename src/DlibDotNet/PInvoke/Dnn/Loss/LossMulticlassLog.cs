@@ -254,6 +254,14 @@ namespace DlibDotNet
         [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
         public static extern int dnn_output_uint32_t_getSize(IntPtr vector);
 
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern void dnn_output_uint64_t_delete(IntPtr vector);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern OutputLabelType dnn_output_uint64_t_getItem(IntPtr vector, int index);
+
+        [DllImport(NativeDnnLibrary, CallingConvention = CallingConvention)]
+        public static extern int dnn_output_uint64_t_getSize(IntPtr vector);
         #endregion
 
     }
