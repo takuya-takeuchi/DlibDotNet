@@ -23,6 +23,7 @@ namespace DlibDotNet
             {
                 new { Type = typeof(int),                                  ElementType = ElementTypes.Int32 },
                 new { Type = typeof(uint),                                 ElementType = ElementTypes.UInt32 },
+                new { Type = typeof(UInt64),                               ElementType = ElementTypes.UInt64 },
                 new { Type = typeof(long),                                 ElementType = ElementTypes.Long  },
                 new { Type = typeof(float),                                ElementType = ElementTypes.Float  },
                 new { Type = typeof(double),                               ElementType = ElementTypes.Double  },
@@ -61,6 +62,8 @@ namespace DlibDotNet
             Int32,
 
             UInt32,
+            
+            UInt64,
 
             Long,
 

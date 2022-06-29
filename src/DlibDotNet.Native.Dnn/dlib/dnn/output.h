@@ -51,6 +51,21 @@ DLLEXPORT size_t dnn_output_uint32_t_getSize(std::vector<unsigned long>* vector)
     return vector->size();
 }
 
+DLLEXPORT void dnn_output_uint64_t_delete(std::vector<uint64_t>* vector)
+{
+    delete vector;
+}
+
+DLLEXPORT unsigned long dnn_output_uint64_t_getItem(std::vector<uint64_t>* vector, const int index)
+{
+    return vector->at(index);
+}
+
+DLLEXPORT size_t dnn_output_uint64_t_getSize(std::vector<uint64_t>* vector)
+{
+    return vector->size();
+}
+
 #pragma endregion std::vector<matrix<uint16_t>>
 
 #pragma region std::vector<matrix<float,0,1>>

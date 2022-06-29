@@ -126,6 +126,8 @@ namespace DlibDotNet
                         return new StdVectorInt32Imp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.UInt32:
                         return new StdVectorUInt32Imp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.UInt64:
+                        return new StdVectorUInt64Imp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.Long:
                         return new StdVectorLongImp() as StdVectorImp<TItem>;
                     case StdVectorElementTypesRepository.ElementTypes.Float:
@@ -206,6 +208,8 @@ namespace DlibDotNet
                             return new StdVectorMatrixImp<ushort>(templateRows, templateColumns) as StdVectorImp<TItem>;
                         case MatrixElementTypes.UInt32:
                             return new StdVectorMatrixImp<uint>(templateRows, templateColumns) as StdVectorImp<TItem>;
+                        case MatrixElementTypes.UInt64:
+                            return new StdVectorMatrixImp<UInt64>(templateRows, templateColumns) as StdVectorImp<TItem>;
                         case MatrixElementTypes.Int8:
                             return new StdVectorMatrixImp<sbyte>(templateRows, templateColumns) as StdVectorImp<TItem>;
                         case MatrixElementTypes.Int16:
@@ -391,6 +395,74 @@ namespace DlibDotNet
                     return new uint[0];
 
                 var dst = new uint[size];
+                var elementPtr = this.GetElementPtr(ptr);
+                Interop.InteropHelper.Copy(elementPtr, dst, (uint)dst.Length);
+                return dst;
+            }
+
+            #endregion
+
+        }
+
+        private sealed class StdVectorUInt64Imp : StdVectorImp<UInt64>
+        {
+
+            #region Methods
+
+            public override void CopyTo(IntPtr ptr, UInt64[] array, int arrayIndex)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return;
+
+                var elementPtr = this.GetElementPtr(ptr);
+                Interop.InteropHelper.Copy(elementPtr, array, arrayIndex, (uint)size);
+            }
+
+            public override IntPtr Create()
+            {
+                return NativeMethods.stdvector_uint64_new1();
+            }
+
+            public override IntPtr Create(int size)
+            {
+                if (size < 0)
+                    throw new ArgumentOutOfRangeException(nameof(size));
+
+                return NativeMethods.stdvector_uint64_new2(new IntPtr(size));
+            }
+
+            public override IntPtr Create(IEnumerable<UInt64> data)
+            {
+                if (data == null)
+                    throw new ArgumentNullException(nameof(data));
+
+                var array = data.ToArray();
+                return NativeMethods.stdvector_uint64_new3(array, new IntPtr(array.Length));
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.stdvector_uint64_delete(ptr);
+            }
+
+            public override IntPtr GetElementPtr(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_uint64_getPointer(ptr);
+            }
+
+            public override int GetSize(IntPtr ptr)
+            {
+                return NativeMethods.stdvector_uint64_getSize(ptr).ToInt32();
+            }
+
+            public override UInt64[] ToArray(IntPtr ptr)
+            {
+                var size = this.GetSize(ptr);
+                if (size == 0)
+                    return new UInt64[0];
+
+                var dst = new UInt64[size];
                 var elementPtr = this.GetElementPtr(ptr);
                 Interop.InteropHelper.Copy(elementPtr, dst, (uint)dst.Length);
                 return dst;

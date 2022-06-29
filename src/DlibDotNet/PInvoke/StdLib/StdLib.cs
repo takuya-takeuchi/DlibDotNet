@@ -100,6 +100,28 @@ namespace DlibDotNet
 
         #endregion
 
+        #region uint64
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_uint64_new1();
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_uint64_new2(IntPtr size);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_uint64_new3([In] UInt64[] data, IntPtr dataLength);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_uint64_getSize(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr stdvector_uint64_getPointer(IntPtr vector);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void stdvector_uint64_delete(IntPtr vector);
+
+        #endregion
+
         #region long
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
