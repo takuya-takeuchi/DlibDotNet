@@ -36,7 +36,6 @@ do {\
     }\
 \
     std::vector<loss_multiclass_log_out_type> dets = net->operator()(in_tmp, batch_size);\
-    *ret = new std::vector<loss_multiclass_log_out_type>(dets);\
     std::vector<unsigned long> dets = net->operator()(in_tmp, batch_size);\
     const auto dets_size = dets.size();\
     auto ret_tmp = new std::vector<loss_multiclass_log_out_type>();\
