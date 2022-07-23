@@ -35,7 +35,6 @@ do {\
         in_tmp.push_back(mat);\
     }\
 \
-    std::vector<loss_multiclass_log_out_type> dets = net->operator()(in_tmp, batch_size);\
     std::vector<unsigned long> dets = net->operator()(in_tmp, batch_size);\
     const auto dets_size = dets.size();\
     auto ret_tmp = new std::vector<loss_multiclass_log_out_type>();\
