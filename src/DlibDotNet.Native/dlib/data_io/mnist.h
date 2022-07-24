@@ -13,9 +13,9 @@ using namespace std;
 DLLEXPORT void load_mnist_dataset(const char* folder_name,
                                   const int folder_name_length,
                                   std::vector<matrix<unsigned char>*>** training_images,
-                                  std::vector<unsigned long>** training_labels,
+                                  std::vector<uint32_t>** training_labels,
                                   std::vector<matrix<unsigned char>*>** testing_images,
-                                  std::vector<unsigned long>** testing_labels)
+                                  std::vector<uint32_t>** testing_labels)
 {
     std::string tmp(folder_name, folder_name_length);
     std::vector<matrix<unsigned char>> tmp_training_images;
@@ -25,9 +25,9 @@ DLLEXPORT void load_mnist_dataset(const char* folder_name,
     load_mnist_dataset(tmp, tmp_training_images, tmp_training_labels, tmp_testing_images, tmp_testing_labels);
 
     auto ret_training_images = new std::vector<matrix<unsigned char>*>();
-    auto ret_training_labels = new std::vector<unsigned long>();
+    auto ret_training_labels = new std::vector<uint32_t>();
     auto ret_testing_images = new std::vector<matrix<unsigned char>*>();
-    auto ret_testing_labels = new std::vector<unsigned long>();
+    auto ret_testing_labels = new std::vector<uint32_t>();
 
     for (int i = 0; i < tmp_training_images.size(); i++)
         ret_training_images->push_back(new matrix<unsigned char>(tmp_training_images[i]));
