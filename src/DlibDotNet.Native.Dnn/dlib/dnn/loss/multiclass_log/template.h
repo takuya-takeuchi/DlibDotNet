@@ -35,8 +35,15 @@ do {\
         in_tmp.push_back(mat);\
     }\
 \
-    std::vector<loss_multiclass_log_out_type> dets = net->operator()(in_tmp, batch_size);\
-    *ret = new std::vector<loss_multiclass_log_out_type>(dets);\
+    std::vector<unsigned long> dets = net->operator()(in_tmp, batch_size);\
+    const auto dets_size = dets.size();\
+    auto ret_tmp = new std::vector<loss_multiclass_log_out_type>();\
+    ret_tmp->reserve(dets_size);\
+    for (auto i = 0; i< dets_size; i++)\
+    {\
+        ret_tmp->push_back(static_cast<loss_multiclass_log_out_type>(dets[i]));\
+    }\
+    *ret = ret_tmp;\
 } while (0)
 
 #pragma endregion template
@@ -708,7 +715,7 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
                                                                                                                      void* labels)
 {
     std::vector<dlib::matrix<ELEMENT>> out_data;
-    std::vector<LABEL_ELEMENT> out_label;
+    std::vector<unsigned long> out_label;
     convert(data, labels, out_data, out_label);
 
     switch(optimizer_id)
@@ -737,7 +744,7 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
                                                                                                              void* labels)
 {
     std::vector<dlib::matrix<ELEMENT>> out_data;
-    std::vector<LABEL_ELEMENT> out_label;
+    std::vector<unsigned long> out_label;
     convert(data, labels, out_data, out_label);
 
     switch(optimizer_id)
@@ -766,7 +773,7 @@ void LossMulticlassLog<NET, MATRIX_ELEMENT, ELEMENT, LABEL_MATRIX_ELEMENT, LABEL
                                                                                                                       void* labels)
 {
     std::vector<matrix<ELEMENT>> out_data;
-    std::vector<LABEL_ELEMENT> out_label;
+    std::vector<unsigned long> out_label;
     convert(data, labels, out_data, out_label);
 
     switch(optimizer_id)

@@ -34,19 +34,20 @@ using namespace std;
 // typedef array2d<T,MM> input_type;
 // typedef matrix<rgb_pixel> input_type;
 
+// unsigned long is size 4 in windows and size 8 in linux
 #pragma region std::vector<unsigned long>
 
-DLLEXPORT void dnn_output_uint32_t_delete(std::vector<unsigned long>* vector)
+DLLEXPORT void dnn_output_uint32_t_delete(std::vector<uint32_t>* vector)
 {
     delete vector;
 }
 
-DLLEXPORT unsigned long dnn_output_uint32_t_getItem(std::vector<unsigned long>* vector, const int index)
+DLLEXPORT uint32_t dnn_output_uint32_t_getItem(std::vector<uint32_t>* vector, const int index)
 {
     return vector->at(index);
 }
 
-DLLEXPORT size_t dnn_output_uint32_t_getSize(std::vector<unsigned long>* vector)
+DLLEXPORT size_t dnn_output_uint32_t_getSize(std::vector<uint32_t>* vector)
 {
     return vector->size();
 }

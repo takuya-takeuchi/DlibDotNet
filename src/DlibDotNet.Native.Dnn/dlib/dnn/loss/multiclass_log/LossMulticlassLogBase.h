@@ -8,8 +8,9 @@
 
 #include "../LossBase.h"
 
-typedef unsigned long loss_multiclass_log_out_type;
-typedef unsigned long loss_multiclass_log_train_label_type;
+// unsigned long is size 4 in windows and size 8 in linux
+typedef uint32_t loss_multiclass_log_out_type;
+typedef uint32_t loss_multiclass_log_train_label_type;
 
 using namespace dlib;
 using namespace std;
