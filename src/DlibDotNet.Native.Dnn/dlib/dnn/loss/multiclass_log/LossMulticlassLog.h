@@ -150,7 +150,7 @@ protected:
     void convert(void* data,
                  void* labels,
                  std::vector<dlib::matrix<ELEMENT>>& out_data,
-                 std::vector<LABEL_ELEMENT>& out_labels)
+                 std::vector<unsigned long>& out_labels)
     {
         std::vector<dlib::matrix<ELEMENT>*>& tmp_data = *(static_cast<std::vector<dlib::matrix<ELEMENT>*>*>(data));
         for (size_t i = 0; i< tmp_data.size(); i++)
