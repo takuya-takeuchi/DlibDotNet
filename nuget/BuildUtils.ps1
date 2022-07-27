@@ -958,7 +958,6 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
          -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
          -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
          -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-         -D JPEG_FOUND=OFF `
          ${CMakefileDir}" -ForegroundColor Yellow
       cmake -D ARCH_TYPE="${arch_type}" `
             -D DLIB_USE_CUDA=OFF `
@@ -976,7 +975,6 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-            -D JPEG_FOUND=OFF `
             ${CMakefileDir}
    }
    else
