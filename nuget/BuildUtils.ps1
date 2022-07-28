@@ -941,26 +941,6 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
       $USE_SSE4_INSTRUCTIONS = $Config.GetSSE4INSTRUCTIONS()
       $USE_SSE2_INSTRUCTIONS = $Config.GetSSE2INSTRUCTIONS()
 
-      # overwrite JPEG_FOUND
-      # Cmake uses 
-      # /Library/Frameworks/Mono.framework/Versions/6.12.0/include as JPEG_INCLUDE_DIR
-      # /usr/local/lib/libjpeg.dylib (libjpeg 9. installed by brew install mono-libgdiplus) as JPEG_LIBRARY
-      # Program uses /usr/local/lib/libjpeg.dylib even though link dlib/external/libjpeg
-      # It occurs 'Wrong JPEG library version: library is 90, caller expects 80'
-      $JPEG_INCLUDE_DIR = "/usr/local/include"
-      $JPEG_LIBRARY = "/usr/local/lib/libjpeg.a"
-      if (!(Test-Path(${JPEG_INCLUDE_DIR})))
-      {
-         Write-Host "JPEG_INCLUDE_DIR: ${JPEG_INCLUDE_DIR} is missing" -ForegroundColor Red
-         exit -1
-      }
-
-      if (!(Test-Path(${JPEG_LIBRARY})))
-      {
-         Write-Host "JPEG_LIBRARY: ${JPEG_LIBRARY} is missing" -ForegroundColor Red
-         exit -1
-      }
-
       $arch_type = $Config.GetArchitecture()
       Write-Host "   cmake -D ARCH_TYPE=`"${arch_type}`" `
          -D DLIB_USE_CUDA=OFF `
@@ -978,9 +958,7 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
          -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
          -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
          -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
-         -D JPEG_FOUND=ON `
-         -D JPEG_INCLUDE_DIR=`"${JPEG_INCLUDE_DIR}`" `
-         -D JPEG_LIBRARY=`"${JPEG_LIBRARY}`" `
+         -D JPEG_FOUND=OFF `
          ${CMakefileDir}" -ForegroundColor Yellow
       cmake -D ARCH_TYPE="${arch_type}" `
             -D DLIB_USE_CUDA=OFF `
@@ -999,8 +977,6 @@ function ConfigCPU([Config]$Config, [string]$CMakefileDir)
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
             -D JPEG_FOUND=OFF `
-            -D JPEG_INCLUDE_DIR="${JPEG_INCLUDE_DIR}" `
-            -D JPEG_LIBRARY="${JPEG_LIBRARY}" `
             ${CMakefileDir}
    }
    else
@@ -1283,6 +1259,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
          -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
          -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
          -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+         -D JPEG_FOUND=OFF `
          ${CMakefileDir}" -ForegroundColor Yellow
       cmake -D ARCH_TYPE="$arch_type" `
             -D DLIB_USE_CUDA=OFF `
@@ -1296,6 +1273,7 @@ function ConfigMKL([Config]$Config, [string]$CMakefileDir)
             -D USE_AVX_INSTRUCTIONS=$USE_AVX_INSTRUCTIONS `
             -D USE_SSE4_INSTRUCTIONS=$USE_SSE4_INSTRUCTIONS `
             -D USE_SSE2_INSTRUCTIONS=$USE_SSE2_INSTRUCTIONS `
+            -D JPEG_FOUND=OFF `
             ${CMakefileDir}
    }
 }
