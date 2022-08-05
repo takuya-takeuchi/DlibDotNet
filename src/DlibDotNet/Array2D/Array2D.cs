@@ -194,6 +194,30 @@ namespace DlibDotNet
             }
         }
 
+        public TElement this[int row, int column]
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+
+                if (!(0 <= row && row < this.Rows))
+                    throw new IndexOutOfRangeException();
+
+                using (var rowElement = this[row])
+                    return rowElement[column];
+            }
+            set
+            {
+                this.ThrowIfDisposed();
+
+                if (!(0 <= row && row < this.Rows))
+                    throw new IndexOutOfRangeException();
+
+                using (var rowElement = this[row])
+                    rowElement[column] = value;
+            }
+        }
+
         #endregion
 
         #region Methods  
