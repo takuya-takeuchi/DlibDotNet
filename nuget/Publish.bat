@@ -1,4 +1,5 @@
 dotnet nuget push DlibDotNet.MKL.%1.nupkg -k %2 -s https://api.nuget.org/v3/index.json
+dotnet nuget push DlibDotNet.CUDA112.%1.nupkg -k %2 -s https://api.nuget.org/v3/index.json
 dotnet nuget push DlibDotNet.CUDA111.%1.nupkg -k %2 -s https://api.nuget.org/v3/index.json
 dotnet nuget push DlibDotNet.CUDA110.%1.nupkg -k %2 -s https://api.nuget.org/v3/index.json
 dotnet nuget push DlibDotNet.CUDA102.%1.nupkg -k %2 -s https://api.nuget.org/v3/index.json
