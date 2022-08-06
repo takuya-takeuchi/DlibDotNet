@@ -25,6 +25,9 @@
 |DlibDotNet for CUDA 11.1|Windows|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA111.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA111)|
 ||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA111.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA111)|
 ||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA111.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA111)|
+|DlibDotNet for CUDA 11.2|Windows|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA112.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA112)|
+||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA112.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA112)|
+||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.CUDA112.svg)](https://www.nuget.org/packages/DlibDotNet.CUDA112)|
 |DlibDotNet for Intel MKL|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
 ||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
 ||OSX|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/DlibDotNet.MKL.svg)](https://www.nuget.org/packages/DlibDotNet.MKL)|
