@@ -147,7 +147,6 @@ namespace DlibDotNet.Extensions
                 if (requireDispose)
                 {
                     array?.Dispose();
-                    throw new NotSupportedException();
                 }
             }
 

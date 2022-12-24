@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9E3AD0D-91F4-48B4-9509-5C06B54C7374}"
 EndProject
@@ -144,6 +144,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaceDetection.Server", "examples\ASP.NET\FaceDetection.Server\FaceDetection.Server.csproj", "{DCD4F84F-91D6-4936-AD45-890127D9EF54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions", "src\DlibDotNet.Extensions\DlibDotNet.Extensions.csproj", "{2273A0B6-E4B7-4D22-A358-08C1315AF09E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions.Drawing", "src\DlibDotNet.Extensions.Drawing\DlibDotNet.Extensions.Drawing.csproj", "{D19C51A1-6D06-49C0-A04A-D9556326A251}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1105,6 +1107,22 @@ Global
 		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x64.Build.0 = Release|Any CPU
 		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x86.ActiveCfg = Release|Any CPU
 		{2273A0B6-E4B7-4D22-A358-08C1315AF09E}.Release|x86.Build.0 = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|x64.Build.0 = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Debug|x86.Build.0 = Debug|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|ARM.Build.0 = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|x64.ActiveCfg = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|x64.Build.0 = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|x86.ActiveCfg = Release|Any CPU
+		{D19C51A1-6D06-49C0-A04A-D9556326A251}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1176,6 +1194,7 @@ Global
 		{EBACC7C9-4376-4D04-BFBB-12D5E7ABCD37} = {D2D6D0D7-7544-4730-A34E-DAE2588B55D8}
 		{DCD4F84F-91D6-4936-AD45-890127D9EF54} = {D2D6D0D7-7544-4730-A34E-DAE2588B55D8}
 		{2273A0B6-E4B7-4D22-A358-08C1315AF09E} = {A9E3AD0D-91F4-48B4-9509-5C06B54C7374}
+		{D19C51A1-6D06-49C0-A04A-D9556326A251} = {A9E3AD0D-91F4-48B4-9509-5C06B54C7374}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}
