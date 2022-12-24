@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using DlibDotNet;
-using DlibDotNet.Extensions;
+
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
+
+using DlibDotNet;
+using DlibDotNet.Extensions;
 
 namespace FaceDetection.ViewModels
 {
