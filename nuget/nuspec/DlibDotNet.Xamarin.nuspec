@@ -12,7 +12,7 @@
     <icon>images\ml128.png</icon>
     <description>Dlib wrapper library written in C++ and C# for Xamarin.UWP and Xamarin.iOS</description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2017-2021</copyright>
+    <copyright>© Takuya Takeuchi 2017-2022</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
   </metadata>
