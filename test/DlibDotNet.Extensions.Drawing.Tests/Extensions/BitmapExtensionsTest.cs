@@ -154,6 +154,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
                             Assert.True(false);
                         if (array.ImageType != ImageTypes.UInt8)
                             Assert.True(false);
+                        Assert.NotNull(array);
 
                         this.DisposeAndCheckDisposedState(array);
                     }
