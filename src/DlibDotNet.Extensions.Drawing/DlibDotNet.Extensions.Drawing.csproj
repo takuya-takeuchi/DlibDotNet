@@ -5,9 +5,9 @@
     <Authors>Takuya Takeuchi</Authors>
     <Description>DlibDotNet Extension package for System.Drawing</Description>
     <Company />
-    <Copyright>© Takuya Takeuchi 2018-2020</Copyright>
+    <Copyright>© Takuya Takeuchi 2018-2022</Copyright>
     <Configurations>Debug;Release</Configurations>
-    <Version>19.18.0</Version>
+    <Version>19.21.0</Version>
     <RepositoryUrl>https://github.com/takuya-takeuchi/DlibDotNet</RepositoryUrl>
     <PackageTags>dlib .net machinelearning</PackageTags>
     <PackageLicenseUrl></PackageLicenseUrl>
