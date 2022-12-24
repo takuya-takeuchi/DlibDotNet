@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <Authors>Takuya Takeuchi</Authors>
-    <Description>DlibDotNet Extension package for System.Drawing</Description>
+    <Description>DlibDotNet Extension package for SkiaSharp</Description>
     <Company />
     <Copyright>© Takuya Takeuchi 2018-2022</Copyright>
     <Configurations>Debug;Release</Configurations>
@@ -30,7 +30,7 @@
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
-    <DocumentationFile>docs\DlibDotNet.Extensions.Drawing.xml</DocumentationFile>
+    <DocumentationFile>docs\DlibDotNet.Extensions.Skia.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
@@ -45,17 +45,15 @@
     <Reference Include="System" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.Contains('netstandard')) Or $(TargetFramework.Contains('netcoreapp')) ">
-    <PackageReference Include="System.Drawing.Common">
-      <Version>4.7.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
   </ItemGroup>
 
 </Project>
