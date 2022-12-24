@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
+
+using SkiaSharp;
 
 // ReSharper disable once CheckNamespace
 namespace DlibDotNet.Extensions
@@ -13,47 +13,34 @@ namespace DlibDotNet.Extensions
 
         #region Fields
 
-        private static readonly Dictionary<PixelFormat, int> OptimumChannels;
+        private static readonly Dictionary<SKColorType, int> OptimumChannels;
 
-        private static readonly Dictionary<PixelFormat, ConvertInfo<ImageTypes>[]> OptimumConvertImageInfos;
+        private static readonly Dictionary<SKColorType, ConvertInfo<ImageTypes>[]> OptimumConvertImageInfos;
 
-        private static readonly Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>> OptimumConvertMatrixInfos;
-
-        private static Color[] _8bppColorPalette = new Color[256];
-
+        private static readonly Dictionary<SKColorType, ConvertInfo<MatrixElementTypes>> OptimumConvertMatrixInfos;
+        
         #endregion
 
         #region Constructors
 
         static SkiaExtensions()
         {
-            OptimumChannels = new Dictionary<PixelFormat, int>();
-            OptimumChannels[PixelFormat.Format24bppRgb] = 3;
-            OptimumChannels[PixelFormat.Format8bppIndexed] = 1;
-            OptimumChannels[PixelFormat.Format32bppRgb] =
-            OptimumChannels[PixelFormat.Format32bppArgb] = 4;
+            OptimumChannels = new Dictionary<SKColorType, int>();
+            OptimumChannels[SKColorType.Rgba8888] = 4;
 
-            OptimumConvertImageInfos = new Dictionary<PixelFormat, ConvertInfo<ImageTypes>[]>();
-            OptimumConvertImageInfos[PixelFormat.Format8bppIndexed] = new[]
+            OptimumConvertImageInfos = new Dictionary<SKColorType, ConvertInfo<ImageTypes>[]>();
+            OptimumConvertImageInfos[SKColorType.Gray8] = new[]
             {
                 new ConvertInfo<ImageTypes> { Type = ImageTypes.UInt8 }
             };
-            OptimumConvertImageInfos[PixelFormat.Format24bppRgb] = new[]
+            OptimumConvertImageInfos[SKColorType.Rgba8888] = new[]
             {
                 new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbPixel, RgbReverse = true },
-                new ConvertInfo<ImageTypes>{ Type = ImageTypes.BgrPixel, RgbReverse = false }
+                new ConvertInfo<ImageTypes>{ Type = ImageTypes.BgrPixel, RgbReverse = false },
+                new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbAlphaPixel, RgbReverse = true }
             };
-            OptimumConvertImageInfos[PixelFormat.Format32bppArgb] = new[]
-            {
-                new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true }
-            };
-            OptimumConvertMatrixInfos = new Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>>();
-            OptimumConvertMatrixInfos[PixelFormat.Format8bppIndexed] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
-            OptimumConvertMatrixInfos[PixelFormat.Format24bppRgb] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertMatrixInfos[PixelFormat.Format32bppArgb] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbAlphaPixel, RgbReverse = true };
-
-            for (var i = 0; i < _8bppColorPalette.Length; i++)
-                _8bppColorPalette[i] = Color.FromArgb(i, i, i);
+            OptimumConvertMatrixInfos = new Dictionary<SKColorType, ConvertInfo<MatrixElementTypes>>();
+            OptimumConvertMatrixInfos[SKColorType.Rgba8888] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
         }
 
         #endregion
@@ -62,14 +49,14 @@ namespace DlibDotNet.Extensions
 
         #region Array2D
 
-        public static Bitmap ToBitmap<T>(this Array2D<T> array)
+        public static SKBitmap ToBitmap<T>(this Array2D<T> array)
             where T : struct
         {
             array.ThrowIfDisposed();
 
             var width = array.Columns;
             var height = array.Rows;
-            var format = PixelFormat.Undefined;
+            var format = SKColorType.Unknown;
             var channels = 0;
             var rgbReverse = false;
 
@@ -81,7 +68,7 @@ namespace DlibDotNet.Extensions
                     // But .NET Bitmap data
                     // B,G,R,B,G,R,...
                     rgbReverse = true;
-                    format = PixelFormat.Format24bppRgb;
+                    format = SKColorType.Rgba8888;
                     channels = 3;
                     break;
                 case ImageTypes.BgrPixel:
@@ -89,11 +76,11 @@ namespace DlibDotNet.Extensions
                     // R,G,B,R,G,B,...
                     // But .NET Bitmap data
                     // B,G,R,B,G,R,...
-                    format = PixelFormat.Format24bppRgb;
+                    format = SKColorType.Rgba8888;
                     channels = 3;
                     break;
                 case ImageTypes.RgbAlphaPixel:
-                    format = PixelFormat.Format32bppArgb;
+                    format = SKColorType.Rgba8888;
                     channels = 4;
                     break;
                 case ImageTypes.UInt8:
@@ -108,15 +95,15 @@ namespace DlibDotNet.Extensions
                     throw new NotSupportedException();
             }
 
-            var bitmap = new Bitmap(width, height, format);
+            var bitmap = new SKBitmap(width, height, format, SKAlphaType.Unpremul);
             ToManaged(array.ImageType, array.NativePtr, bitmap, rgbReverse, channels);
             return bitmap;
         }
 
-        public static Array2D<T> ToArray2D<T>(this Bitmap bitmap)
+        public static Array2D<T> ToArray2D<T>(this SKBitmap bitmap)
             where T : struct
         {
-            var format = bitmap.PixelFormat;
+            var format = bitmap.Info.ColorType;
             if (!OptimumConvertImageInfos.TryGetValue(format, out var infos))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
@@ -157,7 +144,7 @@ namespace DlibDotNet.Extensions
 
         #region Bitmap
 
-        public static Bitmap To8bppIndexedGrayscale(this Bitmap bitmap, GrayscalLumaCoefficients coefficients)
+        public static SKBitmap To8bppIndexedGrayscale(this SKBitmap bitmap, GrayscalLumaCoefficients coefficients)
         {
             float red;
             float green;
@@ -187,12 +174,10 @@ namespace DlibDotNet.Extensions
             return To8bppIndexedGrayscale(bitmap, red, green, blue);
         }
 
-        public static Bitmap To8bppIndexedGrayscale(this Bitmap bitmap, float rCoefficient, float gCoefficient, float bCoefficient)
+        public static SKBitmap To8bppIndexedGrayscale(this SKBitmap bitmap, float rCoefficient, float gCoefficient, float bCoefficient)
         {
-            var format = bitmap.PixelFormat;
-            if (format != PixelFormat.Format8bppIndexed &&
-                format != PixelFormat.Format24bppRgb &&
-                format != PixelFormat.Format32bppRgb)
+            var format = bitmap.Info.ColorType;
+            if (format != SKColorType.Rgba8888)
                 throw new NotSupportedException($"{format} is not support");
 
             if (!OptimumChannels.TryGetValue(format, out var channels))
@@ -200,26 +185,26 @@ namespace DlibDotNet.Extensions
 
             var width = bitmap.Width;
             var height = bitmap.Height;
-            var rect = new System.Drawing.Rectangle(0, 0, width, height);
+            var info = bitmap.Info;
 
-            BitmapData srcData = null;
-            BitmapData dstData = null;
-            Bitmap dst = null;
+            SKBitmap dst = null;
 
             try
             {
-                dst = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+                dst = new SKBitmap(width, height, SKColorType.Gray8, SKAlphaType.Unpremul);
 
-                srcData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, format);
-                dstData = dst.LockBits(rect, ImageLockMode.WriteOnly, dst.PixelFormat);
+                var scan0 = bitmap.GetPixels();
+                var stride = info.BytesSize / info.Height;
+                var srcData = bitmap.GetPixels();
+                var dstData = dst.GetPixels();
 
-                var srcStride = srcData.Stride;
-                var dstStride = dstData.Stride;
+                var srcStride = stride;
+                var dstStride = stride;
 
                 switch (channels)
                 {
                     case 1:
-                        NativeMethods.cstd_memcpy(dstData.Scan0, srcData.Scan0, srcStride * height);
+                        NativeMethods.cstd_memcpy(dstData, srcData, srcStride * height);
                         break;
                     case 3:
                     case 4:
@@ -227,8 +212,8 @@ namespace DlibDotNet.Extensions
                         {
                             for (var y = 0; y < height; y++)
                             {
-                                var pSrc = ((byte*)srcData.Scan0) + y * srcStride;
-                                var pDst = ((byte*)dstData.Scan0) + y * dstStride;
+                                var pSrc = ((byte*)srcData) + y * srcStride;
+                                var pDst = ((byte*)dstData) + y * dstStride;
                                 for (var x = 0; x < width; x++, pSrc += channels, pDst++)
                                     *pDst = (byte)(pSrc[0] * bCoefficient + pSrc[1] * gCoefficient + pSrc[2] * rCoefficient);
                             }
@@ -242,15 +227,6 @@ namespace DlibDotNet.Extensions
                 dst?.Dispose();
                 throw;
             }
-            finally
-            {
-                UpdatePalette(dst);
-
-                if (srcData != null)
-                    bitmap.UnlockBits(srcData);
-                if (dstData != null)
-                    dst.UnlockBits(dstData);
-            }
 
             return dst;
         }
@@ -259,14 +235,14 @@ namespace DlibDotNet.Extensions
 
         #region Matrix
 
-        public static Bitmap ToBitmap<T>(this Matrix<T> matrix)
+        public static SKBitmap ToBitmap<T>(this Matrix<T> matrix)
             where T : struct
         {
             matrix.ThrowIfDisposed();
 
             var width = matrix.Columns;
             var height = matrix.Rows;
-            PixelFormat format;
+            var format = SKColorType.Unknown;
             int channels;
             var rgbReverse = false;
 
@@ -274,31 +250,31 @@ namespace DlibDotNet.Extensions
             {
                 case MatrixElementTypes.RgbPixel:
                     rgbReverse = true;
-                    format = PixelFormat.Format24bppRgb;
+                    format = SKColorType.Rgba8888;
                     channels = 3;
                     break;
                 case MatrixElementTypes.BgrPixel:
-                    format = PixelFormat.Format24bppRgb;
+                    format = SKColorType.Rgba8888;
                     channels = 3;
                     break;
                 case MatrixElementTypes.RgbAlphaPixel:
                     rgbReverse = true;
-                    format = PixelFormat.Format32bppArgb;
+                    format = SKColorType.Rgba8888;
                     channels = 4;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            var bitmap = new Bitmap(width, height, format);
+            var bitmap = new SKBitmap(width, height, format, SKAlphaType.Unpremul);
             ToManaged(matrix.MatrixElementType, matrix.NativePtr, bitmap, rgbReverse, channels);
             return bitmap;
         }
 
-        public static Matrix<T> ToMatrix<T>(this Bitmap bitmap)
+        public static Matrix<T> ToMatrix<T>(this SKBitmap bitmap)
             where T : struct
         {
-            var format = bitmap.PixelFormat;
+            var format = bitmap.Info.ColorType;
             if (!OptimumConvertMatrixInfos.TryGetValue(format, out var info))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
@@ -335,130 +311,50 @@ namespace DlibDotNet.Extensions
 
         #region Helpers
 
-        private static void ToManaged(ImageTypes type, IntPtr src, Bitmap bitmap, bool rgbReverse, int channels)
+        private static void ToManaged(ImageTypes type, IntPtr src, SKBitmap bitmap, bool rgbReverse, int channels)
         {
-            var format = bitmap.PixelFormat;
+            var info = bitmap.Info;
             var width = bitmap.Width;
             var height = bitmap.Height;
 
-            BitmapData bitmapData = null;
-            try
-            {
-                bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, width, height),
-                    ImageLockMode.WriteOnly,
-                    format);
-
-                var scan0 = bitmapData.Scan0;
-                var stride = bitmapData.Stride;
-                var srcType = type.ToNativeArray2DType();
-                NativeMethods.extensions_convert_array_to_managed_image(srcType, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
-            }
-            finally
-            {
-                if (bitmapData != null)
-                    bitmap.UnlockBits(bitmapData);
-            }
+            var scan0 = bitmap.GetPixels();
+            var stride = info.BytesSize / info.Height;
+            var srcType = type.ToNativeArray2DType();
+            NativeMethods.extensions_convert_array_to_managed_image(srcType, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
-        private static void ToManaged(MatrixElementTypes type, IntPtr src, Bitmap bitmap, bool rgbReverse, int channels)
+        private static void ToManaged(MatrixElementTypes type, IntPtr src, SKBitmap bitmap, bool rgbReverse, int channels)
         {
-            var format = bitmap.PixelFormat;
+            var info = bitmap.Info;
             var width = bitmap.Width;
             var height = bitmap.Height;
 
-            BitmapData bitmapData = null;
-            try
-            {
-                bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, width, height),
-                    ImageLockMode.WriteOnly,
-                    format);
-
-                var scan0 = bitmapData.Scan0;
-                var stride = bitmapData.Stride;
-                var srcType = type.ToNativeMatrixElementType();
-                NativeMethods.extensions_convert_matrix_to_managed_image(srcType, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
-            }
-            finally
-            {
-                if (bitmapData != null)
-                    bitmap.UnlockBits(bitmapData);
-            }
+            var scan0 = bitmap.GetPixels();
+            var stride = info.BytesSize / info.Height;
+            var srcType = type.ToNativeMatrixElementType();
+            NativeMethods.extensions_convert_matrix_to_managed_image(srcType, src, scan0, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
-        private static void ToNative(Bitmap bitmap, ImageTypes dstType, IntPtr dst, bool rgbReverse, int channels)
+        private static void ToNative(SKBitmap bitmap, ImageTypes dstType, IntPtr dst, bool rgbReverse, int channels)
         {
-            var format = bitmap.PixelFormat;
+            var info = bitmap.Info;
             var width = bitmap.Width;
             var height = bitmap.Height;
-            var palette = bitmap.Palette;
-            var usePalette = bitmap.Palette.Entries.Length == 256;
 
-            BitmapData bitmapData = null;
-            try
-            {
-                bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, width, height),
-                    ImageLockMode.ReadOnly,
-                    format);
-
-                var scan0 = bitmapData.Scan0;
-                var stride = bitmapData.Stride;
-                if (!usePalette)
-                {
-                    NativeMethods.extensions_convert_managed_image_to_array(scan0, dstType.ToNativeArray2DType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
-                }
-                else
-                {
-                    var p = palette.Entries.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                    NativeMethods.extensions_convert_managed_image_to_array_by_palette(scan0, dstType.ToNativeArray2DType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
-                }
-            }
-            finally
-            {
-                if (bitmapData != null)
-                    bitmap.UnlockBits(bitmapData);
-            }
+            var scan0 = bitmap.GetPixels();
+            var stride = info.BytesSize / info.Height;
+            NativeMethods.extensions_convert_managed_image_to_array(scan0, dstType.ToNativeArray2DType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
-        private static void ToNative(Bitmap bitmap, MatrixElementTypes dstType, IntPtr dst, bool rgbReverse, int channels)
+        private static void ToNative(SKBitmap bitmap, MatrixElementTypes dstType, IntPtr dst, bool rgbReverse, int channels)
         {
-            var format = bitmap.PixelFormat;
+            var info = bitmap.Info;
             var width = bitmap.Width;
             var height = bitmap.Height;
-            var palette = bitmap.Palette;
-            var usePalette = bitmap.Palette.Entries.Length == 256;
 
-            BitmapData bitmapData = null;
-            try
-            {
-                bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, width, height),
-                    ImageLockMode.ReadOnly,
-                    format);
-
-                var scan0 = bitmapData.Scan0;
-                var stride = bitmapData.Stride;
-                if (!usePalette)
-                {
-                    NativeMethods.extensions_convert_managed_image_to_matrix(scan0, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
-                }
-                else
-                {
-                    var p = palette.Entries.Select(c => new RgbPixel { Blue = c.B, Green = c.G, Red = c.R }).ToArray();
-                    NativeMethods.extensions_convert_managed_image_to_matrix_by_palette(scan0, dstType.ToNativeMatrixElementType(), dst, p, (uint)height, (uint)width, (uint)stride, (uint)channels);
-                }
-            }
-            finally
-            {
-                if (bitmapData != null)
-                    bitmap.UnlockBits(bitmapData);
-            }
-        }
-
-        private static void UpdatePalette(Bitmap bitmap)
-        {
-            var palette = bitmap.Palette;
-            for (var i = 0; i < _8bppColorPalette.Length; i++)
-                palette.Entries[i] = Color.FromArgb(i, i, i);
-            bitmap.Palette = palette;
+            var scan0 = bitmap.GetPixels();
+            var stride = info.BytesSize / info.Height;
+            NativeMethods.extensions_convert_managed_image_to_matrix(scan0, dstType.ToNativeMatrixElementType(), dst, rgbReverse, (uint)height, (uint)width, (uint)stride, (uint)channels);
         }
 
         #endregion

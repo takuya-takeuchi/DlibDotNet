@@ -1,5 +1,4 @@
-﻿#if WPF
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -337,8 +336,23 @@ namespace DlibDotNet.Extensions
 
         #endregion
 
+        internal sealed class ConvertInfo<T>
+        {
+
+            public T Type
+            {
+                get;
+                set;
+            }
+
+            public bool RgbReverse
+            {
+                get;
+                set;
+            }
+
+        }
+
     }
 
 }
-
-#endif
