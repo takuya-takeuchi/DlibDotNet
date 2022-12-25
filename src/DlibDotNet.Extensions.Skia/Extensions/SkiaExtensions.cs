@@ -134,6 +134,7 @@ namespace DlibDotNet.Extensions
                 if (requireDispose)
                 {
                     array?.Dispose();
+                    array = null;
                 }
             }
 
@@ -294,13 +295,17 @@ namespace DlibDotNet.Extensions
                     ToNative(bitmap, info.Type, matrix.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;
                 }
+                else
+                {
+                    throw new NotSupportedException($"Not support converting from {format} to {matrix.MatrixElementType}");
+                }
             }
             finally
             {
                 if (requireDispose)
                 {
                     matrix?.Dispose();
-                    throw new NotSupportedException();
+                    matrix = null;
                 }
             }
 

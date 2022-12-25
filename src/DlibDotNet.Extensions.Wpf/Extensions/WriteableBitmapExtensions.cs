@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -163,13 +164,17 @@ namespace DlibDotNet.Extensions
                     ToNative(bitmap, info.Type, array.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;
                 }
+                else
+                {
+                    throw new NotSupportedException($"Not support converting from {format} to {array.ImageType}");
+                }
             }
             finally
             {
                 if (requireDispose)
                 {
                     array?.Dispose();
-                    throw new NotSupportedException();
+                    array = null;
                 }
             }
 
@@ -233,7 +238,7 @@ namespace DlibDotNet.Extensions
 
             try
             {
-                dst = new WriteableBitmap(width, height, dpiX, dpiY, PixelFormats.Gray8, BitmapPalettes.Gray256);
+                dst = new WriteableBitmap(width, height, dpiX, dpiY, PixelFormats.Indexed8, BitmapPalettes.Gray256);
                 dst.Lock();
                 var dstData = dst.BackBuffer;
 
@@ -267,6 +272,8 @@ namespace DlibDotNet.Extensions
             finally
             {
                 dst?.AddDirtyRect(new System.Windows.Int32Rect(0, 0, dst.PixelWidth, dst.PixelHeight));
+                dst?.Unlock();
+                bitmap.Unlock();
             }
 
             return dst;
@@ -355,13 +362,17 @@ namespace DlibDotNet.Extensions
                     ToNative(bitmap, info.Type, matrix.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;
                 }
+                else
+                {
+                    throw new NotSupportedException($"Not support converting from {format} to {matrix.MatrixElementType}");
+                }
             }
             finally
             {
                 if (requireDispose)
                 {
                     matrix?.Dispose();
-                    throw new NotSupportedException();
+                    matrix = null;
                 }
             }
 

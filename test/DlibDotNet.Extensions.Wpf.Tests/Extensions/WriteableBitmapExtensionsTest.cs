@@ -29,7 +29,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
                 new
                 {
                     Source = rgb32,
-                    ExpectResult = PixelFormats.Gray8
+                    ExpectResult = PixelFormats.Indexed8
                 }
             };
 
@@ -46,7 +46,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
                     var fileName = Path.Combine(this.GetOutDir(testName), $"{format}_{cof}.bmp");
                     using var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                     var encoder = new BmpBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Frames.Add(BitmapFrame.Create(ret));
                     encoder.Save(stream);
                 }
         }
@@ -61,7 +61,7 @@ namespace DlibDotNet.Extensions.Tests.Extensions
 
             var tests = new[]
             {
-                new { Source = rgb,   ExpectResult = PixelFormats.Gray8 }
+                new { Source = rgb,   ExpectResult = PixelFormats.Indexed8 }
             };
 
             foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
