@@ -54,7 +54,9 @@ foreach ($target in $targets)
 
 # Extensions
 $targets = @(
-   "Extensions.Drawing"
+   "Extensions.Drawing",
+   "Extensions.Wpf",
+   "Extensions.Skia"
 )
 
 # build for general

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>DlibDotNet.Extensions.Wpf</id>
+    <version>19.18.0.20200428</version>
+    <title>DlibDotNet.Extensions.Wpf</title>
+    <authors>Takuya Takeuchi</authors>
+    <owners>Takuya Takeuchi</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <projectUrl>https://github.com/takuya-takeuchi/DlibDotNet</projectUrl>
+    <icon>images\ml128.png</icon>
+    <description>Extension package for DlibDotNet</description>
+    <releaseNotes></releaseNotes>
+    <copyright>© Takuya Takeuchi 2017-2022</copyright>
+    <tags>dlib .net machinelearning</tags>
+    <serviceable>true</serviceable>
+
+    <dependencies>
+      <group targetFramework="net461">
+        <dependency id="DlibDotNet" version="19.18.0.20200301" />
+      </group>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="System.Drawing.Common" version="4.7.0" />
+        <dependency id="DlibDotNet" version="19.18.0.20200301" />
+      </group>
+    </dependencies>
+    
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net461" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="net461" />
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework="net461" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="net461" />
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="net461" />
+      <frameworkAssembly assemblyName="System.Xaml" targetFramework="net461" />
+    </frameworkAssemblies>
+  </metadata>
+
+  <files>
+    <file src="..\ml128.png" target="images\" />
+
+    <file src="..\..\src\DlibDotNet.Extensions.Drawing\bin\Release\netstandard2.0\DlibDotNet.Extensions.Drawing.dll" target="lib\netstandard2.0" />
+
+    <file src="..\..\src\DlibDotNet.Extensions.Drawing\bin\Release\net461\DlibDotNet.Extensions.Drawing.dll" target="lib\net461" />
+
+    <!-- license -->
+    <file src="..\..\LICENSE.txt" target="" />
+  </files>
+
+</package>
