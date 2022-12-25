@@ -155,6 +155,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions.Drawi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions.Wpf.Tests", "test\DlibDotNet.Extensions.Wpf.Tests\DlibDotNet.Extensions.Wpf.Tests.csproj", "{A5165371-2714-463F-B699-FB022E6712A6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlibDotNet.Extensions.Skia.Tests", "test\DlibDotNet.Extensions.Skia.Tests\DlibDotNet.Extensions.Skia.Tests.csproj", "{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1195,6 +1197,22 @@ Global
 		{A5165371-2714-463F-B699-FB022E6712A6}.Release|x64.Build.0 = Release|Any CPU
 		{A5165371-2714-463F-B699-FB022E6712A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{A5165371-2714-463F-B699-FB022E6712A6}.Release|x86.Build.0 = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|ARM.Build.0 = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|x64.Build.0 = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Debug|x86.Build.0 = Debug|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|ARM.Build.0 = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|x64.ActiveCfg = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|x64.Build.0 = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|x86.ActiveCfg = Release|Any CPU
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1271,6 +1289,7 @@ Global
 		{0EB06D5E-E64E-4277-8EC6-EA49584366D1} = {A9E3AD0D-91F4-48B4-9509-5C06B54C7374}
 		{4D2D6224-0775-4766-A21F-F4A5040B6DD9} = {44730D39-C672-4CC0-B983-26CC9D7E59C1}
 		{A5165371-2714-463F-B699-FB022E6712A6} = {44730D39-C672-4CC0-B983-26CC9D7E59C1}
+		{353CDBD2-3194-4CC7-BFB7-4B9589A305B2} = {44730D39-C672-4CC0-B983-26CC9D7E59C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D3A508A-1F0B-4364-9FEC-16AF376DA11D}

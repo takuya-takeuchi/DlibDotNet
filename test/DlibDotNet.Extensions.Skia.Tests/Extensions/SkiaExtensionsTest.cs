@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
+using SkiaSharp;
 using Xunit;
 
 using DlibDotNet.Tests;
 
-namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
+namespace DlibDotNet.Extensions.Skia.Tests.Extensions
 {
 
-    public class WriteableBitmapExtensionsTest : TestBase
+    public class SkiaExtensionsTest : TestBase
     {
 
         private const string LoadTarget = "Lenna";
@@ -21,15 +20,14 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
             const string testName = "To8bppIndexedGrayscale";
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var bitmap = new BitmapImage(new Uri(path.FullName, UriKind.Absolute));
-            var rgb32 = new WriteableBitmap(bitmap);
+            using var bitmap = SKBitmap.Decode(path.FullName);
 
             var tests = new[]
             {
                 new
                 {
-                    Source = rgb32,
-                    ExpectResult = PixelFormats.Indexed8
+                    Source = bitmap,
+                    ExpectResult = SKColorType.Gray8
                 }
             };
 
@@ -37,17 +35,15 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
                 foreach (var output in tests)
                 {
                     var ret = output.Source.To8bppIndexedGrayscale(value);
-                    if (ret.Format != output.ExpectResult)
+                    if (ret.Info.ColorType != output.ExpectResult)
                         Assert.True(false);
 
-                    var format = output.Source.Format.ToString();
+                    var format = output.Source.Info.ColorType.ToString();
                     var cof = value.ToString();
 
                     var fileName = Path.Combine(this.GetOutDir(testName), $"{format}_{cof}.bmp");
                     using var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-                    var encoder = new BmpBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(ret));
-                    encoder.Save(stream);
+                    ret.Encode(stream, SKEncodedImageFormat.Bmp, 100);
                 }
         }
 
@@ -56,11 +52,10 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var bitmap = new BitmapImage(new Uri(path.FullName, UriKind.Absolute));
-            var rgb = new WriteableBitmap(bitmap);
+            using var bitmap = SKBitmap.Decode(path.FullName);
 
-            using var rgbArray = rgb.ToArray2D<RgbPixel>();
-            using var bgrArray = rgb.ToArray2D<BgrPixel>();
+            using var rgbArray = bitmap.ToArray2D<RgbPixel>();
+            using var bgrArray = bitmap.ToArray2D<BgrPixel>();
         }
 
         [Fact]
@@ -68,12 +63,11 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var bitmap = new BitmapImage(new Uri(path.FullName, UriKind.Absolute));
-            var rgb = new WriteableBitmap(bitmap);
+            using var bitmap = SKBitmap.Decode(path.FullName);
 
             var tests = new[]
             {
-                new { Source = rgb,   ExpectResult = PixelFormats.Indexed8 }
+                new { Source = bitmap,   ExpectResult = SKColorType.Gray8 }
             };
 
             foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
@@ -81,7 +75,7 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
                 {
                     var ret = output.Source.To8bppIndexedGrayscale(value);
                     var array = ret.ToArray2D<byte>();
-                    if (ret.Format != output.ExpectResult)
+                    if (ret.Info.ColorType != output.ExpectResult)
                         Assert.True(false);
                     if (array.ImageType != ImageTypes.UInt8)
                         Assert.True(false);
@@ -96,11 +90,10 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var bitmap = new BitmapImage(new Uri(path.FullName, UriKind.Absolute));
-            var rgb = new WriteableBitmap(bitmap);
+            using var bitmap = SKBitmap.Decode(path.FullName);
 
-            using var rgbMatrix = rgb.ToMatrix<RgbPixel>();
-            using var bgrMatrix = rgb.ToMatrix<BgrPixel>();
+            using var rgbMatrix = bitmap.ToMatrix<RgbPixel>();
+            using var bgrMatrix = bitmap.ToMatrix<BgrPixel>();
         }
 
         [Fact]
@@ -108,12 +101,11 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var bitmap = new BitmapImage(new Uri(path.FullName, UriKind.Absolute));
-            var rgb = new WriteableBitmap(bitmap);
+            using var bitmap = SKBitmap.Decode(path.FullName);
 
             var tests = new[]
             {
-                new { Source = rgb,   ExpectResult = PixelFormats.Indexed8 }
+                new { Source = bitmap,   ExpectResult = SKColorType.Gray8 }
             };
 
             foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
@@ -121,7 +113,7 @@ namespace DlibDotNet.Extensions.Wpf.Tests.Extensions
             {
                 var ret = output.Source.To8bppIndexedGrayscale(value);
                 var array = ret.ToMatrix<byte>();
-                if (ret.Format != output.ExpectResult)
+                if (ret.Info.ColorType != output.ExpectResult)
                     Assert.True(false);
                 if (array.MatrixElementType != MatrixElementTypes.UInt8)
                     Assert.True(false);

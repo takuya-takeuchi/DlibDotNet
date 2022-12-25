@@ -17,7 +17,7 @@ namespace DlibDotNet.Extensions
 
         private static readonly Dictionary<SKColorType, ConvertInfo<ImageTypes>[]> OptimumConvertImageInfos;
 
-        private static readonly Dictionary<SKColorType, ConvertInfo<MatrixElementTypes>> OptimumConvertMatrixInfos;
+        private static readonly Dictionary<SKColorType, ConvertInfo<MatrixElementTypes>[]> OptimumConvertMatrixInfos;
         
         #endregion
 
@@ -26,21 +26,31 @@ namespace DlibDotNet.Extensions
         static SkiaExtensions()
         {
             OptimumChannels = new Dictionary<SKColorType, int>();
-            OptimumChannels[SKColorType.Rgba8888] = 4;
+            OptimumChannels[SKColorType.Bgra8888] = 4;
+            OptimumChannels[SKColorType.Gray8] = 1;
 
             OptimumConvertImageInfos = new Dictionary<SKColorType, ConvertInfo<ImageTypes>[]>();
             OptimumConvertImageInfos[SKColorType.Gray8] = new[]
             {
                 new ConvertInfo<ImageTypes> { Type = ImageTypes.UInt8 }
             };
-            OptimumConvertImageInfos[SKColorType.Rgba8888] = new[]
+            OptimumConvertImageInfos[SKColorType.Bgra8888] = new[]
             {
                 new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbPixel, RgbReverse = true },
                 new ConvertInfo<ImageTypes>{ Type = ImageTypes.BgrPixel, RgbReverse = false },
                 new ConvertInfo<ImageTypes>{ Type = ImageTypes.RgbAlphaPixel, RgbReverse = true }
             };
-            OptimumConvertMatrixInfos = new Dictionary<SKColorType, ConvertInfo<MatrixElementTypes>>();
-            OptimumConvertMatrixInfos[SKColorType.Rgba8888] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
+            OptimumConvertMatrixInfos = new Dictionary<SKColorType, ConvertInfo<MatrixElementTypes>[]>();
+            OptimumConvertMatrixInfos[SKColorType.Gray8] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.UInt8 }
+            };
+            OptimumConvertMatrixInfos[SKColorType.Bgra8888] = new []
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true },
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.BgrPixel , RgbReverse = false },
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbAlphaPixel, RgbReverse = true }
+            };
         }
 
         #endregion
@@ -49,7 +59,7 @@ namespace DlibDotNet.Extensions
 
         #region Array2D
 
-        public static SKBitmap ToBitmap<T>(this Array2D<T> array)
+        public static SKBitmap ToSKBitmap<T>(this Array2D<T> array)
             where T : struct
         {
             array.ThrowIfDisposed();
@@ -178,7 +188,7 @@ namespace DlibDotNet.Extensions
         public static SKBitmap To8bppIndexedGrayscale(this SKBitmap bitmap, float rCoefficient, float gCoefficient, float bCoefficient)
         {
             var format = bitmap.Info.ColorType;
-            if (format != SKColorType.Rgba8888)
+            if (format != SKColorType.Bgra8888)
                 throw new NotSupportedException($"{format} is not support");
 
             if (!OptimumChannels.TryGetValue(format, out var channels))
@@ -193,14 +203,13 @@ namespace DlibDotNet.Extensions
             try
             {
                 dst = new SKBitmap(width, height, SKColorType.Gray8, SKAlphaType.Unpremul);
-
-                var scan0 = bitmap.GetPixels();
+                
                 var stride = info.BytesSize / info.Height;
                 var srcData = bitmap.GetPixels();
                 var dstData = dst.GetPixels();
 
-                var srcStride = stride;
-                var dstStride = stride;
+                var srcStride = info.BytesSize / info.Height;
+                var dstStride = dst.Info.BytesSize / dst.Info.Height;
 
                 switch (channels)
                 {
@@ -236,7 +245,7 @@ namespace DlibDotNet.Extensions
 
         #region Matrix
 
-        public static SKBitmap ToBitmap<T>(this Matrix<T> matrix)
+        public static SKBitmap ToSKBitmap<T>(this Matrix<T> matrix)
             where T : struct
         {
             matrix.ThrowIfDisposed();
@@ -276,7 +285,7 @@ namespace DlibDotNet.Extensions
             where T : struct
         {
             var format = bitmap.Info.ColorType;
-            if (!OptimumConvertMatrixInfos.TryGetValue(format, out var info))
+            if (!OptimumConvertMatrixInfos.TryGetValue(format, out var infos))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
                 throw new NotSupportedException($"{format} is not support");
@@ -290,7 +299,8 @@ namespace DlibDotNet.Extensions
             try
             {
                 matrix = new Matrix<T>(height, width);
-                if (matrix.MatrixElementType == info.Type)
+                var info = infos.FirstOrDefault(i => i.Type == matrix.MatrixElementType);
+                if (info != null)
                 {
                     ToNative(bitmap, info.Type, matrix.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;

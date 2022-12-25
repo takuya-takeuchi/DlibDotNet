@@ -7,7 +7,7 @@ using Xunit;
 
 using DlibDotNet.Tests;
 
-namespace DlibDotNet.Extensions.Tests.Extensions
+namespace DlibDotNet.Extensions.Drawing.Tests.Extensions
 {
 
     public class BitmapExtensionsTest : TestBase
