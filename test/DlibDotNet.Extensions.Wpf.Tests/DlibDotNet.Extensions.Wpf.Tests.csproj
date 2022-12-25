@@ -34,11 +34,6 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\DlibDotNet\DlibDotNet.csproj" />
-    <ProjectReference Include="..\..\src\DlibDotNet.Extensions.Wpf\DlibDotNet.Extensions.Wpf.csproj" />
-  </ItemGroup>
-
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" Condition="'$(OS)' != 'Windows_NT'" />
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.WindowsDesktop" Condition="'$(OS)' == 'Windows_NT'" />
 

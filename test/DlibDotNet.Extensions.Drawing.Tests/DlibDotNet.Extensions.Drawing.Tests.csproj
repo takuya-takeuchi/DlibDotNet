@@ -34,9 +34,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\DlibDotNet\DlibDotNet.csproj" />
-    <ProjectReference Include="..\..\src\DlibDotNet.Extensions.Drawing\DlibDotNet.Extensions.Drawing.csproj" />
-  </ItemGroup>
-
 </Project>
