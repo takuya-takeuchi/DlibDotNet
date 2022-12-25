@@ -2,8 +2,10 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using DlibDotNet.Tests;
+
 using Xunit;
+
+using DlibDotNet.Tests;
 
 namespace DlibDotNet.Extensions.Tests.Extensions
 {
@@ -96,8 +98,8 @@ namespace DlibDotNet.Extensions.Tests.Extensions
             const string testName = "To8bppIndexedGrayscale";
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var rgb24 = Image.FromFile(path.FullName) as Bitmap;
-            var rgb32 = To32Rgb(rgb24, false);
+            using var rgb24 = Image.FromFile(path.FullName) as Bitmap;
+            using var rgb32 = To32Rgb(rgb24, false);
 
             var tests = new[]
             {
@@ -132,12 +134,27 @@ namespace DlibDotNet.Extensions.Tests.Extensions
         }
 
         [Fact]
+        public void ToArray2D()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.png");
+
+            using var rgb = new Bitmap(path.FullName);
+            using var argb = To32Rgb(rgb, false);
+
+            using var rgbArray = rgb.ToArray2D<RgbPixel>();
+            using var bgrArray = rgb.ToArray2D<BgrPixel>();
+            using var rgbaArray = argb.ToArray2D<RgbAlphaPixel>();
+            using var bgr2Array = argb.ToArray2D<RgbPixel>();
+            using var rgb2Array = argb.ToArray2D<BgrPixel>();
+        }
+
+        [Fact]
         public void ToArray2DFrom8bppIndexed()
         {
             var path = this.GetDataFile($"{LoadTarget}.png");
 
-            var rgb = new Bitmap(path.FullName);
-            var argb = To32Rgb(rgb, false);
+            using var rgb = new Bitmap(path.FullName);
+            using var argb = To32Rgb(rgb, false);
 
             var tests = new[]
             {
@@ -158,6 +175,53 @@ namespace DlibDotNet.Extensions.Tests.Extensions
 
                         this.DisposeAndCheckDisposedState(array);
                     }
+
+            foreach (var output in tests)
+                output.Source.Dispose();
+        }
+
+        [Fact]
+        public void ToMatrix()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.png");
+
+            using var rgb = new Bitmap(path.FullName);
+            using var argb = To32Rgb(rgb, false);
+
+            using var rgbMatrix = rgb.ToMatrix<RgbPixel>();
+            using var bgrMatrix = rgb.ToMatrix<BgrPixel>();
+            using var rgbaMatrix = argb.ToMatrix<RgbAlphaPixel>();
+            using var bgr2Matrix = argb.ToMatrix<RgbPixel>();
+            using var rgb2Matrix = argb.ToMatrix<BgrPixel>();
+        }
+
+        [Fact]
+        public void ToMatrixFrom8bppIndexed()
+        {
+            var path = this.GetDataFile($"{LoadTarget}.png");
+
+            using var rgb = new Bitmap(path.FullName);
+            using var argb = To32Rgb(rgb, false);
+
+            var tests = new[]
+            {
+                new { Source = rgb,   ExpectResult = PixelFormat.Format8bppIndexed },
+                new { Source = argb,  ExpectResult = PixelFormat.Format8bppIndexed }
+            };
+
+            foreach (GrayscalLumaCoefficients value in Enum.GetValues(typeof(GrayscalLumaCoefficients)))
+            foreach (var output in tests)
+            {
+                using var ret = output.Source.To8bppIndexedGrayscale(value);
+                var array = ret.ToMatrix<byte>();
+                if (ret.PixelFormat != output.ExpectResult)
+                    Assert.True(false);
+                if (array.MatrixElementType != MatrixElementTypes.UInt8)
+                    Assert.True(false);
+                Assert.NotNull(array);
+
+                this.DisposeAndCheckDisposedState(array);
+            }
 
             foreach (var output in tests)
                 output.Source.Dispose();
