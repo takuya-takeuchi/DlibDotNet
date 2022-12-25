@@ -3,6 +3,9 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using DlibDotNet;
+using DlibDotNet.Extensions;
+
 using Xunit;
 
 using DlibDotNet.Tests;

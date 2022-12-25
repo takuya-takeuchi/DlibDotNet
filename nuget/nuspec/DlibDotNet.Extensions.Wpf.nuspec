@@ -39,9 +39,9 @@
   <files>
     <file src="..\ml128.png" target="images\" />
 
-    <file src="..\..\src\DlibDotNet.Extensions.Drawing\bin\Release\netstandard2.0\DlibDotNet.Extensions.Drawing.dll" target="lib\netstandard2.0" />
+    <file src="..\..\src\DlibDotNet.Extensions.Wpf\bin\Release\netstandard2.0\DlibDotNet.Extensions.Wpf.dll" target="lib\netstandard2.0" />
 
-    <file src="..\..\src\DlibDotNet.Extensions.Drawing\bin\Release\net461\DlibDotNet.Extensions.Drawing.dll" target="lib\net461" />
+    <file src="..\..\src\DlibDotNet.Extensions.Wpf\bin\Release\net461\DlibDotNet.Extensions.Wpf.dll" target="lib\net461" />
 
     <!-- license -->
     <file src="..\..\LICENSE.txt" target="" />

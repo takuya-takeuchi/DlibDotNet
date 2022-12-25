@@ -97,6 +97,26 @@ function RunTest($BuildTargets)
 
       Copy-Item "$NativeTestDir" "$WorkDir" -Recurse
 
+      $DlibDotNetTestDir = Join-Path $DlibDotNetRoot test | `
+                           Join-Path -ChildPath "DlibDotNet.Tests"
+
+      $targetBaseDir = Join-Path $WorkDir "DlibDotNet.Tests"
+      if (Test-Path "$targetBaseDir") {
+         Remove-Item -Path "$targetBaseDir" -Recurse -Force > $null
+      }
+
+      New-Item -Type Directory "${targetBaseDir}" -Force  > $null
+      $testBaseFiles = @(
+         "TestBase.cs",
+         "TestDataBase.cs"
+      )
+      foreach($testBaseFile in $testBaseFiles)
+      {
+         $src = Join-Path "${DlibDotNetTestDir}" ${testBaseFile}
+         $dst = Join-Path "${targetBaseDir}" ${testBaseFile}
+         Copy-Item "${src}" "${dst}" -Force
+      }
+
       Set-Location -Path "$TargetDir"
 
       Clear-PackakgeCache -PackageName $Package -PackageVersion $Version
@@ -104,7 +124,10 @@ function RunTest($BuildTargets)
 
       # restore package from local nuget pacakge
       # And drop stdout message
+      Write-Host "dotnet add package ${package} -v ${VERSION} --source ${NugetDir}" -Foreground Blue
       dotnet add package $package -v $VERSION --source "$NugetDir" > $null
+      Write-Host "dotnet add package ${Extension} -v ${ExtensionVersion} --source ${NugetDir}" -Foreground Blue
+      dotnet add package $Extension -v $ExtensionVersion --source "$NugetDir" > $null
 
       # Copy Dependencies
       $OutDir = Join-Path $TargetDir bin | `
@@ -137,20 +160,9 @@ function RunTest($BuildTargets)
          $dotnetPath = "dotnet"
       }
 
-      switch($PlatformTarget)
-      {
-         "x64"
-         {
-            $runsetting = "x64.runsettings"
-         }
-         "x86"
-         {
-            $runsetting = "x86.runsettings"
-         }
-      }
-
-      Write-Host "${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx" -Foreground Yellow
-      & ${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx
+      Write-Host "${dotnetPath} test -c Release -r "$TestDir" --logger trx" -Foreground Yellow
+      # & ${dotnetPath} test -c Release -r "$TestDir" --logger trx
+      & ${dotnetPath} test -c Release --logger trx
       if ($lastexitcode -eq 0) {
          Write-Host "Test Successful" -ForegroundColor Green
       } else {
@@ -162,10 +174,10 @@ function RunTest($BuildTargets)
       $ErrorActionPreference = "continue"
 
       # move to current
-      Set-Location -Path "$Current"
+      Set-Location -Path "${Current}"
 
       # to make sure, delete
-      if (Test-Path "$WorkDir") {
+      if (Test-Path "${WorkDir}") {
          Remove-Item -Path "$WorkDir" -Recurse -Force
       }
    }
