@@ -41,9 +41,11 @@ namespace DlibDotNet.Extensions.Skia.Tests.Extensions
                     var format = output.Source.Info.ColorType.ToString();
                     var cof = value.ToString();
 
-                    var fileName = Path.Combine(this.GetOutDir(testName), $"{format}_{cof}.bmp");
+                    // I'm not sure why bitmap encode always return false
+                    var fileName = Path.Combine(this.GetOutDir(testName), $"{format}_{cof}.png");
                     using var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-                    ret.Encode(stream, SKEncodedImageFormat.Bmp, 100);
+                    var b = ret.Encode(stream, SKEncodedImageFormat.Png, 100);
+                    Assert.True(b, "Failed to encode");
                 }
         }
 
