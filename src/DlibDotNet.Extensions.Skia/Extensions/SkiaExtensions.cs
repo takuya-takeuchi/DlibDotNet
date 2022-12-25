@@ -204,7 +204,6 @@ namespace DlibDotNet.Extensions
             {
                 dst = new SKBitmap(width, height, SKColorType.Gray8, SKAlphaType.Unpremul);
                 
-                var stride = info.BytesSize / info.Height;
                 var srcData = bitmap.GetPixels();
                 var dstData = dst.GetPixels();
 
