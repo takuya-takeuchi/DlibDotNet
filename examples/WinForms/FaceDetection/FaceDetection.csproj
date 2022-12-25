@@ -79,6 +79,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\DlibDotNet.Extensions.Drawing\DlibDotNet.Extensions.Drawing.csproj">
+      <Project>{d19c51a1-6d06-49c0-a04a-d9556326a251}</Project>
+      <Name>DlibDotNet.Extensions.Drawing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\src\DlibDotNet\DlibDotNet.csproj">
       <Project>{b13a6288-7b69-4b53-9138-2e20a8d5cfc5}</Project>
       <Name>DlibDotNet</Name>

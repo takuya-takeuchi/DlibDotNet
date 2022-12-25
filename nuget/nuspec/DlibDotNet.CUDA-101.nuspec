@@ -14,17 +14,9 @@
 
 Requirements: Visual C++ 2017 Redistributable Package, cublas64_10.dll, cudnn64_7.dll, curand64_10.dll and cusolver64_10.dll</description>
     <releaseNotes></releaseNotes>
-    <copyright>© Takuya Takeuchi 2017-2021</copyright>
+    <copyright>© Takuya Takeuchi 2017-2022</copyright>
     <tags>dlib .net machinelearning</tags>
     <serviceable>true</serviceable>
-    <dependencies>
-      <group targetFramework="netstandard2.0">
-        <dependency id="System.Drawing.Common" version="5.0.1" />
-      </group>
-    </dependencies>
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net461" />
-    </frameworkAssemblies>
   </metadata>
 
   <files>

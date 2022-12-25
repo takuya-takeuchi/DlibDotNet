@@ -1,5 +1,4 @@
-﻿#if WPF
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -16,9 +15,9 @@ namespace DlibDotNet.Extensions
 
         private static readonly Dictionary<PixelFormat, int> OptimumChannels;
 
-        private static readonly Dictionary<PixelFormat, ConvertInfo<ImageTypes>> OptimumConvertImageInfos;
+        private static readonly Dictionary<PixelFormat, ConvertInfo<ImageTypes>[]> OptimumConvertImageInfos;
 
-        private static readonly Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>> OptimumConvertMatrixInfos;
+        private static readonly Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>[]> OptimumConvertMatrixInfos;
 
         #endregion
 
@@ -53,20 +52,60 @@ namespace DlibDotNet.Extensions
             OptimumChannels[PixelFormats.Prgba128Float] =
             OptimumChannels[PixelFormats.Rgba64] =
             OptimumChannels[PixelFormats.Rgba128Float] = 4;
-
-            OptimumConvertImageInfos = new Dictionary<PixelFormat, ConvertInfo<ImageTypes>>();
-            OptimumConvertImageInfos[PixelFormats.Indexed8] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel };
-            OptimumConvertImageInfos[PixelFormats.Bgr24] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertImageInfos[PixelFormats.Rgb24] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel };
-            OptimumConvertImageInfos[PixelFormats.Bgr32] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertImageInfos[PixelFormats.Bgra32] = new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true };
             
-            OptimumConvertMatrixInfos = new Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>>();
-            OptimumConvertMatrixInfos[PixelFormats.Indexed8] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
-            OptimumConvertMatrixInfos[PixelFormats.Bgr24] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertMatrixInfos[PixelFormats.Rgb24] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel };
-            OptimumConvertMatrixInfos[PixelFormats.Bgr32] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true };
-            OptimumConvertMatrixInfos[PixelFormats.Bgra32] = new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbAlphaPixel, RgbReverse = true };
+            OptimumConvertImageInfos = new Dictionary<PixelFormat, ConvertInfo<ImageTypes>[]>();
+            OptimumConvertImageInfos[PixelFormats.Gray8] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.UInt8 }
+            };
+            OptimumConvertImageInfos[PixelFormats.Indexed8] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.UInt8 }
+            };
+            OptimumConvertImageInfos[PixelFormats.Bgr24] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true }
+            };
+            OptimumConvertImageInfos[PixelFormats.Rgb24] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = false }
+            };
+            OptimumConvertImageInfos[PixelFormats.Bgr32] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbPixel, RgbReverse = true },
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.BgrPixel, RgbReverse = false }
+            };
+            OptimumConvertImageInfos[PixelFormats.Bgra32] = new[]
+            {
+                new ConvertInfo<ImageTypes> { Type = ImageTypes.RgbAlphaPixel, RgbReverse = true }
+            };
+
+            OptimumConvertMatrixInfos = new Dictionary<PixelFormat, ConvertInfo<MatrixElementTypes>[]>();
+            OptimumConvertMatrixInfos[PixelFormats.Gray8] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.UInt8 }
+            };
+            OptimumConvertMatrixInfos[PixelFormats.Indexed8] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.UInt8 }
+            };
+            OptimumConvertMatrixInfos[PixelFormats.Bgr24] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true }
+            };
+            OptimumConvertMatrixInfos[PixelFormats.Rgb24] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = false }
+            };
+            OptimumConvertMatrixInfos[PixelFormats.Bgr32] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbPixel, RgbReverse = true },
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.BgrPixel, RgbReverse = false }
+            };
+            OptimumConvertMatrixInfos[PixelFormats.Bgra32] = new[]
+            {
+                new ConvertInfo<MatrixElementTypes> { Type = MatrixElementTypes.RgbAlphaPixel, RgbReverse = true }
+            };
         }
 
         #endregion
@@ -143,7 +182,7 @@ namespace DlibDotNet.Extensions
             where T : struct
         {
             var format = bitmap.Format;
-            if (!OptimumConvertImageInfos.TryGetValue(format, out var info))
+            if (!OptimumConvertImageInfos.TryGetValue(format, out var infos))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
                 throw new NotSupportedException($"{format} is not support");
@@ -157,10 +196,15 @@ namespace DlibDotNet.Extensions
             try
             {
                 array = new Array2D<T>(height, width);
-                if (array.ImageType == info.Type)
+                var info = infos.FirstOrDefault(i => i.Type == array.ImageType);
+                if (info != null)
                 {
                     ToNative(bitmap, info.Type, array.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;
+                }
+                else
+                {
+                    throw new NotSupportedException($"Not support converting from {format} to {array.ImageType}");
                 }
             }
             finally
@@ -168,11 +212,109 @@ namespace DlibDotNet.Extensions
                 if (requireDispose)
                 {
                     array?.Dispose();
-                    throw new NotSupportedException();
+                    array = null;
                 }
             }
 
             return array;
+        }
+
+        #endregion
+
+
+        #region Bitmap
+
+        public static WriteableBitmap To8bppIndexedGrayscale(this WriteableBitmap bitmap, GrayscalLumaCoefficients coefficients)
+        {
+            float red;
+            float green;
+            float blue;
+
+            switch (coefficients)
+            {
+                case GrayscalLumaCoefficients.ITU_R_BT_601:
+                    red = 0.299F;
+                    green = 0.587F;
+                    blue = 0.1144F;
+                    break;
+                case GrayscalLumaCoefficients.ITU_R_BT_709:
+                    red = 0.2126F;
+                    green = 0.7152F;
+                    blue = 0.0722F;
+                    break;
+                case GrayscalLumaCoefficients.SMPTE_240M:
+                    red = 0.212F;
+                    green = 0.701F;
+                    blue = 0.087F;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(coefficients), coefficients, null);
+            }
+
+            return To8bppIndexedGrayscale(bitmap, red, green, blue);
+        }
+
+        public static WriteableBitmap To8bppIndexedGrayscale(this WriteableBitmap bitmap, float rCoefficient, float gCoefficient, float bCoefficient)
+        {
+            var format = bitmap.Format;
+            if (format != PixelFormats.Gray8 &&
+                format != PixelFormats.Indexed8 &&
+                format != PixelFormats.Bgr24 &&
+                format != PixelFormats.Bgr32 &&
+                format != PixelFormats.Bgra32)
+                throw new NotSupportedException($"{format} is not support");
+
+            if (!OptimumChannels.TryGetValue(format, out var channels))
+                throw new NotSupportedException($"{format} is not support");
+
+            var width = bitmap.PixelWidth;
+            var height = bitmap.PixelHeight;
+            var dpiX = bitmap.DpiX;
+            var dpiY = bitmap.DpiY;
+
+            WriteableBitmap dst = null;
+
+            try
+            {
+                dst = new WriteableBitmap(width, height, dpiX, dpiY, PixelFormats.Indexed8, BitmapPalettes.Gray256);
+                dst.Lock();
+                var dstData = dst.BackBuffer;
+
+                bitmap.Lock();
+                var srcData = bitmap.BackBuffer;
+
+                var srcStride = bitmap.BackBufferStride;
+                var dstStride = dst.BackBufferStride;
+
+                switch (channels)
+                {
+                    case 1:
+                        NativeMethods.cstd_memcpy(dstData, srcData, srcStride * height);
+                        break;
+                    case 3:
+                    case 4:
+                        unsafe
+                        {
+                            for (var y = 0; y < height; y++)
+                            {
+                                var pSrc = ((byte*)srcData) + y * srcStride;
+                                var pDst = ((byte*)dstData) + y * dstStride;
+                                for (var x = 0; x < width; x++, pSrc += channels, pDst++)
+                                    *pDst = (byte)(pSrc[0] * bCoefficient + pSrc[1] * gCoefficient + pSrc[2] * rCoefficient);
+                            }
+                        }
+
+                        break;
+                }
+            }
+            finally
+            {
+                dst?.AddDirtyRect(new System.Windows.Int32Rect(0, 0, dst.PixelWidth, dst.PixelHeight));
+                dst?.Unlock();
+                bitmap.Unlock();
+            }
+
+            return dst;
         }
 
         #endregion
@@ -239,7 +381,7 @@ namespace DlibDotNet.Extensions
             where T : struct
         {
             var format = bitmap.Format;
-            if (!OptimumConvertMatrixInfos.TryGetValue(format, out var info))
+            if (!OptimumConvertMatrixInfos.TryGetValue(format, out var infos))
                 throw new NotSupportedException($"{format} is not support");
             if (!OptimumChannels.TryGetValue(format, out var channels))
                 throw new NotSupportedException($"{format} is not support");
@@ -253,10 +395,15 @@ namespace DlibDotNet.Extensions
             try
             {
                 matrix = new Matrix<T>(height, width);
-                if (matrix.MatrixElementType == info.Type)
+                var info = infos.FirstOrDefault(i => i.Type == matrix.MatrixElementType);
+                if (info != null)
                 {
                     ToNative(bitmap, info.Type, matrix.NativePtr, info.RgbReverse, channels);
                     requireDispose = false;
+                }
+                else
+                {
+                    throw new NotSupportedException($"Not support converting from {format} to {matrix.MatrixElementType}");
                 }
             }
             finally
@@ -264,7 +411,7 @@ namespace DlibDotNet.Extensions
                 if (requireDispose)
                 {
                     matrix?.Dispose();
-                    throw new NotSupportedException();
+                    matrix = null;
                 }
             }
 
@@ -337,8 +484,23 @@ namespace DlibDotNet.Extensions
 
         #endregion
 
+        internal sealed class ConvertInfo<T>
+        {
+
+            public T Type
+            {
+                get;
+                set;
+            }
+
+            public bool RgbReverse
+            {
+                get;
+                set;
+            }
+
+        }
+
     }
 
 }
-
-#endif

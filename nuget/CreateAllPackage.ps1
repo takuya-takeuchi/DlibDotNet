@@ -32,9 +32,9 @@ foreach ($key in $customProperties.keys)
    Write-Host "Build ${output}" -ForegroundColor Blue
    dotnet build -c Release -p:CustomDefinition="${customProperty}" ${source} /nowarn:CS1591
    $output = Join-Path $source bin | `
-            Join-Path -ChildPath Release
+             Join-Path -ChildPath Release
    $dest = Join-Path $source bin | `
-         Join-Path -ChildPath ${dirname}
+           Join-Path -ChildPath ${dirname}
    
    if (Test-path($dest))
    {
@@ -49,5 +49,23 @@ dotnet build -c Release ${source} /nowarn:CS1591
 
 foreach ($target in $targets)
 {
+   pwsh CreatePackage.ps1 $target
+}
+
+# Extensions
+$targets = @(
+   "Extensions.Drawing",
+   "Extensions.Wpf",
+   "Extensions.Skia"
+)
+
+# build for general
+dotnet build -c Release ${source} /nowarn:CS1591
+
+foreach ($target in $targets)
+{
+   $source = Join-Path $DlibDotNetRoot src | `
+             Join-Path -ChildPath "DlibDotNet.${target}"
+   dotnet build -c Release ${source} /nowarn:CS1591
    pwsh CreatePackage.ps1 $target
 }
