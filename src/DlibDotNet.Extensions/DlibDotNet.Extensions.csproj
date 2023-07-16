@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
@@ -47,7 +47,7 @@
 
   <ItemGroup Condition="$(TargetFramework.Contains('netstandard')) Or $(TargetFramework.Contains('netcoreapp')) ">
     <PackageReference Include="System.Drawing.Common">
-      <Version>4.7.0</Version>
+      <Version>4.7.2</Version>
     </PackageReference>
   </ItemGroup>
 
